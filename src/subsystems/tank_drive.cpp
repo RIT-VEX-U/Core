@@ -1,8 +1,17 @@
 #include "subsystems/tank_drive.h"
 
-TankDrive::TankDrive(motor_group *left_motors, motor_group *right_motors, gyro *gyro_sensor, TankDrive::tankdrive_config_t *config)
+TankDrive::TankDrive(motor_group *left_motors, motor_group *right_motors, inertial *gyro_sensor, TankDrive::tankdrive_config_t *config)
     : config(config), left_motors(left_motors), right_motors(right_motors), drive_pid(config->drive_pid), turn_pid(config->turn_pid), gyro_sensor(gyro_sensor)
 {
+}
+
+/**
+ * Stops rotation of all the motors using their "brake mode"
+ */
+void TankDrive::stop()
+{
+  left_motors->stop();
+  right_motors->stop();
 }
 
 /**
@@ -78,7 +87,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   // On the first run of the funciton, reset the gyro position and PID
   if (initialize_func)
   {
-    gyro_sensor->resetAngle();
+    gyro_sensor->resetRotation();
     turn_pid.reset();
 
     turn_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
@@ -88,7 +97,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   }
 
   // Update PID loop and drive the robot based on it's output
-  turn_pid.update(gyro_sensor->angle(rotationUnits::deg));
+  turn_pid.update(gyro_sensor->rotation(rotationUnits::deg));
   drive_tank(turn_pid.get(), -turn_pid.get());
 
   // If the robot is at it's target, return true

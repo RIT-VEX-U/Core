@@ -23,7 +23,12 @@ public:
   /**
    * Create the TankDrive object 
    */
-  TankDrive(motor_group *left_motors, motor_group *right_motors, gyro *gyro_sensor, tankdrive_config_t *config);
+  TankDrive(motor_group *left_motors, motor_group *right_motors, inertial *gyro_sensor, tankdrive_config_t *config);
+
+  /**
+   * Stops rotation of all the motors using their "brake mode"
+   */
+  void stop();
 
   /**
    * Drive the robot using differential style controls. left_motors controls the left motors,
@@ -66,7 +71,7 @@ private:
   PID drive_pid;
   PID turn_pid;
 
-  gyro *gyro_sensor;
+  inertial *gyro_sensor;
 
   bool initialize_func = true;
 };
