@@ -4,7 +4,7 @@
 #define PI 3.141592654
 
 #include "vex.h"
-#include "utils/pid.h"
+#include "../core/include/utils/pid.h"
 
 using namespace vex;
 

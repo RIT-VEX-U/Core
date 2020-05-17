@@ -1,4 +1,4 @@
-#include "subsystems/tank_drive.h"
+#include "../core/include/subsystems/tank_drive.h"
 
 TankDrive::TankDrive(motor_group *left_motors, motor_group *right_motors, inertial *gyro_sensor, TankDrive::tankdrive_config_t *config)
     : config(config), left_motors(left_motors), right_motors(right_motors), drive_pid(config->drive_pid), turn_pid(config->turn_pid), gyro_sensor(gyro_sensor)

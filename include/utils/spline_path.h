@@ -1,9 +1,9 @@
 #ifndef _SPLINE_
 #define _SPLINE_
 
-#include "pathfinder.h"
+#include "../core/include/pathfinder.h"
 
-#include "subsystems/tank_drive.h"
+#include "../core/include/subsystems/tank_drive.h"
 
 
 class SplinePath

@@ -5,20 +5,20 @@
 extern "C" {
 #endif
 
-#include "pathfinder/mathutil.h"
-#include "pathfinder/structs.h"
+#include "../core/include/pathfinder/mathutil.h"
+#include "../core/include/pathfinder/structs.h"
 
-#include "pathfinder/fit.h"
-#include "pathfinder/spline.h"
-#include "pathfinder/trajectory.h"
+#include "../core/include/pathfinder/fit.h"
+#include "../core/include/pathfinder/spline.h"
+#include "../core/include/pathfinder/trajectory.h"
 
-#include "pathfinder/modifiers/tank.h"
-#include "pathfinder/modifiers/swerve.h"
+#include "../core/include/pathfinder/modifiers/tank.h"
+#include "../core/include/pathfinder/modifiers/swerve.h"
 
-#include "pathfinder/followers/encoder.h"
-#include "pathfinder/followers/distance.h"
+#include "../core/include/pathfinder/followers/encoder.h"
+#include "../core/include/pathfinder/followers/distance.h"
 
-#include "pathfinder/io.h"
+#include "../core/include/pathfinder/io.h"
 
 #ifdef __cplusplus
 }

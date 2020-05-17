@@ -1,7 +1,8 @@
 #ifndef PATHFINDER_TRAJECTORY_H_DEF
 #define PATHFINDER_TRAJECTORY_H_DEF
 
-#include "pathfinder/lib.h"
+#include "../core/include/pathfinder/lib.h"
+#include "../core/include/pathfinder/structs.h"
 
 CAPI int pathfinder_prepare(Waypoint *path, int path_length, void (*fit)(Waypoint,Waypoint,Spline*), int sample_count, double dt,
         double max_velocity, double max_acceleration, double max_jerk, TrajectoryCandidate *cand);
