@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "pathfinder/lib.h"
+#include "../core/include/pathfinder/lib.h"
+#include "../core/include/pathfinder/structs.h"
 
 #define CSV_LEADING_STRING "dt,x,y,position,velocity,acceleration,jerk,heading\n"
 

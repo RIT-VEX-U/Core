@@ -1,7 +1,7 @@
-#include "utils/spline_path.h"
+#include "../core/include/utils/spline_path.h"
 
 SplinePath::SplinePath(TankDrive *drive_system, vex::inertial *imu, vex::motor *l_enc, vex::motor *r_enc, motion_profile_t *motion_profile)
-: drive_system(drive_system), imu(imu), l_enc(l_enc), r_enc(r_enc), motion_profile(motion_profile)
+: drive_system(drive_system), l_enc(l_enc), r_enc(r_enc), imu(imu), motion_profile(motion_profile)
 {
 }
 

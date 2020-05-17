@@ -1,7 +1,7 @@
 #ifndef PATHFINDER_STRUCT_H_DEF
 #define PATHFINDER_STRUCT_H_DEF
 
-#include "pathfinder/lib.h"
+#include "../core/include/pathfinder/lib.h"
 
 CAPI typedef struct {
     double x, y, angle;

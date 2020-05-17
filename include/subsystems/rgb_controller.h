@@ -19,7 +19,7 @@ class RGBController
     Off, Blue, Red, Green, OrangeWhite, Rainbow
   };
 
-  RGBController(rgb_t starting_color, triport::port port1, triport::port port2, triport::port port3)
+  RGBController(rgb_t starting_color, vex::triport::port port1, vex::triport::port port2, vex::triport::port port3)
   : port1(port1), port2(port2), port3(port3)
   {
     set(starting_color);
