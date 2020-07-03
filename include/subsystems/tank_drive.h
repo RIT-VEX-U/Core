@@ -23,7 +23,7 @@ public:
   /**
    * Create the TankDrive object 
    */
-  TankDrive(motor_group *left_motors, motor_group *right_motors, inertial *gyro_sensor, tankdrive_config_t *config);
+  TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, tankdrive_config_t &config);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -63,15 +63,15 @@ public:
   bool turn_degrees(double degrees, double percent_speed);
 
 private:
-  tankdrive_config_t *config;
+  tankdrive_config_t &config;
 
-  motor_group *left_motors;
-  motor_group *right_motors;
+  motor_group &left_motors;
+  motor_group &right_motors;
 
   PID drive_pid;
   PID turn_pid;
 
-  inertial *gyro_sensor;
+  inertial &gyro_sensor;
 
   bool initialize_func = true;
 };
