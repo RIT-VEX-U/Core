@@ -33,7 +33,7 @@ public:
     double wheelbase_width = 11.5;
   };
 
-  SplinePath(TankDrive *drive_system, vex::inertial *imu, vex::motor *l_enc, vex::motor *r_enc, motion_profile_t *motion_profile);
+  SplinePath(TankDrive &drive_system, vex::inertial &imu, vex::motor &l_enc, vex::motor &r_enc, motion_profile_t &motion_profile);
 
   bool run_path(Waypoint *point_list, int list_length);
 
@@ -47,11 +47,11 @@ private:
   EncoderFollower *left_follower, *right_follower;
   EncoderConfig enc_conf;
 
-  TankDrive *drive_system;
-  vex::motor *l_enc, *r_enc;
-  vex::inertial *imu;
+  TankDrive &drive_system;
+  vex::motor &l_enc, &r_enc;
+  vex::inertial &imu;
 
-  motion_profile_t *motion_profile;
+  motion_profile_t &motion_profile;
 };
 
 #endif

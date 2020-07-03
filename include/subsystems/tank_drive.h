@@ -14,8 +14,8 @@ public:
 
   struct tankdrive_config_t
   {
-    PID::pid_config_t *drive_pid;
-    PID::pid_config_t *turn_pid;
+    PID::pid_config_t drive_pid;
+    PID::pid_config_t turn_pid;
 
     double wheel_diam;
   };
