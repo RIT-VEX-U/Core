@@ -3,7 +3,7 @@
 /**
    * Create the PID object
    */
-PID::PID(pid_config_t *config)
+PID::PID(pid_config_t &config)
     : config(config)
 {
   pid_timer.reset();
@@ -21,7 +21,7 @@ void PID::update(double sensor_val)
 
   accum_error += time_delta * get_error();
 
-  out = (config->f) + (config->p * get_error()) + (config->i * accum_error) + (config->d * (get_error() - last_error) / time_delta);
+  out = (config.f) + (config.p * get_error()) + (config.i * accum_error) + (config.d * (get_error() - last_error) / time_delta);
 
   last_time = pid_timer.value();
   last_error = get_error();
@@ -85,14 +85,14 @@ void PID::set_limits(double lower, double upper)
    */
 bool PID::is_on_target()
 {
-  if (fabs(get_error()) < config->deadband)
+  if (fabs(get_error()) < config.deadband)
   {
     if (is_checking_on_target == false)
     {
       on_target_last_time = pid_timer.value();
       is_checking_on_target = true;
     }
-    else if (pid_timer.value() - on_target_last_time > config->on_target_time)
+    else if (pid_timer.value() - on_target_last_time > config.on_target_time)
     {
       return true;
     }

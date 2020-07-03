@@ -18,7 +18,7 @@ public:
   /**
    * Create the PID object
    */
-  PID(pid_config_t *config);
+  PID(pid_config_t &config);
 
   /**
    * Update the PID loop by taking the time difference from last update,
@@ -59,7 +59,7 @@ public:
   bool is_on_target();
 
 private:
-  pid_config_t *config;
+  pid_config_t &config;
 
   double last_error = 0, accum_error = 0;
   double last_time = 0, on_target_last_time = 0;
