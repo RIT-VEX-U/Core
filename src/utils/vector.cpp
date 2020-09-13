@@ -1,4 +1,4 @@
-#include "../Core/include/utils/vector.h"
+#include "../core/include/utils/vector.h"
 
 /**
  * Construct a vector object.
@@ -82,7 +82,7 @@ Vector Vector::operator-(const Vector &other)
 /**
  * General function for converting degrees to radians
  */
-double d2r(double deg)
+double deg2rad(double deg)
 {
     return deg * (PI / 180.0);
 }
@@ -90,7 +90,7 @@ double d2r(double deg)
 /**
  * General function for converting radians to degrees
  */
-double r2d(double rad)
+double rad2deg(double rad)
 {
     return rad * (180.0 / PI);
 }
