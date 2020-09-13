@@ -72,6 +72,10 @@ class SwerveModule
     vex::motor &direction;
     vex::gearSetting dir_gearing;
 
+    double lastStoredHeading;
+    bool inverseDrive;
+    double driveMulitplier;
+
 };
 
 #endif

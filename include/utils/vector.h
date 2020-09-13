@@ -21,7 +21,7 @@ public:
      * @param mag Magnitude.
      */ 
     Vector(double dir, double mag);
-
+    
     /**
      * Construct a vector object from a cartesian point.
      * 
@@ -65,11 +65,11 @@ private:
 /**
  * General function for converting degrees to radians
  */
-double d2r(double deg);
+double deg2rad(double deg);
 
 /**
  * General function for converting radians to degrees
  */
-double r2d(double r);
+double rad2deg(double r);
 
 #endif

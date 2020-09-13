@@ -1,4 +1,4 @@
-#include "../Core/include/subsystems/swerve_drive.h"
+#include "../core/include/subsystems/swerve_drive.h"
 
 /**
  * Construct the SwerveDrive object.
@@ -14,7 +14,7 @@ SwerveDrive::SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, Swer
  * account before passing to the main control method.
  * 
  * @param leftY Left joystick, Y axis (-100 -> 100)
- * @param leftX Left joystick, X axis (-100 -> 100)
+ * @param leftX Left joystick, X axis (-100 -> 100) 
  * @param rightX Right joystick, X axis(-100 -> 100)
  */
 void SwerveDrive::drive(int32_t leftY, int32_t leftX, int32_t rightX)
@@ -32,7 +32,7 @@ void SwerveDrive::drive(int32_t leftY, int32_t leftX, int32_t rightX)
         rightX = 0;
 
     // Convert input to a vector, and pass into main control method
-    return this->drive(input_lat, rightX);    
+    return this->drive(input_lat, rightX / 100.0);    
 }
 
 /**
@@ -42,10 +42,10 @@ void SwerveDrive::drive(int32_t leftY, int32_t leftX, int32_t rightX)
 void SwerveDrive::drive(Vector lateral, double rotation)
 {
     // Each wheel has a different rotation vector
-    Vector rot_lf(d2r(45), rotation);
-    Vector rot_rf(d2r(45+90), rotation);
-    Vector rot_rr(d2r(45+180), rotation);
-    Vector rot_lr(d2r(45+270), rotation);
+    Vector rot_lf(deg2rad(45), rotation);
+    Vector rot_rf(deg2rad(45+90), rotation);
+    Vector rot_rr(deg2rad(45+180), rotation);
+    Vector rot_lr(deg2rad(45+270), rotation);
 
     // Perform vector addition between the rotation vector and lateral vectors
     Vector lf_out = rot_lf + lateral;
@@ -54,8 +54,8 @@ void SwerveDrive::drive(Vector lateral, double rotation)
     Vector lr_out = rot_lr + lateral;
 
     // Set each swerve module to the respective direction / speed
-    left_front.set(r2d(lf_out.get_dir()), lf_out.get_mag());
-    right_front.set(r2d(rf_out.get_dir()), rf_out.get_mag());
-    right_rear.set(r2d(rr_out.get_dir()), rr_out.get_mag());
-    left_rear.set(r2d(lr_out.get_dir()), lr_out.get_mag());
+    left_front.set(rad2deg(lf_out.get_dir()), lf_out.get_mag());
+    right_front.set(rad2deg(rf_out.get_dir()), rf_out.get_mag());
+    right_rear.set(rad2deg(rr_out.get_dir()), rr_out.get_mag());
+    left_rear.set(rad2deg(lr_out.get_dir()), lr_out.get_mag());
 }

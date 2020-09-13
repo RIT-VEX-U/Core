@@ -1,4 +1,5 @@
-#include "../Core/include/subsystems/swerve_module.h"
+#include "../core/include/subsystems/swerve_module.h"
+#include "hardware.h"
 
 /**
  * Create a single swerve module, made up of a Drive motor and a Direction motor.
@@ -8,6 +9,9 @@
 SwerveModule::SwerveModule(vex::motor &drive, vex::gearSetting drive_gearing, vex::motor &direction, vex::gearSetting dir_gearing)
     : drive(drive), drive_gearing(drive_gearing), direction(direction), dir_gearing(dir_gearing)
 {
+  lastStoredHeading = 0.0;
+  inverseDrive = false;
+  driveMulitplier = 0.0;
 }
 
 /**
@@ -19,8 +23,14 @@ SwerveModule::SwerveModule(vex::motor &drive, vex::gearSetting drive_gearing, ve
  */
 void SwerveModule::set(double direction_deg, double speed_pct)
 {
-    set_direction(direction_deg);
-    set_speed(speed_pct);
+  // Don't move the direction wheel unless we need to
+  if(speed_pct == 0.0)
+    direction_deg = lastStoredHeading;
+  else
+    lastStoredHeading = direction_deg;
+
+  set_direction(direction_deg);
+  set_speed(speed_pct);
 }
 
 /**
@@ -35,14 +45,25 @@ void SwerveModule::set(double direction_deg, double speed_pct)
  */
 void SwerveModule::set_direction(double deg)
 {
+  double pos = direction.position(vex::rotationUnits::deg) * DIR_GEAR_RATIO;
+  
+  // Find the degrees of the direction module between -180 and +180, with 0 being forward.
+  int modpos = mod(pos, 360);
+  modpos -= (modpos > 180) ? 360 : 0;
 
-    int modpos = mod(deg, 360);
+  // Delta between where we are (modpos) and where we need to be (deg)
+  // Normalize the delta to make sure the maximum movement of the direction motor is 90 degrees.
+  // If the delta is above 90, then the wheel will go to the nearest 180 from the target, and move the drive wheel backwards.
+  int delta = deg - modpos;
+  int normalizedDelta = delta + (abs(delta) > 90 ? (delta > 0 ? -180 : 180) : 0);
 
-    // If the position is more than 180 degrees away, then turn the other way
-    if(fabs(modpos - direction.rotation(vex::rotationUnits::deg)) > 180)
-        modpos = mod(modpos + 180, 360);
+  inverseDrive = abs(delta) > 90 ? true : false;
 
-    direction.spinToPosition(modpos / DIR_GEAR_RATIO, vex::rotationUnits::deg, false);
+  // Slow down the drive if we aren't close to the set direction yet (use the cube of the error)
+  driveMulitplier = pow(1 - (abs(normalizedDelta) / 90.0), 3);
+  
+  direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
+
 }
 
 /**
@@ -51,11 +72,12 @@ void SwerveModule::set_direction(double deg)
  */
 void SwerveModule::set_speed(double percent)
 {
-    // The speed of the Drive motor is influenced by how fast the direciton motor is spinning,
-    // due to the way they are geared together. Therefore, subtract that RPM from what will be set.
-    double rpm = (percent * gearset_max_rpm(drive_gearing)) - (direction.rotation(vex::rotationUnits::rev) * DIR_GEAR_RATIO);
+  //TODO take into account how the RPM of the direction motor affects the RPM of the drive wheel
 
-    drive.spin(vex::directionType::fwd, rpm / gearset_max_rpm(drive_gearing), vex::percentUnits::pct);
+  drive.spin(vex::directionType::fwd, percent * 100.0 * (inverseDrive ? -1 : 1) * driveMulitplier, vex::percentUnits::pct);
+  //double rpm = (percent * gearset_max_rpm(drive_gearing)) - (direction.rotation(vex::rotationUnits::rev) * DIR_GEAR_RATIO);
+
+  //drive.spin(vex::directionType::fwd, rpm / gearset_max_rpm(drive_gearing), vex::percentUnits::pct);
 }
 
 /**
