@@ -20,8 +20,9 @@ SwerveModule::SwerveModule(vex::motor &drive, vex::gearSetting drive_gearing, ve
  * 
  * @param direction_deg Degrees of rotation for the module's direction (clockwise positive, from top)
  * @param speed_pct Speed of the wheel for the module, in percent (-1.0 -> 1.0, positive fwd)
+ * @param power=2 Square / Cube the input for a exponential curve for more lower speed control
  */
-void SwerveModule::set(double direction_deg, double speed_pct)
+void SwerveModule::set(double direction_deg, double speed_pct, int power)
 {
   // Don't move the direction wheel unless we need to
   if(speed_pct == 0.0)
@@ -30,7 +31,10 @@ void SwerveModule::set(double direction_deg, double speed_pct)
     lastStoredHeading = direction_deg;
 
   set_direction(direction_deg);
-  set_speed(speed_pct);
+  if(power % 2 == 0)
+    set_speed((speed_pct > 0 ? 1.0 : -1.0) * pow(speed_pct, power));
+  else
+    set_speed(pow(speed_pct, power));
 }
 
 /**
@@ -43,7 +47,7 @@ void SwerveModule::set(double direction_deg, double speed_pct)
  * 
  * @param deg position to set the motor, counter clockwise from the top.
  */
-void SwerveModule::set_direction(double deg)
+bool SwerveModule::set_direction(double deg)
 {
   double pos = direction.position(vex::rotationUnits::deg) * DIR_GEAR_RATIO;
   
@@ -62,7 +66,7 @@ void SwerveModule::set_direction(double deg)
   // Slow down the drive if we aren't close to the set direction yet (use the cube of the error)
   driveMulitplier = pow(1 - (abs(normalizedDelta) / 90.0), 3);
   
-  direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
+  return direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
 
 }
 
@@ -72,32 +76,37 @@ void SwerveModule::set_direction(double deg)
  */
 void SwerveModule::set_speed(double percent)
 {
-  //TODO take into account how the RPM of the direction motor affects the RPM of the drive wheel
+  // take into account how the RPM of the direction motor affects the RPM of the drive wheel
+  //double speed_diff_dps = 0;//direction.velocity(vex::velocityUnits::dps) * DIR_GEAR_RATIO * -.2;
+  // Difference is negligable. Not worth the effort of getting it right.
 
-  drive.spin(vex::directionType::fwd, percent * 100.0 * (inverseDrive ? -1 : 1) * driveMulitplier, vex::percentUnits::pct);
-  //double rpm = (percent * gearset_max_rpm(drive_gearing)) - (direction.rotation(vex::rotationUnits::rev) * DIR_GEAR_RATIO);
-
-  //drive.spin(vex::directionType::fwd, rpm / gearset_max_rpm(drive_gearing), vex::percentUnits::pct);
+  drive.spin(vex::directionType::fwd, percent * 100.0 * (inverseDrive ? -1 : 1), vex::velocityUnits::pct);
 }
 
 /**
- * Grab the maximum RPM of a motor with a certain gearset
- * 
- * values are:
- *  RED: 100
- *  GREEN: 200
- *  BLUE: 600
+ * Get 'distance' from the drive motor
  */
-double SwerveModule::gearset_max_rpm(vex::gearSetting gearing)
+double SwerveModule::get_distance_driven()
+{
+  return WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO;
+}
+
+/**
+ * Grab the maximum degrees per second of a motor with a certain gearset
+ * 36 : 1 = reds
+ * 18 : 1 = greens
+ * 6 : 1 = blues
+ */
+double SwerveModule::gearset_dps(vex::gearSetting gearing)
 {
     switch (gearing)
     {
     case vex::gearSetting::ratio36_1:
-        return (1.0 / 36.0) * MOTOR_MAX_RPM;
+        return (1.0 / 36.0) * MOTOR_MAX_RPM * 360.0;
     case vex::gearSetting::ratio18_1:
-        return (1.0 / 18.0) * MOTOR_MAX_RPM;
+        return (1.0 / 18.0) * MOTOR_MAX_RPM * 360.0;
     case vex::gearSetting::ratio6_1:
-        return (1.0 / 6.0) * MOTOR_MAX_RPM;
+        return (1.0 / 6.0) * MOTOR_MAX_RPM * 360.0;
     default:
         return 0.0;
     }

@@ -3,6 +3,7 @@
 
 #include "../Core/include/subsystems/swerve_module.h"
 #include "../Core/include/utils/vector.h"
+#include "../Core/include/utils/pid.h"
 
 #define ROT_DEADBAND 0.2
 #define LAT_DEADBAND 0.2
@@ -29,9 +30,22 @@ void drive(int32_t leftY, int32_t leftX, int32_t rightX);
  */
 void drive(Vector lateral, double rotation);
 
+/**
+ * Autonomously drive the robot in (degrees) direction, at (-1.0 -> 1.0) speed, for (inches) distance.
+ * Indicate a negative speed or distance, or (preferably) a direction of +-180 degrees for backwards.
+ */
+bool auto_drive(double direction, double speed, double distance);
+
+void set_drive_pid(PID::pid_config_t &config);
+void set_turn_pid(PID::pid_config_t &config);
+
 private:
 
 SwerveModule &left_front, &left_rear, &right_front, &right_rear;
+bool auto_drive_init = true;
+double auto_drive_enc_reset = 0.0;
+
+PID *drive_pid, *turn_pid;
 
 };
 

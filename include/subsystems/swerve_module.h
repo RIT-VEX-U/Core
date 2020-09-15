@@ -11,6 +11,8 @@
 
 #define MOTOR_MAX_RPM 3600
 
+#define WHEEL_DIAM 4 //inches
+
 class SwerveModule
 {
     public:
@@ -29,9 +31,7 @@ class SwerveModule
      * @param direction_deg Degrees of rotation for the module's direction (clockwise positive, from top)
      * @param speed_pct Speed of the wheel for the module, in percent (-1.0 -> 1.0, positive fwd)
      */
-    void set(double direction_deg, double speed_pct);
-
-    private:
+    void set(double direction_deg, double speed_pct, int power=2);
 
     /**
      * Sets the direction of the module to X degrees (clockwise positive, from top perspective).
@@ -43,13 +43,20 @@ class SwerveModule
      * 
      * @param deg position to set the motor, counter clockwise from the top.
      */
-    void set_direction(double deg);
+    bool set_direction(double deg);
 
     /**
      * Sets the speed of the drive motor, taking into account the speed of the direction motor,
      * in percent units (-1.0 -> 1.0)
      */
     void set_speed(double percent);
+
+    /**
+     * Get 'distance' from the drive motor
+     */
+    double get_distance_driven();
+    
+    private:
 
     /**
      * Grab the maximum RPM of a motor with a certain gearset
@@ -59,7 +66,7 @@ class SwerveModule
      *  GREEN: 200
      *  BLUE: 600
      */
-    static double gearset_max_rpm(vex::gearSetting gearing);
+    static double gearset_dps(vex::gearSetting gearing);
 
     /**
      * Improved modulus which correctly calculates negatives
