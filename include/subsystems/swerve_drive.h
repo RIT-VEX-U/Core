@@ -16,7 +16,7 @@ public:
 /**
  * Construct the SwerveDrive object.
  */
-SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, SwerveModule &right_front, SwerveModule &right_rear);
+SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, SwerveModule &right_front, SwerveModule &right_rear, vex::inertial &imu);
 
 /**
  * Drive the robot using controller inputs. Deadbands are automatically taken into
@@ -36,6 +36,12 @@ void drive(Vector lateral, double rotation);
  */
 bool auto_drive(double direction, double speed, double distance);
 
+/**
+ * Autonomously turn the robot over it's center axis in degrees. Positive degrees is clockwise, Negative is counter-clockwise
+ * Speed is in percent (-1.0 -> 1.0)
+ */
+bool auto_turn(double degrees, double speed);
+
 void set_drive_pid(PID::pid_config_t &config);
 void set_turn_pid(PID::pid_config_t &config);
 
@@ -43,9 +49,11 @@ private:
 
 SwerveModule &left_front, &left_rear, &right_front, &right_rear;
 bool auto_drive_init = true;
+bool auto_turn_init = true;
 double auto_drive_enc_reset = 0.0;
 
 PID *drive_pid, *turn_pid;
+vex::inertial &imu;
 
 };
 

@@ -11,7 +11,7 @@
 
 #define MOTOR_MAX_RPM 3600
 
-#define WHEEL_DIAM 4 //inches
+#define WHEEL_DIAM 2.75 //inches
 
 class SwerveModule
 {

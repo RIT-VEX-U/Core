@@ -1,10 +1,13 @@
 #include "../core/include/subsystems/swerve_drive.h"
+#include <iostream>
+
+using namespace std;
 
 /**
  * Construct the SwerveDrive object.
  */
-SwerveDrive::SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, SwerveModule &right_front, SwerveModule &right_rear)
-:left_front(left_front), left_rear(left_rear), right_front(right_front), right_rear(right_rear)
+SwerveDrive::SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, SwerveModule &right_front, SwerveModule &right_rear, vex::inertial &imu)
+:left_front(left_front), left_rear(left_rear), right_front(right_front), right_rear(right_rear), imu(imu)
 {
 
 }
@@ -30,6 +33,8 @@ void SwerveDrive::drive(int32_t leftY, int32_t leftX, int32_t rightX)
     // Rotational Deadband
     if(fabs(rightX / 100.0) < LAT_DEADBAND)
         rightX = 0;
+
+    printf("distance: %f\n", left_front.get_distance_driven());
 
     // Convert input to a vector, and pass into main control method
     this->drive(input_lat, rightX / 100.0);    
@@ -127,7 +132,7 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     auto_drive_init = false;
   }
 
-  // PERIODIC
+  // LOOP
 
   drive_pid->update( left_front.get_distance_driven() - auto_drive_enc_reset );
   this->drive(Vector(deg2rad(direction), drive_pid->get()), 0);
@@ -137,6 +142,56 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
   {
     this->drive(Vector(0,0), 0); // stop the robot
     auto_drive_init = true;
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Autonomously turn the robot over it's center axis in degrees. Positive degrees is clockwise, Negative is counter-clockwise
+ * Function is non-blocking, and returns true when it has finished turning.
+ */
+bool SwerveDrive::auto_turn(double degrees, double speed)
+{
+  if(turn_pid == NULL)
+  {
+    fprintf(stderr, "Failed to run auto_turn: missing PID config!");
+    return true;
+  }
+
+  // INIT
+  if(auto_turn_init)
+  {
+    // Wait until all the modules are at their 45's before continuing
+    bool all_wheels_done = true;
+    all_wheels_done = all_wheels_done && left_front.set_direction(45);
+    all_wheels_done = all_wheels_done && right_front.set_direction(45 + 90);
+    all_wheels_done = all_wheels_done && right_rear.set_direction(45 + 180);
+    all_wheels_done = all_wheels_done && left_rear.set_direction(45 + 270);
+    if(!all_wheels_done)
+      return false;
+
+    // Reset the IMU rotation and configure the PID loop
+    imu.resetRotation();
+    
+    turn_pid->reset();
+    turn_pid->set_limits(-fabs(speed), fabs(speed));
+    turn_pid->set_target(degrees);
+
+    auto_turn_init = false;
+  }
+
+  // LOOP
+
+  turn_pid->update(imu.rotation());
+  drive(Vector(0,0) , turn_pid->get());
+
+  // when the robot is on target, we are done. return true.
+  if(turn_pid->is_on_target())
+  {
+    drive(Vector(0,0), 0);
+    auto_turn_init = true;
     return true;
   }
 

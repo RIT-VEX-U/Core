@@ -1,17 +1,6 @@
 #include "../core/include/utils/generic_auto.h"
 
 /**
-* Create the GenericAuto object
-*
-* Example: GenericAuto auto1 = {func_ptr1, func_ptr2, ...};
-*/
-GenericAuto::GenericAuto(std::initializer_list<state_ptr> states)
-{
-  for (state_ptr s : states)
-    state_list.push_back(s);
-}
-
-/**
 * The method that runs the autonomous. If 'blocking' is true, then
 * this method will run through every state until it finished.
 *
@@ -31,9 +20,11 @@ bool GenericAuto::run(bool blocking)
 
   do
   {
+    if( state_list.front()() )
+      state_list.pop();
 
-    if((state_list.front())() == true)
-      state_list.erase(state_list.begin());
+    if(blocking)
+      vexDelay(50);
 
   } while(blocking && !state_list.empty());
 
@@ -41,3 +32,9 @@ bool GenericAuto::run(bool blocking)
   // If non-blocking, return false because the list isn't empty yet
   return blocking;
 }
+
+void GenericAuto::add(state_ptr newState)
+{
+  state_list.push(newState);
+}
+

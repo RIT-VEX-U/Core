@@ -88,6 +88,7 @@ void SwerveModule::set_speed(double percent)
  */
 double SwerveModule::get_distance_driven()
 {
+  // return drive.position(vex::rotationUnits::rev);
   return WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO;
 }
 
