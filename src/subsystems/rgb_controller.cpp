@@ -1,4 +1,4 @@
-#include "../Core/include/subsystems/rgb_controller.h"
+#include "../core/include/subsystems/rgb_controller.h"
 
 RGBController::RGBController(rgb_t starting_color, vex::triport::port port1, vex::triport::port port2, vex::triport::port port3)
   : port1(port1), port2(port2), port3(port3)

@@ -1,21 +1,16 @@
 #ifndef _GENAUTO_
 #define _GENAUTO_
 
-#include <vector>
+#include <queue>
+#include <map>
+#include "vex.h"
 
-typedef bool (*state_ptr)(void);
+typedef bool (*state_ptr)();
 
 class GenericAuto
 {
   public:
-  
-  /**
-  * Create the GenericAuto object
-  *
-  * Example: GenericAuto auto1 = {func_ptr1, func_ptr2, ...};
-  */
-  GenericAuto(std::initializer_list<state_ptr> states);
-  
+
   /**
   * The method that runs the autonomous. If 'blocking' is true, then
   * this method will run through every state until it finished.
@@ -31,9 +26,11 @@ class GenericAuto
   */
   bool run(bool blocking);
 
+  void add(state_ptr);
+
   private:
 
-  std::vector<state_ptr> state_list;
+  std::queue<state_ptr> state_list;
 
 };
 
