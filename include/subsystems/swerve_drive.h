@@ -1,9 +1,9 @@
 #ifndef _SWERVEDRIVE_
 #define _SWERVEDRIVE_
 
-#include "../Core/include/subsystems/swerve_module.h"
-#include "../Core/include/utils/vector.h"
-#include "../Core/include/utils/pid.h"
+#include "../core/include/subsystems/swerve_module.h"
+#include "../core/include/utils/vector.h"
+#include "../core/include/utils/pid.h"
 
 #define ROT_DEADBAND 0.2
 #define LAT_DEADBAND 0.2
