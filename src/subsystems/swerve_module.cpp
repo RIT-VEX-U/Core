@@ -66,8 +66,9 @@ bool SwerveModule::set_direction(double deg)
   // Slow down the drive if we aren't close to the set direction yet (use the cube of the error)
   driveMulitplier = pow(1 - (abs(normalizedDelta) / 90.0), 3);
   
-  return direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
+  direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
 
+  return direction.isDone();
 }
 
 /**
@@ -84,12 +85,20 @@ void SwerveModule::set_speed(double percent)
 }
 
 /**
+ * Reset the drive encoder to zero
+ */
+void SwerveModule::reset_distance_driven()
+{
+  drive.resetPosition();
+}
+
+/**
  * Get 'distance' from the drive motor
  */
 double SwerveModule::get_distance_driven()
 {
   // return drive.position(vex::rotationUnits::rev);
-  return WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO;
+  return WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO * (inverseDrive ? -1 : 1);
 }
 
 /**

@@ -52,10 +52,17 @@ class SwerveModule
     void set_speed(double percent);
 
     /**
+    * Reset the drive encoder to zero
+    */
+    void reset_distance_driven();
+
+    /**
      * Get 'distance' from the drive motor
      */
     double get_distance_driven();
-    
+
+    bool auto_reverse = false;
+
     private:
 
     /**
@@ -78,9 +85,8 @@ class SwerveModule
 
     vex::motor &direction;
     vex::gearSetting dir_gearing;
-
-    double lastStoredHeading;
     bool inverseDrive;
+    double lastStoredHeading;
     double driveMulitplier;
 
 };
