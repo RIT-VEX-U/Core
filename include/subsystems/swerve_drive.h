@@ -50,7 +50,6 @@ private:
 SwerveModule &left_front, &left_rear, &right_front, &right_rear;
 bool auto_drive_init = true;
 bool auto_turn_init = true;
-double auto_drive_enc_reset = 0.0;
 
 PID *drive_pid, *turn_pid;
 vex::inertial &imu;

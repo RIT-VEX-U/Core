@@ -103,6 +103,7 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
   // INITIALIZATION
   if(auto_drive_init)
   {
+    // std::cout << "Init-ing" << std::endl;
     // Turn all the wheels in the correct direction before running
     bool all_wheels_done = true;
     all_wheels_done = all_wheels_done & left_front.set_direction(direction);
@@ -122,8 +123,7 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
       return false;
 
     // We're using the left front encoder for distance travelled.
-    auto_drive_enc_reset = left_front.get_distance_driven();
-
+    left_front.reset_distance_driven();
     // set up the PID
     drive_pid->reset();
     drive_pid->set_target(distance);
@@ -133,9 +133,14 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
   }
 
   // LOOP
+  drive_pid->update( left_front.get_distance_driven());
 
-  drive_pid->update( left_front.get_distance_driven() - auto_drive_enc_reset );
-  this->drive(Vector(deg2rad(direction), drive_pid->get()), 0);
+  fprintf(stderr, "Distance Driven: %f\n", left_front.get_distance_driven());
+  
+  left_front.set_speed(drive_pid->get());
+  right_front.set_speed(drive_pid->get());
+  left_rear.set_speed(drive_pid->get());
+  right_rear.set_speed(drive_pid->get());
 
   // Check if the driving is complete
   if(drive_pid->is_on_target())
