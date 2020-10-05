@@ -34,7 +34,7 @@ void SwerveDrive::drive(int32_t leftY, int32_t leftX, int32_t rightX)
     if(fabs(rightX / 100.0) < LAT_DEADBAND)
         rightX = 0;
 
-    printf("distance: %f\n", left_front.get_distance_driven());
+    // printf("distance: %f\n", left_front.get_distance_driven());
 
     // Convert input to a vector, and pass into main control method
     this->drive(input_lat, rightX / 100.0);    
@@ -122,8 +122,11 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     if(!all_wheels_done)
       return false;
 
-    // We're using the left front encoder for distance travelled.
     left_front.reset_distance_driven();
+    right_front.reset_distance_driven();
+    left_rear.reset_distance_driven();
+    right_rear.reset_distance_driven();
+
     // set up the PID
     drive_pid->reset();
     drive_pid->set_target(distance);
@@ -132,10 +135,13 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     auto_drive_init = false;
   }
 
-  // LOOP
-  drive_pid->update( left_front.get_distance_driven());
+  double average = (left_front.get_distance_driven() + right_front.get_distance_driven() 
+                  + left_rear.get_distance_driven() + right_rear.get_distance_driven()) / 4.0;
 
-  fprintf(stderr, "Distance Driven: %f\n", left_front.get_distance_driven());
+  // LOOP
+  drive_pid->update(average);
+
+  fprintf(stderr, "Distance Driven: %f\n", average);
   
   left_front.set_speed(drive_pid->get());
   right_front.set_speed(drive_pid->get());
@@ -170,10 +176,10 @@ bool SwerveDrive::auto_turn(double degrees, double speed)
   {
     // Wait until all the modules are at their 45's before continuing
     bool all_wheels_done = true;
-    all_wheels_done = all_wheels_done && left_front.set_direction(45);
-    all_wheels_done = all_wheels_done && right_front.set_direction(45 + 90);
-    all_wheels_done = all_wheels_done && right_rear.set_direction(45 + 180);
-    all_wheels_done = all_wheels_done && left_rear.set_direction(45 + 270);
+    all_wheels_done = all_wheels_done & left_front.set_direction(45);
+    all_wheels_done = all_wheels_done & right_front.set_direction(45 + 90);
+    all_wheels_done = all_wheels_done & right_rear.set_direction(-45 - 90);
+    all_wheels_done = all_wheels_done & left_rear.set_direction(-45);
     if(!all_wheels_done)
       return false;
 
@@ -190,7 +196,13 @@ bool SwerveDrive::auto_turn(double degrees, double speed)
   // LOOP
 
   turn_pid->update(imu.rotation());
-  drive(Vector(0,0) , turn_pid->get());
+  left_front.set_speed(turn_pid->get());
+  right_front.set_speed(turn_pid->get());
+  left_rear.set_speed(turn_pid->get());
+  right_rear.set_speed(turn_pid->get());
+
+  fprintf(stderr, "Angle: %f  ", imu.rotation());
+  fprintf(stderr, "Out: %f \n", turn_pid->get());
 
   // when the robot is on target, we are done. return true.
   if(turn_pid->is_on_target())
