@@ -65,10 +65,11 @@ bool SwerveModule::set_direction(double deg)
 
   // Slow down the drive if we aren't close to the set direction yet (use the cube of the error)
   driveMulitplier = pow(1 - (abs(normalizedDelta) / 90.0), 3);
+  double setpnt = (normalizedDelta + pos) / DIR_GEAR_RATIO;
   
-  direction.spinTo((normalizedDelta + pos) / DIR_GEAR_RATIO, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
+  direction.spinTo(setpnt, vex::rotationUnits::deg, 100, vex::velocityUnits::pct, false);
 
-  return direction.isDone();
+  return fabs(setpnt - direction.rotation(rotationUnits::deg)) < 2;
 }
 
 /**
@@ -80,8 +81,9 @@ void SwerveModule::set_speed(double percent)
   // take into account how the RPM of the direction motor affects the RPM of the drive wheel
   //double speed_diff_dps = 0;//direction.velocity(vex::velocityUnits::dps) * DIR_GEAR_RATIO * -.2;
   // Difference is negligable. Not worth the effort of getting it right.
+  drive.setReversed(inverseDrive);
 
-  drive.spin(vex::directionType::fwd, percent * 100.0 * (inverseDrive ? -1 : 1), vex::velocityUnits::pct);
+  drive.spin(vex::directionType::fwd, percent * 100.0, vex::velocityUnits::pct);
 }
 
 /**
@@ -93,12 +95,13 @@ void SwerveModule::reset_distance_driven()
 }
 
 /**
- * Get 'distance' from the drive motor
+ * Get 'distance' from the drive motor.
+ * Will ALWAYS be positive.
  */
 double SwerveModule::get_distance_driven()
 {
   // return drive.position(vex::rotationUnits::rev);
-  return WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO * (inverseDrive ? -1 : 1);
+  return fabs(WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO);
 }
 
 /**
