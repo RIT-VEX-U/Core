@@ -1,9 +1,53 @@
 #include "../core/include/subsystems/mecanum_drive.h"
 
-MecanumDrive::MecanumDrive(vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear, vex::motor &right_rear)
-: left_front(left_front), right_front(right_front), left_rear(left_rear), right_rear(right_rear)
+MecanumDrive::MecanumDrive(vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear, vex::motor &right_rear, 
+                           vex::rotation *lateral_wheel, vex::inertial *imu, mecanumdrive_config_t *config)
+: left_front(left_front), right_front(right_front), left_rear(left_rear), right_rear(right_rear), // MOTOR CONFIG
+  config(config), // CONFIG ...uh... config
+  lateral_wheel(lateral_wheel), // NON-DRIVEN WHEEL CONFIG
+  imu(imu) //IMU CONFIG
 {
 
+  // If the configuration exists, then allocate memory for the drive and turn pids
+  if(config != NULL)
+  {
+    drive_pid = new PID(config->drive_pid_conf);
+    drive_gyro_pid = new PID(config->drive_gyro_pid_conf);
+    turn_pid = new PID(config->turn_pid_conf);
+  }
+
+}
+
+/**
+  * Drive the robot using vectors. This handles all the math required for mecanum control.
+  *
+  * @param direction_deg  the direction to drive the robot, in degrees. 0 is forward,
+  *                       180 is back, clockwise is positive, counterclockwise is negative.
+  * @param magnitude      How fast the robot should drive, in percent: 0.0->1.0
+  * @param rotation       How fast the robot should rotate, in percent: -1.0->+1.0
+  */
+void MecanumDrive::drive_raw(double direction_deg, double magnitude, double rotation)
+{
+  double direction = (PI / 180.0) * direction_deg;
+
+  // ALGORITHM - "rotate" the vector by 45 degrees and apply each corner to a wheel
+  // .. Oh, and mix rotation too
+  double lf = (magnitude * cos(direction - (PI / 4.0))) + rotation;
+  double rf = (magnitude * cos(direction + (PI / 4.0))) - rotation;
+  double lr = (magnitude * cos(direction + (PI / 4.0))) + rotation;
+  double rr = (magnitude * cos(direction - (PI / 4.0))) - rotation;
+
+  // Limit the output between -1.0 and +1.0
+  lf = lf > 1.0 ? 1.0 : (lf < -1.0 ? -1.0 : lf);
+  rf = rf > 1.0 ? 1.0 : (rf < -1.0 ? -1.0 : rf);
+  lr = lr > 1.0 ? 1.0 : (lr < -1.0 ? -1.0 : lr);
+  rr = rr > 1.0 ? 1.0 : (rr < -1.0 ? -1.0 : rr);
+
+  // Finally, spin the motors
+  left_front.spin(vex::directionType::fwd, lf * 100.0, vex::velocityUnits::pct);
+  right_front.spin(vex::directionType::fwd, rf * 100.0, vex::velocityUnits::pct);
+  left_rear.spin(vex::directionType::fwd, lr * 100.0, vex::velocityUnits::pct);
+  right_rear.spin(vex::directionType::fwd, rr * 100.0, vex::velocityUnits::pct);
 }
 
 /**
@@ -29,23 +73,127 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
   double rotation = right_x / 100.0;
   rotation = (power%2 == 0 ? rotation < 0 ? -1.0 : 1.0 : 1.0) * pow(rotation, power);
 
+  return this->drive_raw(direction * (180.0 / PI), magnitude, rotation);  
+}
 
-  // ALGORITHM - "rotate" the vector by 45 degrees and apply each corner to a wheel
-  // .. Oh, and mix rotation too
-  double lf = (magnitude * cos(direction - (PI / 4.0))) + rotation;
-  double rf = (magnitude * cos(direction + (PI / 4.0))) - rotation;
-  double lr = (magnitude * cos(direction + (PI / 4.0))) + rotation;
-  double rr = (magnitude * cos(direction - (PI / 4.0))) - rotation;
+/**
+  * Drive the robot in a straight line automatically.
+  * If the inertial was declared in the constructor, use it to correct while driving.
+  * If the lateral wheel was declared in the constructor, use it for more accurate positioning while strafing.
+  *
+  * @param inches   How far the robot should drive, in inches
+  * @param direction    What direction the robot should travel in, in degrees.
+  *                     0 is forward, +/-180 is reverse, clockwise is positive.
+  * @param speed    The maximum speed the robot should travel, in percent: -1.0->+1.0
+  * @param gyro_correction=true   Whether or not to use the gyro to help correct while driving.
+  *                               Will always be false if no gyro was declared in the constructor.
+  */
+bool MecanumDrive::auto_drive(double inches, double direction, double speed, bool gyro_correction)
+{
+  if(config == NULL || drive_pid == NULL)
+  {
+    fprintf(stderr, "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in constructor");
+    return true; // avoid an infinte loop within auto
+  }
 
-  // Limit the output between -1.0 and +1.0
-  lf = lf > 1.0 ? 1.0 : (lf < -1.0 ? -1.0 : lf);
-  rf = rf > 1.0 ? 1.0 : (rf < -1.0 ? -1.0 : rf);
-  lr = lr > 1.0 ? 1.0 : (lr < -1.0 ? -1.0 : lr);
-  rr = rr > 1.0 ? 1.0 : (rr < -1.0 ? -1.0 : rr);
+  bool enable_gyro = gyro_correction && (imu != NULL);
+  bool enable_wheel = (lateral_wheel != NULL);
 
-  // Finally, spin the motors
-  left_front.spin(vex::directionType::fwd, lf * 100.0, vex::velocityUnits::pct);
-  right_front.spin(vex::directionType::fwd, rf * 100.0, vex::velocityUnits::pct);
-  left_rear.spin(vex::directionType::fwd, lr * 100.0, vex::velocityUnits::pct);
-  right_rear.spin(vex::directionType::fwd, rr * 100.0, vex::velocityUnits::pct);
+
+  // INITIALIZE - only run ONCE "per drive" on startup
+  if(init == true)
+  {
+
+    // Reset all driven encoders, and PID
+    left_front.resetPosition();
+    right_front.resetPosition();
+    left_rear.resetPosition();
+    right_rear.resetPosition();
+
+    drive_pid->reset();
+
+    // Reset only if gyro exists
+    if(enable_gyro)
+    {
+      imu->resetRotation();
+      drive_gyro_pid->reset();
+      drive_gyro_pid->set_target(0.0);
+    }
+    // reset only if lateral wheel exists
+    if(enable_wheel)
+      lateral_wheel->resetPosition();
+
+    // Finish setting up the PID loop - max speed and position target
+    drive_pid->set_limits(-fabs(speed), fabs(speed));
+    drive_pid->set_target(fabs(inches));
+
+    init = false;
+  }
+
+  double dist_avg = 0.0;
+  double drive_avg = 0.0;
+
+  // This algorithm should be DEFINITELY good for forward/back, left/right.
+  // Directions other than 0, 180, -90 and 90 will be hit or miss, but should be mostly right.
+  // Recommend THOUROUGH testing at many angles.
+
+  // IF in quadrant 1 or 3, use left front and right rear wheels as "drive" movement
+  // ELSE in quadrant 2 or 4, use left rear and right front wheels as "drive" movement
+  // Some wheels are NOT being averaged at any given time since the general mecanum algorithm makes them go slower than our robot speed
+  // somewhat of a nasty hack, but wheel slippage should make up for it, and multivariable calc is hard.
+  if( (direction > 0 && direction <= 90) || (direction < -90 && direction > -180))
+  {
+    drive_avg = fabs(left_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI)
+              + fabs(right_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI)
+              / 2.0;
+  } else
+  {
+    drive_avg = fabs(left_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI)
+              + fabs(right_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI)
+              / 2.0;
+  }
+
+  // Only use the encoder wheel if it exists.
+  // Without the wheel should be usable, but with it will be muuuuch more accurate.
+  if(enable_wheel)
+  {
+    // Distance driven = Magnitude = sqrt(x^2 + y^2)
+    // Since drive_avg is already a polar magnitude, turn it into "Y" with cos(theta)
+    dist_avg = sqrt(
+      pow(lateral_wheel->position(rotationUnits::rev) * config->lateral_wheel_diam * PI, 2)
+      + pow(drive_avg * cos(direction * (PI / 180.0)), 2)
+    );
+  }else
+  {
+    dist_avg = drive_avg;
+  }
+
+  // ...double check to avoid an infinite loop
+  dist_avg = fabs(dist_avg);
+
+
+  // ROTATION CORRECTION
+  double rot = 0;
+
+  if(enable_gyro)
+  {
+    drive_gyro_pid->update(imu->rotation());
+    rot = drive_gyro_pid->get();
+  }
+
+  // Update the PID and drive
+  drive_pid->update(drive_avg);
+
+  this->drive_raw(direction, drive_pid->get(), rot);
+
+  // Stop and return true whenever the robot has completed it's drive.
+  if(drive_pid->is_on_target())
+  {
+    drive_raw(0, 0, 0);
+    init = true;
+    return true;
+  }
+
+  // Return false while the robot is still driving.
+  return false;
 }
