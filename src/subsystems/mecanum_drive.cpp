@@ -1,5 +1,8 @@
 #include "../core/include/subsystems/mecanum_drive.h"
 
+/**
+* Create the Mecanum drivetrain object
+*/
 MecanumDrive::MecanumDrive(vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear, vex::motor &right_rear, 
                            vex::rotation *lateral_wheel, vex::inertial *imu, mecanumdrive_config_t *config)
 : left_front(left_front), right_front(right_front), left_rear(left_rear), right_rear(right_rear), // MOTOR CONFIG
@@ -87,12 +90,13 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
   * @param speed    The maximum speed the robot should travel, in percent: -1.0->+1.0
   * @param gyro_correction=true   Whether or not to use the gyro to help correct while driving.
   *                               Will always be false if no gyro was declared in the constructor.
+  * @return Whether or not the maneuver is complete.
   */
 bool MecanumDrive::auto_drive(double inches, double direction, double speed, bool gyro_correction)
 {
   if(config == NULL || drive_pid == NULL)
   {
-    fprintf(stderr, "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in constructor");
+    fprintf(stderr, "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in constructor\n");
     return true; // avoid an infinte loop within auto
   }
 
@@ -195,5 +199,78 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
   }
 
   // Return false while the robot is still driving.
+  return false;
+}
+
+/**
+* Autonomously turn the robot X degrees over it's center point. Uses a closed loop
+* for control.
+* @param degrees How many degrees to rotate the robot. Clockwise postive.
+* @param speed What percentage to run the motors at: 0.0 -> 1.0
+* @param ignore_imu=false Whether or not to use the Inertial for determining angle.
+*        Will instead use circumference formula + robot's wheelbase + encoders to determine.
+* 
+* @return whether or not the robot has finished the maneuver
+*/
+bool MecanumDrive::auto_turn(double degrees, double speed, bool ignore_imu)
+{
+  // Make sure the configurations exist before continuing
+  if(config == NULL || turn_pid == NULL)
+  {
+    fprintf(stderr, "Failed to run MecanumDrive::auto_turn - Missing mecanumdrive_config_t in constructor\n");
+    return true;
+  }
+
+  // Decide whether or not to use the Inertial
+  ignore_imu = ignore_imu || (this->imu == NULL);
+
+  // INITIALIZE - clear encoders / imu / pid loops
+  if(init == true)
+  {
+    if(ignore_imu)
+    {
+      this->left_front.resetPosition();
+      this->right_front.resetPosition();
+      this->left_rear.resetPosition();
+      this->right_rear.resetPosition();
+    }else
+    {
+      this->imu->resetRotation();
+    }
+
+    this->turn_pid->reset();
+    this->turn_pid->set_limits(-fabs(speed), fabs(speed));
+    this->turn_pid->set_target(degrees);
+
+    init = false;
+  }
+
+  // RUN PERIODICALLY
+
+  double current_angle = 0.0;
+
+  if(ignore_imu)
+  {
+    double avg = (left_front.position(rotationUnits::rev) + left_rear.position(rotationUnits::rev) 
+                - right_front.position(rotationUnits::rev) - right_rear.position(rotationUnits::rev)) / 4.0;
+
+    // Current arclength = (avg * wheel_diam * PI) = (theta * (wheelbase / 2.0)). then convert to degrees
+    current_angle = (360.0 * avg * config->drive_wheel_diam) / config->wheelbase_width;
+  } else
+  {
+    current_angle = imu->rotation();
+  }
+
+  this->turn_pid->update(current_angle);
+  this->drive_raw(0, 0, turn_pid->get());
+
+  // We have reached the target.
+  if(this->turn_pid->is_on_target())
+  {
+    this->drive_raw(0, 0, 0);
+    init = true;
+    return true;
+  }
+
   return false;
 }
