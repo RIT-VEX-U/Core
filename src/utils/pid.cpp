@@ -21,7 +21,7 @@ void PID::update(double sensor_val)
 
   accum_error += time_delta * get_error();
 
-  out = (config.f) + (config.p * get_error()) + (config.i * accum_error) + (config.d * (get_error() - last_error) / time_delta);
+  out = (config.f * target) + (config.p * get_error()) + (config.i * accum_error) + (config.d * (get_error() - last_error) / time_delta);
 
   last_time = pid_timer.value();
   last_error = get_error();
