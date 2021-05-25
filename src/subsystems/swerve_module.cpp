@@ -1,5 +1,5 @@
 #include "../core/include/subsystems/swerve_module.h"
-#include "hardware.h"
+
 
 /**
  * Create a single swerve module, made up of a Drive motor and a Direction motor.
