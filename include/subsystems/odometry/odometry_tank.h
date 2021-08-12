@@ -1,27 +1,13 @@
-#ifndef _ODOMETRY_
-#define _ODOMETRY_
+#ifndef _ODOMETRY_TANK_
+#define _ODOMETRY_TANK_
 
-#include "vex.h"
+#include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/utils/vector.h"
-
-#define DOWNTIME 50 //milliseconds
-
-#ifndef PI
-#define PI 3.141592654
-#endif
 
 /**
  * The background task constantly polling the motors and updating the position.
  */
-static int background_task(void* pos_ptr);
-
-// Describes a single position and rotation
-typedef struct
-{
-    double x;
-    double y;
-    double rot;
-} position_t;
+static int background_task(void *pos_ptr);
 
 typedef struct
 {
@@ -36,14 +22,14 @@ typedef struct
     double lside, rside;
 } stored_info_t;
 
-class Odometry
+class Odometry : public OdometryBase
 {
-    public:
-
+public:
     /**
      * Initialize the Odometry module, using the IMU to get rotation
      * @param left_side The left motors 
-     * @param right_side The right motors
+     * @param right_
+     * side The right motors
      * @param imu The robot's inertial sensor
      * @param is_async If true, the robot will automatically poll it's position and update it in the background.
      *      If false, the update() function must be called periodically.
@@ -77,36 +63,17 @@ class Odometry
 
     void end_async();
 
-    bool end_task = false;
-
-    /**
-     * Get the distance between two points
-     */
-    static double pos_diff(position_t &pos1, position_t &pos2);
-
-    /**
-     * Get the change in rotation between two points
-     */
-    static double rot_diff(position_t &pos1, position_t &pos2);
-
-    private:
-
+private:
     /**
      * Get information from the input hardware and an existing position, and calculate a new current position
      */
-    static position_t calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg=NULL);
-
-    vex::mutex mut;
-    position_t current_pos;
+    static position_t calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg = NULL);
 
     vex::motor_group &left_side, &right_side;
     vex::inertial *imu;
     odometry_config_t &config;
 
-    vex::task *handle;
-
     stored_info_t stored_info;
-    
 };
 
 #endif
