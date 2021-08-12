@@ -1,4 +1,4 @@
-#include "../core/include/subsystems/odometry.h"
+#include "../core/include/subsystems/odometry/odometry_tank.h"
 
 /**
  * Initialize the Odometry module, using the IMU to get rotation
@@ -52,16 +52,6 @@ int background_task(void* odom_obj)
 }
 
 /**
- * End the background task. Cannot be restarted.
- * If the user wants to end the thread but keep the data up to date,
- * they must run the update() function manually from then on.
- */
-void Odometry::end_async()
-{
-    this->end_task = true;
-}
-
-/**
  * Update, store and return the current position of the robot. Only use if not initializing
  * with a separate thread.
  */
@@ -87,58 +77,6 @@ position_t Odometry::update()
     mut.unlock();
 
     return updated_pos;
-}
-
-/**
- * Gets the current position and rotation
- */
-position_t Odometry::get_position()
-{
-    mut.lock();
-
-    // Create a new struct to pass-by-value
-    position_t out = 
-    {
-        .x = current_pos.x,
-        .y = current_pos.y,
-        .rot = current_pos.rot
-    };
-
-    mut.unlock();
-
-    return out;   
-}
-
-/**
- * Sets the current position of the robot
- */
-void Odometry::set_position(position_t &newpos)
-{
-    mut.lock();
-
-    current_pos.x = newpos.x;
-    current_pos.y = newpos.y;
-    current_pos.rot = newpos.rot;
-
-    mut.unlock();
-}
-
-/**
- * Get the distance between two points
- */
-double Odometry::pos_diff(position_t &pos1, position_t &pos2)
-{
-    // Use the pythagorean theorem
-    return sqrt(pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2));
-
-}
-
-/**
- * Get the change in rotation between two points
- */
-double Odometry::rot_diff(position_t &pos1, position_t &pos2)
-{
-    return pos2.rot - pos1.rot;
 }
 
 /**

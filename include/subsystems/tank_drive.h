@@ -1,7 +1,9 @@
 #ifndef _TANKDRIVE_
 #define _TANKDRIVE_
 
+#ifndef PI
 #define PI 3.141592654
+#endif
 
 #include "vex.h"
 #include "../core/include/utils/pid.h"
