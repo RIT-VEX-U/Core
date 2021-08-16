@@ -5,12 +5,6 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/subsystems/swerve_drive.h"
 
-/**
- * Function containing the code running in the background, if this odometry is running 
- * asynchronously.
- */
-static int background_task(void *obj);
-
 typedef struct
 {
     double lf_dist, rf_dist, lr_dist, rr_dist;
