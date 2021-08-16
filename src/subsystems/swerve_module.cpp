@@ -6,8 +6,8 @@
  * 
  * the Drive motor is the central one, with the Direction motor being offset.
  */
-SwerveModule::SwerveModule(vex::motor &drive, vex::gearSetting drive_gearing, vex::motor &direction, vex::gearSetting dir_gearing)
-    : drive(drive), drive_gearing(drive_gearing), direction(direction), dir_gearing(dir_gearing)
+SwerveModule::SwerveModule(vex::motor &drive, vex::motor &direction)
+    : drive(drive), direction(direction)
 {
   lastStoredHeading = 0.0;
   inverseDrive = false;
@@ -102,6 +102,15 @@ double SwerveModule::get_distance_driven()
 {
   // return drive.position(vex::rotationUnits::rev);
   return fabs(WHEEL_DIAM * PI * drive.position(vex::rotationUnits::rev) * DRIVE_GEAR_RATIO);
+}
+
+/**
+ * Return the direction that the module is pointing
+ */
+double SwerveModule::get_module_angle()
+{
+  // Limit to 0->360
+  return fmod(direction.rotation(vex::rotationUnits::deg) * DIR_GEAR_RATIO, 360);
 }
 
 /**

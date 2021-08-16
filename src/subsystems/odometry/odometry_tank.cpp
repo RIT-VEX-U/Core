@@ -6,7 +6,7 @@
  * @param right_side The right motors
  * @param imu The robot's inertial sensor
  */
-Odometry::Odometry(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async)
+OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async)
 : left_side(left_side), right_side(right_side), imu(&imu), config(config)
 {
     // Make sure the last known info starts zeroed
@@ -23,7 +23,7 @@ Odometry::Odometry(vex::motor_group &left_side, vex::motor_group &right_side, ve
  * @param right_side The right motors
  * @param imu The robot's inertial sensor
  */
-Odometry::Odometry(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async)
+OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async)
 : left_side(left_side), right_side(right_side), imu(NULL), config(config)
 {
     // Make sure the last known info starts zeroed
@@ -40,7 +40,7 @@ Odometry::Odometry(vex::motor_group &left_side, vex::motor_group &right_side, od
  */
 int background_task(void* odom_obj)
 {
-    Odometry &odom = *((Odometry*) odom_obj);
+    OdometryTank &odom = *((OdometryTank*) odom_obj);
     while(!odom.end_task)
     {
         odom.update();
@@ -55,7 +55,7 @@ int background_task(void* odom_obj)
  * Update, store and return the current position of the robot. Only use if not initializing
  * with a separate thread.
  */
-position_t Odometry::update()
+position_t OdometryTank::update()
 {
     position_t updated_pos;
 
@@ -83,7 +83,7 @@ position_t Odometry::update()
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-position_t Odometry::calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg)
+position_t OdometryTank::calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg)
 {
     position_t new_pos;
 

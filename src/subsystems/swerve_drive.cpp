@@ -214,3 +214,23 @@ bool SwerveDrive::auto_turn(double degrees, double speed)
 
   return false;
 }
+
+/**
+ * Return the corresponding module to this swerve drive system
+ */
+SwerveModule& SwerveDrive::get_module(ModulePosition pos)
+{
+  switch(pos)
+  {
+    case LEFT_FRONT:
+      return left_front;
+    case RIGHT_FRONT:
+      return right_front;
+    case LEFT_REAR:
+      return left_rear;
+
+    default: // ONLY if something goes horribly wrong, return the right rear
+    case RIGHT_REAR:
+      return right_rear;
+  }
+}

@@ -8,6 +8,11 @@
 #define ROT_DEADBAND 0.2
 #define LAT_DEADBAND 0.2
 
+enum ModulePosition
+{
+    LEFT_FRONT, RIGHT_FRONT, LEFT_REAR, RIGHT_REAR
+};
+
 class SwerveDrive
 {
 
@@ -44,6 +49,11 @@ bool auto_turn(double degrees, double speed);
 
 void set_drive_pid(PID::pid_config_t &config);
 void set_turn_pid(PID::pid_config_t &config);
+
+/**
+ * Return the corresponding module to this swerve drive system
+ */
+SwerveModule& get_module(ModulePosition pos);
 
 private:
 

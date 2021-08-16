@@ -26,7 +26,7 @@ class SwerveModule
      * 
      * the Drive motor is the central one, with the Direction motor being offset.
      */
-    SwerveModule(vex::motor &drive, vex::gearSetting drive_gearing, vex::motor &direction, vex::gearSetting dir_gearing);
+    SwerveModule(vex::motor &drive, vex::motor &direction);
 
     /**
      * Sets both the speed and direction of the module, taking into account how the motors are geared
@@ -57,13 +57,22 @@ class SwerveModule
 
     /**
     * Reset the drive encoder to zero
+    * 
+    * @deprecated Resetting encoders will screw up OdometrySwerve; do not use with odometry.
     */
     void reset_distance_driven();
 
     /**
      * Get 'distance' from the drive motor
+     * 
+     * TODO take into account the effect of the direction motor on the driven distance
      */
     double get_distance_driven();
+
+    /**
+     * Return the direction that the module is pointing
+     */
+    double get_module_angle();
 
     bool auto_reverse = false;
 
@@ -84,11 +93,8 @@ class SwerveModule
      */
     static int mod(int var1, int var2);
 
-    vex::motor &drive;
-    vex::gearSetting drive_gearing;
+    vex::motor &drive, &direction;
 
-    vex::motor &direction;
-    vex::gearSetting dir_gearing;
     bool inverseDrive;
     double lastStoredHeading;
     double driveMulitplier;
