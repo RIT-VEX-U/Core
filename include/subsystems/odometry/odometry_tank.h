@@ -22,7 +22,7 @@ typedef struct
     double lside, rside;
 } stored_info_t;
 
-class Odometry : public OdometryBase
+class OdometryTank : public OdometryBase
 {
 public:
     /**
@@ -34,7 +34,7 @@ public:
      * @param is_async If true, the robot will automatically poll it's position and update it in the background.
      *      If false, the update() function must be called periodically.
      */
-    Odometry(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async);
+    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async);
 
     /**
      * Initialize the Odometry module, calculating the rotation from encoders
@@ -44,24 +44,12 @@ public:
      * @param is_async If true, the robot will automatically poll it's position and update it in the background.
      *      If false, the update() function must be called periodically.
      */
-    Odometry(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async);
-
-    /**
-     * Gets the current position and rotation
-     */
-    position_t get_position();
-
-    /**
-     * Sets the current position of the robot
-     */
-    void set_position(position_t &newpos);
+    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async);
 
     /**
      * Update the current position on the field based on the sensors
      */
     position_t update();
-
-    void end_async();
 
 private:
     /**
