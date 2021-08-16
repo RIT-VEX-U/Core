@@ -48,7 +48,7 @@ public:
     /**
      * Get the distance between two points
      */
-    static double pos_diff(position_t &pos1, position_t &pos2);
+    static double pos_diff(position_t pos1, position_t pos2, bool use_negatives=false);
 
     /**
      * Get the change in rotation between two points

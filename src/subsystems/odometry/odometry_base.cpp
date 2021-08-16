@@ -1,4 +1,5 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
+#include "../core/include/utils/vector.h"
 
 /**
 * Gets the current position and rotation
@@ -47,10 +48,28 @@ void OdometryBase::end_async()
 /**
  * Get the distance between two points
  */
-double OdometryBase::pos_diff(position_t &pos1, position_t &pos2)
+double OdometryBase::pos_diff(position_t pos1, position_t pos2, bool use_negatives)
 {
+    int negative_multiplier = 1;
+
+    // If we are using negative distances, define a "negative distance" as when the angle
+    // of a vector made from those two points is between 3PI/4 and 7PI/4
+    if(use_negatives)
+    {
+        Vector::point_t point_diff = {
+            .x = pos1.x - pos2.x,
+            .y = pos1.y - pos2.y
+        };
+
+        Vector v_diff(point_diff);
+        double angle = rad2deg(v_diff.get_dir());
+
+        if(angle > 135 && angle < 315)
+            negative_multiplier = -1;
+    }
+
     // Use the pythagorean theorem
-    return sqrt(pow(pos2.x - pos1.x, 2) + pow(pos2.y - pos1.y, 2));
+    return negative_multiplier * sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
 }
 
 /**

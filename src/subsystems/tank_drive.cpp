@@ -1,8 +1,16 @@
 #include "../core/include/subsystems/tank_drive.h"
 
 TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, TankDrive::tankdrive_config_t &config)
-    : config(config), left_motors(left_motors), right_motors(right_motors), drive_pid(config.drive_pid), turn_pid(config.turn_pid), gyro_sensor(gyro_sensor)
+    : left_motors(left_motors), right_motors(right_motors),
+     drive_pid(config.drive_pid), turn_pid(config.turn_pid)
 {
+
+  odometry_config_t cfg = {
+    .dist_between_wheels = config.dist_between_wheels,
+    .wheel_diam = config.wheel_diam,
+  };
+
+  this->odometry = new OdometryTank(left_motors, right_motors, cfg, true);
 }
 
 /**
@@ -46,13 +54,15 @@ void TankDrive::drive_arcade(double forward_back, double left_right)
  * of percent_speed (-1.0 -> 1.0).
  * 
  * Uses a PID loop for it's control.
+ * 
+ * NOTE: uses relative positioning, so after a few drive_forward's, position may be lost!
  */
 bool TankDrive::drive_forward(double inches, double percent_speed)
 {
   // On the first run of the funciton, reset the motor position and PID
   if (initialize_func)
   {
-    left_motors.resetPosition();
+    saved_pos = odometry->get_position();
     drive_pid.reset();
 
     drive_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
@@ -61,8 +71,12 @@ bool TankDrive::drive_forward(double inches, double percent_speed)
     initialize_func = false;
   }
 
+  double position_diff = OdometryBase::pos_diff(odometry->get_position(), saved_pos, true);
+
   // Update PID loop and drive the robot based on it's output
-  drive_pid.update(left_motors.position(rotationUnits::rev) * PI * config.wheel_diam);
+  drive_pid.update(position_diff);
+
+  // Drive backwards if we input negative inches, forward for positive
   drive_tank(drive_pid.get(), drive_pid.get());
 
   // If the robot is at it's target, return true
@@ -87,7 +101,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   // On the first run of the funciton, reset the gyro position and PID
   if (initialize_func)
   {
-    gyro_sensor.resetRotation();
+    saved_pos = odometry->get_position();
     turn_pid.reset();
 
     turn_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
@@ -97,7 +111,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   }
 
   // Update PID loop and drive the robot based on it's output
-  turn_pid.update(gyro_sensor.rotation(rotationUnits::deg));
+  turn_pid.update(odometry->get_position().rot - saved_pos.rot);
   drive_tank(turn_pid.get(), -turn_pid.get());
 
   // If the robot is at it's target, return true

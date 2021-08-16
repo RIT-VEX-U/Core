@@ -4,11 +4,6 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/utils/vector.h"
 
-/**
- * The background task constantly polling the motors and updating the position.
- */
-static int background_task(void *pos_ptr);
-
 typedef struct
 {
     double dist_between_wheels;

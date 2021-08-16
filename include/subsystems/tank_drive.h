@@ -7,6 +7,7 @@
 
 #include "vex.h"
 #include "../core/include/utils/pid.h"
+#include "../core/include/subsystems/odometry/odometry_tank.h"
 
 using namespace vex;
 
@@ -19,6 +20,7 @@ public:
     PID::pid_config_t drive_pid;
     PID::pid_config_t turn_pid;
 
+    double dist_between_wheels;
     double wheel_diam;
   };
 
@@ -65,15 +67,15 @@ public:
   bool turn_degrees(double degrees, double percent_speed);
 
 private:
-  tankdrive_config_t &config;
-
   motor_group &left_motors;
   motor_group &right_motors;
 
   PID drive_pid;
   PID turn_pid;
 
-  inertial &gyro_sensor;
+  OdometryTank *odometry;
+
+  position_t saved_pos;
 
   bool initialize_func = true;
 };
