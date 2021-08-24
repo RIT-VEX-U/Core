@@ -2,6 +2,7 @@
 #define _SWERVEDRIVE_
 
 #include "../core/include/subsystems/swerve_module.h"
+#include "../core/include/subsystems/odometry/odometry_swerve.h"
 #include "../core/include/utils/vector.h"
 #include "../core/include/utils/pid.h"
 
@@ -63,6 +64,9 @@ bool auto_turn_init = true;
 
 PID *drive_pid, *turn_pid;
 vex::inertial &imu;
+
+OdometrySwerve *odometry;
+position_t saved_pos;
 
 };
 
