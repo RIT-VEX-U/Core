@@ -9,7 +9,7 @@ using namespace std;
 SwerveDrive::SwerveDrive(SwerveModule &left_front, SwerveModule &left_rear, SwerveModule &right_front, SwerveModule &right_rear, vex::inertial &imu)
 :left_front(left_front), left_rear(left_rear), right_front(right_front), right_rear(right_rear), imu(imu)
 {
-
+  // odometry = new OdometrySwerve(*this, imu, true);
 }
 
 /**
@@ -90,6 +90,8 @@ void SwerveDrive::set_turn_pid(PID::pid_config_t &config)
 /**
  * Autonomously drive the robot in (degrees) direction, at (-1.0 -> 1.0) speed, for (inches) distance.
  * Indicate a negative speed or distance, or (preferably) a direction of +-180 degrees for backwards.
+ * 
+ * NOTE: This function uses relative positioning, and a few calls to it may cause it to drift!
  */
 bool SwerveDrive::auto_drive(double direction, double speed, double distance)
 {
@@ -122,10 +124,7 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     if(!all_wheels_done)
       return false;
 
-    left_front.reset_distance_driven();
-    right_front.reset_distance_driven();
-    left_rear.reset_distance_driven();
-    right_rear.reset_distance_driven();
+    saved_pos = odometry->get_position();
 
     // set up the PID
     drive_pid->reset();
@@ -135,13 +134,10 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     auto_drive_init = false;
   }
 
-  double average = (left_front.get_distance_driven() + right_front.get_distance_driven() 
-                  + left_rear.get_distance_driven() + right_rear.get_distance_driven()) / 4.0;
+  double pos_diff = OdometryBase::pos_diff(odometry->get_position(), saved_pos, true);
 
   // LOOP
-  drive_pid->update(average);
-
-  fprintf(stderr, "Distance Driven: %f\n", average);
+  drive_pid->update(pos_diff);
   
   left_front.set_speed(drive_pid->get());
   right_front.set_speed(drive_pid->get());
@@ -162,6 +158,8 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
 /**
  * Autonomously turn the robot over it's center axis in degrees. Positive degrees is clockwise, Negative is counter-clockwise
  * Function is non-blocking, and returns true when it has finished turning.
+ * 
+ * NOTE: this uses relative positioning, and a few calls may cause it to lose it's desired angle!
  */
 bool SwerveDrive::auto_turn(double degrees, double speed)
 {
@@ -183,9 +181,8 @@ bool SwerveDrive::auto_turn(double degrees, double speed)
     if(!all_wheels_done)
       return false;
 
-    // Reset the IMU rotation and configure the PID loop
-    imu.resetRotation();
-    
+    saved_pos = odometry->get_position();
+
     turn_pid->reset();
     turn_pid->set_limits(-fabs(speed), fabs(speed));
     turn_pid->set_target(degrees);
@@ -195,14 +192,12 @@ bool SwerveDrive::auto_turn(double degrees, double speed)
 
   // LOOP
 
-  turn_pid->update(imu.rotation());
+  turn_pid->update(odometry->get_position().rot);
+
   left_front.set_speed(turn_pid->get());
   right_front.set_speed(turn_pid->get());
   left_rear.set_speed(turn_pid->get());
   right_rear.set_speed(turn_pid->get());
-
-  fprintf(stderr, "Angle: %f  ", imu.rotation());
-  fprintf(stderr, "Out: %f \n", turn_pid->get());
 
   // when the robot is on target, we are done. return true.
   if(turn_pid->is_on_target())
