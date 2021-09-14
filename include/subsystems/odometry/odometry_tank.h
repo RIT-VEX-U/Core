@@ -8,7 +8,10 @@ typedef struct
 {
     double dist_between_wheels;
     double wheel_diam;
+    double gear_ratio;
 } odometry_config_t;
+
+static int background_task(void* odom_obj);
 
 // Contains information stored between update()s required for calculating posiion
 typedef struct
@@ -29,7 +32,7 @@ public:
      * @param is_async If true, the robot will automatically poll it's position and update it in the background.
      *      If false, the update() function must be called periodically.
      */
-    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async);
+    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, vex::inertial &imu, odometry_config_t &config, bool is_async=true);
 
     /**
      * Initialize the Odometry module, calculating the rotation from encoders
@@ -39,7 +42,7 @@ public:
      * @param is_async If true, the robot will automatically poll it's position and update it in the background.
      *      If false, the update() function must be called periodically.
      */
-    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async);
+    OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, odometry_config_t &config, bool is_async=true);
 
     /**
      * Update the current position on the field based on the sensors

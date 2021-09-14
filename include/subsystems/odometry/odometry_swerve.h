@@ -1,14 +1,17 @@
-#ifndef _ODOMETRY_SWERVE_
-#define _ODOMETRY_SWERVE_
+#pragma once
 
 #include "vex.h"
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/subsystems/swerve_drive.h"
 
+class SwerveDrive;
+
 typedef struct
 {
     double lf_dist, rf_dist, lr_dist, rr_dist;
 } stored_info_t;
+
+static int background_task(void *obj);
 
 /**
  * Odometry controller for a 4x module swerve drivetrain. Can either run in the background or 
@@ -42,5 +45,3 @@ private:
 
     stored_info_t stored_info;
 };
-
-#endif

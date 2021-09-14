@@ -1,5 +1,4 @@
-#ifndef _TANKDRIVE_
-#define _TANKDRIVE_
+#pragma once
 
 #ifndef PI
 #define PI 3.141592654
@@ -27,7 +26,7 @@ public:
   /**
    * Create the TankDrive object 
    */
-  TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, tankdrive_config_t &config);
+  TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, tankdrive_config_t &config, OdometryTank *odom=NULL);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -79,5 +78,3 @@ private:
 
   bool initialize_func = true;
 };
-
-#endif

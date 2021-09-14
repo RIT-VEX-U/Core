@@ -1,5 +1,4 @@
-#ifndef _SWERVEDRIVE_
-#define _SWERVEDRIVE_
+#pragma once
 
 #include "../core/include/subsystems/swerve_module.h"
 #include "../core/include/subsystems/odometry/odometry_swerve.h"
@@ -8,6 +7,8 @@
 
 #define ROT_DEADBAND 0.2
 #define LAT_DEADBAND 0.2
+
+class OdometrySwerve;
 
 enum ModulePosition
 {
@@ -69,5 +70,3 @@ OdometrySwerve *odometry;
 position_t saved_pos;
 
 };
-
-#endif

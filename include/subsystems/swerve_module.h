@@ -2,6 +2,7 @@
 #define _SWERVEMODULE_
 
 #include "vex.h"
+using namespace vex;
 
 #ifndef PI
 #define PI 3.141592654
