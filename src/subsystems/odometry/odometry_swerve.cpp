@@ -1,7 +1,7 @@
 #include "../core/include/subsystems/odometry/odometry_swerve.h"
 #include "../core/include/utils/vector.h"
 
-OdometrySwerve::OdometrySwerve(SwerveDrive &drive_system, vex::inertial &imu, bool is_async=true)
+OdometrySwerve::OdometrySwerve(SwerveDrive &drive_system, vex::inertial &imu, bool is_async)
 : drive_system(drive_system), imu(imu)
 {
     memset(&stored_info, 0, sizeof(stored_info_t));

@@ -1,16 +1,10 @@
 #include "../core/include/subsystems/tank_drive.h"
 
-TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, TankDrive::tankdrive_config_t &config)
+TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, TankDrive::tankdrive_config_t &config, OdometryTank *odom)
     : left_motors(left_motors), right_motors(right_motors),
-     drive_pid(config.drive_pid), turn_pid(config.turn_pid)
+     drive_pid(config.drive_pid), turn_pid(config.turn_pid), odometry(odom)
 {
 
-  odometry_config_t cfg = {
-    .dist_between_wheels = config.dist_between_wheels,
-    .wheel_diam = config.wheel_diam,
-  };
-
-  this->odometry = new OdometryTank(left_motors, right_motors, cfg, true);
 }
 
 /**
@@ -30,8 +24,8 @@ void TankDrive::stop()
  */
 void TankDrive::drive_tank(double left, double right)
 {
-  left_motors.setVelocity(left * 100, velocityUnits::pct);
-  right_motors.setVelocity(right * 100, velocityUnits::pct);
+  left_motors.spin(directionType::fwd, left * 100, velocityUnits::pct);
+  right_motors.spin(directionType::fwd, right * 100, velocityUnits::pct);
 }
 
 /**
@@ -71,7 +65,10 @@ bool TankDrive::drive_forward(double inches, double percent_speed)
     initialize_func = false;
   }
 
-  double position_diff = OdometryBase::pos_diff(odometry->get_position(), saved_pos, true);
+  double position_diff = odometry->get_position().y - saved_pos.y;
+
+  // printf("Pos diff: %f Saved pos: %f  ", position_diff, saved_pos.y);
+  printf("Tank X: %f   Tank Y: %f  ", odometry->get_position().y, odometry->get_position().x);
 
   // Update PID loop and drive the robot based on it's output
   drive_pid.update(position_diff);

@@ -59,15 +59,15 @@ position_t OdometryTank::update()
 {
     position_t updated_pos;
 
-    double lside_revs = left_side.position(rotationUnits::rev);
-    double rside_revs = right_side.position(rotationUnits::rev);
+    double lside_revs = left_side.position(vex::rotationUnits::rev) / config.gear_ratio;
+    double rside_revs = right_side.position(vex::rotationUnits::rev) / config.gear_ratio;
 
     if(imu == NULL)
     {
         updated_pos = calculate_new_pos(config, stored_info, lside_revs, rside_revs);
     } else
     {
-        double angle = imu->rotation(rotationUnits::deg);
+        double angle = imu->rotation(vex::rotationUnits::deg);
         updated_pos = calculate_new_pos(config, stored_info, lside_revs, rside_revs, &angle);
     }
     
