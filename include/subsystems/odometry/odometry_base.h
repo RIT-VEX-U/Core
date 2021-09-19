@@ -31,7 +31,7 @@ public:
     /**
      * Sets the current position of the robot
      */
-    void set_position(position_t &newpos);
+    virtual void set_position(const position_t &newpos=zero_pos);
 
     /**
      * Update the current position on the field based on the sensors
@@ -56,6 +56,8 @@ public:
     static double rot_diff(position_t &pos1, position_t &pos2);
 
     bool end_task = false;
+
+    static constexpr position_t zero_pos = {0, 0, 0};
 
 protected:
     vex::task *handle;

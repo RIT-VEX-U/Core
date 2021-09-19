@@ -10,11 +10,22 @@ OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_
 : left_side(left_side), right_side(right_side), imu(&imu), config(config)
 {
     // Make sure the last known info starts zeroed
-    memset(&stored_info, 0, sizeof(stored_info_t));
+    memset(&current_pos, 0, sizeof(position_t));
 
     // Start the asynchronous background thread
     if (is_async)
         handle = new vex::task(background_task, this);
+}
+
+/**
+ * Resets the position and rotational data to the input.
+ * 
+ */
+void OdometryTank::set_position(const position_t &newpos)
+{
+  rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
+
+  OdometryBase::set_position(newpos);
 }
 
 /**
@@ -27,7 +38,7 @@ OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_
 : left_side(left_side), right_side(right_side), imu(NULL), config(config)
 {
     // Make sure the last known info starts zeroed
-    memset(&stored_info, 0, sizeof(stored_info_t));
+    memset(&current_pos, 0, sizeof(position_t));
 
     // Start the asynchronous background thread
     if (is_async)
@@ -62,15 +73,35 @@ position_t OdometryTank::update()
     double lside_revs = left_side.position(vex::rotationUnits::rev) / config.gear_ratio;
     double rside_revs = right_side.position(vex::rotationUnits::rev) / config.gear_ratio;
 
+    double angle = 0;
+
+    // If the IMU data was passed in, use it for rotational data
     if(imu == NULL)
     {
-        updated_pos = calculate_new_pos(config, stored_info, lside_revs, rside_revs);
+      // Get the difference in distance driven between the two sides
+      // Uses the absolute position of the encoders, so resetting them will result in
+      // a bad angle.
+      double distance_diff = (lside_revs - rside_revs) * PI * config.wheel_diam;
+
+      //Use the arclength formula to calculate the angle.
+      angle = (180.0 / PI) * (distance_diff / config.dist_between_wheels);
+
     } else
     {
-        double angle = imu->rotation(vex::rotationUnits::deg);
-        updated_pos = calculate_new_pos(config, stored_info, lside_revs, rside_revs, &angle);
+        angle = imu->rotation(vex::rotationUnits::deg);
     }
-    
+
+    // Offset the angle, if we've done a set_position
+    angle += rotation_offset;
+
+    //Limit the angle betwen 0 and 360. 
+    //fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's negative.
+    angle = fmod(angle, 360.0);
+    if(angle < 0)
+        angle += 360;
+
+    updated_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
+
     // Update the class' stored position
     mut.lock();
     this->current_pos = updated_pos;
@@ -83,57 +114,37 @@ position_t OdometryTank::update()
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-position_t OdometryTank::calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg)
+position_t OdometryTank::calculate_new_pos(odometry_config_t &config, position_t &curr_pos, double lside_revs, double rside_revs, double angle_deg)
 {
     position_t new_pos;
 
-    double angle = 0;
+    static double stored_lside_revs = lside_revs;
+    static double stored_rside_revs = rside_revs;
 
-        // If the IMU data was passed in, use it for rotational data
-        if(gyro_angle_deg != NULL)
-            angle = *gyro_angle_deg;
-        else
-        {
-            // Get the difference in distance driven between the two sides
-            // Uses the absolute position of the encoders, so resetting them will result in
-            // a bad angle.
-            double distance_diff = (lside_revs - rside_revs) * PI * config.wheel_diam;
+    // Convert the revolutions into "change in distance", and average the values for a "distance driven"
+    double lside_diff = (lside_revs - stored_lside_revs) * PI * config.wheel_diam;
+    double rside_diff = (rside_revs - stored_rside_revs) * PI * config.wheel_diam;
+    double dist_driven = (lside_diff + rside_diff) / 2.0;
 
-            //Use the arclength formula to calculate the angle.
-            angle = (180.0 / PI) * (distance_diff / config.dist_between_wheels);
-            
-            //Limit the angle betwen 0 and 360. 
-            //fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's negative.
-            angle = fmod(angle, 360.0);
-            if(angle < 0)
-                angle += 360;
-        }
+    double angle = angle_deg * PI / 180.0; // Degrees to radians
 
-        angle *= PI / 180.0; // Degrees to radians
+    // Create a vector from the change in distance in the current direction of the robot
+    Vector chg_vec(angle_deg, dist_driven);
+    
+    // Create a vector from the current position in reference to X,Y=0,0
+    Vector::point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
+    Vector curr_vec(curr_point);
 
-        // Convert the revolutions into "change in distance", and average the values for a "distance driven"
-        double lside_diff = (lside_revs - stored_info.lside) * PI * config.wheel_diam;
-        double rside_diff = (rside_revs - stored_info.rside) * PI * config.wheel_diam;
-        double dist_driven = (lside_diff + rside_diff) / 2.0;
+    // Tack on the "difference" vector to the current vector
+    Vector new_vec = curr_vec + chg_vec;
 
-        // Create a vector from the change in distance in the current direction of the robot
-        Vector chg_vec(angle, dist_driven);
-        
-        // Create a vector from the current position in reference to X,Y=0,0
-        Vector::point_t curr_point = {.x = stored_info.pos.x, .y = stored_info.pos.y};
-        Vector curr_vec(curr_point);
+    new_pos.x = new_vec.get_x();
+    new_pos.y = new_vec.get_y();
+    new_pos.rot = angle * (180.0 / PI);
 
-        // Tack on the "difference" vector to the current vector
-        Vector new_vec = curr_vec + chg_vec;
-
-        new_pos.x = new_vec.get_x();
-        new_pos.y = new_vec.get_y();
-        new_pos.rot = angle * (180.0 / PI);
-
-        // Store the left and right encoder values to find the difference in the next iteration
-        stored_info.lside = lside_revs;
-        stored_info.rside = rside_revs;
-        stored_info.pos = new_pos;
+    // Store the left and right encoder values to find the difference in the next iteration
+    stored_lside_revs = lside_revs;
+    stored_rside_revs = rside_revs;
 
     return new_pos;
 }

@@ -24,7 +24,7 @@ position_t OdometryBase::get_position(void)
 /**
  * Sets the current position of the robot
  */
-void OdometryBase::set_position(position_t &newpos)
+void OdometryBase::set_position(const position_t &newpos)
 {
     mut.lock();
 

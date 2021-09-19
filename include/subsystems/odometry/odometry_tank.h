@@ -13,13 +13,6 @@ typedef struct
 
 static int background_task(void* odom_obj);
 
-// Contains information stored between update()s required for calculating posiion
-typedef struct
-{
-    position_t pos;
-    double lside, rside;
-} stored_info_t;
-
 class OdometryTank : public OdometryBase
 {
 public:
@@ -47,19 +40,23 @@ public:
     /**
      * Update the current position on the field based on the sensors
      */
-    position_t update();
+    position_t update() override;
+
+
+    void set_position(const position_t &newpos=zero_pos) override;
 
 private:
     /**
      * Get information from the input hardware and an existing position, and calculate a new current position
      */
-    static position_t calculate_new_pos(odometry_config_t &config, stored_info_t &stored_info, double lside_revs, double rside_revs, double *gyro_angle_deg = NULL);
+    static position_t calculate_new_pos(odometry_config_t &config, position_t &stored_info, double lside_diff, double rside_diff, double angle_deg);
 
     vex::motor_group &left_side, &right_side;
     vex::inertial *imu;
     odometry_config_t &config;
 
-    stored_info_t stored_info;
+    double rotation_offset = 0;
+    
 };
 
 #endif
