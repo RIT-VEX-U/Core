@@ -7,6 +7,7 @@
 #include "vex.h"
 #include "../core/include/utils/pid.h"
 #include "../core/include/subsystems/odometry/odometry_tank.h"
+#include <vector>
 
 using namespace vex;
 
@@ -71,6 +72,12 @@ public:
   bool drive_to_point(double x, double y, double rot_deg, double speed);
 
   static double modify_inputs(double input, int power=2);
+
+  /**
+    * Returns points of the intersections of a line segment and a circle. The line 
+    * segment is defined by two points, and the circle is defined by a center and radius.
+    */
+  std::vector<Vector::point_t> line_circle_intersections(Vector::point_t center, double r, Vector::point_t point1, Vector::point_t point2);
 
 private:
   motor_group &left_motors;
