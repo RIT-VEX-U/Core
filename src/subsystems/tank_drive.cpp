@@ -185,3 +185,52 @@ double TankDrive::modify_inputs(double input, int power)
 {
   return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
 }
+
+/**
+  * Returns points of the intersections of a line segment and a circle. The line 
+  * segment is defined by two points, and the circle is defined by a center and radius.
+  */
+std::vector<Vector::point_t> TankDrive::line_circle_intersections(Vector::point_t center, double r, Vector::point_t point1, Vector::point_t point2)
+{
+  std::vector<Vector::point_t> intersections = {};
+
+  //Do future calculations relative to the circle's center
+  point1.y -= center.y;
+  point1.x -= center.x;
+  point2.y -= center.y;
+  point2.x -= center.x;
+
+  double x1, x2, y1, y2;
+  //Handling an infinite slope using mx+b and x^2 + y^2 = r^2
+  if(point1.x - point2.x == 0)
+  {
+    y1 = point1.y;
+    x1 = sqrt(pow(r, 2) - pow(y1, 2));
+    y2 = point1.y; 
+    x2 = -sqrt(pow(r, 2) - pow(y1, 2));
+  }
+  //Non-infinite slope using mx+b and x^2 + y^2 = r^2
+  else
+  {
+    double m = (point1.y - point2.y) / (point1.x - point2.x);
+    double b = point1.y - (m * point1.x);
+
+    x1 = ((-m * b) + sqrt(pow(r, 2) + (pow(m, 2) * pow(r, 2)) - pow(b, 2))) / (1 + pow(m,2));
+    y1 = m * x1 + b;
+    x2 = ((-m * b) - sqrt(pow(r, 2) + (pow(m, 2) * pow(r, 2)) - pow(b, 2))) / (1 + pow(m,2));
+    y2 = m * x2 + b;
+  }
+
+  //The equations used define an infinitely long line, so we check if the detected intersection falls on the line segment.
+  if(x1 >= fmin(point1.x, point2.x) && x1 <= fmax(point1.x, point2.x) && y1 >= fmin(point1.y, point2.y) && y1 <= fmax(point1.y, point2.y))
+  {
+    intersections.push_back(Vector::point_t{.x = x1 + center.x, .y = y1 + center.y});
+  }
+
+  if(x2 >= fmin(point1.x, point2.x) && x2 <= fmax(point1.x, point2.x) && y2 >= fmin(point1.y, point2.y) && y2 <= fmax(point1.y, point2.y))
+  {
+    intersections.push_back(Vector::point_t{.x = x2 + center.x, .y = y2 + center.y});
+  }
+
+  return intersections;
+}
