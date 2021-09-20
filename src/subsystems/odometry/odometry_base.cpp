@@ -79,3 +79,23 @@ double OdometryBase::rot_diff(position_t &pos1, position_t &pos2)
 {
     return pos2.rot - pos1.rot;
 }
+
+/**
+ * Get the smallest difference in angle between a start heading and end heading.
+ * Returns the difference between -180 degrees and +180 degrees, representing the robot
+ * turning left or right, respectively.
+ */
+double OdometryBase::smallest_angle(double start_deg, double end_deg)
+{
+  double retval;
+  // get the difference between 0 and 360
+  retval = fmod(end_deg - start_deg, 360.0);
+  if(retval < 0)
+    retval += 360.0;
+
+  // Get the closest angle, now between -180 (turn left) and +180 (turn right)
+  if(retval > 180)
+    retval -= 360;
+
+  return retval;
+}

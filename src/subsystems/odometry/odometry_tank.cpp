@@ -129,7 +129,7 @@ position_t OdometryTank::calculate_new_pos(odometry_config_t &config, position_t
     double angle = angle_deg * PI / 180.0; // Degrees to radians
 
     // Create a vector from the change in distance in the current direction of the robot
-    Vector chg_vec(angle_deg, dist_driven);
+    Vector chg_vec(angle, dist_driven);
     
     // Create a vector from the current position in reference to X,Y=0,0
     Vector::point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
@@ -140,7 +140,7 @@ position_t OdometryTank::calculate_new_pos(odometry_config_t &config, position_t
 
     new_pos.x = new_vec.get_x();
     new_pos.y = new_vec.get_y();
-    new_pos.rot = angle * (180.0 / PI);
+    new_pos.rot = angle_deg;
 
     // Store the left and right encoder values to find the difference in the next iteration
     stored_lside_revs = lside_revs;

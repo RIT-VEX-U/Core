@@ -65,11 +65,15 @@ public:
 
   /**
    * Use odometry to automatically drive the robot to a point on the field.
-   * X, Y and Rotation are the final point and orientation we want the robot.
-   *
-   * Combing multiple drive_to_point's gives a pure pursuit system.
+   * X and Y is the final point we want the robot.
    */
-  bool drive_to_point(double x, double y, double rot_deg, double speed);
+  bool drive_to_point(double x, double y, double speed);
+
+  /**
+   * Turn the robot in place to an exact heading relative to the field.
+   * 0 is forward, and 0->360 is clockwise.
+   */
+  bool turn_to_heading(double heading_deg, double speed);
 
   static double modify_inputs(double input, int power=2);
 

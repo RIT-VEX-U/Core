@@ -125,7 +125,13 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   return false;
 }
 
-bool TankDrive::drive_to_point(double x, double y, double rot_deg, double speed)
+/**
+  * Use odometry to automatically drive the robot to a point on the field.
+  * X and Y is the final point we want the robot.
+  *
+  * Returns whether or not the robot has reached it's destination.
+  */
+bool TankDrive::drive_to_point(double x, double y, double speed)
 {
   static bool initialized = false;
 
@@ -138,9 +144,10 @@ bool TankDrive::drive_to_point(double x, double y, double rot_deg, double speed)
     drive_pid.set_limits(-fabs(speed), fabs(speed));
     turn_pid.set_limits(-fabs(speed), fabs(speed));
 
-    // Set the distance target to 0, because we update with the change in distance between the current point
+    // Set the targets to 0, because we update with the change in distance and angle between the current point
     // and the new point.
     drive_pid.set_target(0);
+    turn_pid.set_target(0);
 
     initialized = true;
   }
@@ -148,24 +155,27 @@ bool TankDrive::drive_to_point(double x, double y, double rot_deg, double speed)
   position_t end_pos = 
   {
     .x = x,
-    .y = y,
-    .rot = rot_deg
+    .y = y
   };
 
   // Store the initial position of the robot
   position_t current_pos = odometry->get_position();
 
-  // Set the rotational target of the PID loop.
-  // Every loop this gets updated, to make sure we are pointing in the right direction
-  turn_pid.set_target(OdometryBase::rot_diff(end_pos, current_pos));
+  // Get the distance between 2 points
+  double dist_left = OdometryBase::pos_diff(current_pos, end_pos);
+
+  // Get the heading difference between where we are and where we want to be
+  // Optimize that heading so we don't turn clockwise all the time
+  double heading = OdometryBase::rot_diff(current_pos, end_pos);
+  double delta_heading = OdometryBase::smallest_angle(current_pos.rot, heading);
 
   // Update the PID controllers with new information
-  turn_pid.update(current_pos.rot);
-  drive_pid.update(OdometryBase::pos_diff(current_pos, end_pos));
+  turn_pid.update(delta_heading);
+  drive_pid.update(dist_left);
 
   // Combine the two pid outputs
-  double lside = drive_pid.get() + turn_pid.get();
-  double rside = drive_pid.get() - turn_pid.get();
+  double lside = drive_pid.get() - turn_pid.get();
+  double rside = drive_pid.get() + turn_pid.get();
 
   // limit the outputs between -1 and +1
   lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
@@ -173,6 +183,48 @@ bool TankDrive::drive_to_point(double x, double y, double rot_deg, double speed)
 
   drive_tank(lside, rside);
 
+  // Check if the robot has reached it's destination
+  if(drive_pid.is_on_target())
+  {
+    stop();
+    initialized = false;
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Turn the robot in place to an exact heading relative to the field.
+ * 0 is forward, and 0->360 is clockwise.
+ */
+bool TankDrive::turn_to_heading(double heading_deg, double speed)
+{
+  bool initialized = false;
+  if(!initialized)
+  {
+    turn_pid.reset();
+    turn_pid.set_limits(-fabs(speed), fabs(speed));
+
+    // Set the target to zero, and the input will be a delta.
+    turn_pid.set_target(0);
+
+    initialized = true;
+  }
+
+  // Get the difference between the new heading and the current, and decide whether to turn left or right.
+  double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
+  turn_pid.update(delta_heading);
+
+  drive_tank(-turn_pid.get(), turn_pid.get());
+
+  // When the robot has reached it's angle, return true.
+  if(turn_pid.is_on_target())
+  {
+    initialized = false;
+    stop();
+    return true;
+  }
 
   return false;
 }
