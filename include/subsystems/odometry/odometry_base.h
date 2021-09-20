@@ -55,6 +55,13 @@ public:
      */
     static double rot_diff(position_t &pos1, position_t &pos2);
 
+    /**
+     * Get the smallest difference in angle between a start heading and end heading.
+     * Returns the difference between -180 degrees and +180 degrees, representing the robot
+     * turning left or right, respectively.
+     */
+    static double smallest_angle(double start_deg, double end_deg);
+
     bool end_task = false;
 
     static constexpr position_t zero_pos = {0, 0, 0};
