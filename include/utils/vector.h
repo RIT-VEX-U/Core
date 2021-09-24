@@ -14,6 +14,26 @@ public:
     struct point_t
     {
         double x, y;
+
+        point_t operator+(const point_t &other)
+        {
+          point_t p 
+          {
+            .x = this->x + other.x,
+            .y = this->y + other.y
+          };
+          return p;
+        }
+
+        point_t operator-(const point_t &other)
+        {
+          point_t p 
+          {
+            .x = this->x - other.x,
+            .y = this->y - other.y
+          };
+          return p;
+        }
     };
 
     /**
@@ -54,7 +74,17 @@ public:
      */
     double get_y() const;
 
+    /**
+     * Changes the magnetude of the vector to 1
+    */
+    Vector normalize();
 
+    /**
+    * Returns a point from the vector
+    */
+    Vector::point_t point();
+
+    Vector operator*(const double &x);
     Vector operator+(const Vector &other);
     Vector operator-(const Vector &other);
 
