@@ -53,6 +53,27 @@ return mag * cos(dir);
 }
 
 /**
+ * Changes the magnetude of the vector to 1
+*/
+Vector Vector::normalize()
+{
+  return Vector(this->dir, 1);
+}
+
+/**
+ * Returns a point from the vector
+*/
+Vector::point_t Vector::point()
+{
+  point_t p = 
+  {
+    .x = this->mag * cos(this->dir),
+    .y = this->mag * sin(this->dir)
+  };
+  return p;
+}
+
+/**
  * Correctly add vectors together with the + operator
  */
 Vector Vector::operator+(const Vector &other)
@@ -77,6 +98,14 @@ Vector Vector::operator-(const Vector &other)
         .y = this->get_y() - other.get_y()
     };
     return Vector( p );
+}
+
+/**
+ * Multiplies a vector by a double with the * operator
+*/
+Vector Vector::operator*(const double &x)
+{
+  return Vector(this->dir, this->mag * x);
 }
 
 /**
