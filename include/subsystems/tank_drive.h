@@ -19,6 +19,7 @@ public:
   {
     PID::pid_config_t drive_pid;
     PID::pid_config_t turn_pid;
+    PID::pid_config_t correction_pid;
   };
 
   /**
@@ -75,6 +76,11 @@ public:
    */
   bool turn_to_heading(double heading_deg, double speed);
 
+  /**
+   * Reset the initialization for autonomous drive functions
+   */
+  void reset_auto();
+
   static double modify_inputs(double input, int power=2);
 
   /**
@@ -89,10 +95,11 @@ private:
 
   PID drive_pid;
   PID turn_pid;
+  PID correction_pid;
 
   OdometryTank *odometry;
 
   position_t saved_pos;
 
-  bool initialize_func = true;
+  bool func_initialized = false;
 };

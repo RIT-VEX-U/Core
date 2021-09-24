@@ -48,28 +48,30 @@ void OdometryBase::end_async()
 /**
  * Get the distance between two points
  */
-double OdometryBase::pos_diff(position_t pos1, position_t pos2, bool use_negatives)
+double OdometryBase::pos_diff(position_t start_pos, position_t end_pos, bool use_negatives)
 {
     int negative_multiplier = 1;
 
     // If we are using negative distances, define a "negative distance" as when the angle
-    // of a vector made from those two points is between 3PI/4 and 7PI/4
+    // of a vector made from those two points is between PI/2 and 3PI/2
     if(use_negatives)
     {
-        Vector::point_t point_diff = {
-            .x = pos1.x - pos2.x,
-            .y = pos1.y - pos2.y
-        };
+        // use atan2(x,y) instead of the documented (y,x), so 0 degrees is forwards, and positive angle is clockwise.
+        double angle = rad2deg(atan2(end_pos.x - start_pos.x, end_pos.y - start_pos.y));
 
-        Vector v_diff(point_diff);
-        double angle = rad2deg(v_diff.get_dir());
+        printf("Start: %f, %f End: %f, %f, Old Angle: %f, Odom angle: %f, ",start_pos.x, start_pos.y, end_pos.x, end_pos.y, angle, start_pos.rot);
 
-        if(angle > 135 && angle < 315)
+        // Get the angle in relation to the robot
+        angle = fmod(angle - start_pos.rot, 180.0);
+
+        printf("Angle: %f\n", angle);
+
+        if(angle > 90 || angle < -90)
             negative_multiplier = -1;
     }
 
     // Use the pythagorean theorem
-    return negative_multiplier * sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
+    return negative_multiplier * sqrt(pow(end_pos.x - start_pos.x, 2) + pow(end_pos.y - start_pos.y, 2));
 }
 
 /**
@@ -77,7 +79,7 @@ double OdometryBase::pos_diff(position_t pos1, position_t pos2, bool use_negativ
  */
 double OdometryBase::rot_diff(position_t &pos1, position_t &pos2)
 {
-    return pos2.rot - pos1.rot;
+    return pos1.rot - pos2.rot;
 }
 
 /**

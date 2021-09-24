@@ -15,6 +15,7 @@ PID::PID(pid_config_t &config)
    */
 void PID::update(double sensor_val)
 {
+
   this->sensor_val = sensor_val;
 
   double time_delta = pid_timer.value() - last_time;
