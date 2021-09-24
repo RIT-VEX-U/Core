@@ -8,6 +8,10 @@ using namespace vex;
 #define PI 3.141592654
 #endif
 
+#ifndef PI
+#define PI 3.141592654
+#endif
+
 // Gear teeth (input to output): 16, 35
 #define DIR_GEAR_RATIO (16.0/35.0) // ~0.457
 
