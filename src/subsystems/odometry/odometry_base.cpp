@@ -62,7 +62,9 @@ double OdometryBase::pos_diff(position_t start_pos, position_t end_pos, bool use
         printf("Start: %f, %f End: %f, %f, Old Angle: %f, Odom angle: %f, ",start_pos.x, start_pos.y, end_pos.x, end_pos.y, angle, start_pos.rot);
 
         // Get the angle in relation to the robot
-        angle = fmod(angle - start_pos.rot, 180.0);
+        angle = fmod(angle - start_pos.rot, 360);
+        if(angle < -180) angle += 360;
+        if(angle > 180) angle -= 360;
 
         printf("Angle: %f\n", angle);
 
