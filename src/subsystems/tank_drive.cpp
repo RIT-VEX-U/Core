@@ -2,9 +2,17 @@
 
 TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, inertial &gyro_sensor, TankDrive::tankdrive_config_t &config, OdometryTank *odom)
     : left_motors(left_motors), right_motors(right_motors),
-     drive_pid(config.drive_pid), turn_pid(config.turn_pid), odometry(odom)
+     drive_pid(config.drive_pid), turn_pid(config.turn_pid), correction_pid(config.correction_pid), odometry(odom)
 {
 
+}
+
+/**
+ * Reset the initialization for autonomous drive functions
+ */
+void TankDrive::reset_auto()
+{
+  func_initialized = false;
 }
 
 /**
@@ -60,7 +68,7 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
 bool TankDrive::drive_forward(double inches, double percent_speed)
 {
   // On the first run of the funciton, reset the motor position and PID
-  if (initialize_func)
+  if (!func_initialized)
   {
     saved_pos = odometry->get_position();
     drive_pid.reset();
@@ -68,7 +76,7 @@ bool TankDrive::drive_forward(double inches, double percent_speed)
     drive_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
     drive_pid.set_target(inches);
 
-    initialize_func = false;
+    func_initialized = true;
   }
 
   double position_diff = odometry->get_position().y - saved_pos.y;
@@ -83,7 +91,7 @@ bool TankDrive::drive_forward(double inches, double percent_speed)
   if (drive_pid.is_on_target())
   {
     drive_tank(0, 0);
-    initialize_func = true;
+    func_initialized = false;
     return true;
   }
 
@@ -99,26 +107,29 @@ bool TankDrive::drive_forward(double inches, double percent_speed)
 bool TankDrive::turn_degrees(double degrees, double percent_speed)
 {
   // On the first run of the funciton, reset the gyro position and PID
-  if (initialize_func)
+  if (!func_initialized)
   {
     saved_pos = odometry->get_position();
     turn_pid.reset();
 
     turn_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
-    turn_pid.set_target(degrees);
+    turn_pid.set_target(0);
 
-    initialize_func = false;
+    func_initialized = true;
   }
+  double heading = odometry->get_position().rot - saved_pos.rot;
+  double delta_heading = OdometryBase::smallest_angle(heading, degrees);
+  turn_pid.update(delta_heading);
 
-  // Update PID loop and drive the robot based on it's output
-  turn_pid.update(odometry->get_position().rot - saved_pos.rot);
-  drive_tank(turn_pid.get(), -turn_pid.get());
+  printf("heading: %f, delta_heading: %f\n", heading, delta_heading);
+
+  drive_tank(-turn_pid.get(), turn_pid.get());
 
   // If the robot is at it's target, return true
   if (turn_pid.is_on_target())
   {
     drive_tank(0, 0);
-    initialize_func = true;
+    func_initialized = false;
     return true;
   }
 
@@ -133,49 +144,51 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   */
 bool TankDrive::drive_to_point(double x, double y, double speed)
 {
-  static bool initialized = false;
-
-  if(!initialized)
+  if(!func_initialized)
   {
     // Reset the control loops
     drive_pid.reset();
-    turn_pid.reset();
+    correction_pid.reset();
 
     drive_pid.set_limits(-fabs(speed), fabs(speed));
-    turn_pid.set_limits(-fabs(speed), fabs(speed));
+    correction_pid.set_limits(-fabs(speed), fabs(speed));
 
     // Set the targets to 0, because we update with the change in distance and angle between the current point
     // and the new point.
     drive_pid.set_target(0);
-    turn_pid.set_target(0);
+    correction_pid.set_target(0);
 
-    initialized = true;
+    func_initialized = true;
   }
-
-  position_t end_pos = 
-  {
-    .x = x,
-    .y = y
-  };
 
   // Store the initial position of the robot
   position_t current_pos = odometry->get_position();
+  position_t end_pos = {.x=x, .y=y};
+
+  // Create a point (and vector) to get the direction
+  Vector::point_t pos_diff_pt = 
+  {
+    .x = x - current_pos.x,
+    .y = y - current_pos.y
+  };
+
+  Vector point_vec(pos_diff_pt);
 
   // Get the distance between 2 points
-  double dist_left = OdometryBase::pos_diff(current_pos, end_pos);
+  double dist_left = -OdometryBase::pos_diff(current_pos, end_pos, true);
 
   // Get the heading difference between where we are and where we want to be
   // Optimize that heading so we don't turn clockwise all the time
-  double heading = OdometryBase::rot_diff(current_pos, end_pos);
-  double delta_heading = OdometryBase::smallest_angle(current_pos.rot, heading);
+  double heading = rad2deg(point_vec.get_dir());
+  double delta_heading = -OdometryBase::smallest_angle(current_pos.rot, heading);
 
   // Update the PID controllers with new information
-  turn_pid.update(delta_heading);
+  correction_pid.update(delta_heading);
   drive_pid.update(dist_left);
 
   // Combine the two pid outputs
-  double lside = drive_pid.get() - turn_pid.get();
-  double rside = drive_pid.get() + turn_pid.get();
+  double lside = drive_pid.get() + correction_pid.get();
+  double rside = drive_pid.get() - correction_pid.get();
 
   // limit the outputs between -1 and +1
   lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
@@ -187,7 +200,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed)
   if(drive_pid.is_on_target())
   {
     stop();
-    initialized = false;
+    func_initialized = false;
     return true;
   }
 
@@ -200,7 +213,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed)
  */
 bool TankDrive::turn_to_heading(double heading_deg, double speed)
 {
-  bool initialized = false;
+  static bool initialized = false;
   if(!initialized)
   {
     turn_pid.reset();
@@ -215,6 +228,8 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   // Get the difference between the new heading and the current, and decide whether to turn left or right.
   double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
   turn_pid.update(delta_heading);
+
+  printf("delta heading: %f, pid: %f, ", delta_heading, turn_pid.get());
 
   drive_tank(-turn_pid.get(), turn_pid.get());
 
