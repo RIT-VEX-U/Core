@@ -142,7 +142,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   *
   * Returns whether or not the robot has reached it's destination.
   */
-bool TankDrive::drive_to_point(double x, double y, double speed)
+bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed)
 {
   if(!func_initialized)
   {
@@ -151,7 +151,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed)
     correction_pid.reset();
 
     drive_pid.set_limits(-fabs(speed), fabs(speed));
-    correction_pid.set_limits(-fabs(speed), fabs(speed));
+    correction_pid.set_limits(-fabs(correction_speed), fabs(correction_speed));
 
     // Set the targets to 0, because we update with the change in distance and angle between the current point
     // and the new point.
