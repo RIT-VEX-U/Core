@@ -22,13 +22,41 @@ void PID::update(double sensor_val)
 
   accum_error += time_delta * get_error();
 
-  out = (config.f * target) + (config.p * get_error()) + (config.i * accum_error) + (config.d * (get_error() - last_error) / time_delta);
+  double i_term = config.i * accum_error;
+
+  // Avoid a divide by zero error
+  double d_term = 0;
+  if(time_delta != 0)
+    d_term = config.d * (get_error() - last_error) / time_delta;
+  else
+    printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
+
+  out = (config.f * target) + (config.p * get_error()) + i_term + d_term;
 
   last_time = pid_timer.value();
   last_error = get_error();
 
+  // Enable clamping if the limit is not 0
   if (lower_limit != 0 || upper_limit != 0)
+  {
+    // Integral back-calculation 
+    // If the PID is oversaturated and the integrated term is not pushing it in the right direction,
+    // then "turn off" the integral until it's actually helping.
+    bool clamping_upper = (out > upper_limit) && ((out - i_term) > upper_limit);
+    bool clamping_lower = (out < lower_limit) && ((out - i_term) < lower_limit);
+
+    if(clamping_upper || clamping_lower)
+    {
+      out -= i_term;
+      printf("out: %f, out-iterm: %f, Integral clamping!\n", out, out-i_term);
+    }else
+    {
+      printf("out: %f, out-iterm: %f, NOT Integral clamping!\n", out, out-i_term);
+    }
+
+    // Actually clamp the value
     out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
+  }
 }
 
 /**
