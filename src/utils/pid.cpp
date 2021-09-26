@@ -46,13 +46,7 @@ void PID::update(double sensor_val)
     bool clamping_lower = (out < lower_limit) && ((out - i_term) < lower_limit);
 
     if(clamping_upper || clamping_lower)
-    {
       out -= i_term;
-      printf("out: %f, out-iterm: %f, Integral clamping!\n", out, out-i_term);
-    }else
-    {
-      printf("out: %f, out-iterm: %f, NOT Integral clamping!\n", out, out-i_term);
-    }
 
     // Actually clamp the value
     out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
