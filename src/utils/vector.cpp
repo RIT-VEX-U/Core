@@ -19,7 +19,7 @@ Vector::Vector(double dir, double mag)
  */
 Vector::Vector(point_t &p)
 {
-    this->dir = atan2(p.x, p.y);
+    this->dir = atan2(p.y, p.x);
     this->mag = sqrt( (p.x*p.x) + (p.y*p.y) );
 }
 
