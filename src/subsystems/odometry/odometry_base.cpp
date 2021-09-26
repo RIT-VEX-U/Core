@@ -56,17 +56,12 @@ double OdometryBase::pos_diff(position_t start_pos, position_t end_pos, bool use
     // of a vector made from those two points is between PI/2 and 3PI/2
     if(use_negatives)
     {
-        // use atan2(x,y) instead of the documented (y,x), so 0 degrees is forwards, and positive angle is clockwise.
-        double angle = rad2deg(atan2(end_pos.x - start_pos.x, end_pos.y - start_pos.y));
-
-        printf("Start: %f, %f End: %f, %f, Old Angle: %f, Odom angle: %f, ",start_pos.x, start_pos.y, end_pos.x, end_pos.y, angle, start_pos.rot);
+        double angle = rad2deg(atan2(end_pos.y - start_pos.y, end_pos.x - start_pos.x));
 
         // Get the angle in relation to the robot
         angle = fmod(angle - start_pos.rot, 360);
         if(angle < -180) angle += 360;
         if(angle > 180) angle -= 360;
-
-        printf("Angle: %f\n", angle);
 
         if(angle > 90 || angle < -90)
             negative_multiplier = -1;
