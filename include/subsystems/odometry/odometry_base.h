@@ -64,7 +64,7 @@ public:
 
     bool end_task = false;
 
-    static constexpr position_t zero_pos = {0, 0, 0};
+    inline static constexpr position_t zero_pos = {.x=0, .y=0, .rot=90};
 
 protected:
     vex::task *handle;

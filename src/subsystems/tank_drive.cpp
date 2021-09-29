@@ -121,7 +121,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   double delta_heading = OdometryBase::smallest_angle(heading, degrees);
   turn_pid.update(delta_heading);
 
-  printf("heading: %f, delta_heading: %f\n", heading, delta_heading);
+  // printf("heading: %f, delta_heading: %f\n", heading, delta_heading);
 
   drive_tank(-turn_pid.get(), turn_pid.get());
 
@@ -180,7 +180,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   // Get the heading difference between where we are and where we want to be
   // Optimize that heading so we don't turn clockwise all the time
   double heading = rad2deg(point_vec.get_dir());
-  double delta_heading = -OdometryBase::smallest_angle(current_pos.rot, heading);
+  double delta_heading = OdometryBase::smallest_angle(current_pos.rot, heading);
 
   // Update the PID controllers with new information
   correction_pid.update(delta_heading);
@@ -229,9 +229,9 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
   turn_pid.update(delta_heading);
 
-  printf("delta heading: %f, pid: %f, ", delta_heading, turn_pid.get());
+  // printf("delta heading: %f, pid: %f, ", delta_heading, turn_pid.get());
 
-  drive_tank(-turn_pid.get(), turn_pid.get());
+  drive_tank(turn_pid.get(), -turn_pid.get());
 
   // When the robot has reached it's angle, return true.
   if(turn_pid.is_on_target())

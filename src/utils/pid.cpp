@@ -28,7 +28,7 @@ void PID::update(double sensor_val)
   double d_term = 0;
   if(time_delta != 0)
     d_term = config.d * (get_error() - last_error) / time_delta;
-  else
+  else if(last_time != 0)
     printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
 
   out = (config.f * target) + (config.p * get_error()) + i_term + d_term;
