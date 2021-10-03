@@ -41,7 +41,7 @@ double Vector::get_mag() const { return mag; }
  */
 double Vector::get_x() const
 {
-return mag * sin(dir);
+return mag * cos(dir);
 }
 
 /**
@@ -49,7 +49,7 @@ return mag * sin(dir);
  */
 double Vector::get_y() const
 {
-return mag * cos(dir);
+return mag * sin(dir);
 }
 
 /**
