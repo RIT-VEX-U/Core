@@ -175,7 +175,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   Vector point_vec(pos_diff_pt);
 
   // Get the distance between 2 points
-  double dist_left = -OdometryBase::pos_diff(current_pos, end_pos, true);
+  double dist_left = -OdometryBase::pos_diff(current_pos, end_pos, true, true);
 
   // Get the heading difference between where we are and where we want to be
   // Optimize that heading so we don't turn clockwise all the time
@@ -186,9 +186,13 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   correction_pid.update(delta_heading);
   drive_pid.update(dist_left);
 
+  printf("~DRIVE~ ");
+  printf("Correction: %f, Drive: %f, Corr_PID: %f, Drive_PID: %f \n", delta_heading, dist_left, correction_pid.get(), drive_pid.get());
+  fflush(stdout);
+
   // Combine the two pid outputs
-  double lside = drive_pid.get() + correction_pid.get();
-  double rside = drive_pid.get() - correction_pid.get();
+  double lside = drive_pid.get() + ((fabs(dist_left) > 2) ? correction_pid.get() : 0);
+  double rside = drive_pid.get() - ((fabs(dist_left) > 2) ? correction_pid.get() : 0);
 
   // limit the outputs between -1 and +1
   lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
@@ -229,7 +233,9 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
   turn_pid.update(delta_heading);
 
-  // printf("delta heading: %f, pid: %f, ", delta_heading, turn_pid.get());
+  printf("~TURN~ delta: %f\n", delta_heading);
+  // printf("delta heading: %f, pid: %f\n", delta_heading, turn_pid.get());
+  fflush(stdout);
 
   drive_tank(turn_pid.get(), -turn_pid.get());
 
