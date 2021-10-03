@@ -24,7 +24,7 @@ bool GenericAuto::run(bool blocking)
       state_list.pop();
 
     if(blocking)
-      vexDelay(50);
+      vexDelay(20);
 
   } while(blocking && !state_list.empty());
 
