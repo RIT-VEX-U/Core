@@ -123,7 +123,7 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
 
   // printf("heading: %f, delta_heading: %f\n", heading, delta_heading);
 
-  drive_tank(-turn_pid.get(), turn_pid.get());
+  drive_tank(turn_pid.get(), -turn_pid.get());
 
   // If the robot is at it's target, return true
   if (turn_pid.is_on_target())
