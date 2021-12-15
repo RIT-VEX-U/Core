@@ -42,43 +42,18 @@ void OdometryBase::set_position(const position_t &newpos)
  */
 void OdometryBase::end_async()
 {
-    this->end_task = true;
+  this->end_task = true;
 }
 
 /**
  * Get the distance between two points
  */
-double OdometryBase::pos_diff(position_t start_pos, position_t end_pos, bool use_negatives, bool along_axis)
+double OdometryBase::pos_diff(position_t start_pos, position_t end_pos)
 {
-    int negative_multiplier = 1;
-
-    // If we are using negative distances, define a "negative distance" as when the angle
-    // of a vector made from those two points is between PI/2 and 3PI/2
-    if(use_negatives)
-    {
-        double angle = rad2deg(atan2(end_pos.y - start_pos.y, end_pos.x - start_pos.x));
-
-        // Get the angle in relation to the robot
-        angle = fmod(angle - start_pos.rot, 360);
-        if(angle < -180) angle += 360;
-        if(angle > 180) angle -= 360;
-
-        if(angle > 90 || angle < -90)
-            negative_multiplier = -1;
-    }
-
-    // Use the pythagorean theorem
-    double retval = negative_multiplier * sqrt(pow(end_pos.x - start_pos.x, 2) + pow(end_pos.y - start_pos.y, 2));
-
-    // If requested, only find the distance along the robot's forward axis
-    if(along_axis)
-    {
-      double angle = start_pos.rot - rad2deg(atan2(end_pos.y - start_pos.y, end_pos.x - start_pos.x));
-      // printf("theta: %f, ", angle);
-      retval *= fabs(cos(deg2rad(angle)));
-    }
-    
-    return retval;
+  // Use the pythagorean theorem
+  double retval = sqrt(pow(end_pos.x - start_pos.x, 2) + pow(end_pos.y - start_pos.y, 2));
+  
+  return retval;
 }
 
 /**
@@ -86,7 +61,7 @@ double OdometryBase::pos_diff(position_t start_pos, position_t end_pos, bool use
  */
 double OdometryBase::rot_diff(position_t &pos1, position_t &pos2)
 {
-    return pos1.rot - pos2.rot;
+  return pos1.rot - pos2.rot;
 }
 
 /**
