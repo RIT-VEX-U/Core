@@ -1,8 +1,8 @@
 #include "../core/include/subsystems/tank_drive.h"
 
-TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, TankDrive::tankdrive_config_t &config, OdometryTank *odom)
+TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryTank *odom)
     : left_motors(left_motors), right_motors(right_motors),
-     drive_pid(config.drive_pid), turn_pid(config.turn_pid), correction_pid(config.correction_pid), odometry(odom)
+     drive_pid(config.drive_pid), turn_pid(config.turn_pid), correction_pid(config.correction_pid), odometry(odom), config(config)
 {
 
 }
@@ -58,44 +58,37 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
 }
 
 /**
- * Autonomously drive the robot X inches forward (Negative for backwards), with a maximum speed
- * of percent_speed (-1.0 -> 1.0).
- * 
- * Uses a PID loop for it's control.
- * 
- * NOTE: uses relative positioning, so after a few drive_forward's, position may be lost!
+ * Autonomously drive forward or backwards, X inches infront or behind the robot's current position.
+ * This driving method is relative, so excessive use may cause the robot to get off course!
+ *
+ * @param inches Distance to drive in a straight line
+ * @param speed How fast the robot should travel, 0 -> 1.0
+ * @param correction How much the robot should correct for being off angle
+ * @param dir Whether the robot is travelling forwards or backwards
  */
-bool TankDrive::drive_forward(double inches, double percent_speed)
+bool TankDrive::drive_forward(double inches, double speed, double correction, directionType dir)
 {
-  // On the first run of the funciton, reset the motor position and PID
+  static position_t pos_setpt;
+
+  // Generate a point X inches forward of the current position, on first startup
   if (!func_initialized)
   {
     saved_pos = odometry->get_position();
     drive_pid.reset();
 
-    drive_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
-    drive_pid.set_target(inches);
+    // Use vector math to get an X and Y
+    Vector current_pos({saved_pos.x , saved_pos.y});
+    Vector delta_pos(deg2rad(saved_pos.rot), inches);
+    Vector setpt_vec = current_pos + delta_pos;
+
+    // Save the new X and Y values
+    pos_setpt = {.x=setpt_vec.get_x(), .y=setpt_vec.get_y()};
 
     func_initialized = true;
   }
 
-  double position_diff = odometry->get_position().y - saved_pos.y;
-
-  // Update PID loop and drive the robot based on it's output
-  drive_pid.update(position_diff);
-
-  // Drive backwards if we input negative inches, forward for positive
-  drive_tank(drive_pid.get(), drive_pid.get());
-
-  // If the robot is at it's target, return true
-  if (drive_pid.is_on_target())
-  {
-    drive_tank(0, 0);
-    func_initialized = false;
-    return true;
-  }
-
-  return false;
+  // Call the drive_to_point with updated point values
+  return drive_to_point(pos_setpt.x, pos_setpt.y, speed, correction, dir);
 }
 
 /**
@@ -142,8 +135,9 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   *
   * Returns whether or not the robot has reached it's destination.
   */
-bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed)
+bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType dir)
 {
+
   if(!func_initialized)
   {
     // Reset the control loops
@@ -157,6 +151,8 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
     // and the new point.
     drive_pid.set_target(0);
     correction_pid.set_target(0);
+
+    // point_orientation_deg = atan2(y - odometry->get_position().y, x - odometry->get_position().x) * 180.0 / PI;
 
     func_initialized = true;
   }
@@ -175,24 +171,61 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   Vector point_vec(pos_diff_pt);
 
   // Get the distance between 2 points
-  double dist_left = -OdometryBase::pos_diff(current_pos, end_pos, true, true);
+  double dist_left = OdometryBase::pos_diff(current_pos, end_pos);
+  
+  int sign = 1;
+
+  if (fabs(dist_left) < config.drive_correction_cutoff) 
+  {
+    // Make an imaginary perpendicualar line to that between the bot and the point. If the point is behind that line,
+    // and the point is within the robot's radius, use negatives for feedback control.
+
+    double angle_to_point = atan2(y - current_pos.y, x - current_pos.x) * 180.0 / PI;
+    double angle = fmod(current_pos.rot - angle_to_point, 360.0);
+    // Normalize the angle between 0 and 360
+    if (angle > 360) angle -= 360;
+    if (angle < 0) angle += 360; 
+    // If the angle is behind the robot, report negative.
+    if (dir == directionType::fwd && angle > 90 && angle < 270)
+      sign = -1;
+    else if(dir == directionType::rev && (angle < 90 || angle > 270))
+      sign = -1;
+
+    // When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
+    // so we always "reach" the point without having to do a lateral translation
+    dist_left *= fabs(cos(angle * PI / 180.0));
+  }
 
   // Get the heading difference between where we are and where we want to be
   // Optimize that heading so we don't turn clockwise all the time
   double heading = rad2deg(point_vec.get_dir());
-  double delta_heading = OdometryBase::smallest_angle(current_pos.rot, heading);
+  double delta_heading = 0;
+
+  // Going backwards "flips" the robot's current heading
+  if (dir == directionType::fwd)
+    delta_heading = OdometryBase::smallest_angle(current_pos.rot, heading);
+  else
+    delta_heading = OdometryBase::smallest_angle(current_pos.rot - 180, heading);
 
   // Update the PID controllers with new information
   correction_pid.update(delta_heading);
-  drive_pid.update(dist_left);
+  drive_pid.update(sign * -1 * dist_left);
 
-  printf("~DRIVE~ ");
-  printf("Correction: %f, Drive: %f, Corr_PID: %f, Drive_PID: %f \n", delta_heading, dist_left, correction_pid.get(), drive_pid.get());
-  fflush(stdout);
+  // Disable correction when we're close enough to the point
+  double correction = 0;
+  if(fabs(dist_left) > config.drive_correction_cutoff)
+    correction = correction_pid.get();
+
+  // Reverse the drive_pid output if we're going backwards
+  double drive_pid_rval;
+  if(dir == directionType::rev)
+    drive_pid_rval = drive_pid.get() * -1;
+  else
+    drive_pid_rval = drive_pid.get();
 
   // Combine the two pid outputs
-  double lside = drive_pid.get() + ((fabs(dist_left) > 2) ? correction_pid.get() : 0);
-  double rside = drive_pid.get() - ((fabs(dist_left) > 2) ? correction_pid.get() : 0);
+  double lside = drive_pid_rval + correction;
+  double rside = drive_pid_rval - correction;
 
   // limit the outputs between -1 and +1
   lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
@@ -259,122 +292,11 @@ double TankDrive::modify_inputs(double input, int power)
   return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
 }
 
-/**
-  * Returns points of the intersections of a line segment and a circle. The line 
-  * segment is defined by two points, and the circle is defined by a center and radius.
-  */
-std::vector<Vector::point_t> line_circle_intersections(Vector::point_t center, double r, Vector::point_t point1, Vector::point_t point2)
-{
-  std::vector<Vector::point_t> intersections = {};
+bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res) {
+  std::vector<Vector::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
-  //Do future calculations relative to the circle's center
-  point1.y -= center.y;
-  point1.x -= center.x;
-  point2.y -= center.y;
-  point2.x -= center.x;
-
-  double x1, x2, y1, y2;
-  //Handling an infinite slope using mx+b and x^2 + y^2 = r^2
-  if(point1.x - point2.x == 0)
-  {
-    y1 = point1.y;
-    x1 = sqrt(pow(r, 2) - pow(y1, 2));
-    y2 = point1.y; 
-    x2 = -sqrt(pow(r, 2) - pow(y1, 2));
-  }
-  //Non-infinite slope using mx+b and x^2 + y^2 = r^2
-  else
-  {
-    double m = (point1.y - point2.y) / (point1.x - point2.x);
-    double b = point1.y - (m * point1.x);
-
-    x1 = ((-m * b) + sqrt(pow(r, 2) + (pow(m, 2) * pow(r, 2)) - pow(b, 2))) / (1 + pow(m,2));
-    y1 = m * x1 + b;
-    x2 = ((-m * b) - sqrt(pow(r, 2) + (pow(m, 2) * pow(r, 2)) - pow(b, 2))) / (1 + pow(m,2));
-    y2 = m * x2 + b;
-  }
-
-  //The equations used define an infinitely long line, so we check if the detected intersection falls on the line segment.
-  if(x1 >= fmin(point1.x, point2.x) && x1 <= fmax(point1.x, point2.x) && y1 >= fmin(point1.y, point2.y) && y1 <= fmax(point1.y, point2.y))
-  {
-    intersections.push_back(Vector::point_t{.x = x1 + center.x, .y = y1 + center.y});
-  }
-
-  if(x2 >= fmin(point1.x, point2.x) && x2 <= fmax(point1.x, point2.x) && y2 >= fmin(point1.y, point2.y) && y2 <= fmax(point1.y, point2.y))
-  {
-    intersections.push_back(Vector::point_t{.x = x2 + center.x, .y = y2 + center.y});
-  }
-
-  return intersections;
-}
-
-/**
- * Selects a look ahead from all the intersections in the path.
- */
-Vector::point_t get_lookahead(std::vector<Vector::point_t> path, Vector::point_t robot_loc, double radius)
-{
-  //Default: the end of the path
-  Vector::point_t target = path.back();
-  
-  //Check each line segment of the path for potential targets
-  for(int i = 0; i < path.size() - 1; i++)
-  {
-    Vector::point_t start = path[i];
-    Vector::point_t end = path[i+1];
-
-    std::vector<Vector::point_t> intersections = line_circle_intersections(robot_loc, radius, start, end);
-    //Choose the intersection that is closest to the end of the line segment
-    //This prioritizes the closest intersection to the end of the path
-    for(Vector::point_t intersection: intersections)
-    {
-      double intersection_dist_to_end = sqrt(pow(intersection.x - end.x, 2) + pow(intersection.y - end.y, 2));
-      double target_dist_to_end = sqrt(pow(target.x - end.x, 2) + pow(target.y - end.y, 2));
-      if(intersection_dist_to_end < target_dist_to_end)
-        target = intersection;
-    }
-  }
-
-  return target;
-}
-
-/**
- Injects points in a path without changing the curvature with a certain spacing.
-*/
-std::vector<Vector::point_t> inject_path(std::vector<Vector::point_t> path, double spacing)
-{
-  std::vector<Vector::point_t> new_path;
-
-  //Injecting points for each line segment
-  for(int i = 0; i < path.size() - 1; i++)
-  {
-    Vector::point_t start = path[i];
-    Vector::point_t end = path[i+1];
-
-    Vector::point_t diff = end - start;
-    Vector vector = Vector(diff);
-    
-    int num_points = ceil(vector.get_mag() / spacing);
-
-    //This is the vector between each point
-    vector = vector.normalize() * spacing;
-
-    for(int j = 0; j < num_points; j++)
-    {
-      //We take the start point and add additional vectors
-      Vector::point_t path_point = (Vector(start) + vector * j).point();
-      new_path.push_back(path_point);
-    }
-  }
-  //Adds the last point
-  new_path.push_back(path.back());
-  return new_path;
-}
-
-/**
-  Drives through a path using pure pursuit.
-*/
-void pure_pursuit(std::vector<Vector::point_t> path, Vector::point_t robot_loc, double radius, double speed)
-{
-  Vector::point_t lookahead = get_lookahead(path, robot_loc, radius);
-  // Travel towards target :)
+  Vector::point_t lookahead = PurePursuit::get_lookahead(smoothed_path, {odometry->get_position().x, odometry->get_position().y}, radius);
+  //printf("%f\t%f\n", odometry->get_position().x, odometry->get_position().y); 
+  //printf("%f\t%f\n", lookahead.x, lookahead.y);
+  return drive_to_point(lookahead.x, lookahead.y, speed, speed/2);
 }

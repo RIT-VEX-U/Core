@@ -2,12 +2,13 @@
 #define _ODOMETRY_
 
 #include "vex.h"
+#include "../core/include/robot_specs.h"
 
 #ifndef PI
 #define PI 3.141592654
 #endif
 
-#define DOWNTIME 50 //milliseconds
+#define DOWNTIME 0 //milliseconds
 
 // Describes a single position and rotation
 typedef struct
@@ -48,7 +49,7 @@ public:
     /**
      * Get the distance between two points
      */
-    static double pos_diff(position_t pos1, position_t pos2, bool use_negatives=false, bool along_axis=false);
+    static double pos_diff(position_t pos1, position_t pos2);
 
     /**
      * Get the change in rotation between two points

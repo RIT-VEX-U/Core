@@ -7,7 +7,9 @@
 #include "vex.h"
 #include "../core/include/utils/pid.h"
 #include "../core/include/subsystems/odometry/odometry_tank.h"
+#include "../core/include/robot_specs.h"
 #include <vector>
+#include "../core/src/utils/pure_pursuit.cpp"
 
 using namespace vex;
 
@@ -15,17 +17,10 @@ class TankDrive
 {
 public:
 
-  struct tankdrive_config_t
-  {
-    PID::pid_config_t drive_pid;
-    PID::pid_config_t turn_pid;
-    PID::pid_config_t correction_pid;
-  };
-
   /**
    * Create the TankDrive object 
    */
-  TankDrive(motor_group &left_motors, motor_group &right_motors, tankdrive_config_t &config, OdometryTank *odom=NULL);
+  TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryTank *odom=NULL);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -49,12 +44,15 @@ public:
   void drive_arcade(double forward_back, double left_right, int power=1);
 
   /**
-   * Autonomously drive the robot X inches forward (Negative for backwards), with a maximum speed
-   * of percent_speed (-1.0 -> 1.0).
-   * 
-   * Uses a PID loop for it's control.
+   * Autonomously drive forward or backwards, X inches infront or behind the robot's current position.
+   * This driving method is relative, so excessive use may cause the robot to get off course!
+   *
+   * @param inches Distance to drive in a straight line
+   * @param speed How fast the robot should travel, 0 -> 1.0
+   * @param correction How much the robot should correct for being off angle
+   * @param dir Whether the robot is travelling forwards or backwards
    */
-  bool drive_forward(double inches, double percent_speed);
+  bool drive_forward(double inches, double speed, double correction, directionType dir);
 
   /**
    * Autonomously turn the robot X degrees to the right (negative for left), with a maximum motor speed
@@ -68,7 +66,7 @@ public:
    * Use odometry to automatically drive the robot to a point on the field.
    * X and Y is the final point we want the robot.
    */
-  bool drive_to_point(double x, double y, double speed, double correction_speed);
+  bool drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType direction=vex::directionType::fwd);
 
   /**
    * Turn the robot in place to an exact heading relative to the field.
@@ -83,22 +81,7 @@ public:
 
   static double modify_inputs(double input, int power=2);
 
-  /**
-    * Returns points of the intersections of a line segment and a circle. The line 
-    * segment is defined by two points, and the circle is defined by a center and radius.
-    */
-  std::vector<Vector::point_t> line_circle_intersections(Vector::point_t center, double r, Vector::point_t point1, Vector::point_t point2);
-
-  /**
-    * Selects a look ahead from all the intersections in the path.
-    */
-  Vector::point_t get_lookahead(std::vector<Vector::point_t> path, Vector::point_t robot_loc, double radius);
-
-  /**
-   * Injects points in a path without changing the curvature with a certain spacing.
-   */
-  std::vector<Vector::point_t> inject_path(std::vector<Vector::point_t> path, double spacing);
-
+  bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res);
 
 private:
   motor_group &left_motors;
@@ -111,6 +94,8 @@ private:
   OdometryTank *odometry;
 
   position_t saved_pos;
+
+  robot_specs_t &config;
 
   bool func_initialized = false;
 };

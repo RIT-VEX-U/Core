@@ -134,7 +134,8 @@ bool SwerveDrive::auto_drive(double direction, double speed, double distance)
     auto_drive_init = false;
   }
 
-  double pos_diff = OdometryBase::pos_diff(odometry->get_position(), saved_pos, true);
+  // TODO fix negatives
+  double pos_diff = OdometryBase::pos_diff(odometry->get_position(), saved_pos);
 
   // LOOP
   drive_pid->update(pos_diff);
