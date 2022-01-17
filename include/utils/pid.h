@@ -11,7 +11,7 @@ class PID
 public:
   struct pid_config_t
   {
-    double p, i, d, f;
+    double p, i, d, f, k;
     double deadband, on_target_time;
   };
 

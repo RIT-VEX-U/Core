@@ -162,3 +162,18 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
 
     return new_pos;
 }
+
+double OdometryTank::get_speed()
+{
+  static position_t last_pos = get_position();
+  static timer speed_tmr;
+
+  double out = 0;
+  if(speed_tmr.value() != 0)
+  {
+    out = pos_diff(last_pos, get_position()) / speed_tmr.time(timeUnits::sec);
+    speed_tmr.reset();
+  }
+  last_pos = get_position();
+  return out;
+}

@@ -36,6 +36,8 @@ public:
 
     void set_position(const position_t &newpos=zero_pos) override;
 
+    double get_speed();
+
 private:
     /**
      * Get information from the input hardware and an existing position, and calculate a new current position
