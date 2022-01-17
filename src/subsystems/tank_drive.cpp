@@ -233,6 +233,9 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   drive_tank(lside, rside);
 
+  printf("dist: %f\n", dist_left);
+  fflush(stdout);
+
   // Check if the robot has reached it's destination
   if(drive_pid.is_on_target())
   {
