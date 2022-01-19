@@ -135,8 +135,11 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   *
   * Returns whether or not the robot has reached it's destination.
   */
-bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType dir)
+bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType dir, double max_accel)
 {
+
+  static timer accel_tmr;
+  static double lside_accel = 0, rside_accel = 0;
 
   if(!func_initialized)
   {
@@ -153,6 +156,10 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
     correction_pid.set_target(0);
 
     // point_orientation_deg = atan2(y - odometry->get_position().y, x - odometry->get_position().x) * 180.0 / PI;
+
+    accel_tmr.reset();
+    lside_accel = 0;
+    rside_accel = 0;
 
     func_initialized = true;
   }
@@ -230,6 +237,32 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   // limit the outputs between -1 and +1
   lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
   rside = (rside > 1) ? 1 : (rside < -1) ? -1 : rside;
+
+  // static double last_lside = lside, last_rside = rside;
+  // bool decelerating = (fabs(lside) < fabs(last_lside)) && (fabs(rside) < fabs(last_rside));
+  // last_lside = lside;
+  // last_rside = rside;
+
+  // if(max_accel != 0 && !decelerating)
+  // {    
+  //   double accel_addition = max_accel * accel_tmr.time(timeUnits::sec);
+  //   accel_tmr.reset();
+    
+  //   lside_accel += (lside > 0 ? accel_addition : -accel_addition);
+  //   rside_accel += (rside > 0 ? accel_addition : -accel_addition);
+
+  //   printf("lside: %f, rside: %f, laccel: %f, raccel: %f\n", lside, rside, lside_accel, rside_accel);
+    
+  //   if ((lside < 0 && lside_accel > lside) || (lside > 0 && lside_accel < lside))
+  //     lside = lside_accel;
+  //   else
+  //     lside_accel = lside;
+    
+  //   if ((rside < 0 && rside_accel > rside) || (rside > 0 && rside_accel < rside))
+  //     rside = rside_accel;
+  //   else
+  //     rside_accel = rside;
+  // }
 
   drive_tank(lside, rside);
 
