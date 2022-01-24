@@ -91,6 +91,11 @@ double PID::get_error()
   return target - sensor_val;
 }
 
+double PID::get_target()
+{
+  return target;
+}
+
 /**
    * Set the target for the PID loop, where the robot is trying to end up
    */

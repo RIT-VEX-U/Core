@@ -26,6 +26,9 @@ class GenericAuto
   */
   bool run(bool blocking);
 
+  /**
+   * Add a new state to the autonomous via function point of type "bool (ptr*)()"
+   */
   void add(state_ptr);
 
   private:

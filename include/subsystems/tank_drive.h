@@ -79,8 +79,20 @@ public:
    */
   void reset_auto();
 
+  /**
+   * Create a curve for the inputs, so that drivers have more control at lower speeds.
+   * Curves are exponential, with the deault being squaring the inputs.
+   */
   static double modify_inputs(double input, int power=2);
 
+  /**
+   * Follow a hermite curve using the pure pursuit algorithm.
+   * 
+   * @param path The hermite curve for the robot to take. Must have 2 or more points.
+   * @param radius How the pure pursuit radius, in inches, for finding the lookahead point
+   * @param speed Robot's maximum speed throughout the path, between 0 and 1.0
+   * @param res The number of points to use along the path; the hermite curve is split up into "res" individual points.
+   */
   bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res);
 
 private:
@@ -98,4 +110,5 @@ private:
   robot_specs_t &config;
 
   bool func_initialized = false;
+  bool is_pure_pursuit = false;
 };

@@ -41,6 +41,8 @@ public:
    */
   double get_error();
 
+  double get_target();
+
   /**
    * Set the target for the PID loop, where the robot is trying to end up
    */
