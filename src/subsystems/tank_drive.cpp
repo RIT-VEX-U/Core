@@ -220,7 +220,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   // Disable correction when we're close enough to the point
   double correction = 0;
-  if(fabs(dist_left) > config.drive_correction_cutoff)
+  if(is_pure_pursuit || fabs(dist_left) > config.drive_correction_cutoff)
     correction = correction_pid.get();
 
   // Reverse the drive_pid output if we're going backwards
@@ -329,10 +329,21 @@ double TankDrive::modify_inputs(double input, int power)
 }
 
 bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res) {
+  is_pure_pursuit = true;
   std::vector<Vector::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
   Vector::point_t lookahead = PurePursuit::get_lookahead(smoothed_path, {odometry->get_position().x, odometry->get_position().y}, radius);
   //printf("%f\t%f\n", odometry->get_position().x, odometry->get_position().y); 
   //printf("%f\t%f\n", lookahead.x, lookahead.y);
-  return drive_to_point(lookahead.x, lookahead.y, speed, speed/2);
+  bool is_last_point = (path.back().x == lookahead.x) && (path.back().y == lookahead.y);
+
+  if(is_last_point)
+    is_pure_pursuit = false;
+
+  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1);
+
+  if(is_last_point)
+    return retval;
+
+  return false;
 }
