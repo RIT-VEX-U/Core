@@ -30,13 +30,20 @@ void TankDrive::stop()
  * 
  * left_motors and right_motors are in "percent": -1.0 -> 1.0
  */
-void TankDrive::drive_tank(double left, double right, int power)
+void TankDrive::drive_tank(double left, double right, int power, bool isdriver)
 {
   left = modify_inputs(left, power);
   right = modify_inputs(right, power);
 
-  left_motors.spin(directionType::fwd, left * 12, voltageUnits::volt);
-  right_motors.spin(directionType::fwd, right * 12, voltageUnits::volt);
+  if(isdriver == false)
+  {
+    left_motors.spin(directionType::fwd, left * 12, voltageUnits::volt);
+    right_motors.spin(directionType::fwd, right * 12, voltageUnits::volt);
+  }else
+  {
+    left_motors.spin(directionType::fwd, left * 100.0, percentUnits::pct);
+    right_motors.spin(directionType::fwd, right * 100.0, percentUnits::pct);
+  }
 }
 
 /**

@@ -33,7 +33,7 @@ public:
    * 
    * left_motors and right_motors are in "percent": -1.0 -> 1.0
    */
-  void drive_tank(double left, double right, int power=1);
+  void drive_tank(double left, double right, int power=1, bool isdriver=false);
 
   /**
    * Drive the robot using arcade style controls. forward_back controls the linear motion,
