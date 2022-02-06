@@ -66,7 +66,7 @@ public:
    * Use odometry to automatically drive the robot to a point on the field.
    * X and Y is the final point we want the robot.
    */
-  bool drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType direction=vex::directionType::fwd, double max_accel=0);
+  bool drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType direction=vex::directionType::fwd);
 
   /**
    * Turn the robot in place to an exact heading relative to the field.
