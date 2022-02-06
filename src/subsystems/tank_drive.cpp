@@ -160,9 +160,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
     fflush(stderr);
     return true;
   }
-
-  static double lside_accel = 0, rside_accel = 0;
-
+  
   if(!func_initialized)
   {
     // Reset the control loops
@@ -178,9 +176,6 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
     correction_pid.set_target(0);
 
     // point_orientation_deg = atan2(y - odometry->get_position().y, x - odometry->get_position().x) * 180.0 / PI;
-
-    lside_accel = 0;
-    rside_accel = 0;
 
     func_initialized = true;
   }
