@@ -50,8 +50,8 @@ class Lift
     * @param setpoint_map
     *   A map of enum type T, in which each enum entry corresponds to a different lift height
     */
-  Lift(motor_group &lift_motors, lift_cfg_t &lift_cfg, map<T, double> setpoint_map)
-  : lift_motors(lift_motors), cfg(lift_cfg), lift_pid(cfg.lift_pid_cfg), setpoint_map(setpoint_map)
+  Lift(motor_group &lift_motors, lift_cfg_t &lift_cfg, map<T, double> setpoint_map, limit *homing_switch=NULL)
+  : lift_motors(lift_motors), cfg(lift_cfg), lift_pid(cfg.lift_pid_cfg), setpoint_map(setpoint_map), homing_switch(homing_switch)
   {
 
     is_async = true;
@@ -209,6 +209,33 @@ class Lift
   }
 
   /**
+   * A blocking function that automatically homes the lift based on a sensor or hard stop, 
+   * and sets the position to 0. A watchdog times out after 3 seconds, to avoid damage.
+   */
+  void home()
+  {
+    static timer tmr;
+    tmr.reset();
+    
+    while(tmr.time(sec) < 3)
+    {
+      lift_motors.spin(directionType::rev, 6, volt);
+
+      if (homing_switch == NULL && lift_motors.current(currentUnits::amp) > 1.5)
+        break;
+      else if (homing_switch != NULL && homing_switch->pressing())
+        break;
+    }
+
+    if(reset_sensor != NULL)
+      reset_sensor();
+    
+    lift_motors.resetPosition();
+    lift_motors.stop();
+
+  }
+
+  /**
     * @return whether or not the background thread is running the lift
     */
   bool get_async()
@@ -240,18 +267,30 @@ class Lift
     this->get_sensor = fn_ptr;
   }
 
+  /**
+   *  Creates a custom hook to reset the sensor used in set_sensor_function(). Example:
+   * /code{.cpp}
+   * my_lift.set_sensor_reset( my_sensor.resetPosition );
+   * /endcode
+   */
+  void set_sensor_reset(void (*fn_ptr) (void))
+  {
+    this->reset_sensor = fn_ptr;
+  }
+
   private:
 
   motor_group &lift_motors;
   lift_cfg_t &cfg;
   PID lift_pid;
   map<T, double> &setpoint_map;
+  limit *homing_switch;
   
   atomic<double> setpoint;
   atomic<bool> is_async;
 
   double (*get_sensor)(void) = NULL;
-
+  void (*reset_sensor)(void) = NULL;
   
 
 };
