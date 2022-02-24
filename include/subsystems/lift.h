@@ -2,6 +2,7 @@
 
 #include "vex.h"
 #include "../core/include/utils/pid.h"
+#include <iostream>
 #include <map>
 #include <atomic>
 #include <vector>
@@ -100,12 +101,15 @@ class Lift
       lift_motors.spin(directionType::fwd, cfg.up_speed, volt);
       setpoint = cur_pos;
 
+      std::cout << "DEBUG OUT: UP " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
+
       // Disable the PID while going UP.
       is_async = false;
     } else if(down_ctrl && cur_pos > cfg.softstop_down)
     {
       // Lower the lift slowly, at a rate defined by down_speed
-      setpoint -= tmr.time(sec) * cfg.down_speed;
+      setpoint = setpoint - (tmr.time(sec) * /*cfg.down_speed*/ 2.4);
+      std::cout << "DEBUG OUT: DOWN " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
       is_async = true;
     } else
     {
@@ -199,11 +203,14 @@ class Lift
   void hold()
   {
     lift_pid.set_target(setpoint);
+    std::cout << "DEBUG OUT: SETPOINT " << setpoint << "\n";
 
     if(get_sensor != NULL)
       lift_pid.update(get_sensor());
     else
       lift_pid.update(lift_motors.rotation(rev));
+
+    std::cout << "DEBUG OUT: ROTATION " << lift_motors.rotation(rev) << "\n\n";
 
     lift_motors.spin(fwd, lift_pid.get(), volt);
   }
