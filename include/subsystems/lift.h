@@ -99,17 +99,18 @@ class Lift
     if(up_ctrl && cur_pos < cfg.softstop_up)
     {
       lift_motors.spin(directionType::fwd, cfg.up_speed, volt);
-      setpoint = cur_pos;
+      setpoint = cur_pos + .3;
 
-      std::cout << "DEBUG OUT: UP " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
+      // std::cout << "DEBUG OUT: UP " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
 
       // Disable the PID while going UP.
       is_async = false;
     } else if(down_ctrl && cur_pos > cfg.softstop_down)
     {
       // Lower the lift slowly, at a rate defined by down_speed
-      setpoint = setpoint - (tmr.time(sec) * /*cfg.down_speed*/ 2.4);
-      std::cout << "DEBUG OUT: DOWN " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
+      if(setpoint > cfg.softstop_down)
+        setpoint = setpoint - (tmr.time(sec) * cfg.down_speed);
+      // std::cout << "DEBUG OUT: DOWN " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
       is_async = true;
     } else
     {
@@ -203,14 +204,14 @@ class Lift
   void hold()
   {
     lift_pid.set_target(setpoint);
-    std::cout << "DEBUG OUT: SETPOINT " << setpoint << "\n";
+    // std::cout << "DEBUG OUT: SETPOINT " << setpoint << "\n";
 
     if(get_sensor != NULL)
       lift_pid.update(get_sensor());
     else
       lift_pid.update(lift_motors.rotation(rev));
 
-    std::cout << "DEBUG OUT: ROTATION " << lift_motors.rotation(rev) << "\n\n";
+    // std::cout << "DEBUG OUT: ROTATION " << lift_motors.rotation(rev) << "\n\n";
 
     lift_motors.spin(fwd, lift_pid.get(), volt);
   }
