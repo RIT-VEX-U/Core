@@ -3,7 +3,7 @@
 CustomEncoder::CustomEncoder(vex::triport::port &port, double ticks_per_rev)
 : super(port)
 {
-  tick_scalar = ticks_per_rev / 90;
+  tick_scalar = 90 / ticks_per_rev;
 }
 
 void CustomEncoder::setRotation(double val, vex::rotationUnits units)
