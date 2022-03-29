@@ -326,7 +326,7 @@ double TankDrive::modify_inputs(double input, int power)
   return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
 }
 
-bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res) {
+bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res, directionType dir) {
   is_pure_pursuit = true;
   std::vector<Vector::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
@@ -338,7 +338,7 @@ bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, doubl
   if(is_last_point)
     is_pure_pursuit = false;
 
-  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1);
+  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1, dir);
 
   if(is_last_point)
     return retval;
