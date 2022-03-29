@@ -93,7 +93,7 @@ public:
    * @param speed Robot's maximum speed throughout the path, between 0 and 1.0
    * @param res The number of points to use along the path; the hermite curve is split up into "res" individual points.
    */
-  bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res);
+  bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res, directionType dir=fwd);
 
 private:
   motor_group &left_motors;
