@@ -23,7 +23,7 @@ OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_
  * @param right_side The right motors
  * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
  */
-OdometryTank::OdometryTank(vex::encoder &left_enc, vex::encoder &right_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
+OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
 : left_side(NULL), right_side(NULL), left_enc(&left_enc), right_enc(&right_enc), imu(imu), config(config)
 {
     // Make sure the last known info starts zeroed

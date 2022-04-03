@@ -2,6 +2,7 @@
 #define _ODOMETRY_TANK_
 
 #include "../core/include/subsystems/odometry/odometry_base.h"
+#include "../core/include/subsystems/custom_encoder.h"
 #include "../core/include/utils/vector.h"
 #include "../core/include/robot_specs.h"
 
@@ -26,7 +27,7 @@ public:
     * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
     * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
     */
-    OdometryTank(vex::encoder &left_enc, vex::encoder &right_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
+    OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
 
     /**
      * Update the current position on the field based on the sensors
@@ -45,7 +46,7 @@ private:
     static position_t calculate_new_pos(robot_specs_t &config, position_t &stored_info, double lside_diff, double rside_diff, double angle_deg);
 
     vex::motor_group *left_side, *right_side;
-    vex::encoder *left_enc, *right_enc;
+    CustomEncoder *left_enc, *right_enc;
     vex::inertial *imu;
     robot_specs_t &config;
 
