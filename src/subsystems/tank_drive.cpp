@@ -284,8 +284,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
     return true;
   }
 
-  static bool initialized = false;
-  if(!initialized)
+  if(!func_initialized)
   {
     turn_pid.reset();
     turn_pid.set_limits(-fabs(speed), fabs(speed));
@@ -293,7 +292,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
     // Set the target to zero, and the input will be a delta.
     turn_pid.set_target(0);
 
-    initialized = true;
+    func_initialized = true;
   }
 
   // Get the difference between the new heading and the current, and decide whether to turn left or right.
@@ -309,7 +308,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   // When the robot has reached it's angle, return true.
   if(turn_pid.is_on_target())
   {
-    initialized = false;
+    func_initialized = false;
     stop();
     return true;
   }
