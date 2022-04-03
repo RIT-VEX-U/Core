@@ -291,8 +291,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
     return true;
   }
 
-  static bool initialized = false;
-  if(!initialized)
+  if(!func_initialized)
   {
     turn_pid.reset();
     turn_pid.set_limits(-fabs(speed), fabs(speed));
@@ -300,7 +299,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
     // Set the target to zero, and the input will be a delta.
     turn_pid.set_target(0);
 
-    initialized = true;
+    func_initialized = true;
   }
 
   // Get the difference between the new heading and the current, and decide whether to turn left or right.
@@ -316,7 +315,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   // When the robot has reached it's angle, return true.
   if(turn_pid.is_on_target())
   {
-    initialized = false;
+    func_initialized = false;
     stop();
     return true;
   }
@@ -333,7 +332,7 @@ double TankDrive::modify_inputs(double input, int power)
   return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
 }
 
-bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res) {
+bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res, directionType dir) {
   is_pure_pursuit = true;
   std::vector<Vector::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
@@ -345,7 +344,7 @@ bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, doubl
   if(is_last_point)
     is_pure_pursuit = false;
 
-  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1);
+  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1, dir);
 
   if(is_last_point)
     return retval;

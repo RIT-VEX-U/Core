@@ -122,6 +122,26 @@ class Lift
   }
 
   /**
+   * Control the lift with manual controls (no holding voltage)
+   * 
+   * @param up_btn Raise the lift when true
+   * @param down_btn Lower the lift when true
+   * @param volt_up Motor voltage when raising the lift
+   * @param volt_down Motor voltage when lowering the lift
+   */
+  void control_manual(bool up_btn, bool down_btn, int volt_up, int volt_down)
+  {
+    is_async = false;
+
+    if(up_btn)
+      lift_motors.spin(directionType::fwd, volt_up, voltageUnits::volt);
+    else if(down_btn)
+      lift_motors.spin(directionType::rev, volt_down, voltageUnits::volt);
+    else
+      lift_motors.spin(directionType::fwd, 0, voltageUnits::volt);
+  }
+
+  /**
     * Control the lift in "steps". When the "up" button is pressed, the lift will go to the next
     * position as defined by pos_list. Order matters! 
     *

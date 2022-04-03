@@ -33,8 +33,30 @@ bool GenericAuto::run(bool blocking)
   return blocking;
 }
 
-void GenericAuto::add(state_ptr newState)
+void GenericAuto::add(state_ptr new_state)
 {
-  state_list.push(newState);
+  state_list.push(new_state);
 }
 
+void GenericAuto::add_async(state_ptr async_state)
+{
+  state_ptr fn = [&async_state](){
+    vex::task t([](void* fn_ptr){
+      while(! (*(state_ptr*)fn_ptr)() )
+       vexDelay(20);
+
+      return 0;
+    }, &async_state);
+    return true;
+  };
+
+  state_list.push(fn);
+}
+
+void GenericAuto::add_delay(int ms)
+{
+  add([ms](){
+    vexDelay(ms);
+    return true;
+  });
+}
