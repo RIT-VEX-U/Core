@@ -19,15 +19,21 @@ void CustomEncoder::setPosition(double val, vex::rotationUnits units)
 
 double CustomEncoder::rotation(vex::rotationUnits units)
 {
-  return super::rotation(units) * tick_scalar;
+  if(units != vex::rotationUnits::raw)
+    return super::rotation(units) * tick_scalar;
+  
+  return super::rotation(units);
 }
 
 double CustomEncoder::position(vex::rotationUnits units)
 {
-  return super::position(units) * tick_scalar;
+  if (units != vex::rotationUnits::raw)
+    return super::position(units) * tick_scalar;
+
+  return super::position(units);
 }
 
 double CustomEncoder::velocity(vex::velocityUnits units)
 {
-  return super::velocity(units) * tick_scalar;
+    return super::velocity(units) * tick_scalar;
 }

@@ -205,22 +205,22 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   
   int sign = 1;
 
+  // Make an imaginary perpendicualar line to that between the bot and the point. If the point is behind that line,
+  // and the point is within the robot's radius, use negatives for feedback control.
+
+  double angle_to_point = atan2(y - current_pos.y, x - current_pos.x) * 180.0 / PI;
+  double angle = fmod(current_pos.rot - angle_to_point, 360.0);
+  // Normalize the angle between 0 and 360
+  if (angle > 360) angle -= 360;
+  if (angle < 0) angle += 360; 
+  // If the angle is behind the robot, report negative.
+  if (dir == directionType::fwd && angle > 90 && angle < 270)
+    sign = -1;
+  else if(dir == directionType::rev && (angle < 90 || angle > 270))
+    sign = -1;
+
   if (fabs(dist_left) < config.drive_correction_cutoff) 
   {
-    // Make an imaginary perpendicualar line to that between the bot and the point. If the point is behind that line,
-    // and the point is within the robot's radius, use negatives for feedback control.
-
-    double angle_to_point = atan2(y - current_pos.y, x - current_pos.x) * 180.0 / PI;
-    double angle = fmod(current_pos.rot - angle_to_point, 360.0);
-    // Normalize the angle between 0 and 360
-    if (angle > 360) angle -= 360;
-    if (angle < 0) angle += 360; 
-    // If the angle is behind the robot, report negative.
-    if (dir == directionType::fwd && angle > 90 && angle < 270)
-      sign = -1;
-    else if(dir == directionType::rev && (angle < 90 || angle > 270))
-      sign = -1;
-
     // When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
     // so we always "reach" the point without having to do a lateral translation
     dist_left *= fabs(cos(angle * PI / 180.0));
@@ -263,7 +263,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   drive_tank(lside, rside);
 
-  printf("dist: %f\n", dist_left);
+  printf("dist: %f\n", sign * -1 * dist_left);
   fflush(stdout);
 
   // Check if the robot has reached it's destination
