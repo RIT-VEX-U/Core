@@ -4,8 +4,9 @@
 #include <queue>
 #include <map>
 #include "vex.h"
+#include <functional>
 
-typedef bool (*state_ptr)();
+typedef std::function<bool(void)> state_ptr;
 
 class GenericAuto
 {
@@ -30,6 +31,10 @@ class GenericAuto
    * Add a new state to the autonomous via function point of type "bool (ptr*)()"
    */
   void add(state_ptr);
+
+  void add_async(state_ptr);
+
+  void add_delay(int ms);
 
   private:
 
