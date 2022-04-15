@@ -133,9 +133,9 @@ class Lift
   {
     is_async = false;
 
-    if(up_btn)
+    if(up_btn && lift_motors.rotation(rev) < cfg.softstop_up)
       lift_motors.spin(directionType::fwd, volt_up, voltageUnits::volt);
-    else if(down_btn)
+    else if(down_btn && lift_motors.rotation(rev) > cfg.softstop_down)
       lift_motors.spin(directionType::rev, volt_down, voltageUnits::volt);
     else
       lift_motors.spin(directionType::fwd, 0, voltageUnits::volt);
