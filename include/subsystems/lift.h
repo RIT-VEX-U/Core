@@ -131,14 +131,30 @@ class Lift
    */
   void control_manual(bool up_btn, bool down_btn, int volt_up, int volt_down)
   {
-    is_async = false;
+    static bool down_hold = false;
+    static bool init = true;
 
-    if(up_btn && lift_motors.rotation(rev) < cfg.softstop_up)
+    // Allow for setting position while still calling this function
+    if(init || up_btn || down_btn)
+    {
+      init = false;
+      is_async = false;
+    }
+
+    double rev = lift_motors.rotation(rotationUnits::rev);
+
+    if(rev < cfg.softstop_down && down_btn)
+      down_hold = true;
+    else if( !down_btn )
+      down_hold = false;
+
+    if(up_btn && rev < cfg.softstop_up)
       lift_motors.spin(directionType::fwd, volt_up, voltageUnits::volt);
-    else if(down_btn && lift_motors.rotation(rev) > cfg.softstop_down)
+    else if(down_btn && rev > cfg.softstop_down && !down_hold)
       lift_motors.spin(directionType::rev, volt_down, voltageUnits::volt);
     else
       lift_motors.spin(directionType::fwd, 0, voltageUnits::volt);
+  
   }
 
   /**
