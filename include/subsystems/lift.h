@@ -92,7 +92,7 @@ class Lift
 
     // Check if there's a hook for a custom sensor. If not, use the motors.
     if(get_sensor == NULL)
-      cur_pos = lift_motors.rotation(rev);
+      cur_pos = lift_motors.position(rev);
     else
       cur_pos = get_sensor();
 
@@ -141,7 +141,7 @@ class Lift
       is_async = false;
     }
 
-    double rev = lift_motors.rotation(rotationUnits::rev);
+    double rev = lift_motors.position(rotationUnits::rev);
 
     if(rev < cfg.softstop_down && down_btn)
       down_hold = true;
@@ -245,7 +245,7 @@ class Lift
     if(get_sensor != NULL)
       lift_pid.update(get_sensor());
     else
-      lift_pid.update(lift_motors.rotation(rev));
+      lift_pid.update(lift_motors.position(rev));
 
     // std::cout << "DEBUG OUT: ROTATION " << lift_motors.rotation(rev) << "\n\n";
 
