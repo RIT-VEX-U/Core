@@ -1,5 +1,4 @@
-#ifndef _ODOMETRY_TANK_
-#define _ODOMETRY_TANK_
+#pragma once
 
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/subsystems/custom_encoder.h"
@@ -53,5 +52,3 @@ private:
     double rotation_offset = 0;
     
 };
-
-#endif

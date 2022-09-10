@@ -1,5 +1,4 @@
-#ifndef _MECANUMDRIVE_
-#define _MECANUMDRIVE_
+#pragma once
 
 #include "vex.h"
 #include "../core/include/utils/pid.h"
@@ -107,5 +106,3 @@ class MecanumDrive
   bool init = true;
 
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef _ODOMETRY_
-#define _ODOMETRY_
+#pragma once
 
 #include "vex.h"
 #include "../core/include/robot_specs.h"
@@ -72,5 +71,3 @@ protected:
     vex::mutex mut;
     position_t current_pos;
 };
-
-#endif
