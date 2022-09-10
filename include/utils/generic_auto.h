@@ -1,5 +1,4 @@
-#ifndef _GENAUTO_
-#define _GENAUTO_
+#pragma once
 
 #include <queue>
 #include <map>
@@ -41,5 +40,3 @@ class GenericAuto
   std::queue<state_ptr> state_list;
 
 };
-
-#endif

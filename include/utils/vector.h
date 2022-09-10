@@ -1,5 +1,4 @@
-#ifndef _VECTOR_
-#define _VECTOR_
+#pragma once
 
 #include <cmath>
 
@@ -113,5 +112,3 @@ double deg2rad(double deg);
  * General function for converting radians to degrees
  */
 double rad2deg(double r);
-
-#endif

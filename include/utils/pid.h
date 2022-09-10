@@ -1,5 +1,4 @@
-#ifndef _PID_
-#define _PID_
+#pragma once
 
 #include <cmath>
 #include "vex.h"
@@ -72,5 +71,3 @@ private:
 
   timer pid_timer;
 };
-
-#endif
