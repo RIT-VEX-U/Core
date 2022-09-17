@@ -1,5 +1,5 @@
 #include "../core/include/subsystems/mecanum_drive.h"
-
+#include "../core/include/utils/vector.h"
 /**
 * Create the Mecanum drivetrain object
 */
@@ -31,20 +31,20 @@ MecanumDrive::MecanumDrive(vex::motor &left_front, vex::motor &right_front, vex:
   */
 void MecanumDrive::drive_raw(double direction_deg, double magnitude, double rotation)
 {
-  double direction = (PI / 180.0) * direction_deg;
-
+  double direction = deg2rad(direction_deg);
+  
   // ALGORITHM - "rotate" the vector by 45 degrees and apply each corner to a wheel
   // .. Oh, and mix rotation too
   double lf = (magnitude * cos(direction - (PI / 4.0))) + rotation;
   double rf = (magnitude * cos(direction + (PI / 4.0))) - rotation;
   double lr = (magnitude * cos(direction + (PI / 4.0))) + rotation;
   double rr = (magnitude * cos(direction - (PI / 4.0))) - rotation;
-
+  
   // Limit the output between -1.0 and +1.0
-  lf = lf > 1.0 ? 1.0 : (lf < -1.0 ? -1.0 : lf);
-  rf = rf > 1.0 ? 1.0 : (rf < -1.0 ? -1.0 : rf);
-  lr = lr > 1.0 ? 1.0 : (lr < -1.0 ? -1.0 : lr);
-  rr = rr > 1.0 ? 1.0 : (rr < -1.0 ? -1.0 : rr);
+  lf = clamp(lf, -1.0, 1.0);
+  rf = clamp(rf, -1.0, 1.0);
+  lr = clamp(lr, -1.0, 1.0);
+  rr = clamp(rr, -1.0, 1.0);
 
   // Finally, spin the motors
   left_front.spin(vex::directionType::fwd, lf * 100.0, vex::velocityUnits::pct);
@@ -68,15 +68,16 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
   // LATERAL CONTROLS - convert cartesion to a vector
   double magnitude = sqrt(pow(left_y / 100.0, 2) + pow(left_x / 100.0, 2));
   magnitude = pow(magnitude, power);
-
+  
   double direction = atan2(left_x / 100.0, left_y / 100.0);
 
   // ROTATIONAL CONTROLS - just the right x joystick
-  // Ternary makes sure that if the "power" is even, the rotation keeps it's sign
   double rotation = right_x / 100.0;
-  rotation = (power%2 == 0 ? rotation < 0 ? -1.0 : 1.0 : 1.0) * pow(rotation, power);
 
-  return this->drive_raw(direction * (180.0 / PI), magnitude, rotation);  
+  //  
+  rotation = sign(rotation) * fabs(pow(rotation, power));
+  
+  return this->drive_raw(rad2deg(direction), magnitude, rotation);  
 }
 
 /**
