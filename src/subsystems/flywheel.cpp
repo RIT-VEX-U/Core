@@ -14,19 +14,18 @@
 #include "../core/include/subsystems/flywheel.h"
 #include "../core/include/utils/pid.h"
 #include "vex.h"
-#include <thread>
 
 using namespace vex;
 
 /*
 * Create the Flywheel object.
 */
-Flywheel::Flywheel(motor_group &motors, robot_specs_t &config, PID &pid)
-         :motors(motors), config(config), pid(pid){ }
+Flywheel::Flywheel(motor_group &motors, PID &pid)
+    :motors(motors), pid(pid){ }
 
 // Spin motors using voltage; defaults forward at 12 volts
 // Speed is between -1 and 1.
-void Flywheel::spin(double speed, directionType dir){
+void Flywheel::spin_raw(double speed, directionType dir){
   motors.spin(dir, speed * 12, voltageUnits::volt);
 }
 
@@ -44,9 +43,11 @@ int spinRPMThread(void* wheelPointer) {
 
 // starts / restarts RPM thread at new value
 void Flywheel::spinRPM(int inputRPM) {
-  RPM = inputRPM;
-  rpmThread.interrupt();
-  rpmThread = thread(spinRPMThread, this);
+  if(inputRPM != RPM) {
+    RPM = inputRPM;
+    rpmTask.stop();
+    rpmTask = task(spinRPMThread, this);
+  }
 }
 
 // return the current value that the RPM should be set to;
@@ -60,12 +61,12 @@ motor_group* Flywheel::getMotors() { return &motors; }
 
 // stop the RPM thread and the wheel
 void Flywheel::stop() {
-  rpmThread.interrupt();
+  rpmTask.stop();
   motors.stop();
 }
 
 
 // end the thread but keep spinning the wheel; not sure why anyone would use this but here it is anyway.
 void Flywheel::stopThread() {
-  rpmThread.interrupt();
+  rpmTask.stop();
 }
