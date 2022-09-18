@@ -143,14 +143,14 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
     double angle = angle_deg * PI / 180.0; // Degrees to radians
 
     // Create a vector from the change in distance in the current direction of the robot
-    Vector chg_vec(angle, dist_driven);
+    Vector2D chg_vec(angle, dist_driven);
     
     // Create a vector from the current position in reference to X,Y=0,0
-    Vector::point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
-    Vector curr_vec(curr_point);
+    Vector2D::point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
+    Vector2D curr_vec(curr_point);
 
     // Tack on the "difference" vector to the current vector
-    Vector new_vec = curr_vec + chg_vec;
+    Vector2D new_vec = curr_vec + chg_vec;
 
     new_pos.x = new_vec.get_x();
     new_pos.y = new_vec.get_y();
