@@ -7,9 +7,9 @@ using namespace vex;
 class Flywheel{
   public:
 
-  Flywheel(motor_group &motors, robot_specs_t &config, PID &pid);
+  Flywheel(motor_group &motors, PID &pid);
 
-  void spin(double speed, directionType dir=fwd);
+  void spin_raw(double speed, directionType dir=fwd);
   void spinRPM(int rpm);
   void stop();
   void stopThread();
@@ -21,9 +21,7 @@ class Flywheel{
   private:
 
   motor_group &motors;
-  robot_specs_t &config;
   PID pid;
-  bool inRPMLoop = false;
   double RPM = -1.0;
-  thread rpmThread;
+  task rpmTask;
 };
