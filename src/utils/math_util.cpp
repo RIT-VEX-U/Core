@@ -19,13 +19,11 @@ double clamp(double val, double low, double high){
 * Returns the sign of a number
 * @param x
 * 
-* returns the sign +/-1 of x. 0 if x is 0
+* returns the sign +/-1 of x. special case at 0 it returns +1
 **/
 double sign(double x){
   if (x<0){
     return -1;
-  } else if (x>0){
-    return 1;
   }
-  return 0;
+  return 1;
 }
