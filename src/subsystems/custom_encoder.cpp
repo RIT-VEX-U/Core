@@ -1,4 +1,4 @@
-#include "../core/include/subsystems/custom_encoder.h"
+#include "../core/include/subsystems/custom_encoder.h"   
 
 CustomEncoder::CustomEncoder(vex::triport::port &port, double ticks_per_rev)
 : super(port)

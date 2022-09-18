@@ -4,9 +4,9 @@
   * Returns points of the intersections of a line segment and a circle. The line 
   * segment is defined by two points, and the circle is defined by a center and radius.
   */
-std::vector<Vector::point_t> PurePursuit::line_circle_intersections(Vector::point_t center, double r, Vector::point_t point1, Vector::point_t point2)
+std::vector<Vector2D::point_t> PurePursuit::line_circle_intersections(Vector2D::point_t center, double r, Vector2D::point_t point1, Vector2D::point_t point2)
 {
-  std::vector<Vector::point_t> intersections = {};
+  std::vector<Vector2D::point_t> intersections = {};
 
   //Do future calculations relative to the circle's center
   point1.y -= center.y;
@@ -38,12 +38,12 @@ std::vector<Vector::point_t> PurePursuit::line_circle_intersections(Vector::poin
   //The equations used define an infinitely long line, so we check if the detected intersection falls on the line segment.
   if(x1 >= fmin(point1.x, point2.x) && x1 <= fmax(point1.x, point2.x) && y1 >= fmin(point1.y, point2.y) && y1 <= fmax(point1.y, point2.y))
   {
-    intersections.push_back(Vector::point_t{.x = x1 + center.x, .y = y1 + center.y});
+    intersections.push_back(Vector2D::point_t{.x = x1 + center.x, .y = y1 + center.y});
   }
 
   if(x2 >= fmin(point1.x, point2.x) && x2 <= fmax(point1.x, point2.x) && y2 >= fmin(point1.y, point2.y) && y2 <= fmax(point1.y, point2.y))
   {
-    intersections.push_back(Vector::point_t{.x = x2 + center.x, .y = y2 + center.y});
+    intersections.push_back(Vector2D::point_t{.x = x2 + center.x, .y = y2 + center.y});
   }
 
   return intersections;
@@ -52,10 +52,10 @@ std::vector<Vector::point_t> PurePursuit::line_circle_intersections(Vector::poin
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-Vector::point_t PurePursuit::get_lookahead(std::vector<Vector::point_t> path, Vector::point_t robot_loc, double radius)
+Vector2D::point_t PurePursuit::get_lookahead(std::vector<Vector2D::point_t> path, Vector2D::point_t robot_loc, double radius)
 { 
   //Default: the end of the path
-  Vector::point_t target = path.back();
+  Vector2D::point_t target = path.back();
 
   
   if(target.dist(robot_loc) <= radius)
@@ -66,13 +66,13 @@ Vector::point_t PurePursuit::get_lookahead(std::vector<Vector::point_t> path, Ve
   //Check each line segment of the path for potential targets
   for(int i = 0; i < path.size() - 1; i++)
   {
-    Vector::point_t start = path[i];
-    Vector::point_t end = path[i+1];
+    Vector2D::point_t start = path[i];
+    Vector2D::point_t end = path[i+1];
 
-    std::vector<Vector::point_t> intersections = line_circle_intersections(robot_loc, radius, start, end);
+    std::vector<Vector2D::point_t> intersections = line_circle_intersections(robot_loc, radius, start, end);
     //Choose the intersection that is closest to the end of the line segment
     //This prioritizes the closest intersection to the end of the path
-    for(Vector::point_t intersection: intersections)
+    for(Vector2D::point_t intersection: intersections)
     {
       if(intersection.dist(end) < target.dist(end))
         target = intersection;
@@ -85,18 +85,18 @@ Vector::point_t PurePursuit::get_lookahead(std::vector<Vector::point_t> path, Ve
 /**
  Injects points in a path without changing the curvature with a certain spacing.
 */
-std::vector<Vector::point_t> PurePursuit::inject_path(std::vector<Vector::point_t> path, double spacing)
+std::vector<Vector2D::point_t> PurePursuit::inject_path(std::vector<Vector2D::point_t> path, double spacing)
 {
-  std::vector<Vector::point_t> new_path;
+  std::vector<Vector2D::point_t> new_path;
 
   //Injecting points for each line segment
   for(int i = 0; i < path.size() - 1; i++)
   {
-    Vector::point_t start = path[i];
-    Vector::point_t end = path[i+1];
+    Vector2D::point_t start = path[i];
+    Vector2D::point_t end = path[i+1];
 
-    Vector::point_t diff = end - start;
-    Vector vector = Vector(diff);
+    Vector2D::point_t diff = end - start;
+    Vector2D vector = Vector2D(diff);
     
     int num_points = ceil(vector.get_mag() / spacing);
 
@@ -106,7 +106,7 @@ std::vector<Vector::point_t> PurePursuit::inject_path(std::vector<Vector::point_
     for(int j = 0; j < num_points; j++)
     {
       //We take the start point and add additional vectors
-      Vector::point_t path_point = (Vector(start) + vector * j).point();
+      Vector2D::point_t path_point = (Vector2D(start) + vector * j).point();
       new_path.push_back(path_point);
     }
   }
@@ -125,21 +125,21 @@ std::vector<Vector::point_t> PurePursuit::inject_path(std::vector<Vector::point_
  * Honestly have no idea if/how this works.
  * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
 */
-std::vector<Vector::point_t> PurePursuit::smooth_path(std::vector<Vector::point_t> path, double weight_data, double weight_smooth, double tolerance)
+std::vector<Vector2D::point_t> PurePursuit::smooth_path(std::vector<Vector2D::point_t> path, double weight_data, double weight_smooth, double tolerance)
 {
-  std::vector<Vector::point_t> new_path = path;
+  std::vector<Vector2D::point_t> new_path = path;
   double change = tolerance;
   while(change >= tolerance)
   {
     change = 0;
     for(int i = 1; i < path.size() - 1; i++)
     {
-        Vector::point_t x_i = path[i];
-        Vector::point_t y_i = new_path[i];
-        Vector::point_t y_prev = new_path[i-1];
-        Vector::point_t y_next = new_path[i+1];
+        Vector2D::point_t x_i = path[i];
+        Vector2D::point_t y_i = new_path[i];
+        Vector2D::point_t y_prev = new_path[i-1];
+        Vector2D::point_t y_next = new_path[i+1];
         
-        Vector::point_t y_i_saved = y_i;
+        Vector2D::point_t y_i_saved = y_i;
         
         y_i.x += weight_data * (x_i.x - y_i.x) + weight_smooth * (y_next.x + y_prev.x - (2 * y_i.x));
         y_i.y += weight_data * (x_i.y - y_i.y) + weight_smooth * (y_next.y + y_prev.y - (2 * y_i.y));
@@ -159,17 +159,17 @@ std::vector<Vector::point_t> PurePursuit::smooth_path(std::vector<Vector::point_
  * @param steps The number of points interpolated between points.
  * @return The smoothed path.
  */
-std::vector<Vector::point_t> PurePursuit::smooth_path_hermite(std::vector<hermite_point> path, double steps) {
-  std::vector<Vector::point_t> new_path;
+std::vector<Vector2D::point_t> PurePursuit::smooth_path_hermite(std::vector<hermite_point> path, double steps) {
+  std::vector<Vector2D::point_t> new_path;
   for(int i = 0; i < path.size() - 1; i++) {
     for(int t = 0; t < steps; t++) {
-      // Storing the start and end points and slopes at those points as Vectors.
-      Vector::point_t tmp = path[i].getPoint();
-      Vector p1 = Vector(tmp);
+      // Storing the start and end points and slopes at those points as Vector2Ds.
+      Vector2D::point_t tmp = path[i].getPoint();
+      Vector2D p1 = Vector2D(tmp);
       tmp = path[i+1].getPoint();
-      Vector p2 = Vector(tmp);
-      Vector t1 = path[i].getTangent();
-      Vector t2 = path[i+1].getTangent();
+      Vector2D p2 = Vector2D(tmp);
+      Vector2D t1 = path[i].getTangent();
+      Vector2D t2 = path[i+1].getTangent();
 
 
       // Scale s from 0.0 to 1.0
@@ -182,7 +182,7 @@ std::vector<Vector::point_t> PurePursuit::smooth_path_hermite(std::vector<hermit
       double h4 = pow(s, 3) - pow(s, 2);
 
       // Calculate the point
-      Vector p = p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4; 
+      Vector2D p = p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4; 
       new_path.push_back(p.point());
     }
   }
@@ -191,8 +191,8 @@ std::vector<Vector::point_t> PurePursuit::smooth_path_hermite(std::vector<hermit
   return new_path;
 }
 
-std::vector<Vector::point_t> PurePursuit::smooth_path_cubic(std::vector<Vector::point_t> path, double res) {
-  std::vector<Vector::point_t> new_path;
+std::vector<Vector2D::point_t> PurePursuit::smooth_path_cubic(std::vector<Vector2D::point_t> path, double res) {
+  std::vector<Vector2D::point_t> new_path;
   std::vector<spline> splines;
 
   double delta_x[path.size() - 1];
