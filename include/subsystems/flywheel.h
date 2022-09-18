@@ -10,16 +10,20 @@ class Flywheel{
   Flywheel(motor_group &motors, robot_specs_t &config, PID &pid);
 
   void spin(double speed, directionType dir=fwd);
-  bool spinRPM(int rpm);
+  void spinRPM(int rpm);
   void stop();
-  void spinToDistance(double distance);
+  void stopThread();
+
+  double getRPM();
+  PID* getPID();
+  motor_group* getMotors();
 
   private:
 
   motor_group &motors;
   robot_specs_t &config;
   PID pid;
-  const int VOLTAGECONSTANT = 12;
   bool inRPMLoop = false;
-
+  double RPM = -1.0;
+  thread rpmThread;
 };
