@@ -2,7 +2,7 @@
 
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/subsystems/custom_encoder.h"
-#include "../core/include/utils/vector.h"
+#include "../core/include/utils/vector2d.h"
 #include "../core/include/robot_specs.h"
 
 static int background_task(void* odom_obj);
