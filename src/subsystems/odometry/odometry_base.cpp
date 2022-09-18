@@ -1,5 +1,5 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
-#include "../core/include/utils/vector.h"
+#include "../core/include/utils/vector2d.h"
 
 /**
 * Gets the current position and rotation
