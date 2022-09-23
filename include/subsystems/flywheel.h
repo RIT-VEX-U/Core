@@ -7,7 +7,7 @@ using namespace vex;
 class Flywheel{
   public:
 
-  Flywheel(motor_group &motors, PID &pid);
+  Flywheel(motor_group &motors, PID::pid_config_t &pid_config);
 
   void spin_raw(double speed, directionType dir=fwd);
   void spinRPM(int rpm);

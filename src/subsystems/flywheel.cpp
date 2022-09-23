@@ -23,8 +23,8 @@ using namespace vex;
 * @param motors - pointer to the motors on the fly wheel
 * @param pid - pointer to the PID
 */
-Flywheel::Flywheel(motor_group &motors, PID &pid)
-    :motors(motors), pid(pid){ }
+Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config)
+    :motors(motors), pid(pid_config) { }
 
 /* Spin motors using voltage; defaults forward at 12 volts
 * @param speed - speed (between -1 and 1) to set the motor
