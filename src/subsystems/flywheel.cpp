@@ -48,6 +48,22 @@ int spinRPMThread(void* wheelPointer) {
   return 0; // only here to make the compiler SHUT UP
 }
 
+/* spin this flywheel at a given RPM, async; runs until stop(), stopThread(), or a new spinRPM() is called. 
+*  Runs a BANG BANG variant. I have NO IDEA if it will work properly but I have NOTHING to test this on.
+* @param wheelPointer - points to the current wheel object
+*/
+int spinRPMThread_BangBang(void* wheelPointer) {
+  Flywheel* wheel = (Flywheel*) wheelPointer; 
+  while(true) {
+    wheel->getPID()->update(wheel->getMotors()->velocity(velocityUnits::rpm)); // check the current velocity and update the PID with it.
+    // if it below the RPM, go, otherwise don't
+    if(wheel->getMotors()->velocity(velocityUnits::rpm) < wheel->getRPM()) { wheel->getMotors()->spin(fwd, 12, voltageUnits::volt); }   
+    else { wheel->getMotors()->stop(); }
+    vexDelay(20);
+  }
+  return 0; // only here to make the compiler SHUT UP
+}
+
 /* starts / restarts RPM thread at new value
 * @param inputRPM - set the current RPM
 */
