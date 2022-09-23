@@ -21,6 +21,7 @@ class Flywheel{
   private:
 
   motor_group &motors;
+  bool taskRunning = false;
   PID pid;
   double RPM = -1.0;
   task rpmTask;
