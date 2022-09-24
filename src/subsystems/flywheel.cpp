@@ -68,9 +68,9 @@ void Flywheel::updatePID(double value) { pid.update(value); }
 // Runs a PID loop to get to the set RPM.
 int spinRPMTask_PID(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
-  wheel->setPIDTarget(wheel->getRPM());  // get the pid from the wheel and set its target to the RPM stored in the wheel.
+  // get the pid from the wheel and set its target to the RPM stored in the wheel.
   while(true) {
-    wheel->updatePID(wheel->getVelocity_RPM());        // check the current velocity and update the PID with it.
+    wheel->updatePID(wheel->getVelocity_RPM());   // check the current velocity and update the PID with it.
     wheel->spin_raw(wheel->getPIDValue(), fwd);   // set the motors to whatever PID tells them to do
     vexDelay(20);
   }
@@ -103,7 +103,6 @@ int spinRPMTask_TBH(void* wheelPointer) { return 0; }
 // Runs a 'Moving average filter with above closed loop systems' variant, whatever that means; FUNCTION STUB
 int spinRPMTask_ClosedLoop(void* wheelPointer) { return 0; }
 
-
 /*********************************************************
 *         SPINNERS AND STOPPERS
 *********************************************************/
@@ -121,12 +120,12 @@ void Flywheel::spin_raw(double speed, directionType dir){
 */
 void Flywheel::spinRPM(int inputRPM) {
   // only run if the RPM is different or it isn't already running
-  if(inputRPM != RPM || !taskRunning) {
-    RPM = inputRPM;
-    rpmTask.stop();
+  if(!taskRunning) {
     rpmTask = task(spinRPMTask_PID, this);
     taskRunning = true;
   }
+  RPM = inputRPM;
+  setPIDTarget(RPM);
 }
 
 // stop the RPM thread and the wheel
@@ -138,10 +137,3 @@ void Flywheel::stop() {
 
 // stop only the motors; exclusively for BANG BANG use
 void Flywheel::stopMotors() { motors.stop(); }
-
-
-// stop only the thread; not currently used but might come in handy \__('-')__/
-void Flywheel::stopThread() { // TODO -- Remove?
-  taskRunning = false;
-  rpmTask.stop();
-}

@@ -34,7 +34,6 @@ class Flywheel{
   void spinRPM(int rpm);                                        // spins the turret at a target RPM
   void stop();                                                  // stops the motors and the thread
   void stopMotors();                                            // stops ONLY the motors
-  void stopThread();                                            // stops ONLY the thread
 
   private:
 
