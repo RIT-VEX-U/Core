@@ -263,7 +263,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   drive_tank(lside, rside);
 
-  printf("dist: %f\n", sign * -1 * dist_left);
+  //printf("dist: %f\n", sign * -1 * dist_left);
   fflush(stdout);
 
   // Check if the robot has reached it's destination
@@ -306,7 +306,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
   turn_pid.update(delta_heading);
 
-  printf("~TURN~ delta: %f\n", delta_heading);
+  //printf("~TURN~ delta: %f\n", delta_heading);
   // printf("delta heading: %f, pid: %f\n", delta_heading, turn_pid.get());
   fflush(stdout);
 

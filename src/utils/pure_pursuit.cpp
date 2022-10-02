@@ -223,7 +223,7 @@ std::vector<Vector2D::point_t> PurePursuit::smooth_path_cubic(std::vector<Vector
   }
 
   for(spline spline: splines) {
-      printf("spline a: %f b: %f c: %f d %f start %f, %f end %f, %f\n", spline.a, spline.b, spline.c, spline.d, spline.x_start, spline.getY(spline.x_start), spline.x_end, spline.getY(spline.x_end));
+      //printf("spline a: %f b: %f c: %f d %f start %f, %f end %f, %f\n", spline.a, spline.b, spline.c, spline.d, spline.x_start, spline.getY(spline.x_start), spline.x_end, spline.getY(spline.x_end));
     double x = spline.x_start;
     while(x >= fmin(spline.x_start, spline.x_end) && x <= fmax(spline.x_start, spline.x_end)) {
       new_path.push_back({x, spline.getY(x)});
