@@ -97,7 +97,7 @@ position_t OdometryTank::update()
       //Use the arclength formula to calculate the angle. Add 90 to make "0 degrees" to starboard
       angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels)) + 90;
 
-      printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
+      // printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
 
     } else
     {

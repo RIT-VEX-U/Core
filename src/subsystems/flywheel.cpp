@@ -11,6 +11,7 @@
 * 09/18/2022  <CRN> Added async functionality.
 * 09/22/2022  <CRN> Documentation improvements, fixed error if RPM is set but motor is stopped.
 * 09/23/2022  <CRN> Neatened up program, added getters and setters, fixed documentation and bang bang.
+* 09/29/2022  <CRN> Bug fixes, RPM handling. Multiplied the motor by 18.
 *********************************************************/
 
 #include "../core/include/subsystems/flywheel.h"
@@ -27,18 +28,22 @@ using namespace vex;
 * Create the Flywheel object.
 * @param motors - pointer to the motors on the fly wheel
 * @param pid - pointer to the PID
+* @param ratio - ratio of the whatever just multiplies the velocity
 */
-Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config)
-    :motors(motors), pid(pid_config) { }
+Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, const double ratio)
+    :motors(motors), pid(pid_config), ratio(ratio) { }
 
 // return the current value that the RPM should be set to;
 double Flywheel::getRPM() { return RPM; }
+
+// returns whether or not the wheel is running a task currently
+bool Flywheel::isTaskRunning() { return taskRunning; }
   
 // Returns a POINTER TO the motors; not currently used.
 motor_group* Flywheel::getMotors() { return &motors; } // TODO -- Remove?
 
 // return the current velocity of the flywheel motors, in RPM
-double Flywheel::getVelocity_RPM() { return motors.velocity(velocityUnits::rpm); }
+double Flywheel::getVelocity_RPM() { return ratio * motors.velocity(velocityUnits::rpm); }
 
 // Returns a POINTER TO the PID; not currently used.
 PID* Flywheel::getPID() { return &pid; } // TODO -- Remove?
@@ -72,7 +77,7 @@ int spinRPMTask_PID(void* wheelPointer) {
   while(true) {
     wheel->updatePID(wheel->getVelocity_RPM());   // check the current velocity and update the PID with it.
     wheel->spin_raw(wheel->getPIDValue(), fwd);   // set the motors to whatever PID tells them to do
-    vexDelay(20);
+    vexDelay(1);
   }
   return 0; // only here to make the compiler SHUT UP
 }
@@ -86,7 +91,7 @@ int spinRPMTask_BangBang(void* wheelPointer) {
       wheel->spin_raw(1, fwd);
     }   
     else { wheel->stopMotors(); }
-    vexDelay(20);
+    vexDelay(1);
   }
   return 0; // only here to make the compiler SHUT UP
 }
@@ -108,11 +113,18 @@ int spinRPMTask_ClosedLoop(void* wheelPointer) { return 0; }
 *********************************************************/
 
 /* Spin motors using voltage; defaults forward at 12 volts
+* FOR USE BY TASKS ONLY
 * @param speed - speed (between -1 and 1) to set the motor
 * @param dir - direction that the motor moves in; defaults to forward
 */
 void Flywheel::spin_raw(double speed, directionType dir){
   motors.spin(dir, speed * 12, voltageUnits::volt);
+}
+
+// Spin motors using voltage; defaults forward at 12 volts
+// FOR USE BY OPCONTROL AND AUTONOMOUS, same as spin_raw otherwise
+void Flywheel::spin_manual(double speed, directionType dir){
+  if(!taskRunning) motors.spin(dir, speed * 12, voltageUnits::volt);
 }
 
 /* starts / restarts RPM thread at new value
@@ -137,3 +149,6 @@ void Flywheel::stop() {
 
 // stop only the motors; exclusively for BANG BANG use
 void Flywheel::stopMotors() { motors.stop(); }
+
+// stop the motors iff the task isn't running
+void Flywheel::stopNonTasks() { if(!taskRunning) { motors.stop(); }}
