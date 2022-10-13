@@ -8,15 +8,17 @@
 
 #include "vex.h"
 #include "../core/include/utils/command_structure/auto_command.h"
+#include "../core/include/subsystems/tank_drive.h"
 
 using namespace vex;
 
 class DriveForwardCommand: public AutoCommand {
   public:
-    DriveForwardCommand(double inches, double speed, double correction, directionType dir);
-    bool run();
+    DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir);
+    bool run() override;
 
   private:
+    TankDrive &drive_sys;
     double inches;
     double speed;
     double correction;

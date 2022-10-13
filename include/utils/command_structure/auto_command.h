@@ -15,5 +15,5 @@ class AutoCommand {
      * Overridden by child classes
      * @returns true when the command is finished, false otherwise
      */
-    virtual bool run();
+    virtual bool run() { return true; }
 };

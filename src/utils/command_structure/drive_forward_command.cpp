@@ -6,14 +6,14 @@
 
 #include "vex.h"
 #include "../core/include/utils/command_structure/drive_forward_command.h"
+#include <iostream>
 
 using namespace vex;
 
-DriveForwardCommand::DriveForwardCommand(double inches, double speed, double correction, directionType dir):
-  inches(inches), speed(speed), correction(correction), dir(dir) {}
+DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir):
+  drive_sys(drive_sys), inches(inches), speed(speed), correction(correction), dir(dir) {}
 
 bool DriveForwardCommand::run() {
-  // while(!){statements
-  // }
-  return true;
+  std::cout << "DRIVE FORWARD COMMAND RUNNING\n";
+  return drive_sys.drive_forward(inches, speed, correction, dir);
 }

@@ -92,12 +92,12 @@ position_t OdometryTank::update()
       // Get the arclength of the turning circle of the robot
       double distance_diff = (rside_revs - lside_revs) * PI * config.odom_wheel_diam;
 
-      printf("dist_diff: %f, ", distance_diff);
+      //printf("dist_diff: %f, ", distance_diff);
 
       //Use the arclength formula to calculate the angle. Add 90 to make "0 degrees" to starboard
       angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels)) + 90;
 
-      printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
+      //printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
 
     } else
     {
