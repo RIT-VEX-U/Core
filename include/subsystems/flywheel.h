@@ -23,10 +23,10 @@ class Flywheel{
 
   // CONSTRUCTORS, GETTERS, AND SETTERS
   Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio);  // constructor
-  double getRPM();                                              // returns the desired RPM
+  double getDesiredRPM();                                        // returns the desired RPM
   bool isTaskRunning();                                         // returns if a task is running
   motor_group* getMotors();                                     // returns a pointer to the motors
-  double getVelocity_RPM();                                     // get the current velocity of the motors in RPM
+  double getRPM();                                     // get the current velocity of the motors in RPM
   PID* getPID();                                                // returns a pointer to the PID
   double getPIDValue();                                         // get the current OUT value of the PID
   double getFeedforwardValue();                                 // get the current OUT value of the feedforward
