@@ -18,6 +18,7 @@
 #include "../core/include/utils/feedforward.h"
 #include "../core/include/utils/pid.h"
 #include "../core/include/utils/math_util.h"
+#include "C:/Users/richi/VEX/2022-2023-Flynn/include/robot-config.h"
 #include "vex.h"
 
 using namespace vex;
