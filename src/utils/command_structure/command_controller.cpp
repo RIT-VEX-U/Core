@@ -14,7 +14,7 @@
  * Adds a command to the queue
  * @param cmd - AutoCommand to be added
  */
-void CommandController::add(AutoCommand cmd) {
+void CommandController::add(AutoCommand *cmd) {
   command_queue.push(cmd);
 }
 
@@ -25,7 +25,7 @@ void CommandController::add(AutoCommand cmd) {
  *    before continuing execution of autonomous
  */
 void CommandController::add_delay(int ms) {
-  AutoCommand delay = DelayCommand(ms);
+  AutoCommand *delay = new DelayCommand(ms);
   command_queue.push(delay);
 }
 
@@ -35,13 +35,16 @@ void CommandController::add_delay(int ms) {
  * repeat until there are no more commmands in the queue
  */
 void CommandController::run() {
-  AutoCommand next_cmd;
+  AutoCommand *next_cmd;
   while(!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
     next_cmd = command_queue.front();
     command_queue.pop();
 
-    // run the current command
-    next_cmd.run();
+    // run the current command until it returns true
+    while(!next_cmd -> run()) {
+      vexDelay(20);
+    }
+    
   }
 }

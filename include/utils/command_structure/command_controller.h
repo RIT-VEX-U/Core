@@ -19,7 +19,7 @@ class CommandController {
    * Adds a command to the queue
    * @param cmd - AutoCommand to be added
    */
-  void add(AutoCommand cmd);
+  void add(AutoCommand *cmd);
 
   /**
    * Adds a command that will delay progression
@@ -37,5 +37,5 @@ class CommandController {
   void run();
 
   private:
-    std::queue<AutoCommand> command_queue;
+    std::queue<AutoCommand*> command_queue;
 };

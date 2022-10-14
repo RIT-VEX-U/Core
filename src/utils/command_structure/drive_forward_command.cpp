@@ -14,6 +14,5 @@ DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, do
   drive_sys(drive_sys), inches(inches), speed(speed), correction(correction), dir(dir) {}
 
 bool DriveForwardCommand::run() {
-  std::cout << "DRIVE FORWARD COMMAND RUNNING\n";
   return drive_sys.drive_forward(inches, speed, correction, dir);
 }
