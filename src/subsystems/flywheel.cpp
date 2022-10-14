@@ -15,8 +15,10 @@
 *********************************************************/
 
 #include "../core/include/subsystems/flywheel.h"
+#include "../core/include/utils/feedforward.h"
 #include "../core/include/utils/pid.h"
 #include "../core/include/utils/math_util.h"
+#include "C:/Users/richi/VEX/2022-2023-Flynn/include/robot-config.h"
 #include "vex.h"
 
 using namespace vex;
@@ -24,16 +26,46 @@ using namespace vex;
 /*********************************************************
 *         CONSTRUCTOR, GETTERS, SETTERS
 *********************************************************/
+//used when using bang bang or TBH control
+PID::pid_config_t empty_pid = PID::pid_config_t{};
+FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 
 /*
-* Create the Flywheel object.
+* Create the Flywheel object using PID + feedforward for control.
 * @param motors - pointer to the motors on the fly wheel
-* @param pid - pointer to the PID config
 * @param ff  - pointer to the feedforward config
 * @param ratio - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio)
-    :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio) { }
+    :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio), control_style(PID_Feedforward) { }
+
+/*
+* Create the Flywheel object using only feedforward for control
+* @param motors - pointer to the motors on the fly wheel
+* @param ff  - pointer to the feedforward config
+* @param ratio - ratio of the whatever just multiplies the velocity
+*/
+Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio)
+    :motors(motors), pid(empty_pid), ff(ff_config), ratio(ratio), control_style(Feedforward) {}
+
+/*
+* Create the Flywheel object using Take Back Half for control
+* @param motors - pointer to the motors on the fly wheel
+* @param TBH_gain - the TBH control paramater
+* @param ratio - ratio of the whatever just multiplies the velocity
+*/
+Flywheel::Flywheel(motor_group &motors, const double TBH_gain, const double ratio)
+    :motors(motors), pid(empty_pid), ff(empty_ff), TBH_gain(TBH_gain), ratio(ratio), control_style(Take_Back_Half) {}
+
+/*
+* Create the Flywheel object using Bang Bang for control
+* @param motors - pointer to the motors on the fly wheel
+* @param ratio - ratio of the whatever just multiplies the velocity
+*/
+Flywheel::Flywheel(motor_group &motors, const double ratio)
+    :motors(motors), pid(empty_pid), ff(empty_ff), ratio(ratio), control_style(Bang_Bang) {}
+
+
 
 // return the current value that the RPM should be set to;
 double Flywheel::getDesiredRPM() { return RPM; }
@@ -52,12 +84,16 @@ PID* Flywheel::getPID() { return &pid; } // TODO -- Remove?
 
 // returns the current OUT value of the PID
 double Flywheel::getPIDValue() { return pid.get(); }
+
 // returns the current OUT value of the Feedforward
-// uses the current set rpm and the acceleration by ?????????
 double Flywheel::getFeedforwardValue() { 
   double v = getDesiredRPM();
-  
   return ff.calculate(v, 0); 
+}
+
+// get the gain used for TBH control
+double Flywheel::getTBHGain(){
+  return TBH_gain;
 }
 
 /* 
@@ -123,7 +159,6 @@ int spinRPMTask_PID_Feedforward(void* wheelPointer) {
 //https://www.vexwiki.org/programming/controls_algorithms/tbh
 int spinRPMTask_TBH(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
-  double gain = .00001;
 
   double tbh = 0.0;
   double output = 0.0;
@@ -137,7 +172,7 @@ int spinRPMTask_TBH(void* wheelPointer) {
     }
    
     double error = wheel->getDesiredRPM() - wheel->getRPM();
-    output += gain * error;
+    output += wheel->getTBHGain() * error;
     wheel->spin_raw(clamp(output, 0, 1), fwd);
 
     if (sign(error)!=sign(previous_error)){
@@ -180,7 +215,26 @@ void Flywheel::spin_manual(double speed, directionType dir){
 void Flywheel::spinRPM(int inputRPM) {
   // only run if the RPM is different or it isn't already running
   if(!taskRunning) {
-    rpmTask = task(spinRPMTask_TBH, this);
+
+    int (*rpm_control_task)(void *);  // this just means a function that returns int and takes a void pointer as an argument aka a spinRPMTask function
+    // choose which version to use based on how  the flywheel was constructed
+    switch(control_style){
+      case Bang_Bang:
+        rpm_control_task = spinRPMTask_BangBang;
+        break;
+      case Take_Back_Half:
+        rpm_control_task = spinRPMTask_TBH;
+        break;
+      case Feedforward:
+        rpm_control_task = spinRPMTask_Feedforward;
+        break;
+      case PID_Feedforward:
+        rpm_control_task = spinRPMTask_PID_Feedforward;
+        break;
+    }
+
+
+    rpmTask = task(rpm_control_task, this);
     taskRunning = true;
   }
   RPM = inputRPM;
