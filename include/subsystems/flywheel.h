@@ -29,31 +29,130 @@ class Flywheel{
   public:
 
   // CONSTRUCTORS, GETTERS, AND SETTERS
-  Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio);  // constructor for feedforward + pid
-  Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio);  // constructor for only feed forward
-  Flywheel(motor_group &motors, double tbh_gain, const double ratio);  // constructor for take back half
-  Flywheel(motor_group &motors, const double ratio);  // constructor for bang-bang control
+  /**
+  * Create the Flywheel object using PID + feedforward for control.
+  * @param motors     - pointer to the motors on the fly wheel
+  * @param pid_config - pointer the pid config
+  * @param ff         - pointer to the feedforward config
+  * @param ratio      - ratio of the whatever just multiplies the velocity
+  */
+  Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio);
 
+  /**
+  * Create the Flywheel object using only feedforward for control
+  * @param motors - pointer to the motors on the fly wheel
+  * @param ff     - pointer to the feedforward config
+  * @param ratio  - ratio of the whatever just multiplies the velocity
+  */
+  Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio);
 
-  double getDesiredRPM();                                        // returns the desired RPM
-  bool isTaskRunning();                                         // returns if a task is running
-  motor_group* getMotors();                                     // returns a pointer to the motors
-  double getRPM();                                     // get the current velocity of the motors in RPM
-  PID* getPID();                                                // returns a pointer to the PID
-  double getPIDValue();                                         // get the current OUT value of the PID
-  double getFeedforwardValue();                                 // get the current OUT value of the feedforward
-  double getTBHGain();                                          // get the gain used for TBH control
+  /**
+  * Create the Flywheel object using Take Back Half for control
+  * @param motors   - pointer to the motors on the fly wheel
+  * @param TBH_gain - the TBH control paramater
+  * @param ratio    - ratio of the whatever just multiplies the velocity
+  */
+  Flywheel(motor_group &motors, double tbh_gain, const double ratio);
+
+  /**
+  * Create the Flywheel object using Bang Bang for control
+  * @param motors - pointer to the motors on the fly wheel
+  * @param ratio  - ratio of the whatever just multiplies the velocity
+  */
+  Flywheel(motor_group &motors, const double ratio);
+
+  /**
+  * Return the current value that the RPM should be set to
+  * @return RPM = the target rpm
+  */
+  double getDesiredRPM();
+
+  /**
+  * Checks if the background RPM controlling task is running
+  * @return taskRunning - If the task is running
+  */
+  bool isTaskRunning();
+
+  /**
+  * Returns a POINTER to the motors
+  */
+  motor_group* getMotors();
+
+  /**
+  * return the current velocity of the flywheel motors, in RPM
+  */
+  double getRPM();
+
+  /**
+  * Returns a POINTER to the PID.
+  */
+  PID* getPID();
+
+  /**
+  * returns the current OUT value of the PID - the value that the PID would set the motors to
+  */
+  double getPIDValue();
+
+  /**
+  * returns the current OUT value of the PID - the value that the PID would set the motors to
+  */
+  double getFeedforwardValue();
   
-  void setPIDTarget(double value);                              // set the PID target
-  void updatePID(double value);                                 // update the PID with the current value it's tracking
+  /**
+  * get the gain used for TBH control
+  */
+  double getTBHGain();
+  
+  /**
+  * Sets the value of the PID target
+  * @param value - desired value of the PID
+  */
+  void setPIDTarget(double value);
+
+/**
+* updates the value of the PID
+* @param value - value to update the PID with
+*/
+  void updatePID(double value);
 
   // SPINNERS AND STOPPERS
-  void spin_raw(double speed, directionType dir=fwd);           // Spins at a given speed between -1 and 1
-  void spin_manual(double speed, directionType dir=fwd);        // Same as spin_raw, but check to make sure a task isn't running before doing it.
-  void spinRPM(int rpm);                                        // spins the turret at a target RPM
-  void stop();                                                  // stops the motors and the thread
-  void stopMotors();                                            // stops ONLY the motors
-  void stopNonTasks();                                          // stops motors IFF a task isn't running and a manual setter isn't being pressed
+
+  /** 
+  * Spin motors using voltage; defaults forward at 12 volts
+  * FOR USE BY TASKS ONLY
+  * @param speed - speed (between -1 and 1) to set the motor
+  * @param dir - direction that the motor moves in; defaults to forward
+  */
+  void spin_raw(double speed, directionType dir=fwd);
+  
+  /**
+  * Spin motors using voltage; defaults forward at 12 volts
+  * FOR USE BY OPCONTROL AND AUTONOMOUS - this only applies if the RPM thread is not running
+  */
+  void spin_manual(double speed, directionType dir=fwd);
+  
+  /**
+  * starts or sets the RPM thread at new value
+  * what control scheme is dependent on control_style
+  * @param inputRPM - set the current RPM
+  */
+  void spinRPM(int rpm);
+
+  /**
+  * stop the RPM thread and the wheel
+  */
+  void stop();
+
+  
+  /**
+  * stop only the motors; exclusively for BANG BANG use
+  */
+  void stopMotors();
+
+  /**
+  * Stop the motors if the task isn't running - stop manual control
+  */
+  void stopNonTasks();
 
   private:
 
