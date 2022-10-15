@@ -18,7 +18,6 @@
 #include "../core/include/utils/feedforward.h"
 #include "../core/include/utils/pid.h"
 #include "../core/include/utils/math_util.h"
-#include "C:/Users/richi/VEX/2022-2023-Flynn/include/robot-config.h"
 #include "vex.h"
 
 using namespace vex;
@@ -30,7 +29,7 @@ using namespace vex;
 PID::pid_config_t empty_pid = PID::pid_config_t{};
 FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 
-/*
+/**
 * Create the Flywheel object using PID + feedforward for control.
 * @param motors - pointer to the motors on the fly wheel
 * @param ff  - pointer to the feedforward config
@@ -39,7 +38,7 @@ FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio)
     :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio), control_style(PID_Feedforward) { }
 
-/*
+/**
 * Create the Flywheel object using only feedforward for control
 * @param motors - pointer to the motors on the fly wheel
 * @param ff  - pointer to the feedforward config
@@ -48,7 +47,7 @@ Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForwa
 Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio)
     :motors(motors), pid(empty_pid), ff(ff_config), ratio(ratio), control_style(Feedforward) {}
 
-/*
+/**
 * Create the Flywheel object using Take Back Half for control
 * @param motors - pointer to the motors on the fly wheel
 * @param TBH_gain - the TBH control paramater
@@ -57,7 +56,7 @@ Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, con
 Flywheel::Flywheel(motor_group &motors, const double TBH_gain, const double ratio)
     :motors(motors), pid(empty_pid), ff(empty_ff), TBH_gain(TBH_gain), ratio(ratio), control_style(Take_Back_Half) {}
 
-/*
+/**
 * Create the Flywheel object using Bang Bang for control
 * @param motors - pointer to the motors on the fly wheel
 * @param ratio - ratio of the whatever just multiplies the velocity
@@ -65,44 +64,60 @@ Flywheel::Flywheel(motor_group &motors, const double TBH_gain, const double rati
 Flywheel::Flywheel(motor_group &motors, const double ratio)
     :motors(motors), pid(empty_pid), ff(empty_ff), ratio(ratio), control_style(Bang_Bang) {}
 
-
-
-// return the current value that the RPM should be set to;
+/**
+* Return the current value that the RPM should be set to
+* @return RPM = the target rpm
+*/
 double Flywheel::getDesiredRPM() { return RPM; }
 
-// returns whether or not the wheel is running a task currently
+/**
+* Checks if the background RPM controlling task is running
+* @return taskRunning - If the task is running
+*/
 bool Flywheel::isTaskRunning() { return taskRunning; }
-  
-// Returns a POINTER TO the motors; not currently used.
+
+/**
+* Returns a POINTER TO the motors; not currently used.
+*/
 motor_group* Flywheel::getMotors() { return &motors; } // TODO -- Remove?
 
-// return the current velocity of the flywheel motors, in RPM
+/**
+* return the current velocity of the flywheel motors, in RPM
+*/
 double Flywheel::getRPM() { return ratio * motors.velocity(velocityUnits::rpm); }
 
-// Returns a POINTER TO the PID; not currently used.
+/**
+* Returns a POINTER TO the PID; not currently used.
+*/
 PID* Flywheel::getPID() { return &pid; } // TODO -- Remove?
 
-// returns the current OUT value of the PID
+/**
+* returns the current OUT value of the PID - the value that the PID would set the motors to
+*/
 double Flywheel::getPIDValue() { return pid.get(); }
 
-// returns the current OUT value of the Feedforward
+/**
+* returns the current OUT value of the Feedforward - the value that the Feedforward would set the motors to
+*/
 double Flywheel::getFeedforwardValue() { 
   double v = getDesiredRPM();
   return ff.calculate(v, 0); 
 }
 
-// get the gain used for TBH control
+/**
+* get the gain used for TBH control
+*/
 double Flywheel::getTBHGain(){
   return TBH_gain;
 }
 
-/* 
+/**
 * Sets the value of the PID target
 * @param value - desired value of the PID
 */
 void Flywheel::setPIDTarget(double value) { pid.set_target(value); }
 
-/* 
+/**
 * updates the value of the PID
 * @param value - value to update the PID with
 */
@@ -115,7 +130,9 @@ void Flywheel::updatePID(double value) { pid.update(value); }
 * @param wheelPointer - points to the current wheel object
 *********************************************************/
 
-//  Runs a BANG BANG variant. I have NO IDEA if it will work properly but I have NOTHING to test this on.
+/**
+* Runs a Feedforward variant to control rpm
+*/
 int spinRPMTask_BangBang(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer; 
   while(true) {
@@ -126,10 +143,12 @@ int spinRPMTask_BangBang(void* wheelPointer) {
     else { wheel->stopMotors(); }
     vexDelay(1);
   }
-  return 0; // only here to make the compiler SHUT UP
+  return 0;
 }
 
-// Runs a Feedforward variant;
+/**
+* Runs a Feedforward variant to control rpm
+*/
 int spinRPMTask_Feedforward(void* wheelPointer) { 
   Flywheel* wheel = (Flywheel*) wheelPointer;
   // get the pid from the wheel and set its target to the RPM stored in the wheel.
@@ -141,8 +160,9 @@ int spinRPMTask_Feedforward(void* wheelPointer) {
   }
   return 0; 
 }
-
-// Runs a PID + Feedforward variant;
+/**
+* Runs a PID + Feedforward variant to control rpm
+*/
 int spinRPMTask_PID_Feedforward(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
   // get the pid from the wheel and set its target to the RPM stored in the wheel.
@@ -155,8 +175,10 @@ int spinRPMTask_PID_Feedforward(void* wheelPointer) {
   return 0; 
 }
 
-// Runs a Take Back Half variant;
-//https://www.vexwiki.org/programming/controls_algorithms/tbh
+/**
+* Runs a Take Back Half variant to control RPM
+* https://www.vexwiki.org/programming/controls_algorithms/tbh
+*/
 int spinRPMTask_TBH(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
 
@@ -194,7 +216,8 @@ int spinRPMTask_ClosedLoop(void* wheelPointer) { return 0; }
 *         SPINNERS AND STOPPERS
 *********************************************************/
 
-/* Spin motors using voltage; defaults forward at 12 volts
+/** 
+* Spin motors using voltage; defaults forward at 12 volts
 * FOR USE BY TASKS ONLY
 * @param speed - speed (between -1 and 1) to set the motor
 * @param dir - direction that the motor moves in; defaults to forward
@@ -203,13 +226,17 @@ void Flywheel::spin_raw(double speed, directionType dir){
   motors.spin(dir, speed * 12, voltageUnits::volt);
 }
 
-// Spin motors using voltage; defaults forward at 12 volts
-// FOR USE BY OPCONTROL AND AUTONOMOUS, same as spin_raw otherwise
+/**
+* Spin motors using voltage; defaults forward at 12 volts
+* FOR USE BY OPCONTROL AND AUTONOMOUS - this only applies if the RPM thread is not running
+*/
 void Flywheel::spin_manual(double speed, directionType dir){
   if(!taskRunning) motors.spin(dir, speed * 12, voltageUnits::volt);
 }
 
-/* starts / restarts RPM thread at new value
+/**
+* starts or sets the RPM thread at new value
+* what control scheme is dependent on control_style
 * @param inputRPM - set the current RPM
 */
 void Flywheel::spinRPM(int inputRPM) {
@@ -241,15 +268,21 @@ void Flywheel::spinRPM(int inputRPM) {
   setPIDTarget(RPM);
 }
 
-// stop the RPM thread and the wheel
+/**
+* stop the RPM thread and the wheel
+*/
 void Flywheel::stop() {
   rpmTask.stop();
   taskRunning = false;
   motors.stop();
 }
 
-// stop only the motors; exclusively for BANG BANG use
+/**
+* stop only the motors; exclusively for BANG BANG use
+*/
 void Flywheel::stopMotors() { motors.stop(); }
 
-// stop the motors iff the task isn't running
+/**
+* Stop the motors if the task isn't running - stop manual control
+*/
 void Flywheel::stopNonTasks() { if(!taskRunning) { motors.stop(); }}
