@@ -15,6 +15,7 @@
 #include "vex.h"
 #include "../core/include/robot_specs.h"
 #include "../core/include/utils/pid.h"
+#include <atomic>
 
 using namespace vex;
 
@@ -62,7 +63,7 @@ class Flywheel{
   FeedForward ff;                     // FF constants for the flywheel
   double TBH_gain;                    // TBH gain parameter for the flywheel
   double ratio;                       // multiplies the velocity by this value
-  double RPM = -1.0;                  // Desired RPM of the flywheel. 
+  std::atomic<double> RPM;            // Desired RPM of the flywheel. 
   task rpmTask;                       // task (thread but not) that handles spinning the wheel at a given RPM
   FlywheelControlStyle control_style; // how the flywheel should be controlled
 
