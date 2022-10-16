@@ -1,7 +1,8 @@
 /**
  * File: drive_forward_command.h
  * Desc:
- *    Command wrapper class for the drive_forward function in the TankDrive class
+ *    AutoCommand wrapper class for the drive_forward function in the 
+ *    TankDrive class
  */
 
 #pragma once
@@ -15,10 +16,19 @@ using namespace vex;
 class DriveForwardCommand: public AutoCommand {
   public:
     DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir);
+
+    /**
+     * Run drive_forward
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
     bool run() override;
 
   private:
+    // drive system to run the function on
     TankDrive &drive_sys;
+
+    // parameters for drive_forward
     double inches;
     double speed;
     double correction;

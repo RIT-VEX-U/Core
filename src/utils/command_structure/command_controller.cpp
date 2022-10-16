@@ -1,10 +1,10 @@
 /**
  * File: command_controller.cpp
  * Desc:
- *    Handles autonomous command execution
- *    Acts like a queue (because it is one)
- *    Execute and remove command at the head of the queue, 
- *    repeat until there are no more commmands in the queue
+ *    A CommandController manages the AutoCommands that make
+ *    up an autonomous route. The AutoCommands are kept in
+ *    a queue and get executed and removed from the queue
+ *    in FIFO order.
  */
 
 #include "../core/include/utils/command_structure/command_controller.h"
@@ -31,8 +31,7 @@ void CommandController::add_delay(int ms) {
 
 /**
  * Begin execution of the queue
- * Execute and remove command at the head of the queue, 
- * repeat until there are no more commmands in the queue
+ * Execute and remove commands in FIFO order
  */
 void CommandController::run() {
   AutoCommand *next_cmd;
