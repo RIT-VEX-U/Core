@@ -1,7 +1,8 @@
 /**
  * File: drive_forward_command.cpp
  * Desc:
- *    Command wrapper class for the drive_forward function in the TankDrive class
+ *    AutoCommand wrapper class for the drive_forward function in the 
+ *    TankDrive class
  */
 
 #include "vex.h"
@@ -13,6 +14,11 @@ using namespace vex;
 DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir):
   drive_sys(drive_sys), inches(inches), speed(speed), correction(correction), dir(dir) {}
 
+/**
+ * Run drive_forward
+ * Overrides run from AutoCommand
+ * @returns true when execution is complete, false otherwise
+ */
 bool DriveForwardCommand::run() {
   return drive_sys.drive_forward(inches, speed, correction, dir);
 }

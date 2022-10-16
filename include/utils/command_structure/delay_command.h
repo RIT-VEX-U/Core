@@ -1,7 +1,8 @@
 /**
  * File: delay_command.h
  * Desc:
- *    [insert meaningful desc]
+ *    A DelayCommand will make the robot wait the set amount of
+ *    milliseconds before continuing execution of the autonomous route
  */
 
 #pragma once
@@ -11,12 +12,7 @@
 class DelayCommand: public AutoCommand {
   public:
 
-    /**
-     * Constructor
-     */
-    DelayCommand(int _ms) {
-      ms = _ms;
-    }
+    DelayCommand(int ms): ms(ms) {}
     
     /**
      * Delays for the amount of milliseconds stored in the command
