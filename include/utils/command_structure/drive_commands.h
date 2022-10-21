@@ -65,3 +65,67 @@ class TurnDegreesCommand: public AutoCommand {
     double degrees;
     double percent_speed;
 };
+
+/**
+ * AutoCommand wrapper class for the drive_to_point function in the
+ * TankDrive class
+ */
+class DriveToPointCommand: public AutoCommand {
+  public:
+    DriveToPointCommand(TankDrive &drive_sys, double x, double y, double speed, double correction_speed, directionType dir=directionType::fwd);
+
+    /**
+     * Run drive_to_point
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+
+  private:
+    // drive system to run the function on
+    TankDrive &drive_sys;
+
+    // parameters for drive_to_point
+    double x;
+    double y;
+    double speed;
+    double correction_speed;
+    directionType dir;
+};
+
+
+class TurnToHeadingCommand: public AutoCommand {
+  public:
+    TurnToHeadingCommand(TankDrive &drive_sys, double heading_deg, double speed);
+
+    /**
+     * Run turn_to_heading
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+
+  private:
+    // drive system to run the function on
+    TankDrive &drive_sys;
+
+    // parameters for turn_to_heading
+    double heading_deg;
+    double speed;
+};
+
+class DriveStopCommand: public AutoCommand {
+  public:
+    DriveStopCommand(TankDrive &drive_sys);
+
+    /**
+     * Stop the drive system
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+
+  private:
+    // drive system to run the function on
+    TankDrive &drive_sys;
+};
