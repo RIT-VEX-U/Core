@@ -1,11 +1,19 @@
 /**
  * File: drive_commands.h
  * Desc:
- *    Holds all the AutoCommand subclasses that wrap TankDrive functions
+ *    Holds all the AutoCommand subclasses that wrap (currently) TankDrive functions
  *    
  *    Currently includes:
  *      - drive_forward
  *      - turn_degrees
+ *      - drive_to_point
+ *      - turn_to_heading
+ *      - stop
+ *
+ *    Also holds AutoCommand subclasses that wrap OdometryBase functions
+ *
+ *    Currently includes:
+ *      - set_position
  */
 
 #pragma once
@@ -15,6 +23,9 @@
 #include "../core/include/subsystems/tank_drive.h"
 
 using namespace vex;
+
+
+// ==== DRIVING ====
 
 /**
  * AutoCommand wrapper class for the drive_forward function in the 
@@ -128,4 +139,24 @@ class DriveStopCommand: public AutoCommand {
   private:
     // drive system to run the function on
     TankDrive &drive_sys;
+};
+
+
+// ==== ODOMETRY ====
+
+class OdomSetPosition: public AutoCommand {
+  public:
+    OdomSetPosition(OdometryBase &odom, const position_t &newpos=OdometryBase::zero_pos);
+
+    /**
+     * Run set_position
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+
+  private:
+    // drive system with an odometry config
+    OdometryBase &odom;
+    position_t newpos;
 };

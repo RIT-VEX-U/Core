@@ -9,12 +9,19 @@
  *      - drive_to_point
  *      - turn_to_heading
  *      - stop
+ *
+ *    Also holds AutoCommand subclasses that wrap OdometryBase functions
+ *
+ *    Currently includes:
+ *      - set_position
  */
 
 #include "../core/include/utils/command_structure/drive_commands.h"
 
 
-// ==== DRIVE FORWARD ====
+// ==== DRIVING ====
+
+// Drive Forward
 
 DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir):
   drive_sys(drive_sys), inches(inches), speed(speed), correction(correction), dir(dir) {}
@@ -29,7 +36,7 @@ bool DriveForwardCommand::run() {
 }
 
 
-// ==== TURN DEGREES ====
+// Turn Degrees
 
 TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, double degrees, double percent_speed):
   drive_sys(drive_sys), degrees(degrees), percent_speed(percent_speed) {}
@@ -44,7 +51,7 @@ bool TurnDegreesCommand::run() {
 }
 
 
-// ==== DRIVE TO POINT ====
+// Drive to Point
 
 DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, double x, double y, double speed, double correction_speed, directionType dir):
   drive_sys(drive_sys), x(x), y(y), speed(speed), correction_speed(correction_speed), dir(dir) {}
@@ -59,7 +66,7 @@ bool DriveToPointCommand::run() {
 }
 
 
-// ==== TURN TO HEADING ====
+// Turn to Heading
 
 TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, double heading_deg, double speed):
   drive_sys(drive_sys), heading_deg(heading_deg), speed(speed) {}
@@ -74,7 +81,7 @@ bool TurnToHeadingCommand::run() {
 }
 
 
-// ==== STOP ====
+// Stop
 
 DriveStopCommand::DriveStopCommand(TankDrive &drive_sys):
   drive_sys(drive_sys) {}
@@ -86,5 +93,13 @@ DriveStopCommand::DriveStopCommand(TankDrive &drive_sys):
  */
 bool DriveStopCommand::run() {
   drive_sys.stop();
+  return true;
+}
+
+
+// ==== ODOMETRY ====
+
+bool OdomSetPosition::run() {
+  odom.set_position(newpos);
   return true;
 }
