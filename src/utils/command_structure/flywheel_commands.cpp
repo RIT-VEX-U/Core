@@ -6,23 +6,6 @@
 
 #include "../core/include/utils/command_structure/flywheel_commands.h"
 
-SpinRawCommand::SpinRawCommand(Flywheel &flywheel, double speed, directionType dir):
-  flywheel(flywheel), speed(speed), dir(dir) {}
-
-bool SpinRawCommand::run() {
-  flywheel.spin_raw(speed, dir);
-  return true;
-}
-
-
-SpinManualCommand::SpinManualCommand(Flywheel &flywheel, double speed, directionType dir):
-  flywheel(flywheel), speed(speed), dir(dir) {}
-
-bool SpinManualCommand::run() {
-  flywheel.spin_manual(speed, dir);
-  return true;
-}
-
 
 SpinRPMCommand::SpinRPMCommand(Flywheel &flywheel, int rpm):
   flywheel(flywheel), rpm(rpm) {}
