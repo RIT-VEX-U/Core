@@ -9,45 +9,6 @@
 #include "../core/include/subsystems/flywheel.h"
 #include "../core/include/utils/command_structure/auto_command.h"
 
-class SpinRawCommand: public AutoCommand {
-  public:
-    SpinRawCommand(Flywheel &flywheel, double speed, directionType dir=fwd);
-
-    /**
-     * Run spin_raw
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-  private:
-    // Flywheel instance to run the function on
-    Flywheel &flywheel;
-
-    // parameters for spin_raw
-    double speed;
-    directionType dir;
-};
-
-class SpinManualCommand: public AutoCommand {
-  SpinManualCommand(Flywheel &flywheel, double speed, directionType dir=fwd);
-
-    /**
-     * Run spin_manual
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-  private:
-    // Flywheel instance to run the function on
-    Flywheel &flywheel;
-
-    // parameters for spin_manual
-    double speed;
-    directionType dir;
-};
-
 class SpinRPMCommand: AutoCommand {
   SpinRPMCommand(Flywheel &flywheel, int rpm);
 
