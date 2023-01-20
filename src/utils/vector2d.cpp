@@ -17,7 +17,7 @@ Vector2D::Vector2D(double dir, double mag)
  * 
  * @param p point_t.x , point_t.y
  */
-Vector2D::Vector2D(point_t &p)
+Vector2D::Vector2D(point_t p)
 {
     this->dir = atan2(p.y, p.x);
     this->mag = sqrt( (p.x*p.x) + (p.y*p.y) );

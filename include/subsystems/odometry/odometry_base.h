@@ -7,8 +7,6 @@
 #define PI 3.141592654
 #endif
 
-#define DOWNTIME 0 //milliseconds
-
 // Describes a single position and rotation
 typedef struct
 {
@@ -18,11 +16,28 @@ typedef struct
 } position_t;
 
 /**
- * Base odometry class to simplify implementations of multiple drivetrains.
+ * OdometryBase
+ * 
+ * This base class contains all the shared code between different implementations of odometry.
+ * It handles the asynchronous management, position input/output and basic math functions, and 
+ * holds positional types specific to field orientation. 
+ * 
+ * All future odometry implementations should extend this file and redefine update() function. 
+ * 
+ * @author Ryan McGee
+ * @date Aug 11 2021
  */
 class OdometryBase
 {
 public:
+
+    /**
+     * Construct a new Odometry Base object
+     * 
+     * @param is_async True to run constantly in the background, false to call update() manually
+     */
+    OdometryBase(bool is_async);
+
     /**
     * Gets the current position and rotation
     */
@@ -39,6 +54,15 @@ public:
     virtual position_t update() = 0;
 
     /**
+     * Function that runs in the background task. This function pointer is passed
+     * to the vex::task constructor. 
+     * 
+     * @param ptr Pointer to OdometryBase object
+     * @return Required integer return code. Unused.
+     */
+    static int background_task(void* ptr);
+
+    /**
      * End the background task. Cannot be restarted.
      * If the user wants to end the thread but keep the data up to date,
      * they must run the update() function manually from then on.
@@ -53,7 +77,7 @@ public:
     /**
      * Get the change in rotation between two points
      */
-    static double rot_diff(position_t &pos1, position_t &pos2);
+    static double rot_diff(position_t pos1, position_t pos2);
 
     /**
      * Get the smallest difference in angle between a start heading and end heading.
@@ -64,7 +88,7 @@ public:
 
     bool end_task = false;
 
-    inline static constexpr position_t zero_pos = {.x=0, .y=0, .rot=90};
+    inline static constexpr position_t zero_pos = {.x=0.0L, .y=0.0L, .rot=90.0L};
 
 protected:
     vex::task *handle;

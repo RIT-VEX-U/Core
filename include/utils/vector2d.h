@@ -58,7 +58,7 @@ public:
      * 
      * @param p point_t.x , point_t.y
      */
-    Vector2D(point_t &p);
+    Vector2D(point_t p);
 
     /**
      * Get the direction of the vector, in radians.
