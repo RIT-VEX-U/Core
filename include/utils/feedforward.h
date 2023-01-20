@@ -20,6 +20,12 @@
  * @author Ryan McGee
  * @date 6/13/2022
  */
+#include <math.h>
+#include <vector>
+#include "../core/include/utils/math_util.h"
+#include "../core/include/utils/moving_average.h"
+#include "vex.h"
+
 class FeedForward
 {
     public:
@@ -59,3 +65,13 @@ class FeedForward
     ff_config_t &cfg;
 
 };
+
+
+/**
+* tune_feedforward takes a group of motors and finds the feedforward conifg parameters automagically.
+*  @param motor the motor group to use 
+*  @param pct Maximum velocity in percent (0->1.0)
+ * @param duration Amount of time the motors spin for the test
+ * @return A tuned feedforward object
+ */
+FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, double duration);
