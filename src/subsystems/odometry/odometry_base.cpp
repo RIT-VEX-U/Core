@@ -2,6 +2,45 @@
 #include "../core/include/utils/vector2d.h"
 
 /**
+ * Construct a new Odometry Base object
+ * 
+ * @param is_async True to run constantly in the background, false to call update() manually
+ */
+OdometryBase::OdometryBase(bool is_async) : current_pos(zero_pos)
+{
+  if(is_async)
+    handle = new vex::task(background_task, (void*) this);
+}
+
+/**
+ * Function that runs in the background task. This function pointer is passed
+ * to the vex::task constructor. 
+ * 
+ * @param ptr Pointer to OdometryBase object
+ * @return Required integer return code. Unused.
+ */
+int OdometryBase::background_task(void* ptr)
+{
+    OdometryBase &obj = *((OdometryBase*) ptr);
+    while(!obj.end_task)
+    {
+      obj.update();
+    }
+
+    return 0;
+}
+
+/**
+ * End the background task. Cannot be restarted.
+ * If the user wants to end the thread but keep the data up to date,
+ * they must run the update() function manually from then on.
+ */
+void OdometryBase::end_async()
+{
+  this->end_task = true;
+}
+
+/**
 * Gets the current position and rotation
 */
 position_t OdometryBase::get_position(void)
@@ -36,16 +75,6 @@ void OdometryBase::set_position(const position_t &newpos)
 }
 
 /**
- * End the background task. Cannot be restarted.
- * If the user wants to end the thread but keep the data up to date,
- * they must run the update() function manually from then on.
- */
-void OdometryBase::end_async()
-{
-  this->end_task = true;
-}
-
-/**
  * Get the distance between two points
  */
 double OdometryBase::pos_diff(position_t start_pos, position_t end_pos)
@@ -59,7 +88,7 @@ double OdometryBase::pos_diff(position_t start_pos, position_t end_pos)
 /**
  * Get the change in rotation between two points
  */
-double OdometryBase::rot_diff(position_t &pos1, position_t &pos2)
+double OdometryBase::rot_diff(position_t pos1, position_t pos2)
 {
   return pos1.rot - pos2.rot;
 }

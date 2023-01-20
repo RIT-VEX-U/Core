@@ -1,4 +1,6 @@
 #pragma once
+#include "math.h"
+#include "vex.h"
 #include <vector>
 
 /**
@@ -18,6 +20,8 @@ double clamp(double value, double low, double high);
 **/
 double sign(double x);
 
+double wrap_angle_deg(double input);
+double wrap_angle_rad(double input);
 
 /*
 Calculates the variance of  a set of numbers (needed for linear regression)
