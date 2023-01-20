@@ -55,7 +55,8 @@ int background_task(void* odom_obj)
     {
         odom.update();
 
-        vexDelay(DOWNTIME);
+        if (DOWNTIME != 0)
+          vexDelay(DOWNTIME);
     }
 
     return 0;
@@ -116,9 +117,37 @@ position_t OdometryTank::update()
 
     updated_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
 
+
+    static position_t last_pos = updated_pos;
+    static double last_speed = 0;
+    static timer tmr;
+
+    double speed_local = 0;
+    double accel_local = 0;
+    bool update_vel_accel = tmr.time(sec) > 0.1;
+
+    // This loop runs too fast. Only check at LEAST every 1/10th sec
+    if(update_vel_accel)
+    {
+      // Calculate robot velocity
+      speed_local = pos_diff(updated_pos, last_pos) / tmr.time(sec);
+
+      // Calculate robot acceleration
+      accel_local = (speed_local - last_speed) / tmr.time(sec);
+
+      tmr.reset();
+      last_pos = updated_pos;
+      last_speed = speed_local;
+    }
+
     // Update the class' stored position
     mut.lock();
     this->current_pos = updated_pos;
+    if(update_vel_accel)
+    {
+      this->speed = speed_local;
+      this->accel = accel_local;
+    }
     mut.unlock();
 
     return updated_pos;
@@ -165,15 +194,18 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
 
 double OdometryTank::get_speed()
 {
-  static position_t last_pos = get_position();
-  static timer speed_tmr;
+  mut.lock();
+  double retval = speed;
+  mut.unlock();
+  
+  return retval;
+}
 
-  double out = 0;
-  if(speed_tmr.value() != 0)
-  {
-    out = pos_diff(last_pos, get_position()) / speed_tmr.time(timeUnits::sec);
-    speed_tmr.reset();
-  }
-  last_pos = get_position();
-  return out;
+double OdometryTank::get_accel()
+{
+  mut.lock();
+  double retval = accel;
+  mut.unlock();
+
+  return retval;
 }

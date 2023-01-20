@@ -1,10 +1,11 @@
 #include "../core/include/subsystems/tank_drive.h"
+#include "../core/include/utils/math_util.h"
 
 TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryTank *odom)
-    : left_motors(left_motors), right_motors(right_motors),
-     drive_pid(config.drive_pid), turn_pid(config.turn_pid), correction_pid(config.correction_pid), odometry(odom), config(config)
+    : left_motors(left_motors), right_motors(right_motors), correction_pid(config.correction_pid), odometry(odom), config(config)
 {
-
+  drive_default_feedback = config.drive_feedback;
+  turn_default_feedback = config.turn_feedback;
 }
 
 /**
@@ -69,11 +70,11 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
  * This driving method is relative, so excessive use may cause the robot to get off course!
  *
  * @param inches Distance to drive in a straight line
- * @param speed How fast the robot should travel, 0 -> 1.0
- * @param correction How much the robot should correct for being off angle
  * @param dir Whether the robot is travelling forwards or backwards
+ * @param correction How much the robot should correct for being off angle
+ * @param speed How fast the robot should travel, 0 -> 1.0
  */
-bool TankDrive::drive_forward(double inches, double speed, double correction, directionType dir)
+bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed)
 {
   static position_t pos_setpt;
 
@@ -88,31 +89,57 @@ bool TankDrive::drive_forward(double inches, double speed, double correction, di
   // Generate a point X inches forward of the current position, on first startup
   if (!func_initialized)
   {
-    saved_pos = odometry->get_position();
-    drive_pid.reset();
+    position_t cur_pos = odometry->get_position();
+
+    // forwards is positive Y axis, backwards is negative
+    if (dir == directionType::rev)
+      inches = -fabs(inches);
+    else
+      inches = fabs(inches);
 
     // Use vector math to get an X and Y
-    Vector2D current_pos({saved_pos.x , saved_pos.y});
-    Vector2D delta_pos(deg2rad(saved_pos.rot), inches);
-    Vector2D setpt_vec = current_pos + delta_pos;
+    Vector2D cur_pos_vec({cur_pos.x , cur_pos.y});
+    Vector2D delta_pos_vec(deg2rad(cur_pos.rot), inches);
+    Vector2D setpt_vec = cur_pos_vec + delta_pos_vec;
 
     // Save the new X and Y values
     pos_setpt = {.x=setpt_vec.get_x(), .y=setpt_vec.get_y()};
 
-    func_initialized = true;
   }
 
   // Call the drive_to_point with updated point values
-  return drive_to_point(pos_setpt.x, pos_setpt.y, speed, correction, dir);
+  return drive_to_point(pos_setpt.x, pos_setpt.y, dir, feedback, max_speed);
+}
+/**
+ * Autonomously drive forward or backwards, X inches infront or behind the robot's current position.
+ * This driving method is relative, so excessive use may cause the robot to get off course!
+ *
+ * @param inches Distance to drive in a straight line
+ * @param speed How fast the robot should travel, 0 -> 1.0
+ * @param correction How much the robot should correct for being off angle
+ * @param dir Whether the robot is travelling forwards or backwards
+ */
+bool TankDrive::drive_forward(double inches, directionType dir, double max_speed)
+{
+  if(drive_default_feedback != NULL)
+    return drive_forward(inches, dir, *drive_default_feedback, max_speed);
+
+  printf("tank_drive.cpp: Cannot run drive_forward without a feedback controller!\n");
+  fflush(stdout);
+  return true;
 }
 
 /**
- * Autonomously turn the robot X degrees to the right (negative for left), with a maximum motor speed
+ * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
  * of percent_speed (-1.0 -> 1.0)
  * 
- * Uses a PID loop for it's control.
+ * Uses the specified feedback for it's control.
+ * 
+ * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
+ * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+ * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
  */
-bool TankDrive::turn_degrees(double degrees, double percent_speed)
+bool TankDrive::turn_degrees(double degrees, Feedback &feedback, double max_speed)
 {
   // We can't run the auto drive function without odometry
   if(odometry == NULL)
@@ -122,34 +149,37 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
     return true;
   }
 
+  static double target_heading = 0;
+
   // On the first run of the funciton, reset the gyro position and PID
   if (!func_initialized)
   {
-    saved_pos = odometry->get_position();
-    turn_pid.reset();
+    double start_heading = odometry->get_position().rot;
+    target_heading = start_heading + degrees;
 
-    turn_pid.set_limits(-fabs(percent_speed), fabs(percent_speed));
-    turn_pid.set_target(0);
-
-    func_initialized = true;
-  }
-  double heading = odometry->get_position().rot - saved_pos.rot;
-  double delta_heading = OdometryBase::smallest_angle(heading, degrees);
-  turn_pid.update(delta_heading);
-
-  // printf("heading: %f, delta_heading: %f\n", heading, delta_heading);
-
-  drive_tank(turn_pid.get(), -turn_pid.get());
-
-  // If the robot is at it's target, return true
-  if (turn_pid.is_on_target())
-  {
-    drive_tank(0, 0);
-    func_initialized = false;
-    return true;
   }
 
-  return false;
+  return turn_to_heading(target_heading);
+}
+
+/**
+ * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
+ * of percent_speed (-1.0 -> 1.0)
+ * 
+ * Uses the defualt turning feedback of the drive system.
+ * 
+ * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
+ * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+ * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ */
+bool TankDrive::turn_degrees(double degrees, double max_speed)
+{
+  if(turn_default_feedback != NULL)
+    return turn_degrees(degrees, *turn_default_feedback, max_speed);
+  
+  printf("tank_drive.cpp: Cannot run turn_degrees without a feedback controller!\n");
+  fflush(stdout);
+  return true;
 }
 
 /**
@@ -157,8 +187,13 @@ bool TankDrive::turn_degrees(double degrees, double percent_speed)
   * X and Y is the final point we want the robot.
   *
   * Returns whether or not the robot has reached it's destination.
+  * @param x          the x position of the target
+  * @param y          the y position of the target
+  * @param dir        the direction we want to travel forward and backward
+  * @param feedback   the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+  * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
   */
-bool TankDrive::drive_to_point(double x, double y, double speed, double correction_speed, vex::directionType dir)
+bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedback &feedback, double max_speed)
 {
   // We can't run the auto drive function without odometry
   if(odometry == NULL)
@@ -170,19 +205,15 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   
   if(!func_initialized)
   {
+    
+    double initial_dist = OdometryBase::pos_diff(odometry->get_position(), {.x=x, .y=y});
+
     // Reset the control loops
-    drive_pid.reset();
-    correction_pid.reset();
+    correction_pid.init(0, 0);
+    feedback.init(-initial_dist, 0);
 
-    drive_pid.set_limits(-fabs(speed), fabs(speed));
-    correction_pid.set_limits(-fabs(correction_speed), fabs(correction_speed));
-
-    // Set the targets to 0, because we update with the change in distance and angle between the current point
-    // and the new point.
-    drive_pid.set_target(0);
-    correction_pid.set_target(0);
-
-    // point_orientation_deg = atan2(y - odometry->get_position().y, x - odometry->get_position().x) * 180.0 / PI;
+    correction_pid.set_limits(-1, 1);
+    feedback.set_limits(-1, 1);
 
     func_initialized = true;
   }
@@ -210,9 +241,11 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   double angle_to_point = atan2(y - current_pos.y, x - current_pos.x) * 180.0 / PI;
   double angle = fmod(current_pos.rot - angle_to_point, 360.0);
+
   // Normalize the angle between 0 and 360
   if (angle > 360) angle -= 360;
   if (angle < 0) angle += 360; 
+
   // If the angle is behind the robot, report negative.
   if (dir == directionType::fwd && angle > 90 && angle < 270)
     sign = -1;
@@ -239,7 +272,7 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 
   // Update the PID controllers with new information
   correction_pid.update(delta_heading);
-  drive_pid.update(sign * -1 * dist_left);
+  feedback.update(sign * -1 * dist_left);
 
   // Disable correction when we're close enough to the point
   double correction = 0;
@@ -249,25 +282,22 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
   // Reverse the drive_pid output if we're going backwards
   double drive_pid_rval;
   if(dir == directionType::rev)
-    drive_pid_rval = drive_pid.get() * -1;
+    drive_pid_rval = feedback.get() * -1;
   else
-    drive_pid_rval = drive_pid.get();
+    drive_pid_rval = feedback.get();
 
   // Combine the two pid outputs
   double lside = drive_pid_rval + correction;
   double rside = drive_pid_rval - correction;
 
   // limit the outputs between -1 and +1
-  lside = (lside > 1) ? 1 : (lside < -1) ? -1 : lside;
-  rside = (rside > 1) ? 1 : (rside < -1) ? -1 : rside;
+  lside = clamp(lside, -1, 1);
+  rside = clamp(rside, -1, 1);
 
   drive_tank(lside, rside);
 
-  printf("dist: %f\n", sign * -1 * dist_left);
-  fflush(stdout);
-
   // Check if the robot has reached it's destination
-  if(drive_pid.is_on_target())
+  if(feedback.is_on_target())
   {
     stop();
     func_initialized = false;
@@ -278,10 +308,36 @@ bool TankDrive::drive_to_point(double x, double y, double speed, double correcti
 }
 
 /**
+  * Use odometry to automatically drive the robot to a point on the field.
+  * X and Y is the final point we want the robot.
+  * Here we use the default feedback controller from the drive_sys
+  *
+  * Returns whether or not the robot has reached it's destination.
+  * @param x          the x position of the target
+  * @param y          the y position of the target
+  * @param dir        the direction we want to travel forward and backward
+  * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+  */
+bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, double max_speed)
+{
+  if(drive_default_feedback != NULL)
+    return this->drive_to_point(x, y, dir, *drive_default_feedback, max_speed);
+
+  printf("tank_drive.cpp: Cannot run drive_to_point without a feedback controller!\n");
+  fflush(stdout);
+  return true;
+}
+
+/**
  * Turn the robot in place to an exact heading relative to the field.
- * 0 is forward, and 0->360 is clockwise.
+ * 0 is forward.
+ * 
+ * @param heading_deg the heading to which we will turn 
+ * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+ * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
  */
-bool TankDrive::turn_to_heading(double heading_deg, double speed)
+ 
+bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double max_speed)
 {
   // We can't run the auto drive function without odometry
   if(odometry == NULL)
@@ -293,27 +349,23 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
 
   if(!func_initialized)
   {
-    turn_pid.reset();
-    turn_pid.set_limits(-fabs(speed), fabs(speed));
-
-    // Set the target to zero, and the input will be a delta.
-    turn_pid.set_target(0);
+    double initial_delta = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
+    feedback.init(-initial_delta, 0);
+    feedback.set_limits(-fabs(max_speed), fabs(max_speed));
 
     func_initialized = true;
   }
 
   // Get the difference between the new heading and the current, and decide whether to turn left or right.
   double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
-  turn_pid.update(delta_heading);
+  feedback.update(-delta_heading);
 
-  printf("~TURN~ delta: %f\n", delta_heading);
-  // printf("delta heading: %f, pid: %f\n", delta_heading, turn_pid.get());
   fflush(stdout);
 
-  drive_tank(turn_pid.get(), -turn_pid.get());
+  drive_tank(-feedback.get(), feedback.get());
 
   // When the robot has reached it's angle, return true.
-  if(turn_pid.is_on_target())
+  if(feedback.is_on_target())
   {
     func_initialized = false;
     stop();
@@ -321,6 +373,22 @@ bool TankDrive::turn_to_heading(double heading_deg, double speed)
   }
 
   return false;
+}
+/**
+ * Turn the robot in place to an exact heading relative to the field.
+ * 0 is forward. Uses the defualt turn feedback of the drive system 
+ * 
+ * @param heading_deg the heading to which we will turn 
+ * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ */
+bool TankDrive::turn_to_heading(double heading_deg, double max_speed)
+{
+  if(turn_default_feedback != NULL)
+    return turn_to_heading(heading_deg, *turn_default_feedback, max_speed);
+
+  printf("tank_drive.cpp: Cannot run turn_to_heading without a feedback controller!\n");
+  fflush(stdout);
+  return true;
 }
 
 /**
@@ -332,7 +400,8 @@ double TankDrive::modify_inputs(double input, int power)
   return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
 }
 
-bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, double radius, double speed, double res, directionType dir) {
+bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, directionType dir, double radius, double res, Feedback &feedback, double max_speed) 
+{
   is_pure_pursuit = true;
   std::vector<Vector2D::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
@@ -344,7 +413,7 @@ bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, doubl
   if(is_last_point)
     is_pure_pursuit = false;
 
-  bool retval = drive_to_point(lookahead.x, lookahead.y, speed, 1, dir);
+  bool retval = drive_to_point(lookahead.x, lookahead.y, dir, feedback, max_speed);
 
   if(is_last_point)
     return retval;
