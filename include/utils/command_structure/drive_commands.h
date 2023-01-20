@@ -33,7 +33,7 @@ using namespace vex;
  */
 class DriveForwardCommand: public AutoCommand {
   public:
-    DriveForwardCommand(TankDrive &drive_sys, double inches, double speed, double correction, directionType dir);
+    DriveForwardCommand(TankDrive &drive_sys, double inches, directionType dir, double max_speed);
 
     /**
      * Run drive_forward
@@ -48,9 +48,8 @@ class DriveForwardCommand: public AutoCommand {
 
     // parameters for drive_forward
     double inches;
-    double speed;
-    double correction;
     directionType dir;
+    double max_speed;
 };
 
 /**
@@ -59,7 +58,7 @@ class DriveForwardCommand: public AutoCommand {
  */
 class TurnDegreesCommand: public AutoCommand {
   public:
-    TurnDegreesCommand(TankDrive &drive_sys, double degrees, double percent_speed);
+    TurnDegreesCommand(TankDrive &drive_sys, double degrees, double max_speed);
 
     /**
      * Run turn_degrees
@@ -74,7 +73,7 @@ class TurnDegreesCommand: public AutoCommand {
 
     // parameters for turn_degrees
     double degrees;
-    double percent_speed;
+    double max_speed;
 };
 
 /**
@@ -83,7 +82,7 @@ class TurnDegreesCommand: public AutoCommand {
  */
 class DriveToPointCommand: public AutoCommand {
   public:
-    DriveToPointCommand(TankDrive &drive_sys, double x, double y, double speed, double correction_speed, directionType dir=directionType::fwd);
+    DriveToPointCommand(TankDrive &drive_sys, double x, double y, directionType dir, double max_speed);
 
     /**
      * Run drive_to_point
@@ -99,9 +98,9 @@ class DriveToPointCommand: public AutoCommand {
     // parameters for drive_to_point
     double x;
     double y;
-    double speed;
-    double correction_speed;
     directionType dir;
+    double max_speed;
+    
 };
 
 
@@ -122,7 +121,7 @@ class TurnToHeadingCommand: public AutoCommand {
 
     // parameters for turn_to_heading
     double heading_deg;
-    double speed;
+    double max_speed;
 };
 
 class DriveStopCommand: public AutoCommand {

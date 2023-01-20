@@ -37,6 +37,7 @@ public:
     void set_position(const position_t &newpos=zero_pos) override;
 
     double get_speed();
+    double get_accel();
 
 private:
     /**
@@ -48,6 +49,8 @@ private:
     CustomEncoder *left_enc, *right_enc;
     vex::inertial *imu;
     robot_specs_t &config;
+
+    double speed, accel;
 
     double rotation_offset = 0;
     

@@ -7,8 +7,8 @@
  * that require info about the robot.
  * All distance measurements are in inches.
  */
-typedef struct 
-{
+typedef struct
+{  
   double robot_radius;
 
   double odom_wheel_diam;
@@ -17,8 +17,8 @@ typedef struct
 
   double drive_correction_cutoff;
 
-  PID::pid_config_t drive_pid;
-  PID::pid_config_t turn_pid;
+  Feedback *drive_feedback;
+  Feedback *turn_feedback;
   PID::pid_config_t correction_pid;
 
 } robot_specs_t;
