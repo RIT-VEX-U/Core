@@ -1,7 +1,7 @@
 #include "../core/include/subsystems/tank_drive.h"
 #include "../core/include/utils/math_util.h"
 
-TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryTank *odom)
+TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
     : left_motors(left_motors), right_motors(right_motors), correction_pid(config.correction_pid), odometry(odom), config(config)
 {
   drive_default_feedback = config.drive_feedback;
