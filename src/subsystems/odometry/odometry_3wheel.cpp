@@ -28,8 +28,37 @@ position_t Odometry3Wheel::update()
     rside_old = rside;
     offax_old = offax;
 
+    position_t updated_pos = calculate_new_pos(lside_delta, rside_delta, offax_delta, current_pos, cfg);
+
+    static position_t last_pos = updated_pos;
+    static double last_speed = 0;
+    static timer tmr;
+
+    double speed_local = 0;
+    double accel_local = 0;
+    bool update_vel_accel = tmr.time(sec) > 0.1;
+
+    // This loop runs too fast. Only check at LEAST every 1/10th sec
+    if(update_vel_accel)
+    {
+      // Calculate robot velocity
+      speed_local = pos_diff(updated_pos, last_pos) / tmr.time(sec);
+
+      // Calculate robot acceleration
+      accel_local = (speed_local - last_speed) / tmr.time(sec);
+
+      tmr.reset();
+      last_pos = updated_pos;
+      last_speed = speed_local;
+    }
+
     mut.lock();
-    current_pos = calculate_new_pos(lside_delta, rside_delta, offax_delta, current_pos, cfg);
+    this->current_pos = updated_pos;
+    if(update_vel_accel)
+    {
+        this->speed = speed_local;
+        this->accel = accel_local;
+    }
     mut.unlock();
 
     return current_pos;

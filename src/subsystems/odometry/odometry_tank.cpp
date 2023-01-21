@@ -162,21 +162,3 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
 
     return new_pos;
 }
-
-double OdometryTank::get_speed()
-{
-  mut.lock();
-  double retval = speed;
-  mut.unlock();
-  
-  return retval;
-}
-
-double OdometryTank::get_accel()
-{
-  mut.lock();
-  double retval = accel;
-  mut.unlock();
-
-  return retval;
-}
