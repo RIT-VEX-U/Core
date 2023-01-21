@@ -142,6 +142,7 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive)
     con.Screen.newLine();
     con.Screen.print("Press A to continue");
     while(!con.ButtonA.pressing()) { vexDelay(20); }
+    con.Screen.clearScreen();
     
     old_lval = lside_fwd.position(deg);
     old_rval = rside_fwd.position(deg);
@@ -176,5 +177,5 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive)
     con.Screen.newLine();
     con.Screen.print("offax: %f", found_offax_center_dist);
 
-    printf("Tuning completed.\n  Wheel Diameter: %f\n  Wheelbase: %f\n  Off Axis Distance: %f\n");
+    printf("Tuning completed.\n  Wheel Diameter: %f\n  Wheelbase: %f\n  Off Axis Distance: %f\n", found_diam, found_wheelbase, found_offax_center_dist);
 }
