@@ -22,7 +22,7 @@ public:
   /**
    * Create the TankDrive object 
    */
-  TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryTank *odom=NULL);
+  TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom=NULL);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -167,7 +167,7 @@ private:
   Feedback *drive_default_feedback = NULL;
   Feedback *turn_default_feedback = NULL;
 
-  OdometryTank *odometry;
+  OdometryBase *odometry;
 
   robot_specs_t &config;
 
