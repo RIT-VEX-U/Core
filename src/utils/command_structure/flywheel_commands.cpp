@@ -15,6 +15,19 @@ bool SpinRPMCommand::run() {
   return true;
 }
 
+WaitUntilUpToSpeedCommand::WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshhold_rpm):
+  flywheel(flywheel), threshhold_rpm(threshhold_rpm) {}
+
+bool WaitUntilUpToSpeedCommand::run() {
+  // If we're withing the specified threshhold, we're ready to fire
+  if (fabs(flywheel.getDesiredRPM() - flywheel.getRPM()) < threshhold_rpm){
+    return true;
+  }
+  // else, keep waiting
+  return false;
+}
+
+
 
 FlywheelStopCommand::FlywheelStopCommand(Flywheel &flywheel):
   flywheel(flywheel) {}
