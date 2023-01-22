@@ -9,15 +9,17 @@
  * This class handles the code for a standard 3-pod odometry setup, where there are 3 "pods" made up of undriven
  * (dead) wheels connected to encoders in the following configuration:
  * 
- *  ---------------
- *  |             |
- *  |             |
- *  | ||   X   || |
- *  |             |
- *  |     ===     |
- *  ---------------
+ *  +Y   ---------------
+ *  ^    |             |
+ *  |    |             |
+ *  |    | ||   O   || |
+ *  |    |             |
+ *  |    |     ===     |
+ *  |    ---------------
+ *  |
+ *  +-------------------> + X
  * 
- * Where X is the center of rotation. The robot will monitor the changes in rotation of these wheels and calculate
+ * Where O is the center of rotation. The robot will monitor the changes in rotation of these wheels and calculate
  * the robot's X, Y and rotation on the field.
  * 
  * This is a "set and forget" class, meaning once the object is created, the robot will immediately begin
