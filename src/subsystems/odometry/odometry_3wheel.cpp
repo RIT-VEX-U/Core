@@ -32,10 +32,13 @@ position_t Odometry3Wheel::update()
 
     static position_t last_pos = updated_pos;
     static double last_speed = 0;
+    static double last_ang_speed = 0;
     static timer tmr;
 
     double speed_local = 0;
     double accel_local = 0;
+    double ang_speed_local = 0;
+    double ang_accel_local = 0;
     bool update_vel_accel = tmr.time(sec) > 0.1;
 
     // This loop runs too fast. Only check at LEAST every 1/10th sec
@@ -47,9 +50,16 @@ position_t Odometry3Wheel::update()
       // Calculate robot acceleration
       accel_local = (speed_local - last_speed) / tmr.time(sec);
 
+      // Calculate robot angular velocity (deg/sec)
+      ang_speed_local = smallest_angle(updated_pos.rot, last_pos.rot) / tmr.time(sec);
+
+      // Calculate robot angular acceleration (deg/sec^2)
+      ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
+
       tmr.reset();
       last_pos = updated_pos;
       last_speed = speed_local;
+      last_ang_speed = ang_speed_local;
     }
 
     mut.lock();
@@ -58,6 +68,8 @@ position_t Odometry3Wheel::update()
     {
         this->speed = speed_local;
         this->accel = accel_local;
+        this->ang_speed_deg = ang_speed_local;
+        this->ang_accel_deg = ang_accel_local;
     }
     mut.unlock();
 
