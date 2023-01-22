@@ -130,3 +130,21 @@ double OdometryBase::get_accel()
 
   return retval;
 }
+
+double OdometryBase::get_angular_speed_deg()
+{
+  mut.lock();
+  double retval = ang_speed_deg;
+  mut.unlock();
+
+  return retval;
+}
+
+double OdometryBase::get_angular_accel_deg()
+{
+  mut.lock();
+  double retval = ang_accel_deg;
+  mut.unlock();
+
+  return retval;
+}
