@@ -30,10 +30,11 @@ using namespace vex;
 /**
  * AutoCommand wrapper class for the drive_forward function in the 
  * TankDrive class
+ *
  */
 class DriveForwardCommand: public AutoCommand {
   public:
-    DriveForwardCommand(TankDrive &drive_sys, double inches, directionType dir, double max_speed);
+    DriveForwardCommand(TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed=1);
 
     /**
      * Run drive_forward
@@ -45,6 +46,9 @@ class DriveForwardCommand: public AutoCommand {
   private:
     // drive system to run the function on
     TankDrive &drive_sys;
+
+    // feedback controller to use
+    Feedback &feedback;
 
     // parameters for drive_forward
     double inches;
@@ -58,7 +62,7 @@ class DriveForwardCommand: public AutoCommand {
  */
 class TurnDegreesCommand: public AutoCommand {
   public:
-    TurnDegreesCommand(TankDrive &drive_sys, double degrees, double max_speed);
+    TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed);
 
     /**
      * Run turn_degrees
@@ -70,6 +74,9 @@ class TurnDegreesCommand: public AutoCommand {
   private:
     // drive system to run the function on
     TankDrive &drive_sys;
+    
+    // feedback controller to use
+    Feedback &feedback;
 
     // parameters for turn_degrees
     double degrees;
@@ -82,7 +89,7 @@ class TurnDegreesCommand: public AutoCommand {
  */
 class DriveToPointCommand: public AutoCommand {
   public:
-    DriveToPointCommand(TankDrive &drive_sys, double x, double y, directionType dir, double max_speed);
+    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed);
 
     /**
      * Run drive_to_point
@@ -95,6 +102,9 @@ class DriveToPointCommand: public AutoCommand {
     // drive system to run the function on
     TankDrive &drive_sys;
 
+    // feedback controller to use
+    Feedback &feedback;
+
     // parameters for drive_to_point
     double x;
     double y;
@@ -106,7 +116,7 @@ class DriveToPointCommand: public AutoCommand {
 
 class TurnToHeadingCommand: public AutoCommand {
   public:
-    TurnToHeadingCommand(TankDrive &drive_sys, double heading_deg, double speed);
+    TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed);
 
     /**
      * Run turn_to_heading
@@ -118,6 +128,9 @@ class TurnToHeadingCommand: public AutoCommand {
   private:
     // drive system to run the function on
     TankDrive &drive_sys;
+
+    // feedback controller to use
+    Feedback &feedback;
 
     // parameters for turn_to_heading
     double heading_deg;

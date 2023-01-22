@@ -21,10 +21,9 @@
 
 // ==== DRIVING ====
 
-// Drive Forward
 
-DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, directionType dir, double max_speed):
-  drive_sys(drive_sys), inches(inches), dir(dir), max_speed(max_speed) {}
+DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed):
+  drive_sys(drive_sys), feedback(feedback), inches(inches), dir(dir), max_speed(max_speed) {}
 
 /**
  * Run drive_forward
@@ -32,14 +31,14 @@ DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, double inches, di
  * @returns true when execution is complete, false otherwise
  */
 bool DriveForwardCommand::run() {
-  return drive_sys.drive_forward(inches, dir, max_speed);
+  return drive_sys.drive_forward(inches, dir, feedback, max_speed);
 }
 
 
 // Turn Degrees
 
-TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, double degrees, double max_speed):
-  drive_sys(drive_sys), degrees(degrees), max_speed(max_speed) {}
+TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed):
+  drive_sys(drive_sys), feedback(feedback), degrees(degrees), max_speed(max_speed) {}
 
 /**
  * Run turn_degrees
@@ -53,8 +52,8 @@ bool TurnDegreesCommand::run() {
 
 // Drive to Point
 
-DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, double x, double y, directionType dir, double max_speed):
-  drive_sys(drive_sys), x(x), y(y), dir(dir), max_speed(max_speed) {}
+DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed):
+  drive_sys(drive_sys), feedback(feedback), x(x), y(y), dir(dir), max_speed(max_speed) {}
 
 /**
  * Run drive_to_point
@@ -68,8 +67,8 @@ bool DriveToPointCommand::run() {
 
 // Turn to Heading
 
-TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, double heading_deg, double max_speed):
-  drive_sys(drive_sys), heading_deg(heading_deg), max_speed(max_speed) {}
+TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double max_speed):
+  drive_sys(drive_sys), feedback(feedback), heading_deg(heading_deg), max_speed(max_speed) {}
 
 /**
  * Run turn_to_heading
@@ -77,7 +76,7 @@ TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, double heading_
  * @returns true when execution is complete, false otherwise
  */
 bool TurnToHeadingCommand::run() {
-  return drive_sys.turn_to_heading(heading_deg, max_speed);
+  return drive_sys.turn_to_heading(heading_deg, feedback, max_speed);
 }
 
 
