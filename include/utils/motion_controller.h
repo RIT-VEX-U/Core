@@ -37,10 +37,11 @@ class MotionController : public Feedback
     /**
      * @brief Construct a new Motion Controller object
      * 
-     * @param max_v Maximum velocity the movement is capable of
-     * @param accel Acceleration / deceleration of the movement
-     * @param pid_cfg Definitions of kP, kI, and kD
-     * @param ff_cfg Definitions of kS, kV, and kA
+     * @param config The definition of how the robot is able to move
+     *    max_v Maximum velocity the movement is capable of
+     *    accel Acceleration / deceleration of the movement
+     *    pid_cfg Definitions of kP, kI, and kD
+     *    ff_cfg Definitions of kS, kV, and kA
      */
     MotionController(m_profile_cfg_t &config);
 
