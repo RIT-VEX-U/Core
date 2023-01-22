@@ -23,16 +23,27 @@ using namespace vex;
 class PID : Feedback
 {
 public:
+  /**
+   *An enum to distinguish between a linear and angular caluclation of PID error.
+   */
+  enum ERROR_TYPE{
+    LINEAR,
+    ANGULAR
+  };
   struct pid_config_t
   {
     double p, i, d;
     double deadband, on_target_time;
+    ERROR_TYPE error_method;
   };
+
+  
 
   /**
    * Create the PID object
    */
   PID(pid_config_t &config);
+
 
   /**
    * Inherited from Feedback for interoperability.
@@ -87,6 +98,7 @@ public:
 
 private:
   pid_config_t &config;
+
 
   double last_error = 0, accum_error = 0;
   double last_time = 0, on_target_last_time = 0;

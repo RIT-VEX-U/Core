@@ -1,4 +1,5 @@
 #include "../core/include/utils/pid.h"
+#include "../core/include/subsystems/odometry/odometry_base.h"
 
 /**
  * Create the PID object
@@ -87,6 +88,9 @@ double PID::get()
  */
 double PID::get_error()
 {
+  if (config.error_method==ERROR_TYPE::ANGULAR){
+    return OdometryBase::smallest_angle(target, sensor_val);
+  }
   return target - sensor_val;
 }
 
