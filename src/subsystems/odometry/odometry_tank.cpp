@@ -28,7 +28,9 @@ OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, ro
  */
 void OdometryTank::set_position(const position_t &newpos)
 {
+  mut.lock();
   rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
+  mut.unlock();
 
   OdometryBase::set_position(newpos);
 }
@@ -86,7 +88,11 @@ position_t OdometryTank::update()
     if(angle < 0)
         angle += 360;
 
-    updated_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
+    mut.lock();
+    position_t current_pos_local = current_pos;
+    mut.unlock();
+
+    updated_pos = calculate_new_pos(config, current_pos_local, lside_revs, rside_revs, angle);
 
 
     static position_t last_pos = updated_pos;
