@@ -1,5 +1,11 @@
 #pragma once
 
+#include <math.h>
+#include <vector>
+#include "../core/include/utils/math_util.h"
+#include "../core/include/utils/moving_average.h"
+#include "vex.h"
+
 /**
  * FeedForward
  * 
@@ -20,12 +26,6 @@
  * @author Ryan McGee
  * @date 6/13/2022
  */
-#include <math.h>
-#include <vector>
-#include "../core/include/utils/math_util.h"
-#include "../core/include/utils/moving_average.h"
-#include "vex.h"
-
 class FeedForward
 {
     public:
@@ -43,6 +43,10 @@ class FeedForward
     } ff_config_t;
 
     
+    /**
+     * Creates a FeedForward object.
+     * @param cfg Configuration Struct for tuning
+    */
     FeedForward(ff_config_t &cfg) : cfg(cfg) {}
 
     /**
