@@ -3,6 +3,7 @@
 /**
   * Initialize the auto-chooser. This class places a choice menu on the brain screen,
   * so the driver can choose which autonomous to run.
+  * @param brain the brain on which to draw the selection boxes
   */
 AutoChooser::AutoChooser(vex::brain &brain) : brain(brain)
 {
@@ -41,6 +42,7 @@ AutoChooser::AutoChooser(vex::brain &brain) : brain(brain)
 /**
   * Place all the autonomous choices on the screen.
   * If one is selected, change it's color
+  * @param render the chouce that is to be rendered
   */
 void AutoChooser::render(entry_t *selected)
 {

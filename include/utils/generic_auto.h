@@ -7,6 +7,10 @@
 
 typedef std::function<bool(void)> state_ptr;
 
+/**
+ * GenericAuto provides a pleasant interface for organizing an auto path
+ * steps of the path can be added with add() and when ready, calling run() will begin executing the path
+*/
 class GenericAuto
 {
   public:

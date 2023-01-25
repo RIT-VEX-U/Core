@@ -19,6 +19,13 @@
 
 using namespace vex;
 
+/**
+ * a Flywheel class that handles all control of a high inertia spinning disk
+ * It gives multiple options for what control system to use in order to control wheel velocity and functions alerting the user when the flywheel is up to speed.
+ * Flywheel is a set and forget class. 
+ * Once you create it you can call spinRPM or stop on it at any time and it will take all necessary steps to accomplish this
+ * 
+*/
 class Flywheel{
   enum FlywheelControlStyle{
     PID_Feedforward,
