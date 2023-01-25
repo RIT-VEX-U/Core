@@ -113,7 +113,11 @@ class DriveToPointCommand: public AutoCommand {
     
 };
 
-
+/**
+ * AutoCommand wrapper class for the turn_to_heading() function in the 
+ * TankDrive class
+ *
+ */
 class TurnToHeadingCommand: public AutoCommand {
   public:
     TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed);
@@ -137,6 +141,11 @@ class TurnToHeadingCommand: public AutoCommand {
     double max_speed;
 };
 
+/**
+ * AutoCommand wrapper class for the stop() function in the 
+ * TankDrive class
+ *
+ */
 class DriveStopCommand: public AutoCommand {
   public:
     DriveStopCommand(TankDrive &drive_sys);

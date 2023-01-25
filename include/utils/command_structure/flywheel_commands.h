@@ -9,6 +9,11 @@
 #include "../core/include/subsystems/flywheel.h"
 #include "../core/include/utils/command_structure/auto_command.h"
 
+/**
+ * AutoCommand wrapper class for the spinRPM function
+ * in the Flywheel class
+ *
+ */
 class SpinRPMCommand: public AutoCommand {
   public:
   SpinRPMCommand(Flywheel &flywheel, int rpm);
@@ -28,6 +33,10 @@ class SpinRPMCommand: public AutoCommand {
     int rpm;
 };
 
+/**
+ * AutoCommand that listens to the Flywheel and waits until it is at its target speed +/- the specified threshold
+ *
+ */
 class WaitUntilUpToSpeedCommand: public AutoCommand {
   public:
     WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm);
@@ -47,6 +56,11 @@ class WaitUntilUpToSpeedCommand: public AutoCommand {
     int threshhold_rpm;
 };
 
+/**
+ * AutoCommand wrapper class for the stop function
+ * in the Flywheel class
+ *
+ */
 class FlywheelStopCommand: public AutoCommand {
   public:
   FlywheelStopCommand(Flywheel &flywheel);
@@ -63,6 +77,11 @@ class FlywheelStopCommand: public AutoCommand {
     Flywheel &flywheel;
 };
 
+/**
+ * AutoCommand wrapper class for the stopMotors function
+ * in the Flywheel class
+ *
+ */
 class FlywheelStopMotorsCommand: public AutoCommand {
   public:
   FlywheelStopMotorsCommand(Flywheel &flywheel);
@@ -79,6 +98,11 @@ class FlywheelStopMotorsCommand: public AutoCommand {
     Flywheel &flywheel;
 };
 
+/**
+ * AutoCommand wrapper class for the stopNonTasks function
+ * in the Flywheel class
+ *
+ */
 class FlywheelStopNonTasksCommand: public AutoCommand {
   FlywheelStopNonTasksCommand(Flywheel &flywheel);
 
