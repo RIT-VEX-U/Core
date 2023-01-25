@@ -33,7 +33,7 @@ FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 * Create the Flywheel object using PID + feedforward for control.
 * @param motors     - pointer to the motors on the fly wheel
 * @param pid_config - pointer the pid config
-* @param ff         - pointer to the feedforward config
+* @param ff_config         - pointer to the feedforward config
 * @param ratio      - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio)
@@ -42,7 +42,7 @@ Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForwa
 /**
 * Create the Flywheel object using only feedforward for control
 * @param motors - pointer to the motors on the fly wheel
-* @param ff     - pointer to the feedforward config
+* @param ff_config     - pointer to the feedforward config
 * @param ratio  - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio)

@@ -21,8 +21,8 @@ public:
 
     /**
     * Initialize the Odometry module, calculating posiiton from encoders on "dead wheels"
-    * @param left_side The left motors 
-    * @param right_side The right motors
+    * @param left_enc The left motors 
+    * @param right_enc The right motors
     * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
     * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
     */
