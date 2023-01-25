@@ -61,7 +61,6 @@ double MotionController::get()
  * 
  * @param lower Upper limit
  * @param upper Lower limit
- * @return double 
  */
 void MotionController::set_limits(double lower, double upper)
 {

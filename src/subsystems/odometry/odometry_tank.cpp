@@ -13,8 +13,8 @@ OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_
 
 /**
  * Initialize the Odometry module, calculating posiiton from encoders on "dead wheels"
- * @param left_side The left motors 
- * @param right_side The right motors
+ * @param left_enc The left motors 
+ * @param right_enc The right motors
  * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
  */
 OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)

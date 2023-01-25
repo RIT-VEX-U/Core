@@ -71,8 +71,7 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
  *
  * @param inches Distance to drive in a straight line
  * @param dir Whether the robot is travelling forwards or backwards
- * @param correction How much the robot should correct for being off angle
- * @param speed How fast the robot should travel, 0 -> 1.0
+ * @param max_speed How fast the robot should travel, 0 -> 1.0
  */
 bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed)
 {
@@ -115,9 +114,8 @@ bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedba
  * This driving method is relative, so excessive use may cause the robot to get off course!
  *
  * @param inches Distance to drive in a straight line
- * @param speed How fast the robot should travel, 0 -> 1.0
- * @param correction How much the robot should correct for being off angle
  * @param dir Whether the robot is travelling forwards or backwards
+ * @param max_speed How fast the robot should travel, 0 -> 1.0
  */
 bool TankDrive::drive_forward(double inches, directionType dir, double max_speed)
 {
@@ -169,7 +167,6 @@ bool TankDrive::turn_degrees(double degrees, Feedback &feedback, double max_spee
  * Uses the defualt turning feedback of the drive system.
  * 
  * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
- * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
  * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
  */
 bool TankDrive::turn_degrees(double degrees, double max_speed)
