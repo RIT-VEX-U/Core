@@ -5,7 +5,11 @@
 #ifndef PI
 #define PI 3.141592654
 #endif
-
+/**
+ * Vector2D is an x,y pair
+ * Used to represent 2D locations on the field. 
+ * It can also be treated as a direction and magnitude
+*/
 class Vector2D
 {
 public:
@@ -65,36 +69,55 @@ public:
      * '0' is forward, clockwise positive when viewed from the top.
      * 
      * Use r2d() to convert.
+     * @return the direction of the vetctor in radians
      */
     double get_dir() const;
 
     /**
-     * Get the magnitude of the vector
+     * @return the magnitude of the vector
      */
     double get_mag() const;
 
     /**
-     * Get the X component of the vector; positive to the right.
+     * @return the X component of the vector; positive to the right.
      */
     double get_x() const;
 
     /**
-     * Get the Y component of the vector, positive forward.
+     * @return the Y component of the vector, positive forward.
      */
     double get_y() const;
 
     /**
-     * Changes the magnetude of the vector to 1
+     * Changes the magnitude of the vector to 1
+     * @return the normalized vector
     */
     Vector2D normalize();
 
     /**
     * Returns a point from the vector
+    * @return the point represented by the vector
     */
     Vector2D::point_t point();
 
+    /**
+     * Multiply the components of a vector by x
+     * (self.x * x, self.y * x)
+     * @param x the scalar value by which to multiply the components of the vector
+     * @return the vector after scaling by s
+    */
     Vector2D operator*(const double &x);
+    /**
+     * Add the components of two vectors together
+     * Vector2D + Vector2D = (self.x + other.x, self.y + other.y)
+     * @return the sum of the vectors
+    */
     Vector2D operator+(const Vector2D &other);
+    /**
+     * Subtract the components of two vectors together
+     * Vector2D - Vector2D = (self.x - other.x, self.y - other.y)
+     * @return the difference of the vectors
+    */
     Vector2D operator-(const Vector2D &other);
 
 private:
@@ -105,10 +128,15 @@ private:
 
 /**
  * General function for converting degrees to radians
+ * @param deg the angle in degrees
+ * @return the angle in radians
  */
 double deg2rad(double deg);
 
 /**
  * General function for converting radians to degrees
+ * @param rad the angle in radians
+ * @return the angle in degrees
+
  */
 double rad2deg(double r);

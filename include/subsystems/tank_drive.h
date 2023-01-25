@@ -15,6 +15,10 @@
 
 using namespace vex;
 
+/**
+ * TankDrive is a class to run a tank drive system.
+ * A tank drive system, sometimes called differential drive, has a motor (or group of synchronized motors) on the left and right side
+*/
 class TankDrive
 {
 public:

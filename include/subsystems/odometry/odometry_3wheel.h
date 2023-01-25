@@ -33,6 +33,10 @@ class Odometry3Wheel : public OdometryBase
 {
     public:
 
+    /**
+     * odometry3wheel_cfg_t holds all the specifications for how to calculate position with 3 encoders
+     * see the wiki for what exactly each of these parameters measures
+     */
     typedef struct
     {
         double wheelbase_dist;

@@ -12,7 +12,6 @@
 
 /**
  * Adds a command to the queue
- * @param cmd - AutoCommand to be added
  */
 void CommandController::add(AutoCommand *cmd) {
   command_queue.push(cmd);

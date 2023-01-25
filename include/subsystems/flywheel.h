@@ -38,45 +38,45 @@ class Flywheel{
   // CONSTRUCTORS, GETTERS, AND SETTERS
   /**
   * Create the Flywheel object using PID + feedforward for control.
-  * @param motors     - pointer to the motors on the fly wheel
-  * @param pid_config - pointer the pid config
-  * @param ff         - pointer to the feedforward config
-  * @param ratio      - ratio of the whatever just multiplies the velocity
+  * @param motors      pointer to the motors on the fly wheel
+  * @param pid_config  pointer the pid config to use
+  * @param ff_config   the feedforward config to use
+  * @param ratio       ratio of the whatever just multiplies the velocity
   */
   Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio);
 
   /**
   * Create the Flywheel object using only feedforward for control
-  * @param motors - pointer to the motors on the fly wheel
-  * @param ff     - pointer to the feedforward config
-  * @param ratio  - ratio of the whatever just multiplies the velocity
+  * @param motors    the motors on the fly wheel
+  * @param ff_config the feedforward config to use
+  * @param ratio     ratio of the whatever just multiplies the velocity
   */
   Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio);
 
   /**
   * Create the Flywheel object using Take Back Half for control
-  * @param motors   - pointer to the motors on the fly wheel
-  * @param TBH_gain - the TBH control paramater
-  * @param ratio    - ratio of the whatever just multiplies the velocity
+  * @param motors   the motors on the fly wheel
+  * @param tbh_gain the TBH control paramater
+  * @param ratio    ratio of the whatever just multiplies the velocity
   */
   Flywheel(motor_group &motors, double tbh_gain, const double ratio);
 
   /**
   * Create the Flywheel object using Bang Bang for control
-  * @param motors - pointer to the motors on the fly wheel
-  * @param ratio  - ratio of the whatever just multiplies the velocity
+  * @param motors the motors on the fly wheel
+  * @param ratio  ratio of the whatever just multiplies the velocity
   */
   Flywheel(motor_group &motors, const double ratio);
 
   /**
-  * Return the current value that the RPM should be set to
-  * @return RPM = the target rpm
+  * Return the RPM that the flywheel is currently trying to achieve
+  * @return RPM  the target rpm
   */
   double getDesiredRPM();
 
   /**
   * Checks if the background RPM controlling task is running
-  * @return taskRunning - If the task is running
+  * @return true if the task is running
   */
   bool isTaskRunning();
 

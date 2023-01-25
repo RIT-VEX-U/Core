@@ -11,7 +11,10 @@
 
 class DelayCommand: public AutoCommand {
   public:
-
+    /**
+     * Construct a delay command
+     * @param ms the number of milliseconds to delay for
+    */
     DelayCommand(int ms): ms(ms) {}
     
     /**

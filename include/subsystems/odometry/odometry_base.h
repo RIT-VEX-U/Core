@@ -7,7 +7,9 @@
 #define PI 3.141592654
 #endif
 
-// Describes a single position and rotation
+/**
+ *  Describes a single position and rotation
+ */
 typedef struct
 {
     double x;

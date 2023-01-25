@@ -39,6 +39,11 @@ class SpinRPMCommand: public AutoCommand {
  */
 class WaitUntilUpToSpeedCommand: public AutoCommand {
   public:
+    /** 
+     * Creat a WaitUntilUpToSpeedCommand
+     * @param flywheel the flywheel system we are commanding
+     * @param threshold_rpm the threshold over and under the flywheel target RPM that we define to be acceptable
+    */
     WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm);
 
     /**
@@ -63,6 +68,10 @@ class WaitUntilUpToSpeedCommand: public AutoCommand {
  */
 class FlywheelStopCommand: public AutoCommand {
   public:
+  /**
+   * Construct a FlywheelStopCommand
+   * @param flywheel the flywheel system we are commanding
+  */
   FlywheelStopCommand(Flywheel &flywheel);
 
     /**

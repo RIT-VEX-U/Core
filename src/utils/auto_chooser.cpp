@@ -42,7 +42,7 @@ AutoChooser::AutoChooser(vex::brain &brain) : brain(brain)
 /**
   * Place all the autonomous choices on the screen.
   * If one is selected, change it's color
-  * @param render the chouce that is to be rendered
+  * @param selected the choice that is currently selected
   */
 void AutoChooser::render(entry_t *selected)
 {

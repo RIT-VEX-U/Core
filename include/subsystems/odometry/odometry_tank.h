@@ -7,6 +7,13 @@
 
 static int background_task(void* odom_obj);
 
+
+/**
+ * OdometryTank defines an odometry system for a tank drivetrain
+ * This requires encoders in the same orientation as the drive wheels
+ * Odometry is a "start and forget" subsystem, which means once it's created and configured, 
+ * it will constantly run in the background and track the robot's X, Y and rotation coordinates.
+*/
 class OdometryTank : public OdometryBase
 {
 public:
