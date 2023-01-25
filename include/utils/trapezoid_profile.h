@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * motion_t is a description of 1 dimensional motion at a point in time
+*/
 typedef struct
 {
     double pos;

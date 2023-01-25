@@ -24,12 +24,19 @@ class PID : Feedback
 {
 public:
   /**
-   *An enum to distinguish between a linear and angular caluclation of PID error.
+   * An enum to distinguish between a linear and angular caluclation of PID error.
    */
   enum ERROR_TYPE{
     LINEAR,
     ANGULAR
   };
+  /**
+   * pid_config_t holds the configuration parameters for a pid controller
+   * In addtion to the constant of proportional, integral and derivative, these parameters include: 
+   * - deadband - at what point are we close enough to be finished
+   * - on_target_time - for how long do we have to be at the target to stop
+   * As well, pid_config_t holds an error type which determines whether errors should be calculated as if the sensor position is a measure of distance or an angle
+  */
   struct pid_config_t
   {
     double p, i, d;

@@ -1,18 +1,17 @@
 #include <vector>
 
-/*
-* MovingAverage
-*
-* A moving average is a way of smoothing out noisy data. For many sensor readings, the noise is roughly symmetric around the actual value. 
-* This means that if you collect enough samples those that are too high are cancelled out by the samples that are too low leaving the real value.
-*
-* The MovingAverage class provides a simple interface to do this smoothing from our noisy sensor values. 
-*
-* WARNING: because we need a lot of samples to get the actual value, the value given by the MovingAverage will 'lag' behind the actual value that the sensor is reading. 
-* Using a MovingAverage is thus a tradeoff between accuracy and lag time (more samples) vs. less accuracy and faster updating (less samples).  
-*
-*/
-
+/**
+ * MovingAverage
+ *
+ * A moving average is a way of smoothing out noisy data. For many sensor readings, the noise is roughly symmetric around the actual value. 
+ * This means that if you collect enough samples those that are too high are cancelled out by the samples that are too low leaving the real value.
+ *
+ * The MovingAverage class provides a simple interface to do this smoothing from our noisy sensor values. 
+ *
+ * WARNING: because we need a lot of samples to get the actual value, the value given by the MovingAverage will 'lag' behind the actual value that the sensor is reading. 
+ * Using a MovingAverage is thus a tradeoff between accuracy and lag time (more samples) vs. less accuracy and faster updating (less samples).  
+ *
+ */
 class MovingAverage {
   public:
   /*

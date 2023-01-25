@@ -26,6 +26,11 @@ class MotionController : public Feedback
 {
     public:
 
+    /**
+     * m_profile_config holds all data the motion controller uses to plan paths
+     * When motion pofile is given a target to drive to, max_v and accel are used to make the trapezoid profile instructing the controller how to drive
+     * pid_cfg, ff_cfg are used to find the motor outputs necessary to execute this path
+     */
     typedef struct
     {
         double max_v;

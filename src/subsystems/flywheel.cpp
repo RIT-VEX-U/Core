@@ -84,6 +84,7 @@ motor_group* Flywheel::getMotors() { return &motors; } // TODO -- Remove?
 
 /**
 * return the current velocity of the flywheel motors, in RPM
+* @return the measured velocity of the flywheel
 */
 double Flywheel::getRPM() { return ratio * motors.velocity(velocityUnits::rpm); }
 
@@ -94,11 +95,13 @@ PID* Flywheel::getPID() { return &pid; } // TODO -- Remove?
 
 /**
 * returns the current OUT value of the PID - the value that the PID would set the motors to
+* @return the voltage that PID wants the motors at to achieve the target RPM
 */
 double Flywheel::getPIDValue() { return pid.get(); }
 
 /**
 * returns the current OUT value of the Feedforward - the value that the Feedforward would set the motors to
+* @return the voltage that feedforward wants the motors at to achieve the target RPM
 */
 double Flywheel::getFeedforwardValue() { 
   double v = getDesiredRPM();
@@ -107,6 +110,7 @@ double Flywheel::getFeedforwardValue() {
 
 /**
 * get the gain used for TBH control
+* @return the gain used in TBH control
 */
 double Flywheel::getTBHGain(){
   return TBH_gain;

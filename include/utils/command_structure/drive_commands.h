@@ -144,7 +144,6 @@ class TurnToHeadingCommand: public AutoCommand {
 /**
  * AutoCommand wrapper class for the stop() function in the 
  * TankDrive class
- *
  */
 class DriveStopCommand: public AutoCommand {
   public:
@@ -165,6 +164,10 @@ class DriveStopCommand: public AutoCommand {
 
 // ==== ODOMETRY ====
 
+/**
+ * AutoCommand wrapper class for the set_position function in the 
+ * Odometry class
+ */
 class OdomSetPosition: public AutoCommand {
   public:
     OdomSetPosition(OdometryBase &odom, const position_t &newpos=OdometryBase::zero_pos);
