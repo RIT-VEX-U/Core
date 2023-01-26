@@ -90,17 +90,42 @@ public:
 
     bool end_task = false;
 
+    /**
+     * Get the current speed
+     */
     double get_speed();
+
+    /**
+     * Get the current acceleration
+     */
     double get_accel();
 
+    /**
+     * Get the current angular speed in degrees
+     */
     double get_angular_speed_deg();
+
+    /**
+     * Get the current angular acceleration in degrees
+     */
     double get_angular_accel_deg();
 
+    /**
+     * Zeroed position. X=0, Y=0, Rotation= 90 degrees
+     */
     inline static constexpr position_t zero_pos = {.x=0.0L, .y=0.0L, .rot=90.0L};
 
 protected:
     vex::task *handle;
+
+    /**
+     * Mutex to control multithreading
+     */
     vex::mutex mut;
+
+    /**
+     * Current position of the robot in terms of x,y,rotation
+     */
     position_t current_pos;
 
     double speed, accel, ang_speed_deg, ang_accel_deg;

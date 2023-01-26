@@ -79,6 +79,7 @@ bool Flywheel::isTaskRunning() { return taskRunning; }
 
 /**
 * Returns a POINTER TO the motors; not currently used.
+* @return motorPointer -pointer to the motors
 */
 motor_group* Flywheel::getMotors() { return &motors; } // TODO -- Remove?
 
@@ -90,6 +91,7 @@ double Flywheel::getRPM() { return ratio * motors.velocity(velocityUnits::rpm); 
 
 /**
 * Returns a POINTER TO the PID; not currently used.
+* @return pidPointer -pointer to the PID
 */
 PID* Flywheel::getPID() { return &pid; } // TODO -- Remove?
 
@@ -234,6 +236,8 @@ void Flywheel::spin_raw(double speed, directionType dir){
 /**
 * Spin motors using voltage; defaults forward at 12 volts
 * FOR USE BY OPCONTROL AND AUTONOMOUS - this only applies if the RPM thread is not running
+* @param speed - speed (between -1 and 1) to set the motor
+* @param dir - direction that the motor moves in; defaults to forward
 */
 void Flywheel::spin_manual(double speed, directionType dir){
   if(!taskRunning) motors.spin(dir, speed * 12, voltageUnits::volt);

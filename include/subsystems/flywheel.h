@@ -135,6 +135,8 @@ class Flywheel{
   /**
   * Spin motors using voltage; defaults forward at 12 volts
   * FOR USE BY OPCONTROL AND AUTONOMOUS - this only applies if the RPM thread is not running
+  * @param speed - speed (between -1 and 1) to set the motor
+  * @param dir - direction that the motor moves in; defaults to forward
   */
   void spin_manual(double speed, directionType dir=fwd);
   
