@@ -23,7 +23,7 @@ public:
 
 
         /** 
-         * dist calculates the euclidian distance using the pythagorean theorem
+         * dist calculates the euclidian distance between this point and another point using the pythagorean theorem
          * @return the euclidian distance between this and other
          */
         double dist(const point_t other)
