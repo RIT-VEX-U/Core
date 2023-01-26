@@ -75,6 +75,7 @@ Vector2D::point_t Vector2D::point()
 
 /**
  * Correctly add vectors together with the + operator
+ * @param &other -The point on which to do the operation
  */
 Vector2D Vector2D::operator+(const Vector2D &other)
 {
@@ -89,6 +90,7 @@ Vector2D Vector2D::operator+(const Vector2D &other)
 
 /**
  * Correctly subtract vectors with the - operator
+ * @param &other -The point on which to do the operation
  */
 Vector2D Vector2D::operator-(const Vector2D &other)
 {
