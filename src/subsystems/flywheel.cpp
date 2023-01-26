@@ -31,43 +31,30 @@ FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 
 /**
 * Create the Flywheel object using PID + feedforward for control.
-* @param motors     - pointer to the motors on the fly wheel
-* @param pid_config - pointer the pid config
-* @param ff_config         - pointer to the feedforward config
-* @param ratio      - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio)
     :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio), control_style(PID_Feedforward) { }
 
 /**
 * Create the Flywheel object using only feedforward for control
-* @param motors - pointer to the motors on the fly wheel
-* @param ff_config     - pointer to the feedforward config
-* @param ratio  - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio)
     :motors(motors), pid(empty_pid), ff(ff_config), ratio(ratio), control_style(Feedforward) {}
 
 /**
 * Create the Flywheel object using Take Back Half for control
-* @param motors   - pointer to the motors on the fly wheel
-* @param TBH_gain - the TBH control paramater
-* @param ratio    - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, const double TBH_gain, const double ratio)
     :motors(motors), pid(empty_pid), ff(empty_ff), TBH_gain(TBH_gain), ratio(ratio), control_style(Take_Back_Half) {}
 
 /**
 * Create the Flywheel object using Bang Bang for control
-* @param motors - pointer to the motors on the fly wheel
-* @param ratio  - ratio of the whatever just multiplies the velocity
 */
 Flywheel::Flywheel(motor_group &motors, const double ratio)
     :motors(motors), pid(empty_pid), ff(empty_ff), ratio(ratio), control_style(Bang_Bang) {}
 
 /**
 * Return the current value that the RPM should be set to
-* @return RPM = the target rpm
 */
 double Flywheel::getDesiredRPM() { return RPM; }
 

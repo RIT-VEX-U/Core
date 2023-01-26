@@ -31,15 +31,19 @@ class FeedForward
     public:
 
     /**
-     * kS - Coefficient to overcome static friction: the point at which the motor *starts* to move.
-     * kV - Veclocity coefficient: the power required to keep the mechanism in motion. Multiplied by the requested velocity.
-     * kA - Acceleration coefficient: the power required to change the mechanism's speed. Multiplied by the requested acceleration.
-     * kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay at steady state.
-     *      Should relate to acceleration due to gravity and mass of the lift.
+     * ff_config_t holds the parameters to make the theoretical model of a real world system
+     * equation is of the form
+     * kS if the system is not stopped, 0 otherwise
+     * + kV * desired velocity
+     * + kA * desired acceleration
+     * + kG
      */
     typedef struct
     {
-        double kS, kV, kA, kG;
+        double kS; /**< Coefficient to overcome static friction: the point at which the motor *starts* to move.*/
+        double kV; /**< Veclocity coefficient: the power required to keep the mechanism in motion. Multiplied by the requested velocity.*/
+        double kA; /**< kA - Acceleration coefficient: the power required to change the mechanism's speed. Multiplied by the requested acceleration.*/
+        double kG; /**< kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay at steady state.*/
     } ff_config_t;
 
     

@@ -22,6 +22,12 @@ class Lift
 {
   public:
 
+  /**
+   * lift_cfg_t holds the physical parameter specifications of a lify system.
+   * includes:
+   * - maximum speeds for the system
+   * - softstops to stop the lift from hitting the hard stops too hard 
+   */
   struct lift_cfg_t
   {
     double up_speed, down_speed;

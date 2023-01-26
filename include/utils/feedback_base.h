@@ -37,7 +37,6 @@ class Feedback
      * 
      * @param lower Upper limit
      * @param upper Lower limit
-     * @return double 
      */
     virtual void set_limits(double lower, double upper) = 0;
 

@@ -19,7 +19,10 @@ namespace PurePursuit {
       return a * pow((x - x_start), 3) + b * pow((x - x_start), 2) + c * (x - x_start) + d;
     }
   };
-
+  /**
+   * a position along the hermite path
+   * contains a position and orientation information that the robot would be at at this point
+   */
   struct hermite_point
   {
     double x;
