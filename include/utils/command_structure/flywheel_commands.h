@@ -16,6 +16,11 @@
  */
 class SpinRPMCommand: public AutoCommand {
   public:
+  /**
+   * Construct a SpinRPM Command
+   * @param flywheel the flywheel sys to command
+   * @param rpm the rpm that we should spin at
+  */
   SpinRPMCommand(Flywheel &flywheel, int rpm);
 
     /**

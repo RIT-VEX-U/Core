@@ -32,15 +32,15 @@ class GenericAuto
 
   /**
    * Add a new state to the autonomous via function point of type "bool (ptr*)()"
-   * @param state_ptr the function to run
+   * @param new_state the function to run
    */
-  void add(state_ptr);
+  void add(state_ptr new_state);
 
   /**
    * Add a new state to the autonomous via function point of type "bool (ptr*)()" that will run asynchronously
-   * @param state_ptr the function to run
+   * @param async_state the function to run
    */
-  void add_async(state_ptr);
+  void add_async(state_ptr async_state);
 
   /**
    * add_delay adds a period where the auto system will simply wait for the specified time

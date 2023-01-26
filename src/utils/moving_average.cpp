@@ -13,16 +13,18 @@
 *
 */
 
-/*
+/**
  * Create a moving average calculator with 0 as the default value
  *
  * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
  */
 MovingAverage::MovingAverage(int buffer_size) {
-  buffer = std::vector<double>(buffer_size, 0.0); buffer_index = 0; is_ready = false;
+  buffer = std::vector<double>(buffer_size, 0.0); 
+  buffer_index = 0; 
+  is_ready = false;
 }
 
-/*
+/**
  * Create a moving average calculator with a specified default value
  * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
  * @param starting_value The value that the average will be before any data is added
@@ -35,7 +37,7 @@ MovingAverage::MovingAverage(int buffer_size, double starting_value) {
 
 
 
-/*
+/**
  * Add a reading to the buffer
  * Before:
  * [ 1 1 2 2 3 3] => 2
@@ -56,10 +58,10 @@ void MovingAverage::add_entry(double n){
   buffer_index%=buffer.size();
 }
 
-/*
- * Returns the average based off of all the samples collected so far
- * @return sum(samples)/numsamples
- */
+/**
+ * How many samples the average is made from
+ * @return the number of samples used to calculate this average
+ */ 
 double MovingAverage::get_average(){
   double total = 0;
 

@@ -66,12 +66,13 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
 }
 
 /**
- * Autonomously drive forward or backwards, X inches infront or behind the robot's current position.
- * This driving method is relative, so excessive use may cause the robot to get off course!
+ * Use odometry to drive forward a certain distance using a custom feedback controller
  *
- * @param inches Distance to drive in a straight line
- * @param dir Whether the robot is travelling forwards or backwards
- * @param max_speed How fast the robot should travel, 0 -> 1.0
+ * Returns whether or not the robot has reached it's destination.
+ * @param inches     the distance to drive forward
+ * @param dir        the direction we want to travel forward and backward
+ * @param feedback   the custom feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+ * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
  */
 bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed)
 {
@@ -110,12 +111,13 @@ bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedba
   return drive_to_point(pos_setpt.x, pos_setpt.y, dir, feedback, max_speed);
 }
 /**
- * Autonomously drive forward or backwards, X inches infront or behind the robot's current position.
- * This driving method is relative, so excessive use may cause the robot to get off course!
- *
- * @param inches Distance to drive in a straight line
- * @param dir Whether the robot is travelling forwards or backwards
- * @param max_speed How fast the robot should travel, 0 -> 1.0
+ * Autonomously drive the robot forward a certain distance
+ * 
+ * 
+ * @param inches      degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
+ * @param dir        the direction we want to travel forward and backward
+ * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ * @return true if we have finished driving to our point
  */
 bool TankDrive::drive_forward(double inches, directionType dir, double max_speed)
 {
@@ -136,6 +138,7 @@ bool TankDrive::drive_forward(double inches, directionType dir, double max_speed
  * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
  * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
  * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ * @return true if we have turned our target number of degrees
  */
 bool TankDrive::turn_degrees(double degrees, Feedback &feedback, double max_speed)
 {
@@ -168,6 +171,7 @@ bool TankDrive::turn_degrees(double degrees, Feedback &feedback, double max_spee
  * 
  * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
  * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ * @return true if we turned te target number of degrees
  */
 bool TankDrive::turn_degrees(double degrees, double max_speed)
 {
@@ -189,6 +193,7 @@ bool TankDrive::turn_degrees(double degrees, double max_speed)
   * @param dir        the direction we want to travel forward and backward
   * @param feedback   the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
   * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+  * @return true if we have reached our target point
   */
 bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedback &feedback, double max_speed)
 {
@@ -314,6 +319,7 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedb
   * @param y          the y position of the target
   * @param dir        the direction we want to travel forward and backward
   * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+  * @return true if we have reached our target point
   */
 bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, double max_speed)
 {
@@ -332,8 +338,8 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, doubl
  * @param heading_deg the heading to which we will turn 
  * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
  * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ * @return true if we have reached our target heading
  */
- 
 bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double max_speed)
 {
   // We can't run the auto drive function without odometry
@@ -377,6 +383,7 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
  * 
  * @param heading_deg the heading to which we will turn 
  * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+ * @return true if we have reached our target heading
  */
 bool TankDrive::turn_to_heading(double heading_deg, double max_speed)
 {
@@ -391,6 +398,9 @@ bool TankDrive::turn_to_heading(double heading_deg, double max_speed)
 /**
  * Modify the inputs from the controller by squaring / cubing, etc
  * Allows for better control of the robot at slower speeds
+ * @param input the input signal -1 -> 1
+ * @param power the power to raise the signal to
+ * @return input^power accounting for any sign issues that would arise with this naive solution
  */
 double TankDrive::modify_inputs(double input, int power)
 {

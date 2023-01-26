@@ -3,14 +3,14 @@
 #include <vector>
 
 /**
- * @brief Construct a new Motion Controller object
- * 
- * @param config The definition of how the robot is able to move
- *    max_v Maximum velocity the movement is capable of
- *    accel Acceleration / deceleration of the movement
- *    pid_cfg Definitions of kP, kI, and kD
- *    ff_cfg Definitions of kS, kV, and kA
- */
+* @brief Construct a new Motion Controller object
+* 
+* @param config The definition of how the robot is able to move
+*    max_v Maximum velocity the movement is capable of
+*    accel Acceleration / deceleration of the movement
+*    pid_cfg Definitions of kP, kI, and kD
+*    ff_cfg Definitions of kS, kV, and kA
+*/
 MotionController::MotionController(m_profile_cfg_t &config)
 : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(config.max_v, config.accel)
 {}
@@ -29,11 +29,11 @@ void MotionController::init(double start_pt, double end_pt)
 }
 
 /**
- * @brief Update the motion profile with a new sensor value
- * 
- * @param sensor_val Value from the sensor
- * @return The motor input generated from the motion profile 
- */
+* @brief Update the motion profile with a new sensor value
+* 
+* @param sensor_val Value from the sensor
+* @return the motor input generated from the motion profile 
+*/
 double MotionController::update(double sensor_val)
 {
     motion_t motion = profile.calculate(tmr.time(timeUnits::sec));

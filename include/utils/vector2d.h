@@ -19,11 +19,13 @@ public:
      */
     struct point_t
     {
-        double x, y; ///< x and y position in space
+        double x; ///< the x position in space
+        double y; ///< the y position in space
 
 
         /** 
          * dist calculates the euclidian distance between this point and another point using the pythagorean theorem
+         * @param other the point to measure the distance from
          * @return the euclidian distance between this and other
          */
         double dist(const point_t other)
@@ -33,6 +35,7 @@ public:
 
         /**
          * Vector2D addition operation on points
+         * @param other the point to add on to this
          * @return this + other (this.x + other.x, this.y + other.y)
          */
         point_t operator+(const point_t &other)
@@ -47,6 +50,7 @@ public:
 
         /**
          * Vector2D subtraction operation on points
+         * @param other the point_t to subtract from this
          * @return this - other (this.x - other.x, this.y - other.y)
          */
         point_t operator-(const point_t &other)
@@ -111,22 +115,23 @@ public:
     */
     Vector2D::point_t point();
 
-    /**
-     * Multiply the components of a vector by x
-     * (self.x * x, self.y * x)
-     * @param x the scalar value by which to multiply the components of the vector
-     * @return the vector after scaling by s
-    */
+/**
+ * Scales a Vector2D by a scalar with the * operator
+ * @param x the value to scale the vector by
+ * @return the this Vector2D scaled by x
+*/
     Vector2D operator*(const double &x);
     /**
      * Add the components of two vectors together
-     * Vector2D + Vector2D = (self.x + other.x, self.y + other.y)
+     * Vector2D + Vector2D = (this.x + other.x, this.y + other.y)
+     * @param other the vector to add to this
      * @return the sum of the vectors
     */
     Vector2D operator+(const Vector2D &other);
     /**
      * Subtract the components of two vectors together
-     * Vector2D - Vector2D = (self.x - other.x, self.y - other.y)
+     * Vector2D - Vector2D = (this.x - other.x, this.y - other.y)
+     * @param other the vector to subtract from this
      * @return the difference of the vectors
     */
     Vector2D operator-(const Vector2D &other);
