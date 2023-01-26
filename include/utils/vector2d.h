@@ -19,14 +19,22 @@ public:
      */
     struct point_t
     {
-        double x, y;
+        double x, y; ///< x and y position in space
 
+
+        /** 
+         * dist calculates the euclidian distance using the pythagorean theorem
+         * @return the euclidian distance between this and other
+         */
         double dist(const point_t other)
         {
           return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
         }
 
-        // Vector2D addition operation on points
+        /**
+         * Vector2D addition operation on points
+         * @return this + other (this.x + other.x, this.y + other.y)
+         */
         point_t operator+(const point_t &other)
         {
           point_t p 
@@ -37,7 +45,10 @@ public:
           return p;
         }
 
-        // Vector2D subtraction operation on points
+        /**
+         * Vector2D subtraction operation on points
+         * @return this - other (this.x - other.x, this.y - other.y)
+         */
         point_t operator-(const point_t &other)
         {
           point_t p 

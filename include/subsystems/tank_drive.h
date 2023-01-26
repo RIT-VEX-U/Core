@@ -25,6 +25,10 @@ public:
 
   /**
    * Create the TankDrive object 
+   * @param left_motors left side drive motors
+   * @param right_motors right side drive motors
+   * @param config the configuration specification defining physical dimensions about the robot. See robot_specs_t for more info
+   * @param odom an odometry system to track position and rotation. this is necessary to execute autonomous paths
    */
   TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom=NULL);
 
@@ -38,6 +42,10 @@ public:
    * right_motors controls the right motors.
    * 
    * left_motors and right_motors are in "percent": -1.0 -> 1.0
+   * @param left the percent to run the left motors
+   * @param right the percent to run the right motors
+   * @param power modifies the input velocities left^power, right^power
+   * @param is_driver default false. if true uses motor percentage. if false uses plain percentage of maximum voltage
    */
   void drive_tank(double left, double right, int power=1, bool isdriver=false);
 
@@ -46,36 +54,39 @@ public:
    * left_right controls the turning.
    * 
    * left_motors and right_motors are in "percent": -1.0 -> 1.0
+   * Drive the robot using differential style controls. left_motors controls the left motors,
+   * right_motors controls the right motors.
+   * 
+   * left_motors and right_motors are in "percent": -1.0 -> 1.0
+   * @param left the percent to run the left motors
+   * @param right the percent to run the right motors
+   * @param power modifies the input velocities left^power, right^power
    */
   void drive_arcade(double forward_back, double left_right, int power=1);
 
   /**
-   * Use odometry to automatically drive the robot to a point on the field.
-   * X and Y is the final point we want the robot.
+   * Use odometry to drive forward a certain distance using a custom feedback controller
    *
    * Returns whether or not the robot has reached it's destination.
-   * @param x          the x position of the target
-   * @param y          the y position of the target
+   * @param inches     the distance to drive forward
    * @param dir        the direction we want to travel forward and backward
-   * @param feedback   the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+   * @param feedback   the custom feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
    */
   bool drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed=1);
+
   /**
-   * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
-   * of percent_speed (-1.0 -> 1.0)
+   * Autonomously drive the robot forward a certain distance
    * 
-   * Uses the specified feedback for it's control.
    * 
-   * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
-   * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
+   * @param inches      degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
+   * @param dir        the direction we want to travel forward and backward
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
    */
-
   bool drive_forward(double inches, directionType dir, double max_speed=1);
 
   /**
-   * Autonomously turn the robot X degrees to the right (negative for left), with a maximum motor speed
+   * Autonomously turn the robot X degrees counterclockwise (negative for clockwise), with a maximum motor speed
    * of percent_speed (-1.0 -> 1.0)
    * 
    * Uses PID + Feedforward for it's control.
@@ -85,6 +96,7 @@ public:
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
    */
   bool turn_degrees(double degrees, Feedback &feedback, double max_speed=1);
+
   /**
    * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
    * of percent_speed (-1.0 -> 1.0)
@@ -92,9 +104,9 @@ public:
    * Uses the defualt turning feedback of the drive system.
    * 
    * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
-   * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   */  bool turn_degrees(double degrees, double max_speed=1);
+   */  
+  bool turn_degrees(double degrees, double max_speed=1);
 
   /**
    * Use odometry to automatically drive the robot to a point on the field.
@@ -147,7 +159,11 @@ public:
 
   /**
    * Create a curve for the inputs, so that drivers have more control at lower speeds.
-   * Curves are exponential, with the deault being squaring the inputs.
+   * Curves are exponential, with the default being squaring the inputs.
+   * 
+   * @param input the input before modification
+   * @param power the power to raise input to
+   * @return input ^ power (accounts for negative inputs and odd numbered powers)
    */
   static double modify_inputs(double input, int power=2);
 
@@ -164,17 +180,17 @@ public:
   bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, directionType dir, double radius, double res, Feedback &feedback, double max_speed=1);
 
 private:
-  motor_group &left_motors;
-  motor_group &right_motors;
+  motor_group &left_motors; ///< left drive motors
+  motor_group &right_motors; ///< right drive motors
 
-  PID correction_pid;
-  Feedback *drive_default_feedback = NULL;
-  Feedback *turn_default_feedback = NULL;
+  PID correction_pid; ///< PID controller used to drive in as straight a line as possible
+  Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
+  Feedback *turn_default_feedback = NULL; ///< feedback to use to turn if none is specified
 
-  OdometryBase *odometry;
+  OdometryBase *odometry; ///< odometry system to track position and rotation. necessary for autonomous driving
 
-  robot_specs_t &config;
+  robot_specs_t &config; ///< configuration holding physical dimensions of the robot. see robot_specs_t for more information
 
-  bool func_initialized = false;
-  bool is_pure_pursuit = false;
+  bool func_initialized = false; ///< used to control initialization of autonomous driving. (you only wan't to set the target once, not every iteration that you're driving)
+  bool is_pure_pursuit = false; ///< true if we are driving with a pure pursuit system
 };

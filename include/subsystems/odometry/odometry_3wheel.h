@@ -35,13 +35,13 @@ class Odometry3Wheel : public OdometryBase
 
     /**
      * odometry3wheel_cfg_t holds all the specifications for how to calculate position with 3 encoders
-     * see the wiki for what exactly each of these parameters measures
+     * See the core wiki for what exactly each of these parameters measures
      */
     typedef struct
     {
-        double wheelbase_dist;
-        double off_axis_center_dist;
-        double wheel_diam;
+        double wheelbase_dist; /**< distance from the center of the left wheel to the center of the right wheel*/
+        double off_axis_center_dist; /**< distance from the center of the robot to the center off axis wheel*/
+        double wheel_diam; /**< the diameter of the tracking wheel*/
         
     } odometry3wheel_cfg_t;
     

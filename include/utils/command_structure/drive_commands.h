@@ -170,6 +170,11 @@ class DriveStopCommand: public AutoCommand {
  */
 class OdomSetPosition: public AutoCommand {
   public:
+    /**
+     * constructs a new OdomSetPosition command
+     * @param odom the odometry system we are setting
+     * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
+    */
     OdomSetPosition(OdometryBase &odom, const position_t &newpos=OdometryBase::zero_pos);
 
     /**

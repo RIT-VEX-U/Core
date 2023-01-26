@@ -12,9 +12,9 @@
  */
 typedef struct
 {
-    double x;
-    double y;
-    double rot;
+    double x; ///< x position in the world
+    double y; ///< y position in the world
+    double rot; ///< rotation in the world
 } position_t;
 
 /**
@@ -42,16 +42,19 @@ public:
 
     /**
     * Gets the current position and rotation
+    * @return the position that the odometry believes the robot is at
     */
     position_t get_position(void);
 
     /**
      * Sets the current position of the robot
+     * @param newpos the new position that the odometry will believe it is at
      */
     virtual void set_position(const position_t &newpos=zero_pos);
 
     /**
      * Update the current position on the field based on the sensors
+     * @return the location that the robot is at after the odometry does its calculations
      */
     virtual position_t update() = 0;
 
@@ -73,11 +76,17 @@ public:
 
     /**
      * Get the distance between two points
+     * @param pos1 distance from this point
+     * @param pos2 to this point
+     * @return the euclidean distance between pos1 and pos2
      */
     static double pos_diff(position_t pos1, position_t pos2);
 
     /**
      * Get the change in rotation between two points
+     * @param pos1 position with initial rotation
+     * @param pos2 position with final rotation
+     * @return change in rotation between pos1 and pos2
      */
     static double rot_diff(position_t pos1, position_t pos2);
 
@@ -85,6 +94,9 @@ public:
      * Get the smallest difference in angle between a start heading and end heading.
      * Returns the difference between -180 degrees and +180 degrees, representing the robot
      * turning left or right, respectively.
+     * @param start_deg intitial angle (degrees)
+     * @param end_deg final angle (degrees)
+     * @return the smallest angle from the initial to the final angle. This takes into account the wrapping of rotations around 360 degrees 
      */
     static double smallest_angle(double start_deg, double end_deg);
 
@@ -92,21 +104,25 @@ public:
 
     /**
      * Get the current speed
+     * @return the speed at which the robot is moving and grooving (inch/s)
      */
     double get_speed();
 
     /**
      * Get the current acceleration
+     * @return the acceleration rate of the robot (inch/s^2)
      */
     double get_accel();
 
     /**
      * Get the current angular speed in degrees
+     * @return the angular velocity at which we are turning (deg/s) 
      */
     double get_angular_speed_deg();
 
     /**
      * Get the current angular acceleration in degrees
+     * @return the angular acceleration at which we are turning (deg/s^2)
      */
     double get_angular_accel_deg();
 
@@ -116,6 +132,9 @@ public:
     inline static constexpr position_t zero_pos = {.x=0.0L, .y=0.0L, .rot=90.0L};
 
 protected:
+    /**
+     * handle to the vex task that is running the odometry code
+    */
     vex::task *handle;
 
     /**
@@ -128,5 +147,8 @@ protected:
      */
     position_t current_pos;
 
-    double speed, accel, ang_speed_deg, ang_accel_deg;
+    double speed; /**< the speed at which we are travelling (inch/s)*/
+    double accel; /**< the rate at which we are accelerating (inch/s^2)*/
+    double ang_speed_deg; /**< the speed at which we are turning (deg/s)*/
+    double ang_accel_deg; /**< the rate at which we are accelerating our turn (deg/s^2)*/
 };

@@ -1,22 +1,26 @@
 #include "../core/include/subsystems/odometry/odometry_tank.h"
 
 /**
- * Initialize the Odometry module, calculating position from the drive motors.
- * @param left_side The left motors 
- * @param right_side The right motors
- * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- */
+* Initialize the Odometry module, calculating position from the drive motors.
+* @param left_side The left motors 
+* @param right_side The right motors
+* @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+* @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
+* @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+*/
 OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config, vex::inertial *imu, bool is_async)
 : OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_enc(NULL), right_enc(NULL), imu(imu), config(config)
 {
 }
 
 /**
- * Initialize the Odometry module, calculating posiiton from encoders on "dead wheels"
- * @param left_enc The left motors 
- * @param right_enc The right motors
- * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- */
+* Initialize the Odometry module, calculating position from the drive motors.
+* @param left_enc The left motors 
+* @param right_enc The right motors
+* @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+* @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
+* @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+*/
 OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
 : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_enc(&left_enc), right_enc(&right_enc), imu(imu), config(config)
 {

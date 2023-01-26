@@ -58,7 +58,7 @@ class WaitUntilUpToSpeedCommand: public AutoCommand {
     Flywheel &flywheel;
 
     // if the actual speed is equal to the desired speed +/- this value, we are ready to fire
-    int threshhold_rpm;
+    int threshold_rpm;
 };
 
 /**
@@ -93,6 +93,10 @@ class FlywheelStopCommand: public AutoCommand {
  */
 class FlywheelStopMotorsCommand: public AutoCommand {
   public:
+  /**
+   * Construct a FlywheeStopMotors Command
+   * @param flywheel the flywheel system we are commanding
+  */
   FlywheelStopMotorsCommand(Flywheel &flywheel);
 
     /**

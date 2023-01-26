@@ -21,26 +21,33 @@ public:
     * Initialize the Odometry module, calculating position from the drive motors.
     * @param left_side The left motors 
     * @param right_side The right motors
+    * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
     * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
     * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
     */
     OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
 
     /**
-    * Initialize the Odometry module, calculating posiiton from encoders on "dead wheels"
+    * Initialize the Odometry module, calculating position from the drive motors.
     * @param left_enc The left motors 
     * @param right_enc The right motors
+    * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
     * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
     * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
     */
+
     OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
 
     /**
      * Update the current position on the field based on the sensors
+     * @return the position that odometry has calculated itself to be at
      */
     position_t update() override;
 
-
+    /**
+     * set_position tells the odometry to place itself at a position
+     * @param newpos the position the odometry will take
+    */
     void set_position(const position_t &newpos=zero_pos) override;
 
     

@@ -133,8 +133,6 @@ position_t Odometry3Wheel::calculate_new_pos(double lside_delta_deg, double rsid
  * 
  * It is assumed the gear ratio and encoder PPR have been set correctly
  * 
- * @param con Controller reference, for screen and button control
- * @param drive Drivetrain reference for robot control
  */
 void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive)
 {
