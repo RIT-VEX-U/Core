@@ -80,7 +80,7 @@ public:
      * @param end_pos to this point
      * @return the euclidean distance between start_pos and end_pos
      */
-    double OdometryBase::pos_diff(position_t start_pos, position_t end_pos);
+    static double pos_diff(position_t start_pos, position_t end_pos);
 
     /**
      * Get the change in rotation between two points
