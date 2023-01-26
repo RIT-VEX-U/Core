@@ -70,7 +70,6 @@ position_t OdometryTank::update()
       // Get the arclength of the turning circle of the robot
       double distance_diff = (rside_revs - lside_revs) * PI * config.odom_wheel_diam;
 
-      // printf("dist_diff: %f, ", distance_diff);
 
       //Use the arclength formula to calculate the angle. Add 90 to make "0 degrees" to starboard
       angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels)) + 90;
@@ -165,6 +164,7 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
     double angle = angle_deg * PI / 180.0; // Degrees to radians
 
     // Create a vector from the change in distance in the current direction of the robot
+    //deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
     Vector2D chg_vec(angle, dist_driven);
     
     // Create a vector from the current position in reference to X,Y=0,0
