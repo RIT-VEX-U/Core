@@ -2,12 +2,7 @@
 #include "../core/include/utils/math_util.h"
 #include <cmath>
 
-/**
- * @brief Construct a new Trapezoid Profile object
- * 
- * @param max_v Maximum velocity the robot can run at
- * @param accel Maximum acceleration of the robot
- */
+
 TrapezoidProfile::TrapezoidProfile(double max_v, double accel)
 : start(0), end(0), max_v(max_v), accel(accel)  {}
 

@@ -45,7 +45,7 @@ public:
    * @param left the percent to run the left motors
    * @param right the percent to run the right motors
    * @param power modifies the input velocities left^power, right^power
-   * @param is_driver default false. if true uses motor percentage. if false uses plain percentage of maximum voltage
+   * @param isdriver default false. if true uses motor percentage. if false uses plain percentage of maximum voltage
    */
   void drive_tank(double left, double right, int power=1, bool isdriver=false);
 
@@ -53,13 +53,10 @@ public:
    * Drive the robot using arcade style controls. forward_back controls the linear motion,
    * left_right controls the turning.
    * 
-   * left_motors and right_motors are in "percent": -1.0 -> 1.0
-   * Drive the robot using differential style controls. left_motors controls the left motors,
-   * right_motors controls the right motors.
+   * forward_back and left_right are in "percent": -1.0 -> 1.0
    * 
-   * left_motors and right_motors are in "percent": -1.0 -> 1.0
-   * @param left the percent to run the left motors
-   * @param right the percent to run the right motors
+   * @param forward_back the percent to move forward or backward
+   * @param left_right the percent to turn left or right
    * @param power modifies the input velocities left^power, right^power
    */
   void drive_arcade(double forward_back, double left_right, int power=1);
@@ -72,6 +69,7 @@ public:
    * @param dir        the direction we want to travel forward and backward
    * @param feedback   the custom feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @return true when we have reached our target distance
    */
   bool drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed=1);
 
@@ -176,6 +174,7 @@ public:
    * @param res The number of points to use along the path; the hermite curve is split up into "res" individual points.
    * @param feedback The feedback controller to use
    * @param max_speed Robot's maximum speed throughout the path, between 0 and 1.0
+   * @return true when we reach the end of the path
    */
   bool pure_pursuit(std::vector<PurePursuit::hermite_point> path, directionType dir, double radius, double res, Feedback &feedback, double max_speed=1);
 

@@ -69,10 +69,10 @@ public:
   /**
    * Update the PID loop by taking the time difference from last update,
    * and running the PID formula with the new sensor data
-   * @param sensorVal update the PID controller with the most recent sensor measurement
-   * @return the updated Out value of the controller (voltage, RPM, whatever the PID controller is controlling)
+   * @param sensor_val the distance, angle, encoder position or whatever it is we are measuring
+   * @return the new output. What would be returned by PID::get()
    */
-  double update(double sensorVal) override;
+  double update(double sensor_val) override;
 
   /**
    * Gets the current PID out value, from when update() was last run

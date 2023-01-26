@@ -12,8 +12,8 @@
  */
 typedef struct
 {
-    double x; ///< x position in the world
-    double y; ///< y position in the world
+    double x;   ///< x position in the world
+    double y;   ///< y position in the world
     double rot; ///< rotation in the world
 } position_t;
 
@@ -76,11 +76,11 @@ public:
 
     /**
      * Get the distance between two points
-     * @param pos1 distance from this point
-     * @param pos2 to this point
-     * @return the euclidean distance between pos1 and pos2
+     * @param start_pos distance from this point
+     * @param end_pos to this point
+     * @return the euclidean distance between start_pos and end_pos
      */
-    static double pos_diff(position_t pos1, position_t pos2);
+    double OdometryBase::pos_diff(position_t start_pos, position_t end_pos);
 
     /**
      * Get the change in rotation between two points
@@ -100,6 +100,7 @@ public:
      */
     static double smallest_angle(double start_deg, double end_deg);
 
+    /// @brief end_task is true if we instruct the odometry thread to shut down
     bool end_task = false;
 
     /**

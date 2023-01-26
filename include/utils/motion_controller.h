@@ -33,10 +33,10 @@ class MotionController : public Feedback
      */
     typedef struct
     {
-        double max_v;
-        double accel;
-        PID::pid_config_t pid_cfg;
-        FeedForward::ff_config_t ff_cfg;
+        double max_v; ///< the maximum velocity the robot can drive
+        double accel; ///< the most acceleration the robot can do
+        PID::pid_config_t pid_cfg; ///< configuration parameters for the internal PID controller 
+        FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal 
     } m_profile_cfg_t;
 
     /**
@@ -53,9 +53,6 @@ class MotionController : public Feedback
     /**
      * @brief Initialize the motion profile for a new movement
      * This will also reset the PID and profile timers.
-     * 
-     * @param start_pt Movement starting position
-     * @param end_pt Movement ending posiiton 
      */
     void init(double start_pt, double end_pt) override;
     
@@ -63,7 +60,7 @@ class MotionController : public Feedback
      * @brief Update the motion profile with a new sensor value
      * 
      * @param sensor_val Value from the sensor
-     * @return The motor input generated from the motion profile 
+     * @return the motor input generated from the motion profile 
      */
     double update(double sensor_val) override;
 
@@ -74,10 +71,10 @@ class MotionController : public Feedback
 
     /**
      * Clamp the upper and lower limits of the output. If both are 0, no limits should be applied.
+     * if limits are applied, the controller will not target any value below lower or above upper
      * 
-     * @param lower Upper limit
-     * @param upper Lower limit
-     * @return double 
+     * @param lower upper limit
+     * @param upper lower limiet
      */
     void set_limits(double lower, double upper) override;
 

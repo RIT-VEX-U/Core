@@ -76,6 +76,9 @@ void OdometryBase::set_position(const position_t &newpos)
 
 /**
  * Get the distance between two points
+ * @param start_pos distance from this point
+ * @param end_pos to this point
+ * @return the euclidean distance between start_pos and end_pos
  */
 double OdometryBase::pos_diff(position_t start_pos, position_t end_pos)
 {
