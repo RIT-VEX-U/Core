@@ -62,7 +62,6 @@ position_t Odometry3Wheel::update()
       last_ang_speed = ang_speed_local;
     }
 
-    mut.lock();
     this->current_pos = updated_pos;
     if(update_vel_accel)
     {
@@ -71,7 +70,6 @@ position_t Odometry3Wheel::update()
         this->ang_speed_deg = ang_speed_local;
         this->ang_accel_deg = ang_accel_local;
     }
-    mut.unlock();
 
     return current_pos;
 }

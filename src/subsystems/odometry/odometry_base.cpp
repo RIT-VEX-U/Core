@@ -24,7 +24,9 @@ int OdometryBase::background_task(void* ptr)
     OdometryBase &obj = *((OdometryBase*) ptr);
     while(!obj.end_task)
     {
+      obj.mut.lock();
       obj.update();
+      obj.mut.unlock();
     }
 
     return 0;
@@ -48,12 +50,7 @@ position_t OdometryBase::get_position(void)
     mut.lock();
 
     // Create a new struct to pass-by-value
-    position_t out =
-    {
-        .x = current_pos.x,
-        .y = current_pos.y,
-        .rot = current_pos.rot
-    };
+    position_t out = current_pos;
 
     mut.unlock();
 
@@ -63,13 +60,11 @@ position_t OdometryBase::get_position(void)
 /**
  * Sets the current position of the robot
  */
-void OdometryBase::set_position(const position_t &newpos)
+void OdometryBase::set_position(const position_t& newpos)
 {
     mut.lock();
 
-    current_pos.x = newpos.x;
-    current_pos.y = newpos.y;
-    current_pos.rot = newpos.rot;
+    current_pos = newpos;
 
     mut.unlock();
 }

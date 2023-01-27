@@ -50,7 +50,7 @@ public:
      * Sets the current position of the robot
      * @param newpos the new position that the odometry will believe it is at
      */
-    virtual void set_position(const position_t &newpos=zero_pos);
+    virtual void set_position(const position_t& newpos=zero_pos);
 
     /**
      * Update the current position on the field based on the sensors
