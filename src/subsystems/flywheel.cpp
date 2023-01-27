@@ -2,7 +2,7 @@
 *
 *     File:     Flywheel.cpp
 *     Purpose:  Generalized flywheel class for Core.
-*     Author:   Chris Nokes
+*     Author:   Chris Nokes, Richie Sommers
 *     
 **********************************************************
 * EDIT HISTORY
@@ -22,6 +22,8 @@
 
 using namespace vex;
 
+const int FlywheelWindowSize = 30;
+
 /*********************************************************
 *         CONSTRUCTOR, GETTERS, SETTERS
 *********************************************************/
@@ -33,25 +35,26 @@ FeedForward::ff_config_t empty_ff = FeedForward::ff_config_t{};
 * Create the Flywheel object using PID + feedforward for control.
 */
 Flywheel::Flywheel(motor_group &motors, PID::pid_config_t &pid_config, FeedForward::ff_config_t &ff_config, const double ratio)
-    :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio), control_style(PID_Feedforward) { }
+    :motors(motors), pid(pid_config), ff(ff_config), ratio(ratio), control_style(PID_Feedforward), smoothedRPM(0), RPM_avger(MovingAverage(FlywheelWindowSize)) {
+    }
 
 /**
 * Create the Flywheel object using only feedforward for control
 */
 Flywheel::Flywheel(motor_group &motors, FeedForward::ff_config_t &ff_config, const double ratio)
-    :motors(motors), pid(empty_pid), ff(ff_config), ratio(ratio), control_style(Feedforward) {}
+    :motors(motors), pid(empty_pid), ff(ff_config), ratio(ratio), control_style(Feedforward), smoothedRPM(0), RPM_avger(MovingAverage(FlywheelWindowSize)) {}
 
 /**
 * Create the Flywheel object using Take Back Half for control
 */
 Flywheel::Flywheel(motor_group &motors, const double TBH_gain, const double ratio)
-    :motors(motors), pid(empty_pid), ff(empty_ff), TBH_gain(TBH_gain), ratio(ratio), control_style(Take_Back_Half) {}
+    :motors(motors), pid(empty_pid), ff(empty_ff), TBH_gain(TBH_gain), ratio(ratio), control_style(Take_Back_Half), smoothedRPM(0), RPM_avger(MovingAverage(FlywheelWindowSize)) {}
 
 /**
 * Create the Flywheel object using Bang Bang for control
 */
 Flywheel::Flywheel(motor_group &motors, const double ratio)
-    :motors(motors), pid(empty_pid), ff(empty_ff), ratio(ratio), control_style(Bang_Bang) {}
+    :motors(motors), pid(empty_pid), ff(empty_ff), ratio(ratio), control_style(Bang_Bang), smoothedRPM(0), RPM_avger(MovingAverage(FlywheelWindowSize)) {}
 
 /**
 * Return the current value that the RPM should be set to
@@ -74,8 +77,16 @@ motor_group* Flywheel::getMotors() { return &motors; } // TODO -- Remove?
 * return the current velocity of the flywheel motors, in RPM
 * @return the measured velocity of the flywheel
 */
-double Flywheel::getRPM() { return ratio * motors.velocity(velocityUnits::rpm); }
+double Flywheel::measureRPM() { 
+  double rawRPM = ratio * motors.velocity(velocityUnits::rpm); 
+  RPM_avger.add_entry(rawRPM);
+  smoothedRPM = RPM_avger.get_average();
+  return smoothedRPM;
+}
 
+double Flywheel::getRPM(){
+  return smoothedRPM;
+}
 /**
 * Returns a POINTER TO the PID; not currently used.
 * @return pidPointer -pointer to the PID
@@ -131,6 +142,8 @@ int spinRPMTask_BangBang(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer; 
   while(true) {
     // if it below the RPM, go, otherwise don't
+    wheel->measureRPM();
+
     if(wheel->getRPM() < wheel->getDesiredRPM()) { 
       wheel->spin_raw(1, fwd);
     }   
@@ -147,6 +160,7 @@ int spinRPMTask_Feedforward(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
   // get the pid from the wheel and set its target to the RPM stored in the wheel.
   while(true) {
+    wheel->measureRPM();
     wheel->updatePID(wheel->getRPM());   // check the current velocity and update the PID with it.
     double output = wheel->getFeedforwardValue();
     wheel->spin_raw(output, fwd);   // set the motors to whatever feedforward tells them to do
@@ -161,6 +175,7 @@ int spinRPMTask_PID_Feedforward(void* wheelPointer) {
   Flywheel* wheel = (Flywheel*) wheelPointer;
   // get the pid from the wheel and set its target to the RPM stored in the wheel.
   while(true) {
+    wheel->measureRPM();
     wheel->updatePID(wheel->getRPM());   // check the current velocity and update the PID with it.
     double output = wheel->getPIDValue() + wheel->getFeedforwardValue();
     wheel->spin_raw(output, fwd);   // set the motors to whatever PID tells them to do
@@ -181,6 +196,8 @@ int spinRPMTask_TBH(void* wheelPointer) {
   double previous_error = 0.0;
 
   while (true){
+    wheel->measureRPM();
+
     //reset if set to 0, this keeps the tbh val from screwing us up when we start up again
     if (wheel->getDesiredRPM()==0){
       output = 0;
@@ -236,6 +253,10 @@ void Flywheel::spin_manual(double speed, directionType dir){
 * @param inputRPM - set the current RPM
 */
 void Flywheel::spinRPM(int inputRPM) {
+  // setting to 0 is equivelent to stopping
+  if (inputRPM==0){
+    stop();
+  }
   // only run if the RPM is different or it isn't already running
   if(!taskRunning) {
 
