@@ -34,21 +34,24 @@ void CommandController::add_delay(int ms) {
  */
 void CommandController::run() {
   AutoCommand *next_cmd;
-  printf("Beginning Auto. Starting from 1");
+  printf("Beginning Auto. Commands 1 to %d\n", command_queue.size());
+  fflush(stdout);
   int command_count = 1;
   while(!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
     next_cmd = command_queue.front();
     command_queue.pop();
 
-    printf("Beginning Command %d", command_count);
+    printf("Beginning Command %d\n", command_count);
+    fflush(stdout);
 
     // run the current command until it returns true
     while(!next_cmd -> run()) {
       vexDelay(20);
     }
 
-    printf("Finished Command %d", command_count);
+    printf("Finished Command %d\n", command_count);
+    fflush(stdout);
     command_count++;
   }
 }
