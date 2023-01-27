@@ -20,7 +20,7 @@ using namespace vex;
  * @author Ryan McGee
  * @date 4/3/2020
  */
-class PID : Feedback
+class PID : public Feedback
 {
 public:
   /**
