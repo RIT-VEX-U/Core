@@ -86,10 +86,14 @@ class Flywheel{
   motor_group* getMotors();
 
   /**
-  * return the current velocity of the flywheel motors, in RPM
+  * make a measurement of the current RPM of the flywheel motor and return a smoothed version
+  */
+  double measureRPM();
+
+  /**
+  * return the current smoothed velocity of the flywheel motors, in RPM
   */
   double getRPM();
-
   /**
   * Returns a POINTER to the PID.
   */
@@ -174,5 +178,6 @@ class Flywheel{
   std::atomic<double> RPM;            // Desired RPM of the flywheel. 
   task rpmTask;                       // task (thread but not) that handles spinning the wheel at a given RPM
   FlywheelControlStyle control_style; // how the flywheel should be controlled
-
-};
+  double smoothedRPM;
+  MovingAverage RPM_avger;
+  };
