@@ -85,6 +85,11 @@ class MotionController : public Feedback
     bool is_on_target() override;
 
     /**
+     * @return The current postion, velocity and acceleration setpoints
+    */
+    motion_t get_motion();
+
+    /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
      * It does this by first calculating the kS (voltage to overcome static friction) by slowly increasing
      * the voltage until it moves.
@@ -114,6 +119,7 @@ class MotionController : public Feedback
 
     double lower_limit = 0, upper_limit = 0;
     double out = 0;
+    motion_t cur_motion;
      
     vex::timer tmr;
 

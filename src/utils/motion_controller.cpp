@@ -36,11 +36,11 @@ void MotionController::init(double start_pt, double end_pt)
 */
 double MotionController::update(double sensor_val)
 {
-    motion_t motion = profile.calculate(tmr.time(timeUnits::sec));
-    pid.set_target(motion.pos);
+    cur_motion = profile.calculate(tmr.time(timeUnits::sec));
+    pid.set_target(cur_motion.pos);
     pid.update(sensor_val);
 
-    out = pid.get() +  ff.calculate(motion.vel, motion.accel);
+    out = pid.get() +  ff.calculate(cur_motion.vel, cur_motion.accel);
 
     if(lower_limit != upper_limit)
         out = clamp(out, lower_limit, upper_limit);
@@ -75,6 +75,14 @@ void MotionController::set_limits(double lower, double upper)
 bool MotionController::is_on_target()
 {
     return (tmr.time(timeUnits::sec) > profile.get_movement_time()) && pid.is_on_target();
+}
+
+/**
+ * @return The current postion, velocity and acceleration setpoints
+*/
+motion_t MotionController::get_motion()
+{
+    return cur_motion;
 }
 
 /**
