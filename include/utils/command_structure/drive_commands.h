@@ -120,7 +120,7 @@ class DriveToPointCommand: public AutoCommand {
  */
 class TurnToHeadingCommand: public AutoCommand {
   public:
-    TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed);
+    TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed = 1);
 
     /**
      * Run turn_to_heading
