@@ -21,7 +21,7 @@
 MovingAverage::MovingAverage(int buffer_size) {
   buffer = std::vector<double>(buffer_size, 0.0); 
   buffer_index = 0; 
-  is_ready = false;
+  current_avg = 0;
 }
 
 /**
@@ -32,7 +32,7 @@ MovingAverage::MovingAverage(int buffer_size) {
 MovingAverage::MovingAverage(int buffer_size, double starting_value) {
   buffer = std::vector<double>(buffer_size, starting_value); 
   buffer_index = 0; 
-  is_ready = true;
+  current_avg = starting_value;
 }
 
 
@@ -48,14 +48,12 @@ MovingAverage::MovingAverage(int buffer_size, double starting_value) {
  * @param n  the sample that will be added to the moving average.
  */
 void MovingAverage::add_entry(double n){
+  current_avg -= buffer[buffer_index]/get_size();
+  current_avg += n/get_size();
   buffer[buffer_index] = n;
+
   buffer_index++;
-  // if weve filled the buffer once, then we're ready
-  if (!is_ready && buffer_index==buffer.size()-1){
-    is_ready = true;
-  }
-  //wrap around
-  buffer_index%=buffer.size();
+  buffer_index%=get_size();
 }
 
 /**
@@ -63,19 +61,7 @@ void MovingAverage::add_entry(double n){
  * @return the number of samples used to calculate this average
  */ 
 double MovingAverage::get_average(){
-  double total = 0;
-
-  int upto = buffer.size();
-  if (!is_ready){ //if we're not completely ready, only make average out of the samples we have
-    upto = buffer_index;
-  }
-
-  for (int i=0; i<upto; i++){
-    total+=buffer[i];
-  }
-
-  total/=upto;
-  return total;
+  return current_avg;
 }
 
 // How many samples the average is made from
