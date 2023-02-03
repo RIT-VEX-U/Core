@@ -40,6 +40,10 @@ DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, Feedback &feedbac
 bool DriveForwardCommand::run() {
   return drive_sys.drive_forward(inches, dir, feedback, max_speed);
 }
+
+/**
+ * reset the drive system if we timeout
+*/
 void DriveForwardCommand::on_timeout(){
   drive_sys.reset_auto();
 }
@@ -63,6 +67,9 @@ TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback,
 bool TurnDegreesCommand::run() {
   return drive_sys.turn_degrees(degrees, max_speed);
 }
+/**
+ * reset the drive system if we timeout
+*/
 void TurnDegreesCommand::on_timeout(){
   drive_sys.reset_auto();
 }
