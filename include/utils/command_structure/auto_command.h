@@ -11,14 +11,6 @@
 class AutoCommand {
   public:
     /**
-     * Constructs an autocommand with a specified timeout
-    */
-    AutoCommand(double timeout_seconds): timeout_seconds(timeout_seconds){}
-    /**
-     * Constructs an autocommand with no timeout
-    */
-    AutoCommand(): timeout_seconds(0.0){}
-    /**
      * Executes the command
      * Overridden by child classes
      * @returns true when the command is finished, false otherwise
