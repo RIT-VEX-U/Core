@@ -12,8 +12,11 @@
 
 /**
  * Adds a command to the queue
+ * @param cmd the AutoCommand we want to add to our list
+ * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout
  */
-void CommandController::add(AutoCommand *cmd) {
+void CommandController::add(AutoCommand *cmd, double timeout_seconds) {
+  cmd->timeout_seconds = timeout_seconds;
   command_queue.push(cmd);
 }
 
@@ -34,24 +37,47 @@ void CommandController::add_delay(int ms) {
  */
 void CommandController::run() {
   AutoCommand *next_cmd;
-  printf("Beginning Auto. Commands 1 to %d\n", command_queue.size());
+  printf("Running Auto. Commands 1 to %d\n", command_queue.size());
   fflush(stdout);
   int command_count = 1;
+
   while(!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
     next_cmd = command_queue.front();
     command_queue.pop();
+    command_timed_out = false;
 
     printf("Beginning Command %d\n", command_count);
     fflush(stdout);
 
-    // run the current command until it returns true
+
+    vex::timer timeout_timer;
+    timeout_timer.reset();
+    bool doTimeout = next_cmd->timeout_seconds > 0.0;
+
+    // run the current command until it returns true or we timeout
     while(!next_cmd -> run()) {
       vexDelay(20);
+
+      if (!doTimeout){
+        continue;
+      }
+
+      // If we do want to check for timeout, check and end the command if we should
+      double cmd_elapsed_sec = ((double)timeout_timer.time())/1000.0;
+      if (cmd_elapsed_sec > next_cmd->timeout_seconds){
+        next_cmd->on_timeout();
+        command_timed_out = true;
+        break;
+      }
     }
 
-    printf("Finished Command %d\n", command_count);
+    printf("Finished Command %d. Timed out: %s\n", command_count, command_timed_out ? "true" : "false" );
     fflush(stdout);
     command_count++;
   }
+}
+
+bool CommandController::last_command_timed_out(){
+  return command_timed_out;
 }

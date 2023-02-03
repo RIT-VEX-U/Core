@@ -55,7 +55,6 @@ class MovingAverage {
   private:
     int buffer_index;               //index of the next value to be overridden
     std::vector<double> buffer;     //all current data readings we've taken 
-    bool is_ready;                  //if the average is ready to be read (stil can read before this but it will be taken a limited number of samples)
-
+    double current_avg;             //the current value of the data
 
 };
