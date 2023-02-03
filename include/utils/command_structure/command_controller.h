@@ -17,9 +17,10 @@ class CommandController {
 
   /**
    * Adds a command to the queue
-   * @param cmd - AutoCommand to be added
+   * @param cmd the AutoCommand we want to add to our list
+   * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is <= 0 no time out will be applied
    */
-  void add(AutoCommand *cmd);
+  void add(AutoCommand *cmd, double timeout_seconds = 0);
 
   /**
    * Adds a command that will delay progression
@@ -34,7 +35,14 @@ class CommandController {
    * Execute and remove commands in FIFO order
    */
   void run();
+  /**
+   * last_command_timed_out tells how the last command ended
+   * Use this if you want to make decisions based on the end of the last command
+   * @return true if the last command timed out. false if it finished regularly
+   */
+  bool last_command_timed_out();
 
   private:
     std::queue<AutoCommand*> command_queue;
+    bool command_timed_out = false;
 };

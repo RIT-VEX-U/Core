@@ -11,9 +11,32 @@
 class AutoCommand {
   public:
     /**
+     * Constructs an autocommand with a specified timeout
+    */
+    AutoCommand(double timeout_seconds): timeout_seconds(timeout_seconds){}
+    /**
+     * Constructs an autocommand with no timeout
+    */
+    AutoCommand(): timeout_seconds(0.0){}
+    /**
      * Executes the command
      * Overridden by child classes
      * @returns true when the command is finished, false otherwise
      */
     virtual bool run() { return true; }
+    /**
+     * What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
+    */
+    virtual void on_timeout(){}
+    /** 
+     * How long to run until we cancel this command. 
+     * If the command is cancelled, on_timeout() is called to allow any cleanup from the function. 
+     * If the timeout_seconds <= 0, no timeout will be applied and this command will run forever
+     * A timeout can come in handy for some commands that can not reach the end due to some physical limitation such as
+     * - a drive command hitting a wall and not being able to reach its target
+     * - a command that waits until something is up to speed that never gets up to speed because of battery voltage
+     * - something else...
+    */
+    double timeout_seconds;
+
 };

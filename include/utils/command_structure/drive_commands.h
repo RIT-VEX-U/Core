@@ -42,6 +42,10 @@ class DriveForwardCommand: public AutoCommand {
      * @returns true when execution is complete, false otherwise
      */
     bool run() override;
+    /**
+     * Cleans up drive system if we time out before finishing
+    */
+    void on_timeout() override;
 
   private:
     // drive system to run the function on
@@ -62,7 +66,7 @@ class DriveForwardCommand: public AutoCommand {
  */
 class TurnDegreesCommand: public AutoCommand {
   public:
-    TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed);
+    TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed = 1);
 
     /**
      * Run turn_degrees
@@ -70,6 +74,11 @@ class TurnDegreesCommand: public AutoCommand {
      * @returns true when execution is complete, false otherwise
      */
     bool run() override;
+    /**
+     * Cleans up drive system if we time out before finishing
+    */
+    void on_timeout() override;
+
 
   private:
     // drive system to run the function on
@@ -89,7 +98,7 @@ class TurnDegreesCommand: public AutoCommand {
  */
 class DriveToPointCommand: public AutoCommand {
   public:
-    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed);
+    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed = 1);
 
     /**
      * Run drive_to_point
@@ -101,6 +110,12 @@ class DriveToPointCommand: public AutoCommand {
   private:
     // drive system to run the function on
     TankDrive &drive_sys;
+    
+    /**
+     * Cleans up drive system if we time out before finishing
+    */
+    void on_timeout() override;
+
 
     // feedback controller to use
     Feedback &feedback;
@@ -128,6 +143,11 @@ class TurnToHeadingCommand: public AutoCommand {
      * @returns true when execution is complete, false otherwise
      */
     bool run() override;
+    /**
+     * Cleans up drive system if we time out before finishing
+    */
+    void on_timeout() override;
+
 
   private:
     // drive system to run the function on
@@ -155,6 +175,11 @@ class DriveStopCommand: public AutoCommand {
      * @returns true when execution is complete, false otherwise
      */
     bool run() override;
+    /**
+     * Cleans up drive system if we time out before finishing
+    */
+    void on_timeout() override;
+
 
   private:
     // drive system to run the function on
