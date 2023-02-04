@@ -46,6 +46,7 @@ bool DriveForwardCommand::run() {
 */
 void DriveForwardCommand::on_timeout(){
   drive_sys.reset_auto();
+  drive_sys.stop();
 }
 
 
@@ -72,6 +73,7 @@ bool TurnDegreesCommand::run() {
 */
 void TurnDegreesCommand::on_timeout(){
   drive_sys.reset_auto();
+  drive_sys.stop();
 }
 
 
@@ -100,6 +102,7 @@ bool DriveToPointCommand::run() {
 */
 void DriveToPointCommand::on_timeout(){
   drive_sys.reset_auto();
+  drive_sys.stop();
 }
 
 
@@ -126,6 +129,7 @@ bool TurnToHeadingCommand::run() {
 */
 void TurnToHeadingCommand::on_timeout(){
   drive_sys.reset_auto();
+  drive_sys.stop();
 }
 
 
