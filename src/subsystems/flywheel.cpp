@@ -148,7 +148,7 @@ int spinRPMTask_BangBang(void* wheelPointer) {
       wheel->spin_raw(1, fwd);
     }   
     else { wheel->stopMotors(); }
-    vexDelay(1);
+    vexDelay(10);
   }
   return 0;
 }
