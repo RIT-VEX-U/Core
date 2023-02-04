@@ -60,7 +60,7 @@ class MecanumDrive
   * @param left_y left joystick, Y axis (forward / backwards)
   * @param left_x left joystick, X axis (strafe left / right)
   * @param right_x right joystick, X axis (rotation left / right)
-  * @param power=2 how much of a "curve" there should be on drive controls; better for low speed maneuvers.
+  * @param power =2 how much of a "curve" there should be on drive controls; better for low speed maneuvers.
   *                Leave blank for a default curve of 2 (higher means more fidelity)
   */
   void drive(double left_y, double left_x, double right_x, int power=2);
@@ -74,7 +74,7 @@ class MecanumDrive
   * @param direction    What direction the robot should travel in, in degrees.
   *                     0 is forward, +/-180 is reverse, clockwise is positive.
   * @param speed    The maximum speed the robot should travel, in percent: -1.0->+1.0
-  * @param gyro_correction=true   Whether or not to use the gyro to help correct while driving.
+  * @param gyro_correction =true   Whether or not to use the gyro to help correct while driving.
   *                               Will always be false if no gyro was declared in the constructor.
   */
   bool auto_drive(double inches, double direction, double speed, bool gyro_correction=true);
@@ -84,7 +84,7 @@ class MecanumDrive
   * for control.
   * @param degrees How many degrees to rotate the robot. Clockwise postive.
   * @param speed What percentage to run the motors at: 0.0 -> 1.0
-  * @param ignore_imu=false Whether or not to use the Inertial for determining angle.
+  * @param ignore_imu =false Whether or not to use the Inertial for determining angle.
   *        Will instead use circumference formula + robot's wheelbase + encoders to determine.
   * 
   * @return whether or not the robot has finished the maneuver
