@@ -95,7 +95,7 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
  * @returns true when execution is complete, false otherwise
  */
 bool DriveToPointCommand::run() {
-  return drive_sys.drive_to_point(x, y, dir, max_speed);
+  return drive_sys.drive_to_point(x, y, dir, feedback, max_speed);
 }
 /**
  * reset the drive system if we don't hit our target
