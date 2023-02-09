@@ -99,6 +99,7 @@ class TurnDegreesCommand: public AutoCommand {
 class DriveToPointCommand: public AutoCommand {
   public:
     DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed = 1);
+    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Vector2D::point_t point, directionType dir, double max_speed=1);
 
     /**
      * Run drive_to_point
