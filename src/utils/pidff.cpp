@@ -19,6 +19,11 @@ void PIDFF::init(double start_pt, double set_pt)
     pid.init(start_pt, set_pt);
 }
 
+void PIDFF::set_target(double set_pt)
+{
+    pid.set_target(set_pt);
+}
+
 /**
  * Iterate the feedback loop once with an updated sensor value.
  * Only kS for feedfoward will be applied.

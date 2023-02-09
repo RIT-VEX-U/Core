@@ -18,6 +18,12 @@ class PIDFF : public Feedback
     void init(double start_pt, double set_pt) override;
 
     /**
+     * Set the target of the PID loop
+     * @param set_pt Setpoint / target value
+    */
+    void set_target(double set_pt);
+
+    /**
      * Iterate the feedback loop once with an updated sensor value.
      * Only kS for feedfoward will be applied.
      * 
