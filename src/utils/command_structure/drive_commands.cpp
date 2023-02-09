@@ -90,6 +90,17 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
   drive_sys(drive_sys), feedback(feedback), x(x), y(y), dir(dir), max_speed(max_speed) {}
 
 /**
+ * Construct a DriveForward Command
+ * @param drive_sys the drive system we are commanding
+ * @param feedback the feedback controller we are using to execute the drive
+ * @param y the point to drive to
+ * @param dir the direction to drive
+ * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
+ */
+DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Vector2D::point_t point, directionType dir, double max_speed):
+  drive_sys(drive_sys), feedback(feedback), x(point.x), y(point.y), dir(dir), max_speed(max_speed) {}
+
+/**
  * Run drive_to_point
  * Overrides run from AutoCommand
  * @returns true when execution is complete, false otherwise

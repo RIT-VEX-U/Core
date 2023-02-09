@@ -21,6 +21,16 @@ void CommandController::add(AutoCommand *cmd, double timeout_seconds) {
 }
 
 /**
+ * Add multiple commands to the queue. No timeout here. 
+ * @param cmds the AutoCommands we want to add to our list
+ */
+void CommandController::add(std::vector<AutoCommand *> cmds) {
+  for(AutoCommand * cmd : cmds){
+    command_queue.push(cmd);
+  } 
+}
+
+/**
  * Adds a command that will delay progression
  * of the queue
  * @param ms - number of milliseconds to wait

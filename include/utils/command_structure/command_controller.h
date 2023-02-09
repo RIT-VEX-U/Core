@@ -21,6 +21,12 @@ class CommandController {
    * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is <= 0 no time out will be applied
    */
   void add(AutoCommand *cmd, double timeout_seconds = 0);
+  
+  /**
+   * Add multiple commands to the queue. No timeout here. 
+   * @param cmds the AutoCommands we want to add to our list
+   */
+  void add(std::vector<AutoCommand *> cmds);
 
   /**
    * Adds a command that will delay progression
