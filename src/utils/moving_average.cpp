@@ -48,7 +48,7 @@ MovingAverage::MovingAverage(int buffer_size, double starting_value) {
  * @param n  the sample that will be added to the moving average.
  */
 void MovingAverage::add_entry(double n){
-  current_avg -= buffer[buffer_index]/get_size();
+  current_avg -= buffer[buffer_index]/(double)get_size();
   current_avg += n/get_size();
   buffer[buffer_index] = n;
 
