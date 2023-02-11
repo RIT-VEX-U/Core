@@ -2,7 +2,9 @@
 
 #include <string>
 #include <stdio.h>
+#include <vector>
 #include "vex.h"
+#include "../core/include/utils/vector2d.h"
 
 class GraphDrawer
 {
