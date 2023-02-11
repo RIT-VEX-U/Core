@@ -60,11 +60,13 @@ class PIDFF : public Feedback
      */
     bool is_on_target() override;
 
+    PID pid;
+
+
     private:
 
     FeedForward::ff_config_t &ff_cfg;
 
-    PID pid;
     FeedForward ff;
 
     double out;
