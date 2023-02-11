@@ -142,3 +142,7 @@ bool PID::is_on_target()
 
   return false;
 }
+
+Feedback::FeedbackType PID::get_type(){
+    return Feedback::FeedbackType::PIDType;
+}
