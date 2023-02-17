@@ -93,7 +93,7 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
  * Construct a DriveForward Command
  * @param drive_sys the drive system we are commanding
  * @param feedback the feedback controller we are using to execute the drive
- * @param y the point to drive to
+ * @param point the point to drive to
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
