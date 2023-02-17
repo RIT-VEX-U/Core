@@ -57,7 +57,7 @@ void CommandController::run() {
     command_queue.pop();
     command_timed_out = false;
 
-    printf("Beginning Command %d\n", command_count);
+    printf("Beginning Command %d : timeout = %f\n", command_count, next_cmd->timeout_seconds);
     fflush(stdout);
 
 
