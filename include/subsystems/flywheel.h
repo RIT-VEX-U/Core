@@ -147,7 +147,7 @@ class Flywheel{
   /**
   * starts or sets the RPM thread at new value
   * what control scheme is dependent on control_style
-  * @param inputRPM - set the current RPM
+  * @param rpm - the RPM we want to spin at
   */
   void spinRPM(int rpm);
 
