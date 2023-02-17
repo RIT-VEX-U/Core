@@ -20,6 +20,10 @@ class AutoCommand {
      * What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
     */
     virtual void on_timeout(){}
+    AutoCommand* withTimeout(double t_seconds){
+      timeout_seconds = t_seconds;
+      return this;
+    }
     /** 
      * How long to run until we cancel this command. 
      * If the command is cancelled, on_timeout() is called to allow any cleanup from the function. 
