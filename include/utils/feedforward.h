@@ -63,9 +63,15 @@ class FeedForward
      * @param a Requested acceleration of system
      * @return A feedforward that should closely represent the system if tuned correctly
      */
-    double calculate(double v, double a)
+    double calculate(double v, double a, double pid_ref=0.0)
     {
-        return (cfg.kS * (v > 0 ? 1 : v < 0 ? -1 : 0)) + (cfg.kV * v) + (cfg.kA * a) + cfg.kG;
+        double ks_sign = 0;
+        if(v != 0)
+            ks_sign = sign(v);
+        else if(pid_ref != 0)
+            ks_sign = sign(pid_ref);
+        
+        return (cfg.kS * ks_sign) + (cfg.kV * v) + (cfg.kA * a) + cfg.kG;
     }
 
     private:

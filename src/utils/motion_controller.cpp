@@ -40,7 +40,7 @@ double MotionController::update(double sensor_val)
     pid.set_target(cur_motion.pos);
     pid.update(sensor_val);
 
-    out = pid.get() +  ff.calculate(cur_motion.vel, cur_motion.accel);
+    out = pid.get() +  ff.calculate(cur_motion.vel, cur_motion.accel, pid.get());
 
     if(lower_limit != upper_limit)
         out = clamp(out, lower_limit, upper_limit);
