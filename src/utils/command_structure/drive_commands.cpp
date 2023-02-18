@@ -151,6 +151,11 @@ void TurnToHeadingCommand::on_timeout(){
 DriveStopCommand::DriveStopCommand(TankDrive &drive_sys):
   drive_sys(drive_sys) {}
 
+void DriveStopCommand::on_timeout()
+{
+  drive_sys.reset_auto();
+}
+
 /**
  * Stop the drive train
  * Overrides run from AutoCommand
