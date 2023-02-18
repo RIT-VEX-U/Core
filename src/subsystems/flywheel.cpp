@@ -22,7 +22,7 @@
 
 using namespace vex;
 
-const int FlywheelWindowSize = 10;
+const int FlywheelWindowSize = 1;
 
 /*********************************************************
 *         CONSTRUCTOR, GETTERS, SETTERS
