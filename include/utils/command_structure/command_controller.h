@@ -20,7 +20,7 @@ class CommandController {
    * @param cmd the AutoCommand we want to add to our list
    * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is <= 0 no time out will be applied
    */
-  void add(AutoCommand *cmd, double timeout_seconds = 0);
+  void add(AutoCommand *cmd, double timeout_seconds = 10.0);
   
   /**
    * Add multiple commands to the queue. No timeout here. 
