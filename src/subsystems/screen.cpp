@@ -76,7 +76,7 @@ void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char
     {
         bg_col = med_col;
     }
-    else if (tempC > hightemp)
+    else if (tempC >= hightemp)
     {
         bg_col = hot_col;
     }
