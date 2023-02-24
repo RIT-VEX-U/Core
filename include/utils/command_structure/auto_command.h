@@ -21,7 +21,7 @@ class AutoCommand {
     */
     virtual void on_timeout(){}
     AutoCommand* withTimeout(double t_seconds){
-      timeout_seconds = t_seconds;
+      this->timeout_seconds = t_seconds;
       return this;
     }
     /** 

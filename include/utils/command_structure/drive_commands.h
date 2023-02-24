@@ -176,11 +176,6 @@ class DriveStopCommand: public AutoCommand {
      * @returns true when execution is complete, false otherwise
      */
     bool run() override;
-    /**
-     * Cleans up drive system if we time out before finishing
-    */
-    void on_timeout() override;
-
 
   private:
     // drive system to run the function on
