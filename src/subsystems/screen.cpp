@@ -139,10 +139,10 @@ void draw_lr_arrows(vex::brain::lcd &screen, int bar_width, int width, int heigh
     screen.drawLine(width - bar_width / 3, height / 2, width - 2 * bar_width / 3, height / 2 + 20);
 }
 
-int HandleScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages)
+int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages, int first_page)
 {
     unsigned int num_pages = pages.size();
-    unsigned int current_page = 0;
+    unsigned int current_page = first_page;
 
     int width = 480;
     int height = 240;
@@ -184,19 +184,18 @@ int HandleScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages)
         }
         was_pressing = screen.pressing();
         screen.render();
-        vexDelay(100);
+        vexDelay(40);
     }
 
     return 0;
 }
 
-void StartScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages)
+void StartScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages, int first_page)
 {
+    // hold onto arguments here so we don't lose them and can use then in the lambda down there. capture semantics are not fun
     static std::vector<screenFunc> my_pages = pages;
-    ; // hold onto it here so we don't lose it and can use it in the lambda down there. capture semantics are fun
     static vex::brain::lcd my_screen = screen;
+    static int my_first_page = first_page;
     vex::task screenTask([]()
-                         {
-      HandleScreen(my_screen, my_pages);
-      return 0; });
+                         { return handle_screen_thread(my_screen, my_pages, my_first_page); });
 }

@@ -18,5 +18,5 @@ void draw_battery_stats(vex::brain::lcd &screen, int x, int y, double voltage, d
 
 void draw_lr_arrows(vex::brain::lcd &screen, int bar_width, int width, int height);
 
-int HandleScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages);
-void StartScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages);
+int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages, int first_page);
+void StartScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages, int first_page = 0);
