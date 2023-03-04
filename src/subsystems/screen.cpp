@@ -153,8 +153,6 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
     bool first_draw = true;
     while (true)
     {
-        draw_lr_arrows(screen, bar_width, width, height);
-
         pages[current_page](screen, bar_width, 0, width - bar_width * 2, height, first_draw);
 
         first_draw = false;
@@ -181,6 +179,7 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
                 current_page %= num_pages;
                 first_draw = true;
             }
+            draw_lr_arrows(screen, bar_width, width, height);
         }
         was_pressing = screen.pressing();
         screen.render();
