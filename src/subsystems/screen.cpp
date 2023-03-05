@@ -87,10 +87,6 @@ void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char
         {
             bg_col = not_plugged_in_col;
         }
-        else
-        {
-            bg_col = bg_col;
-        }
     }
 
     vex::color border_col = vex::white;
@@ -161,7 +157,7 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
         {
 
             int x = screen.xPosition();
-            int y = screen.yPosition();
+            //int y = screen.yPosition();
 
             if (x < bar_width)
             {
