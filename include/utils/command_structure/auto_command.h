@@ -21,11 +21,7 @@ class AutoCommand {
     */
     virtual void on_timeout(){}
     AutoCommand* withTimeout(double t_seconds){
-<<<<<<< HEAD
       this->timeout_seconds = t_seconds;
-=======
-      timeout_seconds = t_seconds;
->>>>>>> refs/subrepo/core/fetch
       return this;
     }
     /** 
