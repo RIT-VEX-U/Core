@@ -22,11 +22,7 @@
 
 using namespace vex;
 
-<<<<<<< HEAD
 const int FlywheelWindowSize = 20;
-=======
-const int FlywheelWindowSize = 1;
->>>>>>> refs/subrepo/core/fetch
 
 /*********************************************************
 *         CONSTRUCTOR, GETTERS, SETTERS
