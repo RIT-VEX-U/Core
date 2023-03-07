@@ -296,7 +296,7 @@ class Lift
   /**
     * Enables or disables the background task. Note that running the control functions, or set_position functions
     * will immediately re-enable the task for autonomous use.
-    * @param Whether or not the background thread should run the lift
+    * @param val Whether or not the background thread should run the lift
     */
   void set_async(bool val)
   {
