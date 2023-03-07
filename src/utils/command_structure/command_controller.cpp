@@ -59,7 +59,7 @@ void CommandController::run() {
     command_queue.pop();
     command_timed_out = false;
 
-    printf("Beginning Command %d : timeout = %f\n", command_count, next_cmd->timeout_seconds);
+    printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count, next_cmd->timeout_seconds, tmr.time(vex::seconds));
     fflush(stdout);
 
 
