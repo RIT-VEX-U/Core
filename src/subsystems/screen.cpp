@@ -169,7 +169,7 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
                 first_draw = true;
             }
 
-            if (x > width - bar_width * 2)
+            if (x > width - bar_width)
             {
                 current_page++;
                 current_page %= num_pages;
