@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['set_5faccel_0',['set_accel',['../classTrapezoidProfile.html#a1dcdfa1c290347cf0af48aca5afd167c',1,'TrapezoidProfile']]],
+  ['set_5fasync_1',['set_async',['../classLift.html#a7f37703180518390ec38cba9a780282b',1,'Lift']]],
+  ['set_5fendpts_2',['set_endpts',['../classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5',1,'TrapezoidProfile']]],
+  ['set_5flimits_3',['set_limits',['../classFeedback.html#a533a10b65cfc998898bf054f8b141de2',1,'Feedback::set_limits()'],['../classMotionController.html#a944c245002a1eb124dd8df40de4fcc57',1,'MotionController::set_limits()'],['../classPID.html#a8411ac48e8868d89e97afcf8990cca2c',1,'PID::set_limits()'],['../classPIDFF.html#ae0dccb27a91ec687f90c930441f246bb',1,'PIDFF::set_limits()']]],
+  ['set_5fmax_5fv_4',['set_max_v',['../classTrapezoidProfile.html#a6c08d08d8eadaa719f4dc9e607f9fe97',1,'TrapezoidProfile']]],
+  ['set_5fposition_5',['set_position',['../classLift.html#ab3cb7bc86faa079ec1249b5026ea6a85',1,'Lift::set_position()'],['../classOdometryBase.html#a34e4bd8567933d1b6bd6e41327a36549',1,'OdometryBase::set_position()'],['../classOdometryTank.html#ad3b4bcf351767992e2383ab000645335',1,'OdometryTank::set_position()']]],
+  ['set_5fsensor_5ffunction_6',['set_sensor_function',['../classLift.html#a08b7cdcfc9390f4945dd3737ac0e5ddc',1,'Lift']]],
+  ['set_5fsensor_5freset_7',['set_sensor_reset',['../classLift.html#a70b8e7cff5cd3b5827d8da07a02d92e6',1,'Lift']]],
+  ['set_5fsetpoint_8',['set_setpoint',['../classLift.html#a662bdc055d706699ef5cf308cd8872f8',1,'Lift']]],
+  ['set_5ftarget_9',['set_target',['../classPID.html#a2e301ab123c9e18e677b4873b03550dd',1,'PID::set_target()'],['../classPIDFF.html#a5b5584e4ca036b0e51c693a24a23b50b',1,'PIDFF::set_target()']]],
+  ['setpidtarget_10',['setPIDTarget',['../classFlywheel.html#a5eeb847c6ef4736b1917bf32843c69aa',1,'Flywheel']]],
+  ['setposition_11',['setPosition',['../classCustomEncoder.html#a0edd50e16020ccad5eafa55e0f80288d',1,'CustomEncoder']]],
+  ['setrotation_12',['setRotation',['../classCustomEncoder.html#abcb003c4627f59faa25c748c597da7fd',1,'CustomEncoder']]],
+  ['smallest_5fangle_13',['smallest_angle',['../classOdometryBase.html#a70ec71e9fb2e14f0a191a6bac927d36b',1,'OdometryBase']]],
+  ['speed_14',['speed',['../classOdometryBase.html#a6119ab3ce0b685e67a8b57871e0a2c26',1,'OdometryBase']]],
+  ['spin_5fmanual_15',['spin_manual',['../classFlywheel.html#a291e067bcc495a9d3da16a5832d78484',1,'Flywheel']]],
+  ['spin_5fraw_16',['spin_raw',['../classFlywheel.html#a5f4afa2ab8976acbf9fd47776a884dd3',1,'Flywheel']]],
+  ['spinrpm_17',['spinRPM',['../classFlywheel.html#aa72700130c0c8a08517ec1396fe9cc2b',1,'Flywheel']]],
+  ['spinrpmcommand_18',['SpinRPMCommand',['../classSpinRPMCommand.html#a9bfcf882448d6d4e0860c1a7de90f9ea',1,'SpinRPMCommand::SpinRPMCommand()'],['../classSpinRPMCommand.html',1,'SpinRPMCommand']]],
+  ['spline_19',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]],
+  ['stop_20',['stop',['../classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e',1,'Flywheel::stop()'],['../classTankDrive.html#af10e648e4de35fa72859fb96a9a80485',1,'TankDrive::stop()']]],
+  ['stopmotors_21',['stopMotors',['../classFlywheel.html#a78eaa40c9c069b8b4146c3ae34a21d4e',1,'Flywheel']]],
+  ['stopnontasks_22',['stopNonTasks',['../classFlywheel.html#a63c9c4d3646e4ed14f3b98ce3ab28684',1,'Flywheel']]]
+];
