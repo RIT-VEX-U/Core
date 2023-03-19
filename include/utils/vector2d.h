@@ -151,7 +151,7 @@ double deg2rad(double deg);
 
 /**
  * General function for converting radians to degrees
- * @param rad the angle in radians
+ * @param r the angle in radians
  * @return the angle in degrees
 
  */
