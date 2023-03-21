@@ -9,7 +9,11 @@ void draw_battery_stats(vex::brain::lcd &screen, int x, int y, double voltage, d
     vex::color med_col = vex::color(140, 100, 0);
     vex::color high_col = vex::black;
 
+
+
     vex::color bg_col = vex::black;
+    vex::color border_col = vex::white;
+
     if (percentage < low_pct)
     {
         bg_col = low_col;
@@ -23,23 +27,26 @@ void draw_battery_stats(vex::brain::lcd &screen, int x, int y, double voltage, d
         bg_col = high_col;
     }
 
+    screen.setPenWidth(3);
     screen.setFillColor(bg_col);
-    screen.setPenColor(vex::white);
+    screen.setPenColor(border_col);
     screen.setFont(vex::mono15);
 
-    screen.drawRectangle(x, y, 200, 20);
-    screen.printAt(x + 2, y + 15, "battery: %.1fv  %d%%", voltage, (int)percentage);
+
+    screen.drawRectangle(x+3, y, 200-3, 20);
+    screen.printAt(x + 5, y + 15, "battery: %.1fv  %d%%", voltage, (int)percentage);
 }
 
 void draw_mot_header(vex::brain::lcd &screen, int x, int y, int width)
 {
     vex::color bg_col = vex::black;
     vex::color border_col = vex::white;
+    screen.setPenWidth(3);
     screen.setFillColor(bg_col);
     screen.setPenColor(border_col);
     screen.setFont(vex::mono15);
 
-    screen.drawRectangle(x, y, width, 20);
+    screen.drawRectangle(x+3, y, width-3, 20);
     screen.printAt(x + 5, y + 15, "motor name");
     int name_width = 110;
 
@@ -52,14 +59,13 @@ void draw_mot_header(vex::brain::lcd &screen, int x, int y, int width)
     screen.printAt(x + name_width + 55, y + 15, "port");
 }
 
-void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::motor &motor)
+void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::motor &motor, int animation_tick)
 {
     double tempC = motor.temperature(vex::celsius);
     bool pluggedin = motor.installed();
     int port = motor.index() + 1;
 
     // used for flashing
-    static int count = 0;
     vex::color bg_col = vex::black;
     vex::color hot_col = vex::color(120, 0, 0);
     vex::color med_col = vex::color(140, 100, 0);
@@ -83,21 +89,22 @@ void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char
 
     if (!pluggedin)
     {
-        if ((count / 16) % 2 == 0)
+        if ((animation_tick / 8) % 2 == 0)
         {
             bg_col = not_plugged_in_col;
         }
     }
 
     vex::color border_col = vex::white;
+    screen.setPenWidth(3);
     screen.setFillColor(bg_col);
     screen.setPenColor(border_col);
     screen.setFont(vex::mono15);
 
-    screen.drawRectangle(x, y, width, 20);
+    screen.drawRectangle(x+3, y, width-3, 20);
 
     // name
-    screen.printAt(x + 5, y + 15, name);
+    screen.printAt(x + 7, y + 15, name);
     int name_width = 110;
 
     // temp
@@ -112,7 +119,50 @@ void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char
         warning = "";
     }
     screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
-    count++;
+}
+
+//
+void draw_dev_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::device &dev, int animation_tick)
+{
+    bool pluggedin = dev.installed();
+    int port = dev.index() + 1;
+
+    // used for flashing
+    vex::color bg_col = vex::black;
+    vex::color not_plugged_in_col = vex::color(255, 0, 0);
+
+    if (!pluggedin)
+    {
+        if ((animation_tick / 8) % 2 == 0)
+        {
+            bg_col = not_plugged_in_col;
+        }
+    }
+
+    vex::color border_col = vex::white;
+    screen.setPenWidth(3);
+    screen.setFillColor(bg_col);
+    screen.setPenColor(border_col);
+    screen.setFont(vex::mono15);
+
+    screen.drawRectangle(x+3, y, width-3, 20);
+
+    // name
+    screen.printAt(x + 5, y + 15, name);
+    int name_width = 110;
+
+    // temp
+    // screen.drawLine(x + name_width, y, x + name_width, y + 20);
+    // screen.printAt(x + name_width + 10, y + 15, "%dC", (int)tempC);
+
+    // PORT
+    screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
+    char *warning = "!";
+    if (pluggedin)
+    {
+        warning = "";
+    }
+    screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
 }
 
 void draw_lr_arrows(vex::brain::lcd &screen, int bar_width, int width, int height)
@@ -157,7 +207,7 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
         {
 
             int x = screen.xPosition();
-            //int y = screen.yPosition();
+            // int y = screen.yPosition();
 
             if (x < bar_width)
             {
@@ -175,8 +225,8 @@ int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc> pages,
                 current_page %= num_pages;
                 first_draw = true;
             }
-            draw_lr_arrows(screen, bar_width, width, height);
         }
+        draw_lr_arrows(screen, bar_width, width, height);
         was_pressing = screen.pressing();
         screen.render();
         vexDelay(40);
