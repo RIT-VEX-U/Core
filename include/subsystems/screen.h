@@ -11,7 +11,9 @@ typedef void (*screenFunc)(vex::brain::lcd &screen, int x, int y, int width, int
 
 void draw_mot_header(vex::brain::lcd &screen, int x, int y, int width);
 // name should be no longer than 15 characters
-void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::motor &motor);
+void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::motor &motor, int animation_tick);
+void draw_dev_stats(vex::brain::lcd &screen, int x, int y, int width, const char *name, vex::device &dev, int animation_tick);
+
 void draw_battery_stats(vex::brain::lcd &screen, int x, int y, double voltage, double percentage);
 
 
