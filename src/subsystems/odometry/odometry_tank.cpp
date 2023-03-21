@@ -60,7 +60,7 @@ position_t OdometryTank::update()
     double angle = 0;
 
     // If the IMU data was passed in, use it for rotational data
-    if(imu == NULL)
+    if(imu == NULL || imu->installed() == false)
     {
       // Get the difference in distance driven between the two sides
       // Uses the absolute position of the encoders, so resetting them will result in
