@@ -18,7 +18,7 @@ public:
  * @param y_label the name of the y axis (currently unused)
  * @param draw_border whether to draw the border around the graph. can be turned off if there are multiple graphs in the same space ie. a graph of error and output
  * @param lower_bound the bottom of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints  
- * @param upper_bound the top of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints  
+ * @param upper_bound the top of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints
 */
   GraphDrawer(vex::brain::lcd &screen, int num_samples, std::string x_label, std::string y_label, vex::color col, bool draw_border, double lower_bound, double upper_bound) : Screen(screen), sample_index(0), xlabel(x_label), ylabel(y_label), col(col), border(draw_border), upper(upper_bound), lower(lower_bound)
   {
