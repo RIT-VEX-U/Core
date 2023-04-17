@@ -113,10 +113,10 @@ void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const char
 
     // PORT
     screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
-    char *warning = "!";
+    char *warning = (char *)"!";
     if (pluggedin)
     {
-        warning = "";
+        warning = (char *)"";
     }
     screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
 }
@@ -157,10 +157,10 @@ void draw_dev_stats(vex::brain::lcd &screen, int x, int y, int width, const char
 
     // PORT
     screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
-    char *warning = "!";
+    char *warning = (char *)"!";
     if (pluggedin)
     {
-        warning = "";
+        warning = (char *)"";
     }
     screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
 }
