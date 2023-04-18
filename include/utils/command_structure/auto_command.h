@@ -10,6 +10,7 @@
 
 class AutoCommand {
   public:
+    static constexpr double default_timeout = 10.0;
     /**
      * Executes the command
      * Overridden by child classes
@@ -33,6 +34,6 @@ class AutoCommand {
      * - a command that waits until something is up to speed that never gets up to speed because of battery voltage
      * - something else...
     */
-    double timeout_seconds = 10.0;
+    double timeout_seconds = default_timeout;
 
 };
