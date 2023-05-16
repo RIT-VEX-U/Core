@@ -97,7 +97,7 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Vector2D::point_t point, directionType dir, double max_speed):
+DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir, double max_speed):
   drive_sys(drive_sys), feedback(feedback), x(point.x), y(point.y), dir(dir), max_speed(max_speed) {}
 
 /**
@@ -173,7 +173,7 @@ bool DriveStopCommand::run() {
  * @param odom the odometry system we are setting
  * @param newpos the now position to set the odometry to
  */
-OdomSetPosition::OdomSetPosition(OdometryBase &odom, const position_t &newpos): odom(odom), newpos(newpos){}
+OdomSetPosition::OdomSetPosition(OdometryBase &odom, const pose_t &newpos): odom(odom), newpos(newpos){}
 
 bool OdomSetPosition::run() {
   odom.set_position(newpos);

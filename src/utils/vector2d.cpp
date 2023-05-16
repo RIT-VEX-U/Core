@@ -64,7 +64,7 @@ Vector2D Vector2D::normalize()
  * Convert a direction and magnitude representation to an x, y representation
  * @return the x, y representation of the vector 
 */
-Vector2D::point_t Vector2D::point()
+point_t Vector2D::point()
 {
   point_t p = 
   {

@@ -12,7 +12,7 @@ Odometry3Wheel::Odometry3Wheel(CustomEncoder &lside_fwd, CustomEncoder &rside_fw
  * 
  * @return the robot's updated position
  */
-position_t Odometry3Wheel::update()
+pose_t Odometry3Wheel::update()
 {
     static double lside_old=0, rside_old=0, offax_old=0;
 
@@ -28,9 +28,9 @@ position_t Odometry3Wheel::update()
     rside_old = rside;
     offax_old = offax;
 
-    position_t updated_pos = calculate_new_pos(lside_delta, rside_delta, offax_delta, current_pos, cfg);
+    pose_t updated_pos = calculate_new_pos(lside_delta, rside_delta, offax_delta, current_pos, cfg);
 
-    static position_t last_pos = updated_pos;
+    static pose_t last_pos = updated_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
     static timer tmr;
@@ -86,9 +86,9 @@ position_t Odometry3Wheel::update()
  * @param cfg Data on robot's configuration (wheel diameter, wheelbase, off-axis distance from center)
  * @return The robot's new position (x, y, rot) 
  */
-position_t Odometry3Wheel::calculate_new_pos(double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, position_t old_pos, odometry3wheel_cfg_t cfg)
+pose_t Odometry3Wheel::calculate_new_pos(double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, pose_t old_pos, odometry3wheel_cfg_t cfg)
 {
-    position_t retval = {};
+    pose_t retval = {};
 
     // Arclength formula for encoder degrees -> single wheel distance driven
     double lside_dist = (cfg.wheel_diam / 2.0) * deg2rad(lside_delta_deg);

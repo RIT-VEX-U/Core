@@ -2,6 +2,7 @@
 
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/subsystems/custom_encoder.h"
+#include "../core/include/utils/geometry.h"
 #include "../core/include/utils/vector2d.h"
 #include "../core/include/robot_specs.h"
 
@@ -42,13 +43,13 @@ public:
      * Update the current position on the field based on the sensors
      * @return the position that odometry has calculated itself to be at
      */
-    position_t update() override;
+    pose_t update() override;
 
     /**
      * set_position tells the odometry to place itself at a position
      * @param newpos the position the odometry will take
     */
-    void set_position(const position_t &newpos=zero_pos) override;
+    void set_position(const pose_t &newpos=zero_pos) override;
 
     
 
@@ -56,7 +57,7 @@ private:
     /**
      * Get information from the input hardware and an existing position, and calculate a new current position
      */
-    static position_t calculate_new_pos(robot_specs_t &config, position_t &stored_info, double lside_diff, double rside_diff, double angle_deg);
+    static pose_t calculate_new_pos(robot_specs_t &config, pose_t &stored_info, double lside_diff, double rside_diff, double angle_deg);
 
     vex::motor_group *left_side, *right_side;
     CustomEncoder *left_enc, *right_enc;

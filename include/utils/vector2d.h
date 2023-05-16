@@ -1,6 +1,8 @@
 #pragma once
 
+
 #include <cmath>
+#include "../core/include/utils/geometry.h"
 
 #ifndef PI
 #define PI 3.141592654
@@ -13,57 +15,6 @@
 class Vector2D
 {
 public:
-
-    /**
-     * Data structure representing an X,Y coordinate
-     */
-    struct point_t
-    {
-        double x; ///< the x position in space
-        double y; ///< the y position in space
-
-
-        /** 
-         * dist calculates the euclidian distance between this point and another point using the pythagorean theorem
-         * @param other the point to measure the distance from
-         * @return the euclidian distance between this and other
-         */
-        double dist(const point_t other)
-        {
-          return sqrt(pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
-        }
-
-        /**
-         * Vector2D addition operation on points
-         * @param other the point to add on to this
-         * @return this + other (this.x + other.x, this.y + other.y)
-         */
-        point_t operator+(const point_t &other)
-        {
-          point_t p 
-          {
-            .x = this->x + other.x,
-            .y = this->y + other.y
-          };
-          return p;
-        }
-
-        /**
-         * Vector2D subtraction operation on points
-         * @param other the point_t to subtract from this
-         * @return this - other (this.x - other.x, this.y - other.y)
-         */
-        point_t operator-(const point_t &other)
-        {
-          point_t p 
-          {
-            .x = this->x - other.x,
-            .y = this->y - other.y
-          };
-          return p;
-        }
-    };
-
     /**
      * Construct a vector object.
      * 
@@ -113,7 +64,7 @@ public:
     * Returns a point from the vector
     * @return the point represented by the vector
     */
-    Vector2D::point_t point();
+    point_t point();
 
 /**
  * Scales a Vector2D by a scalar with the * operator

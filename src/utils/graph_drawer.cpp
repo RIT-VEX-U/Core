@@ -13,7 +13,7 @@
  */
 GraphDrawer::GraphDrawer(vex::brain::lcd &screen, int num_samples, std::string x_label, std::string y_label, vex::color col, bool draw_border, double lower_bound, double upper_bound) : Screen(screen), sample_index(0), xlabel(x_label), ylabel(y_label), col(col), border(draw_border), upper(upper_bound), lower(lower_bound)
 {
-    std::vector<Vector2D::point_t> temp(num_samples, Vector2D::point_t{.x = 0.0, .y = 0.0});
+    std::vector<point_t> temp(num_samples, point_t{.x = 0.0, .y = 0.0});
     samples = temp;
 }
 
@@ -21,7 +21,7 @@ GraphDrawer::GraphDrawer(vex::brain::lcd &screen, int num_samples, std::string x
  * add_sample adds a point to the graph, removing one from the back
  * @param sample an x, y coordinate of the next point to graph
  */
-void GraphDrawer::add_sample(Vector2D::point_t sample)
+void GraphDrawer::add_sample(point_t sample)
 {
     samples[sample_index] = sample;
     sample_index++;
@@ -49,7 +49,7 @@ void GraphDrawer::draw(int x, int y, int width, int height)
     // collect data
     for (int i = 0; i < samples.size(); i++)
     {
-        Vector2D::point_t p = samples[i];
+        point_t p = samples[i];
         if (p.x < earliest_time)
         {
             earliest_time = p.x;
@@ -95,11 +95,11 @@ void GraphDrawer::draw(int x, int y, int width, int height)
     Screen.setPenColor(col);
     for (int i = sample_index; i < samples.size() + sample_index - 1; i++)
     {
-        Vector2D::point_t p = samples[i % samples.size()];
+        point_t p = samples[i % samples.size()];
         double x_pos = x_s + ((p.x - earliest_time) / time_range) * (double)width;
         double y_pos = y_s + ((p.y - current_min) / sample_range) * (double)(-height);
 
-        Vector2D::point_t p2 = samples[(i + 1) % samples.size()];
+        point_t p2 = samples[(i + 1) % samples.size()];
         double x_pos2 = x_s + ((p2.x - earliest_time) / time_range) * (double)width;
         double y_pos2 = y_s + ((p2.y - current_min) / sample_range) * (double)(-height);
 

@@ -19,6 +19,7 @@
 #pragma once
 
 #include "vex.h"
+#include "../core/include/utils/geometry.h"
 #include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/subsystems/tank_drive.h"
 
@@ -99,7 +100,7 @@ class TurnDegreesCommand: public AutoCommand {
 class DriveToPointCommand: public AutoCommand {
   public:
     DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed = 1);
-    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Vector2D::point_t point, directionType dir, double max_speed=1);
+    DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir, double max_speed=1);
 
     /**
      * Run drive_to_point
@@ -197,7 +198,7 @@ class OdomSetPosition: public AutoCommand {
      * @param odom the odometry system we are setting
      * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
     */
-    OdomSetPosition(OdometryBase &odom, const position_t &newpos=OdometryBase::zero_pos);
+    OdomSetPosition(OdometryBase &odom, const pose_t &newpos=OdometryBase::zero_pos);
 
     /**
      * Run set_position
@@ -209,5 +210,5 @@ class OdomSetPosition: public AutoCommand {
   private:
     // drive system with an odometry config
     OdometryBase &odom;
-    position_t newpos;
+    pose_t newpos;
 };
