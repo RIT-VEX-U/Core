@@ -62,7 +62,7 @@ class Odometry3Wheel : public OdometryBase
      * 
      * @return the robot's updated position
      */
-    position_t update() override;
+    pose_t update() override;
 
     /**
      * A guided tuning process to automatically find tuning parameters.
@@ -88,7 +88,7 @@ class Odometry3Wheel : public OdometryBase
      * @param cfg Data on robot's configuration (wheel diameter, wheelbase, off-axis distance from center)
      * @return The robot's new position (x, y, rot) 
      */
-    static position_t calculate_new_pos(double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, position_t old_pos, odometry3wheel_cfg_t cfg);
+    static pose_t calculate_new_pos(double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, pose_t old_pos, odometry3wheel_cfg_t cfg);
 
     CustomEncoder &lside_fwd, &rside_fwd, &off_axis;
     odometry3wheel_cfg_t &cfg;

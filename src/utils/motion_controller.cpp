@@ -107,7 +107,7 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
 {
     FeedForward::ff_config_t out = {};
     
-    position_t start_pos = odometry.get_position();
+    pose_t start_pos = odometry.get_position();
 
     // ========== kS Tuning =========
     // Start at 0 and slowly increase the power until the robot starts moving

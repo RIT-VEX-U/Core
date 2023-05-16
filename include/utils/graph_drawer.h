@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include "vex.h"
+#include "../core/include/utils/geometry.h"
 #include "../core/include/utils/vector2d.h"
 
 class GraphDrawer
@@ -26,7 +27,7 @@ public:
    * add_sample adds a point to the graph, removing one from the back
    * @param sample an x, y coordinate of the next point to graph
    */
-  void add_sample(Vector2D::point_t sample);
+  void add_sample(point_t sample);
   /**
    * draws the graph to the screen in the constructor
    * @param x x position of the top left of the graphed region
@@ -38,7 +39,7 @@ public:
 
 private:
   vex::brain::lcd &Screen;
-  std::vector<Vector2D::point_t> samples;
+  std::vector<point_t> samples;
   int sample_index = 0;
   std::string xlabel;
   std::string ylabel;

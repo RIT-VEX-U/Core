@@ -1,3 +1,4 @@
+#include "../core/include/utils/geometry.h"
 #include "../core/include/subsystems/tank_drive.h"
 #include "../core/include/utils/math_util.h"
 
@@ -76,7 +77,7 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power)
  */
 bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed)
 {
-  static position_t pos_setpt;
+  static pose_t pos_setpt;
 
   // We can't run the auto drive function without odometry
   if(odometry == NULL)
@@ -89,7 +90,7 @@ bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedba
   // Generate a point X inches forward of the current position, on first startup
   if (!func_initialized)
   {
-    position_t cur_pos = odometry->get_position();
+    pose_t cur_pos = odometry->get_position();
 
     // forwards is positive Y axis, backwards is negative
     if (dir == directionType::rev)
@@ -221,11 +222,11 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedb
   }
 
   // Store the initial position of the robot
-  position_t current_pos = odometry->get_position();
-  position_t end_pos = {.x=x, .y=y};
+  pose_t current_pos = odometry->get_position();
+  pose_t end_pos = {.x=x, .y=y};
 
   // Create a point (and vector) to get the direction
-  Vector2D::point_t pos_diff_pt = 
+  point_t pos_diff_pt = 
   {
     .x = x - current_pos.x,
     .y = y - current_pos.y
@@ -411,9 +412,9 @@ double TankDrive::modify_inputs(double input, int power)
 bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, directionType dir, double radius, double res, Feedback &feedback, double max_speed) 
 {
   is_pure_pursuit = true;
-  std::vector<Vector2D::point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
+  std::vector<point_t> smoothed_path = PurePursuit::smooth_path_hermite(path, res);
 
-  Vector2D::point_t lookahead = PurePursuit::get_lookahead(smoothed_path, {odometry->get_position().x, odometry->get_position().y}, radius);
+  point_t lookahead = PurePursuit::get_lookahead(smoothed_path, {odometry->get_position().x, odometry->get_position().y}, radius);
   //printf("%f\t%f\n", odometry->get_position().x, odometry->get_position().y); 
   //printf("%f\t%f\n", lookahead.x, lookahead.y);
   bool is_last_point = (path.back().x == lookahead.x) && (path.back().y == lookahead.y);

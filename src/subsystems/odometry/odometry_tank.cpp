@@ -30,7 +30,7 @@ OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, ro
  * Resets the position and rotational data to the input.
  * 
  */
-void OdometryTank::set_position(const position_t &newpos)
+void OdometryTank::set_position(const pose_t &newpos)
 {
   mut.lock();
   rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
@@ -43,7 +43,7 @@ void OdometryTank::set_position(const position_t &newpos)
  * Update, store and return the current position of the robot. Only use if not initializing
  * with a separate thread.
  */
-position_t OdometryTank::update()
+pose_t OdometryTank::update()
 {
     double lside_revs = 0, rside_revs = 0;
 
@@ -92,7 +92,7 @@ position_t OdometryTank::update()
     current_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
 
 
-    static position_t last_pos = current_pos;
+    static pose_t last_pos = current_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
     static timer tmr;
@@ -126,9 +126,9 @@ position_t OdometryTank::update()
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &curr_pos, double lside_revs, double rside_revs, double angle_deg)
+pose_t OdometryTank::calculate_new_pos(robot_specs_t &config, pose_t &curr_pos, double lside_revs, double rside_revs, double angle_deg)
 {
-    position_t new_pos;
+    pose_t new_pos;
 
     static double stored_lside_revs = lside_revs;
     static double stored_rside_revs = rside_revs;
@@ -145,7 +145,7 @@ position_t OdometryTank::calculate_new_pos(robot_specs_t &config, position_t &cu
     Vector2D chg_vec(angle, dist_driven);
     
     // Create a vector from the current position in reference to X,Y=0,0
-    Vector2D::point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
+    point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
     Vector2D curr_vec(curr_point);
 
     // Tack on the "difference" vector to the current vector
