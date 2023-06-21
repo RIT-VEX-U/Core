@@ -406,7 +406,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double max_speed)
  */
 double TankDrive::modify_inputs(double input, int power)
 {
-  return (power % 2 == 0 ? (input < 0 ? -1 : 1) : 1) * pow(input, power);
+  return sign(input)* pow(std::abs(input), power);
 }
 
 bool TankDrive::pure_pursuit(std::vector<PurePursuit::hermite_point> path, directionType dir, double radius, double res, Feedback &feedback, double max_speed) 
