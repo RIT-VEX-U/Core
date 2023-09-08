@@ -44,8 +44,8 @@ var hierarchy =
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "PID::pid_config_t", "structPID_1_1pid__config__t.html", null ],
-    [ "Vector2D::point_t", "structVector2D_1_1point__t.html", null ],
-    [ "position_t", "structposition__t.html", null ],
+    [ "point_t", "structpoint__t.html", null ],
+    [ "pose_t", "structpose__t.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],

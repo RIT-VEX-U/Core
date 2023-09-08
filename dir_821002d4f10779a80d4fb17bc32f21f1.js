@@ -5,6 +5,7 @@ var dir_821002d4f10779a80d4fb17bc32f21f1 =
     [ "feedback_base.h", "feedback__base_8h_source.html", null ],
     [ "feedforward.h", "feedforward_8h_source.html", null ],
     [ "generic_auto.h", "generic__auto_8h_source.html", null ],
+    [ "geometry.h", "geometry_8h_source.html", null ],
     [ "graph_drawer.h", "graph__drawer_8h_source.html", null ],
     [ "math_util.h", "math__util_8h_source.html", null ],
     [ "motion_controller.h", "motion__controller_8h_source.html", null ],

@@ -9,6 +9,6 @@ var searchData=
   ['control_5fsetpoints_6',['control_setpoints',['../classLift.html#a7197ad879474798a5c1fec4963058c3a',1,'Lift']]],
   ['core_7',['Core',['../md_README.html',1,'']]],
   ['correction_5fpid_8',['correction_pid',['../structrobot__specs__t.html#a23d091e4a5258c11db6cd9753b598d06',1,'robot_specs_t']]],
-  ['current_5fpos_9',['current_pos',['../classOdometryBase.html#a6870aebb6e05dcd152d3295462f559c3',1,'OdometryBase']]],
-  ['customencoder_10',['CustomEncoder',['../classCustomEncoder.html',1,'CustomEncoder'],['../classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d',1,'CustomEncoder::CustomEncoder()']]]
+  ['current_5fpos_9',['current_pos',['../classOdometryBase.html#a6f85d2eb4866a86d4c39ceae87ea79e2',1,'OdometryBase']]],
+  ['customencoder_10',['customencoder',['../classCustomEncoder.html',1,'CustomEncoder'],['../classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d',1,'CustomEncoder::CustomEncoder()']]]
 ];

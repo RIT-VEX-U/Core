@@ -5,7 +5,7 @@ var searchData=
   ['set_5fendpts_2',['set_endpts',['../classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5',1,'TrapezoidProfile']]],
   ['set_5flimits_3',['set_limits',['../classFeedback.html#a533a10b65cfc998898bf054f8b141de2',1,'Feedback::set_limits()'],['../classMotionController.html#a944c245002a1eb124dd8df40de4fcc57',1,'MotionController::set_limits()'],['../classPID.html#a8411ac48e8868d89e97afcf8990cca2c',1,'PID::set_limits()'],['../classPIDFF.html#ae0dccb27a91ec687f90c930441f246bb',1,'PIDFF::set_limits()']]],
   ['set_5fmax_5fv_4',['set_max_v',['../classTrapezoidProfile.html#a6c08d08d8eadaa719f4dc9e607f9fe97',1,'TrapezoidProfile']]],
-  ['set_5fposition_5',['set_position',['../classLift.html#ab3cb7bc86faa079ec1249b5026ea6a85',1,'Lift::set_position()'],['../classOdometryBase.html#a34e4bd8567933d1b6bd6e41327a36549',1,'OdometryBase::set_position()'],['../classOdometryTank.html#ad3b4bcf351767992e2383ab000645335',1,'OdometryTank::set_position()']]],
+  ['set_5fposition_5',['set_position',['../classLift.html#ab3cb7bc86faa079ec1249b5026ea6a85',1,'Lift::set_position()'],['../classOdometryBase.html#a0abfc14f2b809c9bcf4ed8485f0b30d3',1,'OdometryBase::set_position()'],['../classOdometryTank.html#a6c24c0854b526a6f3aaa78cb1dab50ee',1,'OdometryTank::set_position()']]],
   ['set_5fsensor_5ffunction_6',['set_sensor_function',['../classLift.html#a08b7cdcfc9390f4945dd3737ac0e5ddc',1,'Lift']]],
   ['set_5fsensor_5freset_7',['set_sensor_reset',['../classLift.html#a70b8e7cff5cd3b5827d8da07a02d92e6',1,'Lift']]],
   ['set_5fsetpoint_8',['set_setpoint',['../classLift.html#a662bdc055d706699ef5cf308cd8872f8',1,'Lift']]],

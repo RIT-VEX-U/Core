@@ -1,6 +1,5 @@
 var classVector2D =
 [
-    [ "point_t", "structVector2D_1_1point__t.html", "structVector2D_1_1point__t" ],
     [ "Vector2D", "classVector2D.html#af3084a6d83b0c8220c548fbf74df2744", null ],
     [ "Vector2D", "classVector2D.html#ae6429e185a05c8174d97beeec27432b5", null ],
     [ "get_dir", "classVector2D.html#a683dab4e55cfc8483a32c6805cd29980", null ],
@@ -11,5 +10,5 @@ var classVector2D =
     [ "operator*", "classVector2D.html#a00a0dc6776995d47659b3ddd58c33a78", null ],
     [ "operator+", "classVector2D.html#a2bed654f65df8c3bedbf8cd7d07071df", null ],
     [ "operator-", "classVector2D.html#a07a043fc63572c1cf3104ec0a9a4e796", null ],
-    [ "point", "classVector2D.html#a567227aaadc7eceae0cbccf7f611aff4", null ]
+    [ "point", "classVector2D.html#af4072ee7df61c8cd21c3c4cd935aa7e1", null ]
 ];

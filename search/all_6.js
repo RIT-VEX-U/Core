@@ -13,7 +13,7 @@ var searchData=
   ['get_5fmag_10',['get_mag',['../classVector2D.html#a4da6f92b5874470ed5642587a973c3df',1,'Vector2D']]],
   ['get_5fmotion_11',['get_motion',['../classMotionController.html#ab958ce97fbc4929f4dd03965671e8d4d',1,'MotionController']]],
   ['get_5fmovement_5ftime_12',['get_movement_time',['../classTrapezoidProfile.html#abd551042dfffe0923200c4546d109c55',1,'TrapezoidProfile']]],
-  ['get_5fposition_13',['get_position',['../classOdometryBase.html#a3cdcfcf70ef02e0efc2efd902fac3811',1,'OdometryBase']]],
+  ['get_5fposition_13',['get_position',['../classOdometryBase.html#a423e398bd9ec7038abe7786482db6dd0',1,'OdometryBase']]],
   ['get_5fsetpoint_14',['get_setpoint',['../classLift.html#adaa6cb65351d0c8a2c199a87a318b133',1,'Lift']]],
   ['get_5fsize_15',['get_size',['../classMovingAverage.html#ac45976e15321d2c2f52d1f281475b53d',1,'MovingAverage']]],
   ['get_5fspeed_16',['get_speed',['../classOdometryBase.html#a96c7be68db7424ddbe3704770dd1889f',1,'OdometryBase']]],
@@ -27,5 +27,6 @@ var searchData=
   ['getpidvalue_24',['getPIDValue',['../classFlywheel.html#a45bde10a01304c71e74564cd080a9052',1,'Flywheel']]],
   ['getrpm_25',['getRPM',['../classFlywheel.html#a00e5ad15adfb23185f7713b86d9d7b9f',1,'Flywheel']]],
   ['gettbhgain_26',['getTBHGain',['../classFlywheel.html#a8c1f0b98975b9d75bc5b350fa059043d',1,'Flywheel']]],
-  ['graphdrawer_27',['GraphDrawer',['../classGraphDrawer.html#a8066ff51adb3cbbeca34268d13f34c5f',1,'GraphDrawer::GraphDrawer()'],['../classGraphDrawer.html',1,'GraphDrawer']]]
+  ['getting_20started_27',['Getting Started',['../md_README.html#autotoc_md1',1,'']]],
+  ['graphdrawer_28',['graphdrawer',['../classGraphDrawer.html#a8066ff51adb3cbbeca34268d13f34c5f',1,'GraphDrawer::GraphDrawer()'],['../classGraphDrawer.html',1,'GraphDrawer']]]
 ];
