@@ -1,7 +1,7 @@
 #include "../core/include/utils/pidff.h"
 #include "../core/include/utils/math_util.h"
 
-PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg): ff_cfg(ff_cfg), pid(pid_cfg), ff(ff_cfg)  
+PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg):  pid(pid_cfg), ff_cfg(ff_cfg),ff(ff_cfg)  
 {
     out = 0;
     lower_lim = 0;
