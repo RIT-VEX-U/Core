@@ -1,5 +1,17 @@
 var NAVTREEINDEX1 =
 {
+"files.html":[2,0],
+"flywheel_8h_source.html":[2,0,0,0,2],
+"flywheel__commands_8h_source.html":[2,0,0,1,0,4],
+"functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
+"functions_b.html":[1,3,0,1],
+"functions_c.html":[1,3,0,2],
+"functions_d.html":[1,3,0,3],
+"functions_e.html":[1,3,0,4],
+"functions_enum.html":[1,3,3],
+"functions_f.html":[1,3,0,5],
+"functions_func.html":[1,3,1],
 "functions_g.html":[1,3,0,6],
 "functions_h.html":[1,3,0,7],
 "functions_i.html":[1,3,0,8],
@@ -19,6 +31,7 @@ var NAVTREEINDEX1 =
 "functions_x.html":[1,3,0,21],
 "functions_y.html":[1,3,0,22],
 "functions_z.html":[1,3,0,23],
+"functions_~.html":[1,3,0,24],
 "generic__auto_8h_source.html":[2,0,0,1,4],
 "geometry_8h_source.html":[2,0,0,1,5],
 "graph__drawer_8h_source.html":[2,0,0,1,6],
@@ -41,6 +54,7 @@ var NAVTREEINDEX1 =
 "pure__pursuit_8h_source.html":[2,0,0,1,12],
 "robot__specs_8h_source.html":[2,0,0,2],
 "screen_8h_source.html":[2,0,0,0,5],
+"serializer_8h_source.html":[2,0,0,1,13],
 "structAutoChooser_1_1entry__t.html":[1,0,1,0],
 "structAutoChooser_1_1entry__t.html#a2459ffe56c165e35f3a63bec99990367":[1,0,1,0,2],
 "structAutoChooser_1_1entry__t.html#a2e303a71790d85a67819830302c4dcee":[1,0,1,0,4],
@@ -96,6 +110,6 @@ var NAVTREEINDEX1 =
 "structrobot__specs__t.html#af8c8492ba755766847bb21b960b91bfe":[1,0,30,7],
 "structrobot__specs__t.html#afb03c2e2cbc0d8fd6686c9421e016dec":[1,0,30,1],
 "tank__drive_8h_source.html":[2,0,0,0,6],
-"trapezoid__profile_8h_source.html":[2,0,0,1,13],
-"vector2d_8h_source.html":[2,0,0,1,14]
+"trapezoid__profile_8h_source.html":[2,0,0,1,14],
+"vector2d_8h_source.html":[2,0,0,1,15]
 };

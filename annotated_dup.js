@@ -34,6 +34,7 @@ var annotated_dup =
     [ "point_t", "structpoint__t.html", "structpoint__t" ],
     [ "pose_t", "structpose__t.html", "structpose__t" ],
     [ "robot_specs_t", "structrobot__specs__t.html", "structrobot__specs__t" ],
+    [ "Serializer", "classSerializer.html", "classSerializer" ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", "classSpinRPMCommand" ],
     [ "TankDrive", "classTankDrive.html", "classTankDrive" ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", "classTrapezoidProfile" ],

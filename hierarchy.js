@@ -47,6 +47,7 @@ var hierarchy =
     [ "point_t", "structpoint__t.html", null ],
     [ "pose_t", "structpose__t.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
+    [ "Serializer", "classSerializer.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", null ],

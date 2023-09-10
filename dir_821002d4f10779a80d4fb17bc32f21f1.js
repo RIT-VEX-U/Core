@@ -13,6 +13,7 @@ var dir_821002d4f10779a80d4fb17bc32f21f1 =
     [ "pid.h", "pid_8h_source.html", null ],
     [ "pidff.h", "pidff_8h_source.html", null ],
     [ "pure_pursuit.h", "pure__pursuit_8h_source.html", null ],
+    [ "serializer.h", "serializer_8h_source.html", null ],
     [ "trapezoid_profile.h", "trapezoid__profile_8h_source.html", null ],
     [ "vector2d.h", "vector2d_8h_source.html", null ]
 ];
