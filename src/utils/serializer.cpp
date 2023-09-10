@@ -7,6 +7,8 @@
 
 // Convert a type to bytes to serialize
 
+/// @brief Convert type to bytes. Overload this for non integer types
+/// @param value value to convert
 template <typename T>
 std::vector<char> to_bytes(T value)
 {
@@ -27,8 +29,8 @@ std::vector<char> to_bytes<std::string>(std::string str)
     return value_bytes;
 }
 
-// Convert bytes to a type
-
+/// @brief Convert bytes to a type
+/// @param gets data from arbitrary bytes. Overload this for non integer types
 template <typename T>
 T from_bytes(const std::vector<char> &data, std::vector<char>::const_iterator &position)
 {
@@ -51,8 +53,7 @@ std::string from_bytes(const std::vector<char> &data, std::vector<char>::const_i
     return s;
 }
 
-// Replaces funny characters in names so they don't mess with serialization specifiers
-
+/// @brief Replaces funny characters in names so they don't mess with serialization specifiers
 std::string sanitize_name(std::string s)
 {
     std::replace(s.begin(), s.end(), serialization_separator, '-');
@@ -77,7 +78,9 @@ std::string sanitize_name(std::string s)
  * +-------------+
  */
 
-// Adds data to a file (represented by array of bytes) as specified by the format above
+/// @brief Adds data to a file (represented by array of bytes) as specified by the format above
+/// @param data the bytes to add to
+/// @param map the values and names we are talking about
 template <typename value_type>
 static void add_data(std::vector<char> &data, const std::map<std::string, value_type> &map)
 {
@@ -157,6 +160,7 @@ int Serializer::int_or(const std::string &name, int otherwise)
     {
         return ints.at(name);
     }
+    set_int(name, otherwise);
     return otherwise;
 }
 bool Serializer::bool_or(const std::string &name, bool otherwise)
@@ -165,14 +169,13 @@ bool Serializer::bool_or(const std::string &name, bool otherwise)
     {
         return bools.at(name);
     }
+    set_bool(name, otherwise);
     return otherwise;
 }
 double Serializer::double_or(const std::string &name, double otherwise)
 {
     if (doubles.count(name))
     {
-        printf("Double Read");
-        fflush(stdout);
         return doubles.at(name);
     }
     set_double(name, otherwise);
@@ -184,10 +187,11 @@ std::string Serializer::string_or(const std::string &name, std::string otherwise
     {
         return strings.at(name);
     }
+    set_string(name, otherwise);
     return otherwise;
 }
 
-// forms data bytes then saves to a filename
+/// @brief forms data bytes then saves to filename this was openned with
 void Serializer::save_to_disk() const
 {
     std::vector<char> data = {};
@@ -207,7 +211,7 @@ void Serializer::save_to_disk() const
     }
 }
 
-// reads types from file data
+/// @brief reads types from file data
 bool Serializer::read_from_disk()
 {
     vex::brain::sdcard sd;
