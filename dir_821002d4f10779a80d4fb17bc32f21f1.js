@@ -7,6 +7,7 @@ var dir_821002d4f10779a80d4fb17bc32f21f1 =
     [ "generic_auto.h", "generic__auto_8h_source.html", null ],
     [ "geometry.h", "geometry_8h_source.html", null ],
     [ "graph_drawer.h", "graph__drawer_8h_source.html", null ],
+    [ "logger.h", "logger_8h_source.html", null ],
     [ "math_util.h", "math__util_8h_source.html", null ],
     [ "motion_controller.h", "motion__controller_8h_source.html", null ],
     [ "moving_average.h", "moving__average_8h_source.html", null ],

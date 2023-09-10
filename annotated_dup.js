@@ -21,6 +21,7 @@ var annotated_dup =
     [ "GenericAuto", "classGenericAuto.html", "classGenericAuto" ],
     [ "GraphDrawer", "classGraphDrawer.html", "classGraphDrawer" ],
     [ "Lift", "classLift.html", "classLift" ],
+    [ "Logger", "classLogger.html", "classLogger" ],
     [ "MecanumDrive", "classMecanumDrive.html", "classMecanumDrive" ],
     [ "motion_t", "structmotion__t.html", "structmotion__t" ],
     [ "MotionController", "classMotionController.html", "classMotionController" ],

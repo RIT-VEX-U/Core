@@ -7,5 +7,6 @@ var searchData=
   ['on_5ftimeout_4',['on_timeout',['../classAutoCommand.html#a68475854d11e7c3be90e9c6e8fc9e982',1,'AutoCommand::on_timeout()'],['../classDriveForwardCommand.html#a52b4e1ff386eeb1c00f219f40738d0af',1,'DriveForwardCommand::on_timeout()'],['../classTurnDegreesCommand.html#abd912b5906bafd9f4117e005eaeccb18',1,'TurnDegreesCommand::on_timeout()'],['../classTurnToHeadingCommand.html#acaa3b650ed9f02315eb6ba901181bc85',1,'TurnToHeadingCommand::on_timeout()'],['../classDriveStopCommand.html#a57e6672e217f2d4bbaf95842b079731e',1,'DriveStopCommand::on_timeout()']]],
   ['operator_2a_5',['operator*',['../classVector2D.html#a00a0dc6776995d47659b3ddd58c33a78',1,'Vector2D']]],
   ['operator_2b_6',['operator+',['../structpoint__t.html#a7ac83be085b010e510797bfa290302f4',1,'point_t::operator+()'],['../classVector2D.html#a2bed654f65df8c3bedbf8cd7d07071df',1,'Vector2D::operator+()']]],
-  ['operator_2d_7',['operator-',['../structpoint__t.html#a00bb7f871d2116544e0a9a8df9996785',1,'point_t::operator-()'],['../classVector2D.html#a07a043fc63572c1cf3104ec0a9a4e796',1,'Vector2D::operator-()']]]
+  ['operator_2d_7',['operator-',['../structpoint__t.html#a00bb7f871d2116544e0a9a8df9996785',1,'point_t::operator-()'],['../classVector2D.html#a07a043fc63572c1cf3104ec0a9a4e796',1,'Vector2D::operator-()']]],
+  ['operator_3d_8',['operator=',['../classLogger.html#a2b4a073549a8197b8f0497bb0a5accea',1,'Logger']]]
 ];
