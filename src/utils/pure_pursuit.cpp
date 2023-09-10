@@ -52,7 +52,7 @@ std::vector<point_t> PurePursuit::line_circle_intersections(point_t center, doub
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-point_t PurePursuit::get_lookahead(std::vector<point_t> path, point_t robot_loc, double radius)
+[[maybe_unused]] point_t PurePursuit::get_lookahead(std::vector<point_t> path, point_t robot_loc, double radius)
 { 
   //Default: the end of the path
   point_t target = path.back();
@@ -85,7 +85,7 @@ point_t PurePursuit::get_lookahead(std::vector<point_t> path, point_t robot_loc,
 /**
  Injects points in a path without changing the curvature with a certain spacing.
 */
-std::vector<point_t> PurePursuit::inject_path(std::vector<point_t> path, double spacing)
+[[maybe_unused]] std::vector<point_t> PurePursuit::inject_path(std::vector<point_t> path, double spacing)
 {
   std::vector<point_t> new_path;
 
@@ -125,7 +125,7 @@ std::vector<point_t> PurePursuit::inject_path(std::vector<point_t> path, double 
  * Honestly have no idea if/how this works.
  * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
 */
-std::vector<point_t> PurePursuit::smooth_path(std::vector<point_t> path, double weight_data, double weight_smooth, double tolerance)
+[[maybe_unused]] std::vector<point_t> PurePursuit::smooth_path(std::vector<point_t> path, double weight_data, double weight_smooth, double tolerance)
 {
   std::vector<point_t> new_path = path;
   double change = tolerance;
@@ -159,7 +159,7 @@ std::vector<point_t> PurePursuit::smooth_path(std::vector<point_t> path, double 
  * @param steps The number of points interpolated between points.
  * @return The smoothed path.
  */
-std::vector<point_t> PurePursuit::smooth_path_hermite(std::vector<hermite_point> path, double steps) {
+[[maybe_unused]] std::vector<point_t> PurePursuit::smooth_path_hermite(std::vector<hermite_point> path, double steps) {
   std::vector<point_t> new_path;
   for(int i = 0; i < path.size() - 1; i++) {
     for(int t = 0; t < steps; t++) {
@@ -191,7 +191,7 @@ std::vector<point_t> PurePursuit::smooth_path_hermite(std::vector<hermite_point>
   return new_path;
 }
 
-std::vector<point_t> PurePursuit::smooth_path_cubic(std::vector<point_t> path, double res) {
+[[maybe_unused]] std::vector<point_t> PurePursuit::smooth_path_cubic(std::vector<point_t> path, double res) {
   std::vector<point_t> new_path;
   std::vector<spline> splines;
 
