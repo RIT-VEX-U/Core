@@ -9,20 +9,33 @@
 * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
 */
 OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config, vex::inertial *imu, bool is_async)
-: OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_enc(NULL), right_enc(NULL), imu(imu), config(config)
+: OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_custom_enc(NULL), right_custom_enc(NULL), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config)
 {
 }
 
 /**
 * Initialize the Odometry module, calculating position from the drive motors.
-* @param left_enc The left motors 
-* @param right_enc The right motors
+* @param left_custom_enc The left custom encoder 
+* @param right_custom_enc The right custom encoder
 * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
 * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
 * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
 */
-OdometryTank::OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
-: OdometryBase(is_async), left_side(NULL), right_side(NULL), left_enc(&left_enc), right_enc(&right_enc), imu(imu), config(config)
+OdometryTank::OdometryTank(CustomEncoder &left_custom_enc, CustomEncoder &right_custom_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
+: OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(&left_custom_enc), right_custom_enc(&right_custom_enc), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config)
+{
+}
+
+/**
+* Initialize the Odometry module, calculating position from the drive motors.
+* @param left_vex_enc The left vex encoder 
+* @param right_vex_enc The right vex encoder
+* @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+* @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
+* @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+*/
+OdometryTank::OdometryTank(vex::encoder &left_vex_enc, vex::encoder &right_vex_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
+: OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(NULL), right_custom_enc(NULL), left_vex_enc(&left_vex_enc), right_vex_enc(&right_vex_enc), imu(imu), config(config)
 {
 }
 
@@ -51,10 +64,14 @@ pose_t OdometryTank::update()
     {
       lside_revs = left_side->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
       rside_revs = right_side->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
-    }else if(left_enc != NULL && right_enc != NULL)
+    }else if(left_custom_enc != NULL && right_custom_enc != NULL)
     {
-      lside_revs = left_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
-      rside_revs = right_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
+      lside_revs = left_custom_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
+      rside_revs = right_custom_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
+    }else if(left_vex_enc != NULL && right_vex_enc != NULL)
+    {
+      lside_revs = left_vex_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
+      rside_revs = right_vex_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
     }
 
     double angle = 0;
