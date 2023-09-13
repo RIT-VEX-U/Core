@@ -30,14 +30,25 @@ public:
 
     /**
     * Initialize the Odometry module, calculating position from the drive motors.
-    * @param left_enc The left motors 
-    * @param right_enc The right motors
+    * @param left_custom_enc The left custom encoder 
+    * @param right_custom_enc The right custom encoder
     * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
     * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
     * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
     */
 
-    OdometryTank(CustomEncoder &left_enc, CustomEncoder &right_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
+    OdometryTank(CustomEncoder &left_custom_enc, CustomEncoder &right_custom_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
+
+    /**
+    * Initialize the Odometry module, calculating position from the drive motors.
+    * @param left_vex_enc The left vex encoder 
+    * @param right_vex_enc The right vex encoder
+    * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+    * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
+    * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+    */
+
+    OdometryTank(vex::encoder &left_vex_enc, vex::encoder &right_vex_enc, robot_specs_t &config, vex::inertial *imu=NULL, bool is_async=true);
 
     /**
      * Update the current position on the field based on the sensors
@@ -60,7 +71,8 @@ private:
     static pose_t calculate_new_pos(robot_specs_t &config, pose_t &stored_info, double lside_diff, double rside_diff, double angle_deg);
 
     vex::motor_group *left_side, *right_side;
-    CustomEncoder *left_enc, *right_enc;
+    CustomEncoder *left_custom_enc, *right_custom_enc;
+    vex::encoder *left_vex_enc, *right_vex_enc;
     vex::inertial *imu;
     robot_specs_t &config;
 
