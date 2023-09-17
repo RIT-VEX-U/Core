@@ -60,7 +60,8 @@ jobs:
     - name: Get Notebook Link 
       shell: bash
       run: |
-        echo "NOTEBOOK_URL=$(curl -s https://docs.google.com/document/d/1Qi4-ZraS1KN8aG-58iJjD0aQQz0nNSEPkc6Hfz7vbTE/export\?format\=pdf |grep HREF |sed -E "s|.*HREF=\"([^\"]*).*|\1|g")" >> "$GITHUB_ENV"  
+        echo "NOTEBOOK_URL=$(curl -s https://docs.google.com/document/d/1MXCeYx3YnUjLv4AaNY4qdkM84N3KkZn0HwgL6a-Di8U/export\?format\=pdf |grep HREF |sed -E "s|.*HREF=\"([^\"]*).*|\1|g")" >> "$GITHUB_ENV"  
+
 
     - name: Download Notebook
       uses: wei/curl@master
