@@ -21,6 +21,15 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+
+
+    - name: Install Dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: doxygen-latex poppler-utils
+        version: 1.1
+
+
         
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
@@ -30,10 +39,9 @@ jobs:
         # Working directory
         working-directory: "." # default is .
 
-    - name: Install pdflatex dependencies
-      run: sudo apt-get install -y texlive-latex-base texlive-fonts-extra texlive-latex-extra texlive-font-utils
 
-    - run: sudo make --directory=documentation/latex
+    - name: Generate Reference Manual
+      run: sudo make --directory=documentation/latex
 
     
     - name: Copy file
@@ -48,6 +56,21 @@ jobs:
         source: "documentation/latex/refman.log"
         target: "documentation/html/refman.log"
 
+
+    - name: Get Notebook Link 
+      shell: bash
+      run: |
+        echo "NOTEBOOK_URL=$(curl -s https://docs.google.com/document/d/1Qi4-ZraS1KN8aG-58iJjD0aQQz0nNSEPkc6Hfz7vbTE/export\?format\=pdf |grep HREF |sed -E "s|.*HREF=\"([^\"]*).*|\1|g")" >> "$GITHUB_ENV"  
+
+    - name: Download Notebook
+      uses: wei/curl@master
+      with: 
+        args: ${{ env.NOTEBOOK_URL }} --output documentation/html/notebook_top.pdf
+
+
+
+    - name: Concatenate Manual and Notebook
+      run: sudo pdfunite documentation/html/notebook_top.pdf documentation/html/refman.pdf documentation/html/notebook.pdf
 
     
     - name: Deploy
