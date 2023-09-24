@@ -117,3 +117,23 @@ std::pair<double, double> calculate_linear_regression(std::vector<std::pair<doub
 
     return std::pair<double, double>(slope, y_intercept);
 }
+
+
+double estimate_path_length(std::vector<point_t> points)
+{
+  double dist = 0;
+
+  for(point_t p : points)
+  {
+    static point_t last_p = p;
+
+    // Ignore the first point
+    if(p == last_p)
+      continue;
+
+    dist += p.dist(last_p);
+    last_p = p;
+  }
+  
+  return dist;
+}

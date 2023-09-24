@@ -35,7 +35,9 @@ double PIDFF::update(double val)
 {
     double pid_out = pid.update(val);
     double ff_out = ff_cfg.kS * sign(pid_out);
-    out = clamp(pid_out + ff_out, lower_lim, upper_lim);
+    out = pid_out + ff_out;
+    if (lower_lim != upper_lim)
+        out = clamp(out, lower_lim, upper_lim);
 
     return out;
 }
@@ -53,7 +55,9 @@ double PIDFF::update(double val, double vel_setpt, double a_setpt)
 
     double pid_out = pid.update(val);
     double ff_out = ff.calculate(vel_setpt, a_setpt);
-    out = clamp(ff_out + pid_out, lower_lim, upper_lim);
+    out = pid_out + ff_out;
+    if (lower_lim != upper_lim)
+        out = clamp(out, lower_lim, upper_lim);
     
     return out;
 }

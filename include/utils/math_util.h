@@ -1,7 +1,9 @@
 #pragma once
+#include <vector>
 #include "math.h"
 #include "vex.h"
-#include <vector>
+#include "../core/include/utils/geometry.h"
+
 
 /**
 * Constrain the input between a minimum and a maximum value
@@ -54,3 +56,4 @@ Calculates the slope and y intercept of the line of best fit for the data
 */
 std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const &points);
 
+double estimate_path_length(std::vector<point_t> points);
