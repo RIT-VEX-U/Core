@@ -408,17 +408,14 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
 {
   pose_t robot_pose = odometry->get_position();
   static pose_t start_pos;
-  // static PID::pid_config_t pid_cfg = {
-  //   .p=.1
-  // };
-  // static FeedForward::ff_config_t ff_cfg = {
-
-  // };
-  // static PIDFF pid(pid_cfg, ff_cfg);
 
   if(!func_initialized)
   {
-    feedback.init(-estimate_path_length(path), 0);
+    if(dir != directionType::rev)
+      feedback.init(-estimate_path_length(path), 0);
+    else
+      feedback.init(estimate_path_length(path), 0);
+    
     start_pos = robot_pose;
     func_initialized = true;
   }
@@ -431,8 +428,14 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
   
   double correction = 0;
   double dist_remaining = PurePursuit::estimate_remaining_dist(path, robot_pose, radius);
-  double angle_diff = OdometryBase::smallest_angle(robot_pose.rot, rad2deg(atan2(localized.y, localized.x)));
+  double angle_diff = 0;
   
+  // Robot is facing forwards / backwards, change the bot's angle by 180
+  if(dir != directionType::rev)
+    angle_diff = OdometryBase::smallest_angle(robot_pose.rot, rad2deg(atan2(localized.y, localized.x)));
+  else
+    angle_diff = OdometryBase::smallest_angle(robot_pose.rot + 180, rad2deg(atan2(localized.y, localized.x)));
+
   // Correct the robot's heading until the last cut-off 
   if(!(is_last_point && robot_pose.get_point().dist(last_point) < config.drive_correction_cutoff))
   {
@@ -443,7 +446,10 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
     dist_remaining *= cos(angle_diff * (PI / 180.0));
   }
 
-  feedback.update(-dist_remaining);
+  if(dir != directionType::rev)
+    feedback.update(-dist_remaining);
+  else
+    feedback.update(dist_remaining);
 
   max_speed = fabs(max_speed);
 
