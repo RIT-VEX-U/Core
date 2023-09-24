@@ -44,16 +44,16 @@ namespace PurePursuit {
     * Returns points of the intersections of a line segment and a circle. The line 
     * segment is defined by two points, and the circle is defined by a center and radius.
     */
-  static std::vector<point_t> line_circle_intersections(point_t center, double r, point_t point1, point_t point2);
+  extern std::vector<point_t> line_circle_intersections(point_t center, double r, point_t point1, point_t point2);
   /**
     * Selects a look ahead from all the intersections in the path.
     */
-  static point_t get_lookahead(std::vector<point_t> path, point_t robot_loc, double radius);
+  extern point_t get_lookahead(std::vector<point_t> path, pose_t robot_loc, double radius);
 
   /**
     * Injects points in a path without changing the curvature with a certain spacing.
     */
-  static std::vector<point_t> inject_path(std::vector<point_t> path, double spacing);
+  extern std::vector<point_t> inject_path(std::vector<point_t> path, double spacing);
 
   /**
   * Returns a smoothed path maintaining the start and end of the path.
@@ -66,9 +66,9 @@ namespace PurePursuit {
   * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
   */
 
-  static std::vector<point_t> smooth_path(std::vector<point_t> path, double weight_data, double weight_smooth, double tolerance);
+  extern std::vector<point_t> smooth_path(std::vector<point_t> path, double weight_data, double weight_smooth, double tolerance);
 
-  static std::vector<point_t> smooth_path_cubic(std::vector<point_t> path, double res);
+  extern std::vector<point_t> smooth_path_cubic(std::vector<point_t> path, double res);
 
   /**
    * Interpolates a smooth path given a list of waypoints using hermite splines.
@@ -78,5 +78,18 @@ namespace PurePursuit {
    * @param steps The number of points interpolated between points.
    * @return The smoothed path.
    */
-  static std::vector<point_t> smooth_path_hermite(std::vector<hermite_point> path, double step);
+  extern std::vector<point_t> smooth_path_hermite(std::vector<hermite_point> path, double step);
+
+  /**
+   * Estimates the remaining distance from the robot's position to the end,
+   * by "searching" for the robot along the path and running a "connect the dots"
+   * distance algoritm
+   * 
+   * @param path The pure pursuit path the robot is following
+   * @param robot_pose The robot's current position
+   * @param radius Pure pursuit "radius", used to search for the robot along the path
+   * @return A rough estimate of the remaining distance
+  */
+  extern double estimate_remaining_dist(std::vector<point_t> path, pose_t robot_pose, double radius);
+
 }

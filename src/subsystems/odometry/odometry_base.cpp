@@ -22,6 +22,7 @@ OdometryBase::OdometryBase(bool is_async) : current_pos(zero_pos)
 int OdometryBase::background_task(void* ptr)
 {
     OdometryBase &obj = *((OdometryBase*) ptr);
+    vexDelay(1000);
     while(!obj.end_task)
     {
       obj.mut.lock();

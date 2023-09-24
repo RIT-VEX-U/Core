@@ -44,6 +44,11 @@ struct point_t
             .y = this->y - other.y};
         return p;
     }
+
+    bool operator==(const point_t& rhs)
+    {
+        return x==rhs.x && y==rhs.y;
+    }
 };
 
 
@@ -55,4 +60,9 @@ typedef struct
     double x;   ///< x position in the world
     double y;   ///< y position in the world
     double rot; ///< rotation in the world
+
+    point_t get_point()
+    {
+        return point_t{.x=x, .y=y};
+    }
 } pose_t;
