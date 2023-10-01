@@ -403,12 +403,23 @@ double TankDrive::modify_inputs(double input, int power)
   return sign(input)* pow(std::abs(input), power);
 }
 
-// TODO forwards & backwards
+/**
+ * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+ * waypoints - the robot will attempt to follow the points while cutting corners (radius)
+ * to save time (compared to stop / turn / start)
+ * 
+ * @param path The list of coordinates to follow, in order
+ * @param dir Run the bot forwards or backwards
+ * @param radius How big the corner cutting should be - small values follow the path more closely
+ * @param feedback The feedback controller determining speed
+ * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+ * @return True when the path is complete
+*/
 bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, double radius, Feedback &feedback, double max_speed)
 {
   pose_t robot_pose = odometry->get_position();
-  static pose_t start_pos;
 
+  // On function initialization, send the path-length estimate to the feedback controller
   if(!func_initialized)
   {
     if(dir != directionType::rev)
@@ -416,7 +427,6 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
     else
       feedback.init(estimate_path_length(path), 0);
     
-    start_pos = robot_pose;
     func_initialized = true;
   }
   
@@ -459,11 +469,6 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
   left += correction;
   right -= correction;
   
-  // left = clamp(left + correction, -max_speed, max_speed);
-  // right = clamp(right - correction, -max_speed, max_speed);
-
-  // printf("x:%f, y:%f, rot:%f, d:%f, c:%f l:%f, r:%f\n", robot_pose.x, robot_pose.y, robot_pose.rot, dist_remaining, correction, left, right);
-
   drive_tank(left, right);
 
   // When the robot has reached the end point and feedback reports on target, end pure pursuit
@@ -474,4 +479,22 @@ bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, doubl
     return true;
   }
   return false;
+}
+
+/**
+ * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+ * waypoints - the robot will attempt to follow the points while cutting corners (radius)
+ * to save time (compared to stop / turn / start)
+ * 
+ * Use the default drive feedback
+ * 
+ * @param path The list of coordinates to follow, in order
+ * @param dir Run the bot forwards or backwards
+ * @param radius How big the corner cutting should be - small values follow the path more closely
+ * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+ * @return True when the path is complete
+*/
+bool TankDrive::pure_pursuit(std::vector<point_t> path, directionType dir, double radius, double max_speed)
+{
+  return pure_pursuit(path, dir, radius, *config.drive_feedback, max_speed);
 }
