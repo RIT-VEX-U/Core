@@ -119,7 +119,7 @@ std::pair<double, double> calculate_linear_regression(std::vector<std::pair<doub
 }
 
 
-double estimate_path_length(std::vector<point_t> points)
+double estimate_path_length(const std::vector<point_t> &points)
 {
   double dist = 0;
 

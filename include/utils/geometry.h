@@ -14,7 +14,7 @@ struct point_t
      * @param other the point to measure the distance from
      * @return the euclidian distance between this and other
      */
-    double dist(const point_t other)
+    double dist(const point_t other) const
     {
         return std::sqrt(std::pow(this->x - other.x, 2) + pow(this->y - other.y, 2));
     }

@@ -31,11 +31,11 @@ namespace PurePursuit {
     double dir;
     double mag;
 
-    point_t getPoint() {
+    point_t getPoint() const {
       return {x, y};
     }
 
-    Vector2D getTangent() {
+    Vector2D getTangent() const {
       return Vector2D(dir, mag);
     }
   };
@@ -48,12 +48,12 @@ namespace PurePursuit {
   /**
     * Selects a look ahead from all the intersections in the path.
     */
-  extern point_t get_lookahead(std::vector<point_t> path, pose_t robot_loc, double radius);
+  extern point_t get_lookahead(const std::vector<point_t> &path, pose_t robot_loc, double radius);
 
   /**
     * Injects points in a path without changing the curvature with a certain spacing.
     */
-  extern std::vector<point_t> inject_path(std::vector<point_t> path, double spacing);
+  extern std::vector<point_t> inject_path(const std::vector<point_t> &path, double spacing);
 
   /**
   * Returns a smoothed path maintaining the start and end of the path.
@@ -66,9 +66,9 @@ namespace PurePursuit {
   * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
   */
 
-  extern std::vector<point_t> smooth_path(std::vector<point_t> path, double weight_data, double weight_smooth, double tolerance);
+  extern std::vector<point_t> smooth_path(const std::vector<point_t> &path, double weight_data, double weight_smooth, double tolerance);
 
-  extern std::vector<point_t> smooth_path_cubic(std::vector<point_t> path, double res);
+  extern std::vector<point_t> smooth_path_cubic(const std::vector<point_t> &path, double res);
 
   /**
    * Interpolates a smooth path given a list of waypoints using hermite splines.
@@ -78,7 +78,7 @@ namespace PurePursuit {
    * @param steps The number of points interpolated between points.
    * @return The smoothed path.
    */
-  extern std::vector<point_t> smooth_path_hermite(std::vector<hermite_point> path, double step);
+  extern std::vector<point_t> smooth_path_hermite(const std::vector<hermite_point> &path, double step);
 
   /**
    * Estimates the remaining distance from the robot's position to the end,
@@ -90,6 +90,6 @@ namespace PurePursuit {
    * @param radius Pure pursuit "radius", used to search for the robot along the path
    * @return A rough estimate of the remaining distance
   */
-  extern double estimate_remaining_dist(std::vector<point_t> path, pose_t robot_pose, double radius);
+  extern double estimate_remaining_dist(const std::vector<point_t> &path, pose_t robot_pose, double radius);
 
 }
