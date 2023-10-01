@@ -165,8 +165,34 @@ public:
    */
   static double modify_inputs(double input, int power=2);
 
-  
+  /**
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+   * waypoints - the robot will attempt to follow the points while cutting corners (radius)
+   * to save time (compared to stop / turn / start)
+   * 
+   * @param path The list of coordinates to follow, in order
+   * @param dir Run the bot forwards or backwards
+   * @param radius How big the corner cutting should be - small values follow the path more closely
+   * @param feedback The feedback controller determining speed
+   * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @return True when the path is complete
+  */
   bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, Feedback &feedback, double max_speed=1);
+
+  /**
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+   * waypoints - the robot will attempt to follow the points while cutting corners (radius)
+   * to save time (compared to stop / turn / start)
+   * 
+   * Use the default drive feedback
+   * 
+   * @param path The list of coordinates to follow, in order
+   * @param dir Run the bot forwards or backwards
+   * @param radius How big the corner cutting should be - small values follow the path more closely
+   * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @return True when the path is complete
+  */
+  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
 
 private:
   motor_group &left_motors; ///< left drive motors
