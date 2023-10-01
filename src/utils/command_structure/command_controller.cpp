@@ -62,6 +62,11 @@ void CommandController::add_delay(int ms)
   command_queue.push(delay);
 }
 
+
+void CommandController::add_cancel_func(std::function<bool(void)> true_if_cancel){
+  should_cancel = true_if_cancel;
+}
+
 /**
  * Begin execution of the queue
  * Execute and remove commands in FIFO order
@@ -75,7 +80,7 @@ void CommandController::run()
   vex::timer tmr;
   tmr.reset();
 
-  while (!command_queue.empty())
+  while (!command_queue.empty() )
   {
     // retrieve and remove command at the front of the queue
     next_cmd = command_queue.front();
@@ -101,12 +106,15 @@ void CommandController::run()
 
       // If we do want to check for timeout, check and end the command if we should
       double cmd_elapsed_sec = ((double)timeout_timer.time()) / 1000.0;
-      if (cmd_elapsed_sec > next_cmd->timeout_seconds)
+      if (cmd_elapsed_sec > next_cmd->timeout_seconds || should_cancel())
       {
         next_cmd->on_timeout();
         command_timed_out = true;
         break;
       }
+    }
+    if (should_cancel()){
+      break;
     }
 
     printf("Finished Command %d. Timed out: %s\n", command_count, command_timed_out ? "true" : "false");

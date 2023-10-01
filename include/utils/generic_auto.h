@@ -28,24 +28,28 @@ class GenericAuto
   * @returns
   *     true after all states have finished.
   */
+  [[deprecated("Use CommandController instead.")]] 
   bool run(bool blocking);
 
   /**
    * Add a new state to the autonomous via function point of type "bool (ptr*)()"
    * @param new_state the function to run
    */
+  [[deprecated("Use CommandController instead.")]] 
   void add(state_ptr new_state);
 
   /**
    * Add a new state to the autonomous via function point of type "bool (ptr*)()" that will run asynchronously
    * @param async_state the function to run
    */
+  [[deprecated("Use CommandController instead.")]] 
   void add_async(state_ptr async_state);
 
   /**
    * add_delay adds a period where the auto system will simply wait for the specified time
    * @param ms how long to wait in milliseconds
   */
+  [[deprecated("Use CommandController instead.")]] 
   void add_delay(int ms);
 
   private:
