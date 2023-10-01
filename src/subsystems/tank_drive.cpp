@@ -48,6 +48,14 @@ AutoCommand *TankDrive::TurnDegreesCmd(Feedback &fb, double degrees, double max_
 {
   return new TurnDegreesCommand(*this, fb, degrees, max_speed);
 }
+AutoCommand *TankDrive::PurePursuitCmd(std::vector<point_t> path, directionType dir, double radius, double max_speed)
+{
+  return new PurePursuitCommand(*this, *drive_default_feedback, path, dir, radius, max_speed);
+}
+AutoCommand *TankDrive::PurePursuitCmd(Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed)
+{
+  return new PurePursuitCommand(*this, feedback, path, dir, radius, max_speed);
+}
 
 /**
  * Reset the initialization for autonomous drive functions

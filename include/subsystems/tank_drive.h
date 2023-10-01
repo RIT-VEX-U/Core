@@ -43,6 +43,9 @@ public:
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0);
   AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0);
 
+  AutoCommand *PurePursuitCmd(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  AutoCommand *PurePursuitCmd(Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+
   /**
    * Stops rotation of all the motors using their "brake mode"
    */
