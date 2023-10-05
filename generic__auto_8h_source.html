@@ -118,19 +118,23 @@ $(document).ready(function(){initNavTree('generic__auto_8h_source.html',''); ini
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classGenericAuto.html#af25dcaaf074980064382c458812b3c9c">run</a>(<span class="keywordtype">bool</span> blocking);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#af48629556173af1f5106f7405a196f47">add</a>(state_ptr new_state);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#a938fb69c14735d4cf88ebc7589dcad1c">add_async</a>(state_ptr async_state);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#aaadc99efe49a375f0dc80db7e886d96c">add_delay</a>(<span class="keywordtype">int</span> ms);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::queue&lt;state_ptr&gt; state_list;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  [[deprecated(<span class="stringliteral">&quot;Use CommandController instead.&quot;</span>)]] </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classGenericAuto.html#af25dcaaf074980064382c458812b3c9c">run</a>(<span class="keywordtype">bool</span> blocking);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  [[deprecated(<span class="stringliteral">&quot;Use CommandController instead.&quot;</span>)]] </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#af48629556173af1f5106f7405a196f47">add</a>(state_ptr new_state);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  [[deprecated(<span class="stringliteral">&quot;Use CommandController instead.&quot;</span>)]] </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#a938fb69c14735d4cf88ebc7589dcad1c">add_async</a>(state_ptr async_state);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  [[deprecated(<span class="stringliteral">&quot;Use CommandController instead.&quot;</span>)]] </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGenericAuto.html#aaadc99efe49a375f0dc80db7e886d96c">add_delay</a>(<span class="keywordtype">int</span> ms);</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::queue&lt;state_ptr&gt; state_list;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
 </div>
 <div class="ttc" id="aclassGenericAuto_html"><div class="ttname"><a href="classGenericAuto.html">GenericAuto</a></div><div class="ttdef"><b>Definition</b> generic_auto.h:15</div></div>
 <div class="ttc" id="aclassGenericAuto_html_a938fb69c14735d4cf88ebc7589dcad1c"><div class="ttname"><a href="classGenericAuto.html#a938fb69c14735d4cf88ebc7589dcad1c">GenericAuto::add_async</a></div><div class="ttdeci">void add_async(state_ptr async_state)</div><div class="ttdef"><b>Definition</b> generic_auto.cpp:41</div></div>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hermite_5fpoint_0',['hermite_point',['../structPurePursuit_1_1hermite__point.html',1,'PurePursuit']]]
+  ['genericauto_0',['GenericAuto',['../classGenericAuto.html',1,'']]],
+  ['graphdrawer_1',['GraphDrawer',['../classGraphDrawer.html',1,'']]]
 ];

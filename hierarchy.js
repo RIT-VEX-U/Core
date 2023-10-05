@@ -2,6 +2,8 @@ var hierarchy =
 [
     [ "AutoChooser", "classAutoChooser.html", null ],
     [ "AutoCommand", "classAutoCommand.html", [
+      [ "Async", "classAsync.html", null ],
+      [ "Branch", "classBranch.html", null ],
       [ "DelayCommand", "classDelayCommand.html", null ],
       [ "DriveForwardCommand", "classDriveForwardCommand.html", null ],
       [ "DriveStopCommand", "classDriveStopCommand.html", null ],
@@ -9,13 +11,22 @@ var hierarchy =
       [ "FlywheelStopCommand", "classFlywheelStopCommand.html", null ],
       [ "FlywheelStopMotorsCommand", "classFlywheelStopMotorsCommand.html", null ],
       [ "FlywheelStopNonTasksCommand", "classFlywheelStopNonTasksCommand.html", null ],
+      [ "FunctionCommand", "classFunctionCommand.html", null ],
+      [ "InOrder", "classInOrder.html", null ],
       [ "OdomSetPosition", "classOdomSetPosition.html", null ],
+      [ "Parallel", "classParallel.html", null ],
+      [ "PurePursuitCommand", "classPurePursuitCommand.html", null ],
       [ "SpinRPMCommand", "classSpinRPMCommand.html", null ],
       [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
       [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],
+      [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
       [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
     ] ],
     [ "CommandController", "classCommandController.html", null ],
+    [ "Condition", "classCondition.html", [
+      [ "FunctionCondition", "classFunctionCondition.html", null ],
+      [ "IfTimePassed", "classIfTimePassed.html", null ]
+    ] ],
     [ "vex::encoder", null, [
       [ "CustomEncoder", "classCustomEncoder.html", null ]
     ] ],
@@ -44,6 +55,7 @@ var hierarchy =
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
+    [ "parallel_runner_info", "structparallel__runner__info.html", null ],
     [ "PID::pid_config_t", "structPID_1_1pid__config__t.html", null ],
     [ "point_t", "structpoint__t.html", null ],
     [ "pose_t", "structpose__t.html", null ],

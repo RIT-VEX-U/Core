@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['vector2d_0',['Vector2D',['../classVector2D.html',1,'']]]
+  ['serializer_0',['Serializer',['../classSerializer.html',1,'']]],
+  ['spinrpmcommand_1',['SpinRPMCommand',['../classSpinRPMCommand.html',1,'']]],
+  ['spline_2',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]]
 ];

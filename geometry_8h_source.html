@@ -114,8 +114,8 @@ $(document).ready(function(){initNavTree('geometry_8h_source.html',''); initResi
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">   10</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">y</a>; </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structpoint__t.html#aa9c477ce708cea45153d0ad94c9fc6e7">   17</a></span>    <span class="keywordtype">double</span> <a class="code hl_function" href="structpoint__t.html#aa9c477ce708cea45153d0ad94c9fc6e7">dist</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structpoint__t.html">point_t</a> other)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structpoint__t.html#aff420364748afa2b62ae9700c086924b">   17</a></span>    <span class="keywordtype">double</span> <a class="code hl_function" href="structpoint__t.html#aff420364748afa2b62ae9700c086924b">dist</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structpoint__t.html">point_t</a> other)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keywordflow">return</span> std::sqrt(std::pow(this-&gt;x - other.<a class="code hl_variable" href="structpoint__t.html#acf7556ca44360564040f5c86257b55b1">x</a>, 2) + pow(this-&gt;y - other.<a class="code hl_variable" href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">y</a>, 2));</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    }</div>
 </div>
@@ -139,28 +139,38 @@ $(document).ready(function(){initNavTree('geometry_8h_source.html',''); initResi
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> p;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code hl_struct" href="structpoint__t.html">point_t</a>&amp; rhs)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="structpoint__t.html#acf7556ca44360564040f5c86257b55b1">x</a>==rhs.<a class="code hl_variable" href="structpoint__t.html#acf7556ca44360564040f5c86257b55b1">x</a> &amp;&amp; <a class="code hl_variable" href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">y</a>==rhs.<a class="code hl_variable" href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">y</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
 </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="foldopen" id="foldopen00053" data-start="{" data-end="};">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structpose__t.html">   53</a></span><span class="keyword">typedef</span> <span class="keyword">struct</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>{</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">   55</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">x</a>;   </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">   56</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">y</a>;   </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">   57</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">rot</a>; </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <a class="code hl_struct" href="structpose__t.html">pose_t</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="};">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="structpose__t.html">   58</a></span><span class="keyword">typedef</span> <span class="keyword">struct</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>{</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">   60</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">x</a>;   </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">   61</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">y</a>;   </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">   62</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">rot</a>; </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <a class="code hl_struct" href="structpoint__t.html">point_t</a> get_point()</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keywordflow">return</span> <a class="code hl_struct" href="structpoint__t.html">point_t</a>{.<a class="code hl_variable" href="structpoint__t.html#acf7556ca44360564040f5c86257b55b1">x</a>=x, .y=y};</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <a class="code hl_struct" href="structpose__t.html">pose_t</a>;</div>
 </div>
 <div class="ttc" id="astructpoint__t_html"><div class="ttname"><a href="structpoint__t.html">point_t</a></div><div class="ttdef"><b>Definition</b> geometry.h:8</div></div>
 <div class="ttc" id="astructpoint__t_html_a00bb7f871d2116544e0a9a8df9996785"><div class="ttname"><a href="structpoint__t.html#a00bb7f871d2116544e0a9a8df9996785">point_t::operator-</a></div><div class="ttdeci">point_t operator-(const point_t &amp;other)</div><div class="ttdef"><b>Definition</b> geometry.h:40</div></div>
 <div class="ttc" id="astructpoint__t_html_a7ac83be085b010e510797bfa290302f4"><div class="ttname"><a href="structpoint__t.html#a7ac83be085b010e510797bfa290302f4">point_t::operator+</a></div><div class="ttdeci">point_t operator+(const point_t &amp;other)</div><div class="ttdef"><b>Definition</b> geometry.h:27</div></div>
 <div class="ttc" id="astructpoint__t_html_a8590af4986d0e4ef2b6756946f80438c"><div class="ttname"><a href="structpoint__t.html#a8590af4986d0e4ef2b6756946f80438c">point_t::y</a></div><div class="ttdeci">double y</div><div class="ttdoc">the y position in space</div><div class="ttdef"><b>Definition</b> geometry.h:10</div></div>
-<div class="ttc" id="astructpoint__t_html_aa9c477ce708cea45153d0ad94c9fc6e7"><div class="ttname"><a href="structpoint__t.html#aa9c477ce708cea45153d0ad94c9fc6e7">point_t::dist</a></div><div class="ttdeci">double dist(const point_t other)</div><div class="ttdef"><b>Definition</b> geometry.h:17</div></div>
 <div class="ttc" id="astructpoint__t_html_acf7556ca44360564040f5c86257b55b1"><div class="ttname"><a href="structpoint__t.html#acf7556ca44360564040f5c86257b55b1">point_t::x</a></div><div class="ttdeci">double x</div><div class="ttdoc">the x position in space</div><div class="ttdef"><b>Definition</b> geometry.h:9</div></div>
-<div class="ttc" id="astructpose__t_html"><div class="ttname"><a href="structpose__t.html">pose_t</a></div><div class="ttdef"><b>Definition</b> geometry.h:54</div></div>
-<div class="ttc" id="astructpose__t_html_a2fcb0692ae214620382140b9c267fce2"><div class="ttname"><a href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">pose_t::x</a></div><div class="ttdeci">double x</div><div class="ttdoc">x position in the world</div><div class="ttdef"><b>Definition</b> geometry.h:55</div></div>
-<div class="ttc" id="astructpose__t_html_a8e25328962a6f14b8b14e40df64cc66b"><div class="ttname"><a href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">pose_t::y</a></div><div class="ttdeci">double y</div><div class="ttdoc">y position in the world</div><div class="ttdef"><b>Definition</b> geometry.h:56</div></div>
-<div class="ttc" id="astructpose__t_html_ad2597c1c18e7fd55102be4c2bd5b5089"><div class="ttname"><a href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">pose_t::rot</a></div><div class="ttdeci">double rot</div><div class="ttdoc">rotation in the world</div><div class="ttdef"><b>Definition</b> geometry.h:57</div></div>
+<div class="ttc" id="astructpoint__t_html_aff420364748afa2b62ae9700c086924b"><div class="ttname"><a href="structpoint__t.html#aff420364748afa2b62ae9700c086924b">point_t::dist</a></div><div class="ttdeci">double dist(const point_t other) const</div><div class="ttdef"><b>Definition</b> geometry.h:17</div></div>
+<div class="ttc" id="astructpose__t_html"><div class="ttname"><a href="structpose__t.html">pose_t</a></div><div class="ttdef"><b>Definition</b> geometry.h:59</div></div>
+<div class="ttc" id="astructpose__t_html_a2fcb0692ae214620382140b9c267fce2"><div class="ttname"><a href="structpose__t.html#a2fcb0692ae214620382140b9c267fce2">pose_t::x</a></div><div class="ttdeci">double x</div><div class="ttdoc">x position in the world</div><div class="ttdef"><b>Definition</b> geometry.h:60</div></div>
+<div class="ttc" id="astructpose__t_html_a8e25328962a6f14b8b14e40df64cc66b"><div class="ttname"><a href="structpose__t.html#a8e25328962a6f14b8b14e40df64cc66b">pose_t::y</a></div><div class="ttdeci">double y</div><div class="ttdoc">y position in the world</div><div class="ttdef"><b>Definition</b> geometry.h:61</div></div>
+<div class="ttc" id="astructpose__t_html_ad2597c1c18e7fd55102be4c2bd5b5089"><div class="ttname"><a href="structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089">pose_t::rot</a></div><div class="ttdeci">double rot</div><div class="ttdoc">rotation in the world</div><div class="ttdef"><b>Definition</b> geometry.h:62</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -112,18 +112,25 @@ Inheritance diagram for AutoCommand:</div>
  <div class="center">
   <img src="classAutoCommand.png" usemap="#AutoCommand_map" alt=""/>
   <map id="AutoCommand_map" name="AutoCommand_map">
-<area href="classDelayCommand.html" alt="DelayCommand" shape="rect" coords="208,56,406,80"/>
-<area href="classDriveForwardCommand.html" alt="DriveForwardCommand" shape="rect" coords="208,112,406,136"/>
-<area href="classDriveStopCommand.html" alt="DriveStopCommand" shape="rect" coords="208,168,406,192"/>
-<area href="classDriveToPointCommand.html" alt="DriveToPointCommand" shape="rect" coords="208,224,406,248"/>
-<area href="classFlywheelStopCommand.html" alt="FlywheelStopCommand" shape="rect" coords="208,280,406,304"/>
-<area href="classFlywheelStopMotorsCommand.html" alt="FlywheelStopMotorsCommand" shape="rect" coords="208,336,406,360"/>
-<area href="classFlywheelStopNonTasksCommand.html" alt="FlywheelStopNonTasksCommand" shape="rect" coords="208,392,406,416"/>
-<area href="classOdomSetPosition.html" alt="OdomSetPosition" shape="rect" coords="208,448,406,472"/>
-<area href="classSpinRPMCommand.html" alt="SpinRPMCommand" shape="rect" coords="208,504,406,528"/>
-<area href="classTurnDegreesCommand.html" alt="TurnDegreesCommand" shape="rect" coords="208,560,406,584"/>
-<area href="classTurnToHeadingCommand.html" alt="TurnToHeadingCommand" shape="rect" coords="208,616,406,640"/>
-<area href="classWaitUntilUpToSpeedCommand.html" alt="WaitUntilUpToSpeedCommand" shape="rect" coords="208,672,406,696"/>
+<area href="classAsync.html" title="Async runs a command asynchronously will simply let it go and never look back THIS HAS A VERY NICHE U..." alt="Async" shape="rect" coords="208,56,406,80"/>
+<area href="classBranch.html" title="Branch chooses from multiple options at runtime. the function decider returns an index into the choic..." alt="Branch" shape="rect" coords="208,112,406,136"/>
+<area href="classDelayCommand.html" alt="DelayCommand" shape="rect" coords="208,168,406,192"/>
+<area href="classDriveForwardCommand.html" alt="DriveForwardCommand" shape="rect" coords="208,224,406,248"/>
+<area href="classDriveStopCommand.html" alt="DriveStopCommand" shape="rect" coords="208,280,406,304"/>
+<area href="classDriveToPointCommand.html" alt="DriveToPointCommand" shape="rect" coords="208,336,406,360"/>
+<area href="classFlywheelStopCommand.html" alt="FlywheelStopCommand" shape="rect" coords="208,392,406,416"/>
+<area href="classFlywheelStopMotorsCommand.html" alt="FlywheelStopMotorsCommand" shape="rect" coords="208,448,406,472"/>
+<area href="classFlywheelStopNonTasksCommand.html" alt="FlywheelStopNonTasksCommand" shape="rect" coords="208,504,406,528"/>
+<area href="classFunctionCommand.html" alt="FunctionCommand" shape="rect" coords="208,560,406,584"/>
+<area href="classInOrder.html" title="InOrder runs its commands sequentially then continues. How to handle timeout in this case...." alt="InOrder" shape="rect" coords="208,616,406,640"/>
+<area href="classOdomSetPosition.html" alt="OdomSetPosition" shape="rect" coords="208,672,406,696"/>
+<area href="classParallel.html" title="Parallel runs multiple commands in parallel and waits for all to finish before continuing...." alt="Parallel" shape="rect" coords="208,728,406,752"/>
+<area href="classPurePursuitCommand.html" alt="PurePursuitCommand" shape="rect" coords="208,784,406,808"/>
+<area href="classSpinRPMCommand.html" alt="SpinRPMCommand" shape="rect" coords="208,840,406,864"/>
+<area href="classTurnDegreesCommand.html" alt="TurnDegreesCommand" shape="rect" coords="208,896,406,920"/>
+<area href="classTurnToHeadingCommand.html" alt="TurnToHeadingCommand" shape="rect" coords="208,952,406,976"/>
+<area href="classWaitUntilCondition.html" title="Waits until the condition is true." alt="WaitUntilCondition" shape="rect" coords="208,1008,406,1032"/>
+<area href="classWaitUntilUpToSpeedCommand.html" alt="WaitUntilUpToSpeedCommand" shape="rect" coords="208,1064,406,1088"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -175,7 +182,7 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
 </div><div class="memdoc">
 <p>What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor </p>
 
-<p>Reimplemented in <a class="el" href="classDriveForwardCommand.html#a52b4e1ff386eeb1c00f219f40738d0af">DriveForwardCommand</a>, <a class="el" href="classTurnDegreesCommand.html#abd912b5906bafd9f4117e005eaeccb18">TurnDegreesCommand</a>, <a class="el" href="classTurnToHeadingCommand.html#acaa3b650ed9f02315eb6ba901181bc85">TurnToHeadingCommand</a>, and <a class="el" href="classDriveStopCommand.html#a57e6672e217f2d4bbaf95842b079731e">DriveStopCommand</a>.</p>
+<p>Reimplemented in <a class="el" href="classInOrder.html#ae1d1cb4d40fc64077b93095e0493d0dc">InOrder</a>, <a class="el" href="classParallel.html#a9e1de046e669b72139cea7262007fdc8">Parallel</a>, <a class="el" href="classBranch.html#adb62d2d34b51a3f73d081c9c5f91c1be">Branch</a>, <a class="el" href="classDriveForwardCommand.html#a52b4e1ff386eeb1c00f219f40738d0af">DriveForwardCommand</a>, <a class="el" href="classTurnDegreesCommand.html#abd912b5906bafd9f4117e005eaeccb18">TurnDegreesCommand</a>, <a class="el" href="classTurnToHeadingCommand.html#acaa3b650ed9f02315eb6ba901181bc85">TurnToHeadingCommand</a>, <a class="el" href="classPurePursuitCommand.html#adad6ad91c83c1a38c44077a0994aeef9">PurePursuitCommand</a>, and <a class="el" href="classDriveStopCommand.html#a57e6672e217f2d4bbaf95842b079731e">DriveStopCommand</a>.</p>
 
 </div>
 </div>
@@ -203,7 +210,7 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
 </div><div class="memdoc">
 <p>Executes the command Overridden by child classes </p><dl class="section return"><dt>Returns</dt><dd>true when the command is finished, false otherwise </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">DelayCommand</a>, <a class="el" href="classDriveForwardCommand.html#aff482b72cab23cd569eb01efac6d1d31">DriveForwardCommand</a>, <a class="el" href="classTurnDegreesCommand.html#a2206e4c5073a2e83f6bfa3eeca46a370">TurnDegreesCommand</a>, <a class="el" href="classDriveToPointCommand.html#a8ed58921bc3eeb8c04d0b11b4f7e4fbe">DriveToPointCommand</a>, <a class="el" href="classTurnToHeadingCommand.html#af571168ca078be95cbc735c99c2f4093">TurnToHeadingCommand</a>, <a class="el" href="classDriveStopCommand.html#a3b37806449b50b2f2c19179f1039237b">DriveStopCommand</a>, <a class="el" href="classOdomSetPosition.html#a611e74a12a9eeb0fce1f38a596c3c467">OdomSetPosition</a>, <a class="el" href="classSpinRPMCommand.html#af12f71f87967de0d9991272d9659b6ef">SpinRPMCommand</a>, <a class="el" href="classWaitUntilUpToSpeedCommand.html#a38f75c01a4740d87a380c15cc51c6396">WaitUntilUpToSpeedCommand</a>, <a class="el" href="classFlywheelStopCommand.html#a9be8ca8422bd7b5f5a03cbf8e21025a7">FlywheelStopCommand</a>, and <a class="el" href="classFlywheelStopMotorsCommand.html#ab5b75338d50c3674a5fe27a5e77698bc">FlywheelStopMotorsCommand</a>.</p>
+<p>Reimplemented in <a class="el" href="classFunctionCommand.html#a80cec752aa2657db46fc6abe6421dc02">FunctionCommand</a>, <a class="el" href="classWaitUntilCondition.html#a2270c741a3253486f35bd600ef2062b4">WaitUntilCondition</a>, <a class="el" href="classInOrder.html#a147361a9516c3302ec01f33a6150c183">InOrder</a>, <a class="el" href="classParallel.html#a4fe61c48c3c234caeec219daee00544f">Parallel</a>, <a class="el" href="classBranch.html#a61214b3b87376a3f36b4dc314605a652">Branch</a>, <a class="el" href="classAsync.html#a39e3e0b31de837cdf90476ab12e1268f">Async</a>, <a class="el" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">DelayCommand</a>, <a class="el" href="classDriveForwardCommand.html#aff482b72cab23cd569eb01efac6d1d31">DriveForwardCommand</a>, <a class="el" href="classTurnDegreesCommand.html#a2206e4c5073a2e83f6bfa3eeca46a370">TurnDegreesCommand</a>, <a class="el" href="classDriveToPointCommand.html#a8ed58921bc3eeb8c04d0b11b4f7e4fbe">DriveToPointCommand</a>, <a class="el" href="classTurnToHeadingCommand.html#af571168ca078be95cbc735c99c2f4093">TurnToHeadingCommand</a>, <a class="el" href="classPurePursuitCommand.html#ad39668cb589221997c2e9cf136677010">PurePursuitCommand</a>, <a class="el" href="classDriveStopCommand.html#a3b37806449b50b2f2c19179f1039237b">DriveStopCommand</a>, <a class="el" href="classOdomSetPosition.html#a611e74a12a9eeb0fce1f38a596c3c467">OdomSetPosition</a>, <a class="el" href="classSpinRPMCommand.html#af12f71f87967de0d9991272d9659b6ef">SpinRPMCommand</a>, <a class="el" href="classWaitUntilUpToSpeedCommand.html#a38f75c01a4740d87a380c15cc51c6396">WaitUntilUpToSpeedCommand</a>, <a class="el" href="classFlywheelStopCommand.html#a9be8ca8422bd7b5f5a03cbf8e21025a7">FlywheelStopCommand</a>, and <a class="el" href="classFlywheelStopMotorsCommand.html#ab5b75338d50c3674a5fe27a5e77698bc">FlywheelStopMotorsCommand</a>.</p>
 
 </div>
 </div>

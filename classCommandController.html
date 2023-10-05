@@ -107,14 +107,24 @@ $(document).ready(function(){initNavTree('classCommandController.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4cb2c06abd92fb99578f0da75c1411e5" id="r_a4cb2c06abd92fb99578f0da75c1411e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a4cb2c06abd92fb99578f0da75c1411e5">add</a> (<a class="el" href="classAutoCommand.html">AutoCommand</a> *cmd, double timeout_seconds=10.0)</td></tr>
-<tr class="separator:a4cb2c06abd92fb99578f0da75c1411e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe87cef2dd63449334a46aae33b7edf4" id="r_afe87cef2dd63449334a46aae33b7edf4"><td class="memItemLeft" align="right" valign="top"><a id="afe87cef2dd63449334a46aae33b7edf4" name="afe87cef2dd63449334a46aae33b7edf4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CommandController</b> ()</td></tr>
+<tr class="memdesc:afe87cef2dd63449334a46aae33b7edf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty <a class="el" href="classCommandController.html">CommandController</a>. Add Command with <a class="el" href="classCommandController.html#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a> <br /></td></tr>
+<tr class="separator:afe87cef2dd63449334a46aae33b7edf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9de2dfdf95ff4d80e2ad4906138c1316" id="r_a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a9de2dfdf95ff4d80e2ad4906138c1316">CommandController</a> (std::initializer_list&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds)</td></tr>
+<tr class="memdesc:a9de2dfdf95ff4d80e2ad4906138c1316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classCommandController.html">CommandController</a> with commands pre added. More can be added with <a class="el" href="classCommandController.html#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a>  <br /></td></tr>
+<tr class="separator:a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03fc0dd37c12ae7f43200d5588c768b8" id="r_a03fc0dd37c12ae7f43200d5588c768b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a03fc0dd37c12ae7f43200d5588c768b8">add</a> (std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds)</td></tr>
 <tr class="separator:a03fc0dd37c12ae7f43200d5588c768b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4cb2c06abd92fb99578f0da75c1411e5" id="r_a4cb2c06abd92fb99578f0da75c1411e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a4cb2c06abd92fb99578f0da75c1411e5">add</a> (<a class="el" href="classAutoCommand.html">AutoCommand</a> *cmd, double timeout_seconds=10.0)</td></tr>
+<tr class="separator:a4cb2c06abd92fb99578f0da75c1411e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24417a9add93204b26a35314be325b8c" id="r_a24417a9add93204b26a35314be325b8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a24417a9add93204b26a35314be325b8c">add</a> (std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds, double timeout_sec)</td></tr>
 <tr class="separator:a24417a9add93204b26a35314be325b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae06b054f4aeea86e8c6bee56458dc6d1" id="r_ae06b054f4aeea86e8c6bee56458dc6d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#ae06b054f4aeea86e8c6bee56458dc6d1">add_delay</a> (int ms)</td></tr>
 <tr class="separator:ae06b054f4aeea86e8c6bee56458dc6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb3119447177b940f071d52afda8234" id="r_addb3119447177b940f071d52afda8234"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#addb3119447177b940f071d52afda8234">add_cancel_func</a> (std::function&lt; bool(void)&gt; true_if_cancel)</td></tr>
+<tr class="memdesc:addb3119447177b940f071d52afda8234"><td class="mdescLeft">&#160;</td><td class="mdescRight">add_cancel_func specifies that when this func evaluates to true, to cancel the command controller  <br /></td></tr>
+<tr class="separator:addb3119447177b940f071d52afda8234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f7f6ccce0304c577521205ad37bb36a" id="r_a0f7f6ccce0304c577521205ad37bb36a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a0f7f6ccce0304c577521205ad37bb36a">run</a> ()</td></tr>
 <tr class="separator:a0f7f6ccce0304c577521205ad37bb36a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23306007060f97ab7f57715c5d8d0c57" id="r_a23306007060f97ab7f57715c5d8d0c57"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCommandController.html#a23306007060f97ab7f57715c5d8d0c57">last_command_timed_out</a> ()</td></tr>
@@ -122,7 +132,42 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>File: <a class="el" href="command__controller_8h_source.html">command_controller.h</a> Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a9de2dfdf95ff4d80e2ad4906138c1316" name="a9de2dfdf95ff4d80e2ad4906138c1316"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de2dfdf95ff4d80e2ad4906138c1316">&#9670;&#160;</a></span>CommandController()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CommandController::CommandController </td>
+          <td>(</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt;&#160;</td>
+          <td class="paramname"><em>cmds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a <a class="el" href="classCommandController.html">CommandController</a> with commands pre added. More can be added with <a class="el" href="classCommandController.html#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cmds</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4cb2c06abd92fb99578f0da75c1411e5" name="a4cb2c06abd92fb99578f0da75c1411e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cb2c06abd92fb99578f0da75c1411e5">&#9670;&#160;</a></span>add() <span class="overload">[1/3]</span></h2>
 
@@ -148,13 +193,6 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
-    <tr><td class="paramname">timeout_seconds</td><td>the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is &lt;= 0 no time out will be applied</td></tr>
-  </table>
-  </dd>
-</dl>
 <p>File: command_controller.cpp Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
@@ -180,6 +218,13 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
+    <tr><td class="paramname">timeout_seconds</td><td>the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is &lt;= 0 no time out will be applied</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>Add multiple commands to the queue. No timeout here. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cmds</td><td>the AutoCommands we want to add to our list </td></tr>
@@ -216,6 +261,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Add multiple commands to the queue. No timeout here. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">cmds</td><td>the AutoCommands we want to add to our list Add multiple commands to the queue. No timeout here. </td></tr>
     <tr><td class="paramname">cmds</td><td>the AutoCommands we want to add to our list </td></tr>
     <tr><td class="paramname">timeout_sec</td><td>timeout in seconds to apply to all commands if they are still the default</td></tr>
   </table>
@@ -225,6 +271,32 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">cmds</td><td>the AutoCommands we want to add to our list </td></tr>
     <tr><td class="paramname">timeout</td><td>timeout in seconds to apply to all commands if they are still the default </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="addb3119447177b940f071d52afda8234" name="addb3119447177b940f071d52afda8234"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addb3119447177b940f071d52afda8234">&#9670;&#160;</a></span>add_cancel_func()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CommandController::add_cancel_func </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; bool(void)&gt;&#160;</td>
+          <td class="paramname"><em>true_if_cancel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>add_cancel_func specifies that when this func evaluates to true, to cancel the command controller </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">true_if_cancel</td><td>a function that returns true when we want to cancel the command controller </td></tr>
   </table>
   </dd>
 </dl>

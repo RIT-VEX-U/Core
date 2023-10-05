@@ -49,7 +49,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"command__controller_8h_source.html"
+"classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

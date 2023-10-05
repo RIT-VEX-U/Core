@@ -118,8 +118,10 @@ Inheritance diagram for OdometryTank:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:add83c3320e43e90963c38f25ce06c4da" id="r_add83c3320e43e90963c38f25ce06c4da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#add83c3320e43e90963c38f25ce06c4da">OdometryTank</a> (vex::motor_group &amp;left_side, vex::motor_group &amp;right_side, <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;config, vex::inertial *imu=NULL, bool is_async=true)</td></tr>
 <tr class="separator:add83c3320e43e90963c38f25ce06c4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fdb5e855104301ad83588362974b75a" id="r_a0fdb5e855104301ad83588362974b75a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#a0fdb5e855104301ad83588362974b75a">OdometryTank</a> (<a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;left_enc, <a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;right_enc, <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;config, vex::inertial *imu=NULL, bool is_async=true)</td></tr>
-<tr class="separator:a0fdb5e855104301ad83588362974b75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6303f491f00899215d3de97c760cd7e4" id="r_a6303f491f00899215d3de97c760cd7e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#a6303f491f00899215d3de97c760cd7e4">OdometryTank</a> (<a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;left_custom_enc, <a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;right_custom_enc, <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;config, vex::inertial *imu=NULL, bool is_async=true)</td></tr>
+<tr class="separator:a6303f491f00899215d3de97c760cd7e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcb6edb750f9bc3bbd1dd01723f662b1" id="r_afcb6edb750f9bc3bbd1dd01723f662b1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#afcb6edb750f9bc3bbd1dd01723f662b1">OdometryTank</a> (vex::encoder &amp;left_vex_enc, vex::encoder &amp;right_vex_enc, <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;config, vex::inertial *imu=NULL, bool is_async=true)</td></tr>
+<tr class="separator:afcb6edb750f9bc3bbd1dd01723f662b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8f1251f7bce81e9153391df1ab42f7" id="r_a1a8f1251f7bce81e9153391df1ab42f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#a1a8f1251f7bce81e9153391df1ab42f7">update</a> () override</td></tr>
 <tr class="separator:a1a8f1251f7bce81e9153391df1ab42f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c24c0854b526a6f3aaa78cb1dab50ee" id="r_a6c24c0854b526a6f3aaa78cb1dab50ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOdometryTank.html#a6c24c0854b526a6f3aaa78cb1dab50ee">set_position</a> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="classOdometryBase.html#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>) override</td></tr>
@@ -179,7 +181,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false<
 <div class="textblock"><p><a class="el" href="classOdometryTank.html">OdometryTank</a> defines an odometry system for a tank drivetrain This requires encoders in the same orientation as the drive wheels Odometry is a "start and forget" subsystem, which means once it's created and configured, it will constantly run in the background and track the robot's X, Y and rotation coordinates. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="add83c3320e43e90963c38f25ce06c4da" name="add83c3320e43e90963c38f25ce06c4da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add83c3320e43e90963c38f25ce06c4da">&#9670;&#160;</a></span>OdometryTank() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#add83c3320e43e90963c38f25ce06c4da">&#9670;&#160;</a></span>OdometryTank() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,8 +236,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false<
 
 </div>
 </div>
-<a id="a0fdb5e855104301ad83588362974b75a" name="a0fdb5e855104301ad83588362974b75a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0fdb5e855104301ad83588362974b75a">&#9670;&#160;</a></span>OdometryTank() <span class="overload">[2/2]</span></h2>
+<a id="a6303f491f00899215d3de97c760cd7e4" name="a6303f491f00899215d3de97c760cd7e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6303f491f00899215d3de97c760cd7e4">&#9670;&#160;</a></span>OdometryTank() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,13 +246,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false<
           <td class="memname">OdometryTank::OdometryTank </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;&#160;</td>
-          <td class="paramname"><em>left_enc</em>, </td>
+          <td class="paramname"><em>left_custom_enc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classCustomEncoder.html">CustomEncoder</a> &amp;&#160;</td>
-          <td class="paramname"><em>right_enc</em>, </td>
+          <td class="paramname"><em>right_custom_enc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -279,8 +281,64 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false<
 </div><div class="memdoc">
 <p>Initialize the Odometry module, calculating position from the drive motors. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">left_enc</td><td>The left motors </td></tr>
-    <tr><td class="paramname">right_enc</td><td>The right motors </td></tr>
+    <tr><td class="paramname">left_custom_enc</td><td>The left custom encoder </td></tr>
+    <tr><td class="paramname">right_custom_enc</td><td>The right custom encoder </td></tr>
+    <tr><td class="paramname">config</td><td>the specifications that supply the odometry with descriptions of the robot. See <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> for what is contained </td></tr>
+    <tr><td class="paramname">imu</td><td>The robot's inertial sensor. If not included, rotation is calculated from the encoders. </td></tr>
+    <tr><td class="paramname">is_async</td><td>If true, position will be updated in the background continuously. If false, the programmer will have to manually call <a class="el" href="classOdometryTank.html#a1a8f1251f7bce81e9153391df1ab42f7">update()</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afcb6edb750f9bc3bbd1dd01723f662b1" name="afcb6edb750f9bc3bbd1dd01723f662b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcb6edb750f9bc3bbd1dd01723f662b1">&#9670;&#160;</a></span>OdometryTank() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OdometryTank::OdometryTank </td>
+          <td>(</td>
+          <td class="paramtype">vex::encoder &amp;&#160;</td>
+          <td class="paramname"><em>left_vex_enc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vex::encoder &amp;&#160;</td>
+          <td class="paramname"><em>right_vex_enc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vex::inertial *&#160;</td>
+          <td class="paramname"><em>imu</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_async</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initialize the Odometry module, calculating position from the drive motors. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left_vex_enc</td><td>The left vex encoder </td></tr>
+    <tr><td class="paramname">right_vex_enc</td><td>The right vex encoder </td></tr>
     <tr><td class="paramname">config</td><td>the specifications that supply the odometry with descriptions of the robot. See <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> for what is contained </td></tr>
     <tr><td class="paramname">imu</td><td>The robot's inertial sensor. If not included, rotation is calculated from the encoders. </td></tr>
     <tr><td class="paramname">is_async</td><td>If true, position will be updated in the background continuously. If false, the programmer will have to manually call <a class="el" href="classOdometryTank.html#a1a8f1251f7bce81e9153391df1ab42f7">update()</a>. </td></tr>
