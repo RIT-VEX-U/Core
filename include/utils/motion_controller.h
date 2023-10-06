@@ -54,7 +54,7 @@ class MotionController : public Feedback
      * @brief Initialize the motion profile for a new movement
      * This will also reset the PID and profile timers.
      */
-    void init(double start_pt, double end_pt) override;
+    void init(double start_pt, double end_pt, double start_vel, double end_vel) override;
     
     /**
      * @brief Update the motion profile with a new sensor value
@@ -116,6 +116,9 @@ class MotionController : public Feedback
     PID pid;
     FeedForward ff;
     TrapezoidProfile profile;
+
+    double current_pos;
+    double end_pt;
 
     double lower_limit = 0, upper_limit = 0;
     double out = 0;

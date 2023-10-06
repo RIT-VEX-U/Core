@@ -10,9 +10,10 @@ PID::PID(pid_config_t &config)
   pid_timer.reset();
 }
 
-void PID::init(double start_pt, double set_pt)
+void PID::init(double start_pt, double set_pt, double start_vel, double end_vel)
 {
   set_target(set_pt);
+  target_vel = end_vel;
   reset();
 }
 
@@ -125,6 +126,7 @@ bool PID::is_on_target()
 {
   if (fabs(get_error()) < config.deadband)
   {
+    if (target_vel != 0) return true;
     if (is_checking_on_target == false)
     {
       on_target_last_time = pid_timer.value();

@@ -63,8 +63,10 @@ public:
    * start_pt can be safely ignored in this feedback controller
    * @param start_pt commpletely ignored for PID. necessary to satisfy Feedback base
    * @param set_pt sets the target of the PID controller
+   * @param start_vel completely ignored for PID. necessary to satisfy Feedback base
+   * @param end_vel sets the target end velocity of the PID controller
    */
-  void init(double start_pt, double set_pt) override;
+  void init(double start_pt, double set_pt, double start_vel, double end_vel) override;
 
   /**
    * Update the PID loop by taking the time difference from last update,
@@ -134,6 +136,7 @@ private:
   double upper_limit = 0; ///< the PID controller will never set a target to go higher than this
 
   double target = 0; ///< the target position of the PID controller (lower_limit <= target <= upper_limit)
+  double target_vel = 0; ///< the target velocity of the PID controller (if != 0, controller will not wait for stop)
   double sensor_val = 0; ///< the last recorded value of the sensor we use to feed the PID controller
   double out = 0; ///< the last calculated output value. we save it here so that we don't have to recalculate if we ask for it more than once between update() calls
 
