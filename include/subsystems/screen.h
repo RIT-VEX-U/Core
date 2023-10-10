@@ -5,15 +5,6 @@
 
 namespace screen
 {
-    /**
-     * @brief Start the screen background task. Once you start this, no need to draw to the screen manually elsewhere
-     * @param screen reference to the vex screen
-     * @param pages drawing pages
-     * @param first_page optional, which page to start the program at. by default 0
-     */
-    void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
-
-    void stop_screen();
     /// @brief Page describes one part of the screen slideshow
     class Page
     {
@@ -37,6 +28,19 @@ namespace screen
         virtual void draw(vex::brain::lcd &screen, bool first_draw,
                           unsigned int frame_number);
     };
+
+
+    /**
+     * @brief Start the screen background task. Once you start this, no need to draw to the screen manually elsewhere
+     * @param screen reference to the vex screen
+     * @param pages drawing pages
+     * @param first_page optional, which page to start the program at. by default 0
+     */
+    void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
+
+    void stop_screen();
+
+
 
     /// @brief  type of function needed for update
     using update_func_t = std::function<void(bool, int, int)>;
