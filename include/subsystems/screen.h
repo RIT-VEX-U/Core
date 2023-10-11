@@ -2,6 +2,8 @@
 #include "vex.h"
 #include <vector>
 #include <functional>
+#include <map>
+#include "../core/include/subsystems/odometry/odometry_base.h"
 
 namespace screen
 {
@@ -29,7 +31,6 @@ namespace screen
                           unsigned int frame_number);
     };
 
-
     /**
      * @brief Start the screen background task. Once you start this, no need to draw to the screen manually elsewhere
      * @param screen reference to the vex screen
@@ -40,23 +41,43 @@ namespace screen
 
     void stop_screen();
 
-
-
     /// @brief  type of function needed for update
     using update_func_t = std::function<void(bool, int, int)>;
 
     /// @brief  type of function needed for draw
     using draw_func_t = std::function<void(vex::brain::lcd &screen, bool, unsigned int)>;
 
-    class MotorPage : public Page
+    class StatsPage : public Page
     {
     public:
-        MotorPage(std::map<std::string, vex::motor&> motors) : motors(motors) {}
+        StatsPage(std::map<std::string, vex::motor &> motors);
         void update(bool was_pressed, int x, int y) override;
         void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number) override;
 
     private:
-        std::map<std::string, vex::motor&> motors;
+        void draw_motor_stats(const std::string &name, vex::motor &mot, unsigned int frame, int x, int y, vex::brain::lcd &scr);
+
+        std::map<std::string, vex::motor &> motors;
+        static const int y_start = 0;
+        static const int per_column = 4;
+        static const int row_height = 20;
+        static const int row_width = 200;
+    };
+
+    class OdometryPage : public Page
+    {
+    public:
+        OdometryPage(OdometryBase &odom, double width, double height);
+        void update(bool was_pressed, int x, int y) override;
+        void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number) override;
+
+    private:
+        OdometryBase &odom;
+        double width;
+        double height;
+        uint8_t *buf = nullptr;
+        int buf_size = 0;
+        static constexpr char const *field_filename = "vex_field_240p.png";
     };
 
     /// @brief Simple page that stores no internal data. the draw and update functions use only global data rather than storing anything
