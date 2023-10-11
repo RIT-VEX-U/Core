@@ -64,20 +64,28 @@ namespace screen
         static const int row_width = 200;
     };
 
+    /**
+     * @brief a page that shows odometry position and rotation and a map (if an sd card with the file is on)
+    */
     class OdometryPage : public Page
     {
     public:
-        OdometryPage(OdometryBase &odom, double width, double height);
+        OdometryPage(OdometryBase &odom, double width, double height, bool do_trail);
         void update(bool was_pressed, int x, int y) override;
         void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number) override;
 
     private:
+        static const int path_len = 40;
+        static constexpr char const *field_filename = "vex_field_240p.png";
+
         OdometryBase &odom;
         double width;
         double height;
         uint8_t *buf = nullptr;
         int buf_size = 0;
-        static constexpr char const *field_filename = "vex_field_240p.png";
+        pose_t path[path_len];
+        int path_index = 0;
+        bool do_trail;        
     };
 
     /// @brief Simple page that stores no internal data. the draw and update functions use only global data rather than storing anything

@@ -214,13 +214,20 @@ namespace screen
         scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(), b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
     }
 
-    OdometryPage::OdometryPage(OdometryBase &odom, double width, double height) : odom(odom), width(width), height(height)
+    OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail) : odom(odom), width(width), height(height), do_trail(do_trail)
     {
         vex::brain b;
-
-        buf_size = b.SDcard.size(field_filename);
-        buf = (uint8_t *)malloc(buf_size);
-        b.SDcard.loadfile(field_filename, buf, buf_size);
+        if (b.SDcard.exists(field_filename))
+        {
+            buf_size = b.SDcard.size(field_filename);
+            buf = (uint8_t *)malloc(buf_size);
+            b.SDcard.loadfile(field_filename, buf, buf_size);
+        }
+        pose_t pos = odom.get_position();
+        for (int i = 0; i < path_len; i++)
+        {
+            path[i] = pos;
+        }
     }
 
     int in_to_px(double in)
@@ -231,6 +238,13 @@ namespace screen
 
     void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number)
     {
+        if (do_trail)
+        {
+            path_index++;
+            path_index %= path_len;
+            path[path_index] = odom.get_position();
+        }
+
         auto to_px = [](const point_t p) -> point_t
         {
             return {(double)in_to_px(p.x) + 200, (double)in_to_px(-p.y) + 240};
@@ -241,7 +255,7 @@ namespace screen
             scr.drawLine((int)to_px(from).x, (int)to_px(from).y, (int)to_px(to).x, (int)to_px(to).y);
         };
 
-        pose_t pose = odom.get_position();
+        pose_t pose = path[path_index];
         point_t pos = pose.get_point();
         fflush(stdout);
         scr.printAt(45, 30, "(%.2f, %.2f)", pose.x, pose.y);
@@ -249,7 +263,7 @@ namespace screen
 
         if (buf == nullptr)
         {
-            scr.printAt(320, 110, "Field Image Not Found");
+            scr.printAt(180, 110, "Field Image Not Found");
             return;
         }
 
@@ -257,6 +271,20 @@ namespace screen
 
         point_t pos_px = to_px(pos);
         scr.drawCircle((int)pos_px.x, (int)pos_px.y, 3, vex::color::white);
+
+        if (do_trail)
+        {
+            pose_t last_pos = path[(path_index + 1) % path_len];
+            for (int i = path_index + 2; i < path_index + path_len; i++)
+            {
+                int j = i % path_len;
+                pose_t pose = path[j];
+                scr.setPenColor(vex::color(80, 80, 80));
+                draw_line(pose.get_point(), last_pos.get_point());
+                last_pos = pose;
+            }
+        }
+        scr.setPenColor(vex::color::white);
 
         Mat2 mat = Mat2::FromRotationDegrees(pose.rot - 90);
         const point_t to_left = point_t{-width / 2.0, 0};
@@ -267,7 +295,6 @@ namespace screen
         const point_t bl = pos + mat * (+to_left - to_front);
         const point_t br = pos + mat * (-to_left - to_front);
         const point_t front = pos + mat * (to_front * 2.0);
-
 
         draw_line(fl, fr);
         draw_line(fr, br);
