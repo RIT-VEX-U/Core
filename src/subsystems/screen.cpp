@@ -2,6 +2,24 @@
 
 namespace screen
 {
+    /**
+     * @brief The ScreenData class holds the data that will be passed to the
+     * screen thread
+     * you probably shouldnt have to use it
+     */
+    struct ScreenData
+    {
+        ScreenData(const std::vector<Page *> &m_pages, int m_page, vex::brain::lcd &m_screen)
+            : pages(m_pages), page(m_page), screen(m_screen) {}
+        std::vector<Page *> pages;
+        int page = 0;
+        vex::brain::lcd screen;
+    };
+
+    static vex::thread *screen_thread = nullptr;
+    static bool running = false;
+    static int screen_thread_func(void *screen_data_v);
+
     /// @brief start_screen begins a screen. only call this once per program (a
     /// good place is vexcodeInit)
     /// This is a set and forget type function. You don't have to wait on it or
@@ -17,28 +35,12 @@ namespace screen
             printf("THERE IS ALREADY A SCREEN THREAD RUNNING\n");
             return;
         }
-        ScreenData *data = new ScreenData{pages, first_page, &screen};
+        ScreenData *data = new ScreenData{pages, first_page, screen};
 
         screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
     }
 
     void stop_screen() { running = false; }
-    /**
-     * @brief The ScreenData class holds the data that will be passed to the
-     * screen thread
-     * you probably shouldnt have to use it
-     */
-    struct ScreenData
-    {
-        ScreenData(const std::vector<Page *> &m_pages, int m_page, vex::brain::lcd *m_screen)
-            : pages(m_pages), page(m_page), screen(m_screen) {}
-        std::vector<Page *> pages;
-        int page = 0;
-        vex::brain::lcd *screen = nullptr;
-    };
-
-    static vex::thread *screen_thread = nullptr;
-    static bool running = false;
 
     /**
      * @brief runs the screen thread
@@ -58,6 +60,29 @@ namespace screen
         while (running)
         {
             Page *front_page = screen_data.pages[screen_data.page];
+            bool pressing = screen_data.screen.pressing();
+
+            if (pressing)
+            {
+                pressing = true;
+                x_press = screen_data.screen.xPosition();
+                y_press = screen_data.screen.yPosition();
+            }
+            bool just_pressed = pressing && !was_pressed;
+
+            if (just_pressed && x_press < 40)
+            {
+                screen_data.page--;
+                if (screen_data.page < 0)
+                {
+                    screen_data.page += screen_data.pages.size();
+                }
+            }
+            if (just_pressed && x_press > 440)
+            {
+                screen_data.page++;
+                screen_data.page %= screen_data.pages.size();
+            }
 
             // Update all pages
             for (auto page : screen_data.pages)
@@ -75,9 +100,28 @@ namespace screen
             // Draw First Page
             if (frame % 5 == 0)
             {
-                front_page->draw(*screen_data.screen, false, frame);
+                screen_data.screen.clearScreen(vex::color::black);
+                screen_data.screen.setPenColor("#FFFFFF");
+                screen_data.screen.setFillColor("#000000");
+                front_page->draw(screen_data.screen, false, frame / 5);
+
+                // Draw side boxes
+                screen_data.screen.setPenColor("#202020");
+                screen_data.screen.setFillColor("#202020");
+                screen_data.screen.drawRectangle(0, 0, 40, 240);
+                screen_data.screen.drawRectangle(440, 0, 40, 240);
+                screen_data.screen.setPenColor("#FFFFFF");
+                // left arrow
+                screen_data.screen.drawLine(30, 100, 15, 120);
+                screen_data.screen.drawLine(30, 140, 15, 120);
+                // right arrow
+                screen_data.screen.drawLine(450, 100, 465, 120);
+                screen_data.screen.drawLine(450, 140, 465, 120);
             }
 
+            screen_data.screen.render();
+            frame++;
+            was_pressed = pressing;
             vexDelay(20);
         }
 
@@ -105,8 +149,139 @@ namespace screen
         draw_f(screen, first_draw, frame_number);
     }
 
-    MotorPage::MotorPage(std::map<std::string, vex::motor&> motors)
+    StatsPage::StatsPage(std::map<std::string, vex::motor &> motors) : motors(motors) {}
+    void StatsPage::update(bool was_pressed, int x, int y)
+    {
+        (void)x;
+        (void)y;
+        (void)was_pressed;
+    }
+    void StatsPage::draw_motor_stats(const std::string &name, vex::motor &mot, unsigned int frame, int x, int y, vex::brain::lcd &scr)
+    {
+        const vex::color hot_col = vex::color(120, 0, 0);
+        const vex::color med_col = vex::color(140, 100, 0);
+        const vex::color ok_col = vex::black;
+        const vex::color not_plugged_in_col = vex::color(255, 0, 0);
+        bool installed = mot.installed();
+        double temp = 0;
+        int port = mot.index() + 1;
+        vex::color col = ok_col;
+        if (installed)
+        {
+            temp = mot.temperature(vex::temperatureUnits::celsius);
+        }
 
+        if (temp > 40)
+        {
+            col = med_col;
+        }
+        else if (temp > 50)
+        {
+            col = hot_col;
+        }
+        if (!installed && frame % 2 == 0)
+        {
+            col = not_plugged_in_col;
+        }
+
+        scr.drawRectangle(x, y, row_width, row_height, col);
+        scr.printAt(x + 2, y + 16, false, " %2d   %2.0fC   %.7s", port, temp, name.c_str());
+    }
+    void StatsPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number)
+    {
+        int num = 0;
+        int x = 40;
+        int y = y_start + row_height;
+        scr.drawRectangle(x, y_start, row_width, row_height);
+        scr.printAt(x, y_start + 16, false, " port temp  name");
+        for (auto &kv : motors)
+        {
+            if (num > per_column)
+            {
+                scr.drawRectangle(x + row_width, y_start, row_width, row_height);
+                scr.printAt(x + row_width, y_start + 16, false, " port temp  name");
+
+                y = y_start + row_height;
+                x += row_width;
+                num = 0;
+            }
+
+            draw_motor_stats(kv.first, kv.second, frame_number, x, y, scr);
+            y += row_height;
+            num++;
+        }
+        vex::brain b;
+        scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(), b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
+    }
+
+    OdometryPage::OdometryPage(OdometryBase &odom, double width, double height) : odom(odom), width(width), height(height)
+    {
+        vex::brain b;
+
+        buf_size = b.SDcard.size(field_filename);
+        buf = (uint8_t *)malloc(buf_size);
+        b.SDcard.loadfile(field_filename, buf, buf_size);
+    }
+
+    int in_to_px(double in)
+    {
+        double p = in / (6.0 * 24.0);
+        return (int)(p * 240);
+    }
+
+    void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number)
+    {
+        auto to_px = [](const point_t p) -> point_t
+        {
+            return {(double)in_to_px(p.x) + 200, (double)in_to_px(-p.y) + 240};
+        };
+
+        auto draw_line = [to_px, &scr](const point_t from, const point_t to)
+        {
+            scr.drawLine((int)to_px(from).x, (int)to_px(from).y, (int)to_px(to).x, (int)to_px(to).y);
+        };
+
+        pose_t pose = odom.get_position();
+        point_t pos = pose.get_point();
+        fflush(stdout);
+        scr.printAt(45, 30, "(%.2f, %.2f)", pose.x, pose.y);
+        scr.printAt(45, 50, "%.2f deg", pose.rot);
+
+        if (buf == nullptr)
+        {
+            scr.printAt(320, 110, "Field Image Not Found");
+            return;
+        }
+
+        scr.drawImageFromBuffer(buf, 200, 0, buf_size);
+
+        point_t pos_px = to_px(pos);
+        scr.drawCircle((int)pos_px.x, (int)pos_px.y, 3, vex::color::white);
+
+        Mat2 mat = Mat2::FromRotationDegrees(pose.rot - 90);
+        const point_t to_left = point_t{-width / 2.0, 0};
+        const point_t to_front = point_t{0.0, height / 2.0};
+
+        const point_t fl = pos + mat * (+to_left + to_front);
+        const point_t fr = pos + mat * (-to_left + to_front);
+        const point_t bl = pos + mat * (+to_left - to_front);
+        const point_t br = pos + mat * (-to_left - to_front);
+        const point_t front = pos + mat * (to_front * 2.0);
+
+
+        draw_line(fl, fr);
+        draw_line(fr, br);
+        draw_line(br, bl);
+        draw_line(bl, fl);
+
+        draw_line(pos, front);
+    }
+    void OdometryPage::update(bool was_pressed, int x, int y)
+    {
+        (void)x;
+        (void)y;
+        (void)was_pressed;
+    }
 } // namespace screen
 
 /*
