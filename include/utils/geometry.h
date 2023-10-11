@@ -54,10 +54,12 @@ struct point_t
         return {x / s, y / s};
     }
 
-    point_t operator-() const{
+    point_t operator-() const
+    {
         return {-x, -y};
     }
-    point_t operator+() const{
+    point_t operator+() const
+    {
         return {x, y};
     }
 
