@@ -52,7 +52,7 @@ bool BasicSpinCommand::run(){
  * @param motor Motor to stop
  * @param setting Braketype setting brake,coast,hold
  */
-BasicStopCommand::BasicStopCommand(vex::motor &motor, vex::brakeType &setting):
+BasicStopCommand::BasicStopCommand(vex::motor &motor, vex::brakeType setting):
    motor(motor), setting(setting) {}
 
 /**

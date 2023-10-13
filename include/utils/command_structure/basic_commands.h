@@ -68,7 +68,7 @@ class BasicStopCommand : public AutoCommand{
       * @param motor The motor to stop
       * @param setting The brake setting for the motor
       */
-     BasicStopCommand(vex::motor &motor, vex::brakeType &setting);
+     BasicStopCommand(vex::motor &motor, vex::brakeType setting);
 
      /**
       * @brief Runs the BasicMotorStop Command
@@ -82,7 +82,7 @@ class BasicStopCommand : public AutoCommand{
 
      vex::motor &motor;
 
-     vex::brakeType &setting;
+     vex::brakeType setting;
 };
 
 //Basic Solenoid Commands----------------------------------
