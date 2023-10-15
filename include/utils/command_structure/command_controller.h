@@ -26,7 +26,7 @@ public:
    * @param cmd the AutoCommand we want to add to our list
    * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is <= 0 no time out will be applied
    */
-  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch")]] void add(std::vector<AutoCommand *> cmds);
+  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch (https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void add(std::vector<AutoCommand *> cmds);
   void add(AutoCommand *cmd, double timeout_seconds = 10.0);
 
   /**
@@ -39,7 +39,7 @@ public:
    * @param cmds the AutoCommands we want to add to our list
    * @param timeout_sec timeout in seconds to apply to all commands if they are still the default
    */
-  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch")]] void
+  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch (https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
   add(std::vector<AutoCommand *> cmds, double timeout_sec);
   /**
    * Adds a command that will delay progression
