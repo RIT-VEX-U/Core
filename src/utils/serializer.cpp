@@ -32,7 +32,7 @@ std::vector<char> to_bytes<std::string>(std::string str)
 /// @brief Convert bytes to a type
 /// @param gets data from arbitrary bytes. Overload this for non integer types
 template <typename T>
-T from_bytes(const std::vector<char> &data, std::vector<char>::const_iterator &position)
+T from_bytes(std::vector<char>::const_iterator &position)
 {
     T value;
     std::copy(position, position + sizeof(T), static_cast<char *>(static_cast<void *>(&value)));
@@ -41,7 +41,7 @@ T from_bytes(const std::vector<char> &data, std::vector<char>::const_iterator &p
 }
 
 template <>
-std::string from_bytes(const std::vector<char> &data, std::vector<char>::const_iterator &position)
+std::string from_bytes(std::vector<char>::const_iterator &position)
 {
     auto pos = position;
     while (*pos != 0x0)
@@ -110,10 +110,10 @@ static std::vector<char>::const_iterator read_data(const std::vector<char> &data
     {
         auto name_start = pos;
         // read name
-        std::string name = from_bytes<std::string>(data, name_start);
+        std::string name = from_bytes<std::string>(name_start);
         pos += name.size() + 1;
         // read value
-        value_type value = from_bytes<value_type>(data, pos);
+        value_type value = from_bytes<value_type>(pos);
         printf("Read Name: %s\n", name.c_str());
         map.insert({name, value});
     }
@@ -247,7 +247,7 @@ bool Serializer::read_from_disk()
     auto doubles_start = read_data<bool>(data, bool_start, bools);
     auto strings_start = read_data<double>(data, doubles_start, doubles);
     auto file_end = read_data<std::string>(data, strings_start, strings);
-
+    (void)file_end;
 
     return true;
 }
