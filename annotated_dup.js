@@ -4,6 +4,13 @@ var annotated_dup =
       [ "hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
       [ "spline", "structPurePursuit_1_1spline.html", null ]
     ] ],
+    [ "screen", null, [
+      [ "FunctionPage", "classscreen_1_1FunctionPage.html", "classscreen_1_1FunctionPage" ],
+      [ "OdometryPage", "classscreen_1_1OdometryPage.html", "classscreen_1_1OdometryPage" ],
+      [ "Page", "classscreen_1_1Page.html", "classscreen_1_1Page" ],
+      [ "ScreenData", "structscreen_1_1ScreenData.html", null ],
+      [ "StatsPage", "classscreen_1_1StatsPage.html", "classscreen_1_1StatsPage" ]
+    ] ],
     [ "Async", "classAsync.html", "classAsync" ],
     [ "AutoChooser", "classAutoChooser.html", "classAutoChooser" ],
     [ "AutoCommand", "classAutoCommand.html", "classAutoCommand" ],
@@ -29,6 +36,7 @@ var annotated_dup =
     [ "InOrder", "classInOrder.html", "classInOrder" ],
     [ "Lift", "classLift.html", "classLift" ],
     [ "Logger", "classLogger.html", "classLogger" ],
+    [ "Mat2", "structMat2.html", null ],
     [ "MecanumDrive", "classMecanumDrive.html", "classMecanumDrive" ],
     [ "motion_t", "structmotion__t.html", "structmotion__t" ],
     [ "MotionController", "classMotionController.html", "classMotionController" ],

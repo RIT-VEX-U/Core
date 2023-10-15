@@ -3,7 +3,7 @@ var searchData=
   ['delaycommand_0',['DelayCommand',['../classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb',1,'DelayCommand']]],
   ['dist_1',['dist',['../structpoint__t.html#aff420364748afa2b62ae9700c086924b',1,'point_t']]],
   ['double_5for_2',['double_or',['../classSerializer.html#a096df4d062c6402bee7b6853cdcc849b',1,'Serializer']]],
-  ['draw_3',['draw',['../classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197',1,'GraphDrawer']]],
+  ['draw_3',['draw',['../classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0',1,'screen::Page::draw()'],['../classscreen_1_1StatsPage.html#ae46f2497acd1f6e532ba9784054277f5',1,'screen::StatsPage::draw()'],['../classscreen_1_1OdometryPage.html#a71c67422e17e0bb3dea61c9f16ce96e6',1,'screen::OdometryPage::draw()'],['../classscreen_1_1FunctionPage.html#a5e56aaba242973c6d5a43bff7be30d97',1,'screen::FunctionPage::draw()'],['../classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197',1,'GraphDrawer::draw()']]],
   ['drive_4',['drive',['../classMecanumDrive.html#ac7a660a606aea694d21a4a2dd12faa24',1,'MecanumDrive']]],
   ['drive_5farcade_5',['drive_arcade',['../classTankDrive.html#a4c52b51a9b149d97e9b0b175a10652ef',1,'TankDrive']]],
   ['drive_5fforward_6',['drive_forward',['../classTankDrive.html#a1fb3d661076afbb91452649cdaf8550f',1,'TankDrive::drive_forward(double inches, directionType dir, Feedback &amp;feedback, double max_speed=1)'],['../classTankDrive.html#a8edcf4316d5a22c32849d7d1d5d0a793',1,'TankDrive::drive_forward(double inches, directionType dir, double max_speed=1)']]],

@@ -6,7 +6,7 @@ var searchData=
   ['dist_3',['dist',['../structpoint__t.html#aff420364748afa2b62ae9700c086924b',1,'point_t']]],
   ['dist_5fbetween_5fwheels_4',['dist_between_wheels',['../structrobot__specs__t.html#afb03c2e2cbc0d8fd6686c9421e016dec',1,'robot_specs_t']]],
   ['double_5for_5',['double_or',['../classSerializer.html#a096df4d062c6402bee7b6853cdcc849b',1,'Serializer']]],
-  ['draw_6',['draw',['../classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197',1,'GraphDrawer']]],
+  ['draw_6',['draw',['../classscreen_1_1OdometryPage.html#a71c67422e17e0bb3dea61c9f16ce96e6',1,'screen::OdometryPage::draw()'],['../classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197',1,'GraphDrawer::draw()'],['../classscreen_1_1FunctionPage.html#a5e56aaba242973c6d5a43bff7be30d97',1,'screen::FunctionPage::draw()'],['../classscreen_1_1StatsPage.html#ae46f2497acd1f6e532ba9784054277f5',1,'screen::StatsPage::draw()'],['../classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0',1,'screen::Page::draw()']]],
   ['drive_7',['drive',['../classMecanumDrive.html#ac7a660a606aea694d21a4a2dd12faa24',1,'MecanumDrive']]],
   ['drive_5farcade_8',['drive_arcade',['../classTankDrive.html#a4c52b51a9b149d97e9b0b175a10652ef',1,'TankDrive']]],
   ['drive_5fcorrection_5fcutoff_9',['drive_correction_cutoff',['../structrobot__specs__t.html#aa9fc95ea4c235f455b712ac0cf5aa536',1,'robot_specs_t']]],
@@ -15,7 +15,7 @@ var searchData=
   ['drive_5fraw_12',['drive_raw',['../classMecanumDrive.html#a756383ba74cf555d42a147584f9ae646',1,'MecanumDrive']]],
   ['drive_5ftank_13',['drive_tank',['../classTankDrive.html#abd7d6a5e1deb2845bd06253f01a1d510',1,'TankDrive']]],
   ['drive_5fto_5fpoint_14',['drive_to_point',['../classTankDrive.html#a267114928d17e16d36ad14fd4d3bf91a',1,'TankDrive::drive_to_point(double x, double y, vex::directionType dir, double max_speed=1)'],['../classTankDrive.html#ad64cf88b180865f7e0f9810a344db791',1,'TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedback &amp;feedback, double max_speed=1)']]],
-  ['driveforwardcommand_15',['driveforwardcommand',['../classDriveForwardCommand.html#a09fb0fc75fa06951c9dc160de169d726',1,'DriveForwardCommand::DriveForwardCommand()'],['../classDriveForwardCommand.html',1,'DriveForwardCommand']]],
+  ['driveforwardcommand_15',['driveforwardcommand',['../classDriveForwardCommand.html',1,'DriveForwardCommand'],['../classDriveForwardCommand.html#a09fb0fc75fa06951c9dc160de169d726',1,'DriveForwardCommand::DriveForwardCommand()']]],
   ['drivestopcommand_16',['drivestopcommand',['../classDriveStopCommand.html',1,'DriveStopCommand'],['../classDriveStopCommand.html#a64cc2eeb3a4d67482549a029f93ddde1',1,'DriveStopCommand::DriveStopCommand()']]],
   ['drivetopointcommand_17',['drivetopointcommand',['../classDriveToPointCommand.html',1,'DriveToPointCommand'],['../classDriveToPointCommand.html#ad9d5b904185abbddde096dc87e02f049',1,'DriveToPointCommand::DriveToPointCommand(TankDrive &amp;drive_sys, Feedback &amp;feedback, double x, double y, directionType dir, double max_speed=1)'],['../classDriveToPointCommand.html#a21c435310e14d6345cca536d98701d91',1,'DriveToPointCommand::DriveToPointCommand(TankDrive &amp;drive_sys, Feedback &amp;feedback, point_t point, directionType dir, double max_speed=1)']]]
 ];

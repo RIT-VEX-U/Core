@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RIT VEXU Core API: Class Members</title>
+<title>RIT VEXU Core API: screen::ScreenData Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('functions_f.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structscreen_1_1ScreenData.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -95,22 +95,47 @@ $(document).ready(function(){initNavTree('functions_f.html',''); initResizable()
 </div>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structscreen_1_1ScreenData-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">screen::ScreenData Struct Reference</div></div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
-<h3><a id="index_f" name="index_f"></a>- f -</h3><ul>
-<li>FeedForward()&#160;:&#160;<a class="el" href="classFeedForward.html#aeea5ddbbcc6e75a479442cf69954665c">FeedForward</a></li>
-<li>ff_cfg&#160;:&#160;<a class="el" href="structMotionController_1_1m__profile__cfg__t.html#ad8131facbd379321cc7083361e68ff62">MotionController::m_profile_cfg_t</a></li>
-<li>Flywheel()&#160;:&#160;<a class="el" href="classFlywheel.html#a61a1ba81b716c6f99a8d63394f8d185f">Flywheel</a></li>
-<li>FlywheelStopCommand()&#160;:&#160;<a class="el" href="classFlywheelStopCommand.html#a3e94b6c95ab4ad8216c9a87a22c07c4b">FlywheelStopCommand</a></li>
-<li>FlywheelStopMotorsCommand()&#160;:&#160;<a class="el" href="classFlywheelStopMotorsCommand.html#a0e7ce6586a6ae1ec9322114ede691a13">FlywheelStopMotorsCommand</a></li>
-<li>FunctionPage()&#160;:&#160;<a class="el" href="classscreen_1_1FunctionPage.html#ad16e2507777c22c4fad63cab6f5ae416">screen::FunctionPage</a></li>
+<p>The <a class="el" href="structscreen_1_1ScreenData.html" title="The ScreenData class holds the data that will be passed to the screen thread you probably shouldnt ha...">ScreenData</a> class holds the data that will be passed to the screen thread you probably shouldnt have to use it.  
+ <a href="structscreen_1_1ScreenData.html#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:adfc251dd85cda36509544f33e06e306c" id="r_adfc251dd85cda36509544f33e06e306c"><td class="memItemLeft" align="right" valign="top"><a id="adfc251dd85cda36509544f33e06e306c" name="adfc251dd85cda36509544f33e06e306c"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ScreenData</b> (const std::vector&lt; <a class="el" href="classscreen_1_1Page.html">Page</a> * &gt; &amp;m_pages, int m_page, vex::brain::lcd &amp;m_screen)</td></tr>
+<tr class="separator:adfc251dd85cda36509544f33e06e306c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a2f1c0a5202b77beb6a5f1a3d99634c37" id="r_a2f1c0a5202b77beb6a5f1a3d99634c37"><td class="memItemLeft" align="right" valign="top"><a id="a2f1c0a5202b77beb6a5f1a3d99634c37" name="a2f1c0a5202b77beb6a5f1a3d99634c37"></a>
+std::vector&lt; <a class="el" href="classscreen_1_1Page.html">Page</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>pages</b></td></tr>
+<tr class="separator:a2f1c0a5202b77beb6a5f1a3d99634c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f47e4bcfb40930dd48d097b439ef14" id="r_a56f47e4bcfb40930dd48d097b439ef14"><td class="memItemLeft" align="right" valign="top"><a id="a56f47e4bcfb40930dd48d097b439ef14" name="a56f47e4bcfb40930dd48d097b439ef14"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>page</b> = 0</td></tr>
+<tr class="separator:a56f47e4bcfb40930dd48d097b439ef14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41a6b0fc6e2cd38e0192f7c85550c21e" id="r_a41a6b0fc6e2cd38e0192f7c85550c21e"><td class="memItemLeft" align="right" valign="top"><a id="a41a6b0fc6e2cd38e0192f7c85550c21e" name="a41a6b0fc6e2cd38e0192f7c85550c21e"></a>
+vex::brain::lcd&#160;</td><td class="memItemRight" valign="bottom"><b>screen</b></td></tr>
+<tr class="separator:a41a6b0fc6e2cd38e0192f7c85550c21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="structscreen_1_1ScreenData.html" title="The ScreenData class holds the data that will be passed to the screen thread you probably shouldnt ha...">ScreenData</a> class holds the data that will be passed to the screen thread you probably shouldnt have to use it. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/subsystems/<b>screen.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><b>screen</b></li><li class="navelem"><a class="el" href="structscreen_1_1ScreenData.html">ScreenData</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
