@@ -43,8 +43,8 @@ public:
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
   AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *PurePursuitCmd(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
-  AutoCommand *PurePursuitCmd(Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  AutoCommand *PurePursuitCmd(std::vector<point_t> path, directionType dir, double radius, double max_speed=1, double end_speed=0);
+  AutoCommand *PurePursuitCmd(Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1, double end_speed=0);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -196,9 +196,10 @@ public:
    * @param radius How big the corner cutting should be - small values follow the path more closely
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @param end_speed the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
   */
-  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, Feedback &feedback, double max_speed=1);
+  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, Feedback &feedback, double max_speed=1, double end_speed=0);
 
   /**
    * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
@@ -211,9 +212,10 @@ public:
    * @param dir Run the bot forwards or backwards
    * @param radius How big the corner cutting should be - small values follow the path more closely
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
   */
-  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, double max_speed=1, double end_speed=0);
 
 private:
   motor_group &left_motors;  ///< left drive motors

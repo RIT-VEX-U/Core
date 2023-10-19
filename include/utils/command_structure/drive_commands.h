@@ -205,6 +205,7 @@ class PurePursuitCommand: public AutoCommand
   double radius;
   Feedback &feedback;
   double max_speed;
+  double end_speed;
 
 };
 
