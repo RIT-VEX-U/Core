@@ -186,7 +186,7 @@ class PurePursuitCommand: public AutoCommand
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
   */
-  PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1, double end_speed=1);
 
   /**
    * Direct call to TankDrive::pure_pursuit
