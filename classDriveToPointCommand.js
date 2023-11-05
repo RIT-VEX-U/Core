@@ -1,6 +1,6 @@
 var classDriveToPointCommand =
 [
-    [ "DriveToPointCommand", "classDriveToPointCommand.html#ad9d5b904185abbddde096dc87e02f049", null ],
-    [ "DriveToPointCommand", "classDriveToPointCommand.html#a21c435310e14d6345cca536d98701d91", null ],
+    [ "DriveToPointCommand", "classDriveToPointCommand.html#a9ce50ba932039e7f66be48ac22f3b92e", null ],
+    [ "DriveToPointCommand", "classDriveToPointCommand.html#ab98e7521e0d255683e8dc6e140e79b16", null ],
     [ "run", "classDriveToPointCommand.html#a8ed58921bc3eeb8c04d0b11b4f7e4fbe", null ]
 ];

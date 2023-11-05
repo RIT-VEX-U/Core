@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['odom_5fgear_5fratio_0',['odom_gear_ratio',['../structrobot__specs__t.html#a8c454d8b38efdd15dfa6f075c40e4ec7',1,'robot_specs_t']]],
-  ['odom_5fwheel_5fdiam_1',['odom_wheel_diam',['../structrobot__specs__t.html#acf12b29aa6a86cc09b2ef868f9e77a31',1,'robot_specs_t']]],
-  ['off_5faxis_5fcenter_5fdist_2',['off_axis_center_dist',['../structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#afd79024054d352789991bd816d955d9e',1,'Odometry3Wheel::odometry3wheel_cfg_t']]],
-  ['on_5ftarget_5ftime_3',['on_target_time',['../structPID_1_1pid__config__t.html#a14212579cfa1827b6cc04388c6b3626e',1,'PID::pid_config_t']]]
+  ['p_0',['p',['../structPID_1_1pid__config__t.html#a27290957ad115f4502f765ff292e3a23',1,'PID::pid_config_t']]],
+  ['pid_5fcfg_1',['pid_cfg',['../structMotionController_1_1m__profile__cfg__t.html#a2b6415c29fcab4f9b2ccff067a390baa',1,'MotionController::m_profile_cfg_t']]],
+  ['pos_2',['pos',['../structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4',1,'motion_t']]],
+  ['pos_5fafter_3',['pos_after',['../structtrapezoid__profile__segment__t.html#a7767f2564778bfdca26f8c26638a945d',1,'trapezoid_profile_segment_t']]]
 ];

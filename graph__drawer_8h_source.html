@@ -118,27 +118,27 @@ $(document).ready(function(){initNavTree('graph__drawer_8h_source.html',''); ini
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classGraphDrawer.html">   11</a></span><span class="keyword">class </span><a class="code hl_class" href="classGraphDrawer.html">GraphDrawer</a></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_class" href="classGraphDrawer.html">GraphDrawer</a>(vex::brain::lcd &amp;screen, <span class="keywordtype">int</span> num_samples, std::string x_label, std::string y_label, vex::color col, <span class="keywordtype">bool</span> draw_border, <span class="keywordtype">double</span> lower_bound, <span class="keywordtype">double</span> upper_bound);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#a7d4960e25e5d586fa163fe49278ff952">add_sample</a>(<a class="code hl_struct" href="structpoint__t.html">point_t</a> sample);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197">draw</a>(<span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  vex::brain::lcd &amp;Screen;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  std::vector&lt;point_t&gt; samples;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">int</span> sample_index = 0;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::string xlabel;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  std::string ylabel;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  vex::color col = vex::red;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  vex::color bgcol = vex::transparent;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">bool</span> border;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">double</span> upper;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">double</span> lower;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_class" href="classGraphDrawer.html">GraphDrawer</a>(<span class="keywordtype">int</span> num_samples, <span class="keywordtype">double</span> lower_bound, <span class="keywordtype">double</span> upper_bound, std::vector&lt;vex::color&gt; colors, <span class="keywordtype">size_t</span> num_series = 1);</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b">add_samples</a>(std::vector&lt;point_t&gt; sample);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b">add_samples</a>(std::vector&lt;double&gt; sample);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#a534ae44e0dc680dc22e344986585b5dc">draw</a>(vex::brain::lcd &amp;screen, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::vector&lt;std::vector&lt;point_t&gt;&gt; series;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">int</span> sample_index = 0;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  std::vector&lt;vex::color&gt; cols;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  vex::color bgcol = vex::transparent;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">bool</span> border;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">double</span> upper;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">double</span> lower;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">bool</span> auto_fit = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
 </div>
 <div class="ttc" id="aclassGraphDrawer_html"><div class="ttname"><a href="classGraphDrawer.html">GraphDrawer</a></div><div class="ttdef"><b>Definition</b> graph_drawer.h:12</div></div>
-<div class="ttc" id="aclassGraphDrawer_html_a420b88cacbf91908dc64624eb113d197"><div class="ttname"><a href="classGraphDrawer.html#a420b88cacbf91908dc64624eb113d197">GraphDrawer::draw</a></div><div class="ttdeci">void draw(int x, int y, int width, int height)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:38</div></div>
-<div class="ttc" id="aclassGraphDrawer_html_a7d4960e25e5d586fa163fe49278ff952"><div class="ttname"><a href="classGraphDrawer.html#a7d4960e25e5d586fa163fe49278ff952">GraphDrawer::add_sample</a></div><div class="ttdeci">void add_sample(point_t sample)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:24</div></div>
-<div class="ttc" id="astructpoint__t_html"><div class="ttname"><a href="structpoint__t.html">point_t</a></div><div class="ttdef"><b>Definition</b> geometry.h:8</div></div>
+<div class="ttc" id="aclassGraphDrawer_html_a534ae44e0dc680dc22e344986585b5dc"><div class="ttname"><a href="classGraphDrawer.html#a534ae44e0dc680dc22e344986585b5dc">GraphDrawer::draw</a></div><div class="ttdeci">void draw(vex::brain::lcd &amp;screen, int x, int y, int width, int height)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:80</div></div>
+<div class="ttc" id="aclassGraphDrawer_html_aac4bee87b6cbefa7e9788711eae2cc5b"><div class="ttname"><a href="classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b">GraphDrawer::add_samples</a></div><div class="ttdeci">void add_samples(std::vector&lt; point_t &gt; sample)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

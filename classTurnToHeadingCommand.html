@@ -116,8 +116,8 @@ Inheritance diagram for TurnToHeadingCommand:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a958d75babe94709827c827807d423d" id="r_a9a958d75babe94709827c827807d423d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTurnToHeadingCommand.html#a9a958d75babe94709827c827807d423d">TurnToHeadingCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, double heading_deg, double speed=1)</td></tr>
-<tr class="separator:a9a958d75babe94709827c827807d423d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec1f10929adbfd6e36b73a811ec3886" id="r_aaec1f10929adbfd6e36b73a811ec3886"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTurnToHeadingCommand.html#aaec1f10929adbfd6e36b73a811ec3886">TurnToHeadingCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, double heading_deg, double speed=1, double end_speed=0)</td></tr>
+<tr class="separator:aaec1f10929adbfd6e36b73a811ec3886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af571168ca078be95cbc735c99c2f4093" id="r_af571168ca078be95cbc735c99c2f4093"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTurnToHeadingCommand.html#af571168ca078be95cbc735c99c2f4093">run</a> () override</td></tr>
 <tr class="separator:af571168ca078be95cbc735c99c2f4093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaa3b650ed9f02315eb6ba901181bc85" id="r_acaa3b650ed9f02315eb6ba901181bc85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTurnToHeadingCommand.html#acaa3b650ed9f02315eb6ba901181bc85">on_timeout</a> () override</td></tr>
@@ -126,12 +126,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand" id="r_a75b2b87e945fd7b98b758617feb30404"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withTimeout</b> (double t_seconds)</td></tr>
 <tr class="separator:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand" id="r_a2f28804953d8856397644d3fa38d921f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withCancelCondition</b> (<a class="el" href="classCondition.html">Condition</a> *true_to_end)</td></tr>
+<tr class="separator:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classAutoCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
 <tr class="memitem:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand" id="r_ac3be7be26e49981ad1978491fd313472"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoCommand.html#ac3be7be26e49981ad1978491fd313472">timeout_seconds</a> = default_timeout</td></tr>
 <tr class="separator:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand" id="r_a898ee0ecb997505e985684dddc76b0a5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>true_to_end</b> = nullptr</td></tr>
+<tr class="separator:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classAutoCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
 <tr class="memitem:a7b0d115d4fd603d87fdabe1bf7bc6293 inherit pub_static_attribs_classAutoCommand" id="r_a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memItemLeft" align="right" valign="top">
 static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>default_timeout</b> = 10.0</td></tr>
@@ -140,8 +146,8 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classAutoCommand.html">AutoCommand</a> wrapper class for the turn_to_heading() function in the <a class="el" href="classTankDrive.html">TankDrive</a> class </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9a958d75babe94709827c827807d423d" name="a9a958d75babe94709827c827807d423d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a958d75babe94709827c827807d423d">&#9670;&#160;</a></span>TurnToHeadingCommand()</h2>
+<a id="aaec1f10929adbfd6e36b73a811ec3886" name="aaec1f10929adbfd6e36b73a811ec3886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaec1f10929adbfd6e36b73a811ec3886">&#9670;&#160;</a></span>TurnToHeadingCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -168,7 +174,13 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>max_speed</em> = <code>1</code>&#160;</td>
+          <td class="paramname"><em>max_speed</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>end_speed</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

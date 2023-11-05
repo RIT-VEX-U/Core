@@ -8,6 +8,5 @@ var classLogger =
     [ "Logf", "classLogger.html#a06427b99c9b204e1f7ad70623631543e", null ],
     [ "Logln", "classLogger.html#abde45323cf03f153d0e6b7845c54bce8", null ],
     [ "Logln", "classLogger.html#a6f8ed714cfe7bdd74f62ceb020907ae3", null ],
-    [ "operator=", "classLogger.html#a2b4a073549a8197b8f0497bb0a5accea", null ],
-    [ "MAX_FORMAT_LEN", "classLogger.html#ac3f8ed67013445bf09a554edf9f800ce", null ]
+    [ "operator=", "classLogger.html#a2b4a073549a8197b8f0497bb0a5accea", null ]
 ];

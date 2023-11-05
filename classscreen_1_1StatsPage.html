@@ -102,6 +102,11 @@ $(document).ready(function(){initNavTree('classscreen_1_1StatsPage.html',''); in
   <div class="headertitle"><div class="title">screen::StatsPage Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Draws motor stats and battery stats to the screen.  
+ <a href="classscreen_1_1StatsPage.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="screen_8h_source.html">screen.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for screen::StatsPage:</div>
 <div class="dyncontent">
@@ -114,16 +119,43 @@ Inheritance diagram for screen::StatsPage:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7f77c814dfe1562281ea61dabb56b4eb" id="r_a7f77c814dfe1562281ea61dabb56b4eb"><td class="memItemLeft" align="right" valign="top"><a id="a7f77c814dfe1562281ea61dabb56b4eb" name="a7f77c814dfe1562281ea61dabb56b4eb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StatsPage</b> (std::map&lt; std::string, vex::motor &amp; &gt; motors)</td></tr>
+<tr class="memitem:a7f77c814dfe1562281ea61dabb56b4eb" id="r_a7f77c814dfe1562281ea61dabb56b4eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classscreen_1_1StatsPage.html#a7f77c814dfe1562281ea61dabb56b4eb">StatsPage</a> (std::map&lt; std::string, vex::motor &amp; &gt; motors)</td></tr>
+<tr class="memdesc:a7f77c814dfe1562281ea61dabb56b4eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a stats page.  <br /></td></tr>
 <tr class="separator:a7f77c814dfe1562281ea61dabb56b4eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af361486a24af3aec86a060b41e5df435" id="r_af361486a24af3aec86a060b41e5df435"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classscreen_1_1StatsPage.html#af361486a24af3aec86a060b41e5df435">update</a> (bool was_pressed, int x, int y) override</td></tr>
-<tr class="memdesc:af361486a24af3aec86a060b41e5df435"><td class="mdescLeft">&#160;</td><td class="mdescRight">collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this <a class="el" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow.">Page</a> (only drawn page gets touch updates))  <br /></td></tr>
 <tr class="separator:af361486a24af3aec86a060b41e5df435"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae46f2497acd1f6e532ba9784054277f5" id="r_ae46f2497acd1f6e532ba9784054277f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classscreen_1_1StatsPage.html#ae46f2497acd1f6e532ba9784054277f5">draw</a> (vex::brain::lcd &amp;, bool first_draw, unsigned int frame_number) override</td></tr>
-<tr class="memdesc:ae46f2497acd1f6e532ba9784054277f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw stored data to the screen (runs at 10 hz and only runs if this page is in front)  <br /></td></tr>
 <tr class="separator:ae46f2497acd1f6e532ba9784054277f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Draws motor stats and battery stats to the screen. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7f77c814dfe1562281ea61dabb56b4eb" name="a7f77c814dfe1562281ea61dabb56b4eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f77c814dfe1562281ea61dabb56b4eb">&#9670;&#160;</a></span>StatsPage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">screen::StatsPage::StatsPage </td>
+          <td>(</td>
+          <td class="paramtype">std::map&lt; std::string, vex::motor &amp; &gt;&#160;</td>
+          <td class="paramname"><em>motors</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a stats page. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">motors</td><td>a map of string to motor that we want to draw on this page </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae46f2497acd1f6e532ba9784054277f5" name="ae46f2497acd1f6e532ba9784054277f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae46f2497acd1f6e532ba9784054277f5">&#9670;&#160;</a></span>draw()</h2>
@@ -138,7 +170,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void screen::StatsPage::draw </td>
           <td>(</td>
           <td class="paramtype">vex::brain::lcd &amp;&#160;</td>
-          <td class="paramname"><em>screen</em>, </td>
+          <td class="paramname"><em>scr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -164,15 +196,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>draw stored data to the screen (runs at 10 hz and only runs if this page is in front) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">first_draw</td><td>true if we just switched to this page </td></tr>
-    <tr><td class="paramname">frame_number</td><td>frame of drawing we are on (basically an animation tick) </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0" title="draw stored data to the screen (runs at 10 hz and only runs if this page is in front)">Page::draw</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0">screen::Page</a>.</p>
 
@@ -217,16 +241,7 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this <a class="el" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow.">Page</a> (only drawn page gets touch updates)) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">was_pressed</td><td>true if the screen has been pressed </td></tr>
-    <tr><td class="paramname">x</td><td>x position of screen press (if the screen was pressed) </td></tr>
-    <tr><td class="paramname">y</td><td>y position of screen press (if the screen was pressed) </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405" title="collect data, respond to screen input, do fast things (runs at 50hz even if you&#39;re not focused on thi...">Page::update</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405">screen::Page</a>.</p>
 

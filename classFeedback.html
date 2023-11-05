@@ -97,7 +97,6 @@ $(document).ready(function(){initNavTree('classFeedback.html',''); initResizable
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classFeedback-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Feedback Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
@@ -111,24 +110,18 @@ Inheritance diagram for Feedback:</div>
  <div class="center">
   <img src="classFeedback.png" usemap="#Feedback_map" alt=""/>
   <map id="Feedback_map" name="Feedback_map">
-<area href="classMotionController.html" alt="MotionController" shape="rect" coords="0,56,106,80"/>
-<area href="classPID.html" alt="PID" shape="rect" coords="116,56,222,80"/>
-<area href="classPIDFF.html" alt="PIDFF" shape="rect" coords="232,56,338,80"/>
+<area href="classBangBang.html" alt="BangBang" shape="rect" coords="0,56,106,80"/>
+<area href="classMotionController.html" alt="MotionController" shape="rect" coords="116,56,222,80"/>
+<area href="classPID.html" alt="PID" shape="rect" coords="232,56,338,80"/>
+<area href="classPIDFF.html" alt="PIDFF" shape="rect" coords="348,56,454,80"/>
+<area href="classTakeBackHalf.html" title="A velocity controller." alt="TakeBackHalf" shape="rect" coords="464,56,570,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:ac82a001abba300290790eb8414a84dce" id="r_ac82a001abba300290790eb8414a84dce"><td class="memItemLeft" align="right" valign="top"><a id="ac82a001abba300290790eb8414a84dce" name="ac82a001abba300290790eb8414a84dce"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FeedbackType</b> { <b>PIDType</b>
-, <b>FeedforwardType</b>
-, <b>OtherType</b>
- }</td></tr>
-<tr class="separator:ac82a001abba300290790eb8414a84dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a22efb13216bfd51aea07e0b6e45135c1" id="r_a22efb13216bfd51aea07e0b6e45135c1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFeedback.html#a22efb13216bfd51aea07e0b6e45135c1">init</a> (double start_pt, double set_pt)=0</td></tr>
-<tr class="separator:a22efb13216bfd51aea07e0b6e45135c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac027c77f6aa7298ffe2c218c033c04ad" id="r_ac027c77f6aa7298ffe2c218c033c04ad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFeedback.html#ac027c77f6aa7298ffe2c218c033c04ad">init</a> (double start_pt, double set_pt, double start_vel=0.0, double end_vel=0.0)=0</td></tr>
+<tr class="separator:ac027c77f6aa7298ffe2c218c033c04ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adda5fc7642539996be00632954dfc41f" id="r_adda5fc7642539996be00632954dfc41f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFeedback.html#adda5fc7642539996be00632954dfc41f">update</a> (double val)=0</td></tr>
 <tr class="separator:adda5fc7642539996be00632954dfc41f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac44bb519a6f4e25c8e8250f3d30ab359" id="r_ac44bb519a6f4e25c8e8250f3d30ab359"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFeedback.html#ac44bb519a6f4e25c8e8250f3d30ab359">get</a> ()=0</td></tr>
@@ -137,9 +130,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a533a10b65cfc998898bf054f8b141de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4cc835c374aab9761d22603d4329d34" id="r_ae4cc835c374aab9761d22603d4329d34"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFeedback.html#ae4cc835c374aab9761d22603d4329d34">is_on_target</a> ()=0</td></tr>
 <tr class="separator:ae4cc835c374aab9761d22603d4329d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef8981678b7bcded915ccc7e3e237208" id="r_aef8981678b7bcded915ccc7e3e237208"><td class="memItemLeft" align="right" valign="top"><a id="aef8981678b7bcded915ccc7e3e237208" name="aef8981678b7bcded915ccc7e3e237208"></a>
-virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom"><b>get_type</b> ()</td></tr>
-<tr class="separator:aef8981678b7bcded915ccc7e3e237208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface so that subsystems can easily switch between feedback loops</p>
@@ -170,12 +160,12 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the last saved result from the feedback controller </dd></dl>
 
-<p>Implemented in <a class="el" href="classMotionController.html#a2a1944f590618cd91770364aea416cd5">MotionController</a>, <a class="el" href="classPID.html#a69c2e66b8ff06c86ca9701d11e21da75">PID</a>, and <a class="el" href="classPIDFF.html#a78a34d271bcc703fc803e15b275fd238">PIDFF</a>.</p>
+<p>Implemented in <a class="el" href="classBangBang.html#a163d2ec174adab37b67f97fa27012c2a">BangBang</a>, <a class="el" href="classMotionController.html#a2a1944f590618cd91770364aea416cd5">MotionController</a>, <a class="el" href="classPID.html#a69c2e66b8ff06c86ca9701d11e21da75">PID</a>, <a class="el" href="classPIDFF.html#a78a34d271bcc703fc803e15b275fd238">PIDFF</a>, and <a class="el" href="classTakeBackHalf.html#a43694f365d408b4ec26d533ef140f9bd">TakeBackHalf</a>.</p>
 
 </div>
 </div>
-<a id="a22efb13216bfd51aea07e0b6e45135c1" name="a22efb13216bfd51aea07e0b6e45135c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22efb13216bfd51aea07e0b6e45135c1">&#9670;&#160;</a></span>init()</h2>
+<a id="ac027c77f6aa7298ffe2c218c033c04ad" name="ac027c77f6aa7298ffe2c218c033c04ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac027c77f6aa7298ffe2c218c033c04ad">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +183,19 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>set_pt</em>&#160;</td>
+          <td class="paramname"><em>set_pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>start_vel</em> = <code>0.0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>end_vel</em> = <code>0.0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -212,11 +214,13 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
   <table class="params">
     <tr><td class="paramname">start_pt</td><td>the current sensor value </td></tr>
     <tr><td class="paramname">set_pt</td><td>where the sensor value should be </td></tr>
+    <tr><td class="paramname">start_vel</td><td>Movement starting velocity </td></tr>
+    <tr><td class="paramname">end_vel</td><td>Movement ending velocity </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classMotionController.html#af0d665d9916111cbce677da6df6b6667">MotionController</a>, <a class="el" href="classPID.html#aab0f3b4351cc4ee2b8bb366105e85e95">PID</a>, and <a class="el" href="classPIDFF.html#a37226c8d3bfac97485b28105a15f29fc">PIDFF</a>.</p>
+<p>Implemented in <a class="el" href="classMotionController.html#a78027f833324cf2fa244431d56a88493">MotionController</a>, <a class="el" href="classPIDFF.html#a2402c7e708ceea384891fd142706c057">PIDFF</a>, <a class="el" href="classPID.html#aaf60fcde16cf33e59e1999b2cc076de8">PID</a>, <a class="el" href="classBangBang.html#ab2bb498698948b8d3c74b3b75beeef2e">BangBang</a>, and <a class="el" href="classTakeBackHalf.html#a067309adcc10454f535012ad64dd0132">TakeBackHalf</a>.</p>
 
 </div>
 </div>
@@ -244,7 +248,7 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>true if the feedback controller has reached it's setpoint </dd></dl>
 
-<p>Implemented in <a class="el" href="classMotionController.html#aa9e2af88b848646889deb1d43a283173">MotionController</a>, <a class="el" href="classPID.html#a9de884c31570c4ae0dc6e24eb26daa43">PID</a>, and <a class="el" href="classPIDFF.html#a2534a33490570d839bf1849673a70bc1">PIDFF</a>.</p>
+<p>Implemented in <a class="el" href="classBangBang.html#aac9f7f57d9eccb68a0f98a1079ed6ecf">BangBang</a>, <a class="el" href="classMotionController.html#aa9e2af88b848646889deb1d43a283173">MotionController</a>, <a class="el" href="classPID.html#a9de884c31570c4ae0dc6e24eb26daa43">PID</a>, <a class="el" href="classPIDFF.html#a2534a33490570d839bf1849673a70bc1">PIDFF</a>, and <a class="el" href="classTakeBackHalf.html#ae520e459258ad3ecd336c411808a5ade">TakeBackHalf</a>.</p>
 
 </div>
 </div>
@@ -290,7 +294,7 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classMotionController.html#a944c245002a1eb124dd8df40de4fcc57">MotionController</a>, <a class="el" href="classPID.html#a8411ac48e8868d89e97afcf8990cca2c">PID</a>, and <a class="el" href="classPIDFF.html#ae0dccb27a91ec687f90c930441f246bb">PIDFF</a>.</p>
+<p>Implemented in <a class="el" href="classBangBang.html#a014941b11dd9f88dd180f301501f03cb">BangBang</a>, <a class="el" href="classMotionController.html#a944c245002a1eb124dd8df40de4fcc57">MotionController</a>, <a class="el" href="classPID.html#a8411ac48e8868d89e97afcf8990cca2c">PID</a>, <a class="el" href="classPIDFF.html#ae0dccb27a91ec687f90c930441f246bb">PIDFF</a>, and <a class="el" href="classTakeBackHalf.html#a8bdc05a59fd33a5b0dcba5b8ad949963">TakeBackHalf</a>.</p>
 
 </div>
 </div>
@@ -326,12 +330,12 @@ virtual Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>feedback loop result </dd></dl>
 
-<p>Implemented in <a class="el" href="classMotionController.html#a86ef0ef19858b5b407f7406bb5da30af">MotionController</a>, <a class="el" href="classPID.html#a53b5c34ba5e81fb79ed4258a143015b9">PID</a>, and <a class="el" href="classPIDFF.html#a9a9b05ec43e4430019652b62799e761c">PIDFF</a>.</p>
+<p>Implemented in <a class="el" href="classMotionController.html#a86ef0ef19858b5b407f7406bb5da30af">MotionController</a>, <a class="el" href="classPID.html#a53b5c34ba5e81fb79ed4258a143015b9">PID</a>, <a class="el" href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">BangBang</a>, <a class="el" href="classPIDFF.html#a9a9b05ec43e4430019652b62799e761c">PIDFF</a>, and <a class="el" href="classTakeBackHalf.html#a7b2aa0a83199282edc5f88e090ce5633">TakeBackHalf</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/utils/<a class="el" href="feedback__base_8h_source.html">feedback_base.h</a></li>
+<li>include/utils/controls/<a class="el" href="feedback__base_8h_source.html">feedback_base.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

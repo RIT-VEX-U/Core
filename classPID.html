@@ -128,21 +128,18 @@ Public Types</h2></td></tr>
 , <b>ANGULAR</b>
  }</td></tr>
 <tr class="separator:a259eb7bfd0750c7afd4a058c5d1c58a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classFeedback"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classFeedback')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classFeedback.html">Feedback</a></td></tr>
-<tr class="memitem:ac82a001abba300290790eb8414a84dce inherit pub_types_classFeedback" id="r_ac82a001abba300290790eb8414a84dce"><td class="memItemLeft" align="right" valign="top"><a id="ac82a001abba300290790eb8414a84dce" name="ac82a001abba300290790eb8414a84dce"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>FeedbackType</b> { <b>PIDType</b>
-, <b>FeedforwardType</b>
-, <b>OtherType</b>
- }</td></tr>
-<tr class="separator:ac82a001abba300290790eb8414a84dce inherit pub_types_classFeedback"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6b678b2d52a2be7fb572b766e43994" id="r_a3b6b678b2d52a2be7fb572b766e43994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a3b6b678b2d52a2be7fb572b766e43994">PID</a> (<a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> &amp;<a class="el" href="classPID.html#a67626fa764b201c7190ace37e068666b">config</a>)</td></tr>
 <tr class="separator:a3b6b678b2d52a2be7fb572b766e43994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab0f3b4351cc4ee2b8bb366105e85e95" id="r_aab0f3b4351cc4ee2b8bb366105e85e95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#aab0f3b4351cc4ee2b8bb366105e85e95">init</a> (double start_pt, double set_pt) override</td></tr>
-<tr class="separator:aab0f3b4351cc4ee2b8bb366105e85e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf60fcde16cf33e59e1999b2cc076de8" id="r_aaf60fcde16cf33e59e1999b2cc076de8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#aaf60fcde16cf33e59e1999b2cc076de8">init</a> (double start_pt, double set_pt, double start_vel=0, double end_vel=0) override</td></tr>
+<tr class="separator:aaf60fcde16cf33e59e1999b2cc076de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b5c34ba5e81fb79ed4258a143015b9" id="r_a53b5c34ba5e81fb79ed4258a143015b9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a53b5c34ba5e81fb79ed4258a143015b9">update</a> (double sensor_val) override</td></tr>
 <tr class="separator:a53b5c34ba5e81fb79ed4258a143015b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a822b4dc455223cd4e8ac69763622eb08" id="r_a822b4dc455223cd4e8ac69763622eb08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a822b4dc455223cd4e8ac69763622eb08">get_sensor_val</a> ()</td></tr>
+<tr class="memdesc:a822b4dc455223cd4e8ac69763622eb08"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the sensor value that we were last updated with  <br /></td></tr>
+<tr class="separator:a822b4dc455223cd4e8ac69763622eb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69c2e66b8ff06c86ca9701d11e21da75" id="r_a69c2e66b8ff06c86ca9701d11e21da75"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a69c2e66b8ff06c86ca9701d11e21da75">get</a> () override</td></tr>
 <tr class="separator:a69c2e66b8ff06c86ca9701d11e21da75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8411ac48e8868d89e97afcf8990cca2c" id="r_a8411ac48e8868d89e97afcf8990cca2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a8411ac48e8868d89e97afcf8990cca2c">set_limits</a> (double lower, double upper) override</td></tr>
@@ -157,8 +154,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1cd58cedeccc45b67551e331ee547be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e301ab123c9e18e677b4873b03550dd" id="r_a2e301ab123c9e18e677b4873b03550dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#a2e301ab123c9e18e677b4873b03550dd">set_target</a> (double target)</td></tr>
 <tr class="separator:a2e301ab123c9e18e677b4873b03550dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad131484741b61858cb3b5901d974d5ce" id="r_ad131484741b61858cb3b5901d974d5ce"><td class="memItemLeft" align="right" valign="top">Feedback::FeedbackType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPID.html#ad131484741b61858cb3b5901d974d5ce">get_type</a> () override</td></tr>
-<tr class="separator:ad131484741b61858cb3b5901d974d5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -265,6 +260,26 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a822b4dc455223cd4e8ac69763622eb08" name="a822b4dc455223cd4e8ac69763622eb08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a822b4dc455223cd4e8ac69763622eb08">&#9670;&#160;</a></span>get_sensor_val()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PID::get_sensor_val </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>gets the sensor value that we were last updated with </p>
+<dl class="section return"><dt>Returns</dt><dd>sensor_val </dd></dl>
+
+</div>
+</div>
 <a id="a1cd58cedeccc45b67551e331ee547be9" name="a1cd58cedeccc45b67551e331ee547be9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1cd58cedeccc45b67551e331ee547be9">&#9670;&#160;</a></span>get_target()</h2>
 
@@ -283,35 +298,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad131484741b61858cb3b5901d974d5ce" name="ad131484741b61858cb3b5901d974d5ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad131484741b61858cb3b5901d974d5ce">&#9670;&#160;</a></span>get_type()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Feedback::FeedbackType PID::get_type </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classFeedback.html">Feedback</a>.</p>
-
-</div>
-</div>
-<a id="aab0f3b4351cc4ee2b8bb366105e85e95" name="aab0f3b4351cc4ee2b8bb366105e85e95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab0f3b4351cc4ee2b8bb366105e85e95">&#9670;&#160;</a></span>init()</h2>
+<a id="aaf60fcde16cf33e59e1999b2cc076de8" name="aaf60fcde16cf33e59e1999b2cc076de8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf60fcde16cf33e59e1999b2cc076de8">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,7 +317,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>set_pt</em>&#160;</td>
+          <td class="paramname"><em>set_pt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>start_vel</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>end_vel</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -348,11 +348,13 @@ Public Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">start_pt</td><td>commpletely ignored for <a class="el" href="classPID.html">PID</a>. necessary to satisfy <a class="el" href="classFeedback.html">Feedback</a> base </td></tr>
     <tr><td class="paramname">set_pt</td><td>sets the target of the <a class="el" href="classPID.html">PID</a> controller </td></tr>
+    <tr><td class="paramname">start_vel</td><td>completely ignored for <a class="el" href="classPID.html">PID</a>. necessary to satisfy <a class="el" href="classFeedback.html">Feedback</a> base </td></tr>
+    <tr><td class="paramname">end_vel</td><td>sets the target end velocity of the <a class="el" href="classPID.html">PID</a> controller </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classFeedback.html#a22efb13216bfd51aea07e0b6e45135c1">Feedback</a>.</p>
+<p>Implements <a class="el" href="classFeedback.html#ac027c77f6aa7298ffe2c218c033c04ad">Feedback</a>.</p>
 
 </div>
 </div>
@@ -511,8 +513,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>include/utils/<a class="el" href="pid_8h_source.html">pid.h</a></li>
-<li>src/utils/<b>pid.cpp</b></li>
+<li>include/utils/controls/<a class="el" href="pid_8h_source.html">pid.h</a></li>
+<li>src/utils/controls/<b>pid.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['choice_0',['choice',['../classAutoChooser.html#a473e03a3e74487a38e94d3b5957f34bc',1,'AutoChooser']]],
-  ['config_1',['config',['../classPID.html#a67626fa764b201c7190ace37e068666b',1,'PID']]],
-  ['correction_5fpid_2',['correction_pid',['../structrobot__specs__t.html#a23d091e4a5258c11db6cd9753b598d06',1,'robot_specs_t']]],
-  ['current_5fpos_3',['current_pos',['../classOdometryBase.html#a6f85d2eb4866a86d4c39ceae87ea79e2',1,'OdometryBase']]]
+  ['d_0',['d',['../structPID_1_1pid__config__t.html#a1bb8ecda3f982ea983cd9f49b3d6706a',1,'PID::pid_config_t']]],
+  ['deadband_1',['deadband',['../structPID_1_1pid__config__t.html#a5fe836f65a951c00113996d32101172a',1,'PID::pid_config_t']]],
+  ['dist_5fbetween_5fwheels_2',['dist_between_wheels',['../structrobot__specs__t.html#afb03c2e2cbc0d8fd6686c9421e016dec',1,'robot_specs_t']]],
+  ['drive_5fcorrection_5fcutoff_3',['drive_correction_cutoff',['../structrobot__specs__t.html#aa9fc95ea4c235f455b712ac0cf5aa536',1,'robot_specs_t']]],
+  ['drive_5ffeedback_4',['drive_feedback',['../structrobot__specs__t.html#a828213e8d672431bd3bb87e6484db83f',1,'robot_specs_t']]],
+  ['duration_5',['duration',['../structtrapezoid__profile__segment__t.html#ac7fb19e0e7b34a9dce8a3171ecc855be',1,'trapezoid_profile_segment_t']]]
 ];

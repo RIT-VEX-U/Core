@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['p_0',['p',['../structPID_1_1pid__config__t.html#a27290957ad115f4502f765ff292e3a23',1,'PID::pid_config_t']]],
-  ['pid_5fcfg_1',['pid_cfg',['../structMotionController_1_1m__profile__cfg__t.html#a2b6415c29fcab4f9b2ccff067a390baa',1,'MotionController::m_profile_cfg_t']]],
-  ['pos_2',['pos',['../structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4',1,'motion_t']]]
+  ['robot_5fradius_0',['robot_radius',['../structrobot__specs__t.html#a37a65da54459d805cf1370cc6330bce0',1,'robot_specs_t']]],
+  ['rot_1',['rot',['../structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089',1,'pose_t']]]
 ];

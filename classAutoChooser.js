@@ -1,11 +1,10 @@
 var classAutoChooser =
 [
     [ "entry_t", "structAutoChooser_1_1entry__t.html", "structAutoChooser_1_1entry__t" ],
-    [ "AutoChooser", "classAutoChooser.html#a6e4f8f87e9cf0d0df2e36cda803f2c51", null ],
-    [ "add", "classAutoChooser.html#a67b80bf6b62cfced155519f5b608e08c", null ],
-    [ "get_choice", "classAutoChooser.html#ada27d20c06baeb169c3abed5fd0b06bb", null ],
-    [ "render", "classAutoChooser.html#a9365d354e3401d819e58a999721c07d9", null ],
-    [ "brain", "classAutoChooser.html#a9889be17b1b6243563f975dd421802b4", null ],
-    [ "choice", "classAutoChooser.html#a473e03a3e74487a38e94d3b5957f34bc", null ],
+    [ "AutoChooser", "classAutoChooser.html#aa80fcacf1535d1ae098939f84c0967ab", null ],
+    [ "draw", "classAutoChooser.html#ab7f3c39be83217c58f48df2374f1762e", null ],
+    [ "get_choice", "classAutoChooser.html#ab52d14deb6d1b01afc7dc440e772a523", null ],
+    [ "update", "classAutoChooser.html#aa257a3dca9b9cc10eab6087406f64330", null ],
+    [ "choice", "classAutoChooser.html#a5fdde577439598e339b7e8429290c3db", null ],
     [ "list", "classAutoChooser.html#a5c2b8683579011b529b95aab423b120a", null ]
 ];

@@ -120,7 +120,7 @@ Inheritance diagram for screen::FunctionPage:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad16e2507777c22c4fad63cab6f5ae416" id="r_ad16e2507777c22c4fad63cab6f5ae416"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classscreen_1_1FunctionPage.html#ad16e2507777c22c4fad63cab6f5ae416">FunctionPage</a> (update_func_t update_f, draw_func_t draw_t)</td></tr>
-<tr class="memdesc:ad16e2507777c22c4fad63cab6f5ae416"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classscreen_1_1FunctionPage.html" title="Simple page that stores no internal data. the draw and update functions use only global data rather t...">FunctionPage</a>.  <br /></td></tr>
+<tr class="memdesc:ad16e2507777c22c4fad63cab6f5ae416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a function page.  <br /></td></tr>
 <tr class="separator:ad16e2507777c22c4fad63cab6f5ae416"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4cf2335777156dc2b67b2fb4873b70a" id="r_ae4cf2335777156dc2b67b2fb4873b70a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classscreen_1_1FunctionPage.html#ae4cf2335777156dc2b67b2fb4873b70a">update</a> (bool was_pressed, int x, int y) override</td></tr>
 <tr class="memdesc:ae4cf2335777156dc2b67b2fb4873b70a"><td class="mdescLeft">&#160;</td><td class="mdescRight">update uses the supplied update function to update this page  <br /></td></tr>
@@ -158,9 +158,12 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classscreen_1_1FunctionPage.html" title="Simple page that stores no internal data. the draw and update functions use only global data rather t...">FunctionPage</a>. </p>
+<p>Creates a function page. </p>
+<p><a class="el" href="classscreen_1_1FunctionPage.html" title="Simple page that stores no internal data. the draw and update functions use only global data rather t...">FunctionPage</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">update_f</td><td>the function called every tick to respond to user input or do data collection </td></tr>
+    <tr><td class="paramname">draw_t</td><td>the function called to draw to the screen</td></tr>
     <tr><td class="paramname">update_f</td><td>drawing function </td></tr>
     <tr><td class="paramname">draw_f</td><td>drawing function </td></tr>
   </table>
@@ -211,6 +214,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>draw uses the supplied draw function to draw to the screen </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0" title="draw stored data to the screen (runs at 10 hz and only runs if this page is in front)">Page::draw</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0">screen::Page</a>.</p>
 
@@ -257,6 +261,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>update uses the supplied update function to update this page </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405" title="collect data, respond to screen input, do fast things (runs at 50hz even if you&#39;re not focused on thi...">Page::update</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405">screen::Page</a>.</p>
 

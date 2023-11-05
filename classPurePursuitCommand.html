@@ -116,8 +116,8 @@ Inheritance diagram for PurePursuitCommand:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afcba2f19144cf864ea337d273d94f8bc" id="r_afcba2f19144cf864ea337d273d94f8bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPurePursuitCommand.html#afcba2f19144cf864ea337d273d94f8bc">PurePursuitCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, std::vector&lt; <a class="el" href="structpoint__t.html">point_t</a> &gt; path, directionType dir, double radius, double max_speed=1)</td></tr>
-<tr class="separator:afcba2f19144cf864ea337d273d94f8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6058d0b178c41a26bb1f772e10c7ae" id="r_a4d6058d0b178c41a26bb1f772e10c7ae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae">PurePursuitCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="el" href="classPurePursuit_1_1Path.html">PurePursuit::Path</a> path, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
+<tr class="separator:a4d6058d0b178c41a26bb1f772e10c7ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad39668cb589221997c2e9cf136677010" id="r_ad39668cb589221997c2e9cf136677010"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPurePursuitCommand.html#ad39668cb589221997c2e9cf136677010">run</a> () override</td></tr>
 <tr class="separator:ad39668cb589221997c2e9cf136677010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adad6ad91c83c1a38c44077a0994aeef9" id="r_adad6ad91c83c1a38c44077a0994aeef9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPurePursuitCommand.html#adad6ad91c83c1a38c44077a0994aeef9">on_timeout</a> () override</td></tr>
@@ -126,12 +126,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand" id="r_a75b2b87e945fd7b98b758617feb30404"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withTimeout</b> (double t_seconds)</td></tr>
 <tr class="separator:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand" id="r_a2f28804953d8856397644d3fa38d921f"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withCancelCondition</b> (<a class="el" href="classCondition.html">Condition</a> *true_to_end)</td></tr>
+<tr class="separator:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classAutoCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
 <tr class="memitem:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand" id="r_ac3be7be26e49981ad1978491fd313472"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoCommand.html#ac3be7be26e49981ad1978491fd313472">timeout_seconds</a> = default_timeout</td></tr>
 <tr class="separator:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand" id="r_a898ee0ecb997505e985684dddc76b0a5"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>true_to_end</b> = nullptr</td></tr>
+<tr class="separator:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classAutoCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
 <tr class="memitem:a7b0d115d4fd603d87fdabe1bf7bc6293 inherit pub_static_attribs_classAutoCommand" id="r_a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memItemLeft" align="right" valign="top">
 static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>default_timeout</b> = 10.0</td></tr>
@@ -140,8 +146,8 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Autocommand wrapper class for pure pursuit function in the <a class="el" href="classTankDrive.html">TankDrive</a> class </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afcba2f19144cf864ea337d273d94f8bc" name="afcba2f19144cf864ea337d273d94f8bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcba2f19144cf864ea337d273d94f8bc">&#9670;&#160;</a></span>PurePursuitCommand()</h2>
+<a id="a4d6058d0b178c41a26bb1f772e10c7ae" name="a4d6058d0b178c41a26bb1f772e10c7ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6058d0b178c41a26bb1f772e10c7ae">&#9670;&#160;</a></span>PurePursuitCommand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +167,7 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="structpoint__t.html">point_t</a> &gt;&#160;</td>
+          <td class="paramtype"><a class="el" href="classPurePursuit_1_1Path.html">PurePursuit::Path</a>&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
@@ -174,13 +180,13 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>radius</em>, </td>
+          <td class="paramname"><em>max_speed</em> = <code>1</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>max_speed</em> = <code>1</code>&#160;</td>
+          <td class="paramname"><em>end_speed</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -194,7 +200,6 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
   <table class="params">
     <tr><td class="paramname">path</td><td>The list of coordinates to follow, in order </td></tr>
     <tr><td class="paramname">dir</td><td>Run the bot forwards or backwards </td></tr>
-    <tr><td class="paramname">radius</td><td>How big the corner cutting should be - small values follow the path more closely </td></tr>
     <tr><td class="paramname">feedback</td><td>The feedback controller determining speed </td></tr>
     <tr><td class="paramname">max_speed</td><td>Limit the speed of the robot (for pid / pidff feedbacks) </td></tr>
   </table>
@@ -254,7 +259,7 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Direct call to <a class="el" href="classTankDrive.html#a076ac8c938ddd07a474f21317d404ef7">TankDrive::pure_pursuit</a> </p>
+<p>Direct call to <a class="el" href="classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6">TankDrive::pure_pursuit</a> </p>
 
 <p>Reimplemented from <a class="el" href="classAutoCommand.html#a9f58c576ca6378b18a4136f60df50560">AutoCommand</a>.</p>
 

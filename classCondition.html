@@ -110,21 +110,31 @@ Inheritance diagram for Condition:</div>
  <div class="center">
   <img src="classCondition.png" usemap="#Condition_map" alt=""/>
   <map id="Condition_map" name="Condition_map">
-<area href="classFunctionCondition.html" title="FunctionCondition is a quick and dirty Condition to wrap some expression that should be evaluated at ..." alt="FunctionCondition" shape="rect" coords="0,56,114,80"/>
-<area href="classIfTimePassed.html" title="IfTimePassed tests based on time since the command controller was constructed. Returns true if elapse..." alt="IfTimePassed" shape="rect" coords="124,56,238,80"/>
+<area href="classAndCondition.html" alt="AndCondition" shape="rect" coords="0,56,134,80"/>
+<area href="classFunctionCondition.html" title="FunctionCondition is a quick and dirty Condition to wrap some expression that should be evaluated at ..." alt="FunctionCondition" shape="rect" coords="144,56,278,80"/>
+<area href="classIfTimePassed.html" title="IfTimePassed tests based on time since the command controller was constructed. Returns true if elapse..." alt="IfTimePassed" shape="rect" coords="288,56,422,80"/>
+<area href="classOrCondition.html" alt="OrCondition" shape="rect" coords="432,56,566,80"/>
+<area href="classTimesTestedCondition.html" alt="TimesTestedCondition" shape="rect" coords="576,56,710,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a6297bc0869d7db81f4aa168869784740" id="r_a6297bc0869d7db81f4aa168869784740"><td class="memItemLeft" align="right" valign="top"><a id="a6297bc0869d7db81f4aa168869784740" name="a6297bc0869d7db81f4aa168869784740"></a>
+<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Or</b> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
+<tr class="separator:a6297bc0869d7db81f4aa168869784740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1bd9ed9dfb0d1126ffdb19865406bae" id="r_aa1bd9ed9dfb0d1126ffdb19865406bae"><td class="memItemLeft" align="right" valign="top"><a id="aa1bd9ed9dfb0d1126ffdb19865406bae" name="aa1bd9ed9dfb0d1126ffdb19865406bae"></a>
+<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>And</b> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
+<tr class="separator:aa1bd9ed9dfb0d1126ffdb19865406bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a950b00280fda539767ff9f8ad2d1d0a2" id="r_a950b00280fda539767ff9f8ad2d1d0a2"><td class="memItemLeft" align="right" valign="top"><a id="a950b00280fda539767ff9f8ad2d1d0a2" name="a950b00280fda539767ff9f8ad2d1d0a2"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>test</b> ()=0</td></tr>
 <tr class="separator:a950b00280fda539767ff9f8ad2d1d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A <a class="el" href="classCondition.html">Condition</a> is a function that returns true or false is_even is a predicate that would return true if a number is even For our purposes, a <a class="el" href="classCondition.html">Condition</a> is a choice to be made at runtime drive_sys.reached_point(10, 30) is a predicate time.has_elapsed(10, vex::seconds) is a predicate extend this class for different choices you wish to make </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<div class="textblock"><p>File: <a class="el" href="auto__command_8h_source.html">auto_command.h</a> Desc: Interface for module-specifc commands A <a class="el" href="classCondition.html">Condition</a> is a function that returns true or false is_even is a predicate that would return true if a number is even For our purposes, a <a class="el" href="classCondition.html">Condition</a> is a choice to be made at runtime drive_sys.reached_point(10, 30) is a predicate time.has_elapsed(10, vex::seconds) is a predicate extend this class for different choices you wish to make </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/utils/command_structure/<a class="el" href="auto__command_8h_source.html">auto_command.h</a></li>
+<li>src/utils/command_structure/<b>auto_command.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
