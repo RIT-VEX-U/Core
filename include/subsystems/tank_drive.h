@@ -6,8 +6,8 @@
 
 #include "vex.h"
 #include "../core/include/subsystems/odometry/odometry_tank.h"
-#include "../core/include/utils/pid.h"
-#include "../core/include/utils/feedback_base.h"
+#include "../core/include/utils/controls/pid.h"
+#include "../core/include/utils/controls/feedback_base.h"
 #include "../core/include/robot_specs.h"
 #include "../core/include/utils/pure_pursuit.h"
 #include "../core/include/utils/command_structure/auto_command.h"
@@ -31,20 +31,20 @@ public:
    */
   TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom = NULL);
 
-  AutoCommand *DriveToPointCmd(point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0);
-  AutoCommand *DriveToPointCmd(Feedback &fb, point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0);
+  AutoCommand *DriveToPointCmd(point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
+  AutoCommand *DriveToPointCmd(Feedback &fb, point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *DriveForwardCmd(double dist, vex::directionType dir = vex::forward, double max_speed = 1.0);
-  AutoCommand *DriveForwardCmd(Feedback &fb, double dist, vex::directionType dir = vex::forward, double max_speed = 1.0);
+  AutoCommand *DriveForwardCmd(double dist, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
+  AutoCommand *DriveForwardCmd(Feedback &fb, double dist, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *TurnToHeadingCmd(double heading, double max_speed = 1.0);
-  AutoCommand *TurnToHeadingCmd(Feedback &fb, double heading, double max_speed = 1.0);
+  AutoCommand *TurnToHeadingCmd(double heading, double max_speed = 1.0, double end_speed = 0.0);
+  AutoCommand *TurnToHeadingCmd(Feedback &fb, double heading, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0);
-  AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0);
+  AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
+  AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *PurePursuitCmd(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
-  AutoCommand *PurePursuitCmd(Feedback &feedback, std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  AutoCommand *PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
+  AutoCommand *PurePursuitCmd(Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -83,9 +83,10 @@ public:
    * @param dir        the direction we want to travel forward and backward
    * @param feedback   the custom feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed    the movement profile will attempt to reach this velocity by its completion
    * @return true when we have reached our target distance
    */
-  bool drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed = 1);
+  bool drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
   /**
    * Autonomously drive the robot forward a certain distance
@@ -94,8 +95,9 @@ public:
    * @param inches      degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
    * @param dir        the direction we want to travel forward and backward
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed   the movement profile will attempt to reach this velocity by its completion
    */
-  bool drive_forward(double inches, directionType dir, double max_speed = 1);
+  bool drive_forward(double inches, directionType dir, double max_speed = 1, double end_speed = 0);
 
   /**
    * Autonomously turn the robot X degrees counterclockwise (negative for clockwise), with a maximum motor speed
@@ -107,7 +109,7 @@ public:
    * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
    */
-  bool turn_degrees(double degrees, Feedback &feedback, double max_speed = 1);
+  bool turn_degrees(double degrees, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
   /**
    * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
@@ -117,8 +119,9 @@ public:
    *
    * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   */
-  bool turn_degrees(double degrees, double max_speed = 1);
+   * @param end_speed   the movement profile will attempt to reach this velocity by its completion
+   */  
+  bool turn_degrees(double degrees, double max_speed = 1, double end_speed = 0);
 
   /**
    * Use odometry to automatically drive the robot to a point on the field.
@@ -130,8 +133,9 @@ public:
    * @param dir        the direction we want to travel forward and backward
    * @param feedback   the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
    */
-  bool drive_to_point(double x, double y, vex::directionType dir, Feedback &feedback, double max_speed = 1);
+  bool drive_to_point(double x, double y, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
   /**
    * Use odometry to automatically drive the robot to a point on the field.
@@ -143,8 +147,9 @@ public:
    * @param y          the y position of the target
    * @param dir        the direction we want to travel forward and backward
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
    */
-  bool drive_to_point(double x, double y, vex::directionType dir, double max_speed = 1);
+  bool drive_to_point(double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
 
   /**
    * Turn the robot in place to an exact heading relative to the field.
@@ -153,16 +158,18 @@ public:
    * @param heading_deg the heading to which we will turn
    * @param feedback    the feedback controller we will use to travel. controls the rate at which we accelerate and drive.
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
    */
-  bool turn_to_heading(double heading_deg, Feedback &feedback, double max_speed = 1);
+  bool turn_to_heading(double heading_deg, Feedback &feedback, double max_speed = 1, double end_speed = 0);
   /**
    * Turn the robot in place to an exact heading relative to the field.
    * 0 is forward. Uses the defualt turn feedback of the drive system
    *
    * @param heading_deg the heading to which we will turn
    * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
    */
-  bool turn_to_heading(double heading_deg, double max_speed = 1);
+  bool turn_to_heading(double heading_deg, double max_speed = 1, double end_speed = 0);
 
   /**
    * Reset the initialization for autonomous drive functions
@@ -186,12 +193,12 @@ public:
    * 
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
-   * @param radius How big the corner cutting should be - small values follow the path more closely
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @param end_speed the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
   */
-  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, Feedback &feedback, double max_speed=1);
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed=1, double end_speed=0);
 
   /**
    * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
@@ -202,11 +209,11 @@ public:
    * 
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
-   * @param radius How big the corner cutting should be - small values follow the path more closely
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+   * @param end_speed the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
   */
-  bool pure_pursuit(std::vector<point_t> path, directionType dir, double radius, double max_speed=1);
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
 
 private:
   motor_group &left_motors;  ///< left drive motors

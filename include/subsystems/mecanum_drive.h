@@ -1,7 +1,7 @@
 #pragma once
 
 #include "vex.h"
-#include "../core/include/utils/pid.h"
+#include "../core/include/utils/controls/pid.h"
 
 #ifndef PI
 #define PI 3.141592654

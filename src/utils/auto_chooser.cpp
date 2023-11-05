@@ -1,88 +1,72 @@
 #include "../core/include/utils/auto_chooser.h"
 
 /**
-  * Initialize the auto-chooser. This class places a choice menu on the brain screen,
-  * so the driver can choose which autonomous to run.
-  * @param brain the brain on which to draw the selection boxes
-  */
-AutoChooser::AutoChooser(vex::brain &brain) : brain(brain)
+ * Initialize the auto-chooser. This class places a choice menu on the brain screen,
+ * so the driver can choose which autonomous to run.
+ * @param brain the brain on which to draw the selection boxes
+ */
+AutoChooser::AutoChooser(std::vector<std::string> paths, size_t def) : choice(def)
 {
-  brain.Screen.pressed([](void *ptr){
-    AutoChooser &a = *(AutoChooser*)ptr;
-    int x = a.brain.Screen.xPosition();
-    int y = a.brain.Screen.yPosition();
+  const static int per_line = 3;
+  const static int num_lines = 2;
+  const static int x_padding = 20;
+  const static int y_padding = 20;
 
-    entry_t *selected = NULL;
-    
-    // Check if the touchscreen press is inside each rectangle
-    for(int i = 0; i < a.list.size(); i++)
+  const int entry_height = ((height - (y_padding * (num_lines - 1))) / num_lines);
+  const int entry_width = ((width - (x_padding * (per_line - 1))) / per_line);
+
+  list = std::vector<entry_t>(paths.size());
+  int x = 50;
+  int y = 10;
+  for (size_t i = 0; i < list.size(); i++)
+  {
+    Rect r = Rect::from_min_and_size({(double)x, (double)y}, {entry_width, entry_height});
+    list[i] = entry_t{r, paths[i]};
+    x += entry_width + x_padding;
+    if ((i + 1) % per_line == 0)
     {
-      int rect_x = a.list[i].x, rect_y = a.list[i].y;
-      int rect_w = a.list[i].width, rect_h = a.list[i].height;
-      if (x > rect_x && x < rect_x + rect_w)
-        if (y > rect_y && y < rect_y + rect_h)
-          selected = &a.list[i];
+      y += entry_height + y_padding;
+      x = 50;
     }
-
-    // Re-render all the choices on each press.
-    a.render(selected);
-    
-    if(selected == NULL)
-      a.choice = "";
-    else
-      a.choice = selected->name;
-
-  }, this);
+  }
+}
+void AutoChooser::update(bool was_pressed, int x, int y)
+{
+  size_t i = 0;
+  for (const entry_t &e : list)
+  {
+    if (was_pressed && e.rect.contains({(double)x, (double)y}))
+    {
+      choice = i;
+    }
+    i++;
+  }
 }
 
-#define PADDING 10
-#define WIDTH 150
-#define HEIGHT 40
-
-/**
-  * Place all the autonomous choices on the screen.
-  * If one is selected, change it's color
-  * @param selected the choice that is currently selected
-  */
-void AutoChooser::render(entry_t *selected)
+void AutoChooser::draw(vex::brain::lcd &scr, [[maybe_unused]] bool first_draw, [[maybe_unused]] unsigned int frame_number)
 {
-  for(int i = 0; i < list.size(); i++)
-  {
-    brain.Screen.setPenColor(vex::color::black);
-  
-    if(selected != NULL && selected == &list[i])
-      brain.Screen.setFillColor(vex::color::white);
-    else
-      brain.Screen.setFillColor(vex::color::orange);
+  scr.setFont(vex::fontType::mono20);
 
-    brain.Screen.drawRectangle(list[i].x, list[i].y, list[i].width, list[i].height);
-    brain.Screen.printAt(list[i].x + PADDING, list[i].y + list[i].height - PADDING, list[i].name.c_str());
+  for (size_t i = 0; i < list.size(); i++)
+  {
+    entry_t e = list[i];
+    scr.setFillColor(vex::blue);
+
+    if (choice == i)
+    {
+      scr.setFillColor(vex::green);
+    }
+    scr.drawRectangle(e.rect.min.x, e.rect.min.y, e.rect.width(), e.rect.height());
+
+    int width = scr.getStringWidth(e.name.c_str());
+    scr.printAt(e.rect.center().x - width / 2, e.rect.center().y - 10, e.name.c_str());
   }
 }
 
 /**
-  * Add a new autonomous option. There are 3 options per row.
-  */
-void AutoChooser::add(std::string name)
-{
-  int x = (PADDING * ((list.size() % 3) + 1)) + ((list.size() % 3) * WIDTH);
-  int y = (PADDING * ((list.size() / 3) + 1)) + ((list.size() / 3) * HEIGHT);
-  entry_t entry = {
-    .x=x,
-    .y=y,
-    .width=WIDTH,
-    .height=HEIGHT,
-    .name=name
-  };
-
-  list.push_back(entry);
-  render(NULL);
-}
-
-/**
-  * Return the selected autonomous
-  */
-std::string AutoChooser::get_choice()
+ * Return the selected autonomous
+ */
+size_t AutoChooser::get_choice() 
 {
   return choice;
 }

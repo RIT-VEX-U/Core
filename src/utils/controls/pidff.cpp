@@ -1,4 +1,4 @@
-#include "../core/include/utils/pidff.h"
+#include "../core/include/utils/controls/pidff.h"
 #include "../core/include/utils/math_util.h"
 
 PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg):  pid(pid_cfg), ff_cfg(ff_cfg),ff(ff_cfg)  
@@ -14,9 +14,9 @@ PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg):  pid
  * @param start_pt the current sensor value
  * @param set_pt where the sensor value should be
  */
-void PIDFF::init(double start_pt, double set_pt)
+void PIDFF::init(double start_pt, double set_pt, double start_vel, double end_vel)
 {
-    pid.init(start_pt, set_pt);
+    pid.init(start_pt, set_pt, start_vel, end_vel);
 }
 
 void PIDFF::set_target(double set_pt)

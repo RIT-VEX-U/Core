@@ -1,7 +1,7 @@
 #pragma once
-#include "../core/include/utils/feedback_base.h"
-#include "../core/include/utils/pid.h"
-#include "../core/include/utils/feedforward.h"
+#include "../core/include/utils/controls/feedback_base.h"
+#include "../core/include/utils/controls/pid.h"
+#include "../core/include/utils/controls/feedforward.h"
 
 class PIDFF : public Feedback
 {
@@ -14,8 +14,10 @@ class PIDFF : public Feedback
      * 
      * @param start_pt the current sensor value
      * @param set_pt where the sensor value should be
+     * @param start_vel the current rate of change of the sensor value
+     * @param end_vel the desired ending rate of change of the sensor value
      */
-    void init(double start_pt, double set_pt) override;
+    void init(double start_pt, double set_pt, double start_vel, double end_vel) override;
 
     /**
      * Set the target of the PID loop

@@ -10,20 +10,15 @@
 class Feedback
 {
 public:
-    enum FeedbackType
-    {
-        PIDType,
-        FeedforwardType,
-        OtherType,
-    };
-
     /**
      * Initialize the feedback controller for a movement
      *
      * @param start_pt the current sensor value
      * @param set_pt where the sensor value should be
+     * @param start_vel Movement starting velocity
+     * @param end_vel Movement ending velocity
      */
-    virtual void init(double start_pt, double set_pt) = 0;
+    virtual void init(double start_pt, double set_pt, double start_vel = 0.0, double end_vel = 0.0) = 0;
 
     /**
      * Iterate the feedback loop once with an updated sensor value
@@ -51,8 +46,5 @@ public:
      */
     virtual bool is_on_target() = 0;
 
-    virtual Feedback::FeedbackType get_type()
-    {
-        return FeedbackType::OtherType;
-    }
+
 };

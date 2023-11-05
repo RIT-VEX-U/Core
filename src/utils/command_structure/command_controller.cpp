@@ -62,8 +62,8 @@ void CommandController::add_delay(int ms)
   command_queue.push(delay);
 }
 
-
-void CommandController::add_cancel_func(std::function<bool(void)> true_if_cancel){
+void CommandController::add_cancel_func(std::function<bool(void)> true_if_cancel)
+{
   should_cancel = true_if_cancel;
 }
 
@@ -80,19 +80,23 @@ void CommandController::run()
   vex::timer tmr;
   tmr.reset();
 
-  while (!command_queue.empty() )
+  while (!command_queue.empty())
   {
     // retrieve and remove command at the front of the queue
     next_cmd = command_queue.front();
     command_queue.pop();
     command_timed_out = false;
 
-    printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count, next_cmd->timeout_seconds, tmr.time(vex::seconds));
-    fflush(stdout);
+    // printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count, next_cmd->timeout_seconds, tmr.time(vex::seconds));
+    // fflush(stdout);
 
     vex::timer timeout_timer;
     timeout_timer.reset();
     bool doTimeout = next_cmd->timeout_seconds > 0.0;
+    if (next_cmd->true_to_end != nullptr)
+    {
+      doTimeout = doTimeout || next_cmd->true_to_end->test();
+    }
 
     // run the current command until it returns true or we timeout
     while (!next_cmd->run())
@@ -113,7 +117,8 @@ void CommandController::run()
         break;
       }
     }
-    if (should_cancel()){
+    if (should_cancel())
+    {
       break;
     }
 

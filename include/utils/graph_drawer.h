@@ -11,23 +11,25 @@
 class GraphDrawer
 {
 public:
+  /// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
+  /// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
+  /// @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+  /// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+  /// @param colors the colors of the series. must be of size num_series
+  /// @param num_series the number of series to graph
+  GraphDrawer(int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series = 1);
   /**
-   * Construct a GraphDrawer
-   * @brief a helper class to graph values on the brain screen
-   * @param screen a reference to Brain.screen we can save for later
-   * @param num_samples the graph works on a fixed window and will plot the last `num_samples` before the history is forgotten. Larger values give more context but may slow down if you have many graphs or an exceptionally high
-   * @param x_label the name of the x axis (currently unused)
-   * @param y_label the name of the y axis (currently unused)
-   * @param draw_border whether to draw the border around the graph. can be turned off if there are multiple graphs in the same space ie. a graph of error and output
-   * @param lower_bound the bottom of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints
-   * @param upper_bound the top of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints
-   */
-  GraphDrawer(vex::brain::lcd &screen, int num_samples, std::string x_label, std::string y_label, vex::color col, bool draw_border, double lower_bound, double upper_bound);
-  /**
-   * add_sample adds a point to the graph, removing one from the back
+   * add_samples adds a point to the graph, removing one from the back
    * @param sample an x, y coordinate of the next point to graph
    */
-  void add_sample(point_t sample);
+  void add_samples(std::vector<point_t> sample);
+
+  /**
+   * add_samples adds a point to the graph, removing one from the back
+   * @param sample a y coordinate of the next point to graph, the x coordinate is gotten from vex::timer::system(); (time in ms)
+   */
+  void add_samples(std::vector<double> sample);
+
   /**
    * draws the graph to the screen in the constructor
    * @param x x position of the top left of the graphed region
@@ -35,17 +37,15 @@ public:
    * @param width the width of the graphed region
    * @param height the height of the graphed region
    */
-  void draw(int x, int y, int width, int height);
+  void draw(vex::brain::lcd &screen, int x, int y, int width, int height);
 
 private:
-  vex::brain::lcd &Screen;
-  std::vector<point_t> samples;
+  std::vector<std::vector<point_t>> series;
   int sample_index = 0;
-  std::string xlabel;
-  std::string ylabel;
-  vex::color col = vex::red;
+  std::vector<vex::color> cols;
   vex::color bgcol = vex::transparent;
   bool border;
   double upper;
   double lower;
+  bool auto_fit = false;
 };

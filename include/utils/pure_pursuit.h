@@ -9,6 +9,39 @@ using namespace vex;
 
 namespace PurePursuit {
   /**
+   * Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
+   */
+  class Path
+  {
+    public:
+      /**
+       * Create a Path
+       * @param points the points that make up the path
+       * @param radius the lookahead radius for pure pursuit
+       */
+      Path(std::vector<point_t> points, double radius);
+
+      /**
+       * Get the points associated with this Path
+       */
+      std::vector<point_t> get_points();
+
+      /**
+       * Get the radius associated with this Path
+       */
+      double get_radius();
+      
+      /**
+       * Get whether this path will behave as expected
+       */
+      bool is_valid();
+    
+    private:
+      std::vector<point_t> points;
+      double radius;
+      bool valid;
+  };
+  /**
    * Represents a piece of a cubic spline with s(x) = a(x-xi)^3 + b(x-xi)^2 + c(x-xi) + d
    * The x_start and x_end shows where the equation is valid.
    */

@@ -10,7 +10,7 @@
 #include "../core/include/utils/command_structure/auto_command.h"
 
 /**
- * AutoCommand wrapper class for the spinRPM function
+ * AutoCommand wrapper class for the spin_rpm function
  * in the Flywheel class
  *
  */
@@ -34,7 +34,7 @@ class SpinRPMCommand: public AutoCommand {
     // Flywheel instance to run the function on
     Flywheel &flywheel;
 
-    // parameters for spinRPM
+    // parameters for spin_rpm
     int rpm;
 };
 

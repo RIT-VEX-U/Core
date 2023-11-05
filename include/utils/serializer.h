@@ -4,11 +4,12 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <vex.h>
 
 /// @brief character that will be used to seperate values
 const char serialization_separator = '$';
 /// @brief max file size that the system can deal with
-const std::size_t MAX_FILE_SIZE = 4096; 
+const std::size_t MAX_FILE_SIZE = 4096;
 
 /// @brief Serializes Arbitrary data to a file on the SD Card
 class Serializer
@@ -36,7 +37,11 @@ public:
     /// @brief create a Serializer
     /// @param filename the file to read from. If filename does not exist we will create that file
     /// @param flush_always If true, after every write flush to a file. If false, you are responsible for calling save_to_disk
-    explicit Serializer(const std::string &filename, bool flush_always = true) : flush_always(flush_always), filename(filename), ints({}), bools({}), doubles({}), strings({}) { read_from_disk(); }
+    explicit Serializer(const std::string &filename, bool flush_always = true) : flush_always(flush_always), filename(filename), ints({}), bools({}), doubles({}), strings({})
+
+    {
+        read_from_disk();
+    }
 
     /// @brief saves current Serializer state to disk
     void save_to_disk() const;
