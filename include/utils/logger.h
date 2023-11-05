@@ -26,7 +26,7 @@ private:
 
 public:
     /// @brief  maximum size for a string to be before it's written
-    const int MAX_FORMAT_LEN = 512;
+    static constexpr int MAX_FORMAT_LEN = 512;
     /// @brief  Create a logger that will save to a file
     /// @param filename the file to save to
     explicit Logger(const std::string &filename);

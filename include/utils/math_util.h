@@ -15,6 +15,13 @@
 double clamp(double value, double low, double high);
 
 /**
+ * @brief Linearly intERPolate between values
+ * @param a at t = 0, output = a
+ * @param b at t = 1, output = b
+ * @return a linear mixing of a and b according to t
+*/
+double lerp(double a, double b, double t);
+/**
 * Returns the sign of a number
 * @param x
 * 

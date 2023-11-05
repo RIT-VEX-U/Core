@@ -1,5 +1,5 @@
 #include "../core/include/subsystems/screen.h"
-
+#include "../core/include/utils/math_util.h"
 namespace screen
 {
     /**
@@ -30,6 +30,13 @@ namespace screen
     void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages,
                       int first_page)
     {
+        if (pages.size() == 0)
+        {
+            printf("No pages, not starting screen");
+            return;
+        }
+        first_page %= pages.size();
+
         if (running)
         {
             printf("THERE IS ALREADY A SCREEN THREAD RUNNING\n");
@@ -98,7 +105,7 @@ namespace screen
             }
 
             // Draw First Page
-            if (frame % 5 == 0)
+            if (frame % 2 == 0)
             {
                 screen_data.screen.clearScreen(vex::color::black);
                 screen_data.screen.setPenColor("#FFFFFF");
@@ -122,7 +129,7 @@ namespace screen
             screen_data.screen.render();
             frame++;
             was_pressed = pressing;
-            vexDelay(20);
+            vexDelay(5);
         }
 
         return 0;
@@ -187,11 +194,13 @@ namespace screen
         scr.drawRectangle(x, y, row_width, row_height, col);
         scr.printAt(x + 2, y + 16, false, " %2d   %2.0fC   %.7s", port, temp, name.c_str());
     }
-    void StatsPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number)
+    void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]])
     {
         int num = 0;
         int x = 40;
         int y = y_start + row_height;
+        scr.setPenWidth(1);
+
         scr.drawRectangle(x, y_start, row_width, row_height);
         scr.printAt(x, y_start + 16, false, " port temp  name");
         for (auto &kv : motors)
@@ -214,7 +223,7 @@ namespace screen
         scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(), b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
     }
 
-    OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail) : odom(odom), width(width), height(height), do_trail(do_trail)
+    OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail) : odom(odom), robot_width(width), robot_height(height), do_trail(do_trail)
     {
         vex::brain b;
         if (b.SDcard.exists(field_filename))
@@ -236,13 +245,15 @@ namespace screen
         return (int)(p * 240);
     }
 
-    void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number)
+    void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]])
     {
-        if (do_trail)
+        pose_t pose = odom.get_position();
+        path[path_index] = pose;
+
+        if (do_trail && frame_number % 5 == 0)
         {
             path_index++;
             path_index %= path_len;
-            path[path_index] = odom.get_position();
         }
 
         auto to_px = [](const point_t p) -> point_t
@@ -255,7 +266,6 @@ namespace screen
             scr.drawLine((int)to_px(from).x, (int)to_px(from).y, (int)to_px(to).x, (int)to_px(to).y);
         };
 
-        pose_t pose = path[path_index];
         point_t pos = pose.get_point();
         fflush(stdout);
         scr.printAt(45, 30, "(%.2f, %.2f)", pose.x, pose.y);
@@ -279,7 +289,8 @@ namespace screen
             {
                 int j = i % path_len;
                 pose_t pose = path[j];
-                scr.setPenColor(vex::color(80, 80, 80));
+                scr.setPenWidth(2);
+                scr.setPenColor(vex::color(255, 255, 80));
                 draw_line(pose.get_point(), last_pos.get_point());
                 last_pos = pose;
             }
@@ -287,8 +298,8 @@ namespace screen
         scr.setPenColor(vex::color::white);
 
         Mat2 mat = Mat2::FromRotationDegrees(pose.rot - 90);
-        const point_t to_left = point_t{-width / 2.0, 0};
-        const point_t to_front = point_t{0.0, height / 2.0};
+        const point_t to_left = point_t{-robot_width / 2.0, 0};
+        const point_t to_front = point_t{0.0, robot_height / 2.0};
 
         const point_t fl = pos + mat * (+to_left + to_front);
         const point_t fr = pos + mat * (-to_left + to_front);
@@ -309,257 +320,131 @@ namespace screen
         (void)y;
         (void)was_pressed;
     }
+
+    bool SliderWidget::update(bool was_pressed, int x, int y)
+    {
+        const double margin = 10.0;
+        if (was_pressed)
+        {
+            double dx = x;
+            double dy = y;
+            if (rect.contains(point_t{dx, dy}))
+            {
+                double pct = (dx - rect.min.x - margin) / (rect.dimensions().x - 2 * margin);
+                pct = clamp(pct, 0.0, 1.0);
+                value = (low + pct * (high - low));
+            }
+            return true;
+        }
+        return false;
+    }
+    void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]])
+    {
+        if (rect.height() <= 0)
+        {
+            printf("Slider: %s has no height. Cant use it.", name.c_str());
+        }
+        double xl = rect.min.x;
+        double xh = rect.max.x;
+        double xmid = (xl + xh) / 2.0;
+        double y = rect.min.y + rect.height() / 2;
+        const double margin = 5.0;
+
+        scr.setPenColor(vex::color(50, 50, 50));
+        scr.setFillColor(vex::color(50, 50, 50));
+        scr.setPenWidth(1);
+
+        scr.drawRectangle(rect.min.x, rect.min.y, rect.dimensions().x, rect.dimensions().y);
+
+        scr.setPenColor(vex::color(200, 200, 200));
+        scr.setPenWidth(4);
+
+        scr.drawLine(xl + margin, y, xh - margin, y);
+
+        double pct = (value - low) / (high - low);
+        double vx = pct * (rect.dimensions().x - (2 * margin)) + rect.min.x + margin;
+        const double handle_width = 4;
+        const double handle_height = 4;
+
+        scr.drawRectangle(vx - (handle_width / 2), y - (handle_height / 2), handle_width, handle_height);
+        int text_w = scr.getStringWidth((name + "        ").c_str());
+        scr.printAt(xmid - text_w / 2, y - 15, false, "%s: %.5f", name.c_str(), value);
+    }
+
+    bool ButtonWidget::update(bool was_pressed, int x, int y)
+    {
+        if (was_pressed && !was_pressed_last && rect.contains({(double)x, (double)y}))
+        {
+            onpress();
+            was_pressed_last = was_pressed;
+            return true;
+        }
+        was_pressed_last = was_pressed;
+        return false;
+    }
+
+    void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]])
+    {
+        scr.setPenColor(vex::white);
+        scr.setPenWidth(1);
+        scr.setFillColor(vex::color(50, 50, 50));
+        scr.drawRectangle(rect.min.x, rect.min.y, rect.width(), rect.height());
+        int w = scr.getStringWidth(name.c_str());
+        int h = scr.getStringHeight(name.c_str());
+        scr.printAt(rect.center().x - w / 2, rect.center().y + h / 2, name.c_str());
+    }
+
+    PIDPage::PIDPage(
+        PID &pid, std::string name, std::function<void(void)> onchange)
+        : cfg(pid.config), pid(pid), name(name), onchange(onchange),
+          p_slider(cfg.p, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
+          i_slider(cfg.i, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
+          d_slider(cfg.d, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
+          zero_i([this]()
+                 { zero_i_f(); },
+                 Rect{{180, 80}, {220, 120}}, "0"),
+          zero_d([this]()
+                 { zero_d_f(); },
+                 Rect{{180, 140}, {220, 180}}, "0"),
+          graph(40, 0, 0, {vex::red, vex::green}, 2)
+    {
+    }
+
+    PIDPage::PIDPage(PIDFF &pidff, std::string name, std::function<void(void)> onchange) : PIDPage((pidff.pid), name, onchange) {}
+
+    void PIDPage::update(bool was_pressed, int x, int y)
+    {
+        bool updated = false;
+        updated |= p_slider.update(was_pressed, x, y);
+        updated |= i_slider.update(was_pressed, x, y);
+        updated |= d_slider.update(was_pressed, x, y);
+
+        updated |= zero_i.update(was_pressed, x, y);
+        updated |= zero_d.update(was_pressed, x, y);
+        if (updated)
+        {
+            onchange();
+        }
+    }
+    void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]])
+    {
+        p_slider.draw(scr, first_draw, frame_number);
+        i_slider.draw(scr, first_draw, frame_number);
+        d_slider.draw(scr, first_draw, frame_number);
+        zero_i.draw(scr, first_draw, frame_number);
+        zero_d.draw(scr, first_draw, frame_number);
+
+        graph.add_samples({pid.get_target(), pid.get_sensor_val()});
+
+        graph.draw(scr, 230, 20, 200, 200);
+
+        scr.setPenColor(vex::white);
+        scr.printAt(60, 215, false, "%s", name.c_str());
+
+        scr.setPenColor(vex::red);
+        scr.printAt(240, 20, false, "%.2f", pid.get_target());
+        scr.setPenColor(vex::green);
+        scr.printAt(300, 20, false, "%.2f", pid.get_sensor_val());
+    }
+
 } // namespace screen
-
-/*
-void draw_battery_stats(vex::brain::lcd &screen, int x, int y, double
-voltage, double percentage)
-{
-    double low_pct = 70.0;
-    double med_pct = 85.0;
-
-    vex::color low_col = vex::color(120, 0, 0);
-    vex::color med_col = vex::color(140, 100, 0);
-    vex::color high_col = vex::black;
-
-    vex::color bg_col = vex::black;
-    vex::color border_col = vex::white;
-
-    if (percentage < low_pct)
-    {
-        bg_col = low_col;
-    }
-    else if (percentage < med_pct)
-    {
-        bg_col = med_col;
-    }
-    else
-    {
-        bg_col = high_col;
-    }
-
-    screen.setPenWidth(3);
-    screen.setFillColor(bg_col);
-    screen.setPenColor(border_col);
-    screen.setFont(vex::mono15);
-
-    screen.drawRectangle(x + 3, y, 200 - 3, 20);
-    screen.printAt(x + 5, y + 15, "battery: %.1fv  %d%%", voltage,
-(int)percentage);
-}
-
-void draw_mot_header(vex::brain::lcd &screen, int x, int y, int width)
-{
-    vex::color bg_col = vex::black;
-    vex::color border_col = vex::white;
-    screen.setPenWidth(3);
-    screen.setFillColor(bg_col);
-    screen.setPenColor(border_col);
-    screen.setFont(vex::mono15);
-
-    screen.drawRectangle(x + 3, y, width - 3, 20);
-    screen.printAt(x + 5, y + 15, "motor name");
-    int name_width = 110;
-
-    screen.printAt(x + name_width + 7, y + 15, "temp");
-
-    screen.drawLine(x + name_width, y, x + name_width, y + 20);
-
-    screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
-
-    screen.printAt(x + name_width + 55, y + 15, "port");
-}
-
-void draw_mot_stats(vex::brain::lcd &screen, int x, int y, int width, const
-char *name, vex::motor &motor, int animation_tick)
-{
-    double tempC = motor.temperature(vex::celsius);
-    bool pluggedin = motor.installed();
-    int port = motor.index() + 1;
-
-    // used for flashing
-    vex::color bg_col = vex::black;
-    vex::color hot_col = vex::color(120, 0, 0);
-    vex::color med_col = vex::color(140, 100, 0);
-    vex::color low_col = vex::black; // color(0,100,0);
-    vex::color not_plugged_in_col = vex::color(255, 0, 0);
-
-    double lowtemp = 40;
-    double hightemp = 50;
-    if (tempC < lowtemp)
-    {
-        bg_col = low_col;
-    }
-    else if (tempC >= lowtemp && tempC < hightemp)
-    {
-        bg_col = med_col;
-    }
-    else if (tempC >= hightemp)
-    {
-        bg_col = hot_col;
-    }
-
-    if (!pluggedin)
-    {
-        if ((animation_tick / 8) % 2 == 0)
-        {
-            bg_col = not_plugged_in_col;
-        }
-    }
-
-    vex::color border_col = vex::white;
-    screen.setPenWidth(3);
-    screen.setFillColor(bg_col);
-    screen.setPenColor(border_col);
-    screen.setFont(vex::mono15);
-
-    screen.drawRectangle(x + 3, y, width - 3, 20);
-
-    // name
-    screen.printAt(x + 7, y + 15, name);
-    int name_width = 110;
-
-    // temp
-    screen.drawLine(x + name_width, y, x + name_width, y + 20);
-    screen.printAt(x + name_width + 10, y + 15, "%dC", (int)tempC);
-
-    // PORT
-    screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
-    char *warning = (char *)"!";
-    if (pluggedin)
-    {
-        warning = (char *)"";
-    }
-    screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
-}
-
-//
-void draw_dev_stats(vex::brain::lcd &screen, int x, int y, int width, const
-char *name, vex::device &dev, int animation_tick)
-{
-    bool pluggedin = dev.installed();
-    int port = dev.index() + 1;
-
-    // used for flashing
-    vex::color bg_col = vex::black;
-    vex::color not_plugged_in_col = vex::color(255, 0, 0);
-
-    if (!pluggedin)
-    {
-        if ((animation_tick / 8) % 2 == 0)
-        {
-            bg_col = not_plugged_in_col;
-        }
-    }
-
-    vex::color border_col = vex::white;
-    screen.setPenWidth(3);
-    screen.setFillColor(bg_col);
-    screen.setPenColor(border_col);
-    screen.setFont(vex::mono15);
-
-    screen.drawRectangle(x + 3, y, width - 3, 20);
-
-    // name
-    screen.printAt(x + 5, y + 15, name);
-    int name_width = 110;
-
-    // temp
-    // screen.drawLine(x + name_width, y, x + name_width, y + 20);
-    // screen.printAt(x + name_width + 10, y + 15, "%dC", (int)tempC);
-
-    // PORT
-    screen.drawLine(x + name_width + 50, y, x + name_width + 50, y + 20);
-    char *warning = (char *)"!";
-    if (pluggedin)
-    {
-        warning = (char *)"";
-    }
-    screen.printAt(x + name_width + 60, y + 15, "%d%s", port, warning);
-}
-
-void draw_lr_arrows(vex::brain::lcd &screen, int bar_width, int width, int
-height)
-{
-    auto bar_col = vex::color(40, 40, 40);
-    auto arrow_col = vex::color(255, 255, 255);
-    // draw touch zones
-    screen.setFillColor(bar_col);
-    screen.setPenColor(bar_col);
-
-    screen.drawRectangle(0, 0, bar_width, height);
-    screen.drawRectangle(width - bar_width, 0, width, height);
-
-    // draw arrows
-    screen.setPenColor(arrow_col);
-    screen.drawLine(bar_width / 3, height / 2, 2 * bar_width / 3, height / 2
-- 20); screen.drawLine(bar_width / 3, height / 2, 2 * bar_width / 3, height
-/ 2 + 20);
-
-    screen.drawLine(width - bar_width / 3, height / 2, width - 2 * bar_width
-/ 3, height / 2 - 20); screen.drawLine(width - bar_width / 3, height / 2,
-width - 2 * bar_width / 3, height / 2 + 20);
-}
-
-int handle_screen_thread(vex::brain::lcd &screen, std::vector<screenFunc>
-pages, int first_page)
-{
-    unsigned int num_pages = pages.size();
-    unsigned int current_page = first_page;
-
-    int width = 480;
-    int height = 240;
-
-    int bar_width = 40;
-
-    bool was_pressing = false;
-    bool first_draw = true;
-    while (true)
-    {
-        pages[current_page](screen, bar_width, 0, width - bar_width * 2,
-height, first_draw);
-
-        first_draw = false;
-        // handle presses
-        if (screen.pressing() && !was_pressing)
-        {
-
-            int x = screen.xPosition();
-            // int y = screen.yPosition();
-
-            if (x < bar_width)
-            {
-                if (current_page == 0)
-                {
-                    current_page = num_pages;
-                }
-                current_page--;
-                first_draw = true;
-            }
-
-            if (x > width - bar_width)
-            {
-                current_page++;
-                current_page %= num_pages;
-                first_draw = true;
-            }
-        }
-        draw_lr_arrows(screen, bar_width, width, height);
-        was_pressing = screen.pressing();
-        screen.render();
-        vexDelay(40);
-    }
-
-    return 0;
-}
-
-void StartScreen(vex::brain::lcd &screen, std::vector<screenFunc> pages, int
-first_page)
-{
-    // hold onto arguments here so we don't lose them and can use then in
-the lambda down there. capture semantics are not fun static
-std::vector<screenFunc> my_pages = pages; static vex::brain::lcd my_screen =
-screen; static int my_first_page = first_page; vex::task screenTask([]() {
-return handle_screen_thread(my_screen, my_pages, my_first_page); });
-}
-*/

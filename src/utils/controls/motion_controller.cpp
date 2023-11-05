@@ -1,4 +1,4 @@
-#include "../core/include/utils/motion_controller.h"
+#include "../core/include/utils/controls/motion_controller.h"
 #include "../core/include/utils/math_util.h"
 #include <vector>
 
@@ -20,12 +20,17 @@ MotionController::MotionController(m_profile_cfg_t &config)
  * This will also reset the PID and profile timers.
  * @param start_pt Movement starting position
  * @param end_pt Movement ending posiiton 
+ * @param start_vel Movement starting velocity
+ * @param end_vel Movement ending velocity
  */
-void MotionController::init(double start_pt, double end_pt)
+void MotionController::init(double start_pt, double end_pt, double start_vel, double end_vel)
 {
     profile.set_endpts(start_pt, end_pt);
+    profile.set_vel_endpts(start_vel, end_vel);
     pid.reset();
     tmr.reset();
+
+    this->end_pt = end_pt;
 }
 
 /**
@@ -36,9 +41,11 @@ void MotionController::init(double start_pt, double end_pt)
 */
 double MotionController::update(double sensor_val)
 {
-    cur_motion = profile.calculate(tmr.time(timeUnits::sec));
+    cur_motion = profile.calculate(tmr.time(timeUnits::sec), sensor_val);
     pid.set_target(cur_motion.pos);
     pid.update(sensor_val);
+
+    this->current_pos = sensor_val;
 
     out = pid.get() +  ff.calculate(cur_motion.vel, cur_motion.accel, pid.get());
 
@@ -74,7 +81,7 @@ void MotionController::set_limits(double lower, double upper)
  */
 bool MotionController::is_on_target()
 {
-    return (tmr.time(timeUnits::sec) > profile.get_movement_time()) && pid.is_on_target();
+    return (tmr.time(timeUnits::sec) > profile.get_movement_time()) && pid.is_on_target() && fabs(end_pt - current_pos) < pid.config.deadband;
 }
 
 /**
@@ -142,8 +149,8 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
         vel_ma.add_entry(odometry.get_speed());
         accel_ma.add_entry(odometry.get_accel());
 
-        double speed = vel_ma.get_average();
-        double accel = accel_ma.get_average();
+        double speed = vel_ma.get_value();
+        double accel = accel_ma.get_value();
 
         // For kV:
         if(speed > max_speed)

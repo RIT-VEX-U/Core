@@ -1,31 +1,73 @@
 #include "../core/include/utils/graph_drawer.h"
 
-/**
- * Construct a GraphDrawer
- * @brief a helper class to graph values on the brain screen
- * @param screen a reference to Brain.screen we can save for later
- * @param num_samples the graph works on a fixed window and will plot the last `num_samples` before the history is forgotten. Larger values give more context but may slow down if you have many graphs or an exceptionally high
- * @param x_label the name of the x axis (currently unused)
- * @param y_label the name of the y axis (currently unused)
- * @param draw_border whether to draw the border around the graph. can be turned off if there are multiple graphs in the same space ie. a graph of error and output
- * @param lower_bound the bottom of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints
- * @param upper_bound the top of the window to graph. if lower_bound == upperbound, the graph will scale to it's datapoints
- */
-GraphDrawer::GraphDrawer(vex::brain::lcd &screen, int num_samples, std::string x_label, std::string y_label, vex::color col, bool draw_border, double lower_bound, double upper_bound) : Screen(screen), sample_index(0), xlabel(x_label), ylabel(y_label), col(col), border(draw_border), upper(upper_bound), lower(lower_bound)
+/// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
+/// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
+/// @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+/// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+/// @param colors the colors of the series. must be of size num_series
+/// @param num_series the number of series to graph
+GraphDrawer::GraphDrawer(int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series) : cols(colors), auto_fit(lower_bound == upper_bound)
 {
-    std::vector<point_t> temp(num_samples, point_t{.x = 0.0, .y = 0.0});
-    samples = temp;
+    if (colors.size() != num_series)
+    {
+        printf("The number of colors does not match the number of series in graph drawer\n");
+    }
+    series = std::vector<std::vector<point_t>>(num_series);
+    for (size_t i = 0; i < num_series; i++)
+    {
+        series[i] = std::vector<point_t>(num_samples, {0.0, 0.0});
+    }
+
+    if (auto_fit)
+    {
+        upper = -1000.0;
+        lower = 1000.0;
+    } else {
+        upper = upper_bound;
+        lower = lower_bound;
+    }
 }
 
 /**
- * add_sample adds a point to the graph, removing one from the back
+ * add_samples adds a point to the graph, removing one from the back
  * @param sample an x, y coordinate of the next point to graph
  */
-void GraphDrawer::add_sample(point_t sample)
+void GraphDrawer::add_samples(std::vector<point_t> new_samples)
 {
-    samples[sample_index] = sample;
+    if (series.size() != new_samples.size())
+    {
+        printf("Mismatch between # of samples given and number of series. %s : %d\n", __FILE__, __LINE__);
+    }
+    for (size_t i = 0; i < series.size(); i++)
+    {
+        series[i][sample_index] = new_samples[i];
+        if (auto_fit)
+        {
+            upper = fmax(upper, new_samples[i].y);
+            lower = fmin(lower, new_samples[i].y);
+        }
+    }
     sample_index++;
-    sample_index %= samples.size();
+    sample_index %= series[0].size();
+}
+
+void GraphDrawer::add_samples(std::vector<double> new_samples)
+{
+    if (series.size() != new_samples.size())
+    {
+        printf("Mismatch between # of samples given and number of series. %s : %d\n", __FILE__, __LINE__);
+    }
+    for (size_t i = 0; i < series.size(); i++)
+    {
+        series[i][sample_index] = {(double)vex::timer::system(), new_samples[i]};
+        if (auto_fit)
+        {
+            upper = fmax(upper, new_samples[i]);
+            lower = fmin(lower, new_samples[i]);
+        }
+    }
+    sample_index++;
+    sample_index %= series[0].size();
 }
 
 /**
@@ -35,74 +77,61 @@ void GraphDrawer::add_sample(point_t sample)
  * @param width the width of the graphed region
  * @param height the height of the graphed region
  */
-void GraphDrawer::draw(int x, int y, int width, int height)
+void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int height)
 {
-    if (samples.size() < 1)
+    if (series[0].size() < 1)
     {
         return;
     }
-
-    double current_min = samples[0].y;
-    double current_max = samples[0].y;
-    double earliest_time = samples[0].x;
-    double latest_time = samples[0].x;
-    // collect data
-    for (int i = 0; i < samples.size(); i++)
+    if (cols.size() != series.size())
     {
-        point_t p = samples[i];
-        if (p.x < earliest_time)
-        {
-            earliest_time = p.x;
-        }
-        else if (p.x > latest_time)
-        {
-            latest_time = p.x;
-        }
-
-        if (p.y < current_min)
-        {
-            current_min = p.y;
-        }
-        else if (p.y > current_max)
-        {
-            current_max = p.y;
-        }
+        printf("The number of colors does not match the number of series in graph drawer\n");
     }
+
+    size_t newest_index = (sample_index-1);
+    if (sample_index<0){
+        sample_index+=series[0].size();
+    }
+
+    double earliest_time = series[0][sample_index].x;
+    double latest_time = series[0][newest_index].x;
+    // collect data
     if (std::abs(latest_time - earliest_time) < 0.001)
     {
-        Screen.printAt(width / 2, height / 2, "Not enough Data");
+        screen.printAt(width / 2, height / 2, "Not enough Data");
         return;
-    }
-    if (upper != lower)
-    {
-        current_min = lower;
-        current_max = upper;
     }
 
     if (border)
     {
-        Screen.setPenWidth(1);
-        Screen.setPenColor(vex::white);
-        Screen.setFillColor(bgcol);
-        Screen.drawRectangle(x, y, width, height);
+        screen.setPenWidth(1);
+        screen.setPenColor(vex::white);
+        screen.setFillColor(bgcol);
+        screen.drawRectangle(x, y, width, height);
     }
 
     double time_range = latest_time - earliest_time;
-    double sample_range = current_max - current_min;
-    double x_s = (double)x;
-    double y_s = (double)y + (double)height;
-    Screen.setPenWidth(4);
-    Screen.setPenColor(col);
-    for (int i = sample_index; i < samples.size() + sample_index - 1; i++)
+    double sample_range = upper - lower;
+    screen.setPenWidth(2);
+
+    for (int j = 0; j < series.size(); j++)
     {
-        point_t p = samples[i % samples.size()];
-        double x_pos = x_s + ((p.x - earliest_time) / time_range) * (double)width;
-        double y_pos = y_s + ((p.y - current_min) / sample_range) * (double)(-height);
+        double x_s = (double)x;
+        double y_s = (double)y + (double)height;
+        const std::vector<point_t> &samples = series[j];
 
-        point_t p2 = samples[(i + 1) % samples.size()];
-        double x_pos2 = x_s + ((p2.x - earliest_time) / time_range) * (double)width;
-        double y_pos2 = y_s + ((p2.y - current_min) / sample_range) * (double)(-height);
+        screen.setPenColor(cols[j]);
+        for (int i = sample_index; i < samples.size() + sample_index - 1; i++)
+        {
+            point_t p = samples[i % samples.size()];
+            double x_pos = x_s + ((p.x - earliest_time) / time_range) * (double)width;
+            double y_pos = y_s + ((p.y - lower) / sample_range) * (double)(-height);
 
-        Screen.drawLine((int)x_pos, (int)y_pos, (int)x_pos2, (int)y_pos2);
+            point_t p2 = samples[(i + 1) % samples.size()];
+            double x_pos2 = x_s + ((p2.x - earliest_time) / time_range) * (double)width;
+            double y_pos2 = y_s + ((p2.y - lower) / sample_range) * (double)(-height);
+
+            screen.drawLine((int)x_pos, (int)y_pos, (int)x_pos2, (int)y_pos2);
+        }
     }
 }

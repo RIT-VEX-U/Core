@@ -1,4 +1,4 @@
-#include "../core/include/utils/pid.h"
+#include "../core/include/utils/controls/pid.h"
 #include "../core/include/subsystems/odometry/odometry_base.h"
 
 /**
@@ -10,9 +10,11 @@ PID::PID(pid_config_t &config)
   pid_timer.reset();
 }
 
-void PID::init(double start_pt, double set_pt)
+void PID::init(double start_pt, double set_pt, double, double end_vel)
 {
   set_target(set_pt);
+  target_vel = end_vel;
+  sensor_val = start_pt;
   reset();
 }
 
@@ -31,11 +33,10 @@ double PID::update(double sensor_val)
 
   // Avoid a divide by zero error
   double d_term = 0;
-  if(time_delta != 0)
+  if (time_delta != 0)
     d_term = config.d * (get_error() - last_error) / time_delta;
-  else if(last_time != 0)
+  else if (last_time != 0)
     printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
-
 
   // P and D terms
   out = (config.p * get_error()) + d_term;
@@ -44,9 +45,9 @@ double PID::update(double sensor_val)
 
   // Only add to the accumulated error if the output is not saturated
   // aka "Integral Clamping" anti-windup technique
-  if ( !limits_exist || (limits_exist && (out < upper_limit && out > lower_limit)) )
+  if (!limits_exist || (limits_exist && (out < upper_limit && out > lower_limit)))
     accum_error += time_delta * get_error();
-  
+
   // I term
   out += config.i * accum_error;
 
@@ -55,9 +56,15 @@ double PID::update(double sensor_val)
 
   // Enable clamping if the limit is not 0
   if (limits_exist)
-    out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
+    out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit
+                                                                  : out;
 
   return out;
+}
+
+double PID::get_sensor_val()
+{
+  return sensor_val;
 }
 
 /**
@@ -88,7 +95,8 @@ double PID::get()
  */
 double PID::get_error()
 {
-  if (config.error_method==ERROR_TYPE::ANGULAR){
+  if (config.error_method == ERROR_TYPE::ANGULAR)
+  {
     return OdometryBase::smallest_angle(target, sensor_val);
   }
   return target - sensor_val;
@@ -108,7 +116,7 @@ void PID::set_target(double target)
 }
 
 /**
- * Set the limits on the PID out. The PID out will "clip" itself to be 
+ * Set the limits on the PID out. The PID out will "clip" itself to be
  * between the limits.
  */
 void PID::set_limits(double lower, double upper)
@@ -125,6 +133,7 @@ bool PID::is_on_target()
 {
   if (fabs(get_error()) < config.deadband)
   {
+    if (target_vel != 0) return true;
     if (is_checking_on_target == false)
     {
       on_target_last_time = pid_timer.value();
@@ -141,8 +150,4 @@ bool PID::is_on_target()
   }
 
   return false;
-}
-
-Feedback::FeedbackType PID::get_type(){
-    return Feedback::FeedbackType::PIDType;
 }
