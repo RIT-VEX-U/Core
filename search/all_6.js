@@ -18,7 +18,7 @@ var searchData=
   ['get_5fradius_15',['get_radius',['../classPurePursuit_1_1Path.html#a86e3a01fcc91f32ae54499bec62859f1',1,'PurePursuit::Path']]],
   ['get_5fsensor_5fval_16',['get_sensor_val',['../classPID.html#a822b4dc455223cd4e8ac69763622eb08',1,'PID']]],
   ['get_5fsetpoint_17',['get_setpoint',['../classLift.html#adaa6cb65351d0c8a2c199a87a318b133',1,'Lift']]],
-  ['get_5fsize_18',['get_size',['../classExponentialMovingAverage.html#a2eca6a149d079e621dc2241fe9ef6fd8',1,'ExponentialMovingAverage::get_size()'],['../classMovingAverage.html#a02f6c11fdbeaffd7bdd88c148705c383',1,'MovingAverage::get_size()']]],
+  ['get_5fsize_18',['get_size',['../classMovingAverage.html#a02f6c11fdbeaffd7bdd88c148705c383',1,'MovingAverage::get_size()'],['../classExponentialMovingAverage.html#a2eca6a149d079e621dc2241fe9ef6fd8',1,'ExponentialMovingAverage::get_size()']]],
   ['get_5fspeed_19',['get_speed',['../classOdometryBase.html#a96c7be68db7424ddbe3704770dd1889f',1,'OdometryBase']]],
   ['get_5ftarget_20',['get_target',['../classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0',1,'Flywheel::get_target()'],['../classPID.html#a1cd58cedeccc45b67551e331ee547be9',1,'PID::get_target()']]],
   ['get_5fvalue_21',['get_value',['../classMovingAverage.html#a04d7ad9c662d1b3a2a58146abfa31b2a',1,'MovingAverage::get_value()'],['../classExponentialMovingAverage.html#af2822c00fdf60eba1a8261a69177597c',1,'ExponentialMovingAverage::get_value()']]],
@@ -26,5 +26,5 @@ var searchData=
   ['get_5fy_23',['get_y',['../classVector2D.html#aee94b809a4a63b972c72b22257fa3f30',1,'Vector2D']]],
   ['getrpm_24',['getRPM',['../classFlywheel.html#abbbe49f13e580a85670734f472170b45',1,'Flywheel']]],
   ['getting_20started_25',['Getting Started',['../md_README.html#autotoc_md1',1,'']]],
-  ['graphdrawer_26',['graphdrawer',['../classGraphDrawer.html#a066c3300f9452ada1730c6ee3d191971',1,'GraphDrawer::GraphDrawer()'],['../classGraphDrawer.html',1,'GraphDrawer']]]
+  ['graphdrawer_26',['GraphDrawer',['../classGraphDrawer.html',1,'GraphDrawer'],['../classGraphDrawer.html#a066c3300f9452ada1730c6ee3d191971',1,'GraphDrawer::GraphDrawer()']]]
 ];

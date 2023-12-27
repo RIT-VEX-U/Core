@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['get_0',['get',['../classFeedback.html#ac44bb519a6f4e25c8e8250f3d30ab359',1,'Feedback::get()'],['../classBangBang.html#a163d2ec174adab37b67f97fa27012c2a',1,'BangBang::get()'],['../classTakeBackHalf.html#a43694f365d408b4ec26d533ef140f9bd',1,'TakeBackHalf::get()'],['../classPIDFF.html#a78a34d271bcc703fc803e15b275fd238',1,'PIDFF::get()'],['../classPID.html#a69c2e66b8ff06c86ca9701d11e21da75',1,'PID::get()'],['../classMotionController.html#a2a1944f590618cd91770364aea416cd5',1,'MotionController::get()']]],
+  ['get_0',['get',['../classBangBang.html#a163d2ec174adab37b67f97fa27012c2a',1,'BangBang::get()'],['../classFeedback.html#ac44bb519a6f4e25c8e8250f3d30ab359',1,'Feedback::get()'],['../classMotionController.html#a2a1944f590618cd91770364aea416cd5',1,'MotionController::get()'],['../classPID.html#a69c2e66b8ff06c86ca9701d11e21da75',1,'PID::get()'],['../classPIDFF.html#a78a34d271bcc703fc803e15b275fd238',1,'PIDFF::get()'],['../classTakeBackHalf.html#a43694f365d408b4ec26d533ef140f9bd',1,'TakeBackHalf::get()']]],
   ['get_5faccel_1',['get_accel',['../classOdometryBase.html#a3223bac952f79bf910b979690499b965',1,'OdometryBase']]],
   ['get_5fangular_5faccel_5fdeg_2',['get_angular_accel_deg',['../classOdometryBase.html#a456e6433e51971d2640ff96ed3a59432',1,'OdometryBase']]],
   ['get_5fangular_5fspeed_5fdeg_3',['get_angular_speed_deg',['../classOdometryBase.html#af30d97a35e9e9c4f9be0a81390e6c0f1',1,'OdometryBase']]],
