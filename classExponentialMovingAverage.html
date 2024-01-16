@@ -121,15 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5fa4b2811c4017d9ca741ef476199a37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ac2ab6110667e17390568875b5d6b3c" id="r_a5ac2ab6110667e17390568875b5d6b3c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ac2ab6110667e17390568875b5d6b3c">ExponentialMovingAverage</a> (int buffer_size, double starting_value)</td></tr>
 <tr class="separator:a5ac2ab6110667e17390568875b5d6b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef808cf122c3b9786ae3215e7628aa56" id="r_aef808cf122c3b9786ae3215e7628aa56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aef808cf122c3b9786ae3215e7628aa56">add_entry</a> (double n)</td></tr>
-<tr class="separator:aef808cf122c3b9786ae3215e7628aa56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2822c00fdf60eba1a8261a69177597c" id="r_af2822c00fdf60eba1a8261a69177597c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af2822c00fdf60eba1a8261a69177597c">get_value</a> ()</td></tr>
-<tr class="separator:af2822c00fdf60eba1a8261a69177597c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6cef331bca0529f93d2d4dfa082fad4" id="r_ae6cef331bca0529f93d2d4dfa082fad4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6cef331bca0529f93d2d4dfa082fad4">add_entry</a> (double n) override</td></tr>
+<tr class="separator:ae6cef331bca0529f93d2d4dfa082fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69e8041896718ae83730ca8f5a3ed97e" id="r_a69e8041896718ae83730ca8f5a3ed97e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69e8041896718ae83730ca8f5a3ed97e">get_value</a> () const override</td></tr>
+<tr class="separator:a69e8041896718ae83730ca8f5a3ed97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eca6a149d079e621dc2241fe9ef6fd8" id="r_a2eca6a149d079e621dc2241fe9ef6fd8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2eca6a149d079e621dc2241fe9ef6fd8">get_size</a> ()</td></tr>
 <tr class="separator:a2eca6a149d079e621dc2241fe9ef6fd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classFilter"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classFilter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classFilter.html">Filter</a></td></tr>
-<tr class="memitem:a25a574147840bfa138df4c3609559821 inherit pub_methods_classFilter" id="r_a25a574147840bfa138df4c3609559821"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classFilter.html#a25a574147840bfa138df4c3609559821">get_value</a> () const =0</td></tr>
-<tr class="separator:a25a574147840bfa138df4c3609559821 inherit pub_methods_classFilter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classExponentialMovingAverage.html">ExponentialMovingAverage</a></p>
@@ -190,8 +187,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aef808cf122c3b9786ae3215e7628aa56" name="aef808cf122c3b9786ae3215e7628aa56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef808cf122c3b9786ae3215e7628aa56">&#9670;&#160;</a></span>add_entry()</h2>
+<a id="ae6cef331bca0529f93d2d4dfa082fad4" name="ae6cef331bca0529f93d2d4dfa082fad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6cef331bca0529f93d2d4dfa082fad4">&#9670;&#160;</a></span>add_entry()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +205,7 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -241,22 +238,32 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af2822c00fdf60eba1a8261a69177597c" name="af2822c00fdf60eba1a8261a69177597c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2822c00fdf60eba1a8261a69177597c">&#9670;&#160;</a></span>get_value()</h2>
+<a id="a69e8041896718ae83730ca8f5a3ed97e" name="a69e8041896718ae83730ca8f5a3ed97e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e8041896718ae83730ca8f5a3ed97e">&#9670;&#160;</a></span>get_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double ExponentialMovingAverage::get_value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Returns the average based off of all the samples collected so far </p><dl class="section return"><dt>Returns</dt><dd>the calculated average. sum(samples)/numsamples</dd></dl>
 <p>How many samples the average is made from </p><dl class="section return"><dt>Returns</dt><dd>the number of samples used to calculate this average </dd></dl>
+
+<p>Implements <a class="el" href="classFilter.html">Filter</a>.</p>
 
 </div>
 </div>

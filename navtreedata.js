@@ -50,7 +50,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classSerializer.html#a46f698b9e4f5d148e58068c52b349fe9"
+"classSerializer.html#a15d669148e800bbed3ae37fb33bb6a1d",
+"structrobot__specs__t.html#afb03c2e2cbc0d8fd6686c9421e016dec"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

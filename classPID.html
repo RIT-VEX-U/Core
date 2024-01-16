@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaf60fcde16cf33e59e1999b2cc076de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b5c34ba5e81fb79ed4258a143015b9" id="r_a53b5c34ba5e81fb79ed4258a143015b9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53b5c34ba5e81fb79ed4258a143015b9">update</a> (double sensor_val) override</td></tr>
 <tr class="separator:a53b5c34ba5e81fb79ed4258a143015b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a822b4dc455223cd4e8ac69763622eb08" id="r_a822b4dc455223cd4e8ac69763622eb08"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a822b4dc455223cd4e8ac69763622eb08">get_sensor_val</a> ()</td></tr>
-<tr class="memdesc:a822b4dc455223cd4e8ac69763622eb08"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the sensor value that we were last updated with  <br /></td></tr>
-<tr class="separator:a822b4dc455223cd4e8ac69763622eb08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db32b3729426d45d1358f5db47cf114" id="r_a8db32b3729426d45d1358f5db47cf114"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8db32b3729426d45d1358f5db47cf114">get_sensor_val</a> () const</td></tr>
+<tr class="memdesc:a8db32b3729426d45d1358f5db47cf114"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the sensor value that we were last updated with  <br /></td></tr>
+<tr class="separator:a8db32b3729426d45d1358f5db47cf114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69c2e66b8ff06c86ca9701d11e21da75" id="r_a69c2e66b8ff06c86ca9701d11e21da75"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a69c2e66b8ff06c86ca9701d11e21da75">get</a> () override</td></tr>
 <tr class="separator:a69c2e66b8ff06c86ca9701d11e21da75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8411ac48e8868d89e97afcf8990cca2c" id="r_a8411ac48e8868d89e97afcf8990cca2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8411ac48e8868d89e97afcf8990cca2c">set_limits</a> (double lower, double upper) override</td></tr>
@@ -151,16 +151,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af9677e76cb1beffbcf3f54cbc627c530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5cdb296dbcce80703a9a98b9605c500" id="r_ab5cdb296dbcce80703a9a98b9605c500"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5cdb296dbcce80703a9a98b9605c500">get_error</a> ()</td></tr>
 <tr class="separator:ab5cdb296dbcce80703a9a98b9605c500"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cd58cedeccc45b67551e331ee547be9" id="r_a1cd58cedeccc45b67551e331ee547be9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cd58cedeccc45b67551e331ee547be9">get_target</a> ()</td></tr>
-<tr class="separator:a1cd58cedeccc45b67551e331ee547be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3d37c5ab4ad6709f69337c622186bf3" id="r_ad3d37c5ab4ad6709f69337c622186bf3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3d37c5ab4ad6709f69337c622186bf3">get_target</a> () const</td></tr>
+<tr class="separator:ad3d37c5ab4ad6709f69337c622186bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e301ab123c9e18e677b4873b03550dd" id="r_a2e301ab123c9e18e677b4873b03550dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e301ab123c9e18e677b4873b03550dd">set_target</a> (double target)</td></tr>
 <tr class="separator:a2e301ab123c9e18e677b4873b03550dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a67626fa764b201c7190ace37e068666b" id="r_a67626fa764b201c7190ace37e068666b"><td class="memItemLeft" align="right" valign="top"><a id="a67626fa764b201c7190ace37e068666b" name="a67626fa764b201c7190ace37e068666b"></a>
-<a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>config</b></td></tr>
-<tr class="memdesc:a67626fa764b201c7190ace37e068666b"><td class="mdescLeft">&#160;</td><td class="mdescRight">configuration struct for this controller. see <a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> for information about what this contains <br /></td></tr>
+<tr class="memitem:a67626fa764b201c7190ace37e068666b" id="r_a67626fa764b201c7190ace37e068666b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67626fa764b201c7190ace37e068666b">config</a></td></tr>
 <tr class="separator:a67626fa764b201c7190ace37e068666b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -260,8 +258,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a822b4dc455223cd4e8ac69763622eb08" name="a822b4dc455223cd4e8ac69763622eb08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a822b4dc455223cd4e8ac69763622eb08">&#9670;&#160;</a></span>get_sensor_val()</h2>
+<a id="a8db32b3729426d45d1358f5db47cf114" name="a8db32b3729426d45d1358f5db47cf114"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db32b3729426d45d1358f5db47cf114">&#9670;&#160;</a></span>get_sensor_val()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -270,7 +268,7 @@ Public Attributes</h2></td></tr>
           <td class="memname">double PID::get_sensor_val </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -280,8 +278,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1cd58cedeccc45b67551e331ee547be9" name="a1cd58cedeccc45b67551e331ee547be9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cd58cedeccc45b67551e331ee547be9">&#9670;&#160;</a></span>get_target()</h2>
+<a id="ad3d37c5ab4ad6709f69337c622186bf3" name="ad3d37c5ab4ad6709f69337c622186bf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3d37c5ab4ad6709f69337c622186bf3">&#9670;&#160;</a></span>get_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,7 +288,7 @@ Public Attributes</h2></td></tr>
           <td class="memname">double PID::get_target </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -371,8 +369,7 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Checks if the <a class="el" href="classPID.html">PID</a> controller is on target. <br  />
- </p><dl class="section return"><dt>Returns</dt><dd>true if the loop is within [deadband] for [on_target_time] seconds</dd></dl>
+<p>Checks if the <a class="el" href="classPID.html">PID</a> controller is on target. </p><dl class="section return"><dt>Returns</dt><dd>true if the loop is within [deadband] for [on_target_time] seconds</dd></dl>
 <p>Returns true if the loop is within [deadband] for [on_target_time] seconds </p>
 
 <p>Implements <a class="el" href="classFeedback.html#ae4cc835c374aab9761d22603d4329d34">Feedback</a>.</p>
@@ -491,6 +488,22 @@ Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>the new output. What would be returned by <a class="el" href="#a69c2e66b8ff06c86ca9701d11e21da75">PID::get()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classFeedback.html#adda5fc7642539996be00632954dfc41f">Feedback</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a67626fa764b201c7190ace37e068666b" name="a67626fa764b201c7190ace37e068666b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67626fa764b201c7190ace37e068666b">&#9670;&#160;</a></span>config</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a>&amp; PID::config</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>configuration struct for this controller. see <a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> for information about what this contains </p>
 
 </div>
 </div>

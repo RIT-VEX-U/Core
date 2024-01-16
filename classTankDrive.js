@@ -1,10 +1,16 @@
 var classTankDrive =
 [
+    [ "BrakeType", "classTankDrive.html#a64d4e4346eff9e3c6f8ee3d39099a54a", [
+      [ "None", "classTankDrive.html#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "ZeroVelocity", "classTankDrive.html#a64d4e4346eff9e3c6f8ee3d39099a54aa2b1b0dcd26105d17d5715c7cc9e3cc8f", null ],
+      [ "Smart", "classTankDrive.html#a64d4e4346eff9e3c6f8ee3d39099a54aaacd381e68b92357896c0856efebb3666", null ]
+    ] ],
     [ "TankDrive", "classTankDrive.html#a34f305bb1c996e3748c925af259aeeb4", null ],
-    [ "drive_arcade", "classTankDrive.html#a4c52b51a9b149d97e9b0b175a10652ef", null ],
+    [ "drive_arcade", "classTankDrive.html#adae2aef67d47367eabb263a611312e47", null ],
     [ "drive_forward", "classTankDrive.html#a5d993abede985e5e3020bac432484181", null ],
     [ "drive_forward", "classTankDrive.html#a00ed7a1152a136bd4c5f61071d0ca775", null ],
-    [ "drive_tank", "classTankDrive.html#abd7d6a5e1deb2845bd06253f01a1d510", null ],
+    [ "drive_tank", "classTankDrive.html#a9027c483d373582bfe24662c6ab0e286", null ],
+    [ "drive_tank_raw", "classTankDrive.html#a14c8836f50de0fa44286e07dd6d385de", null ],
     [ "drive_to_point", "classTankDrive.html#acc2e23100b9dcd1135822f5eeb9e12ad", null ],
     [ "drive_to_point", "classTankDrive.html#aec7b356dfa524b79339fbc0d744ffa7f", null ],
     [ "pure_pursuit", "classTankDrive.html#a2c820f92bc185bc29095c83e772bea46", null ],

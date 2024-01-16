@@ -124,13 +124,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>d</b></td></tr>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>deadband</b></td></tr>
 <tr class="memdesc:a5fe836f65a951c00113996d32101172a"><td class="mdescLeft">&#160;</td><td class="mdescRight">at what threshold are we close enough to be finished <br /></td></tr>
 <tr class="separator:a5fe836f65a951c00113996d32101172a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14212579cfa1827b6cc04388c6b3626e" id="r_a14212579cfa1827b6cc04388c6b3626e"><td class="memItemLeft" align="right" valign="top"><a id="a14212579cfa1827b6cc04388c6b3626e" name="a14212579cfa1827b6cc04388c6b3626e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>on_target_time</b></td></tr>
-<tr class="memdesc:a14212579cfa1827b6cc04388c6b3626e"><td class="mdescLeft">&#160;</td><td class="mdescRight">the time in seconds that we have to be on target for to say we are officially at the target <br /></td></tr>
+<tr class="memitem:a14212579cfa1827b6cc04388c6b3626e" id="r_a14212579cfa1827b6cc04388c6b3626e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14212579cfa1827b6cc04388c6b3626e">on_target_time</a></td></tr>
 <tr class="separator:a14212579cfa1827b6cc04388c6b3626e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2f96f58fba854b7e4329175497d1869" id="r_ad2f96f58fba854b7e4329175497d1869"><td class="memItemLeft" align="right" valign="top"><a id="ad2f96f58fba854b7e4329175497d1869" name="ad2f96f58fba854b7e4329175497d1869"></a>
-<a class="el" href="classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1">ERROR_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><b>error_method</b></td></tr>
-<tr class="memdesc:ad2f96f58fba854b7e4329175497d1869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Linear or angular. wheter to do error as a simple subtraction or to wrap. <br /></td></tr>
+<tr class="memitem:ad2f96f58fba854b7e4329175497d1869" id="r_ad2f96f58fba854b7e4329175497d1869"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1">ERROR_TYPE</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2f96f58fba854b7e4329175497d1869">error_method</a></td></tr>
 <tr class="separator:ad2f96f58fba854b7e4329175497d1869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -138,7 +134,38 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>on_target_time</b><
 <li>deadband -</li>
 <li>on_target_time - for how long do we have to be at the target to stop As well, <a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> holds an error type which determines whether errors should be calculated as if the sensor position is a measure of distance or an angle </li>
 </ul>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad2f96f58fba854b7e4329175497d1869" name="ad2f96f58fba854b7e4329175497d1869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2f96f58fba854b7e4329175497d1869">&#9670;&#160;</a></span>error_method</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1">ERROR_TYPE</a> PID::pid_config_t::error_method</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Linear or angular. wheter to do error as a simple subtraction or to wrap </p>
+
+</div>
+</div>
+<a id="a14212579cfa1827b6cc04388c6b3626e" name="a14212579cfa1827b6cc04388c6b3626e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14212579cfa1827b6cc04388c6b3626e">&#9670;&#160;</a></span>on_target_time</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PID::pid_config_t::on_target_time</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>the time in seconds that we have to be on target for to say we are officially at the target </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>include/utils/controls/<a class="el" href="pid_8h_source.html">pid.h</a></li>
 </ul>
 </div><!-- contents -->

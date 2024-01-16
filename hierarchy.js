@@ -25,7 +25,9 @@ var hierarchy =
       [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
       [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
     ] ],
+    [ "screen::ButtonConfig", "structscreen_1_1ButtonConfig.html", null ],
     [ "screen::ButtonWidget", "classscreen_1_1ButtonWidget.html", null ],
+    [ "screen::CheckboxConfig", "structscreen_1_1CheckboxConfig.html", null ],
     [ "CommandController", "classCommandController.html", null ],
     [ "Condition", "classCondition.html", [
       [ "AndCondition", "classAndCondition.html", null ],
@@ -55,6 +57,7 @@ var hierarchy =
     [ "GenericAuto", "classGenericAuto.html", null ],
     [ "GraphDrawer", "classGraphDrawer.html", null ],
     [ "PurePursuit::hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
+    [ "screen::LabelConfig", "structscreen_1_1LabelConfig.html", null ],
     [ "Lift< T >", "classLift.html", null ],
     [ "Lift< T >::lift_cfg_t", "structLift_1_1lift__cfg__t.html", null ],
     [ "Logger", "classLogger.html", null ],
@@ -71,10 +74,12 @@ var hierarchy =
     [ "screen::Page", "classscreen_1_1Page.html", [
       [ "AutoChooser", "classAutoChooser.html", null ],
       [ "FlywheelPage", "classFlywheelPage.html", null ],
+      [ "MotionControllerPage", "classMotionControllerPage.html", null ],
       [ "screen::FunctionPage", "classscreen_1_1FunctionPage.html", null ],
       [ "screen::OdometryPage", "classscreen_1_1OdometryPage.html", null ],
       [ "screen::PIDPage", "classscreen_1_1PIDPage.html", null ],
-      [ "screen::StatsPage", "classscreen_1_1StatsPage.html", null ]
+      [ "screen::StatsPage", "classscreen_1_1StatsPage.html", null ],
+      [ "screen::WidgetPage", "classscreen_1_1WidgetPage.html", null ]
     ] ],
     [ "parallel_runner_info", "structparallel__runner__info.html", null ],
     [ "PurePursuit::Path", "classPurePursuit_1_1Path.html", null ],
@@ -84,11 +89,17 @@ var hierarchy =
     [ "Rect", "structRect.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
     [ "screen::ScreenData", "structscreen_1_1ScreenData.html", null ],
+    [ "screen::ScreenRect", "structscreen_1_1ScreenRect.html", null ],
     [ "Serializer", "classSerializer.html", null ],
+    [ "screen::SizedWidget", "structscreen_1_1SizedWidget.html", null ],
+    [ "SliderCfg", "structSliderCfg.html", null ],
+    [ "screen::SliderConfig", "structscreen_1_1SliderConfig.html", null ],
     [ "screen::SliderWidget", "classscreen_1_1SliderWidget.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
+    [ "screen::TextConfig", "structscreen_1_1TextConfig.html", null ],
     [ "trapezoid_profile_segment_t", "structtrapezoid__profile__segment__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", null ],
-    [ "Vector2D", "classVector2D.html", null ]
+    [ "Vector2D", "classVector2D.html", null ],
+    [ "screen::WidgetConfig", "structscreen_1_1WidgetConfig.html", null ]
 ];

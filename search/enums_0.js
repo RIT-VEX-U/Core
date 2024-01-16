@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['error_5ftype_0',['ERROR_TYPE',['../classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1',1,'PID']]]
+  ['braketype_0',['BrakeType',['../classTankDrive.html#a64d4e4346eff9e3c6f8ee3d39099a54a',1,'TankDrive']]]
 ];

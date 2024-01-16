@@ -98,6 +98,7 @@ $(function(){initNavTree('classTankDrive.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classTankDrive-members.html">List of all members</a>  </div>
@@ -107,6 +108,14 @@ $(function(){initNavTree('classTankDrive.html',''); initResizable(); });
 
 <p><code>#include &lt;<a class="el" href="tank__drive_8h_source.html">tank_drive.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a64d4e4346eff9e3c6f8ee3d39099a54a" id="r_a64d4e4346eff9e3c6f8ee3d39099a54a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a> { <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">None</a>
+, <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa2b1b0dcd26105d17d5715c7cc9e3cc8f">ZeroVelocity</a>
+, <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aaacd381e68b92357896c0856efebb3666">Smart</a>
+ }</td></tr>
+<tr class="separator:a64d4e4346eff9e3c6f8ee3d39099a54a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a34f305bb1c996e3748c925af259aeeb4" id="r_a34f305bb1c996e3748c925af259aeeb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34f305bb1c996e3748c925af259aeeb4">TankDrive</a> (motor_group &amp;left_motors, motor_group &amp;right_motors, <a class="el" href="structrobot__specs__t.html">robot_specs_t</a> &amp;config, <a class="el" href="classOdometryBase.html">OdometryBase</a> *odom=NULL)</td></tr>
@@ -143,10 +152,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af9c9d6b316954c2cd0af54291842a9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10e648e4de35fa72859fb96a9a80485" id="r_af10e648e4de35fa72859fb96a9a80485"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af10e648e4de35fa72859fb96a9a80485">stop</a> ()</td></tr>
 <tr class="separator:af10e648e4de35fa72859fb96a9a80485"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd7d6a5e1deb2845bd06253f01a1d510" id="r_abd7d6a5e1deb2845bd06253f01a1d510"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd7d6a5e1deb2845bd06253f01a1d510">drive_tank</a> (double left, double right, int power=1)</td></tr>
-<tr class="separator:abd7d6a5e1deb2845bd06253f01a1d510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c52b51a9b149d97e9b0b175a10652ef" id="r_a4c52b51a9b149d97e9b0b175a10652ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c52b51a9b149d97e9b0b175a10652ef">drive_arcade</a> (double forward_back, double left_right, int power=1)</td></tr>
-<tr class="separator:a4c52b51a9b149d97e9b0b175a10652ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9027c483d373582bfe24662c6ab0e286" id="r_a9027c483d373582bfe24662c6ab0e286"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9027c483d373582bfe24662c6ab0e286">drive_tank</a> (double left, double right, int power=1, <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a> bt=<a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">BrakeType::None</a>)</td></tr>
+<tr class="separator:a9027c483d373582bfe24662c6ab0e286"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14c8836f50de0fa44286e07dd6d385de" id="r_a14c8836f50de0fa44286e07dd6d385de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14c8836f50de0fa44286e07dd6d385de">drive_tank_raw</a> (double left, double right)</td></tr>
+<tr class="separator:a14c8836f50de0fa44286e07dd6d385de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adae2aef67d47367eabb263a611312e47" id="r_adae2aef67d47367eabb263a611312e47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adae2aef67d47367eabb263a611312e47">drive_arcade</a> (double forward_back, double left_right, int power=1, <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a> bt=<a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">BrakeType::None</a>)</td></tr>
+<tr class="separator:adae2aef67d47367eabb263a611312e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00ed7a1152a136bd4c5f61071d0ca775" id="r_a00ed7a1152a136bd4c5f61071d0ca775"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00ed7a1152a136bd4c5f61071d0ca775">drive_forward</a> (double inches, directionType dir, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, double max_speed=1, double end_speed=0)</td></tr>
 <tr class="separator:a00ed7a1152a136bd4c5f61071d0ca775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d993abede985e5e3020bac432484181" id="r_a5d993abede985e5e3020bac432484181"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d993abede985e5e3020bac432484181">drive_forward</a> (double inches, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
@@ -177,7 +188,38 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classTankDrive.html">TankDrive</a> is a class to run a tank drive system. A tank drive system, sometimes called differential drive, has a motor (or group of synchronized motors) on the left and right side </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a64d4e4346eff9e3c6f8ee3d39099a54a" name="a64d4e4346eff9e3c6f8ee3d39099a54a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64d4e4346eff9e3c6f8ee3d39099a54a">&#9670;&#160;</a></span>BrakeType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">TankDrive::BrakeType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754" name="a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>just send 0 volts to the motors </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a64d4e4346eff9e3c6f8ee3d39099a54aa2b1b0dcd26105d17d5715c7cc9e3cc8f" name="a64d4e4346eff9e3c6f8ee3d39099a54aa2b1b0dcd26105d17d5715c7cc9e3cc8f"></a>ZeroVelocity&#160;</td><td class="fielddoc"><p>try to bring the robot to rest. But don't try to hold position </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a64d4e4346eff9e3c6f8ee3d39099a54aaacd381e68b92357896c0856efebb3666" name="a64d4e4346eff9e3c6f8ee3d39099a54aaacd381e68b92357896c0856efebb3666"></a>Smart&#160;</td><td class="fielddoc"><p>bring the robot to rest and once it's stopped, try to hold that position </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a34f305bb1c996e3748c925af259aeeb4" name="a34f305bb1c996e3748c925af259aeeb4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a34f305bb1c996e3748c925af259aeeb4">&#9670;&#160;</a></span>TankDrive()</h2>
 
@@ -219,8 +261,8 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4c52b51a9b149d97e9b0b175a10652ef" name="a4c52b51a9b149d97e9b0b175a10652ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c52b51a9b149d97e9b0b175a10652ef">&#9670;&#160;</a></span>drive_arcade()</h2>
+<a id="adae2aef67d47367eabb263a611312e47" name="adae2aef67d47367eabb263a611312e47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adae2aef67d47367eabb263a611312e47">&#9670;&#160;</a></span>drive_arcade()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +280,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>power</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>power</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a></td>          <td class="paramname"><span class="paramname"><em>bt</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">BrakeType::None</a></span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -248,7 +295,8 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">forward_back</td><td>the percent to move forward or backward </td></tr>
     <tr><td class="paramname">left_right</td><td>the percent to turn left or right </td></tr>
-    <tr><td class="paramname">power</td><td>modifies the input velocities left^power, right^power</td></tr>
+    <tr><td class="paramname">power</td><td>modifies the input velocities left^power, right^power </td></tr>
+    <tr><td class="paramname">bt</td><td>breaktype. What to do if the driver lets go of the sticks</td></tr>
   </table>
   </dd>
 </dl>
@@ -368,8 +416,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abd7d6a5e1deb2845bd06253f01a1d510" name="abd7d6a5e1deb2845bd06253f01a1d510"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd7d6a5e1deb2845bd06253f01a1d510">&#9670;&#160;</a></span>drive_tank()</h2>
+<a id="a9027c483d373582bfe24662c6ab0e286" name="a9027c483d373582bfe24662c6ab0e286"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9027c483d373582bfe24662c6ab0e286">&#9670;&#160;</a></span>drive_tank()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,7 +435,12 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>power</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span></span>&#160;)</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>power</em><span class="paramdefsep"> = </span><span class="paramdefval">1</span>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a></td>          <td class="paramname"><span class="paramname"><em>bt</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">BrakeType::None</a></span></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -397,12 +450,38 @@ Static Public Member Functions</h2></td></tr>
     <tr><td class="paramname">left</td><td>the percent to run the left motors </td></tr>
     <tr><td class="paramname">right</td><td>the percent to run the right motors </td></tr>
     <tr><td class="paramname">power</td><td>modifies the input velocities left^power, right^power </td></tr>
-    <tr><td class="paramname">isdriver</td><td>default false. if true uses motor percentage. if false uses plain percentage of maximum voltage</td></tr>
+    <tr><td class="paramname">bt</td><td>breaktype. What to do if the driver lets go of the sticks </td></tr>
   </table>
   </dd>
 </dl>
-<p>Drive the robot using differential style controls. left_motors controls the left motors, right_motors controls the right motors.</p>
-<p>left_motors and right_motors are in "percent": -1.0 -&gt; 1.0 </p>
+
+</div>
+</div>
+<a id="a14c8836f50de0fa44286e07dd6d385de" name="a14c8836f50de0fa44286e07dd6d385de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14c8836f50de0fa44286e07dd6d385de">&#9670;&#160;</a></span>drive_tank_raw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TankDrive::drive_tank_raw </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>left</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>right</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Drive the robot raw-ly </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">left</td><td>the percent to run the left motors (-1, 1) </td></tr>
+    <tr><td class="paramname">right</td><td>the percent to run the right motors (-1, 1) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

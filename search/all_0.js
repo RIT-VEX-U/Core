@@ -5,7 +5,7 @@ var searchData=
   ['add_5fasync_2',['add_async',['../classGenericAuto.html#a938fb69c14735d4cf88ebc7589dcad1c',1,'GenericAuto']]],
   ['add_5fcancel_5ffunc_3',['add_cancel_func',['../classCommandController.html#addb3119447177b940f071d52afda8234',1,'CommandController']]],
   ['add_5fdelay_4',['add_delay',['../classCommandController.html#ae06b054f4aeea86e8c6bee56458dc6d1',1,'CommandController::add_delay()'],['../classGenericAuto.html#aaadc99efe49a375f0dc80db7e886d96c',1,'GenericAuto::add_delay()']]],
-  ['add_5fentry_5',['add_entry',['../classMovingAverage.html#a6c85ea575428ef7faf1f1f111a985db8',1,'MovingAverage::add_entry()'],['../classExponentialMovingAverage.html#aef808cf122c3b9786ae3215e7628aa56',1,'ExponentialMovingAverage::add_entry()']]],
+  ['add_5fentry_5',['add_entry',['../classMovingAverage.html#afc008077a473e8c8205e2c7832e28ccb',1,'MovingAverage::add_entry()'],['../classExponentialMovingAverage.html#ae6cef331bca0529f93d2d4dfa082fad4',1,'ExponentialMovingAverage::add_entry()']]],
   ['add_5fsamples_6',['add_samples',['../classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b',1,'GraphDrawer::add_samples(std::vector&lt; point_t &gt; sample)'],['../classGraphDrawer.html#a2e0904acb281f9870ec03144a2a4d2c0',1,'GraphDrawer::add_samples(std::vector&lt; double &gt; sample)']]],
   ['andcondition_7',['AndCondition',['../classAndCondition.html',1,'']]],
   ['ang_5faccel_5fdeg_8',['ang_accel_deg',['../classOdometryBase.html#a01f14bfcecbcde7a74b9b98376deb19f',1,'OdometryBase']]],

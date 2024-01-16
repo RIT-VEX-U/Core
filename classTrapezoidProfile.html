@@ -129,9 +129,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c08d08d8eadaa719f4dc9e607f9fe97" id="r_a6c08d08d8eadaa719f4dc9e607f9fe97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c08d08d8eadaa719f4dc9e607f9fe97">set_max_v</a> (double max_v)</td></tr>
 <tr class="memdesc:a6c08d08d8eadaa719f4dc9e607f9fe97"><td class="mdescLeft">&#160;</td><td class="mdescRight">sets the maximum velocity for the profile (the height of the top of the trapezoid)  <br /></td></tr>
 <tr class="separator:a6c08d08d8eadaa719f4dc9e607f9fe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd551042dfffe0923200c4546d109c55" id="r_abd551042dfffe0923200c4546d109c55"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd551042dfffe0923200c4546d109c55">get_movement_time</a> ()</td></tr>
-<tr class="memdesc:abd551042dfffe0923200c4546d109c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">uses the kinematic equations to and specified accel and max_v to figure out how long moving along the profile would take  <br /></td></tr>
-<tr class="separator:abd551042dfffe0923200c4546d109c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34c729e0971393bf0690d6346c5ffaba" id="r_a34c729e0971393bf0690d6346c5ffaba"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34c729e0971393bf0690d6346c5ffaba">get_movement_time</a> () const</td></tr>
+<tr class="memdesc:a34c729e0971393bf0690d6346c5ffaba"><td class="mdescLeft">&#160;</td><td class="mdescRight">uses the kinematic equations to and specified accel and max_v to figure out how long moving along the profile would take  <br /></td></tr>
+<tr class="separator:a34c729e0971393bf0690d6346c5ffaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9e4d1c59235e9fb8fa8459fdbdf4741" id="r_af9e4d1c59235e9fb8fa8459fdbdf4741"><td class="memItemLeft" align="right" valign="top"><a id="af9e4d1c59235e9fb8fa8459fdbdf4741" name="af9e4d1c59235e9fb8fa8459fdbdf4741"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>get_max_v</b> () const</td></tr>
+<tr class="separator:af9e4d1c59235e9fb8fa8459fdbdf4741"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a670bd75cca23114f4e48b4dd8c141d9a" id="r_a670bd75cca23114f4e48b4dd8c141d9a"><td class="memItemLeft" align="right" valign="top"><a id="a670bd75cca23114f4e48b4dd8c141d9a" name="a670bd75cca23114f4e48b4dd8c141d9a"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>get_accel</b> () const</td></tr>
+<tr class="separator:a670bd75cca23114f4e48b4dd8c141d9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Trapezoid Profile</p>
@@ -239,8 +245,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abd551042dfffe0923200c4546d109c55" name="abd551042dfffe0923200c4546d109c55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd551042dfffe0923200c4546d109c55">&#9670;&#160;</a></span>get_movement_time()</h2>
+<a id="a34c729e0971393bf0690d6346c5ffaba" name="a34c729e0971393bf0690d6346c5ffaba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c729e0971393bf0690d6346c5ffaba">&#9670;&#160;</a></span>get_movement_time()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -249,7 +255,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">double TrapezoidProfile::get_movement_time </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
