@@ -4,6 +4,8 @@
 #include "../core/include/subsystems/custom_encoder.h"
 #include "../core/include/utils/geometry.h"
 #include "../core/include/utils/vector2d.h"
+#include "../core/include/utils/moving_average.h"
+
 #include "../core/include/robot_specs.h"
 
 static int background_task(void* odom_obj);
@@ -77,5 +79,6 @@ private:
     robot_specs_t &config;
 
     double rotation_offset = 0;
+    ExponentialMovingAverage ema = ExponentialMovingAverage(3);
     
 };

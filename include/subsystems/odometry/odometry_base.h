@@ -3,6 +3,7 @@
 #include "vex.h"
 #include "../core/include/utils/geometry.h"
 #include "../core/include/robot_specs.h"
+#include "../core/include/utils/command_structure/auto_command.h"
 
 #ifndef PI
 #define PI 3.141592654
@@ -44,7 +45,7 @@ public:
      * @param newpos the new position that the odometry will believe it is at
      */
     virtual void set_position(const pose_t& newpos=zero_pos);
-
+    AutoCommand *SetPositionCmd(const pose_t& newpos=zero_pos);
     /**
      * Update the current position on the field based on the sensors
      * @return the location that the robot is at after the odometry does its calculations

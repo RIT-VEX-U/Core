@@ -22,6 +22,12 @@ using namespace vex;
 class TankDrive
 {
 public:
+  enum class BrakeType
+  {
+    None, ///< just send 0 volts to the motors
+    ZeroVelocity, ///< try to bring the robot to rest. But don't try to hold position
+    Smart, ///< bring the robot to rest and once it's stopped, try to hold that position
+  };
   /**
    * Create the TankDrive object
    * @param left_motors left side drive motors
@@ -43,8 +49,8 @@ public:
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
   AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
 
-  AutoCommand *PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
-  AutoCommand *PurePursuitCmd(Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
+  AutoCommand *PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
+  AutoCommand *PurePursuitCmd(Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -59,9 +65,15 @@ public:
    * @param left the percent to run the left motors
    * @param right the percent to run the right motors
    * @param power modifies the input velocities left^power, right^power
-   * @param isdriver default false. if true uses motor percentage. if false uses plain percentage of maximum voltage
+   * @param bt  breaktype. What to do if the driver lets go of the sticks
    */
-  void drive_tank(double left, double right, int power=1);
+  void drive_tank(double left, double right, int power = 1, BrakeType bt = BrakeType::None);
+  /**
+   * Drive the robot raw-ly
+   * @param left the percent to run the left motors (-1, 1)
+   * @param right the percent to run the right motors (-1, 1)
+  */
+  void drive_tank_raw(double left, double right);
 
   /**
    * Drive the robot using arcade style controls. forward_back controls the linear motion,
@@ -72,8 +84,9 @@ public:
    * @param forward_back the percent to move forward or backward
    * @param left_right the percent to turn left or right
    * @param power modifies the input velocities left^power, right^power
+   * @param bt  breaktype. What to do if the driver lets go of the sticks
    */
-  void drive_arcade(double forward_back, double left_right, int power = 1);
+  void drive_arcade(double forward_back, double left_right, int power = 1, BrakeType bt = BrakeType::None);
 
   /**
    * Use odometry to drive forward a certain distance using a custom feedback controller
@@ -120,7 +133,7 @@ public:
    * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
    * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
    * @param end_speed   the movement profile will attempt to reach this velocity by its completion
-   */  
+   */
   bool turn_degrees(double degrees, double max_speed = 1, double end_speed = 0);
 
   /**
@@ -187,33 +200,33 @@ public:
   static double modify_inputs(double input, int power = 2);
 
   /**
-   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of
    * waypoints - the robot will attempt to follow the points while cutting corners (radius)
    * to save time (compared to stop / turn / start)
-   * 
+   *
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
    * @param end_speed the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
-  */
-  bool pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed=1, double end_speed=0);
+   */
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
   /**
-   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of 
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of
    * waypoints - the robot will attempt to follow the points while cutting corners (radius)
    * to save time (compared to stop / turn / start)
-   * 
+   *
    * Use the default drive feedback
-   * 
+   *
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
    * @param end_speed the movement profile will attempt to reach this velocity by its completion
    * @return True when the path is complete
-  */
-  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0);
+   */
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
 
 private:
   motor_group &left_motors;  ///< left drive motors

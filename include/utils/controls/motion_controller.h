@@ -4,6 +4,8 @@
 #include "../core/include/utils/controls/trapezoid_profile.h"
 #include "../core/include/utils/controls/feedback_base.h"
 #include "../core/include/subsystems/tank_drive.h"
+#include "../core/include/subsystems/screen.h"
+
 #include "vex.h"
 
 /**
@@ -87,7 +89,10 @@ class MotionController : public Feedback
     /**
      * @return The current postion, velocity and acceleration setpoints
     */
-    motion_t get_motion();
+    motion_t get_motion() const;
+
+
+    screen::Page *Page();
 
     /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
@@ -125,5 +130,6 @@ class MotionController : public Feedback
     motion_t cur_motion;
      
     vex::timer tmr;
+    friend class MotionControllerPage;
 
 };

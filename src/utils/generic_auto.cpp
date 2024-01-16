@@ -15,16 +15,19 @@
 */
 bool GenericAuto::run(bool blocking)
 {
-  if(state_list.empty())
+  if(state_list.empty()) {
     return true;
+}
 
   do
   {
-    if( state_list.front()() )
+    if( state_list.front()() ) {
       state_list.pop();
+}
 
-    if(blocking)
+    if(blocking) {
       vexDelay(20);
+}
 
   } while(blocking && !state_list.empty());
 
@@ -42,8 +45,9 @@ void GenericAuto::add_async(state_ptr async_state)
 {
   state_ptr fn = [&async_state](){
     vex::task t([](void* fn_ptr){
-      while(! (*(state_ptr*)fn_ptr)() )
+      while(! (*(state_ptr*)fn_ptr)() ) {
        vexDelay(20);
+}
 
       return 0;
     }, &async_state);

@@ -14,9 +14,11 @@ PurePursuit::Path::Path(std::vector<point_t> points, double radius) {
     for(int j = i + 2; j < points.size() - 1; j++) {
       // Iterate over points on the segments discretely and compare distances
       double segment_i_dist = points[i].dist(points[i+1]);
-      if (segment_i_dist == 0) segment_i_dist = 0.1;
+      if (segment_i_dist == 0) { segment_i_dist = 0.1;
+}
       double segment_j_dist = points[j].dist(points[j+1]);
-      if (segment_j_dist == 0) segment_j_dist = 0.1;
+      if (segment_j_dist == 0) { segment_j_dist = 0.1;
+}
       for(double t1 = 0; t1 <= 1; t1 += radius / segment_i_dist) {
         point_t p1;
         p1.x = points[i].x + t1 * (points[i+1].x - points[i].x);
@@ -132,8 +134,9 @@ std::vector<point_t> PurePursuit::line_circle_intersections(point_t center, doub
     //This prioritizes the closest intersection to the end of the path
     for(point_t intersection: intersections)
     {
-      if(intersection.dist(end) < target.dist(end))
+      if(intersection.dist(end) < target.dist(end)) {
         target = intersection;
+}
     }
   }
 
@@ -264,8 +267,9 @@ double PurePursuit::estimate_remaining_dist(const std::vector<point_t> &path, po
 {
   point_t lookahead_pt = get_lookahead(path, robot_pose, radius);
   
-  if (lookahead_pt == path[path.size() - 1])
+  if (lookahead_pt == path[path.size() - 1]) {
     return robot_pose.get_point().dist(lookahead_pt);
+}
 
   double dist = 0;
 

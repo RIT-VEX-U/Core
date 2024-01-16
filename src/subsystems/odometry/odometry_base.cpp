@@ -3,34 +3,35 @@
 
 /**
  * Construct a new Odometry Base object
- * 
+ *
  * @param is_async True to run constantly in the background, false to call update() manually
  */
 OdometryBase::OdometryBase(bool is_async) : current_pos(zero_pos)
 {
-  if(is_async)
-    handle = new vex::task(background_task, (void*) this);
+  if (is_async) {
+    handle = new vex::task(background_task, (void *)this);
+}
 }
 
 /**
  * Function that runs in the background task. This function pointer is passed
- * to the vex::task constructor. 
- * 
+ * to the vex::task constructor.
+ *
  * @param ptr Pointer to OdometryBase object
  * @return Required integer return code. Unused.
  */
-int OdometryBase::background_task(void* ptr)
+int OdometryBase::background_task(void *ptr)
 {
-    OdometryBase &obj = *((OdometryBase*) ptr);
-    vexDelay(1000);
-    while(!obj.end_task)
-    {
-      obj.mut.lock();
-      obj.update();
-      obj.mut.unlock();
-    }
+  OdometryBase &obj = *((OdometryBase *)ptr);
+  vexDelay(1000);
+  while (!obj.end_task)
+  {
+    obj.mut.lock();
+    obj.update();
+    obj.mut.unlock();
+  }
 
-    return 0;
+  return 0;
 }
 
 /**
@@ -44,30 +45,36 @@ void OdometryBase::end_async()
 }
 
 /**
-* Gets the current position and rotation
-*/
+ * Gets the current position and rotation
+ */
 pose_t OdometryBase::get_position(void)
 {
-    mut.lock();
+  mut.lock();
 
-    // Create a new struct to pass-by-value
-    pose_t out = current_pos;
+  // Create a new struct to pass-by-value
+  pose_t out = current_pos;
 
-    mut.unlock();
+  mut.unlock();
 
-    return out;
+  return out;
 }
 
 /**
  * Sets the current position of the robot
  */
-void OdometryBase::set_position(const pose_t& newpos)
+void OdometryBase::set_position(const pose_t &newpos)
 {
-    mut.lock();
+  mut.lock();
 
-    current_pos = newpos;
+  current_pos = newpos;
 
-    mut.unlock();
+  mut.unlock();
+}
+
+AutoCommand *OdometryBase::SetPositionCmd(const pose_t &newpos)
+{
+  return new FunctionCommand([&](){set_position(newpos); return true;});
+
 }
 
 /**
@@ -80,7 +87,7 @@ double OdometryBase::pos_diff(pose_t start_pos, pose_t end_pos)
 {
   // Use the pythagorean theorem
   double retval = sqrt(pow(end_pos.x - start_pos.x, 2) + pow(end_pos.y - start_pos.y, 2));
-  
+
   return retval;
 }
 
@@ -102,12 +109,14 @@ double OdometryBase::smallest_angle(double start_deg, double end_deg)
   double retval;
   // get the difference between 0 and 360
   retval = fmod(end_deg - start_deg, 360.0);
-  if(retval < 0)
+  if (retval < 0) {
     retval += 360.0;
+}
 
   // Get the closest angle, now between -180 (turn left) and +180 (turn right)
-  if(retval > 180)
+  if (retval > 180) {
     retval -= 360;
+}
 
   return retval;
 }
@@ -117,7 +126,7 @@ double OdometryBase::get_speed()
   mut.lock();
   double retval = speed;
   mut.unlock();
-  
+
   return retval;
 }
 

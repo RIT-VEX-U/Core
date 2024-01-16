@@ -50,13 +50,13 @@ public:
    *     ^
    * @param n  the sample that will be added to the moving average.
    */
-  void add_entry(double n);
+  void add_entry(double n) override;
 
   /**
    * Returns the average based off of all the samples collected so far
    * @return the calculated average. sum(samples)/numsamples
    */
-  double get_value() const;
+  double get_value() const override;
 
   /**
    * How many samples the average is made from
@@ -108,13 +108,13 @@ public:
    *     ^
    * @param n  the sample that will be added to the moving average.
    */
-  void add_entry(double n);
+  void add_entry(double n) override;
 
   /**
    * Returns the average based off of all the samples collected so far
    * @return the calculated average. sum(samples)/numsamples
    */
-  double get_value();
+  double get_value() const override;
 
   /**
    * How many samples the average is made from
