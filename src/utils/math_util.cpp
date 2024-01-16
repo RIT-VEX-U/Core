@@ -48,8 +48,9 @@ double sign(double x)
 double wrap_angle_deg(double input)
 {
   double angle = fmod(input, 360);
-  if (angle < 0)
+  if (angle < 0) {
     angle += 360;
+}
 
   return angle;
 }
@@ -57,8 +58,9 @@ double wrap_angle_deg(double input)
 double wrap_angle_rad(double input)
 {
   double angle = fmod(input, 2 * PI);
-  if (angle < 0)
+  if (angle < 0) {
     angle += 2 * PI;
+}
 
   return angle;
 }
@@ -145,8 +147,9 @@ double estimate_path_length(const std::vector<point_t> &points)
     static point_t last_p = p;
 
     // Ignore the first point
-    if (p == last_p)
+    if (p == last_p) {
       continue;
+}
 
     dist += p.dist(last_p);
     last_p = p;

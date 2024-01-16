@@ -53,8 +53,9 @@ FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, d
         double accel = accel_ma.get_value();
 
         // For kV:
-        if(speed > max_speed)
+        if(speed > max_speed) {
             max_speed = speed;
+}
 
         // For kA:
         // Filter out the acceleration dampening due to motor inductance

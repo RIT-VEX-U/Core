@@ -4,14 +4,9 @@
 /**
  * Create the PID object
  */
-PID::PID(pid_config_t &config)
-    : config(config)
-{
-  pid_timer.reset();
-}
+PID::PID(pid_config_t &config) : config(config) { pid_timer.reset(); }
 
-void PID::init(double start_pt, double set_pt, double, double end_vel)
-{
+void PID::init(double start_pt, double set_pt, double, double end_vel) {
   set_target(set_pt);
   target_vel = end_vel;
   sensor_val = start_pt;
@@ -21,11 +16,11 @@ void PID::init(double start_pt, double set_pt, double, double end_vel)
 /**
  * Update the PID loop by taking the time difference from last update,
  * and running the PID formula with the new sensor data
- * @param sensor_val the distance, angle, encoder position or whatever it is we are measuring
+ * @param sensor_val the distance, angle, encoder position or whatever it is we
+ * are measuring
  * @return the new output. What would be returned by PID::get()
  */
-double PID::update(double sensor_val)
-{
+double PID::update(double sensor_val) {
 
   this->sensor_val = sensor_val;
 
@@ -33,10 +28,12 @@ double PID::update(double sensor_val)
 
   // Avoid a divide by zero error
   double d_term = 0;
-  if (time_delta != 0)
+  if (time_delta != 0) {
     d_term = config.d * (get_error() - last_error) / time_delta;
-  else if (last_time != 0)
-    printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
+  } else if (last_time != 0) {
+    printf(
+        "(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
+}
 
   // P and D terms
   out = (config.p * get_error()) + d_term;
@@ -45,8 +42,10 @@ double PID::update(double sensor_val)
 
   // Only add to the accumulated error if the output is not saturated
   // aka "Integral Clamping" anti-windup technique
-  if (!limits_exist || (limits_exist && (out < upper_limit && out > lower_limit)))
+  if (!limits_exist ||
+      (limits_exist && (out < upper_limit && out > lower_limit))) {
     accum_error += time_delta * get_error();
+}
 
   // I term
   out += config.i * accum_error;
@@ -55,23 +54,21 @@ double PID::update(double sensor_val)
   last_error = get_error();
 
   // Enable clamping if the limit is not 0
-  if (limits_exist)
-    out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit
-                                                                  : out;
+  if (limits_exist) {
+    out = (out < lower_limit)   ? lower_limit
+          : (out > upper_limit) ? upper_limit
+                                : out;
+}
 
   return out;
 }
 
-double PID::get_sensor_val()
-{
-  return sensor_val;
-}
+double PID::get_sensor_val() const { return sensor_val; }
 
 /**
  * Reset the PID loop by resetting time since 0 and accumulated error.
  */
-void PID::reset()
-{
+void PID::reset() {
   pid_timer.reset();
 
   last_error = 0;
@@ -85,42 +82,30 @@ void PID::reset()
 /**
  * Gets the current PID out value, from when update() was last run
  */
-double PID::get()
-{
-  return out;
-}
+double PID::get() { return out; }
 
 /**
  * Get the delta between the current sensor data and the target
  */
-double PID::get_error()
-{
-  if (config.error_method == ERROR_TYPE::ANGULAR)
-  {
+double PID::get_error() {
+  if (config.error_method == ERROR_TYPE::ANGULAR) {
     return OdometryBase::smallest_angle(target, sensor_val);
   }
   return target - sensor_val;
 }
 
-double PID::get_target()
-{
-  return target;
-}
+double PID::get_target() const { return target; }
 
 /**
  * Set the target for the PID loop, where the robot is trying to end up
  */
-void PID::set_target(double target)
-{
-  this->target = target;
-}
+void PID::set_target(double target) { this->target = target; }
 
 /**
  * Set the limits on the PID out. The PID out will "clip" itself to be
  * between the limits.
  */
-void PID::set_limits(double lower, double upper)
-{
+void PID::set_limits(double lower, double upper) {
   lower_limit = lower;
   upper_limit = upper;
 }
@@ -129,23 +114,19 @@ void PID::set_limits(double lower, double upper)
  * Returns true if the loop is within [deadband] for [on_target_time]
  * seconds
  */
-bool PID::is_on_target()
-{
-  if (fabs(get_error()) < config.deadband)
-  {
-    if (target_vel != 0) return true;
-    if (is_checking_on_target == false)
-    {
+bool PID::is_on_target() {
+  if (fabs(get_error()) < config.deadband) {
+    if (target_vel != 0) {
+      return true;
+}
+    if (is_checking_on_target == false) {
       on_target_last_time = pid_timer.value();
       is_checking_on_target = true;
-    }
-    else if (pid_timer.value() - on_target_last_time > config.on_target_time)
-    {
+    } else if (pid_timer.value() - on_target_last_time >
+               config.on_target_time) {
       return true;
     }
-  }
-  else
-  {
+  } else {
     is_checking_on_target = false;
   }
 

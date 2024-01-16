@@ -131,7 +131,7 @@ void ExponentialMovingAverage::add_entry(double n)
  * How many samples the average is made from
  * @return the number of samples used to calculate this average
  */
-double ExponentialMovingAverage::get_value()
+double ExponentialMovingAverage::get_value() const
 {
   return current_avg;
 }

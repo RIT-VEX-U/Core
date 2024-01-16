@@ -49,7 +49,7 @@ bool FunctionCondition::test()
 IfTimePassed::IfTimePassed(double time_s) : time_s(time_s), tmr() {}
 bool IfTimePassed::test()
 {
-    return (static_cast<double>(tmr.time()) / 1000.0) > time_s;
+    return tmr.value() > time_s;
 }
 
 InOrder::InOrder(std::queue<AutoCommand *> cmds) : cmds(cmds)
@@ -66,7 +66,6 @@ bool InOrder::run()
     // outer loop finished
     if (cmds.size() == 0 && current_command == nullptr)
     {
-        printf("INORDER finished\n");
         return true;
     }
     // retrieve and remove command at the front of the queue
@@ -74,7 +73,6 @@ bool InOrder::run()
     {
         printf("TAKING INORDER: len =  %d\n", cmds.size());
         current_command = cmds.front();
-        printf("Current command: %p\n", (void *)current_command);
         cmds.pop();
         tmr.reset();
     }
@@ -88,7 +86,7 @@ bool InOrder::run()
         return false; // continue onto next command
     }
 
-    double seconds = static_cast<double>(tmr.time()) / 1000.0;
+    double seconds = tmr.value();
 
     bool should_timeout = current_command->timeout_seconds > 0.0;
     bool doTimeout = should_timeout && seconds > current_command->timeout_seconds;
@@ -97,10 +95,10 @@ bool InOrder::run()
         doTimeout = doTimeout || current_command->true_to_end->test();
     }
 
-    printf(".");
     // timeout
     if (doTimeout)
     {
+        printf("InOrder timed out\n");
         current_command->on_timeout();
         current_command = nullptr;
         return false;
@@ -306,6 +304,8 @@ RepeatUntil::RepeatUntil(InOrder cmds, Condition *cond) : cmds(cmds), working_cm
     timeout_seconds = -1.0;
 }
 
+
+
 bool RepeatUntil::run()
 {
     bool finished = working_cmds->run();
@@ -323,6 +323,7 @@ bool RepeatUntil::run()
         return true;
     }
     working_cmds = new InOrder(cmds);
+
 
     return false;
 }

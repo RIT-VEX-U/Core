@@ -95,8 +95,9 @@ void Flywheel::spin_raw(double speed, directionType dir)
  */
 void Flywheel::spin_manual(double speed, directionType dir)
 {
-  if (!task_running)
+  if (!task_running) {
     motors.spin(dir, speed * 12, voltageUnits::volt);
+}
 }
 
 /**

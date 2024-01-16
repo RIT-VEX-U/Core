@@ -127,8 +127,9 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
       drive_gyro_pid->set_target(0.0);
     }
     // reset only if lateral wheel exists
-    if(enable_wheel)
+    if(enable_wheel) {
       lateral_wheel->resetPosition();
+}
 
     // Finish setting up the PID loop - max speed and position target
     drive_pid->set_limits(-fabs(speed), fabs(speed));
