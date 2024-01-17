@@ -420,7 +420,7 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedb
   {
     if (end_speed == 0) {
       stop();
-}
+    }
     func_initialized = false;
     return true;
   }

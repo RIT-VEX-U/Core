@@ -10,7 +10,7 @@ OdometryBase::OdometryBase(bool is_async) : current_pos(zero_pos)
 {
   if (is_async) {
     handle = new vex::task(background_task, (void *)this);
-}
+  }
 }
 
 /**
