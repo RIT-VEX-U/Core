@@ -296,12 +296,12 @@ bool Async::run()
 
 RepeatUntil::RepeatUntil(InOrder cmds, size_t times) : RepeatUntil(cmds, new TimesTestedCondition(times))
 {
-    timeout_seconds = -1.0;
+    timeout_seconds = 999999;
 }
 
 RepeatUntil::RepeatUntil(InOrder cmds, Condition *cond) : cmds(cmds), working_cmds(new InOrder(cmds)), cond(cond)
 {
-    timeout_seconds = -1.0;
+    timeout_seconds = 999999;
 }
 
 
