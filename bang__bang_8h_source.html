@@ -105,14 +105,14 @@ $(function(){initNavTree('bang__bang_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">bang_bang.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;../core/include/utils/controls/feedback_base.h&quot;</span></div>
+<a href="bang__bang_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;../core/include/utils/controls/feedback_base.h&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="foldopen" id="foldopen00003" data-start="{" data-end="};">
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno"><a class="line" href="classBangBang.html">    3</a></span><span class="keyword">class </span><a class="code hl_class" href="classBangBang.html">BangBang</a> : <span class="keyword">public</span> <a class="code hl_class" href="classFeedback.html">Feedback</a></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>{</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_class" href="classBangBang.html">BangBang</a>(<span class="keywordtype">double</span> thresshold, <span class="keywordtype">double</span> low, <span class="keywordtype">double</span> high);</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_function" href="classBangBang.html#a392135e08075270cc807dbed12dc201b">BangBang</a>(<span class="keywordtype">double</span> thresshold, <span class="keywordtype">double</span> low, <span class="keywordtype">double</span> high);</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classBangBang.html#ab2bb498698948b8d3c74b3b75beeef2e">init</a>(<span class="keywordtype">double</span> start_pt, <span class="keywordtype">double</span> set_pt, <span class="keywordtype">double</span> start_vel [[maybe_unused]] = 0.0, <span class="keywordtype">double</span> end_vel [[maybe_unused]] = 0.0) <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">update</a>(<span class="keywordtype">double</span> val) <span class="keyword">override</span>;</div>
@@ -134,6 +134,7 @@ $(function(){initNavTree('bang__bang_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassBangBang_html"><div class="ttname"><a href="classBangBang.html">BangBang</a></div><div class="ttdef"><b>Definition</b> bang_bang.h:4</div></div>
 <div class="ttc" id="aclassBangBang_html_a014941b11dd9f88dd180f301501f03cb"><div class="ttname"><a href="classBangBang.html#a014941b11dd9f88dd180f301501f03cb">BangBang::set_limits</a></div><div class="ttdeci">void set_limits(double lower, double upper) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:12</div></div>
 <div class="ttc" id="aclassBangBang_html_a163d2ec174adab37b67f97fa27012c2a"><div class="ttname"><a href="classBangBang.html#a163d2ec174adab37b67f97fa27012c2a">BangBang::get</a></div><div class="ttdeci">double get() override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:17</div></div>
+<div class="ttc" id="aclassBangBang_html_a392135e08075270cc807dbed12dc201b"><div class="ttname"><a href="classBangBang.html#a392135e08075270cc807dbed12dc201b">BangBang::BangBang</a></div><div class="ttdeci">BangBang(double thresshold, double low, double high)</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:4</div></div>
 <div class="ttc" id="aclassBangBang_html_aac9f7f57d9eccb68a0f98a1079ed6ecf"><div class="ttname"><a href="classBangBang.html#aac9f7f57d9eccb68a0f98a1079ed6ecf">BangBang::is_on_target</a></div><div class="ttdeci">bool is_on_target() override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:40</div></div>
 <div class="ttc" id="aclassBangBang_html_ab2bb498698948b8d3c74b3b75beeef2e"><div class="ttname"><a href="classBangBang.html#ab2bb498698948b8d3c74b3b75beeef2e">BangBang::init</a></div><div class="ttdeci">void init(double start_pt, double set_pt, double start_vel=0.0, double end_vel=0.0) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:6</div></div>
 <div class="ttc" id="aclassBangBang_html_ab5005c63f646a73be1c984630f4c3937"><div class="ttname"><a href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">BangBang::update</a></div><div class="ttdeci">double update(double val) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:22</div></div>
@@ -143,7 +144,7 @@ $(function(){initNavTree('bang__bang_8h_source.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="dir_c0d608acfe7908bae25863e3239ee545.html">controls</a></li><li class="navelem"><b>bang_bang.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="dir_c0d608acfe7908bae25863e3239ee545.html">controls</a></li><li class="navelem"><a class="el" href="bang__bang_8h.html">bang_bang.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

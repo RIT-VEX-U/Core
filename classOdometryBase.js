@@ -8,6 +8,7 @@ var classOdometryBase =
     [ "get_position", "classOdometryBase.html#a423e398bd9ec7038abe7786482db6dd0", null ],
     [ "get_speed", "classOdometryBase.html#a96c7be68db7424ddbe3704770dd1889f", null ],
     [ "set_position", "classOdometryBase.html#a0abfc14f2b809c9bcf4ed8485f0b30d3", null ],
+    [ "SetPositionCmd", "classOdometryBase.html#a3c27127eab8d99a362216c2fabddd204", null ],
     [ "update", "classOdometryBase.html#a3bbff671a85247fff3a39e7b0c2cb242", null ],
     [ "accel", "classOdometryBase.html#a94c814dfb542dd891d84db7e74537249", null ],
     [ "ang_accel_deg", "classOdometryBase.html#a01f14bfcecbcde7a74b9b98376deb19f", null ],

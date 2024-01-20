@@ -11,5 +11,6 @@ var classFlywheel =
     [ "SpinRpmCmd", "classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89", null ],
     [ "stop", "classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e", null ],
     [ "WaitUntilUpToSpeedCmd", "classFlywheel.html#a0340e5807718d4a602aed219783acdd8", null ],
+    [ "FlywheelPage", "classFlywheel.html#a5c63d9cd4e88c2da187553a4b94168d4", null ],
     [ "spinRPMTask", "classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa", null ]
 ];

@@ -105,7 +105,7 @@ $(function(){initNavTree('odometry__base_8h_source.html',''); initResizable(); }
   <div class="headertitle"><div class="title">odometry_base.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<a href="odometry__base_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../core/include/utils/geometry.h&quot;</span></div>
@@ -113,7 +113,7 @@ $(function(){initNavTree('odometry__base_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;../core/include/utils/command_structure/auto_command.h&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef PI</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define PI 3.141592654</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="odometry__base_8h.html#a598a3330b3c21701223ee0ca14316eca">    9</a></span><span class="preprocessor">#define PI 3.141592654</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
@@ -128,7 +128,7 @@ $(function(){initNavTree('odometry__base_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_struct" href="structpose__t.html">pose_t</a> <a class="code hl_function" href="classOdometryBase.html#a423e398bd9ec7038abe7786482db6dd0">get_position</a>(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classOdometryBase.html#a0abfc14f2b809c9bcf4ed8485f0b30d3">set_position</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structpose__t.html">pose_t</a>&amp; newpos=<a class="code hl_variable" href="classOdometryBase.html#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *SetPositionCmd(<span class="keyword">const</span> <a class="code hl_struct" href="structpose__t.html">pose_t</a>&amp; newpos=<a class="code hl_variable" href="classOdometryBase.html#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *<a class="code hl_function" href="classOdometryBase.html#a3c27127eab8d99a362216c2fabddd204">SetPositionCmd</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structpose__t.html">pose_t</a>&amp; newpos=<a class="code hl_variable" href="classOdometryBase.html#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classOdometryBase.html#a3bbff671a85247fff3a39e7b0c2cb242">   53</a></span>    <span class="keyword">virtual</span> <a class="code hl_struct" href="structpose__t.html">pose_t</a> <a class="code hl_function" href="classOdometryBase.html#a3bbff671a85247fff3a39e7b0c2cb242">update</a>() = 0;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keyword">static</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classOdometryBase.html#a17a014f79b282ddfb715835214f3e2fb">background_task</a>(<span class="keywordtype">void</span>* ptr);</div>
@@ -174,6 +174,7 @@ $(function(){initNavTree('odometry__base_8h_source.html',''); initResizable(); }
 <div class="ttc" id="aclassOdometryBase_html_a250ceb6ed296ea579e37851e4a0048fb"><div class="ttname"><a href="classOdometryBase.html#a250ceb6ed296ea579e37851e4a0048fb">OdometryBase::ang_speed_deg</a></div><div class="ttdeci">double ang_speed_deg</div><div class="ttdef"><b>Definition</b> odometry_base.h:147</div></div>
 <div class="ttc" id="aclassOdometryBase_html_a3223bac952f79bf910b979690499b965"><div class="ttname"><a href="classOdometryBase.html#a3223bac952f79bf910b979690499b965">OdometryBase::get_accel</a></div><div class="ttdeci">double get_accel()</div><div class="ttdef"><b>Definition</b> odometry_base.cpp:133</div></div>
 <div class="ttc" id="aclassOdometryBase_html_a3bbff671a85247fff3a39e7b0c2cb242"><div class="ttname"><a href="classOdometryBase.html#a3bbff671a85247fff3a39e7b0c2cb242">OdometryBase::update</a></div><div class="ttdeci">virtual pose_t update()=0</div></div>
+<div class="ttc" id="aclassOdometryBase_html_a3c27127eab8d99a362216c2fabddd204"><div class="ttname"><a href="classOdometryBase.html#a3c27127eab8d99a362216c2fabddd204">OdometryBase::SetPositionCmd</a></div><div class="ttdeci">AutoCommand * SetPositionCmd(const pose_t &amp;newpos=zero_pos)</div><div class="ttdef"><b>Definition</b> odometry_base.cpp:74</div></div>
 <div class="ttc" id="aclassOdometryBase_html_a423e398bd9ec7038abe7786482db6dd0"><div class="ttname"><a href="classOdometryBase.html#a423e398bd9ec7038abe7786482db6dd0">OdometryBase::get_position</a></div><div class="ttdeci">pose_t get_position(void)</div><div class="ttdef"><b>Definition</b> odometry_base.cpp:50</div></div>
 <div class="ttc" id="aclassOdometryBase_html_a456e6433e51971d2640ff96ed3a59432"><div class="ttname"><a href="classOdometryBase.html#a456e6433e51971d2640ff96ed3a59432">OdometryBase::get_angular_accel_deg</a></div><div class="ttdeci">double get_angular_accel_deg()</div><div class="ttdef"><b>Definition</b> odometry_base.cpp:151</div></div>
 <div class="ttc" id="aclassOdometryBase_html_a58d8c7bfd6456038d025c39580971bd6"><div class="ttname"><a href="classOdometryBase.html#a58d8c7bfd6456038d025c39580971bd6">OdometryBase::pos_diff</a></div><div class="ttdeci">static double pos_diff(pose_t start_pos, pose_t end_pos)</div><div class="ttdef"><b>Definition</b> odometry_base.cpp:86</div></div>
@@ -197,7 +198,7 @@ $(function(){initNavTree('odometry__base_8h_source.html',''); initResizable(); }
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><a class="el" href="dir_883d6c53cd62ec60a5d421a7bc1a2629.html">odometry</a></li><li class="navelem"><b>odometry_base.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><a class="el" href="dir_883d6c53cd62ec60a5d421a7bc1a2629.html">odometry</a></li><li class="navelem"><a class="el" href="odometry__base_8h.html">odometry_base.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

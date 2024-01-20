@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['max_5fformat_5flen_0',['MAX_FORMAT_LEN',['../classLogger.html#ac8207d866fe7f6997fb8432db0069a56',1,'Logger']]],
-  ['max_5fv_1',['max_v',['../structMotionController_1_1m__profile__cfg__t.html#a949b084fe78795509ad8e65c74e9bc3f',1,'MotionController::m_profile_cfg_t']]],
-  ['mut_2',['mut',['../classOdometryBase.html#a88bb48858ca6ff8300a41e23482ec6f6',1,'OdometryBase']]]
+  ['ka_0',['kA',['../structFeedForward_1_1ff__config__t.html#a8528f04936dbcbf0bc406d0bfc6b8428',1,'FeedForward::ff_config_t']]],
+  ['kg_1',['kG',['../structFeedForward_1_1ff__config__t.html#a1eab464040edd69a63b528d6d21f0644',1,'FeedForward::ff_config_t']]],
+  ['ks_2',['kS',['../structFeedForward_1_1ff__config__t.html#af140ce6afc074040571d229b6a455c50',1,'FeedForward::ff_config_t']]],
+  ['kv_3',['kV',['../structFeedForward_1_1ff__config__t.html#afd4e01b20b64750ad2604b17ac10f57e',1,'FeedForward::ff_config_t']]]
 ];

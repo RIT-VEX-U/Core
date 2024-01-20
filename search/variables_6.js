@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['i_0',['i',['../structPID_1_1pid__config__t.html#a4140c6884d1dc86366520a2543e654b3',1,'PID::pid_config_t']]]
+  ['graph_0',['graph',['../structscreen_1_1WidgetConfig.html#a3960b34d31127ce2d2f09fea25ebf505',1,'screen::WidgetConfig']]]
 ];

@@ -13,12 +13,22 @@ var classTankDrive =
     [ "drive_tank_raw", "classTankDrive.html#a14c8836f50de0fa44286e07dd6d385de", null ],
     [ "drive_to_point", "classTankDrive.html#acc2e23100b9dcd1135822f5eeb9e12ad", null ],
     [ "drive_to_point", "classTankDrive.html#aec7b356dfa524b79339fbc0d744ffa7f", null ],
+    [ "DriveForwardCmd", "classTankDrive.html#af3b6034c2220235a985100c857a79527", null ],
+    [ "DriveForwardCmd", "classTankDrive.html#a7ccf172377be3793515be1758e2f2679", null ],
+    [ "DriveToPointCmd", "classTankDrive.html#a51139e59b21d58641dfcc71d1410e8e5", null ],
+    [ "DriveToPointCmd", "classTankDrive.html#a452b7666a87e4c82a0089701da884bce", null ],
     [ "pure_pursuit", "classTankDrive.html#a2c820f92bc185bc29095c83e772bea46", null ],
     [ "pure_pursuit", "classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6", null ],
+    [ "PurePursuitCmd", "classTankDrive.html#af9c9d6b316954c2cd0af54291842a9d3", null ],
+    [ "PurePursuitCmd", "classTankDrive.html#af38a1ecee16a7aa7715f1138ae8cd2d8", null ],
     [ "reset_auto", "classTankDrive.html#aaa68eae1521e5b87ecfed2a60b15bf34", null ],
     [ "stop", "classTankDrive.html#af10e648e4de35fa72859fb96a9a80485", null ],
     [ "turn_degrees", "classTankDrive.html#a2b860442d01eec86e689dd41fefdc0f1", null ],
     [ "turn_degrees", "classTankDrive.html#a3cea28e37186c412f2242fa28a2973bc", null ],
     [ "turn_to_heading", "classTankDrive.html#a30ad458c875dfe315a94de3ee5a8bfe9", null ],
-    [ "turn_to_heading", "classTankDrive.html#a015bc5fa6731e365d6485115bbda5739", null ]
+    [ "turn_to_heading", "classTankDrive.html#a015bc5fa6731e365d6485115bbda5739", null ],
+    [ "TurnDegreesCmd", "classTankDrive.html#aa4e79b8454e39973b813ab292d633f72", null ],
+    [ "TurnDegreesCmd", "classTankDrive.html#af1f1847c7dda1ce0b6ac2e7c755e23d6", null ],
+    [ "TurnToHeadingCmd", "classTankDrive.html#ae34c256051a63de017eeb5a442e59038", null ],
+    [ "TurnToHeadingCmd", "classTankDrive.html#a69e47c4b899695793bccc8a997f1bbb2", null ]
 ];

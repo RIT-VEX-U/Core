@@ -1,0 +1,17 @@
+<map id="include/subsystems/flywheel.h" name="include/subsystems/flywheel.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="414,5,550,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,102,159,142"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="414,43,301,66,172,97,161,99,160,94,171,91,299,61,413,38"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="183,109,234,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="414,43,333,64,248,96,237,102,235,98,246,92,332,59,413,38"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="259,102,393,142"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="451,49,373,96,370,91,448,44"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="417,102,547,142"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="485,46,485,86,479,86,479,46"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="571,94,740,150"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="520,44,593,84,591,89,517,49"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="764,102,939,142"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="551,41,753,91,765,95,764,100,752,97,550,46"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="963,109,1023,135"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="551,25,634,30,735,40,845,60,952,92,966,98,963,103,950,96,844,65,735,46,633,35,551,30"/>
+</map>

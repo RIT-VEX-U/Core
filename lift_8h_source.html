@@ -105,7 +105,7 @@ $(function(){initNavTree('lift_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">lift.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<a href="lift_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../core/include/utils/controls/pid.h&quot;</span></div>
@@ -126,10 +126,10 @@ $(function(){initNavTree('lift_8h_source.html',''); initResizable(); });
 <div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structLift_1_1lift__cfg__t.html">   31</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="structLift_1_1lift__cfg__t.html">lift_cfg_t</a></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  {</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">double</span> up_speed, down_speed;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">double</span> softstop_up, softstop_down;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structLift_1_1lift__cfg__t.html#a912d4ef193c18cedb314c4bc00ff1b44">   33</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a2bddc7008517019df221aeeb7e354ce6">up_speed</a>, <a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a912d4ef193c18cedb314c4bc00ff1b44">down_speed</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">   34</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a22a980dfebb51689233ceb96e87a1385">softstop_up</a>, <a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">softstop_down</a>;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> lift_pid_cfg;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structLift_1_1lift__cfg__t.html#a7001809a1e906505e9a19be444fe635b">   36</a></span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> <a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a7001809a1e906505e9a19be444fe635b">lift_pid_cfg</a>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  };</div>
 </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
@@ -173,20 +173,20 @@ $(function(){initNavTree('lift_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>      cur_pos = get_sensor();</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">if</span>(up_ctrl &amp;&amp; cur_pos &lt; cfg.softstop_up)</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">if</span>(up_ctrl &amp;&amp; cur_pos &lt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a22a980dfebb51689233ceb96e87a1385">softstop_up</a>)</div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    {</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      lift_motors.spin(directionType::fwd, cfg.up_speed, volt);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>      lift_motors.spin(directionType::fwd, cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a2bddc7008517019df221aeeb7e354ce6">up_speed</a>, volt);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      setpoint = cur_pos + .3;</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>      <span class="comment">// std::cout &lt;&lt; &quot;DEBUG OUT: UP &quot; &lt;&lt; setpoint &lt;&lt; &quot;, &quot; &lt;&lt; tmr.time(sec) &lt;&lt; &quot;, &quot; &lt;&lt; cfg.down_speed &lt;&lt; &quot;\n&quot;;</span></div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>      <span class="comment">// Disable the PID while going UP.</span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>      is_async = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(down_ctrl &amp;&amp; cur_pos &gt; cfg.softstop_down)</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(down_ctrl &amp;&amp; cur_pos &gt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">softstop_down</a>)</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    {</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>      <span class="comment">// Lower the lift slowly, at a rate defined by down_speed</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">if</span>(setpoint &gt; cfg.softstop_down)</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        setpoint = setpoint - (tmr.time(sec) * cfg.down_speed);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>      <span class="keywordflow">if</span>(setpoint &gt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">softstop_down</a>)</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        setpoint = setpoint - (tmr.time(sec) * cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a912d4ef193c18cedb314c4bc00ff1b44">down_speed</a>);</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="comment">// std::cout &lt;&lt; &quot;DEBUG OUT: DOWN &quot; &lt;&lt; setpoint &lt;&lt; &quot;, &quot; &lt;&lt; tmr.time(sec) &lt;&lt; &quot;, &quot; &lt;&lt; cfg.down_speed &lt;&lt; &quot;\n&quot;;</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>      is_async = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    } <span class="keywordflow">else</span></div>
@@ -214,14 +214,14 @@ $(function(){initNavTree('lift_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordtype">double</span> rev = lift_motors.position(rotationUnits::rev);</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span>(rev &lt; cfg.softstop_down &amp;&amp; down_btn)</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">if</span>(rev &lt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">softstop_down</a> &amp;&amp; down_btn)</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>      down_hold = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>( !down_btn )</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>      down_hold = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">if</span>(up_btn &amp;&amp; rev &lt; cfg.softstop_up)</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keywordflow">if</span>(up_btn &amp;&amp; rev &lt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a22a980dfebb51689233ceb96e87a1385">softstop_up</a>)</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>      lift_motors.spin(directionType::fwd, volt_up, voltageUnits::volt);</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(down_btn &amp;&amp; rev &gt; cfg.softstop_down &amp;&amp; !down_hold)</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(down_btn &amp;&amp; rev &gt; cfg.<a class="code hl_variable" href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">softstop_down</a> &amp;&amp; !down_hold)</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>      lift_motors.spin(directionType::rev, volt_down, voltageUnits::volt);</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">else</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>      lift_motors.spin(directionType::fwd, 0, voltageUnits::volt);</div>
@@ -393,13 +393,18 @@ $(function(){initNavTree('lift_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassPID_html_a9de884c31570c4ae0dc6e24eb26daa43"><div class="ttname"><a href="classPID.html#a9de884c31570c4ae0dc6e24eb26daa43">PID::is_on_target</a></div><div class="ttdeci">bool is_on_target() override</div><div class="ttdef"><b>Definition</b> pid.cpp:117</div></div>
 <div class="ttc" id="aclassPID_html_ad3d37c5ab4ad6709f69337c622186bf3"><div class="ttname"><a href="classPID.html#ad3d37c5ab4ad6709f69337c622186bf3">PID::get_target</a></div><div class="ttdeci">double get_target() const</div><div class="ttdef"><b>Definition</b> pid.cpp:97</div></div>
 <div class="ttc" id="astructLift_1_1lift__cfg__t_html"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html">Lift::lift_cfg_t</a></div><div class="ttdef"><b>Definition</b> lift.h:32</div></div>
+<div class="ttc" id="astructLift_1_1lift__cfg__t_html_a22a980dfebb51689233ceb96e87a1385"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html#a22a980dfebb51689233ceb96e87a1385">Lift::lift_cfg_t::softstop_up</a></div><div class="ttdeci">double softstop_up</div><div class="ttdef"><b>Definition</b> lift.h:34</div></div>
+<div class="ttc" id="astructLift_1_1lift__cfg__t_html_a2bddc7008517019df221aeeb7e354ce6"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html#a2bddc7008517019df221aeeb7e354ce6">Lift::lift_cfg_t::up_speed</a></div><div class="ttdeci">double up_speed</div><div class="ttdef"><b>Definition</b> lift.h:33</div></div>
+<div class="ttc" id="astructLift_1_1lift__cfg__t_html_a356f38cf2cd079b19ede3c0a7a0e0e6e"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html#a356f38cf2cd079b19ede3c0a7a0e0e6e">Lift::lift_cfg_t::softstop_down</a></div><div class="ttdeci">double softstop_down</div><div class="ttdef"><b>Definition</b> lift.h:34</div></div>
+<div class="ttc" id="astructLift_1_1lift__cfg__t_html_a7001809a1e906505e9a19be444fe635b"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html#a7001809a1e906505e9a19be444fe635b">Lift::lift_cfg_t::lift_pid_cfg</a></div><div class="ttdeci">PID::pid_config_t lift_pid_cfg</div><div class="ttdef"><b>Definition</b> lift.h:36</div></div>
+<div class="ttc" id="astructLift_1_1lift__cfg__t_html_a912d4ef193c18cedb314c4bc00ff1b44"><div class="ttname"><a href="structLift_1_1lift__cfg__t.html#a912d4ef193c18cedb314c4bc00ff1b44">Lift::lift_cfg_t::down_speed</a></div><div class="ttdeci">double down_speed</div><div class="ttdef"><b>Definition</b> lift.h:33</div></div>
 <div class="ttc" id="astructPID_1_1pid__config__t_html"><div class="ttname"><a href="structPID_1_1pid__config__t.html">PID::pid_config_t</a></div><div class="ttdef"><b>Definition</b> pid.h:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><b>lift.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><a class="el" href="lift_8h.html">lift.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

@@ -126,21 +126,80 @@ Inheritance diagram for Condition:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6297bc0869d7db81f4aa168869784740" id="r_a6297bc0869d7db81f4aa168869784740"><td class="memItemLeft" align="right" valign="top"><a id="a6297bc0869d7db81f4aa168869784740" name="a6297bc0869d7db81f4aa168869784740"></a>
-<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>Or</b> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
+<tr class="memitem:a6297bc0869d7db81f4aa168869784740" id="r_a6297bc0869d7db81f4aa168869784740"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6297bc0869d7db81f4aa168869784740">Or</a> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
 <tr class="separator:a6297bc0869d7db81f4aa168869784740"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1bd9ed9dfb0d1126ffdb19865406bae" id="r_aa1bd9ed9dfb0d1126ffdb19865406bae"><td class="memItemLeft" align="right" valign="top"><a id="aa1bd9ed9dfb0d1126ffdb19865406bae" name="aa1bd9ed9dfb0d1126ffdb19865406bae"></a>
-<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>And</b> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
+<tr class="memitem:aa1bd9ed9dfb0d1126ffdb19865406bae" id="r_aa1bd9ed9dfb0d1126ffdb19865406bae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1bd9ed9dfb0d1126ffdb19865406bae">And</a> (<a class="el" href="classCondition.html">Condition</a> *b)</td></tr>
 <tr class="separator:aa1bd9ed9dfb0d1126ffdb19865406bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a950b00280fda539767ff9f8ad2d1d0a2" id="r_a950b00280fda539767ff9f8ad2d1d0a2"><td class="memItemLeft" align="right" valign="top"><a id="a950b00280fda539767ff9f8ad2d1d0a2" name="a950b00280fda539767ff9f8ad2d1d0a2"></a>
-virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>test</b> ()=0</td></tr>
+<tr class="memitem:a950b00280fda539767ff9f8ad2d1d0a2" id="r_a950b00280fda539767ff9f8ad2d1d0a2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a950b00280fda539767ff9f8ad2d1d0a2">test</a> ()=0</td></tr>
 <tr class="separator:a950b00280fda539767ff9f8ad2d1d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>File: <a class="el" href="auto__command_8h_source.html">auto_command.h</a> Desc: Interface for module-specifc commands A <a class="el" href="classCondition.html">Condition</a> is a function that returns true or false is_even is a predicate that would return true if a number is even For our purposes, a <a class="el" href="classCondition.html">Condition</a> is a choice to be made at runtime drive_sys.reached_point(10, 30) is a predicate time.has_elapsed(10, vex::seconds) is a predicate extend this class for different choices you wish to make </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+<div class="textblock"><p>File: <a class="el" href="auto__command_8h.html">auto_command.h</a> Desc: Interface for module-specifc commands A <a class="el" href="classCondition.html">Condition</a> is a function that returns true or false is_even is a predicate that would return true if a number is even For our purposes, a <a class="el" href="classCondition.html">Condition</a> is a choice to be made at runtime drive_sys.reached_point(10, 30) is a predicate time.has_elapsed(10, vex::seconds) is a predicate extend this class for different choices you wish to make </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa1bd9ed9dfb0d1126ffdb19865406bae" name="aa1bd9ed9dfb0d1126ffdb19865406bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1bd9ed9dfb0d1126ffdb19865406bae">&#9670;&#160;</a></span>And()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCondition.html">Condition</a> * Condition::And </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCondition.html">Condition</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6297bc0869d7db81f4aa168869784740" name="a6297bc0869d7db81f4aa168869784740"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6297bc0869d7db81f4aa168869784740">&#9670;&#160;</a></span>Or()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classCondition.html">Condition</a> * Condition::Or </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classCondition.html">Condition</a> *</td>          <td class="paramname"><span class="paramname"><em>b</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a950b00280fda539767ff9f8ad2d1d0a2" name="a950b00280fda539767ff9f8ad2d1d0a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a950b00280fda539767ff9f8ad2d1d0a2">&#9670;&#160;</a></span>test()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Condition::test </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classTimesTestedCondition.html#ab12b996378f59268a9a7328fd670237c">TimesTestedCondition</a>, <a class="el" href="classFunctionCondition.html#aed83bd26e3b91421b2146c9384b8aa45">FunctionCondition</a>, <a class="el" href="classIfTimePassed.html#aa7d5a85a3d6b4ab0f2ce477992daa1d0">IfTimePassed</a>, <a class="el" href="classOrCondition.html#ac5cea01d6af666ad1153fdbcdd64b924">OrCondition</a>, and <a class="el" href="classAndCondition.html#a7e4d87e1d412d156fda481c7ed429465">AndCondition</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/utils/command_structure/<a class="el" href="auto__command_8h_source.html">auto_command.h</a></li>
-<li>src/utils/command_structure/<b>auto_command.cpp</b></li>
+<li>src/utils/command_structure/<a class="el" href="auto__command_8cpp.html">auto_command.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

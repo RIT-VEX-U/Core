@@ -105,13 +105,13 @@ $(function(){initNavTree('mecanum__drive_8h_source.html',''); initResizable(); }
   <div class="headertitle"><div class="title">mecanum_drive.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<a href="mecanum__drive_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../core/include/utils/controls/pid.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifndef PI</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define PI 3.141592654</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="mecanum__drive_8h.html#a598a3330b3c21701223ee0ca14316eca">    7</a></span><span class="preprocessor">#define PI 3.141592654</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
@@ -124,18 +124,18 @@ $(function(){initNavTree('mecanum__drive_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html">   22</a></span>  <span class="keyword">struct </span><a class="code hl_struct" href="structMecanumDrive_1_1mecanumdrive__config__t.html">mecanumdrive_config_t</a></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  {</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="comment">// PID configurations for autonomous driving</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> drive_pid_conf;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> drive_gyro_pid_conf;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> turn_pid_conf;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#aa192b6fccd26788fc0e5184fcb344e81">   25</a></span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#aa192b6fccd26788fc0e5184fcb344e81">drive_pid_conf</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#afdf94334818d1ae4eb1c8b750e4f5323">   26</a></span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#afdf94334818d1ae4eb1c8b750e4f5323">drive_gyro_pid_conf</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a6ffe3585d706a40f5d65f97176faf97a">   27</a></span>    <a class="code hl_struct" href="structPID_1_1pid__config__t.html">PID::pid_config_t</a> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a6ffe3585d706a40f5d65f97176faf97a">turn_pid_conf</a>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="comment">// Diameter of the mecanum wheels</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">double</span> drive_wheel_diam;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1db260a971c8df759a545fd74cf9d297">   30</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1db260a971c8df759a545fd74cf9d297">drive_wheel_diam</a>;</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment">// Diameter of the perpendicular undriven encoder wheel</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordtype">double</span> lateral_wheel_diam;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a0f7944f33cf692323f203f3667093e98">   33</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a0f7944f33cf692323f203f3667093e98">lateral_wheel_diam</a>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="comment">// Width between the center of the left and right wheels</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">double</span> wheelbase_width;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1e356e966149626fa819dfe815701020">   36</a></span>    <span class="keywordtype">double</span> <a class="code hl_variable" href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1e356e966149626fa819dfe815701020">wheelbase_width</a>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  };</div>
 </div>
@@ -175,13 +175,19 @@ $(function(){initNavTree('mecanum__drive_8h_source.html',''); initResizable(); }
 <div class="ttc" id="aclassMecanumDrive_html_ac8813aafec14f2d25c3abafefdb81498"><div class="ttname"><a href="classMecanumDrive.html#ac8813aafec14f2d25c3abafefdb81498">MecanumDrive::auto_turn</a></div><div class="ttdeci">bool auto_turn(double degrees, double speed, bool ignore_imu=false)</div><div class="ttdef"><b>Definition</b> mecanum_drive.cpp:219</div></div>
 <div class="ttc" id="aclassPID_html"><div class="ttname"><a href="classPID.html">PID</a></div><div class="ttdef"><b>Definition</b> pid.h:23</div></div>
 <div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html">MecanumDrive::mecanumdrive_config_t</a></div><div class="ttdef"><b>Definition</b> mecanum_drive.h:23</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_a0f7944f33cf692323f203f3667093e98"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#a0f7944f33cf692323f203f3667093e98">MecanumDrive::mecanumdrive_config_t::lateral_wheel_diam</a></div><div class="ttdeci">double lateral_wheel_diam</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:33</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_a1db260a971c8df759a545fd74cf9d297"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1db260a971c8df759a545fd74cf9d297">MecanumDrive::mecanumdrive_config_t::drive_wheel_diam</a></div><div class="ttdeci">double drive_wheel_diam</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:30</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_a1e356e966149626fa819dfe815701020"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#a1e356e966149626fa819dfe815701020">MecanumDrive::mecanumdrive_config_t::wheelbase_width</a></div><div class="ttdeci">double wheelbase_width</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:36</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_a6ffe3585d706a40f5d65f97176faf97a"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#a6ffe3585d706a40f5d65f97176faf97a">MecanumDrive::mecanumdrive_config_t::turn_pid_conf</a></div><div class="ttdeci">PID::pid_config_t turn_pid_conf</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:27</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_aa192b6fccd26788fc0e5184fcb344e81"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#aa192b6fccd26788fc0e5184fcb344e81">MecanumDrive::mecanumdrive_config_t::drive_pid_conf</a></div><div class="ttdeci">PID::pid_config_t drive_pid_conf</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:25</div></div>
+<div class="ttc" id="astructMecanumDrive_1_1mecanumdrive__config__t_html_afdf94334818d1ae4eb1c8b750e4f5323"><div class="ttname"><a href="structMecanumDrive_1_1mecanumdrive__config__t.html#afdf94334818d1ae4eb1c8b750e4f5323">MecanumDrive::mecanumdrive_config_t::drive_gyro_pid_conf</a></div><div class="ttdeci">PID::pid_config_t drive_gyro_pid_conf</div><div class="ttdef"><b>Definition</b> mecanum_drive.h:26</div></div>
 <div class="ttc" id="astructPID_1_1pid__config__t_html"><div class="ttname"><a href="structPID_1_1pid__config__t.html">PID::pid_config_t</a></div><div class="ttdef"><b>Definition</b> pid.h:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><b>mecanum_drive.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><a class="el" href="mecanum__drive_8h.html">mecanum_drive.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

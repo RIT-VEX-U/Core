@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['robot_5fradius_0',['robot_radius',['../structrobot__specs__t.html#a37a65da54459d805cf1370cc6330bce0',1,'robot_specs_t']]],
-  ['rot_1',['rot',['../structpose__t.html#ad2597c1c18e7fd55102be4c2bd5b5089',1,'pose_t']]]
+  ['odom_5fgear_5fratio_0',['odom_gear_ratio',['../structrobot__specs__t.html#a8c454d8b38efdd15dfa6f075c40e4ec7',1,'robot_specs_t']]],
+  ['odom_5fwheel_5fdiam_1',['odom_wheel_diam',['../structrobot__specs__t.html#acf12b29aa6a86cc09b2ef868f9e77a31',1,'robot_specs_t']]],
+  ['off_5faxis_5fcenter_5fdist_2',['off_axis_center_dist',['../structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#afd79024054d352789991bd816d955d9e',1,'Odometry3Wheel::odometry3wheel_cfg_t']]],
+  ['on_5ftarget_5ftime_3',['on_target_time',['../structPID_1_1pid__config__t.html#a14212579cfa1827b6cc04388c6b3626e',1,'PID::pid_config_t']]],
+  ['onclick_4',['onclick',['../structscreen_1_1ButtonConfig.html#aa935b0266c645a6907bed1666fd82f1e',1,'screen::ButtonConfig']]],
+  ['onupdate_5',['onupdate',['../structscreen_1_1CheckboxConfig.html#a5db02d982e202cf31786fdf5ff9e68fc',1,'screen::CheckboxConfig']]]
 ];
