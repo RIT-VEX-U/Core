@@ -1,0 +1,7 @@
+<map id="WaitUntilCondition" name="WaitUntilCondition">
+<area shape="rect" id="Node000001" title="Waits until the condition is true." alt="" coords="5,169,134,195"/>
+<area shape="rect" id="Node000002" href="$classAutoCommand.html" title=" " alt="" coords="16,94,123,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,135,72,169,67,169,67,135"/>
+<area shape="rect" id="Node000003" href="$classCondition.html" title=" " alt="" coords="32,5,107,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="72,47,72,94,67,94,67,47"/>
+</map>

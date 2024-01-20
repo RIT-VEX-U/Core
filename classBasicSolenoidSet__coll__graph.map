@@ -1,0 +1,7 @@
+<map id="BasicSolenoidSet" name="BasicSolenoidSet">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,130,195"/>
+<area shape="rect" id="Node000002" href="$classAutoCommand.html" title=" " alt="" coords="14,94,121,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,135,70,169,65,169,65,135"/>
+<area shape="rect" id="Node000003" href="$classCondition.html" title=" " alt="" coords="30,5,105,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,47,70,94,65,94,65,47"/>
+</map>

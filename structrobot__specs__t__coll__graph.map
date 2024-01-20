@@ -1,0 +1,7 @@
+<map id="robot_specs_t" name="robot_specs_t">
+<area shape="rect" id="Node000001" title=" " alt="" coords="54,109,158,135"/>
+<area shape="rect" id="Node000002" href="$classFeedback.html" title=" " alt="" coords="5,5,84,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="43,46,43,66,49,84,60,97,75,106,72,111,57,101,45,86,38,67,37,46"/>
+<area shape="rect" id="Node000003" href="$structPID_1_1pid__config__t.html" title=" " alt="" coords="108,5,226,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,46,140,86,120,110,116,107,136,84,155,44"/>
+</map>

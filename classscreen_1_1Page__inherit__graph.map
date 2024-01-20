@@ -1,0 +1,19 @@
+<map id="screen::Page" name="screen::Page">
+<area shape="rect" id="Node000001" title="Page describes one part of the screen slideshow." alt="" coords="5,179,102,204"/>
+<area shape="rect" id="Node000002" href="$classAutoChooser.html" title=" " alt="" coords="178,5,274,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,163,95,101,119,68,148,40,176,25,179,30,151,44,123,72,99,104,68,165"/>
+<area shape="rect" id="Node000003" href="$classFlywheelPage.html" title=" " alt="" coords="175,55,277,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="71,164,104,126,148,89,173,77,175,82,151,94,108,130,75,168"/>
+<area shape="rect" id="Node000004" href="$classMotionControllerPage.html" title=" " alt="" coords="153,104,299,130"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="89,168,149,138,177,128,179,133,151,143,91,173"/>
+<area shape="rect" id="Node000005" href="$classscreen_1_1FunctionPage.html" title="Simple page that stores no internal data. the draw and update functions use only global data rather t..." alt="" coords="153,153,299,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="117,180,152,174,152,180,118,185"/>
+<area shape="rect" id="Node000006" href="$classscreen_1_1OdometryPage.html" title="a page that shows odometry position and rotation and a map (if an sd card with the file is on)" alt="" coords="150,203,302,228"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="117,198,150,202,149,208,117,203"/>
+<area shape="rect" id="Node000007" href="$classscreen_1_1PIDPage.html" title="PIDPage provides a way to tune a pid controller on the screen." alt="" coords="167,252,285,278"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="92,210,151,238,179,249,178,254,149,243,90,214"/>
+<area shape="rect" id="Node000008" href="$classscreen_1_1StatsPage.html" title="Draws motor stats and battery stats to the screen." alt="" coords="162,301,290,327"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="75,215,108,252,151,288,172,298,170,303,148,292,104,256,71,218"/>
+<area shape="rect" id="Node000009" href="$classscreen_1_1WidgetPage.html" title=" " alt="" coords="158,351,294,376"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="68,217,100,278,123,310,151,337,169,348,167,352,148,342,119,314,95,281,63,220"/>
+</map>

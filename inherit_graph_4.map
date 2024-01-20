@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classFeedback.html" title=" " alt="" coords="5,104,84,130"/>
+<area shape="rect" id="Node000001" href="$classBangBang.html" title=" " alt="" coords="149,5,230,31"/>
+<area shape="poly" id="edge29_Node000000_Node000001" title=" " alt="" coords="67,91,96,65,130,40,151,29,153,34,133,44,99,69,71,95"/>
+<area shape="rect" id="Node000002" href="$classMotionController.html" title=" " alt="" coords="132,55,247,80"/>
+<area shape="poly" id="edge30_Node000000_Node000002" title=" " alt="" coords="98,96,149,78,150,83,100,101"/>
+<area shape="rect" id="Node000003" href="$classPID.html" title=" " alt="" coords="168,104,211,130"/>
+<area shape="poly" id="edge31_Node000000_Node000003" title=" " alt="" coords="100,114,167,114,167,120,100,120"/>
+<area shape="rect" id="Node000004" href="$classPIDFF.html" title=" " alt="" coords="160,153,219,179"/>
+<area shape="poly" id="edge32_Node000000_Node000004" title=" " alt="" coords="100,133,160,154,159,159,98,138"/>
+<area shape="rect" id="Node000005" href="$classTakeBackHalf.html" title="A velocity controller." alt="" coords="137,203,242,228"/>
+<area shape="poly" id="edge33_Node000000_Node000005" title=" " alt="" coords="71,138,99,164,133,189,153,200,151,205,130,194,96,169,67,142"/>
+</map>
