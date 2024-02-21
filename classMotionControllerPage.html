@@ -106,27 +106,17 @@ $(function(){initNavTree('classMotionControllerPage.html',''); initResizable(); 
 <div class="dynheader">
 Inheritance diagram for MotionControllerPage:</div>
 <div class="dyncontent">
-<div class="center"><img src="classMotionControllerPage__inherit__graph.png" border="0" usemap="#aMotionControllerPage_inherit__map" alt="Inheritance graph"/></div>
-<map name="aMotionControllerPage_inherit__map" id="aMotionControllerPage_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,151,105"/>
-<area shape="rect" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="30,5,126,31"/>
-<area shape="poly" title=" " alt="" coords="81,46,81,79,75,79,75,46"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for MotionControllerPage:</div>
-<div class="dyncontent">
-<div class="center"><img src="classMotionControllerPage__coll__graph.png" border="0" usemap="#aMotionControllerPage_coll__map" alt="Collaboration graph"/></div>
-<map name="aMotionControllerPage_coll__map" id="aMotionControllerPage_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,151,105"/>
-<area shape="rect" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="30,5,126,31"/>
-<area shape="poly" title=" " alt="" coords="81,46,81,79,75,79,75,46"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="classMotionControllerPage.png" usemap="#MotionControllerPage_map" alt=""/>
+  <map id="MotionControllerPage_map" name="MotionControllerPage_map">
+<area href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="screen::Page" shape="rect" coords="0,0,135,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4e0c33298a08228f627c40deb948a066" id="r_a4e0c33298a08228f627c40deb948a066"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e0c33298a08228f627c40deb948a066">MotionControllerPage</a> (const <a class="el" href="classMotionController.html">MotionController</a> &amp;mc)</td></tr>
+<tr class="memitem:a4e0c33298a08228f627c40deb948a066" id="r_a4e0c33298a08228f627c40deb948a066"><td class="memItemLeft" align="right" valign="top"><a id="a4e0c33298a08228f627c40deb948a066" name="a4e0c33298a08228f627c40deb948a066"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MotionControllerPage</b> (const <a class="el" href="classMotionController.html">MotionController</a> &amp;mc)</td></tr>
 <tr class="separator:a4e0c33298a08228f627c40deb948a066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a446ea74a8b85dffdf4be75648d02b04a" id="r_a446ea74a8b85dffdf4be75648d02b04a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a446ea74a8b85dffdf4be75648d02b04a">update</a> (bool was_pressed, int x, int y) override</td></tr>
 <tr class="memdesc:a446ea74a8b85dffdf4be75648d02b04a"><td class="mdescLeft">&#160;</td><td class="mdescRight">collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this Page (only drawn page gets touch updates))  <br /></td></tr>
@@ -135,32 +125,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a2386e9e6a585fc70f5cc341e3c55c92f"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw stored data to the screen (runs at 10 hz and only runs if this page is in front)  <br /></td></tr>
 <tr class="separator:a2386e9e6a585fc70f5cc341e3c55c92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4e0c33298a08228f627c40deb948a066" name="a4e0c33298a08228f627c40deb948a066"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e0c33298a08228f627c40deb948a066">&#9670;&#160;</a></span>MotionControllerPage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">MotionControllerPage::MotionControllerPage </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classMotionController.html">MotionController</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>mc</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2386e9e6a585fc70f5cc341e3c55c92f" name="a2386e9e6a585fc70f5cc341e3c55c92f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2386e9e6a585fc70f5cc341e3c55c92f">&#9670;&#160;</a></span>draw()</h2>
@@ -254,7 +218,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/utils/controls/<a class="el" href="motion__controller_8cpp.html">motion_controller.cpp</a></li>
+<li>src/utils/controls/<b>motion_controller.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

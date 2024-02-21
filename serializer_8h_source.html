@@ -105,7 +105,7 @@ $(function(){initNavTree('serializer_8h_source.html',''); initResizable(); });
   <div class="headertitle"><div class="title">serializer.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="serializer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
@@ -113,8 +113,8 @@ $(function(){initNavTree('serializer_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;vex.h&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="serializer_8h.html#a7ea713e27e8ac0d0a3423ca79ad924eb">   10</a></span><span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code hl_variable" href="serializer_8h.html#a7ea713e27e8ac0d0a3423ca79ad924eb">serialization_separator</a> = <span class="charliteral">&#39;$&#39;</span>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="serializer_8h.html#a547e677dd61162864af9f0eaf1c8f92b">   12</a></span><span class="keyword">const</span> std::size_t <a class="code hl_variable" href="serializer_8h.html#a547e677dd61162864af9f0eaf1c8f92b">MAX_FILE_SIZE</a> = 4096;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">const</span> <span class="keywordtype">char</span> serialization_separator = <span class="charliteral">&#39;$&#39;</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">const</span> std::size_t MAX_FILE_SIZE = 4096;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classSerializer.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classSerializer.html">Serializer</a></div>
@@ -180,14 +180,12 @@ $(function(){initNavTree('serializer_8h_source.html',''); initResizable(); });
 <div class="ttc" id="aclassSerializer_html_a566005d870bf30b48ac956f4cfe7b0ef"><div class="ttname"><a href="classSerializer.html#a566005d870bf30b48ac956f4cfe7b0ef">Serializer::save_to_disk</a></div><div class="ttdeci">void save_to_disk() const</div><div class="ttdoc">saves current Serializer state to disk</div><div class="ttdef"><b>Definition</b> serializer.cpp:194</div></div>
 <div class="ttc" id="aclassSerializer_html_a5f4c7909ef3152f6a26262c0306d9820"><div class="ttname"><a href="classSerializer.html#a5f4c7909ef3152f6a26262c0306d9820">Serializer::set_int</a></div><div class="ttdeci">void set_int(const std::string &amp;name, int i)</div><div class="ttdoc">Setters - not saved until save_to_disk is called.</div><div class="ttdef"><b>Definition</b> serializer.cpp:123</div></div>
 <div class="ttc" id="aclassSerializer_html_a9c260073d1c7ffd41a8ff27f04b6b7b6"><div class="ttname"><a href="classSerializer.html#a9c260073d1c7ffd41a8ff27f04b6b7b6">Serializer::set_string</a></div><div class="ttdeci">void set_string(const std::string &amp;name, std::string str)</div><div class="ttdoc">sets a string by the name of name to s. If flush_always == true, this will save to the sd card</div><div class="ttdef"><b>Definition</b> serializer.cpp:147</div></div>
-<div class="ttc" id="aserializer_8h_html_a547e677dd61162864af9f0eaf1c8f92b"><div class="ttname"><a href="serializer_8h.html#a547e677dd61162864af9f0eaf1c8f92b">MAX_FILE_SIZE</a></div><div class="ttdeci">const std::size_t MAX_FILE_SIZE</div><div class="ttdoc">max file size that the system can deal with</div><div class="ttdef"><b>Definition</b> serializer.h:12</div></div>
-<div class="ttc" id="aserializer_8h_html_a7ea713e27e8ac0d0a3423ca79ad924eb"><div class="ttname"><a href="serializer_8h.html#a7ea713e27e8ac0d0a3423ca79ad924eb">serialization_separator</a></div><div class="ttdeci">const char serialization_separator</div><div class="ttdoc">character that will be used to seperate values</div><div class="ttdef"><b>Definition</b> serializer.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="serializer_8h.html">serializer.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><b>serializer.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

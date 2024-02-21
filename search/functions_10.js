@@ -1,18 +1,11 @@
 var searchData=
 [
-  ['takebackhalf_0',['TakeBackHalf',['../classTakeBackHalf.html#a07460bad0ca9759b533a7aeb8e29739d',1,'TakeBackHalf']]],
-  ['tankdrive_1',['TankDrive',['../classTankDrive.html#a34f305bb1c996e3748c925af259aeeb4',1,'TankDrive']]],
-  ['test_2',['test',['../classCondition.html#a950b00280fda539767ff9f8ad2d1d0a2',1,'Condition::test()'],['../classTimesTestedCondition.html#ab12b996378f59268a9a7328fd670237c',1,'TimesTestedCondition::test()'],['../classFunctionCondition.html#aed83bd26e3b91421b2146c9384b8aa45',1,'FunctionCondition::test()'],['../classIfTimePassed.html#aa7d5a85a3d6b4ab0f2ce477992daa1d0',1,'IfTimePassed::test()'],['../classOrCondition.html#ac5cea01d6af666ad1153fdbcdd64b924',1,'OrCondition::test()'],['../classAndCondition.html#a7e4d87e1d412d156fda481c7ed429465',1,'AndCondition::test()']]],
-  ['timestestedcondition_3',['TimesTestedCondition',['../classTimesTestedCondition.html#add2257c5b17dcce13cae10e58a9aef2e',1,'TimesTestedCondition']]],
-  ['to_5fbytes_4',['to_bytes',['../serializer_8cpp.html#a0f55e3ebde374d85c71499d79d41ff48',1,'serializer.cpp']]],
-  ['to_5fbytes_3c_20std_3a_3astring_20_3e_5',['to_bytes&lt; std::string &gt;',['../serializer_8cpp.html#a4c72a3da62ef3d66bb46191a4772f739',1,'serializer.cpp']]],
-  ['trapezoidprofile_6',['TrapezoidProfile',['../classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d',1,'TrapezoidProfile']]],
-  ['tune_7',['tune',['../classOdometry3Wheel.html#acb23dbf715d342566fc7e44f58ebf654',1,'Odometry3Wheel']]],
-  ['tune_5ffeedforward_8',['tune_feedforward',['../classMotionController.html#a20749b6a4bd3cf509a3acf682831eb00',1,'MotionController::tune_feedforward()'],['../feedforward_8h.html#a9ab527a154a62fa068e87488409fbfa0',1,'tune_feedforward(vex::motor_group &amp;motor, double pct, double duration):&#160;feedforward.cpp'],['../feedforward_8cpp.html#a9ab527a154a62fa068e87488409fbfa0',1,'tune_feedforward(vex::motor_group &amp;motor, double pct, double duration):&#160;feedforward.cpp']]],
-  ['turn_5fdegrees_9',['turn_degrees',['../classTankDrive.html#a3cea28e37186c412f2242fa28a2973bc',1,'TankDrive::turn_degrees(double degrees, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2b860442d01eec86e689dd41fefdc0f1',1,'TankDrive::turn_degrees(double degrees, double max_speed=1, double end_speed=0)']]],
-  ['turn_5fto_5fheading_10',['turn_to_heading',['../classTankDrive.html#a015bc5fa6731e365d6485115bbda5739',1,'TankDrive::turn_to_heading(double heading_deg, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a30ad458c875dfe315a94de3ee5a8bfe9',1,'TankDrive::turn_to_heading(double heading_deg, double max_speed=1, double end_speed=0)']]],
-  ['turndegreescmd_11',['TurnDegreesCmd',['../classTankDrive.html#aa4e79b8454e39973b813ab292d633f72',1,'TankDrive::TurnDegreesCmd(double degrees, double max_speed=1.0, double start_speed=0.0)'],['../classTankDrive.html#af1f1847c7dda1ce0b6ac2e7c755e23d6',1,'TankDrive::TurnDegreesCmd(Feedback &amp;fb, double degrees, double max_speed=1.0, double end_speed=0.0)']]],
-  ['turndegreescommand_12',['TurnDegreesCommand',['../classTurnDegreesCommand.html#a2c8f42b59fefaa45005519e5f044e518',1,'TurnDegreesCommand']]],
-  ['turntoheadingcmd_13',['TurnToHeadingCmd',['../classTankDrive.html#ae34c256051a63de017eeb5a442e59038',1,'TankDrive::TurnToHeadingCmd(double heading, double max_speed=1.0, double end_speed=0.0)'],['../classTankDrive.html#a69e47c4b899695793bccc8a997f1bbb2',1,'TankDrive::TurnToHeadingCmd(Feedback &amp;fb, double heading, double max_speed=1.0, double end_speed=0.0)']]],
-  ['turntoheadingcommand_14',['TurnToHeadingCommand',['../classTurnToHeadingCommand.html#aaec1f10929adbfd6e36b73a811ec3886',1,'TurnToHeadingCommand']]]
+  ['tankdrive_0',['TankDrive',['../classTankDrive.html#a34f305bb1c996e3748c925af259aeeb4',1,'TankDrive']]],
+  ['trapezoidprofile_1',['TrapezoidProfile',['../classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d',1,'TrapezoidProfile']]],
+  ['tune_2',['tune',['../classOdometry3Wheel.html#acb23dbf715d342566fc7e44f58ebf654',1,'Odometry3Wheel']]],
+  ['tune_5ffeedforward_3',['tune_feedforward',['../classMotionController.html#a20749b6a4bd3cf509a3acf682831eb00',1,'MotionController']]],
+  ['turn_5fdegrees_4',['turn_degrees',['../classTankDrive.html#a3cea28e37186c412f2242fa28a2973bc',1,'TankDrive::turn_degrees(double degrees, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2b860442d01eec86e689dd41fefdc0f1',1,'TankDrive::turn_degrees(double degrees, double max_speed=1, double end_speed=0)']]],
+  ['turn_5fto_5fheading_5',['turn_to_heading',['../classTankDrive.html#a015bc5fa6731e365d6485115bbda5739',1,'TankDrive::turn_to_heading(double heading_deg, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a30ad458c875dfe315a94de3ee5a8bfe9',1,'TankDrive::turn_to_heading(double heading_deg, double max_speed=1, double end_speed=0)']]],
+  ['turndegreescommand_6',['TurnDegreesCommand',['../classTurnDegreesCommand.html#a2c8f42b59fefaa45005519e5f044e518',1,'TurnDegreesCommand']]],
+  ['turntoheadingcommand_7',['TurnToHeadingCommand',['../classTurnToHeadingCommand.html#aaec1f10929adbfd6e36b73a811ec3886',1,'TurnToHeadingCommand']]]
 ];

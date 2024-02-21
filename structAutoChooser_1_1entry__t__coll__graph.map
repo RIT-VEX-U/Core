@@ -1,7 +1,0 @@
-<map id="AutoChooser::entry_t" name="AutoChooser::entry_t">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,198,147,223"/>
-<area shape="rect" id="Node000002" href="$structRect.html" title=" " alt="" coords="52,109,100,135"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="79,150,79,197,73,197,73,150"/>
-<area shape="rect" id="Node000003" href="$structpoint__t.html" title=" " alt="" coords="46,5,106,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="79,47,79,109,73,109,73,47"/>
-</map>

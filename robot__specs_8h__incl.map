@@ -1,7 +1,0 @@
-<map id="include/robot_specs.h" name="include/robot_specs.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="84,5,232,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,135,120"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,33,105,71,101,67,143,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="159,79,333,120"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="173,29,215,67,211,71,170,33"/>
-</map>

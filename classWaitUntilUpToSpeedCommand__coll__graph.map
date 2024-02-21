@@ -1,7 +1,0 @@
-<map id="WaitUntilUpToSpeedCommand" name="WaitUntilUpToSpeedCommand">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,208,195"/>
-<area shape="rect" id="Node000002" href="$classAutoCommand.html" title=" " alt="" coords="53,94,160,120"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,135,109,169,104,169,104,135"/>
-<area shape="rect" id="Node000003" href="$classCondition.html" title=" " alt="" coords="69,5,144,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="109,47,109,94,104,94,104,47"/>
-</map>

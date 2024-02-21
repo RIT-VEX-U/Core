@@ -103,32 +103,20 @@ $(function(){initNavTree('classscreen_1_1WidgetPage.html',''); initResizable(); 
   <div class="headertitle"><div class="title">screen::WidgetPage Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="screen_8h_source.html">screen.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for screen::WidgetPage:</div>
 <div class="dyncontent">
-<div class="center"><img src="classscreen_1_1WidgetPage__inherit__graph.png" border="0" usemap="#ascreen_1_1WidgetPage_inherit__map" alt="Inheritance graph"/></div>
-<map name="ascreen_1_1WidgetPage_inherit__map" id="ascreen_1_1WidgetPage_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,142,105"/>
-<area shape="rect" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="25,5,122,31"/>
-<area shape="poly" title=" " alt="" coords="76,46,76,79,71,79,71,46"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for screen::WidgetPage:</div>
-<div class="dyncontent">
-<div class="center"><img src="classscreen_1_1WidgetPage__coll__graph.png" border="0" usemap="#ascreen_1_1WidgetPage_coll__map" alt="Collaboration graph"/></div>
-<map name="ascreen_1_1WidgetPage_coll__map" id="ascreen_1_1WidgetPage_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,142,105"/>
-<area shape="rect" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="25,5,122,31"/>
-<area shape="poly" title=" " alt="" coords="76,46,76,79,71,79,71,46"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="classscreen_1_1WidgetPage.png" usemap="#screen::WidgetPage_map" alt=""/>
+  <map id="screen::WidgetPage_map" name="screen::WidgetPage_map">
+<area href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="screen::Page" shape="rect" coords="0,0,124,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6ed5518071120164a363c4d35fc8dd11" id="r_a6ed5518071120164a363c4d35fc8dd11"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ed5518071120164a363c4d35fc8dd11">WidgetPage</a> (<a class="el" href="structscreen_1_1WidgetConfig.html">WidgetConfig</a> &amp;cfg)</td></tr>
+<tr class="memitem:a6ed5518071120164a363c4d35fc8dd11" id="r_a6ed5518071120164a363c4d35fc8dd11"><td class="memItemLeft" align="right" valign="top"><a id="a6ed5518071120164a363c4d35fc8dd11" name="a6ed5518071120164a363c4d35fc8dd11"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>WidgetPage</b> (<a class="el" href="structscreen_1_1WidgetConfig.html">WidgetConfig</a> &amp;cfg)</td></tr>
 <tr class="separator:a6ed5518071120164a363c4d35fc8dd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92b2f7e59d9c4f39865a116a961c4f17" id="r_a92b2f7e59d9c4f39865a116a961c4f17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92b2f7e59d9c4f39865a116a961c4f17">update</a> (bool was_pressed, int x, int y) override</td></tr>
 <tr class="memdesc:a92b2f7e59d9c4f39865a116a961c4f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this <a class="el" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow.">Page</a> (only drawn page gets touch updates))  <br /></td></tr>
@@ -137,32 +125,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab05dbe7ddc2ebaa0f289dd4078815c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw stored data to the screen (runs at 10 hz and only runs if this page is in front)  <br /></td></tr>
 <tr class="separator:ab05dbe7ddc2ebaa0f289dd4078815c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ed5518071120164a363c4d35fc8dd11" name="a6ed5518071120164a363c4d35fc8dd11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ed5518071120164a363c4d35fc8dd11">&#9670;&#160;</a></span>WidgetPage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">screen::WidgetPage::WidgetPage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structscreen_1_1WidgetConfig.html">WidgetConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cfg</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab05dbe7ddc2ebaa0f289dd4078815c29" name="ab05dbe7ddc2ebaa0f289dd4078815c29"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab05dbe7ddc2ebaa0f289dd4078815c29">&#9670;&#160;</a></span>draw()</h2>
@@ -263,7 +225,7 @@ Public Member Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespacescreen.html">screen</a></li><li class="navelem"><a class="el" href="classscreen_1_1WidgetPage.html">WidgetPage</a></li>
+    <li class="navelem"><b>screen</b></li><li class="navelem"><a class="el" href="classscreen_1_1WidgetPage.html">WidgetPage</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

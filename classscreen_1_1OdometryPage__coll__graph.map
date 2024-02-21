@@ -1,5 +1,0 @@
-<map id="screen::OdometryPage" name="screen::OdometryPage">
-<area shape="rect" id="Node000001" title="a page that shows odometry position and rotation and a map (if an sd card with the file is on)" alt="" coords="5,79,158,105"/>
-<area shape="rect" id="Node000002" href="$classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="33,5,130,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,46,84,79,79,79,79,46"/>
-</map>

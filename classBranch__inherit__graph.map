@@ -1,5 +1,0 @@
-<map id="Branch" name="Branch">
-<area shape="rect" id="Node000001" title="Branch chooses from multiple options at runtime. the function decider returns an index into the choic..." alt="" coords="28,79,90,105"/>
-<area shape="rect" id="Node000002" href="$classAutoCommand.html" title=" " alt="" coords="5,5,113,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,46,62,79,56,79,56,46"/>
-</map>

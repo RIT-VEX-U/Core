@@ -9,5 +9,7 @@ var searchData=
   ['sliderwidget_6',['SliderWidget',['../classscreen_1_1SliderWidget.html',1,'screen']]],
   ['spinrpmcommand_7',['SpinRPMCommand',['../classSpinRPMCommand.html',1,'']]],
   ['spline_8',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]],
-  ['statspage_9',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]]
+  ['state_9',['State',['../structStateMachine_1_1State.html',1,'StateMachine']]],
+  ['statemachine_10',['StateMachine',['../classStateMachine.html',1,'']]],
+  ['statspage_11',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]]
 ];

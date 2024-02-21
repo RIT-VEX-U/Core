@@ -112,25 +112,13 @@ $(function(){initNavTree('classOdometryBase.html',''); initResizable(); });
 <div class="dynheader">
 Inheritance diagram for OdometryBase:</div>
 <div class="dyncontent">
-<div class="center"><img src="classOdometryBase__inherit__graph.png" border="0" usemap="#aOdometryBase_inherit__map" alt="Inheritance graph"/></div>
-<map name="aOdometryBase_inherit__map" id="aOdometryBase_inherit__map">
-<area shape="rect" title=" " alt="" coords="80,5,187,31"/>
-<area shape="rect" href="classOdometry3Wheel.html" title=" " alt="" coords="5,79,126,105"/>
-<area shape="poly" title=" " alt="" coords="114,44,79,80,75,77,110,40"/>
-<area shape="rect" href="classOdometryTank.html" title=" " alt="" coords="150,79,256,105"/>
-<area shape="poly" title=" " alt="" coords="157,40,193,77,189,80,153,44"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for OdometryBase:</div>
-<div class="dyncontent">
-<div class="center"><img src="classOdometryBase__coll__graph.png" border="0" usemap="#aOdometryBase_coll__map" alt="Collaboration graph"/></div>
-<map name="aOdometryBase_coll__map" id="aOdometryBase_coll__map">
-<area shape="rect" title=" " alt="" coords="5,109,113,135"/>
-<area shape="rect" href="structpose__t.html" title=" " alt="" coords="29,5,89,31"/>
-<area shape="poly" title=" " alt="" coords="62,47,62,109,56,109,56,47"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="classOdometryBase.png" usemap="#OdometryBase_map" alt=""/>
+  <map id="OdometryBase_map" name="OdometryBase_map">
+<area href="classOdometry3Wheel.html" alt="Odometry3Wheel" shape="rect" coords="0,56,109,80"/>
+<area href="classOdometryTank.html" alt="OdometryTank" shape="rect" coords="119,56,228,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -140,7 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a423e398bd9ec7038abe7786482db6dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0abfc14f2b809c9bcf4ed8485f0b30d3" id="r_a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0abfc14f2b809c9bcf4ed8485f0b30d3">set_position</a> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>)</td></tr>
 <tr class="separator:a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c27127eab8d99a362216c2fabddd204" id="r_a3c27127eab8d99a362216c2fabddd204"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c27127eab8d99a362216c2fabddd204">SetPositionCmd</a> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>)</td></tr>
+<tr class="memitem:a3c27127eab8d99a362216c2fabddd204" id="r_a3c27127eab8d99a362216c2fabddd204"><td class="memItemLeft" align="right" valign="top"><a id="a3c27127eab8d99a362216c2fabddd204" name="a3c27127eab8d99a362216c2fabddd204"></a>
+<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>SetPositionCmd</b> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>)</td></tr>
 <tr class="separator:a3c27127eab8d99a362216c2fabddd204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bbff671a85247fff3a39e7b0c2cb242" id="r_a3bbff671a85247fff3a39e7b0c2cb242"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bbff671a85247fff3a39e7b0c2cb242">update</a> ()=0</td></tr>
 <tr class="separator:a3bbff671a85247fff3a39e7b0c2cb242"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,8 +157,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae6e35ee98b4410f034cd37c0d2055a8d" id="r_ae6e35ee98b4410f034cd37c0d2055a8d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6e35ee98b4410f034cd37c0d2055a8d">end_task</a> = false</td></tr>
-<tr class="memdesc:ae6e35ee98b4410f034cd37c0d2055a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">end_task is true if we instruct the odometry thread to shut down  <br /></td></tr>
+<tr class="memitem:ae6e35ee98b4410f034cd37c0d2055a8d" id="r_ae6e35ee98b4410f034cd37c0d2055a8d"><td class="memItemLeft" align="right" valign="top"><a id="ae6e35ee98b4410f034cd37c0d2055a8d" name="ae6e35ee98b4410f034cd37c0d2055a8d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false</td></tr>
+<tr class="memdesc:ae6e35ee98b4410f034cd37c0d2055a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">end_task is true if we instruct the odometry thread to shut down <br /></td></tr>
 <tr class="separator:ae6e35ee98b4410f034cd37c0d2055a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -477,23 +467,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3c27127eab8d99a362216c2fabddd204" name="a3c27127eab8d99a362216c2fabddd204"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c27127eab8d99a362216c2fabddd204">&#9670;&#160;</a></span>SetPositionCmd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classAutoCommand.html">AutoCommand</a> * OdometryBase::SetPositionCmd </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structpose__t.html">pose_t</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>newpos</em><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a></span></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a70ec71e9fb2e14f0a191a6bac927d36b" name="a70ec71e9fb2e14f0a191a6bac927d36b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a70ec71e9fb2e14f0a191a6bac927d36b">&#9670;&#160;</a></span>smallest_angle()</h2>
 
@@ -653,22 +626,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae6e35ee98b4410f034cd37c0d2055a8d" name="ae6e35ee98b4410f034cd37c0d2055a8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6e35ee98b4410f034cd37c0d2055a8d">&#9670;&#160;</a></span>end_task</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool OdometryBase::end_task = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>end_task is true if we instruct the odometry thread to shut down </p>
-
-</div>
-</div>
 <a id="ae5308f20a4dfef9594631010c7612dab" name="ae5308f20a4dfef9594631010c7612dab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5308f20a4dfef9594631010c7612dab">&#9670;&#160;</a></span>handle</h2>
 
@@ -763,7 +720,7 @@ Protected Attributes</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/subsystems/odometry/<a class="el" href="odometry__base_8h_source.html">odometry_base.h</a></li>
-<li>src/subsystems/odometry/<a class="el" href="odometry__base_8cpp.html">odometry_base.cpp</a></li>
+<li>src/subsystems/odometry/<b>odometry_base.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

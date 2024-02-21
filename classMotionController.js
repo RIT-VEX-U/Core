@@ -6,8 +6,6 @@ var classMotionController =
     [ "get_motion", "classMotionController.html#a389dec759b61dbae75131dd6a720dddd", null ],
     [ "init", "classMotionController.html#a78027f833324cf2fa244431d56a88493", null ],
     [ "is_on_target", "classMotionController.html#aa9e2af88b848646889deb1d43a283173", null ],
-    [ "Page", "classMotionController.html#ae6c747a91635530fda04352055558ed9", null ],
     [ "set_limits", "classMotionController.html#a944c245002a1eb124dd8df40de4fcc57", null ],
-    [ "update", "classMotionController.html#a86ef0ef19858b5b407f7406bb5da30af", null ],
-    [ "MotionControllerPage", "classMotionController.html#a007999ffa2b37e36b77003369ef334dd", null ]
+    [ "update", "classMotionController.html#a86ef0ef19858b5b407f7406bb5da30af", null ]
 ];

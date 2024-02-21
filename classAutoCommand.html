@@ -105,72 +105,37 @@ $(function(){initNavTree('classAutoCommand.html',''); initResizable(); });
   <div class="headertitle"><div class="title">AutoCommand Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="auto__command_8h_source.html">auto_command.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for AutoCommand:</div>
 <div class="dyncontent">
-<div class="center"><img src="classAutoCommand__inherit__graph.png" border="0" usemap="#aAutoCommand_inherit__map" alt="Inheritance graph"/></div>
-<map name="aAutoCommand_inherit__map" id="aAutoCommand_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,548,113,574"/>
-<area shape="rect" href="classAsync.html" title="Async runs a command asynchronously will simply let it go and never look back THIS HAS A VERY NICHE U..." alt="" coords="241,5,299,31"/>
-<area shape="poly" title=" " alt="" coords="59,532,67,425,85,277,98,202,114,134,134,79,159,40,177,27,199,19,240,14,241,19,200,24,180,32,163,44,139,81,119,136,103,203,90,278,73,425,64,533"/>
-<area shape="rect" href="classBasicSolenoidSet.html" title=" " alt="" coords="208,55,332,80"/>
-<area shape="poly" title=" " alt="" coords="60,532,69,433,88,301,101,234,117,173,136,124,159,90,181,75,206,67,208,72,183,79,163,93,141,126,122,175,107,235,93,302,75,434,65,533"/>
-<area shape="rect" href="classBasicSpinCommand.html" title=" " alt="" coords="200,104,340,130"/>
-<area shape="poly" title=" " alt="" coords="61,532,72,443,92,325,120,213,138,169,159,139,178,126,199,118,201,123,180,130,163,143,143,171,125,214,97,326,77,444,66,533"/>
-<area shape="rect" href="classBasicStopCommand.html" title=" " alt="" coords="200,153,340,179"/>
-<area shape="poly" title=" " alt="" coords="61,533,74,453,95,350,123,252,140,214,159,188,177,175,198,168,200,173,180,180,163,192,145,217,128,254,100,351,79,454,67,533"/>
-<area shape="rect" href="classBranch.html" title="Branch chooses from multiple options at runtime. the function decider returns an index into the choic..." alt="" coords="239,203,301,228"/>
-<area shape="poly" title=" " alt="" coords="58,532,62,471,76,391,89,349,107,308,130,271,159,237,177,225,198,217,238,212,239,217,199,223,179,230,162,242,134,274,111,311,94,351,82,392,67,471,63,532"/>
-<area shape="rect" href="classDelayCommand.html" title=" " alt="" coords="214,252,326,278"/>
-<area shape="poly" title=" " alt="" coords="60,532,67,479,83,413,96,378,113,345,133,314,159,287,184,272,213,264,214,269,186,277,162,291,138,317,117,348,101,381,88,415,72,480,65,533"/>
-<area shape="rect" href="classDriveForwardCommand.html" title=" " alt="" coords="191,301,349,327"/>
-<area shape="poly" title=" " alt="" coords="62,533,72,489,90,436,118,382,137,357,159,336,190,320,192,325,162,340,141,361,123,385,95,438,77,491,67,534"/>
-<area shape="rect" href="classDriveStopCommand.html" title=" " alt="" coords="201,351,339,376"/>
-<area shape="poly" title=" " alt="" coords="66,532,79,498,98,458,125,419,159,385,179,374,200,367,202,372,181,379,162,390,129,422,103,461,84,500,71,534"/>
-<area shape="rect" href="classDriveToPointCommand.html" title=" " alt="" coords="192,400,348,426"/>
-<area shape="poly" title=" " alt="" coords="72,533,107,482,131,456,159,435,191,421,193,426,162,439,135,460,111,485,77,536"/>
-<area shape="rect" href="classFlywheelStopCommand.html" title=" " alt="" coords="191,449,349,475"/>
-<area shape="poly" title=" " alt="" coords="84,535,118,508,160,484,189,473,191,478,162,489,121,513,87,540"/>
-<area shape="rect" href="classFlywheelStopMotorsCommand.html" title=" " alt="" coords="171,499,369,524"/>
-<area shape="poly" title=" " alt="" coords="126,541,160,533,206,522,207,528,161,538,128,546"/>
-<area shape="rect" href="classFlywheelStopNonTasksCommand.html" title=" " alt="" coords="161,548,379,574"/>
-<area shape="poly" title=" " alt="" coords="128,558,160,558,160,564,128,564"/>
-<area shape="rect" href="classFunctionCommand.html" title=" " alt="" coords="205,597,335,623"/>
-<area shape="poly" title=" " alt="" coords="128,575,161,584,207,594,206,599,160,589,126,581"/>
-<area shape="rect" href="classInOrder.html" title="InOrder runs its commands sequentially then continues. How to handle timeout in this case...." alt="" coords="238,647,302,672"/>
-<area shape="poly" title=" " alt="" coords="87,582,121,609,162,633,200,646,238,653,237,659,199,651,160,638,118,613,84,586"/>
-<area shape="rect" href="classOdomSetPosition.html" title=" " alt="" coords="208,696,332,722"/>
-<area shape="poly" title=" " alt="" coords="77,586,111,636,135,662,162,683,184,693,208,700,207,705,182,698,159,687,131,665,107,640,72,589"/>
-<area shape="rect" href="classParallel.html" title="Parallel runs multiple commands in parallel and waits for all to finish before continuing...." alt="" coords="238,745,302,771"/>
-<area shape="poly" title=" " alt="" coords="71,588,84,622,103,661,129,700,162,732,180,742,199,749,238,755,237,760,198,754,178,747,159,736,125,703,98,664,79,624,66,590"/>
-<area shape="rect" href="classPurePursuitCommand.html" title=" " alt="" coords="196,795,344,820"/>
-<area shape="poly" title=" " alt="" coords="67,588,77,631,95,684,123,737,141,761,162,781,178,791,196,798,194,803,176,796,159,786,137,764,118,740,90,686,72,633,62,589"/>
-<area shape="rect" href="classRepeatUntil.html" title=" " alt="" coords="225,844,315,870"/>
-<area shape="poly" title=" " alt="" coords="65,589,72,641,88,707,101,741,117,774,138,805,162,831,192,847,225,854,224,859,190,852,159,835,133,808,113,777,96,743,83,709,67,642,60,590"/>
-<area shape="rect" href="classSpinRPMCommand.html" title=" " alt="" coords="202,893,338,919"/>
-<area shape="poly" title=" " alt="" coords="63,589,67,650,82,729,94,771,111,811,134,848,162,880,181,892,203,900,201,905,179,897,159,884,130,851,107,813,89,772,76,731,62,651,58,590"/>
-<area shape="rect" href="classTurnDegreesCommand.html" title=" " alt="" coords="193,943,347,968"/>
-<area shape="poly" title=" " alt="" coords="67,588,79,668,100,771,128,868,145,905,163,930,177,940,194,947,191,952,174,945,159,933,140,907,123,869,95,772,74,669,61,589"/>
-<area shape="rect" href="classTurnToHeadingCommand.html" title=" " alt="" coords="185,992,355,1018"/>
-<area shape="poly" title=" " alt="" coords="66,589,77,678,97,795,125,907,143,950,163,979,186,994,183,999,159,983,138,953,120,909,92,796,72,679,61,589"/>
-<area shape="rect" href="classWaitUntilCondition.html" title="Waits until the condition is true." alt="" coords="206,1041,334,1067"/>
-<area shape="poly" title=" " alt="" coords="65,589,75,688,93,820,107,886,122,947,141,996,163,1028,183,1042,206,1050,205,1055,180,1047,159,1032,136,998,117,948,101,888,88,821,69,688,60,589"/>
-<area shape="rect" href="classWaitUntilUpToSpeedCommand.html" title=" " alt="" coords="169,1091,371,1116"/>
-<area shape="poly" title=" " alt="" coords="64,589,73,697,90,844,103,918,119,986,139,1041,163,1078,176,1088,172,1092,159,1081,134,1043,114,987,98,919,85,845,67,697,59,589"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
-<div class="dynheader">
-Collaboration diagram for AutoCommand:</div>
-<div class="dyncontent">
-<div class="center"><img src="classAutoCommand__coll__graph.png" border="0" usemap="#aAutoCommand_coll__map" alt="Collaboration graph"/></div>
-<map name="aAutoCommand_coll__map" id="aAutoCommand_coll__map">
-<area shape="rect" title=" " alt="" coords="5,94,113,120"/>
-<area shape="rect" href="classCondition.html" title=" " alt="" coords="21,5,97,31"/>
-<area shape="poly" title=" " alt="" coords="62,47,62,94,56,94,56,47"/>
-</map>
-<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+ <div class="center">
+  <img src="classAutoCommand.png" usemap="#AutoCommand_map" alt=""/>
+  <map id="AutoCommand_map" name="AutoCommand_map">
+<area href="classAsync.html" title="Async runs a command asynchronously will simply let it go and never look back THIS HAS A VERY NICHE U..." alt="Async" shape="rect" coords="208,56,406,80"/>
+<area href="classBasicSolenoidSet.html" alt="BasicSolenoidSet" shape="rect" coords="208,112,406,136"/>
+<area href="classBasicSpinCommand.html" alt="BasicSpinCommand" shape="rect" coords="208,168,406,192"/>
+<area href="classBasicStopCommand.html" alt="BasicStopCommand" shape="rect" coords="208,224,406,248"/>
+<area href="classBranch.html" title="Branch chooses from multiple options at runtime. the function decider returns an index into the choic..." alt="Branch" shape="rect" coords="208,280,406,304"/>
+<area href="classDelayCommand.html" alt="DelayCommand" shape="rect" coords="208,336,406,360"/>
+<area href="classDriveForwardCommand.html" alt="DriveForwardCommand" shape="rect" coords="208,392,406,416"/>
+<area href="classDriveStopCommand.html" alt="DriveStopCommand" shape="rect" coords="208,448,406,472"/>
+<area href="classDriveToPointCommand.html" alt="DriveToPointCommand" shape="rect" coords="208,504,406,528"/>
+<area href="classFlywheelStopCommand.html" alt="FlywheelStopCommand" shape="rect" coords="208,560,406,584"/>
+<area href="classFlywheelStopMotorsCommand.html" alt="FlywheelStopMotorsCommand" shape="rect" coords="208,616,406,640"/>
+<area href="classFlywheelStopNonTasksCommand.html" alt="FlywheelStopNonTasksCommand" shape="rect" coords="208,672,406,696"/>
+<area href="classFunctionCommand.html" alt="FunctionCommand" shape="rect" coords="208,728,406,752"/>
+<area href="classInOrder.html" title="InOrder runs its commands sequentially then continues. How to handle timeout in this case...." alt="InOrder" shape="rect" coords="208,784,406,808"/>
+<area href="classOdomSetPosition.html" alt="OdomSetPosition" shape="rect" coords="208,840,406,864"/>
+<area href="classParallel.html" title="Parallel runs multiple commands in parallel and waits for all to finish before continuing...." alt="Parallel" shape="rect" coords="208,896,406,920"/>
+<area href="classPurePursuitCommand.html" alt="PurePursuitCommand" shape="rect" coords="208,952,406,976"/>
+<area href="classRepeatUntil.html" alt="RepeatUntil" shape="rect" coords="208,1008,406,1032"/>
+<area href="classSpinRPMCommand.html" alt="SpinRPMCommand" shape="rect" coords="208,1064,406,1088"/>
+<area href="classTurnDegreesCommand.html" alt="TurnDegreesCommand" shape="rect" coords="208,1120,406,1144"/>
+<area href="classTurnToHeadingCommand.html" alt="TurnToHeadingCommand" shape="rect" coords="208,1176,406,1200"/>
+<area href="classWaitUntilCondition.html" title="Waits until the condition is true." alt="WaitUntilCondition" shape="rect" coords="208,1232,406,1256"/>
+<area href="classWaitUntilUpToSpeedCommand.html" alt="WaitUntilUpToSpeedCommand" shape="rect" coords="208,1288,406,1312"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -178,21 +143,25 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9f58c576ca6378b18a4136f60df50560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68475854d11e7c3be90e9c6e8fc9e982" id="r_a68475854d11e7c3be90e9c6e8fc9e982"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a68475854d11e7c3be90e9c6e8fc9e982">on_timeout</a> ()</td></tr>
 <tr class="separator:a68475854d11e7c3be90e9c6e8fc9e982"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75b2b87e945fd7b98b758617feb30404" id="r_a75b2b87e945fd7b98b758617feb30404"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75b2b87e945fd7b98b758617feb30404">withTimeout</a> (double t_seconds)</td></tr>
+<tr class="memitem:a75b2b87e945fd7b98b758617feb30404" id="r_a75b2b87e945fd7b98b758617feb30404"><td class="memItemLeft" align="right" valign="top"><a id="a75b2b87e945fd7b98b758617feb30404" name="a75b2b87e945fd7b98b758617feb30404"></a>
+<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withTimeout</b> (double t_seconds)</td></tr>
 <tr class="separator:a75b2b87e945fd7b98b758617feb30404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f28804953d8856397644d3fa38d921f" id="r_a2f28804953d8856397644d3fa38d921f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f28804953d8856397644d3fa38d921f">withCancelCondition</a> (<a class="el" href="classCondition.html">Condition</a> *<a class="el" href="#a898ee0ecb997505e985684dddc76b0a5">true_to_end</a>)</td></tr>
+<tr class="memitem:a2f28804953d8856397644d3fa38d921f" id="r_a2f28804953d8856397644d3fa38d921f"><td class="memItemLeft" align="right" valign="top"><a id="a2f28804953d8856397644d3fa38d921f" name="a2f28804953d8856397644d3fa38d921f"></a>
+<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withCancelCondition</b> (<a class="el" href="classCondition.html">Condition</a> *true_to_end)</td></tr>
 <tr class="separator:a2f28804953d8856397644d3fa38d921f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac3be7be26e49981ad1978491fd313472" id="r_ac3be7be26e49981ad1978491fd313472"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3be7be26e49981ad1978491fd313472">timeout_seconds</a> = <a class="el" href="#a7b0d115d4fd603d87fdabe1bf7bc6293">default_timeout</a></td></tr>
+<tr class="memitem:ac3be7be26e49981ad1978491fd313472" id="r_ac3be7be26e49981ad1978491fd313472"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3be7be26e49981ad1978491fd313472">timeout_seconds</a> = default_timeout</td></tr>
 <tr class="separator:ac3be7be26e49981ad1978491fd313472"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898ee0ecb997505e985684dddc76b0a5" id="r_a898ee0ecb997505e985684dddc76b0a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a898ee0ecb997505e985684dddc76b0a5">true_to_end</a> = nullptr</td></tr>
+<tr class="memitem:a898ee0ecb997505e985684dddc76b0a5" id="r_a898ee0ecb997505e985684dddc76b0a5"><td class="memItemLeft" align="right" valign="top"><a id="a898ee0ecb997505e985684dddc76b0a5" name="a898ee0ecb997505e985684dddc76b0a5"></a>
+<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>true_to_end</b> = nullptr</td></tr>
 <tr class="separator:a898ee0ecb997505e985684dddc76b0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a7b0d115d4fd603d87fdabe1bf7bc6293" id="r_a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memItemLeft" align="right" valign="top">static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b0d115d4fd603d87fdabe1bf7bc6293">default_timeout</a> = 10.0</td></tr>
+<tr class="memitem:a7b0d115d4fd603d87fdabe1bf7bc6293" id="r_a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memItemLeft" align="right" valign="top"><a id="a7b0d115d4fd603d87fdabe1bf7bc6293" name="a7b0d115d4fd603d87fdabe1bf7bc6293"></a>
+static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>default_timeout</b> = 10.0</td></tr>
 <tr class="separator:a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -252,79 +221,7 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2f28804953d8856397644d3fa38d921f" name="a2f28804953d8856397644d3fa38d921f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f28804953d8856397644d3fa38d921f">&#9670;&#160;</a></span>withCancelCondition()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classAutoCommand.html">AutoCommand</a> * AutoCommand::withCancelCondition </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classCondition.html">Condition</a> *</td>          <td class="paramname"><span class="paramname"><em>true_to_end</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a75b2b87e945fd7b98b758617feb30404" name="a75b2b87e945fd7b98b758617feb30404"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75b2b87e945fd7b98b758617feb30404">&#9670;&#160;</a></span>withTimeout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classAutoCommand.html">AutoCommand</a> * AutoCommand::withTimeout </td>
-          <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t_seconds</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7b0d115d4fd603d87fdabe1bf7bc6293" name="a7b0d115d4fd603d87fdabe1bf7bc6293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b0d115d4fd603d87fdabe1bf7bc6293">&#9670;&#160;</a></span>default_timeout</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr double AutoCommand::default_timeout = 10.0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="ac3be7be26e49981ad1978491fd313472" name="ac3be7be26e49981ad1978491fd313472"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac3be7be26e49981ad1978491fd313472">&#9670;&#160;</a></span>timeout_seconds</h2>
 
@@ -332,7 +229,7 @@ Static Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double AutoCommand::timeout_seconds = <a class="el" href="#a7b0d115d4fd603d87fdabe1bf7bc6293">default_timeout</a></td>
+          <td class="memname">double AutoCommand::timeout_seconds = default_timeout</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -341,20 +238,6 @@ Static Public Attributes</h2></td></tr>
 <li>a command that waits until something is up to speed that never gets up to speed because of battery voltage</li>
 <li>something else... </li>
 </ul>
-
-</div>
-</div>
-<a id="a898ee0ecb997505e985684dddc76b0a5" name="a898ee0ecb997505e985684dddc76b0a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a898ee0ecb997505e985684dddc76b0a5">&#9670;&#160;</a></span>true_to_end</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classCondition.html">Condition</a>* AutoCommand::true_to_end = nullptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

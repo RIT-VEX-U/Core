@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['up_5fspeed_0',['up_speed',['../structLift_1_1lift__cfg__t.html#a2bddc7008517019df221aeeb7e354ce6',1,'Lift::lift_cfg_t']]]
+  ['x_0',['x',['../structpoint__t.html#acf7556ca44360564040f5c86257b55b1',1,'point_t::x'],['../structpose__t.html#a2fcb0692ae214620382140b9c267fce2',1,'pose_t::x']]]
 ];

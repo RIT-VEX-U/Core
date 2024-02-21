@@ -1,7 +1,0 @@
-<map id="MotionController::m_profile_cfg_t" name="MotionController::m_profile_cfg_t">
-<area shape="rect" id="Node000001" title=" " alt="" coords="80,94,212,135"/>
-<area shape="rect" id="Node000002" href="$structPID_1_1pid__config__t.html" title=" " alt="" coords="5,5,124,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,41,131,92,127,95,83,44"/>
-<area shape="rect" id="Node000003" href="$structFeedForward_1_1ff__config__t.html" title=" " alt="" coords="147,5,310,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,44,165,95,161,92,206,41"/>
-</map>

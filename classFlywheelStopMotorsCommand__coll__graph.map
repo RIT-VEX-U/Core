@@ -1,7 +1,0 @@
-<map id="FlywheelStopMotorsCommand" name="FlywheelStopMotorsCommand">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,204,195"/>
-<area shape="rect" id="Node000002" href="$classAutoCommand.html" title=" " alt="" coords="51,94,158,120"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,135,107,169,102,169,102,135"/>
-<area shape="rect" id="Node000003" href="$classCondition.html" title=" " alt="" coords="67,5,142,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,47,107,94,102,94,102,47"/>
-</map>

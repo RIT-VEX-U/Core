@@ -108,8 +108,9 @@ $(function(){initNavTree('classCommandController.html',''); initResizable(); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afe87cef2dd63449334a46aae33b7edf4" id="r_afe87cef2dd63449334a46aae33b7edf4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe87cef2dd63449334a46aae33b7edf4">CommandController</a> ()</td></tr>
-<tr class="memdesc:afe87cef2dd63449334a46aae33b7edf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty <a class="el" href="classCommandController.html">CommandController</a>. Add Command with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a>  <br /></td></tr>
+<tr class="memitem:afe87cef2dd63449334a46aae33b7edf4" id="r_afe87cef2dd63449334a46aae33b7edf4"><td class="memItemLeft" align="right" valign="top"><a id="afe87cef2dd63449334a46aae33b7edf4" name="afe87cef2dd63449334a46aae33b7edf4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CommandController</b> ()</td></tr>
+<tr class="memdesc:afe87cef2dd63449334a46aae33b7edf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty <a class="el" href="classCommandController.html">CommandController</a>. Add Command with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a> <br /></td></tr>
 <tr class="separator:afe87cef2dd63449334a46aae33b7edf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9de2dfdf95ff4d80e2ad4906138c1316" id="r_a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9de2dfdf95ff4d80e2ad4906138c1316">CommandController</a> (std::initializer_list&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds)</td></tr>
 <tr class="memdesc:a9de2dfdf95ff4d80e2ad4906138c1316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classCommandController.html">CommandController</a> with commands pre added. More can be added with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a>  <br /></td></tr>
@@ -131,37 +132,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a23306007060f97ab7f57715c5d8d0c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>File: <a class="el" href="command__controller_8h.html">command_controller.h</a> Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. </p>
+<div class="textblock"><p>File: <a class="el" href="command__controller_8h_source.html">command_controller.h</a> Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afe87cef2dd63449334a46aae33b7edf4" name="afe87cef2dd63449334a46aae33b7edf4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe87cef2dd63449334a46aae33b7edf4">&#9670;&#160;</a></span>CommandController() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">CommandController::CommandController </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create an empty <a class="el" href="classCommandController.html">CommandController</a>. Add Command with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a> </p>
-
-</div>
-</div>
 <a id="a9de2dfdf95ff4d80e2ad4906138c1316" name="a9de2dfdf95ff4d80e2ad4906138c1316"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9de2dfdf95ff4d80e2ad4906138c1316">&#9670;&#160;</a></span>CommandController() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de2dfdf95ff4d80e2ad4906138c1316">&#9670;&#160;</a></span>CommandController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -212,7 +186,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>File: <a class="el" href="command__controller_8cpp.html">command_controller.cpp</a> Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
+<p>File: command_controller.cpp Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
     <tr><td class="paramname">timeout_seconds</td><td>the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout </td></tr>
@@ -374,7 +348,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>include/utils/command_structure/<a class="el" href="command__controller_8h_source.html">command_controller.h</a></li>
-<li>src/utils/command_structure/<a class="el" href="command__controller_8cpp.html">command_controller.cpp</a></li>
+<li>src/utils/command_structure/<b>command_controller.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

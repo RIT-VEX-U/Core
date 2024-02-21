@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['flywheelpage_0',['FlywheelPage',['../classFlywheel.html#a5c63d9cd4e88c2da187553a4b94168d4',1,'Flywheel']]]
+  ['spinrpmtask_0',['spinRPMTask',['../classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa',1,'Flywheel']]]
 ];

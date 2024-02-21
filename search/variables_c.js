@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['name_0',['name',['../structAutoChooser_1_1entry__t.html#ab876b8f9fa8bf03a91c45c55c2a7fa23',1,'AutoChooser::entry_t']]]
+  ['p_0',['p',['../structPID_1_1pid__config__t.html#a27290957ad115f4502f765ff292e3a23',1,'PID::pid_config_t']]],
+  ['pid_5fcfg_1',['pid_cfg',['../structMotionController_1_1m__profile__cfg__t.html#a2b6415c29fcab4f9b2ccff067a390baa',1,'MotionController::m_profile_cfg_t']]],
+  ['pos_2',['pos',['../structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4',1,'motion_t']]],
+  ['pos_5fafter_3',['pos_after',['../structtrapezoid__profile__segment__t.html#a7767f2564778bfdca26f8c26638a945d',1,'trapezoid_profile_segment_t']]]
 ];

@@ -105,7 +105,7 @@ $(function(){initNavTree('graph__drawer_8h_source.html',''); initResizable(); })
   <div class="headertitle"><div class="title">graph_drawer.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="graph__drawer_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
@@ -124,7 +124,7 @@ $(function(){initNavTree('graph__drawer_8h_source.html',''); initResizable(); })
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b">add_samples</a>(std::vector&lt;double&gt; sample);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#a534ae44e0dc680dc22e344986585b5dc">draw</a>(vex::brain::lcd &amp;<a class="code hl_namespace" href="namespacescreen.html">screen</a>, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classGraphDrawer.html#a534ae44e0dc680dc22e344986585b5dc">draw</a>(vex::brain::lcd &amp;screen, <span class="keywordtype">int</span> x, <span class="keywordtype">int</span> y, <span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height);</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::vector&lt;std::vector&lt;point_t&gt;&gt; series;</div>
@@ -141,13 +141,12 @@ $(function(){initNavTree('graph__drawer_8h_source.html',''); initResizable(); })
 <div class="ttc" id="aclassGraphDrawer_html_a066c3300f9452ada1730c6ee3d191971"><div class="ttname"><a href="classGraphDrawer.html#a066c3300f9452ada1730c6ee3d191971">GraphDrawer::GraphDrawer</a></div><div class="ttdeci">GraphDrawer(int num_samples, double lower_bound, double upper_bound, std::vector&lt; vex::color &gt; colors, size_t num_series=1)</div><div class="ttdoc">Creates a graph drawer with the specified number of series (each series is a separate line)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:9</div></div>
 <div class="ttc" id="aclassGraphDrawer_html_a534ae44e0dc680dc22e344986585b5dc"><div class="ttname"><a href="classGraphDrawer.html#a534ae44e0dc680dc22e344986585b5dc">GraphDrawer::draw</a></div><div class="ttdeci">void draw(vex::brain::lcd &amp;screen, int x, int y, int width, int height)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:80</div></div>
 <div class="ttc" id="aclassGraphDrawer_html_aac4bee87b6cbefa7e9788711eae2cc5b"><div class="ttname"><a href="classGraphDrawer.html#aac4bee87b6cbefa7e9788711eae2cc5b">GraphDrawer::add_samples</a></div><div class="ttdeci">void add_samples(std::vector&lt; point_t &gt; sample)</div><div class="ttdef"><b>Definition</b> graph_drawer.cpp:35</div></div>
-<div class="ttc" id="anamespacescreen_html"><div class="ttname"><a href="namespacescreen.html">screen</a></div><div class="ttdef"><b>Definition</b> screen.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="graph__drawer_8h.html">graph_drawer.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><b>graph_drawer.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>

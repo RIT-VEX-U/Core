@@ -1,9 +1,0 @@
-<map id="include/subsystems/odometry/odometry_3wheel.h" name="include/subsystems/odometry/odometry_3wheel.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="200,5,394,46"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,94,186,135"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,49,156,90,154,85,250,44"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="209,94,385,135"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="300,47,300,78,294,78,294,47"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="409,94,585,135"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="343,44,438,85,436,90,341,49"/>
-</map>

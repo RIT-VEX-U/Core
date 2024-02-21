@@ -1,5 +1,0 @@
-<map id="screen::PIDPage" name="screen::PIDPage">
-<area shape="rect" id="Node000001" title="PIDPage provides a way to tune a pid controller on the screen." alt="" coords="5,79,124,105"/>
-<area shape="rect" id="Node000002" href="$classscreen_1_1Page.html" title="Page describes one part of the screen slideshow." alt="" coords="16,5,113,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="67,46,67,79,62,79,62,46"/>
-</map>

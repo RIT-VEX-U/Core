@@ -1,6 +1,6 @@
 var classLift =
 [
-    [ "lift_cfg_t", "structLift_1_1lift__cfg__t.html", "structLift_1_1lift__cfg__t" ],
+    [ "lift_cfg_t", "structLift_1_1lift__cfg__t.html", null ],
     [ "Lift", "classLift.html#aa5723874330725dec5176ec4174e9ea8", null ],
     [ "control_continuous", "classLift.html#ae585cb81d733c975a65bfa7914a6bfeb", null ],
     [ "control_manual", "classLift.html#acfeaf4547de1b6a01982e8e51b0bb224", null ],
