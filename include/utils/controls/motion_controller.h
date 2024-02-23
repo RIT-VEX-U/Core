@@ -4,8 +4,6 @@
 #include "../core/include/utils/controls/trapezoid_profile.h"
 #include "../core/include/utils/controls/feedback_base.h"
 #include "../core/include/subsystems/tank_drive.h"
-#include "../core/include/subsystems/screen.h"
-
 #include "vex.h"
 
 /**
@@ -56,7 +54,7 @@ class MotionController : public Feedback
      * @brief Initialize the motion profile for a new movement
      * This will also reset the PID and profile timers.
      */
-    void init(double start_pt, double end_pt, double start_vel, double end_vel) override;
+    void init(double start_pt, double end_pt) override;
     
     /**
      * @brief Update the motion profile with a new sensor value
@@ -89,10 +87,7 @@ class MotionController : public Feedback
     /**
      * @return The current postion, velocity and acceleration setpoints
     */
-    motion_t get_motion() const;
-
-
-    screen::Page *Page();
+    motion_t get_motion();
 
     /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
@@ -122,14 +117,10 @@ class MotionController : public Feedback
     FeedForward ff;
     TrapezoidProfile profile;
 
-    double current_pos;
-    double end_pt;
-
     double lower_limit = 0, upper_limit = 0;
     double out = 0;
     motion_t cur_motion;
      
     vex::timer tmr;
-    friend class MotionControllerPage;
 
 };

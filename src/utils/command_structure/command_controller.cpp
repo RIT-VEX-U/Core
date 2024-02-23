@@ -101,7 +101,7 @@ void CommandController::run()
     // run the current command until it returns true or we timeout
     while (!next_cmd->run())
     {
-      vexDelay(20);
+      vexDelay(5);
 
       if (!doTimeout)
       {

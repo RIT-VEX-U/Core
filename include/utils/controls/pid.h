@@ -69,8 +69,7 @@ public:
    * base
    * @param end_vel sets the target end velocity of the PID controller
    */
-  void init(double start_pt, double set_pt, double start_vel = 0,
-            double end_vel = 0) override;
+  void init(double start_pt, double set_pt) override;
 
   /**
    * Update the PID loop by taking the time difference from last update,
@@ -80,6 +79,17 @@ public:
    * @return the new output. What would be returned by PID::get()
    */
   double update(double sensor_val) override;
+
+  /**
+   * Update the PID loop by taking the time difference from last update,
+   * and running the PID formula with the new sensor data
+   * @param sensor_val the distance, angle, encoder position or whatever it is we
+   * are measuring
+   * @param v_setpt Expected velocity setpoint, to subtract from the D term (for 
+   * velocity control)
+   * @return the new output. What would be returned by PID::get()
+   */
+  double update(double sensor_val, double v_setpt);
 
   /**
    * @brief gets the sensor value that we were last updated with

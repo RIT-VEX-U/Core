@@ -321,8 +321,8 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedb
     double initial_dist = OdometryBase::pos_diff(odometry->get_position(), {.x = x, .y = y});
 
     // Reset the control loops
-    correction_pid.init(0, 0, 0, 0);
-    feedback.init(-initial_dist, 0, odometry->get_speed(), fabs(end_speed));
+    correction_pid.init(0, 0);
+    feedback.init(-initial_dist, 0);
 
     correction_pid.set_limits(-1, 1);
     feedback.set_limits(-1, 1);
@@ -475,7 +475,7 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
   if (!func_initialized)
   {
     double initial_delta = OdometryBase::smallest_angle(odometry->get_position().rot, heading_deg);
-    feedback.init(-initial_delta, 0, odometry->get_angular_speed_deg(), end_speed);
+    feedback.init(-initial_delta, 0);
     feedback.set_limits(-fabs(max_speed), fabs(max_speed));
 
     func_initialized = true;
@@ -555,9 +555,9 @@ bool TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, Feedback
   if (!func_initialized)
   {
     if (dir != directionType::rev) {
-      feedback.init(-estimate_path_length(points), 0, odometry->get_speed(), end_speed);
+      feedback.init(-estimate_path_length(points), 0);
     } else {
-      feedback.init(estimate_path_length(points), 0, odometry->get_speed(), end_speed);
+      feedback.init(estimate_path_length(points), 0);
 }
 
     func_initialized = true;
