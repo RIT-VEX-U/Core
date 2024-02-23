@@ -15,8 +15,7 @@ public:
    * @param start_vel the current rate of change of the sensor value
    * @param end_vel the desired ending rate of change of the sensor value
    */
-  void init(double start_pt, double set_pt, double start_vel,
-            double end_vel) override;
+  void init(double start_pt, double set_pt) override;
 
   /**
    * Set the target of the PID loop

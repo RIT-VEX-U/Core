@@ -11,7 +11,7 @@ TakeBackHalf::TakeBackHalf(double gain, double first_cross_split, double thresh)
     first_cross = true;
 }
 
-void TakeBackHalf::init(double start_pt, double set_pt, double, double)
+void TakeBackHalf::init(double start_pt, double set_pt)
 {
     if (set_pt == target)
     {

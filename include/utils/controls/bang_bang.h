@@ -13,7 +13,7 @@ public:
      * @param start_vel Movement starting velocity
      * @param end_vel Movement ending velocity
      */
-    void init(double start_pt, double set_pt, double start_vel [[maybe_unused]] = 0.0, double end_vel [[maybe_unused]] = 0.0) override;
+    void init(double start_pt, double set_pt) override;
 
     /**
      * Iterate the feedback loop once with an updated sensor value

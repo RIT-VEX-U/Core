@@ -3,7 +3,7 @@
 
 BangBang::BangBang(double threshhold, double low, double high) : setpt(low), sensor_val(low), lower_bound(low), upper_bound(high), threshhold(threshhold) {}
 
-void BangBang::init(double start_pt, double set_pt, double, double)
+void BangBang::init(double start_pt, double set_pt)
 {
     sensor_val = start_pt;
     setpt = set_pt;

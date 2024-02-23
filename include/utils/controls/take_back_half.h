@@ -16,7 +16,7 @@ public:
      * @param start_vel Movement starting velocity (IGNORED)
      * @param end_vel Movement ending velocity (IGNORED)
      */
-    void init(double start_pt, double set_pt, double, double);
+    void init(double start_pt, double set_pt);
     /**
      * Iterate the feedback loop once with an updated sensor value
      *

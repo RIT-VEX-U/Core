@@ -14,9 +14,8 @@ PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg)
  * @param start_pt the current sensor value
  * @param set_pt where the sensor value should be
  */
-void PIDFF::init(double start_pt, double set_pt, double start_vel,
-                 double end_vel) {
-    pid.init(start_pt, set_pt, start_vel, end_vel);
+void PIDFF::init(double start_pt, double set_pt) {
+    pid.init(start_pt, set_pt);
 }
 
 void PIDFF::set_target(double set_pt) { pid.set_target(set_pt); }
