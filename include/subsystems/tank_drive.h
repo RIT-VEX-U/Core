@@ -50,12 +50,17 @@ public:
   AutoCommand *TurnToHeadingCmd(double heading, double max_speed = 1.0, double end_speed = 0.0);
   AutoCommand *TurnToHeadingCmd(Feedback &fb, double heading, double max_speed = 1.0, double end_speed = 0.0);
 
+  AutoCommand *TurnToPointCmd(double x, double y, vex::directionType dir = vex::directionType::fwd,
+                              double max_speed = 1.0, double end_speed = 0.0);
+
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
   AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
   AutoCommand *PurePursuitCmd(Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed = 1,
                               double end_speed = 0);
+  Condition *DriveStalledCondition(double stall_time);
+  AutoCommand *DriveTankCmd(double left, double right);
 
   /**
    * Stops rotation of all the motors using their "brake mode"
@@ -63,8 +68,8 @@ public:
   void stop();
 
   /**
-   * Drive the robot using differential style controls. left_motors controls the left motors,
-   * right_motors controls the right motors.
+   * Drive the robot using differential style controls. left_motors controls
+   * the left motors, right_motors controls the right motors.
    *
    * left_motors and right_motors are in "percent": -1.0 -> 1.0
    * @param left the percent to run the left motors
@@ -81,8 +86,8 @@ public:
   void drive_tank_raw(double left, double right);
 
   /**
-   * Drive the robot using arcade style controls. forward_back controls the linear motion,
-   * left_right controls the turning.
+   * Drive the robot using arcade style controls. forward_back controls the
+   * linear motion, left_right controls the turning.
    *
    * forward_back and left_right are in "percent": -1.0 -> 1.0
    *
@@ -94,7 +99,8 @@ public:
   void drive_arcade(double forward_back, double left_right, int power = 1, BrakeType bt = BrakeType::None);
 
   /**
-   * Use odometry to drive forward a certain distance using a custom feedback controller
+   * Use odometry to drive forward a certain distance using a custom feedback
+   * controller
    *
    * Returns whether or not the robot has reached it's destination.
    * @param inches     the distance to drive forward
@@ -111,16 +117,19 @@ public:
    * Autonomously drive the robot forward a certain distance
    *
    *
-   * @param inches      degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
+   * @param inches      degrees by which we will turn relative to the robot
+   * (+) turns ccw, (-) turns cw
    * @param dir        the direction we want to travel forward and backward
-   * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   * @param end_speed   the movement profile will attempt to reach this velocity by its completion
+   * @param max_speed   the maximum percentage of robot speed at which the
+   * robot will travel. 1 = full power
+   * @param end_speed   the movement profile will attempt to reach this
+   * velocity by its completion
    */
   bool drive_forward(double inches, directionType dir, double max_speed = 1, double end_speed = 0);
 
   /**
-   * Autonomously turn the robot X degrees counterclockwise (negative for clockwise), with a maximum motor speed
-   * of percent_speed (-1.0 -> 1.0)
+   * Autonomously turn the robot X degrees counterclockwise (negative for
+   * clockwise), with a maximum motor speed of percent_speed (-1.0 -> 1.0)
    *
    * Uses PID + Feedforward for it's control.
    *
@@ -132,14 +141,17 @@ public:
   bool turn_degrees(double degrees, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
   /**
-   * Autonomously turn the robot X degrees to counterclockwise (negative for clockwise), with a maximum motor speed
-   * of percent_speed (-1.0 -> 1.0)
+   * Autonomously turn the robot X degrees to counterclockwise (negative for
+   * clockwise), with a maximum motor speed of percent_speed (-1.0 -> 1.0)
    *
    * Uses the defualt turning feedback of the drive system.
    *
-   * @param degrees     degrees by which we will turn relative to the robot (+) turns ccw, (-) turns cw
-   * @param max_speed   the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   * @param end_speed   the movement profile will attempt to reach this velocity by its completion
+   * @param degrees     degrees by which we will turn relative to the robot
+   * (+) turns ccw, (-) turns cw
+   * @param max_speed   the maximum percentage of robot speed at which the
+   * robot will travel. 1 = full power
+   * @param end_speed   the movement profile will attempt to reach this
+   * velocity by its completion
    */
   bool turn_degrees(double degrees, double max_speed = 1, double end_speed = 0);
 
@@ -168,8 +180,10 @@ public:
    * @param x          the x position of the target
    * @param y          the y position of the target
    * @param dir        the direction we want to travel forward and backward
-   * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
+   * @param max_speed  the maximum percentage of robot speed at which the
+   * robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this
+   * velocity by its completion
    */
   bool drive_to_point(double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
 
@@ -189,8 +203,10 @@ public:
    * 0 is forward. Uses the defualt turn feedback of the drive system
    *
    * @param heading_deg the heading to which we will turn
-   * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
-   * @param end_speed  the movement profile will attempt to reach this velocity by its completion
+   * @param max_speed  the maximum percentage of robot speed at which the
+   * robot will travel. 1 = full power
+   * @param end_speed  the movement profile will attempt to reach this
+   * velocity by its completion
    */
   bool turn_to_heading(double heading_deg, double max_speed = 1, double end_speed = 0);
 
@@ -200,41 +216,47 @@ public:
   void reset_auto();
 
   /**
-   * Create a curve for the inputs, so that drivers have more control at lower speeds.
-   * Curves are exponential, with the default being squaring the inputs.
+   * Create a curve for the inputs, so that drivers have more control at lower
+   * speeds. Curves are exponential, with the default being squaring the
+   * inputs.
    *
    * @param input the input before modification
    * @param power the power to raise input to
-   * @return input ^ power (accounts for negative inputs and odd numbered powers)
+   * @return input ^ power (accounts for negative inputs and odd numbered
+   * powers)
    */
   static double modify_inputs(double input, int power = 2);
 
   /**
-   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of
-   * waypoints - the robot will attempt to follow the points while cutting corners (radius)
-   * to save time (compared to stop / turn / start)
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path
+   * with a set of waypoints - the robot will attempt to follow the points
+   * while cutting corners (radius) to save time (compared to stop / turn /
+   * start)
    *
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-   * @param end_speed the movement profile will attempt to reach this velocity by its completion
+   * @param end_speed the movement profile will attempt to reach this velocity
+   * by its completion
    * @return True when the path is complete
    */
   bool pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed = 1,
                     double end_speed = 0);
 
   /**
-   * Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of
-   * waypoints - the robot will attempt to follow the points while cutting corners (radius)
-   * to save time (compared to stop / turn / start)
+   * Drive the robot autonomously using a pure-pursuit algorithm - Input path
+   * with a set of waypoints - the robot will attempt to follow the points
+   * while cutting corners (radius) to save time (compared to stop / turn /
+   * start)
    *
    * Use the default drive feedback
    *
    * @param path The list of coordinates to follow, in order
    * @param dir Run the bot forwards or backwards
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-   * @param end_speed the movement profile will attempt to reach this velocity by its completion
+   * @param end_speed the movement profile will attempt to reach this velocity
+   * by its completion
    * @return True when the path is complete
    */
   bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
@@ -243,11 +265,13 @@ private:
   motor_group &left_motors;  ///< left drive motors
   motor_group &right_motors; ///< right drive motors
 
-  PID correction_pid;                      ///< PID controller used to drive in as straight a line as possible
+  PID correction_pid;                      ///< PID controller used to drive in as straight a line
+                                           ///< as possible
   Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
   Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified
 
-  OdometryBase *odometry; ///< odometry system to track position and rotation. necessary for autonomous driving
+  OdometryBase *odometry; ///< odometry system to track position and rotation.
+                          ///< necessary for autonomous driving
 
   robot_specs_t
       &config; ///< configuration holding physical dimensions of the robot. see robot_specs_t for more information

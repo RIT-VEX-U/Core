@@ -14,10 +14,14 @@
 
 class CommandController {
 public:
-  /// @brief Create an empty CommandController. Add Command with CommandController::add()
-  [[deprecated("Use list constructor instead.")]] CommandController() : command_queue({}) {}
+  /// @brief Create an empty CommandController. Add Command with
+  /// CommandController::add()
+  [[deprecated("Empty constructor is bad. Use list constructor "
+               "instead.")]] CommandController()
+      : command_queue({}) {}
 
-  /// @brief Create a CommandController with commands pre added. More can be added with CommandController::add()
+  /// @brief Create a CommandController with commands pre added. More can be
+  /// added with CommandController::add()
   /// @param cmds
   CommandController(std::initializer_list<AutoCommand *> cmds) : command_queue(cmds) {}
   /**
@@ -39,7 +43,8 @@ public:
   /**
    * Add multiple commands to the queue. No timeout here.
    * @param cmds the AutoCommands we want to add to our list
-   * @param timeout_sec timeout in seconds to apply to all commands if they are still the default
+   * @param timeout_sec timeout in seconds to apply to all commands if they
+   * are still the default
    */
   [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch "
                "(https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
@@ -52,8 +57,10 @@ public:
    */
   void add_delay(int ms);
 
-  /// @brief add_cancel_func specifies that when this func evaluates to true, to cancel the command controller
-  /// @param true_if_cancel a function that returns true when we want to cancel the command controller
+  /// @brief add_cancel_func specifies that when this func evaluates to true,
+  /// to cancel the command controller
+  /// @param true_if_cancel a function that returns true when we want to
+  /// cancel the command controller
   void add_cancel_func(std::function<bool(void)> true_if_cancel);
 
   /**
@@ -64,8 +71,10 @@ public:
 
   /**
    * last_command_timed_out tells how the last command ended
-   * Use this if you want to make decisions based on the end of the last command
-   * @return true if the last command timed out. false if it finished regularly
+   * Use this if you want to make decisions based on the end of the last
+   * command
+   * @return true if the last command timed out. false if it finished
+   * regularly
    */
   bool last_command_timed_out();
 

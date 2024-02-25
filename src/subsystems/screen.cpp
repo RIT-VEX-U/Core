@@ -78,6 +78,10 @@ void next_page() {
   screen_data_ptr->page++;
   screen_data_ptr->page %= screen_data_ptr->pages.size();
 }
+void goto_page(size_t page) {
+  screen_data_ptr->page = page;
+  screen_data_ptr->page %= screen_data_ptr->pages.size();
+}
 
 /**
  * @brief runs the screen thread

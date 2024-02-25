@@ -72,7 +72,7 @@ bool MotionController::is_on_target() {
 /**
  * @return The current postion, velocity and acceleration setpoints
  */
-motion_t MotionController::get_motion() { return cur_motion; }
+motion_t MotionController::get_motion() const { return cur_motion; }
 
 /**
  * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
