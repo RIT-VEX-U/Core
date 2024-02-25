@@ -109,35 +109,33 @@ $(function(){initNavTree('custom__encoder_8h_source.html',''); initResizable(); 
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classCustomEncoder.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classCustomEncoder.html">CustomEncoder</a> : <span class="keyword">public</span> vex::encoder</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">typedef</span> vex::encoder super;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classCustomEncoder.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classCustomEncoder.html">CustomEncoder</a> : <span class="keyword">public</span> vex::encoder {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keyword">typedef</span> vex::encoder super;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <a class="code hl_function" href="classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d">CustomEncoder</a>(vex::triport::port &amp;port, <span class="keywordtype">double</span> ticks_per_rev);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classCustomEncoder.html#abcb003c4627f59faa25c748c597da7fd">setRotation</a>(<span class="keywordtype">double</span> val, vex::rotationUnits units);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classCustomEncoder.html#a0edd50e16020ccad5eafa55e0f80288d">setPosition</a>(<span class="keywordtype">double</span> val, vex::rotationUnits units);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#a853fa3a11f2563d71f08ee3c3f38ff01">rotation</a>(vex::rotationUnits units);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb">position</a>(vex::rotationUnits units);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#a92fe3a3227b4c4bc1ad1389b7b758455">velocity</a>(vex::velocityUnits units);</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">double</span> tick_scalar;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classCustomEncoder.html#abcb003c4627f59faa25c748c597da7fd">setRotation</a>(<span class="keywordtype">double</span> val, vex::rotationUnits units);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classCustomEncoder.html#a0edd50e16020ccad5eafa55e0f80288d">setPosition</a>(<span class="keywordtype">double</span> val, vex::rotationUnits units);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#a853fa3a11f2563d71f08ee3c3f38ff01">rotation</a>(vex::rotationUnits units);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb">position</a>(vex::rotationUnits units);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classCustomEncoder.html#a92fe3a3227b4c4bc1ad1389b7b758455">velocity</a>(vex::velocityUnits units);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">double</span> tick_scalar;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
 </div>
-<div class="ttc" id="aclassCustomEncoder_html"><div class="ttname"><a href="classCustomEncoder.html">CustomEncoder</a></div><div class="ttdef"><b>Definition</b> custom_encoder.h:9</div></div>
-<div class="ttc" id="aclassCustomEncoder_html_a0edd50e16020ccad5eafa55e0f80288d"><div class="ttname"><a href="classCustomEncoder.html#a0edd50e16020ccad5eafa55e0f80288d">CustomEncoder::setPosition</a></div><div class="ttdeci">void setPosition(double val, vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:15</div></div>
+<div class="ttc" id="aclassCustomEncoder_html"><div class="ttname"><a href="classCustomEncoder.html">CustomEncoder</a></div><div class="ttdef"><b>Definition</b> custom_encoder.h:8</div></div>
+<div class="ttc" id="aclassCustomEncoder_html_a0edd50e16020ccad5eafa55e0f80288d"><div class="ttname"><a href="classCustomEncoder.html#a0edd50e16020ccad5eafa55e0f80288d">CustomEncoder::setPosition</a></div><div class="ttdeci">void setPosition(double val, vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:10</div></div>
 <div class="ttc" id="aclassCustomEncoder_html_a6c17b425b7a899107be1bb7ed7e80b9d"><div class="ttname"><a href="classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d">CustomEncoder::CustomEncoder</a></div><div class="ttdeci">CustomEncoder(vex::triport::port &amp;port, double ticks_per_rev)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:3</div></div>
-<div class="ttc" id="aclassCustomEncoder_html_a853fa3a11f2563d71f08ee3c3f38ff01"><div class="ttname"><a href="classCustomEncoder.html#a853fa3a11f2563d71f08ee3c3f38ff01">CustomEncoder::rotation</a></div><div class="ttdeci">double rotation(vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:20</div></div>
-<div class="ttc" id="aclassCustomEncoder_html_a92fe3a3227b4c4bc1ad1389b7b758455"><div class="ttname"><a href="classCustomEncoder.html#a92fe3a3227b4c4bc1ad1389b7b758455">CustomEncoder::velocity</a></div><div class="ttdeci">double velocity(vex::velocityUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:38</div></div>
-<div class="ttc" id="aclassCustomEncoder_html_ab891fa278911c232bd0bf502a5ed95eb"><div class="ttname"><a href="classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb">CustomEncoder::position</a></div><div class="ttdeci">double position(vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:29</div></div>
-<div class="ttc" id="aclassCustomEncoder_html_abcb003c4627f59faa25c748c597da7fd"><div class="ttname"><a href="classCustomEncoder.html#abcb003c4627f59faa25c748c597da7fd">CustomEncoder::setRotation</a></div><div class="ttdeci">void setRotation(double val, vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:10</div></div>
+<div class="ttc" id="aclassCustomEncoder_html_a853fa3a11f2563d71f08ee3c3f38ff01"><div class="ttname"><a href="classCustomEncoder.html#a853fa3a11f2563d71f08ee3c3f38ff01">CustomEncoder::rotation</a></div><div class="ttdeci">double rotation(vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:12</div></div>
+<div class="ttc" id="aclassCustomEncoder_html_a92fe3a3227b4c4bc1ad1389b7b758455"><div class="ttname"><a href="classCustomEncoder.html#a92fe3a3227b4c4bc1ad1389b7b758455">CustomEncoder::velocity</a></div><div class="ttdeci">double velocity(vex::velocityUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:28</div></div>
+<div class="ttc" id="aclassCustomEncoder_html_ab891fa278911c232bd0bf502a5ed95eb"><div class="ttname"><a href="classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb">CustomEncoder::position</a></div><div class="ttdeci">double position(vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:20</div></div>
+<div class="ttc" id="aclassCustomEncoder_html_abcb003c4627f59faa25c748c597da7fd"><div class="ttname"><a href="classCustomEncoder.html#abcb003c4627f59faa25c748c597da7fd">CustomEncoder::setRotation</a></div><div class="ttdeci">void setRotation(double val, vex::rotationUnits units)</div><div class="ttdef"><b>Definition</b> custom_encoder.cpp:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

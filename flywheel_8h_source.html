@@ -107,105 +107,97 @@ $(function(){initNavTree('flywheel_8h_source.html',''); initResizable(); });
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../core/include/utils/controls/feedforward.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../core/include/robot_specs.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;../core/include/utils/controls/pid.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../core/include/utils/command_structure/auto_command.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;../core/include/subsystems/screen.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../core/include/robot_specs.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../core/include/subsystems/screen.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../core/include/utils/command_structure/auto_command.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;../core/include/utils/controls/feedforward.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../core/include/utils/controls/pid.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classFlywheel.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classFlywheel.html">Flywheel</a></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="comment">// CONSTRUCTORS, GETTERS, AND SETTERS</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <a class="code hl_function" href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel</a>(vex::motor_group &amp;motors, <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;helper, <span class="keyword">const</span> <span class="keywordtype">double</span> ratio, <a class="code hl_class" href="classFilter.html">Filter</a> &amp;filt);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">get_target</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">getRPM</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  vex::motor_group &amp;<a class="code hl_function" href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">get_motors</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">spin_manual</a>(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(<span class="keywordtype">double</span> rpm);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">stop</a>();</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">   73</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>()</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> fb.<a class="code hl_function" href="classFeedback.html#ae4cc835c374aab9761d22603d4329d34">is_on_target</a>();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  }</div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classFlywheel.html">   20</a></span><span class="keyword">class </span><a class="code hl_class" href="classFlywheel.html">Flywheel</a> {</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="comment">// CONSTRUCTORS, GETTERS, AND SETTERS</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <a class="code hl_function" href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel</a>(vex::motor_group &amp;motors, <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;helper, <span class="keyword">const</span> <span class="keywordtype">double</span> ratio, <a class="code hl_class" href="classFilter.html">Filter</a> &amp;filt);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">get_target</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">getRPM</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  vex::motor_group &amp;<a class="code hl_function" href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">get_motors</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">spin_manual</a>(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(<span class="keywordtype">double</span> rpm);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">stop</a>();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">   78</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>() { <span class="keywordflow">return</span> fb.<a class="code hl_function" href="classFeedback.html#ae4cc835c374aab9761d22603d4329d34">is_on_target</a>(); }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <a class="code hl_class" href="classscreen_1_1Page.html">screen::Page</a> *<a class="code hl_function" href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Page</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">   93</a></span>  <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *<a class="code hl_function" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">SpinRpmCmd</a>(<span class="keywordtype">int</span> rpm) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classFunctionCommand.html">FunctionCommand</a>([<span class="keyword">this</span>, rpm]() {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(rpm);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    });</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  }</div>
 </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_class" href="classscreen_1_1Page.html">screen::Page</a> *<a class="code hl_function" href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Page</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">   89</a></span>  <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *<a class="code hl_function" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">SpinRpmCmd</a>(<span class="keywordtype">int</span> rpm)</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classFunctionCommand.html">FunctionCommand</a>([<span class="keyword">this</span>, rpm]()</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                               {<a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(rpm); <span class="keywordflow">return</span> <span class="keyword">true</span>; });</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">  106</a></span>  <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *<a class="code hl_function" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">WaitUntilUpToSpeedCmd</a>() {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classWaitUntilCondition.html">WaitUntilCondition</a>(<span class="keyword">new</span> <a class="code hl_class" href="classFunctionCondition.html">FunctionCondition</a>([<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>(); }));</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  }</div>
 </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">  100</a></span>  <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> *<a class="code hl_function" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">WaitUntilUpToSpeedCmd</a>()</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classWaitUntilCondition.html">WaitUntilCondition</a>(</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keyword">new</span> <a class="code hl_class" href="classFunctionCondition.html">FunctionCondition</a>([<span class="keyword">this</span>]()</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                              { <span class="keywordflow">return</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>(); }));</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classFlywheelPage.html">FlywheelPage</a>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">friend</span> <span class="keywordtype">int</span> <a class="code hl_friend" href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">spinRPMTask</a>(<span class="keywordtype">void</span> *wheelPointer);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  vex::motor_group &amp;motors;       </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keywordtype">bool</span> task_running = <span class="keyword">false</span>;      </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;fb;                   </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;ff;                </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  vex::mutex fb_mut;              </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <span class="keywordtype">double</span> ratio;                   </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  std::atomic&lt;double&gt; target_rpm; </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  task rpm_task;                  </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  <a class="code hl_class" href="classFilter.html">Filter</a> &amp;avger;                  </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="comment">// Functions for internal use only</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordtype">void</span> set_target(<span class="keywordtype">double</span> value);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>  <span class="keywordtype">double</span> measure_RPM();</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>  <span class="keywordtype">void</span> spin_raw(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>};</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">friend</span> <span class="keyword">class </span><a class="code hl_class" href="classFlywheelPage.html">FlywheelPage</a>;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keyword">friend</span> <span class="keywordtype">int</span> <a class="code hl_friend" href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">spinRPMTask</a>(<span class="keywordtype">void</span> *wheelPointer);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  vex::motor_group &amp;motors;       </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keywordtype">bool</span> task_running = <span class="keyword">false</span>;      </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;fb;                   </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;ff;                </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  vex::mutex fb_mut;              </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">double</span> ratio;                   </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  std::atomic&lt;double&gt; target_rpm; </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  task rpm_task;                  </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  <a class="code hl_class" href="classFilter.html">Filter</a> &amp;avger;            </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="comment">// Functions for internal use only</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <span class="keywordtype">void</span> set_target(<span class="keywordtype">double</span> value);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keywordtype">double</span> measure_RPM();</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>  <span class="keywordtype">void</span> spin_raw(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
-</div>
-<div class="ttc" id="aclassAutoCommand_html"><div class="ttname"><a href="classAutoCommand.html">AutoCommand</a></div><div class="ttdef"><b>Definition</b> auto_command.h:35</div></div>
-<div class="ttc" id="aclassFeedForward_html"><div class="ttname"><a href="classFeedForward.html">FeedForward</a></div><div class="ttdef"><b>Definition</b> feedforward.h:30</div></div>
-<div class="ttc" id="aclassFeedback_html"><div class="ttname"><a href="classFeedback.html">Feedback</a></div><div class="ttdef"><b>Definition</b> feedback_base.h:11</div></div>
+<div class="ttc" id="aclassAutoCommand_html"><div class="ttname"><a href="classAutoCommand.html">AutoCommand</a></div><div class="ttdef"><b>Definition</b> auto_command.h:31</div></div>
+<div class="ttc" id="aclassFeedForward_html"><div class="ttname"><a href="classFeedForward.html">FeedForward</a></div><div class="ttdef"><b>Definition</b> feedforward.h:29</div></div>
+<div class="ttc" id="aclassFeedback_html"><div class="ttname"><a href="classFeedback.html">Feedback</a></div><div class="ttdef"><b>Definition</b> feedback_base.h:10</div></div>
 <div class="ttc" id="aclassFeedback_html_ae4cc835c374aab9761d22603d4329d34"><div class="ttname"><a href="classFeedback.html#ae4cc835c374aab9761d22603d4329d34">Feedback::is_on_target</a></div><div class="ttdeci">virtual bool is_on_target()=0</div></div>
-<div class="ttc" id="aclassFilter_html"><div class="ttname"><a href="classFilter.html">Filter</a></div><div class="ttdef"><b>Definition</b> moving_average.h:9</div></div>
-<div class="ttc" id="aclassFlywheelPage_html"><div class="ttname"><a href="classFlywheelPage.html">FlywheelPage</a></div><div class="ttdef"><b>Definition</b> flywheel.cpp:148</div></div>
-<div class="ttc" id="aclassFlywheel_html"><div class="ttname"><a href="classFlywheel.html">Flywheel</a></div><div class="ttdef"><b>Definition</b> flywheel.h:19</div></div>
-<div class="ttc" id="aclassFlywheel_html_a0340e5807718d4a602aed219783acdd8"><div class="ttname"><a href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">Flywheel::WaitUntilUpToSpeedCmd</a></div><div class="ttdeci">AutoCommand * WaitUntilUpToSpeedCmd()</div><div class="ttdoc">Creates a new auto command that will hold until the flywheel has its target as defined by its feedbac...</div><div class="ttdef"><b>Definition</b> flywheel.h:100</div></div>
-<div class="ttc" id="aclassFlywheel_html_a237f97e26bca2afd8c7e97558443055f"><div class="ttname"><a href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">Flywheel::get_motors</a></div><div class="ttdeci">vex::motor_group &amp; get_motors() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:27</div></div>
-<div class="ttc" id="aclassFlywheel_html_a291e067bcc495a9d3da16a5832d78484"><div class="ttname"><a href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">Flywheel::spin_manual</a></div><div class="ttdeci">void spin_manual(double speed, directionType dir=fwd)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:96</div></div>
-<div class="ttc" id="aclassFlywheel_html_a2da213a6aaf2ec9c74c7beaa1fdf53ac"><div class="ttname"><a href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Flywheel::Page</a></div><div class="ttdeci">screen::Page * Page() const</div><div class="ttdoc">Creates a page displaying info about the flywheel.</div><div class="ttdef"><b>Definition</b> flywheel.cpp:183</div></div>
+<div class="ttc" id="aclassFilter_html"><div class="ttname"><a href="classFilter.html">Filter</a></div><div class="ttdef"><b>Definition</b> moving_average.h:8</div></div>
+<div class="ttc" id="aclassFlywheelPage_html"><div class="ttname"><a href="classFlywheelPage.html">FlywheelPage</a></div><div class="ttdef"><b>Definition</b> flywheel.cpp:133</div></div>
+<div class="ttc" id="aclassFlywheel_html"><div class="ttname"><a href="classFlywheel.html">Flywheel</a></div><div class="ttdef"><b>Definition</b> flywheel.h:20</div></div>
+<div class="ttc" id="aclassFlywheel_html_a0340e5807718d4a602aed219783acdd8"><div class="ttname"><a href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">Flywheel::WaitUntilUpToSpeedCmd</a></div><div class="ttdeci">AutoCommand * WaitUntilUpToSpeedCmd()</div><div class="ttdoc">Creates a new auto command that will hold until the flywheel has its target as defined by its feedbac...</div><div class="ttdef"><b>Definition</b> flywheel.h:106</div></div>
+<div class="ttc" id="aclassFlywheel_html_a237f97e26bca2afd8c7e97558443055f"><div class="ttname"><a href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">Flywheel::get_motors</a></div><div class="ttdeci">vex::motor_group &amp; get_motors() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:26</div></div>
+<div class="ttc" id="aclassFlywheel_html_a291e067bcc495a9d3da16a5832d78484"><div class="ttname"><a href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">Flywheel::spin_manual</a></div><div class="ttdeci">void spin_manual(double speed, directionType dir=fwd)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:89</div></div>
+<div class="ttc" id="aclassFlywheel_html_a2da213a6aaf2ec9c74c7beaa1fdf53ac"><div class="ttname"><a href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Flywheel::Page</a></div><div class="ttdeci">screen::Page * Page() const</div><div class="ttdoc">Creates a page displaying info about the flywheel.</div><div class="ttdef"><b>Definition</b> flywheel.cpp:169</div></div>
 <div class="ttc" id="aclassFlywheel_html_a39422b9ac580d764694037e3cd8f53e8"><div class="ttname"><a href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel::Flywheel</a></div><div class="ttdeci">Flywheel(vex::motor_group &amp;motors, Feedback &amp;feedback, FeedForward &amp;helper, const double ratio, Filter &amp;filt)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:15</div></div>
-<div class="ttc" id="aclassFlywheel_html_a4bc1b25122c9f8536c43c06c74f4f92c"><div class="ttname"><a href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">Flywheel::is_on_target</a></div><div class="ttdeci">bool is_on_target()</div><div class="ttdoc">check if the feedback controller thinks the flywheel is on target</div><div class="ttdef"><b>Definition</b> flywheel.h:73</div></div>
-<div class="ttc" id="aclassFlywheel_html_a6634f5126f0404e0edeeff1e0e14d05e"><div class="ttname"><a href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">Flywheel::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition</b> flywheel.cpp:135</div></div>
-<div class="ttc" id="aclassFlywheel_html_aa18519258b1ab8753e93392c42b6dba8"><div class="ttname"><a href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">Flywheel::spin_rpm</a></div><div class="ttdeci">void spin_rpm(double rpm)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:108</div></div>
-<div class="ttc" id="aclassFlywheel_html_abbbe49f13e580a85670734f472170b45"><div class="ttname"><a href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">Flywheel::getRPM</a></div><div class="ttdeci">double getRPM() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:40</div></div>
-<div class="ttc" id="aclassFlywheel_html_af1a934bb8f51cc5a4ce88e09c6d9f0a0"><div class="ttname"><a href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">Flywheel::get_target</a></div><div class="ttdeci">double get_target() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:22</div></div>
-<div class="ttc" id="aclassFlywheel_html_afa2cdd8707f7fe1267279f61218fe2aa"><div class="ttname"><a href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">Flywheel::spinRPMTask</a></div><div class="ttdeci">friend int spinRPMTask(void *wheelPointer)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:48</div></div>
-<div class="ttc" id="aclassFlywheel_html_afe2fb986a59f0581e4608e7cbbdf7b89"><div class="ttname"><a href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">Flywheel::SpinRpmCmd</a></div><div class="ttdeci">AutoCommand * SpinRpmCmd(int rpm)</div><div class="ttdoc">Creates a new auto command to spin the flywheel at the desired velocity.</div><div class="ttdef"><b>Definition</b> flywheel.h:89</div></div>
-<div class="ttc" id="aclassFunctionCommand_html"><div class="ttname"><a href="classFunctionCommand.html">FunctionCommand</a></div><div class="ttdef"><b>Definition</b> auto_command.h:80</div></div>
-<div class="ttc" id="aclassFunctionCondition_html"><div class="ttname"><a href="classFunctionCondition.html">FunctionCondition</a></div><div class="ttdoc">FunctionCondition is a quick and dirty Condition to wrap some expression that should be evaluated at ...</div><div class="ttdef"><b>Definition</b> auto_command.h:119</div></div>
-<div class="ttc" id="aclassWaitUntilCondition_html"><div class="ttname"><a href="classWaitUntilCondition.html">WaitUntilCondition</a></div><div class="ttdoc">Waits until the condition is true.</div><div class="ttdef"><b>Definition</b> auto_command.h:146</div></div>
-<div class="ttc" id="aclassscreen_1_1Page_html"><div class="ttname"><a href="classscreen_1_1Page.html">screen::Page</a></div><div class="ttdoc">Page describes one part of the screen slideshow.</div><div class="ttdef"><b>Definition</b> screen.h:135</div></div>
+<div class="ttc" id="aclassFlywheel_html_a4bc1b25122c9f8536c43c06c74f4f92c"><div class="ttname"><a href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">Flywheel::is_on_target</a></div><div class="ttdeci">bool is_on_target()</div><div class="ttdoc">check if the feedback controller thinks the flywheel is on target</div><div class="ttdef"><b>Definition</b> flywheel.h:78</div></div>
+<div class="ttc" id="aclassFlywheel_html_a6634f5126f0404e0edeeff1e0e14d05e"><div class="ttname"><a href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">Flywheel::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition</b> flywheel.cpp:123</div></div>
+<div class="ttc" id="aclassFlywheel_html_aa18519258b1ab8753e93392c42b6dba8"><div class="ttname"><a href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">Flywheel::spin_rpm</a></div><div class="ttdeci">void spin_rpm(double rpm)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:100</div></div>
+<div class="ttc" id="aclassFlywheel_html_abbbe49f13e580a85670734f472170b45"><div class="ttname"><a href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">Flywheel::getRPM</a></div><div class="ttdeci">double getRPM() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:38</div></div>
+<div class="ttc" id="aclassFlywheel_html_af1a934bb8f51cc5a4ce88e09c6d9f0a0"><div class="ttname"><a href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">Flywheel::get_target</a></div><div class="ttdeci">double get_target() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:21</div></div>
+<div class="ttc" id="aclassFlywheel_html_afa2cdd8707f7fe1267279f61218fe2aa"><div class="ttname"><a href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">Flywheel::spinRPMTask</a></div><div class="ttdeci">friend int spinRPMTask(void *wheelPointer)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:44</div></div>
+<div class="ttc" id="aclassFlywheel_html_afe2fb986a59f0581e4608e7cbbdf7b89"><div class="ttname"><a href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">Flywheel::SpinRpmCmd</a></div><div class="ttdeci">AutoCommand * SpinRpmCmd(int rpm)</div><div class="ttdoc">Creates a new auto command to spin the flywheel at the desired velocity.</div><div class="ttdef"><b>Definition</b> flywheel.h:93</div></div>
+<div class="ttc" id="aclassFunctionCommand_html"><div class="ttname"><a href="classFunctionCommand.html">FunctionCommand</a></div><div class="ttdef"><b>Definition</b> auto_command.h:76</div></div>
+<div class="ttc" id="aclassFunctionCondition_html"><div class="ttname"><a href="classFunctionCondition.html">FunctionCondition</a></div><div class="ttdoc">FunctionCondition is a quick and dirty Condition to wrap some expression that should be evaluated at ...</div><div class="ttdef"><b>Definition</b> auto_command.h:109</div></div>
+<div class="ttc" id="aclassWaitUntilCondition_html"><div class="ttname"><a href="classWaitUntilCondition.html">WaitUntilCondition</a></div><div class="ttdoc">Waits until the condition is true.</div><div class="ttdef"><b>Definition</b> auto_command.h:134</div></div>
+<div class="ttc" id="aclassscreen_1_1Page_html"><div class="ttname"><a href="classscreen_1_1Page.html">screen::Page</a></div><div class="ttdoc">Page describes one part of the screen slideshow.</div><div class="ttdef"><b>Definition</b> screen.h:126</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
