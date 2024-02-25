@@ -160,8 +160,7 @@ private:
    * @return a trapezoid_profile_segment_t that represents constant acceleration
    * to the target velocity
    */
-  trapezoid_profile_segment_t calculate_kinetic_motion(double si, double vi,
-                                                       double v_target);
+  trapezoid_profile_segment_t calculate_kinetic_motion(double si, double vi, double v_target);
 
   /**
    * Calculate the next segment of the trapezoid motion profile
