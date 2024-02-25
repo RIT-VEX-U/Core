@@ -31,9 +31,8 @@ double PID::update(double sensor_val) {
   if (time_delta != 0) {
     d_term = config.d * (get_error() - last_error) / time_delta;
   } else if (last_time != 0) {
-    printf(
-        "(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
-}
+    printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
+  }
 
   // P and D terms
   out = (config.p * get_error()) + d_term;
@@ -42,10 +41,9 @@ double PID::update(double sensor_val) {
 
   // Only add to the accumulated error if the output is not saturated
   // aka "Integral Clamping" anti-windup technique
-  if (!limits_exist ||
-      (limits_exist && (out < upper_limit && out > lower_limit))) {
+  if (!limits_exist || (limits_exist && (out < upper_limit && out > lower_limit))) {
     accum_error += time_delta * get_error();
-}
+  }
 
   // I term
   out += config.i * accum_error;
@@ -55,10 +53,8 @@ double PID::update(double sensor_val) {
 
   // Enable clamping if the limit is not 0
   if (limits_exist) {
-    out = (out < lower_limit)   ? lower_limit
-          : (out > upper_limit) ? upper_limit
-                                : out;
-}
+    out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
+  }
 
   return out;
 }
@@ -118,12 +114,11 @@ bool PID::is_on_target() {
   if (fabs(get_error()) < config.deadband) {
     if (target_vel != 0) {
       return true;
-}
+    }
     if (is_checking_on_target == false) {
       on_target_last_time = pid_timer.value();
       is_checking_on_target = true;
-    } else if (pid_timer.value() - on_target_last_time >
-               config.on_target_time) {
+    } else if (pid_timer.value() - on_target_last_time > config.on_target_time) {
       return true;
     }
   } else {

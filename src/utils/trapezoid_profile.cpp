@@ -5,17 +5,13 @@
 
 const double EPSILON = 0.000005;
 
-inline double calc_pos(double t, double a, double v, double si) {
-  return (0.5 * (a) * (t) * (t)) + ((v) * (t)) + (si);
-}
+inline double calc_pos(double t, double a, double v, double si) { return (0.5 * (a) * (t) * (t)) + ((v) * (t)) + (si); }
 
-inline double calc_vel(double t, double a, double vi) {
-  return ((a) * (t)) + (vi);
-}
+inline double calc_vel(double t, double a, double vi) { return ((a) * (t)) + (vi); }
 
 TrapezoidProfile::TrapezoidProfile(double max_v, double accel)
-    : si(0), sf(0), vi(0), vf(0), max_v(max_v), accel(accel), segments(),
-      num_acceleration_phases(0), precalculated(false) {}
+    : si(0), sf(0), vi(0), vf(0), max_v(max_v), accel(accel), segments(), num_acceleration_phases(0),
+      precalculated(false) {}
 
 void TrapezoidProfile::set_max_v(double max_v) {
   this->max_v = max_v;
@@ -46,7 +42,7 @@ void TrapezoidProfile::set_vel_endpts(double start, double end) {
 motion_t TrapezoidProfile::calculate_time_based(double time_s) {
   if (!this->precalculated) {
     precalculate();
-}
+  }
 
   int segment_i = 0;
 
@@ -58,8 +54,7 @@ motion_t TrapezoidProfile::calculate_time_based(double time_s) {
   double segment_t = 0;
 
   // skip phases based on time
-  while (segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS &&
-         time_s > segment_t + this->segments[segment_i].duration) {
+  while (segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS && time_s > segment_t + this->segments[segment_i].duration) {
     segment_t += this->segments[segment_i].duration;
     segment_s = this->segments[segment_i].pos_after;
     segment_v = this->segments[segment_i].vel_after;
@@ -88,7 +83,7 @@ motion_t TrapezoidProfile::calculate_time_based(double time_s) {
 motion_t TrapezoidProfile::calculate(double time_s, double pos_s) {
   if (!this->precalculated) {
     precalculate();
-}
+  }
 
   // printf("%f %f\n", time_s, pos_s);
 
@@ -102,8 +97,7 @@ motion_t TrapezoidProfile::calculate(double time_s, double pos_s) {
   double segment_t = 0;
 
   // skip acceleration phases based on time
-  while (segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS &&
-         segment_i < this->num_acceleration_phases &&
+  while (segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS && segment_i < this->num_acceleration_phases &&
          time_s > segment_t + this->segments[segment_i].duration) {
     segment_t += this->segments[segment_i].duration;
     segment_s = this->segments[segment_i].pos_after;
@@ -114,11 +108,9 @@ motion_t TrapezoidProfile::calculate(double time_s, double pos_s) {
 
   // skip other segments based on distance, if we are past the time segments
   if (segment_i >= this->num_acceleration_phases) {
-    while (
-        segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS &&
-        ((this->si < this->sf && pos_s > this->segments[segment_i].pos_after) ||
-         (this->si > this->sf &&
-          pos_s < this->segments[segment_i].pos_after))) {
+    while (segment_i < MAX_TRAPEZOID_PROFILE_SEGMENTS &&
+           ((this->si < this->sf && pos_s > this->segments[segment_i].pos_after) ||
+            (this->si > this->sf && pos_s < this->segments[segment_i].pos_after))) {
       segment_t += this->segments[segment_i].duration;
       segment_s = this->segments[segment_i].pos_after;
       segment_v = this->segments[segment_i].vel_after;
@@ -157,7 +149,7 @@ motion_t TrapezoidProfile::calculate(double time_s, double pos_s) {
   // match the sign of the starting velocity of the segment
   if (segment_v < 0) {
     out.vel *= -1;
-}
+  }
 
   return out;
 }
@@ -193,12 +185,11 @@ bool TrapezoidProfile::precalculate() {
       this->vf = this->max_v;
     } else {
       this->vf = -this->max_v;
-}
+    }
   }
 
   // if displacement is + but vf is -, or if displacement is - but vf is +
-  if ((this->si < this->sf && this->vf < 0) ||
-      (this->si > this->sf && this->vf > 0)) {
+  if ((this->si < this->sf && this->vf < 0) || (this->si > this->sf && this->vf > 0)) {
     printf("WARNING: trapezoid motion profile target velocity is in the wrong "
            "direction\n");
     this->vf = 0;
@@ -214,7 +205,7 @@ bool TrapezoidProfile::precalculate() {
 
     if (fabs(segment.pos_after - this->sf) < EPSILON) {
       return true;
-}
+    }
 
     // Check if xf is between x and x_next (meaning we overshot the end
     // position)
@@ -226,7 +217,7 @@ bool TrapezoidProfile::precalculate() {
       double a_coeff = 0.5 * segment.accel;
       if (fabs(a_coeff) < EPSILON) {
         a_coeff = EPSILON;
-}
+      }
       double b_coeff = v;
       double c_coeff = s - this->sf;
 
@@ -260,9 +251,7 @@ bool TrapezoidProfile::precalculate() {
   return false;
 }
 
-trapezoid_profile_segment_t
-TrapezoidProfile::calculate_kinetic_motion(double si, double vi,
-                                           double v_target) {
+trapezoid_profile_segment_t TrapezoidProfile::calculate_kinetic_motion(double si, double vi, double v_target) {
   trapezoid_profile_segment_t m;
 
   m.duration = fabs(v_target - vi) / this->accel;
@@ -277,8 +266,7 @@ TrapezoidProfile::calculate_kinetic_motion(double si, double vi,
   return m;
 }
 
-trapezoid_profile_segment_t TrapezoidProfile::calculate_next_segment(double s,
-                                                                     double v) {
+trapezoid_profile_segment_t TrapezoidProfile::calculate_next_segment(double s, double v) {
   // d represents the direction of travel, + or -
   int d = 1;
   if (this->si > this->sf) {
@@ -298,8 +286,7 @@ trapezoid_profile_segment_t TrapezoidProfile::calculate_next_segment(double s,
   }
 
   // how much distance would it take to reach vf in one segment?
-  trapezoid_profile_segment_t beeline_vf =
-      calculate_kinetic_motion(s, v, this->vf);
+  trapezoid_profile_segment_t beeline_vf = calculate_kinetic_motion(s, v, this->vf);
   if ((d == 1 && beeline_vf.pos_after > this->sf - EPSILON) ||
       (d == -1 && beeline_vf.pos_after <= this->sf + EPSILON)) {
     // we can't make it to vf - get as close as possible
@@ -309,8 +296,7 @@ trapezoid_profile_segment_t TrapezoidProfile::calculate_next_segment(double s,
   // we can reach vf in one segment - choose the fastest speed so that that is
   // still possible
   double v_middle =
-      d * sqrt(((v * v + this->vf * this->vf) / 2.0) +
-               this->accel * fabs(this->sf - s) + this->vf * this->vf);
+      d * sqrt(((v * v + this->vf * this->vf) / 2.0) + this->accel * fabs(this->sf - s) + this->vf * this->vf);
   // cap this at our max speed
   v_middle = fmax(-this->max_v, fmin(v_middle, this->max_v));
 

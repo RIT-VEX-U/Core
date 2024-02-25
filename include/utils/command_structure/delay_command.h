@@ -9,25 +9,25 @@
 
 #include "../core/include/utils/command_structure/auto_command.h"
 
-class DelayCommand: public AutoCommand {
-  public:
-    /**
-     * Construct a delay command
-     * @param ms the number of milliseconds to delay for
-    */
-    DelayCommand(int ms): ms(ms) {}
-    
-    /**
-     * Delays for the amount of milliseconds stored in the command
-     * Overrides run from AutoCommand
-     * @returns true when complete
-     */
-    bool run() override {
-      vexDelay(ms);
-      return true;
-    }
+class DelayCommand : public AutoCommand {
+public:
+  /**
+   * Construct a delay command
+   * @param ms the number of milliseconds to delay for
+   */
+  DelayCommand(int ms) : ms(ms) {}
 
-  private:
-    // amount of milliseconds to wait
-    int ms;
+  /**
+   * Delays for the amount of milliseconds stored in the command
+   * Overrides run from AutoCommand
+   * @returns true when complete
+   */
+  bool run() override {
+    vexDelay(ms);
+    return true;
+  }
+
+private:
+  // amount of milliseconds to wait
+  int ms;
 };

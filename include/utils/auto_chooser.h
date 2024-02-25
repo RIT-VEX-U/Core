@@ -1,9 +1,9 @@
 #pragma once
+#include "../core/include/subsystems/screen.h"
+#include "../core/include/utils/geometry.h"
 #include "vex.h"
 #include <string>
 #include <vector>
-#include "../core/include/subsystems/screen.h"
-#include "../core/include/utils/geometry.h"
 
 /**
  * Autochooser is a utility to make selecting robot autonomous programs easier
@@ -11,10 +11,10 @@
  * During a season, we usually code between 4 and 6 autonomous programs.
  * Most teams will change their entire robot program as a way of choosing autonomi
  * but this may cause issues if you have an emergency patch to upload during a competition.
- * This class was built as a way of using the robot screen to list autonomous programs, and the touchscreen to select them.
+ * This class was built as a way of using the robot screen to list autonomous programs, and the touchscreen to select
+ * them.
  */
-class AutoChooser : public screen::Page
-{
+class AutoChooser : public screen::Page {
 public:
   /**
    * Initialize the auto-chooser. This class places a choice menu on the brain screen,
@@ -36,8 +36,7 @@ protected:
   /**
    *  entry_t is a datatype used to store information that the chooser knows about an auto selection button
    */
-  struct entry_t
-  {
+  struct entry_t {
     Rect rect;
     std::string name; /**< name of the auto repretsented by the block*/
   };
