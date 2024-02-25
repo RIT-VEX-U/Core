@@ -1,15 +1,14 @@
 #pragma once
 
-#include <string>
-#include <stdio.h>
-#include <vector>
-#include <cmath>
-#include "vex.h"
 #include "../core/include/utils/geometry.h"
 #include "../core/include/utils/vector2d.h"
+#include "vex.h"
+#include <cmath>
+#include <stdio.h>
+#include <string>
+#include <vector>
 
-class GraphDrawer
-{
+class GraphDrawer {
 public:
   /// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
   /// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
@@ -17,7 +16,8 @@ public:
   /// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
   /// @param colors the colors of the series. must be of size num_series
   /// @param num_series the number of series to graph
-  GraphDrawer(int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series = 1);
+  GraphDrawer(int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors,
+              size_t num_series = 1);
   /**
    * add_samples adds a point to the graph, removing one from the back
    * @param sample an x, y coordinate of the next point to graph
@@ -26,7 +26,8 @@ public:
 
   /**
    * add_samples adds a point to the graph, removing one from the back
-   * @param sample a y coordinate of the next point to graph, the x coordinate is gotten from vex::timer::system(); (time in ms)
+   * @param sample a y coordinate of the next point to graph, the x coordinate is gotten from vex::timer::system();
+   * (time in ms)
    */
   void add_samples(std::vector<double> sample);
 

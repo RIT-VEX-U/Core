@@ -1,17 +1,16 @@
 #pragma once
-#include <vector>
+#include "../core/include/utils/geometry.h"
 #include "math.h"
 #include "vex.h"
-#include "../core/include/utils/geometry.h"
-
+#include <vector>
 
 /**
-* Constrain the input between a minimum and a maximum value
-* 
-* @param val  the value to be restrained
-* @param low  the minimum value that will be returned
-* @param high the maximum value that will be returned
-**/
+ * Constrain the input between a minimum and a maximum value
+ *
+ * @param val  the value to be restrained
+ * @param low  the minimum value that will be returned
+ * @param high the maximum value that will be returned
+ **/
 double clamp(double value, double low, double high);
 
 /**
@@ -19,14 +18,14 @@ double clamp(double value, double low, double high);
  * @param a at t = 0, output = a
  * @param b at t = 1, output = b
  * @return a linear mixing of a and b according to t
-*/
+ */
 double lerp(double a, double b, double t);
 /**
-* Returns the sign of a number
-* @param x
-* 
-* returns the sign +/-1 of x. 0 if x is 0
-**/
+ * Returns the sign of a number
+ * @param x
+ *
+ * returns the sign +/-1 of x. 0 if x is 0
+ **/
 double sign(double x);
 
 double wrap_angle_deg(double input);
@@ -39,7 +38,6 @@ https://en.wikipedia.org/wiki/Variance
 @param mean     the average of values
 */
 double variance(std::vector<double> const &values, double mean);
-
 
 /*
 Calculates the average of a vector of doubles

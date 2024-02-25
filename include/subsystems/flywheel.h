@@ -1,22 +1,21 @@
 #pragma once
 
-#include "../core/include/utils/controls/feedforward.h"
-#include "vex.h"
 #include "../core/include/robot_specs.h"
-#include "../core/include/utils/controls/pid.h"
-#include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/subsystems/screen.h"
+#include "../core/include/utils/command_structure/auto_command.h"
+#include "../core/include/utils/controls/feedforward.h"
+#include "../core/include/utils/controls/pid.h"
+#include "vex.h"
 #include <atomic>
 
 /**
  * a Flywheel class that handles all control of a high inertia spinning disk
- * It gives multiple options for what control system to use in order to control wheel velocity and functions alerting the user when the flywheel is up to speed.
- * Flywheel is a set and forget class.
- * Once you create it you can call spin_rpm or stop on it at any time and it will take all necessary steps to accomplish this
+ * It gives multiple options for what control system to use in order to control wheel velocity and functions alerting
+ * the user when the flywheel is up to speed. Flywheel is a set and forget class. Once you create it you can call
+ * spin_rpm or stop on it at any time and it will take all necessary steps to accomplish this
  *
  */
-class Flywheel
-{
+class Flywheel {
 
 public:
   // CONSTRUCTORS, GETTERS, AND SETTERS
@@ -70,10 +69,7 @@ public:
    * @brief check if the feedback controller thinks the flywheel is on target
    * @return true if on target
    */
-  bool is_on_target()
-  {
-    return fb.is_on_target();
-  }
+  bool is_on_target() { return fb.is_on_target(); }
 
   /**
    *  @brief Creates a page displaying info about the flywheel
@@ -85,23 +81,22 @@ public:
    * @brief Creates a new auto command to spin the flywheel at the desired velocity
    * @param rpm the rpm to spin at
    * @return an auto command to add to a command controller
-  */
-  AutoCommand *SpinRpmCmd(int rpm)
-  {
+   */
+  AutoCommand *SpinRpmCmd(int rpm) {
 
-    return new FunctionCommand([this, rpm]()
-                               {spin_rpm(rpm); return true; });
+    return new FunctionCommand([this, rpm]() {
+      spin_rpm(rpm);
+      return true;
+    });
   }
 
   /**
-   * @brief Creates a new auto command that will hold until the flywheel has its target as defined by its feedback controller
+   * @brief Creates a new auto command that will hold until the flywheel has its target as defined by its feedback
+   * controller
    * @return an auto command to add to a command controller
    */
-  AutoCommand *WaitUntilUpToSpeedCmd()
-  {
-    return new WaitUntilCondition(
-        new FunctionCondition([this]()
-                              { return is_on_target(); }));
+  AutoCommand *WaitUntilUpToSpeedCmd() {
+    return new WaitUntilCondition(new FunctionCondition([this]() { return is_on_target(); }));
   }
 
 private:
@@ -116,7 +111,7 @@ private:
   double ratio;                   ///< ratio between motor and flywheel. For accurate RPM calcualation
   std::atomic<double> target_rpm; ///< Desired RPM of the flywheel.
   task rpm_task;                  ///< task that handles spinning the wheel at a given target_rpm
-  Filter &avger;            ///< Moving average to smooth out noise from
+  Filter &avger;                  ///< Moving average to smooth out noise from
 
   // Functions for internal use only
   /**
