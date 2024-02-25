@@ -33,7 +33,9 @@ void explain_error(vex::brain::lcd &screen) {
     screen.printAt(40, 30, true, "%s was too big to open", name.c_str());
     break;
   case DidntReadRight:
-    screen.printAt(40, 30, true, "%s wasnt read correctly. Are you sure its mpeg1", name.c_str());
+    screen.printAt(40, 30, true,
+                   "%s wasnt read correctly. Are you sure its mpeg1",
+                   name.c_str());
     break;
   case NeverInitialized:
     screen.printAt(40, 30, true, "no video loaded. did you forget set_video()");
@@ -50,7 +52,7 @@ int video_player() {
   }
   plm_frame_t *frame = NULL;
   while (true) {
-    for (int i = 1; frame = plm_decode_video(plm); i++) {
+    for (int i = 1; (frame = plm_decode_video(plm)); i++) {
 
       uint32_t start_ms = vex::timer::system();
 
@@ -108,7 +110,8 @@ void set_video(const std::string &filename) {
 VideoPlayer::VideoPlayer() {}
 void VideoPlayer::update(bool was_pressed, int x, int y) {}
 
-void VideoPlayer::draw(vex::brain::lcd &screen, bool first_draw, unsigned int frame_number) {
+void VideoPlayer::draw(vex::brain::lcd &screen, bool first_draw,
+                       unsigned int frame_number) {
   if (state != Ok) {
     explain_error(screen);
     return;
