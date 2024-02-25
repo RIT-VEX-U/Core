@@ -17,10 +17,9 @@ var searchData=
   ['point_14',['point',['../classVector2D.html#af4072ee7df61c8cd21c3c4cd935aa7e1',1,'Vector2D']]],
   ['point_5ft_15',['point_t',['../structpoint__t.html',1,'']]],
   ['pos_16',['pos',['../structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4',1,'motion_t']]],
-  ['pos_5fafter_17',['pos_after',['../structtrapezoid__profile__segment__t.html#a7767f2564778bfdca26f8c26638a945d',1,'trapezoid_profile_segment_t']]],
-  ['pos_5fdiff_18',['pos_diff',['../classOdometryBase.html#a58d8c7bfd6456038d025c39580971bd6',1,'OdometryBase']]],
-  ['pose_5ft_19',['pose_t',['../structpose__t.html',1,'']]],
-  ['position_20',['position',['../classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb',1,'CustomEncoder']]],
-  ['pure_5fpursuit_21',['pure_pursuit',['../classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2c820f92bc185bc29095c83e772bea46',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0)']]],
-  ['purepursuitcommand_22',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'PurePursuitCommand'],['../classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae',1,'PurePursuitCommand::PurePursuitCommand()']]]
+  ['pos_5fdiff_17',['pos_diff',['../classOdometryBase.html#a58d8c7bfd6456038d025c39580971bd6',1,'OdometryBase']]],
+  ['pose_5ft_18',['pose_t',['../structpose__t.html',1,'']]],
+  ['position_19',['position',['../classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb',1,'CustomEncoder']]],
+  ['pure_5fpursuit_20',['pure_pursuit',['../classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2c820f92bc185bc29095c83e772bea46',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0)']]],
+  ['purepursuitcommand_21',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'PurePursuitCommand'],['../classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae',1,'PurePursuitCommand::PurePursuitCommand()']]]
 ];

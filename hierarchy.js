@@ -75,7 +75,6 @@ var hierarchy =
     [ "screen::Page", "classscreen_1_1Page.html", [
       [ "AutoChooser", "classAutoChooser.html", null ],
       [ "FlywheelPage", "classFlywheelPage.html", null ],
-      [ "MotionControllerPage", "classMotionControllerPage.html", null ],
       [ "VideoPlayer", "classVideoPlayer.html", null ],
       [ "screen::FunctionPage", "classscreen_1_1FunctionPage.html", null ],
       [ "screen::OdometryPage", "classscreen_1_1OdometryPage.html", null ],
@@ -106,7 +105,6 @@ var hierarchy =
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >", "classStateMachine.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
     [ "screen::TextConfig", "structscreen_1_1TextConfig.html", null ],
-    [ "trapezoid_profile_segment_t", "structtrapezoid__profile__segment__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", null ],
     [ "Vector2D", "classVector2D.html", null ],
     [ "screen::WidgetConfig", "structscreen_1_1WidgetConfig.html", null ]

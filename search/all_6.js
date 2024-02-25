@@ -12,7 +12,7 @@ var searchData=
   ['get_5fmag_9',['get_mag',['../classVector2D.html#a4da6f92b5874470ed5642587a973c3df',1,'Vector2D']]],
   ['get_5fmotion_10',['get_motion',['../classMotionController.html#a389dec759b61dbae75131dd6a720dddd',1,'MotionController']]],
   ['get_5fmotors_11',['get_motors',['../classFlywheel.html#a237f97e26bca2afd8c7e97558443055f',1,'Flywheel']]],
-  ['get_5fmovement_5ftime_12',['get_movement_time',['../classTrapezoidProfile.html#a34c729e0971393bf0690d6346c5ffaba',1,'TrapezoidProfile']]],
+  ['get_5fmovement_5ftime_12',['get_movement_time',['../classTrapezoidProfile.html#abd551042dfffe0923200c4546d109c55',1,'TrapezoidProfile']]],
   ['get_5fpoints_13',['get_points',['../classPurePursuit_1_1Path.html#a7711b86fc5c1237c8ce9da56cca1f3d1',1,'PurePursuit::Path']]],
   ['get_5fposition_14',['get_position',['../classOdometryBase.html#a423e398bd9ec7038abe7786482db6dd0',1,'OdometryBase']]],
   ['get_5fradius_15',['get_radius',['../classPurePursuit_1_1Path.html#a86e3a01fcc91f32ae54499bec62859f1',1,'PurePursuit::Path']]],

@@ -128,9 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a076c5aa4ea383dccaeec76f7554a7467" id="r_a076c5aa4ea383dccaeec76f7554a7467"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a076c5aa4ea383dccaeec76f7554a7467">MotionController</a> (<a class="el" href="structMotionController_1_1m__profile__cfg__t.html">m_profile_cfg_t</a> &amp;config)</td></tr>
 <tr class="memdesc:a076c5aa4ea383dccaeec76f7554a7467"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Motion Controller object.  <br /></td></tr>
 <tr class="separator:a076c5aa4ea383dccaeec76f7554a7467"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78027f833324cf2fa244431d56a88493" id="r_a78027f833324cf2fa244431d56a88493"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78027f833324cf2fa244431d56a88493">init</a> (double start_pt, double end_pt, double start_vel, double end_vel) override</td></tr>
-<tr class="memdesc:a78027f833324cf2fa244431d56a88493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the motion profile for a new movement This will also reset the <a class="el" href="classPID.html">PID</a> and profile timers.  <br /></td></tr>
-<tr class="separator:a78027f833324cf2fa244431d56a88493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0d665d9916111cbce677da6df6b6667" id="r_af0d665d9916111cbce677da6df6b6667"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0d665d9916111cbce677da6df6b6667">init</a> (double start_pt, double end_pt) override</td></tr>
+<tr class="memdesc:af0d665d9916111cbce677da6df6b6667"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the motion profile for a new movement This will also reset the <a class="el" href="classPID.html">PID</a> and profile timers.  <br /></td></tr>
+<tr class="separator:af0d665d9916111cbce677da6df6b6667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86ef0ef19858b5b407f7406bb5da30af" id="r_a86ef0ef19858b5b407f7406bb5da30af"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86ef0ef19858b5b407f7406bb5da30af">update</a> (double sensor_val) override</td></tr>
 <tr class="memdesc:a86ef0ef19858b5b407f7406bb5da30af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the motion profile with a new sensor value.  <br /></td></tr>
 <tr class="separator:a86ef0ef19858b5b407f7406bb5da30af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,8 +238,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MotionControllerPage
 
 </div>
 </div>
-<a id="a78027f833324cf2fa244431d56a88493" name="a78027f833324cf2fa244431d56a88493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78027f833324cf2fa244431d56a88493">&#9670;&#160;</a></span>init()</h2>
+<a id="af0d665d9916111cbce677da6df6b6667" name="af0d665d9916111cbce677da6df6b6667"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0d665d9916111cbce677da6df6b6667">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,17 +255,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MotionControllerPage
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end_pt</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>start_vel</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end_vel</em></span>&#160;)</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end_pt</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -280,13 +270,11 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>MotionControllerPage
   <table class="params">
     <tr><td class="paramname">start_pt</td><td>Movement starting position </td></tr>
     <tr><td class="paramname">end_pt</td><td>Movement ending posiiton </td></tr>
-    <tr><td class="paramname">start_vel</td><td>Movement starting velocity </td></tr>
-    <tr><td class="paramname">end_vel</td><td>Movement ending velocity </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classFeedback.html#ac027c77f6aa7298ffe2c218c033c04ad">Feedback</a>.</p>
+<p>Implements <a class="el" href="classFeedback.html#a22efb13216bfd51aea07e0b6e45135c1">Feedback</a>.</p>
 
 </div>
 </div>

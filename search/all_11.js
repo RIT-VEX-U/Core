@@ -6,13 +6,12 @@ var searchData=
   ['textconfig_3',['TextConfig',['../structscreen_1_1TextConfig.html',1,'screen']]],
   ['timeout_5fseconds_4',['timeout_seconds',['../classAutoCommand.html#ac3be7be26e49981ad1978491fd313472',1,'AutoCommand']]],
   ['timestestedcondition_5',['TimesTestedCondition',['../classTimesTestedCondition.html',1,'']]],
-  ['trapezoid_5fprofile_5fsegment_5ft_6',['trapezoid_profile_segment_t',['../structtrapezoid__profile__segment__t.html',1,'']]],
-  ['trapezoidprofile_7',['TrapezoidProfile',['../classTrapezoidProfile.html',1,'TrapezoidProfile'],['../classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d',1,'TrapezoidProfile::TrapezoidProfile()']]],
-  ['tune_8',['tune',['../classOdometry3Wheel.html#acb23dbf715d342566fc7e44f58ebf654',1,'Odometry3Wheel']]],
-  ['tune_5ffeedforward_9',['tune_feedforward',['../classMotionController.html#a20749b6a4bd3cf509a3acf682831eb00',1,'MotionController']]],
-  ['turn_5fdegrees_10',['turn_degrees',['../classTankDrive.html#a3cea28e37186c412f2242fa28a2973bc',1,'TankDrive::turn_degrees(double degrees, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2b860442d01eec86e689dd41fefdc0f1',1,'TankDrive::turn_degrees(double degrees, double max_speed=1, double end_speed=0)']]],
-  ['turn_5ffeedback_11',['turn_feedback',['../structrobot__specs__t.html#af8c8492ba755766847bb21b960b91bfe',1,'robot_specs_t']]],
-  ['turn_5fto_5fheading_12',['turn_to_heading',['../classTankDrive.html#a015bc5fa6731e365d6485115bbda5739',1,'TankDrive::turn_to_heading(double heading_deg, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a30ad458c875dfe315a94de3ee5a8bfe9',1,'TankDrive::turn_to_heading(double heading_deg, double max_speed=1, double end_speed=0)']]],
-  ['turndegreescommand_13',['TurnDegreesCommand',['../classTurnDegreesCommand.html',1,'TurnDegreesCommand'],['../classTurnDegreesCommand.html#a2c8f42b59fefaa45005519e5f044e518',1,'TurnDegreesCommand::TurnDegreesCommand()']]],
-  ['turntoheadingcommand_14',['TurnToHeadingCommand',['../classTurnToHeadingCommand.html',1,'TurnToHeadingCommand'],['../classTurnToHeadingCommand.html#aaec1f10929adbfd6e36b73a811ec3886',1,'TurnToHeadingCommand::TurnToHeadingCommand()']]]
+  ['trapezoidprofile_6',['TrapezoidProfile',['../classTrapezoidProfile.html',1,'TrapezoidProfile'],['../classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d',1,'TrapezoidProfile::TrapezoidProfile()']]],
+  ['tune_7',['tune',['../classOdometry3Wheel.html#acb23dbf715d342566fc7e44f58ebf654',1,'Odometry3Wheel']]],
+  ['tune_5ffeedforward_8',['tune_feedforward',['../classMotionController.html#a20749b6a4bd3cf509a3acf682831eb00',1,'MotionController']]],
+  ['turn_5fdegrees_9',['turn_degrees',['../classTankDrive.html#a3cea28e37186c412f2242fa28a2973bc',1,'TankDrive::turn_degrees(double degrees, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2b860442d01eec86e689dd41fefdc0f1',1,'TankDrive::turn_degrees(double degrees, double max_speed=1, double end_speed=0)']]],
+  ['turn_5ffeedback_10',['turn_feedback',['../structrobot__specs__t.html#af8c8492ba755766847bb21b960b91bfe',1,'robot_specs_t']]],
+  ['turn_5fto_5fheading_11',['turn_to_heading',['../classTankDrive.html#a015bc5fa6731e365d6485115bbda5739',1,'TankDrive::turn_to_heading(double heading_deg, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a30ad458c875dfe315a94de3ee5a8bfe9',1,'TankDrive::turn_to_heading(double heading_deg, double max_speed=1, double end_speed=0)']]],
+  ['turndegreescommand_12',['TurnDegreesCommand',['../classTurnDegreesCommand.html',1,'TurnDegreesCommand'],['../classTurnDegreesCommand.html#a2c8f42b59fefaa45005519e5f044e518',1,'TurnDegreesCommand::TurnDegreesCommand()']]],
+  ['turntoheadingcommand_13',['TurnToHeadingCommand',['../classTurnToHeadingCommand.html',1,'TurnToHeadingCommand'],['../classTurnToHeadingCommand.html#aaec1f10929adbfd6e36b73a811ec3886',1,'TurnToHeadingCommand::TurnToHeadingCommand()']]]
 ];

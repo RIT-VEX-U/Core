@@ -134,10 +134,12 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b6b678b2d52a2be7fb572b766e43994" id="r_a3b6b678b2d52a2be7fb572b766e43994"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b6b678b2d52a2be7fb572b766e43994">PID</a> (<a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a> &amp;<a class="el" href="#a67626fa764b201c7190ace37e068666b">config</a>)</td></tr>
 <tr class="separator:a3b6b678b2d52a2be7fb572b766e43994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf60fcde16cf33e59e1999b2cc076de8" id="r_aaf60fcde16cf33e59e1999b2cc076de8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf60fcde16cf33e59e1999b2cc076de8">init</a> (double start_pt, double set_pt, double start_vel=0, double end_vel=0) override</td></tr>
-<tr class="separator:aaf60fcde16cf33e59e1999b2cc076de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab0f3b4351cc4ee2b8bb366105e85e95" id="r_aab0f3b4351cc4ee2b8bb366105e85e95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab0f3b4351cc4ee2b8bb366105e85e95">init</a> (double start_pt, double set_pt) override</td></tr>
+<tr class="separator:aab0f3b4351cc4ee2b8bb366105e85e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53b5c34ba5e81fb79ed4258a143015b9" id="r_a53b5c34ba5e81fb79ed4258a143015b9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53b5c34ba5e81fb79ed4258a143015b9">update</a> (double sensor_val) override</td></tr>
 <tr class="separator:a53b5c34ba5e81fb79ed4258a143015b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa467837b5a226ca2d328dd5ada05f0a" id="r_aaa467837b5a226ca2d328dd5ada05f0a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa467837b5a226ca2d328dd5ada05f0a">update</a> (double sensor_val, double v_setpt)</td></tr>
+<tr class="separator:aaa467837b5a226ca2d328dd5ada05f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8db32b3729426d45d1358f5db47cf114" id="r_a8db32b3729426d45d1358f5db47cf114"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8db32b3729426d45d1358f5db47cf114">get_sensor_val</a> () const</td></tr>
 <tr class="memdesc:a8db32b3729426d45d1358f5db47cf114"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the sensor value that we were last updated with  <br /></td></tr>
 <tr class="separator:a8db32b3729426d45d1358f5db47cf114"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,8 +298,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aaf60fcde16cf33e59e1999b2cc076de8" name="aaf60fcde16cf33e59e1999b2cc076de8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf60fcde16cf33e59e1999b2cc076de8">&#9670;&#160;</a></span>init()</h2>
+<a id="aab0f3b4351cc4ee2b8bb366105e85e95" name="aab0f3b4351cc4ee2b8bb366105e85e95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab0f3b4351cc4ee2b8bb366105e85e95">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,17 +315,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>set_pt</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>start_vel</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end_vel</em><span class="paramdefsep"> = </span><span class="paramdefval">0</span></span>&#160;)</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>set_pt</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -343,7 +335,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classFeedback.html#ac027c77f6aa7298ffe2c218c033c04ad">Feedback</a>.</p>
+<p>Implements <a class="el" href="classFeedback.html#a22efb13216bfd51aea07e0b6e45135c1">Feedback</a>.</p>
 
 </div>
 </div>
@@ -458,7 +450,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a53b5c34ba5e81fb79ed4258a143015b9" name="a53b5c34ba5e81fb79ed4258a143015b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53b5c34ba5e81fb79ed4258a143015b9">&#9670;&#160;</a></span>update()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a53b5c34ba5e81fb79ed4258a143015b9">&#9670;&#160;</a></span>update() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -488,6 +480,35 @@ Public Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>the new output. What would be returned by <a class="el" href="#a69c2e66b8ff06c86ca9701d11e21da75">PID::get()</a> </dd></dl>
 
 <p>Implements <a class="el" href="classFeedback.html#adda5fc7642539996be00632954dfc41f">Feedback</a>.</p>
+
+</div>
+</div>
+<a id="aaa467837b5a226ca2d328dd5ada05f0a" name="aaa467837b5a226ca2d328dd5ada05f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa467837b5a226ca2d328dd5ada05f0a">&#9670;&#160;</a></span>update() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PID::update </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>sensor_val</em>, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>v_setpt</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Update the <a class="el" href="classPID.html">PID</a> loop by taking the time difference from last update, and running the <a class="el" href="classPID.html">PID</a> formula with the new sensor data </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sensor_val</td><td>the distance, angle, encoder position or whatever it is we are measuring </td></tr>
+    <tr><td class="paramname">v_setpt</td><td>Expected velocity setpoint, to subtract from the D term (for velocity control) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the new output. What would be returned by <a class="el" href="#a69c2e66b8ff06c86ca9701d11e21da75">PID::get()</a> </dd></dl>
 
 </div>
 </div>

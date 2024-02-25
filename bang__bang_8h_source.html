@@ -112,30 +112,29 @@ $(function(){initNavTree('bang__bang_8h_source.html',''); initResizable(); });
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>  <a class="code hl_class" href="classBangBang.html">BangBang</a>(<span class="keywordtype">double</span> thresshold, <span class="keywordtype">double</span> low, <span class="keywordtype">double</span> high);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBangBang.html#ab2bb498698948b8d3c74b3b75beeef2e">init</a>(<span class="keywordtype">double</span> start_pt, <span class="keywordtype">double</span> set_pt, <span class="keywordtype">double</span> start_vel [[maybe_unused]] = 0.0,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            <span class="keywordtype">double</span> end_vel [[maybe_unused]] = 0.0) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">update</a>(<span class="keywordtype">double</span> val) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classBangBang.html#a163d2ec174adab37b67f97fa27012c2a">get</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBangBang.html#a014941b11dd9f88dd180f301501f03cb">set_limits</a>(<span class="keywordtype">double</span> lower, <span class="keywordtype">double</span> upper) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classBangBang.html#aac9f7f57d9eccb68a0f98a1079ed6ecf">is_on_target</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">double</span> setpt;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">double</span> sensor_val;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">double</span> lower_bound, upper_bound;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">double</span> last_output;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordtype">double</span> threshhold;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>};</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBangBang.html#a5e5f574713ec3a326bc874f014cc48e5">init</a>(<span class="keywordtype">double</span> start_pt, <span class="keywordtype">double</span> set_pt) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">update</a>(<span class="keywordtype">double</span> val) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classBangBang.html#a163d2ec174adab37b67f97fa27012c2a">get</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBangBang.html#a014941b11dd9f88dd180f301501f03cb">set_limits</a>(<span class="keywordtype">double</span> lower, <span class="keywordtype">double</span> upper) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classBangBang.html#aac9f7f57d9eccb68a0f98a1079ed6ecf">is_on_target</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">double</span> setpt;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">double</span> sensor_val;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">double</span> lower_bound, upper_bound;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keywordtype">double</span> last_output;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">double</span> threshhold;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
 </div>
 <div class="ttc" id="aclassBangBang_html"><div class="ttname"><a href="classBangBang.html">BangBang</a></div><div class="ttdef"><b>Definition</b> bang_bang.h:3</div></div>
 <div class="ttc" id="aclassBangBang_html_a014941b11dd9f88dd180f301501f03cb"><div class="ttname"><a href="classBangBang.html#a014941b11dd9f88dd180f301501f03cb">BangBang::set_limits</a></div><div class="ttdeci">void set_limits(double lower, double upper) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:12</div></div>
 <div class="ttc" id="aclassBangBang_html_a163d2ec174adab37b67f97fa27012c2a"><div class="ttname"><a href="classBangBang.html#a163d2ec174adab37b67f97fa27012c2a">BangBang::get</a></div><div class="ttdeci">double get() override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:16</div></div>
+<div class="ttc" id="aclassBangBang_html_a5e5f574713ec3a326bc874f014cc48e5"><div class="ttname"><a href="classBangBang.html#a5e5f574713ec3a326bc874f014cc48e5">BangBang::init</a></div><div class="ttdeci">void init(double start_pt, double set_pt) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:7</div></div>
 <div class="ttc" id="aclassBangBang_html_aac9f7f57d9eccb68a0f98a1079ed6ecf"><div class="ttname"><a href="classBangBang.html#aac9f7f57d9eccb68a0f98a1079ed6ecf">BangBang::is_on_target</a></div><div class="ttdeci">bool is_on_target() override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:30</div></div>
-<div class="ttc" id="aclassBangBang_html_ab2bb498698948b8d3c74b3b75beeef2e"><div class="ttname"><a href="classBangBang.html#ab2bb498698948b8d3c74b3b75beeef2e">BangBang::init</a></div><div class="ttdeci">void init(double start_pt, double set_pt, double start_vel=0.0, double end_vel=0.0) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:7</div></div>
 <div class="ttc" id="aclassBangBang_html_ab5005c63f646a73be1c984630f4c3937"><div class="ttname"><a href="classBangBang.html#ab5005c63f646a73be1c984630f4c3937">BangBang::update</a></div><div class="ttdeci">double update(double val) override</div><div class="ttdef"><b>Definition</b> bang_bang.cpp:18</div></div>
 <div class="ttc" id="aclassFeedback_html"><div class="ttname"><a href="classFeedback.html">Feedback</a></div><div class="ttdef"><b>Definition</b> feedback_base.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
