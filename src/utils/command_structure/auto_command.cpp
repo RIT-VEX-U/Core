@@ -159,11 +159,12 @@ void Parallel::on_timeout() {
       }
     }
   }
-  runners.clear();
 }
 
 Branch::Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice)
-    : false_choice(false_choice), true_choice(true_choice), cond(cond), choice(false), chosen(false), tmr() {}
+    : false_choice(false_choice), true_choice(true_choice), cond(cond), choice(false), chosen(false), tmr() {
+  this->timeout_seconds = -1;
+}
 
 Branch::~Branch() {
   delete false_choice;
@@ -173,20 +174,34 @@ bool Branch::run() {
   if (!chosen) {
     choice = cond->test();
     chosen = true;
+    tmr.reset();
   }
 
   double seconds = static_cast<double>(tmr.time()) / 1000.0;
   if (choice == false) {
     if (seconds > false_choice->timeout_seconds && false_choice->timeout_seconds != -1) {
       false_choice->on_timeout();
+      chosen = false;
+      return true;
     }
-    return false_choice->run();
+    bool finished = false_choice->run();
+    if (finished) {
+      chosen = false;
+      return finished;
+    }
   } else {
     if (seconds > true_choice->timeout_seconds && true_choice->timeout_seconds != -1) {
       true_choice->on_timeout();
+      chosen = false;
+      return true;
     }
-    return true_choice->run();
+    bool finished = true_choice->run();
+    if (finished) {
+      chosen = false;
+      return finished;
+    }
   }
+  return false;
 }
 void Branch::on_timeout() {
   if (!chosen) {
@@ -199,6 +214,7 @@ void Branch::on_timeout() {
   } else {
     true_choice->on_timeout();
   }
+  chosen = false;
 }
 
 static int async_runner(void *arg) {
@@ -233,11 +249,11 @@ bool Async::run() {
 }
 
 RepeatUntil::RepeatUntil(InOrder cmds, size_t times) : RepeatUntil(cmds, new TimesTestedCondition(times)) {
-  timeout_seconds = 999999;
+  timeout_seconds = -1.0;
 }
 
 RepeatUntil::RepeatUntil(InOrder cmds, Condition *cond) : cmds(cmds), working_cmds(new InOrder(cmds)), cond(cond) {
-  timeout_seconds = 999999;
+  timeout_seconds = -1.0;
 }
 
 bool RepeatUntil::run() {

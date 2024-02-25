@@ -13,8 +13,8 @@
 /**
  * Adds a command to the queue
  * @param cmd the AutoCommand we want to add to our list
- * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and
- * run on_timeout
+ * @param timeout_seconds the number of seconds we will let the command run for.
+ * If it exceeds this, we cancel it and run on_timeout
  */
 void CommandController::add(AutoCommand *cmd, double timeout_seconds) {
   cmd->timeout_seconds = timeout_seconds;
@@ -34,7 +34,8 @@ void CommandController::add(std::vector<AutoCommand *> cmds) {
 /**
  * Add multiple commands to the queue. No timeout here.
  * @param cmds the AutoCommands we want to add to our list
- * @param timeout timeout in seconds to apply to all commands if they are still the default
+ * @param timeout timeout in seconds to apply to all commands if they are still
+ * the default
  */
 void CommandController::add(std::vector<AutoCommand *> cmds, double timeout_sec) {
   for (AutoCommand *cmd : cmds) {
@@ -94,15 +95,18 @@ void CommandController::run() {
         continue;
       }
 
-      // If we do want to check for timeout, check and end the command if we should
+      // If we do want to check for timeout, check and end the command if
+      // we should
       double cmd_elapsed_sec = ((double)timeout_timer.time()) / 1000.0;
       if (cmd_elapsed_sec > next_cmd->timeout_seconds || should_cancel()) {
         next_cmd->on_timeout();
         command_timed_out = true;
         break;
       }
+      vexDelay(20);
     }
     if (should_cancel()) {
+      printf("Cancelling");
       break;
     }
 
