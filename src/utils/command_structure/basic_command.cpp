@@ -22,7 +22,9 @@
  * @param setting Power setting in volts,percentage,velocity
  * @param power Value of desired power
  */
-BasicSpinCommand::BasicSpinCommand(vex::motor &motor, vex::directionType dir, BasicSpinCommand::type setting, double power) : motor(motor), setting(setting), dir(dir), power(power) {}
+BasicSpinCommand::BasicSpinCommand(vex::motor &motor, vex::directionType dir, BasicSpinCommand::type setting,
+                                   double power)
+    : motor(motor), setting(setting), dir(dir), power(power) {}
 
 /**
  * @brief Run the BasicSpinCommand
@@ -30,21 +32,19 @@ BasicSpinCommand::BasicSpinCommand(vex::motor &motor, vex::directionType dir, Ba
  *
  * @return True Command runs once
  */
-bool BasicSpinCommand::run()
-{
-   switch (setting)
-   {             // Switch Statement taking the setting Enum
-   case voltage: // Voltage Setting
-      motor.spin(dir, power, vex::volt);
-      break;
-   case percent: // Percentage Setting
-      motor.spin(dir, power, vex::percent);
-      break;
-   case veocity: // Velocity Setting
-      motor.spin(dir, power, vex::velocityUnits::rpm);
-      break;
-   }
-   return true; // Always return True to send next on CommandController
+bool BasicSpinCommand::run() {
+  switch (setting) { // Switch Statement taking the setting Enum
+  case voltage:      // Voltage Setting
+    motor.spin(dir, power, vex::volt);
+    break;
+  case percent: // Percentage Setting
+    motor.spin(dir, power, vex::percent);
+    break;
+  case veocity: // Velocity Setting
+    motor.spin(dir, power, vex::velocityUnits::rpm);
+    break;
+  }
+  return true; // Always return True to send next on CommandController
 }
 
 /**
@@ -61,10 +61,9 @@ BasicStopCommand::BasicStopCommand(vex::motor &motor, vex::brakeType setting) : 
  *
  * @return True Command runs once
  */
-bool BasicStopCommand::run()
-{
-   motor.stop(setting);
-   return true;
+bool BasicStopCommand::run() {
+  motor.stop(setting);
+  return true;
 }
 
 // Basic Solenoid Commands-----------------------------------
@@ -82,8 +81,7 @@ BasicSolenoidSet::BasicSolenoidSet(vex::pneumatics &solenoid, bool setting) : so
  *
  * @return True Command runs once
  */
-bool BasicSolenoidSet::run()
-{
-   solenoid.set(setting);
-   return true;
+bool BasicSolenoidSet::run() {
+  solenoid.set(setting);
+  return true;
 }

@@ -4,47 +4,52 @@
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_side The left motors
  * @param right_side The right motors
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+ * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
+ * is contained
  * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+ * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
+ * to manually call update().
  */
-OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config, vex::inertial *imu, bool is_async)
-    : OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_custom_enc(NULL), right_custom_enc(NULL), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config)
-{
-}
+OdometryTank::OdometryTank(vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config,
+                           vex::inertial *imu, bool is_async)
+    : OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_custom_enc(NULL),
+      right_custom_enc(NULL), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config) {}
 
 /**
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_custom_enc The left custom encoder
  * @param right_custom_enc The right custom encoder
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+ * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
+ * is contained
  * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+ * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
+ * to manually call update().
  */
-OdometryTank::OdometryTank(CustomEncoder &left_custom_enc, CustomEncoder &right_custom_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
-    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(&left_custom_enc), right_custom_enc(&right_custom_enc), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config)
-{
-}
+OdometryTank::OdometryTank(CustomEncoder &left_custom_enc, CustomEncoder &right_custom_enc, robot_specs_t &config,
+                           vex::inertial *imu, bool is_async)
+    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(&left_custom_enc),
+      right_custom_enc(&right_custom_enc), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config) {}
 
 /**
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_vex_enc The left vex encoder
  * @param right_vex_enc The right vex encoder
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what is contained
+ * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
+ * is contained
  * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have to manually call update().
+ * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
+ * to manually call update().
  */
-OdometryTank::OdometryTank(vex::encoder &left_vex_enc, vex::encoder &right_vex_enc, robot_specs_t &config, vex::inertial *imu, bool is_async)
-    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(NULL), right_custom_enc(NULL), left_vex_enc(&left_vex_enc), right_vex_enc(&right_vex_enc), imu(imu), config(config)
-{
-}
+OdometryTank::OdometryTank(vex::encoder &left_vex_enc, vex::encoder &right_vex_enc, robot_specs_t &config,
+                           vex::inertial *imu, bool is_async)
+    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(NULL), right_custom_enc(NULL),
+      left_vex_enc(&left_vex_enc), right_vex_enc(&right_vex_enc), imu(imu), config(config) {}
 
 /**
  * Resets the position and rotational data to the input.
  *
  */
-void OdometryTank::set_position(const pose_t &newpos)
-{
+void OdometryTank::set_position(const pose_t &newpos) {
   mut.lock();
   rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
   mut.unlock();
@@ -56,22 +61,16 @@ void OdometryTank::set_position(const pose_t &newpos)
  * Update, store and return the current position of the robot. Only use if not initializing
  * with a separate thread.
  */
-pose_t OdometryTank::update()
-{
+pose_t OdometryTank::update() {
   double lside_revs = 0, rside_revs = 0;
 
-  if (left_side != NULL && right_side != NULL)
-  {
+  if (left_side != NULL && right_side != NULL) {
     lside_revs = left_side->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
     rside_revs = right_side->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
-  }
-  else if (left_custom_enc != NULL && right_custom_enc != NULL)
-  {
+  } else if (left_custom_enc != NULL && right_custom_enc != NULL) {
     lside_revs = left_custom_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
     rside_revs = right_custom_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
-  }
-  else if (left_vex_enc != NULL && right_vex_enc != NULL)
-  {
+  } else if (left_vex_enc != NULL && right_vex_enc != NULL) {
     lside_revs = left_vex_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
     rside_revs = right_vex_enc->position(vex::rotationUnits::rev) / config.odom_gear_ratio;
   }
@@ -79,8 +78,7 @@ pose_t OdometryTank::update()
   double angle = 0;
 
   // If the IMU data was passed in, use it for rotational data
-  if (imu == NULL || imu->installed() == false)
-  {
+  if (imu == NULL || imu->installed() == false) {
     // Get the difference in distance driven between the two sides
     // Uses the absolute position of the encoders, so resetting them will result in
     // a bad angle.
@@ -91,9 +89,7 @@ pose_t OdometryTank::update()
     angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels)) + 90;
 
     // printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
-  }
-  else
-  {
+  } else {
     // Translate "0 forward and clockwise positive" to "90 forward and CCW negative"
     angle = -imu->rotation(vex::rotationUnits::deg) + 90;
   }
@@ -106,7 +102,7 @@ pose_t OdometryTank::update()
   angle = fmod(angle, 360.0);
   if (angle < 0) {
     angle += 360;
-}
+  }
 
   current_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
 
@@ -117,8 +113,7 @@ pose_t OdometryTank::update()
   bool update_vel_accel = tmr.time(sec) > 0.02;
 
   // This loop runs too fast. Only check at LEAST every 1/10th sec
-  if (update_vel_accel)
-  {
+  if (update_vel_accel) {
     // Calculate robot velocity
     double this_speed = pos_diff(current_pos, last_pos) / tmr.time(sec);
     ema.add_entry(this_speed);
@@ -145,8 +140,8 @@ pose_t OdometryTank::update()
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-pose_t OdometryTank::calculate_new_pos(robot_specs_t &config, pose_t &curr_pos, double lside_revs, double rside_revs, double angle_deg)
-{
+pose_t OdometryTank::calculate_new_pos(robot_specs_t &config, pose_t &curr_pos, double lside_revs, double rside_revs,
+                                       double angle_deg) {
   pose_t new_pos;
 
   static double stored_lside_revs = lside_revs;

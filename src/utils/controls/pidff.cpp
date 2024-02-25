@@ -1,11 +1,10 @@
 #include "../core/include/utils/controls/pidff.h"
 #include "../core/include/utils/math_util.h"
 
-PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg)
-    : pid(pid_cfg), ff_cfg(ff_cfg), ff(ff_cfg) {
-    out = 0;
-    lower_lim = 0;
-    upper_lim = 0;
+PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg) : pid(pid_cfg), ff_cfg(ff_cfg), ff(ff_cfg) {
+  out = 0;
+  lower_lim = 0;
+  upper_lim = 0;
 }
 
 /**
@@ -14,9 +13,7 @@ PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg)
  * @param start_pt the current sensor value
  * @param set_pt where the sensor value should be
  */
-void PIDFF::init(double start_pt, double set_pt) {
-    pid.init(start_pt, set_pt);
-}
+void PIDFF::init(double start_pt, double set_pt) { pid.init(start_pt, set_pt); }
 
 void PIDFF::set_target(double set_pt) { pid.set_target(set_pt); }
 
@@ -28,14 +25,14 @@ void PIDFF::set_target(double set_pt) { pid.set_target(set_pt); }
  * @return feedback loop result
  */
 double PIDFF::update(double val) {
-    double pid_out = pid.update(val);
-    double ff_out = ff_cfg.kG + (ff_cfg.kS * sign(pid_out));
-    out = pid_out + ff_out;
-    if (lower_lim != upper_lim) {
-        out = clamp(out, lower_lim, upper_lim);
-}
+  double pid_out = pid.update(val);
+  double ff_out = ff_cfg.kG + (ff_cfg.kS * sign(pid_out));
+  out = pid_out + ff_out;
+  if (lower_lim != upper_lim) {
+    out = clamp(out, lower_lim, upper_lim);
+  }
 
-    return out;
+  return out;
 }
 
 double PIDFF::get_sensor_val() const { return pid.get_sensor_val(); }
@@ -51,14 +48,14 @@ double PIDFF::get_target() const { return pid.get_target(); }
  */
 double PIDFF::update(double val, double vel_setpt, double a_setpt) {
 
-    double pid_out = pid.update(val);
-    double ff_out = ff.calculate(vel_setpt, a_setpt);
-    out = pid_out + ff_out;
-    if (lower_lim != upper_lim) {
-        out = clamp(out, lower_lim, upper_lim);
-}
+  double pid_out = pid.update(val);
+  double ff_out = ff.calculate(vel_setpt, a_setpt);
+  out = pid_out + ff_out;
+  if (lower_lim != upper_lim) {
+    out = clamp(out, lower_lim, upper_lim);
+  }
 
-    return out;
+  return out;
 }
 
 /**
@@ -74,8 +71,8 @@ double PIDFF::get() { return out; }
  * @param upper Lower limit
  */
 void PIDFF::set_limits(double lower, double upper) {
-    upper_lim = upper;
-    lower_lim = lower;
+  upper_lim = upper;
+  lower_lim = lower;
 }
 
 /**
