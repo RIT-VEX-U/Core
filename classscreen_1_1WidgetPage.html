@@ -119,10 +119,8 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>WidgetPage</b> (<a class="el" href="structscreen_1_1WidgetConfig.html">WidgetConfig</a> &amp;cfg)</td></tr>
 <tr class="separator:a6ed5518071120164a363c4d35fc8dd11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92b2f7e59d9c4f39865a116a961c4f17" id="r_a92b2f7e59d9c4f39865a116a961c4f17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92b2f7e59d9c4f39865a116a961c4f17">update</a> (bool was_pressed, int x, int y) override</td></tr>
-<tr class="memdesc:a92b2f7e59d9c4f39865a116a961c4f17"><td class="mdescLeft">&#160;</td><td class="mdescRight">collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this <a class="el" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow.">Page</a> (only drawn page gets touch updates))  <br /></td></tr>
 <tr class="separator:a92b2f7e59d9c4f39865a116a961c4f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab05dbe7ddc2ebaa0f289dd4078815c29" id="r_ab05dbe7ddc2ebaa0f289dd4078815c29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab05dbe7ddc2ebaa0f289dd4078815c29">draw</a> (vex::brain::lcd &amp;, bool first_draw, unsigned int frame_number) override</td></tr>
-<tr class="memdesc:ab05dbe7ddc2ebaa0f289dd4078815c29"><td class="mdescLeft">&#160;</td><td class="mdescRight">draw stored data to the screen (runs at 10 hz and only runs if this page is in front)  <br /></td></tr>
 <tr class="separator:ab05dbe7ddc2ebaa0f289dd4078815c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -138,7 +136,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void screen::WidgetPage::draw </td>
           <td>(</td>
-          <td class="paramtype">vex::brain::lcd &amp;</td>          <td class="paramname"><span class="paramname"><em>screen</em>, </span></td>
+          <td class="paramtype">vex::brain::lcd &amp;</td>          <td class="paramname"><span class="paramname">, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -157,15 +155,6 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>draw stored data to the screen (runs at 10 hz and only runs if this page is in front) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">first_draw</td><td>true if we just switched to this page </td></tr>
-    <tr><td class="paramname">frame_number</td><td>frame of drawing we are on (basically an animation tick) </td></tr>
-  </table>
-  </dd>
-</dl>
 
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0">screen::Page</a>.</p>
 
@@ -203,22 +192,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>collect data, respond to screen input, do fast things (runs at 50hz even if you're not focused on this <a class="el" href="classscreen_1_1Page.html" title="Page describes one part of the screen slideshow.">Page</a> (only drawn page gets touch updates)) </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">was_pressed</td><td>true if the screen has been pressed </td></tr>
-    <tr><td class="paramname">x</td><td>x position of screen press (if the screen was pressed) </td></tr>
-    <tr><td class="paramname">y</td><td>y position of screen press (if the screen was pressed) </td></tr>
-  </table>
-  </dd>
-</dl>
-
 <p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405">screen::Page</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/subsystems/<a class="el" href="screen_8h_source.html">screen.h</a></li>
+<li><a class="el" href="screen_8h_source.html">screen.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
