@@ -98,32 +98,12 @@ $(function(){initNavTree('structStateMachine_1_1State.html',''); initResizable()
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structStateMachine_1_1State-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">StateMachine&lt; System, IDType, Message, delay_ms, do_log &gt;::State Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="state__machine_8h_source.html">state_machine.h</a>&gt;</code></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ac641c0fa1ebb60618210261cb930677a" id="r_ac641c0fa1ebb60618210261cb930677a"><td class="memItemLeft" align="right" valign="top"><a id="ac641c0fa1ebb60618210261cb930677a" name="ac641c0fa1ebb60618210261cb930677a"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>entry</b> (System &amp;)</td></tr>
-<tr class="separator:ac641c0fa1ebb60618210261cb930677a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef008210525af99854391a85d31636b9" id="r_aef008210525af99854391a85d31636b9"><td class="memItemLeft" align="right" valign="top"><a id="aef008210525af99854391a85d31636b9" name="aef008210525af99854391a85d31636b9"></a>
-virtual <a class="el" href="classStateMachine_1_1MaybeMessage.html">MaybeMessage</a>&#160;</td><td class="memItemRight" valign="bottom"><b>work</b> (System &amp;)</td></tr>
-<tr class="separator:aef008210525af99854391a85d31636b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a400eed9c7d2cfe1da94c2a870db238" id="r_a5a400eed9c7d2cfe1da94c2a870db238"><td class="memItemLeft" align="right" valign="top"><a id="a5a400eed9c7d2cfe1da94c2a870db238" name="a5a400eed9c7d2cfe1da94c2a870db238"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>exit</b> (System &amp;)</td></tr>
-<tr class="separator:a5a400eed9c7d2cfe1da94c2a870db238"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6cabc0828b55a797d21450143c324a2" id="r_ad6cabc0828b55a797d21450143c324a2"><td class="memItemLeft" align="right" valign="top"><a id="ad6cabc0828b55a797d21450143c324a2" name="ad6cabc0828b55a797d21450143c324a2"></a>
-virtual <a class="el" href="structStateMachine_1_1State.html">State</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>respond</b> (System &amp;s, Message m)=0</td></tr>
-<tr class="separator:ad6cabc0828b55a797d21450143c324a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad298eadf830234d06d980d49885f3c37" id="r_ad298eadf830234d06d980d49885f3c37"><td class="memItemLeft" align="right" valign="top"><a id="ad298eadf830234d06d980d49885f3c37" name="ad298eadf830234d06d980d49885f3c37"></a>
-virtual IDType&#160;</td><td class="memItemRight" valign="bottom"><b>id</b> () const =0</td></tr>
-<tr class="separator:ad298eadf830234d06d980d49885f3c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename System, typename IDType, typename Message, int32_t delay_ms, bool do_log = false&gt;<br />
 struct StateMachine&lt; System, IDType, Message, delay_ms, do_log &gt;::State</div><p>Abstract class that all states for this machine must inherit from States MUST override respond() and id() in order to function correctly (the compiler won't have it any other way) </p>

@@ -105,15 +105,8 @@ $(function(){initNavTree('classDriveToPointCommand.html',''); initResizable(); }
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="drive__commands_8h_source.html">drive_commands.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for DriveToPointCommand:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classDriveToPointCommand.png" usemap="#DriveToPointCommand_map" alt=""/>
-  <map id="DriveToPointCommand_map" name="DriveToPointCommand_map">
-<area href="classAutoCommand.html" alt="AutoCommand" shape="rect" coords="0,0,140,24"/>
-  </map>
-</div></div>
+
+<p>Inherits AutoCommand.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -123,29 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab98e7521e0d255683e8dc6e140e79b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed58921bc3eeb8c04d0b11b4f7e4fbe" id="r_a8ed58921bc3eeb8c04d0b11b4f7e4fbe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ed58921bc3eeb8c04d0b11b4f7e4fbe">run</a> () override</td></tr>
 <tr class="separator:a8ed58921bc3eeb8c04d0b11b4f7e4fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classAutoCommand"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
-<tr class="memitem:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand" id="r_a75b2b87e945fd7b98b758617feb30404"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withTimeout</b> (double t_seconds)</td></tr>
-<tr class="separator:a75b2b87e945fd7b98b758617feb30404 inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand" id="r_a2f28804953d8856397644d3fa38d921f"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classAutoCommand.html">AutoCommand</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>withCancelCondition</b> (<a class="el" href="classCondition.html">Condition</a> *true_to_end)</td></tr>
-<tr class="separator:a2f28804953d8856397644d3fa38d921f inherit pub_methods_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_classAutoCommand"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
-<tr class="memitem:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand" id="r_ac3be7be26e49981ad1978491fd313472"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAutoCommand.html#ac3be7be26e49981ad1978491fd313472">timeout_seconds</a> = default_timeout</td></tr>
-<tr class="separator:ac3be7be26e49981ad1978491fd313472 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand" id="r_a898ee0ecb997505e985684dddc76b0a5"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classCondition.html">Condition</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>true_to_end</b> = nullptr</td></tr>
-<tr class="separator:a898ee0ecb997505e985684dddc76b0a5 inherit pub_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_static_attribs_classAutoCommand"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_static_attribs_classAutoCommand')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classAutoCommand.html">AutoCommand</a></td></tr>
-<tr class="memitem:a7b0d115d4fd603d87fdabe1bf7bc6293 inherit pub_static_attribs_classAutoCommand" id="r_a7b0d115d4fd603d87fdabe1bf7bc6293"><td class="memItemLeft" align="right" valign="top">
-static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>default_timeout</b> = 10.0</td></tr>
-<tr class="separator:a7b0d115d4fd603d87fdabe1bf7bc6293 inherit pub_static_attribs_classAutoCommand"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="classAutoCommand.html">AutoCommand</a> wrapper class for the drive_to_point function in the <a class="el" href="classTankDrive.html">TankDrive</a> class </p>
+<div class="textblock"><p>AutoCommand wrapper class for the drive_to_point function in the <a class="el" href="classTankDrive.html">TankDrive</a> class </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9ce50ba932039e7f66be48ac22f3b92e" name="a9ce50ba932039e7f66be48ac22f3b92e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ce50ba932039e7f66be48ac22f3b92e">&#9670;&#160;</a></span>DriveToPointCommand() <span class="overload">[1/2]</span></h2>
@@ -274,13 +247,11 @@ static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>de
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Run drive_to_point Overrides run from <a class="el" href="classAutoCommand.html">AutoCommand</a> </p><dl class="section return"><dt>Returns</dt><dd>true when execution is complete, false otherwise </dd></dl>
-
-<p>Reimplemented from <a class="el" href="classAutoCommand.html#a9f58c576ca6378b18a4136f60df50560">AutoCommand</a>.</p>
+<p>Run drive_to_point Overrides run from AutoCommand </p><dl class="section return"><dt>Returns</dt><dd>true when execution is complete, false otherwise </dd></dl>
 
 </div>
 </div>

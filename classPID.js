@@ -1,10 +1,7 @@
 var classPID =
 [
     [ "pid_config_t", "structPID_1_1pid__config__t.html", "structPID_1_1pid__config__t" ],
-    [ "ERROR_TYPE", "classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1", [
-      [ "LINEAR", "classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1ac6ae901fccfefa253b09edd6ea855bc8", null ],
-      [ "ANGULAR", "classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1a02bf979926259f22fe9e573745c99a28", null ]
-    ] ],
+    [ "ERROR_TYPE", "classPID.html#a259eb7bfd0750c7afd4a058c5d1c58a1", null ],
     [ "PID", "classPID.html#a3b6b678b2d52a2be7fb572b766e43994", null ],
     [ "get", "classPID.html#a69c2e66b8ff06c86ca9701d11e21da75", null ],
     [ "get_error", "classPID.html#ab5cdb296dbcce80703a9a98b9605c500", null ],

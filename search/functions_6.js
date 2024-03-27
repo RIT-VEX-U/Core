@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['get_0',['get',['../classBangBang.html#a163d2ec174adab37b67f97fa27012c2a',1,'BangBang::get()'],['../classFeedback.html#ac44bb519a6f4e25c8e8250f3d30ab359',1,'Feedback::get()'],['../classMotionController.html#a2a1944f590618cd91770364aea416cd5',1,'MotionController::get()'],['../classPID.html#a69c2e66b8ff06c86ca9701d11e21da75',1,'PID::get()'],['../classPIDFF.html#a78a34d271bcc703fc803e15b275fd238',1,'PIDFF::get()'],['../classTakeBackHalf.html#a43694f365d408b4ec26d533ef140f9bd',1,'TakeBackHalf::get()']]],
+  ['get_0',['get',['../classFeedback.html#ac44bb519a6f4e25c8e8250f3d30ab359',1,'Feedback::get()'],['../classMotionController.html#a2a1944f590618cd91770364aea416cd5',1,'MotionController::get()'],['../classPID.html#a69c2e66b8ff06c86ca9701d11e21da75',1,'PID::get()'],['../classTakeBackHalf.html#a43694f365d408b4ec26d533ef140f9bd',1,'TakeBackHalf::get()']]],
   ['get_5faccel_1',['get_accel',['../classOdometryBase.html#a3223bac952f79bf910b979690499b965',1,'OdometryBase']]],
   ['get_5fangular_5faccel_5fdeg_2',['get_angular_accel_deg',['../classOdometryBase.html#a456e6433e51971d2640ff96ed3a59432',1,'OdometryBase']]],
   ['get_5fangular_5fspeed_5fdeg_3',['get_angular_speed_deg',['../classOdometryBase.html#af30d97a35e9e9c4f9be0a81390e6c0f1',1,'OdometryBase']]],
@@ -23,6 +23,5 @@ var searchData=
   ['get_5fvalue_20',['get_value',['../classMovingAverage.html#abfc09872a3d1b2573ec5750bbdc844d5',1,'MovingAverage::get_value()'],['../classExponentialMovingAverage.html#a69e8041896718ae83730ca8f5a3ed97e',1,'ExponentialMovingAverage::get_value()']]],
   ['get_5fx_21',['get_x',['../classVector2D.html#a240e649d36dbda8bcba031f5fe5a2438',1,'Vector2D']]],
   ['get_5fy_22',['get_y',['../classVector2D.html#aee94b809a4a63b972c72b22257fa3f30',1,'Vector2D']]],
-  ['getrpm_23',['getRPM',['../classFlywheel.html#abbbe49f13e580a85670734f472170b45',1,'Flywheel']]],
-  ['graphdrawer_24',['GraphDrawer',['../classGraphDrawer.html#a066c3300f9452ada1730c6ee3d191971',1,'GraphDrawer']]]
+  ['getrpm_23',['getRPM',['../classFlywheel.html#abbbe49f13e580a85670734f472170b45',1,'Flywheel']]]
 ];

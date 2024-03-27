@@ -112,14 +112,14 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CommandController</b> ()</td></tr>
 <tr class="memdesc:afe87cef2dd63449334a46aae33b7edf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty <a class="el" href="classCommandController.html">CommandController</a>. Add Command with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a> <br /></td></tr>
 <tr class="separator:afe87cef2dd63449334a46aae33b7edf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9de2dfdf95ff4d80e2ad4906138c1316" id="r_a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9de2dfdf95ff4d80e2ad4906138c1316">CommandController</a> (std::initializer_list&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds)</td></tr>
+<tr class="memitem:a9de2dfdf95ff4d80e2ad4906138c1316" id="r_a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9de2dfdf95ff4d80e2ad4906138c1316">CommandController</a> (std::initializer_list&lt; AutoCommand * &gt; cmds)</td></tr>
 <tr class="memdesc:a9de2dfdf95ff4d80e2ad4906138c1316"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classCommandController.html">CommandController</a> with commands pre added. More can be added with <a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">CommandController::add()</a>  <br /></td></tr>
 <tr class="separator:a9de2dfdf95ff4d80e2ad4906138c1316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03fc0dd37c12ae7f43200d5588c768b8" id="r_a03fc0dd37c12ae7f43200d5588c768b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">add</a> (std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds)</td></tr>
+<tr class="memitem:a03fc0dd37c12ae7f43200d5588c768b8" id="r_a03fc0dd37c12ae7f43200d5588c768b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a03fc0dd37c12ae7f43200d5588c768b8">add</a> (std::vector&lt; AutoCommand * &gt; cmds)</td></tr>
 <tr class="separator:a03fc0dd37c12ae7f43200d5588c768b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cb2c06abd92fb99578f0da75c1411e5" id="r_a4cb2c06abd92fb99578f0da75c1411e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cb2c06abd92fb99578f0da75c1411e5">add</a> (<a class="el" href="classAutoCommand.html">AutoCommand</a> *cmd, double timeout_seconds=10.0)</td></tr>
+<tr class="memitem:a4cb2c06abd92fb99578f0da75c1411e5" id="r_a4cb2c06abd92fb99578f0da75c1411e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4cb2c06abd92fb99578f0da75c1411e5">add</a> (AutoCommand *cmd, double timeout_seconds=10.0)</td></tr>
 <tr class="separator:a4cb2c06abd92fb99578f0da75c1411e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24417a9add93204b26a35314be325b8c" id="r_a24417a9add93204b26a35314be325b8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24417a9add93204b26a35314be325b8c">add</a> (std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt; cmds, double timeout_sec)</td></tr>
+<tr class="memitem:a24417a9add93204b26a35314be325b8c" id="r_a24417a9add93204b26a35314be325b8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a24417a9add93204b26a35314be325b8c">add</a> (std::vector&lt; AutoCommand * &gt; cmds, double timeout_sec)</td></tr>
 <tr class="separator:a24417a9add93204b26a35314be325b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae06b054f4aeea86e8c6bee56458dc6d1" id="r_ae06b054f4aeea86e8c6bee56458dc6d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae06b054f4aeea86e8c6bee56458dc6d1">add_delay</a> (int ms)</td></tr>
 <tr class="separator:ae06b054f4aeea86e8c6bee56458dc6d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +146,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">CommandController::CommandController </td>
           <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em></span></td><td>)</td>
+          <td class="paramtype">std::initializer_list&lt; AutoCommand * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -177,7 +177,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CommandController::add </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classAutoCommand.html">AutoCommand</a> *</td>          <td class="paramname"><span class="paramname"><em>cmd</em>, </span></td>
+          <td class="paramtype">AutoCommand *</td>          <td class="paramname"><span class="paramname"><em>cmd</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -188,7 +188,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>File: command_controller.cpp Desc: A <a class="el" href="classCommandController.html">CommandController</a> manages the AutoCommands that make up an autonomous route. The AutoCommands are kept in a queue and get executed and removed from the queue in FIFO order. Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
+    <tr><td class="paramname">cmd</td><td>the AutoCommand we want to add to our list </td></tr>
     <tr><td class="paramname">timeout_seconds</td><td>the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout </td></tr>
   </table>
   </dd>
@@ -205,14 +205,14 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CommandController::add </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em></span></td><td>)</td>
+          <td class="paramtype">std::vector&lt; AutoCommand * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>Adds a command to the queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>the <a class="el" href="classAutoCommand.html">AutoCommand</a> we want to add to our list </td></tr>
+    <tr><td class="paramname">cmd</td><td>the AutoCommand we want to add to our list </td></tr>
     <tr><td class="paramname">timeout_seconds</td><td>the number of seconds we will let the command run for. If it exceeds this, we cancel it and run on_timeout. if it is &lt;= 0 no time out will be applied</td></tr>
   </table>
   </dd>
@@ -235,7 +235,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void CommandController::add </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classAutoCommand.html">AutoCommand</a> * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em>, </span></td>
+          <td class="paramtype">std::vector&lt; AutoCommand * &gt;</td>          <td class="paramname"><span class="paramname"><em>cmds</em>, </span></td>
         </tr>
         <tr>
           <td class="paramkey"></td>

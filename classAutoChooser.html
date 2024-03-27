@@ -101,7 +101,6 @@ $(function(){initNavTree('classAutoChooser.html',''); initResizable(); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
-<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classAutoChooser-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">AutoChooser Class Reference</div></div>
 </div><!--header-->
@@ -127,10 +126,6 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa80fcacf1535d1ae098939f84c0967ab" id="r_aa80fcacf1535d1ae098939f84c0967ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa80fcacf1535d1ae098939f84c0967ab">AutoChooser</a> (std::vector&lt; std::string &gt; paths, size_t def=0)</td></tr>
 <tr class="separator:aa80fcacf1535d1ae098939f84c0967ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa257a3dca9b9cc10eab6087406f64330" id="r_aa257a3dca9b9cc10eab6087406f64330"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa257a3dca9b9cc10eab6087406f64330">update</a> (bool was_pressed, int x, int y)</td></tr>
-<tr class="separator:aa257a3dca9b9cc10eab6087406f64330"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7f3c39be83217c58f48df2374f1762e" id="r_ab7f3c39be83217c58f48df2374f1762e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7f3c39be83217c58f48df2374f1762e">draw</a> (vex::brain::lcd &amp;, bool first_draw, unsigned int frame_number)</td></tr>
-<tr class="separator:ab7f3c39be83217c58f48df2374f1762e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab52d14deb6d1b01afc7dc440e772a523" id="r_ab52d14deb6d1b01afc7dc440e772a523"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab52d14deb6d1b01afc7dc440e772a523">get_choice</a> ()</td></tr>
 <tr class="separator:ab52d14deb6d1b01afc7dc440e772a523"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -140,15 +135,6 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a5fdde577439598e339b7e8429290c3db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c2b8683579011b529b95aab423b120a" id="r_a5c2b8683579011b529b95aab423b120a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structAutoChooser_1_1entry__t.html">entry_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5c2b8683579011b529b95aab423b120a">list</a></td></tr>
 <tr class="separator:a5c2b8683579011b529b95aab423b120a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
-Static Protected Attributes</h2></td></tr>
-<tr class="memitem:adde6864e70924eb017e7c2cb9045bfa0" id="r_adde6864e70924eb017e7c2cb9045bfa0"><td class="memItemLeft" align="right" valign="top"><a id="adde6864e70924eb017e7c2cb9045bfa0" name="adde6864e70924eb017e7c2cb9045bfa0"></a>
-static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>width</b> = 380</td></tr>
-<tr class="separator:adde6864e70924eb017e7c2cb9045bfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80ff6277aefb605fac4da6610dadfaac" id="r_a80ff6277aefb605fac4da6610dadfaac"><td class="memItemLeft" align="right" valign="top"><a id="a80ff6277aefb605fac4da6610dadfaac" name="a80ff6277aefb605fac4da6610dadfaac"></a>
-static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height</b> = 220</td></tr>
-<tr class="separator:a80ff6277aefb605fac4da6610dadfaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Autochooser is a utility to make selecting robot autonomous programs easier source: RIT VexU Wiki During a season, we usually code between 4 and 6 autonomous programs. Most teams will change their entire robot program as a way of choosing autonomi but this may cause issues if you have an emergency patch to upload during a competition. This class was built as a way of using the robot screen to list autonomous programs, and the touchscreen to select them. </p>
@@ -181,42 +167,6 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab7f3c39be83217c58f48df2374f1762e" name="ab7f3c39be83217c58f48df2374f1762e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7f3c39be83217c58f48df2374f1762e">&#9670;&#160;</a></span>draw()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void AutoChooser::draw </td>
-          <td>(</td>
-          <td class="paramtype">vex::brain::lcd &amp;</td>          <td class="paramname"><span class="paramname"><em>scr</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>first_draw</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int</td>          <td class="paramname"><span class="paramname"><em>frame_number</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a0a95f681b0facd87c4191fc11bcf8ce0">screen::Page</a>.</p>
-
-</div>
-</div>
 <a id="ab52d14deb6d1b01afc7dc440e772a523" name="ab52d14deb6d1b01afc7dc440e772a523"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab52d14deb6d1b01afc7dc440e772a523">&#9670;&#160;</a></span>get_choice()</h2>
 
@@ -233,42 +183,6 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>height
 </div><div class="memdoc">
 <p>Get the currently selected auto choice </p><dl class="section return"><dt>Returns</dt><dd>the identifier to the auto path</dd></dl>
 <p>Return the selected autonomous </p>
-
-</div>
-</div>
-<a id="aa257a3dca9b9cc10eab6087406f64330" name="aa257a3dca9b9cc10eab6087406f64330"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa257a3dca9b9cc10eab6087406f64330">&#9670;&#160;</a></span>update()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void AutoChooser::update </td>
-          <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>was_pressed</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>x</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classscreen_1_1Page.html#a2a37f119e6cf33d96ae0b37ff4227405">screen::Page</a>.</p>
 
 </div>
 </div>

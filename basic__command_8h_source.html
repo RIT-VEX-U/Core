@@ -113,7 +113,7 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// Basic Motor Classes-----------------------------------------------</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classBasicSpinCommand.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicSpinCommand.html">BasicSpinCommand</a> : <span class="keyword">public</span> <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classBasicSpinCommand.html">   24</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicSpinCommand.html">BasicSpinCommand</a> : <span class="keyword">public</span> AutoCommand {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// Enumurator for the type of power setting in the motor</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">enum</span> type { percent, voltage, veocity };</div>
@@ -133,7 +133,7 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
 </div>
 <div class="foldopen" id="foldopen00060" data-start="{" data-end="};">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classBasicStopCommand.html">   60</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicStopCommand.html">BasicStopCommand</a> : <span class="keyword">public</span> <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classBasicStopCommand.html">   60</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicStopCommand.html">BasicStopCommand</a> : <span class="keyword">public</span> AutoCommand {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_function" href="classBasicStopCommand.html#a8f7fa97627810883921d2a6566bd55e3">BasicStopCommand</a>(vex::motor &amp;motor, vex::brakeType setting);</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
@@ -149,7 +149,7 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">// Basic Solenoid Commands----------------------------------</span></div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
 <div class="foldopen" id="foldopen00090" data-start="{" data-end="};">
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classBasicSolenoidSet.html">   90</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicSolenoidSet.html">BasicSolenoidSet</a> : <span class="keyword">public</span> <a class="code hl_class" href="classAutoCommand.html">AutoCommand</a> {</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classBasicSolenoidSet.html">   90</a></span><span class="keyword">class </span><a class="code hl_class" href="classBasicSolenoidSet.html">BasicSolenoidSet</a> : <span class="keyword">public</span> AutoCommand {</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <a class="code hl_function" href="classBasicSolenoidSet.html#a2aab468c0c963f6ab9412c51b7bf42c2">BasicSolenoidSet</a>(vex::pneumatics &amp;solenoid, <span class="keywordtype">bool</span> setting);</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
@@ -161,7 +161,6 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(); }
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">bool</span> setting;</div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>};</div>
 </div>
-<div class="ttc" id="aclassAutoCommand_html"><div class="ttname"><a href="classAutoCommand.html">AutoCommand</a></div><div class="ttdef"><b>Definition</b> auto_command.h:31</div></div>
 <div class="ttc" id="aclassBasicSolenoidSet_html"><div class="ttname"><a href="classBasicSolenoidSet.html">BasicSolenoidSet</a></div><div class="ttdef"><b>Definition</b> basic_command.h:90</div></div>
 <div class="ttc" id="aclassBasicSolenoidSet_html_a044d9814ab675758aa66a4a86b46489c"><div class="ttname"><a href="classBasicSolenoidSet.html#a044d9814ab675758aa66a4a86b46489c">BasicSolenoidSet::run</a></div><div class="ttdeci">bool run() override</div><div class="ttdoc">Runs the BasicSolenoidSet Overrides run command from AutoCommand.</div><div class="ttdef"><b>Definition</b> basic_command.cpp:84</div></div>
 <div class="ttc" id="aclassBasicSolenoidSet_html_a2aab468c0c963f6ab9412c51b7bf42c2"><div class="ttname"><a href="classBasicSolenoidSet.html#a2aab468c0c963f6ab9412c51b7bf42c2">BasicSolenoidSet::BasicSolenoidSet</a></div><div class="ttdeci">BasicSolenoidSet(vex::pneumatics &amp;solenoid, bool setting)</div><div class="ttdoc">Construct a new BasicSolenoidSet Command.</div><div class="ttdef"><b>Definition</b> basic_command.cpp:76</div></div>

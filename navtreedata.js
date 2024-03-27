@@ -40,9 +40,6 @@ var NAVTREE =
         [ "Enumerations", "functions_enum.html", null ],
         [ "Related Symbols", "functions_rela.html", null ]
       ] ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
     ] ]
   ] ]
 ];
@@ -50,8 +47,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classStateMachine_1_1MaybeMessage.html",
-"structscreen_1_1CheckboxConfig.html"
+"classTrapezoidProfile.html#a6c08d08d8eadaa719f4dc9e607f9fe97"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -5,6 +5,5 @@ var searchData=
   ['odometrybase_2',['OdometryBase',['../classOdometryBase.html',1,'']]],
   ['odometrypage_3',['OdometryPage',['../classscreen_1_1OdometryPage.html',1,'screen']]],
   ['odometrytank_4',['OdometryTank',['../classOdometryTank.html',1,'']]],
-  ['odomsetposition_5',['OdomSetPosition',['../classOdomSetPosition.html',1,'']]],
-  ['orcondition_6',['OrCondition',['../classOrCondition.html',1,'']]]
+  ['odomsetposition_5',['OdomSetPosition',['../classOdomSetPosition.html',1,'']]]
 ];
