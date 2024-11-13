@@ -26,6 +26,7 @@ int OdometryBase::background_task(void *ptr) {
     obj.mut.lock();
     obj.update();
     obj.mut.unlock();
+    vexDelay(8);
   }
 
   return 0;
