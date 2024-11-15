@@ -197,6 +197,7 @@ private:
     Eigen::Matrix3d rotation{{cosOldTheta, -sinOldTheta, 0}, {sinOldTheta, cosOldTheta, 0}, {0, 0, 1}};
     Eigen::Matrix3d integrated_rotation;
 
+    // when the angle change is very small, we use a taylor series to approximate
     if (abs(dtheta) < 1e-9) {
       integrated_rotation.row(0) << 1.0 - ((dtheta * dtheta) / 6.0), -(dtheta / 2.0), 0;
       integrated_rotation.row(1) << (dtheta / 2.0), 1.0 - ((dtheta * dtheta) / 6.0), 0;
@@ -227,8 +228,11 @@ private:
    * @return The robot's new position (x, y, rot)
    */
   pose_t calculate_new_pos(Eigen::Vector<double, WHEELS> radian_deltas, pose_t old_pose) {
+    // Mr T = E -> Mr^{+} E = T
     Eigen::Vector3d pose_delta = transfer_matrix_pseudoinverse * (radian_deltas.asDiagonal() * wheel_radii);
     Eigen::Vector3d old_pose_vector{old_pose.x, old_pose.y, old_pose.rot};
+
+    // we achieve better performance by using the imu for rotation directly
     pose_delta(2) = angle - old_heading;
 
     pose_t new_pose = pose_exponential(old_pose_vector, pose_delta);
