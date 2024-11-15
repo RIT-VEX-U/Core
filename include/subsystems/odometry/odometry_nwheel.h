@@ -34,6 +34,9 @@
  * This is a "set and forget" class, meaning once the object is created, the robot will immediately begin
  * tracking it's movement in the background.
  *
+ * https://rit.enterprise.slack.com/files/U04112Y5RB6/F080M01KPA5/predictperpindiculars2.pdf
+ * 2024-2025 Notebook: Entries/Software Entries/Localization/N-Pod Odometry
+ *
  * @author Jack Cammarata, Richie Sommers
  * @date Nov 14 2024
  *
