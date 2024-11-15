@@ -3,7 +3,8 @@
 #undef __ARM_NEON
 #include "../core/include/subsystems/custom_encoder.h"
 #include "../core/include/subsystems/odometry/odometry_base.h"
-#include <../vendor/Eigen/Dense>
+#include "../core/include/utils/math_util.h"
+#include <Eigen/Dense>
 
 /**
  * OdometryNWheel
