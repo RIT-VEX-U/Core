@@ -94,6 +94,8 @@ public:
     }
 
     transfer_matrix_pseudoinverse = transfer_matrix.completeOrthogonalDecomposition().pseudoInverse();
+    angle_offset = 0;
+    old_wheel_angles.fill(0);
   }
 
   /**
