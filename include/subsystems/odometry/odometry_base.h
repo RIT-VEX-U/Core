@@ -1,5 +1,11 @@
 #pragma once
 
+// These are required for Eigen to compile
+// https://www.vexforum.com/t/eigen-integration-issue/61474/5
+#undef __ARM_NEON__
+#undef __ARM_NEON
+#include <Eigen/Dense>
+
 #include "../core/include/robot_specs.h"
 #include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/utils/geometry.h"
@@ -122,6 +128,17 @@ public:
    * Zeroed position. X=0, Y=0, Rotation= 90 degrees
    */
   inline static constexpr pose_t zero_pos = {.x = 0.0L, .y = 0.0L, .rot = 90.0L};
+
+  /**
+   * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
+   * Can be thought of as applying a twist as following an arc rather than a straight line.
+   *
+   * https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2
+   *
+   * @param old_pose  The pose to which the twist will be applied
+   * @param twist     The twist, represents a pose delta
+   */
+  static pose_t pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist);
 
 protected:
   /**

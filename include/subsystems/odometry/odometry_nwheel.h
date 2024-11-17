@@ -60,6 +60,7 @@ public:
    *
    * @param encoders std::array containing each CustomEncoder
    * @param wheel_configs std::array containing each tracking_wheel_cfg
+   * @param imu when passed in, only uses imu for rotation measurement
    * @param is_async true to constantly run in the background
    */
   OdometryNWheel(
@@ -93,8 +94,6 @@ public:
     }
 
     transfer_matrix_pseudoinverse = transfer_matrix.completeOrthogonalDecomposition().pseudoInverse();
-
-    old_angle = 0;
   }
 
   /**
@@ -164,7 +163,7 @@ public:
     }
 
     if (imu != nullptr) {
-      old_heading = angle;
+      old_angle = angle;
     }
 
     return current_pos;
@@ -175,56 +174,13 @@ public:
    */
   void set_position(const pose_t &newpos) override {
     mut.lock();
-    rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
+    angle_offset = newpos.rot - (current_pos.rot - angle_offset);
     mut.unlock();
 
     OdometryBase::set_position(newpos);
   }
 
 private:
-  /**
-   * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
-   * Can be thought of as applying a twist as following an arc rather than a straight line.
-   *
-   * https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2
-   *
-   * @param old_pose  The pose to which the twist will be applied
-   * @param twist     The twist, represents a pose delta
-   */
-  pose_t pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist) {
-    double dtheta = twist(2);
-
-    double sinTheta = sin(dtheta);
-    double cosTheta = cos(dtheta);
-
-    double sinOldTheta = sin(old_pose(2));
-    double cosOldTheta = cos(old_pose(2));
-
-    Eigen::Matrix3d rotation{{cosOldTheta, -sinOldTheta, 0}, {sinOldTheta, cosOldTheta, 0}, {0, 0, 1}};
-    Eigen::Matrix3d integrated_rotation;
-
-    // when the angle change is very small, we use a taylor series to approximate
-    if (abs(dtheta) < 1e-9) {
-      integrated_rotation.row(0) << 1.0 - ((dtheta * dtheta) / 6.0), -(dtheta / 2.0), 0;
-      integrated_rotation.row(1) << (dtheta / 2.0), 1.0 - ((dtheta * dtheta) / 6.0), 0;
-      integrated_rotation.row(2) << 0, 0, 1;
-    } else {
-      integrated_rotation.row(0) << sinTheta / dtheta, (cosTheta - 1.0) / dtheta, 0;
-      integrated_rotation.row(1) << (1 - cosTheta) / dtheta, sinTheta / dtheta, 0;
-      integrated_rotation.row(2) << 0, 0, 1;
-    }
-
-    Eigen::Vector3d global_pose_delta = rotation * integrated_rotation * twist;
-
-    pose_t newPose;
-
-    newPose.x = old_pose(0) + global_pose_delta(0);
-    newPose.y = old_pose(1) + global_pose_delta(1);
-    newPose.rot = wrap_angle_rad(old_pose(2) + global_pose_delta(2));
-
-    return newPose;
-  }
-
   /**
    * Calculation method for the robot's new position using the change in encoders, and the old pose, the wheel
    * configurations are stored as class members.
