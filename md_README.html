@@ -111,7 +111,15 @@ $(function(){initNavTree('md_README.html',''); initResizable(true); });
 <p><img src="https://github.com/RIT-VEX-U/Core/assets/12285261/e91c680b-5bf4-431c-b164-6631bef2a853" alt="core_logo" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Getting Started</h1>
-<p>In order to simply use this repo, you can either clone it into your VEXcode project folder, or download the .zip and place it into a core/ subfolder. Then follow the instructions for setting up compilation at <a href="https://github.com/RIT-VEX-U/Core/wiki/1-%7C-Project-Setup#build-system">Wiki/BuildSystem</a></p>
+<p>The recommended way to use this repo is through <a href="https://git-memo.readthedocs.io/en/latest/subtree.html">git subtree</a>.</p>
+<p>To setup core for a new project</p><ol type="1">
+<li>Create a new vex project (using the VSCode extension or other methods)</li>
+<li>Initialize a git repository for the project</li>
+<li>Execute <code>git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main</code></li>
+<li>Update the vex Makefile (or any other build system) to know about the core files (<code>core/src</code> for source files, <code>core/include</code> for headers)</li>
+<li>Start coding :)</li>
+</ol>
+<p>Or, you can use the <a href="https://github.com/RIT-VEX-U/RobotTemplate">template</a> from the RIT VEX U organization.</p>
 <p>If you wish to contribute, follow the instructions at <a href="https://github.com/RIT-VEX-U/Core/wiki/1-%7C-Project-Setup">Wiki/ProjectSetup</a></p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Features</h1>
@@ -120,7 +128,11 @@ Features</h1>
 </p><ul>
 <li>Tank drivetrain (user control / autonomous)</li>
 <li>Mecanum drivetrain (user control / autonomous)</li>
-<li>Odometry</li>
+<li>Odometry<ul>
+<li>Tank (Differential)</li>
+<li><a href="https://github.com/RIT-VEX-U/Core/commit/37daf076ac1b6dea6723724ad3061d502fea1b08">N-Pod</a></li>
+</ul>
+</li>
 <li><a class="el" href="classFlywheel.html">Flywheel</a></li>
 <li><a class="el" href="classLift.html">Lift</a></li>
 <li>Custom encoders</li>
