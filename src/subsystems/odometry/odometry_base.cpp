@@ -156,7 +156,7 @@ pose_t OdometryBase::pose_exponential(const Eigen::Vector3d old_pose, const Eige
   Eigen::Matrix3d integrated_rotation;
 
   // when the angle change is very small, we use a taylor series to approximate
-  if (abs(dtheta) < 1e-9) {
+  if (std::abs(dtheta) < 1e-9) {
     integrated_rotation.row(0) << 1.0 - ((dtheta * dtheta) / 6.0), -(dtheta / 2.0), 0;
     integrated_rotation.row(1) << (dtheta / 2.0), 1.0 - ((dtheta * dtheta) / 6.0), 0;
     integrated_rotation.row(2) << 0, 0, 1;
