@@ -72,6 +72,7 @@ var hierarchy =
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::State", "structStateMachine_1_1State.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >", "classStateMachine.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
+    [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", null ],
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],

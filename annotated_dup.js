@@ -62,6 +62,7 @@ var annotated_dup =
     [ "StateMachine", "classStateMachine.html", "classStateMachine" ],
     [ "TakeBackHalf", "classTakeBackHalf.html", "classTakeBackHalf" ],
     [ "TankDrive", "classTankDrive.html", "classTankDrive" ],
+    [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", "structtracking__wheel__cfg__t" ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", "classTrapezoidProfile" ],
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", "classTurnDegreesCommand" ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", "classTurnToHeadingCommand" ],

@@ -12,8 +12,9 @@ var searchData=
   ['point_5ft_9',['point_t',['../structpoint__t.html',1,'']]],
   ['pos_10',['pos',['../structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4',1,'motion_t']]],
   ['pos_5fdiff_11',['pos_diff',['../classOdometryBase.html#a58d8c7bfd6456038d025c39580971bd6',1,'OdometryBase']]],
-  ['pose_5ft_12',['pose_t',['../structpose__t.html',1,'']]],
-  ['position_13',['position',['../classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb',1,'CustomEncoder']]],
-  ['pure_5fpursuit_14',['pure_pursuit',['../classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2c820f92bc185bc29095c83e772bea46',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0)']]],
-  ['purepursuitcommand_15',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'PurePursuitCommand'],['../classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae',1,'PurePursuitCommand::PurePursuitCommand()']]]
+  ['pose_5fexponential_12',['pose_exponential',['../classOdometryBase.html#acae6966f4b618fe27e7c140701fc6ac4',1,'OdometryBase']]],
+  ['pose_5ft_13',['pose_t',['../structpose__t.html',1,'']]],
+  ['position_14',['position',['../classCustomEncoder.html#ab891fa278911c232bd0bf502a5ed95eb',1,'CustomEncoder']]],
+  ['pure_5fpursuit_15',['pure_pursuit',['../classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, Feedback &amp;feedback, double max_speed=1, double end_speed=0)'],['../classTankDrive.html#a2c820f92bc185bc29095c83e772bea46',1,'TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed=1, double end_speed=0)']]],
+  ['purepursuitcommand_16',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'PurePursuitCommand'],['../classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae',1,'PurePursuitCommand::PurePursuitCommand()']]]
 ];

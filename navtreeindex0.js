@@ -246,8 +246,8 @@ var NAVTREEINDEX0 =
 "classTankDrive.html#adae2aef67d47367eabb263a611312e47":[1,0,48,2],
 "classTankDrive.html#aec7b356dfa524b79339fbc0d744ffa7f":[1,0,48,8],
 "classTankDrive.html#af10e648e4de35fa72859fb96a9a80485":[1,0,48,12],
-"classTrapezoidProfile.html":[1,0,49],
-"classTrapezoidProfile.html#a0b65a924664e6e052a16db19f73af17c":[1,0,49,1],
-"classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5":[1,0,49,4],
-"classTrapezoidProfile.html#a1dcdfa1c290347cf0af48aca5afd167c":[1,0,49,3]
+"classTrapezoidProfile.html":[1,0,50],
+"classTrapezoidProfile.html#a0b65a924664e6e052a16db19f73af17c":[1,0,50,1],
+"classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5":[1,0,50,4],
+"classTrapezoidProfile.html#a1dcdfa1c290347cf0af48aca5afd167c":[1,0,50,3]
 };
