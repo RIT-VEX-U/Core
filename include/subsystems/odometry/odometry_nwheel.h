@@ -73,16 +73,19 @@ public:
       double y = wheel_configs[i].y;
       double theta_rad = wheel_configs[i].theta_rad;
       double radius = wheel_configs[i].radius;
+      // Eigen::Vector of the radii of the tracking wheels
+      // defined at the bottom of private:
       wheel_radii(i) = radius;
 
       double x_factor = cos(theta_rad);
       double y_factor = -sin(theta_rad);
       double theta_factor = -(x * sin(theta_rad)) - (y * cos(theta_rad));
 
-      if (abs(y_factor) < 0.000000001) {
+      // prevent numerical error due to float precision
+      if (abs(y_factor) < 1e-9) {
         y_factor = 0;
       }
-      if (abs(x_factor) < 0.000000001) {
+      if (abs(x_factor) < 1e-9) {
         x_factor = 0;
       }
 
@@ -91,7 +94,7 @@ public:
 
     transfer_matrix_pseudoinverse = transfer_matrix.completeOrthogonalDecomposition().pseudoInverse();
 
-    old_heading = 0;
+    old_angle = 0;
   }
 
   /**
@@ -112,13 +115,14 @@ public:
 
     pose_t updated_pos = calculate_new_pos(radian_deltas, current_pos);
 
-    angle = 0;
-
-    // Translate "0 forward and clockwise positive" to "CCW positive and radians"
-    angle = -imu->rotation(vex::rotationUnits::rev) * 2 * M_PI;
-
-    // Offset the angle, if we've done a set_position
-    angle += rotation_offset;
+    // if we do not pass in an IMU we use the wheels for rotation
+    if (imu != nullptr) {
+      angle = 0;
+      // Translate "0 forward and clockwise positive" to "CCW positive and radians"
+      angle = -imu->rotation(vex::rotationUnits::rev) * 2 * M_PI;
+      // Offset the angle, if we've done a set_position
+      angle += angle_offset;
+    }
 
     static pose_t last_pos = updated_pos;
     static double last_speed = 0;
@@ -159,7 +163,9 @@ public:
       this->ang_accel_deg = ang_accel_local;
     }
 
-    old_heading = angle;
+    if (imu != nullptr) {
+      old_heading = angle;
+    }
 
     return current_pos;
   }
@@ -229,21 +235,30 @@ private:
    */
   pose_t calculate_new_pos(Eigen::Vector<double, WHEELS> radian_deltas, pose_t old_pose) {
     // Mr T = E -> Mr^{+} E = T
+    // We take the diagonal of radian_deltas to do a coefficient wise multiplication rather than a dot product
     Eigen::Vector3d pose_delta = transfer_matrix_pseudoinverse * (radian_deltas.asDiagonal() * wheel_radii);
     Eigen::Vector3d old_pose_vector{old_pose.x, old_pose.y, old_pose.rot};
 
-    // we achieve better performance by using the imu for rotation directly
-    pose_delta(2) = angle - old_heading;
+    // we achieve better performance by using the imu for rotation directly when possible
+    // If an imu is not passed in when constructing, simply use the wheels for rotation
+    if (imu != nullptr) {
+      pose_delta(2) = angle - old_angle;
+    }
 
     pose_t new_pose = pose_exponential(old_pose_vector, pose_delta);
-    new_pose.rot = angle;
+
+    // simply replaces the calculated angle with the imu angle directly
+    if (imu != nullptr) {
+      new_pose.rot = angle;
+    }
 
     return new_pose;
   }
 
+  // values used for imu integration
   double angle;
-  double old_heading;
-  double rotation_offset;
+  double old_angle;
+  double angle_offset;
 
   vex::inertial *imu;
 
@@ -251,5 +266,6 @@ private:
 
   std::array<CustomEncoder, WHEELS> encoders;
   Eigen::Vector<double, WHEELS> wheel_radii;
+  // from the last timestep, used for finding deltas
   Eigen::Vector<double, WHEELS> old_wheel_angles;
 };
