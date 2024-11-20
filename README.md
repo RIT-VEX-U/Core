@@ -23,6 +23,13 @@ To setup core for a new project:
   3. Add the following to the `makefile`: `INC += -Ivendor/eigen`
 
 Or, you can use the [template](https://github.com/RIT-VEX-U/RobotTemplate) from the RIT VEX U organization.
+On the first clone of a project, run
+```
+git submodule init
+git submodule update
+```
+to initialize 3rd party dependencies.
+
 
 If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.
 
