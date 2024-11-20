@@ -112,15 +112,20 @@ $(function(){initNavTree('md_README.html',''); initResizable(true); });
 <h1><a class="anchor" id="autotoc_md1"></a>
 Getting Started</h1>
 <p>The recommended way to use this repo is through <a href="https://git-memo.readthedocs.io/en/latest/subtree.html">git subtree</a>.</p>
-<p>To setup core for a new project</p><ol type="1">
+<p>To setup core for a new project:</p><ol type="1">
 <li>Create a new vex project (using the VSCode extension or other methods)</li>
 <li>Initialize a git repository for the project</li>
 <li>Execute <code>git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main</code></li>
 <li>Update the vex Makefile (or any other build system) to know about the core files (<code>core/src</code> for source files, <code>core/include</code> for headers)</li>
-<li>Start coding :)</li>
+<li>Enable <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a>:<ol type="a">
+<li><code>mkdir vendor</code></li>
+<li>git submodule add <a href="https://gitlab.com/libeigen/eigen.git">https://gitlab.com/libeigen/eigen.git</a> vendor/eigen</li>
+<li>Add the following to the <code>makefile</code>: <code>INC += -Ivendor/eigen</code></li>
+</ol>
+</li>
 </ol>
 <p>Or, you can use the <a href="https://github.com/RIT-VEX-U/RobotTemplate">template</a> from the RIT VEX U organization.</p>
-<p>If you wish to contribute, follow the instructions at <a href="https://github.com/RIT-VEX-U/Core/wiki/1-%7C-Project-Setup">Wiki/ProjectSetup</a></p>
+<p>If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.</p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Features</h1>
 <p>Here is the current feature list this repo provides:</p>
