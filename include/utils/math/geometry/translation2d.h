@@ -6,6 +6,7 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
+#include "../core/include/utils/math/geometry/rotation2d.h"
 
 /**
  * Class representing a point in 2d space with x and y coordinates.
@@ -39,7 +40,7 @@ class Translation2d {
      * @param r The radius (magnitude) of the vector.
      * @param theta The angle (direction) of the vector.
      */
-    Translation2d(const double& r, const Rotation2d& theta)
+    Translation2d(const double& r, const Rotation2d& theta);
 
     /**
      * Returns the x value of the translation.
@@ -116,7 +117,7 @@ class Translation2d {
      * 
      * @return the single translation mean of the list of translations.
      */
-    Translation2d mean(const std::vector<Translation2d>& list)
+    Translation2d mean(const std::vector<Translation2d>& list);
 
     /**
      * Returns the sum of two translations.
