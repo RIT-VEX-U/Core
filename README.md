@@ -17,10 +17,13 @@ To setup core for a new project:
 2. Initialize a git repository for the project
 3. Execute `git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main`
 4. Update the vex Makefile (or any other build system) to know about the core files (`core/src` for source files, `core/include` for headers)
-5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page):
+5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) (Latest supported version is 3.4.0):
   1. `mkdir vendor`
-  2. git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen
-  3. Add the following to the `makefile`: `INC += -Ivendor/eigen`
+  2. `git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen`
+  3. `cd vendor/eigen`
+  4. `git checkout 3.4.0`
+  5. Add the following to the `makefile` to give Core access to the library: `INC += -Ivendor/eigen`
+
 
 Or, you can use the [template](https://github.com/RIT-VEX-U/RobotTemplate) from the RIT VEX U organization.
 On the first clone of a project, run
