@@ -1,0 +1,53 @@
+name: C/C++ CI
+
+on:
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: 'Build Project'
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+    - name: Get SDK Version
+      shell: bash
+      run: |
+        echo "VERSION=$(curl -s https://content.vexrobotics.com/vexos/public/V5/vscode/sdk/cpp/manifest.json |grep latest |grep -o "V5[^\"]*")" >> "$GITHUB_ENV"  
+    - name: Download SDK
+      uses: wei/curl@master
+      with: 
+        args: https://content.vexrobotics.com/vexos/public/V5/vscode/sdk/cpp/${{ env.VERSION }}.zip --output sdk.zip
+    - name: Unzip SDK
+      uses: montudor/action-zip@v1
+      with:
+        args: unzip -qq sdk.zip     
+    - name: Download Toolchain
+      uses: wei/curl@master
+      with:
+        args: https://content.vexrobotics.com/vexos/public/vscode/toolchain/linux/toolchain_linux64.zip --output tools.zip
+    - name: Unzip Toolchain
+      uses: montudor/action-zip@v1
+      with:
+        args: unzip -qq tools.zip
+    - shell: bash
+      run: |
+        sudo chmod +x toolchain_linux64/gcc/bin/*
+    - run: PATH=${PATH}:toolchain_linux64/gcc/bin make VEX_SDK_PATH=${{ env.VERSION }}
+    - name: Expose git commit data
+      if: ${{ failure() && github.event_name == 'push' }}
+      uses: rlespinasse/git-commit-data-action@v1
+    - name: Send Slack Notification
+      if: ${{ failure() && github.event_name == 'push' }}
+      id: slack
+      uses: slackapi/slack-github-action@v1.24.0
+      with:
+        channel-id: 'github-updates'
+        slack-message: ":x:    _*Oopsie Woopsie! Build Failed in <${{ github.server_url }}/${{ github.repository }}|${{ github.repository }}>*_\n\n> Branch: <${{ github.server_url }}/${{ github.repository }}/tree/${{ github.ref_name }}|${{ github.ref_name }}>\n> Commit Ref: <${{ github.server_url }}/${{ github.repository }}/commit/${{ env.GIT_COMMIT_SHA }}|${{ env.GIT_COMMIT_SHORT_SHA }}>\n> Commit Message: ${{ env.GIT_COMMIT_MESSAGE_SUBJECT }}\n> Author: ${{ env.GIT_COMMIT_COMMITTER }} \n\nPlease fix as soon as possible!"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
