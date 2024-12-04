@@ -37,8 +37,8 @@ Translation2d::Translation2d(const Eigen::Vector2d &vector) {
  * @param theta The angle (direction) of the vector.
  */
 Translation2d::Translation2d(const double &r, const Rotation2d &theta) {
-  m_x = r * theta.cos();
-  m_y = r * theta.sin();
+  m_x = r * theta.f_cos();
+  m_y = r * theta.f_sin();
 }
 
 /**
@@ -95,7 +95,7 @@ double Translation2d::distance(const Translation2d &other) { return std::hypot(m
  * @return the new translation that has been rotated around the origin.
  */
 Translation2d Translation2d::rotate_by(const Rotation2d &rotation) {
-  return {m_x * rotation.cos() - m_y * rotation.sin(), m_x * rotation.sin() + m_y * rotation.cos()};
+  return {m_x * rotation.f_cos() - m_y * rotation.f_sin(), m_x * rotation.f_sin() + m_y * rotation.f_cos()};
 }
 
 /**
