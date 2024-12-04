@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
 #include <cmath>
@@ -253,7 +251,7 @@ double wrap_revolutions_180(const double &angle) {
  * @return the wrapped radian angle value from [0, 2pi).
  */
 double wrap_radians_360(const double &angle) {
-  double x = fmod(x, 2 * M_PI);
+  double x = fmod(angle, 2 * M_PI);
   if (x < 0) {
     x += (2 * M_PI);
   }
@@ -268,7 +266,7 @@ double wrap_radians_360(const double &angle) {
  * @return the wrapped degree angle value from [0, 360).
  */
 double wrap_degrees_360(const double &angle) {
-  double x = fmod(x, 360);
+  double x = fmod(angle, 360);
   if (x < 0) {
     x += 360;
   }
@@ -283,7 +281,7 @@ double wrap_degrees_360(const double &angle) {
  * @return the wrapped revolution angle value from [0, 1).
  */
 double wrap_revolutions_360(const double &angle) {
-  double x = fmod(x, 1);
+  double x = fmod(angle, 1);
   if (x < 0) {
     x += 1;
   }

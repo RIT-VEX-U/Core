@@ -1,5 +1,3 @@
-#pragma once
-
 // These are required for Eigen to compile
 // https://www.vexforum.com/t/eigen-integration-issue/61474/5
 #undef __ARM_NEON__
@@ -74,7 +72,7 @@ Eigen::Vector2d Translation2d::as_vector() { return Eigen::Vector2d(m_x, m_y); }
  *
  * @return the norm of the translation.
  */
-double Translation2d::norm() { std::hypot(m_x, m_y); }
+double Translation2d::norm() { return std::hypot(m_x, m_y); }
 
 /**
  * Returns the distance between two translations.
