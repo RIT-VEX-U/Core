@@ -4,7 +4,7 @@
 // https://www.vexforum.com/t/eigen-integration-issue/61474/5
 #undef __ARM_NEON__
 #undef __ARM_NEON
-#include <Eigen/Dense>
+#include <Eigen/Core>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
@@ -47,14 +47,14 @@ public:
    *
    * @return the x value of the translation.
    */
-  double x();
+  double x() const;
 
   /**
    * Returns the y value of the translation.
    *
    * @return the y value of the translation.
    */
-  double y();
+  double y() const;
 
   /**
    * Returns the angle of the translation.
