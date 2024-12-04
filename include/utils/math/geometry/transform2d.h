@@ -6,7 +6,6 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
-#include "../core/include/utils/math/geometry/pose2d.h"
 #include "../core/include/utils/math/geometry/rotation2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
 
@@ -68,7 +67,7 @@ public:
    * @param translation the translational component of the transform.
    * @param rotation the rotational component of the transform.
    */
-  Transform2d(const Pose2d &start, const Pose2d &end);
+  // Transform2d(const Pose2d &start, const Pose2d &end);
 
   /**
    * Returns the translational component of the transform.
