@@ -6,11 +6,11 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
+#include "../core/include/utils/math/geometry/pose2d.h"
 #include "../core/include/utils/math/geometry/rotation2d.h"
 #include "../core/include/utils/math/geometry/transform2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/math/geometry/twist2d.h"
-#include "../core/include/utils/math/geometry/pose2d.h"
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -18,7 +18,8 @@
  * @param translation translational component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation) : m_translation{translation}, m_rotation{rotation} {}
+Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
+    : m_translation{translation}, m_rotation{rotation} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -27,7 +28,8 @@ Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation) : m
  * @param y y component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation) : m_translation{x, y}, m_rotation{rotation}
+Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
+    : m_translation{x, y}, m_rotation{rotation} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -36,7 +38,7 @@ Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation) : m
  * @param y y component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const double &x, const double &y, const double &radians);
+Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_translation{x, y}, m_rotation{radians} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -44,42 +46,44 @@ Pose2d::Pose2d(const double &x, const double &y, const double &radians);
  * @param translation translational component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const Translation2d &translation, const double &radians);
+Pose2d::Pose2d(const Translation2d &translation, const double &radians)
+    : m_translation{translation}, m_rotation{radians} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
  *
  * @param pose_vector vector of the form [x, y, theta].
  */
-Pose2d::Pose2d(const Eigen::Vector3d &pose_vector);
+Pose2d::Pose2d(const Eigen::Vector3d &pose_vector)
+    : m_translation{pose_vector(0), pose_vector(1)}, m_rotation{pose_vector(2)} {}
 
 /**
  * Returns the translational component.
  *
  * @return the translational component.
  */
-Translation2d Pose2d::translation() const;
+Translation2d Pose2d::translation() const { return m_translation; }
 
 /**
  * Returns the x value of the translational component.
  *
  * @return the x value of the translational component.
  */
-double Pose2d::x() const;
+double Pose2d::x() const { return m_translation.x(); }
 
 /**
  * Returns the y value of the translational component.
  *
  * @return the y value of the translational component.
  */
-double Pose2d::y() const;
+double Pose2d::y() const { return m_translation.y(); }
 
 /**
  * Returns the rotational component.
  *
  * @return the rotational component.
  */
-Rotation2d Pose2d::rotation() const;
+Rotation2d Pose2d::rotation() const { return m_rotation; }
 
 /**
  * Compares this to another pose.
@@ -88,7 +92,9 @@ Rotation2d Pose2d::rotation() const;
  *
  * @return true if each of the components are within 1e-9 of each other.
  */
-bool Pose2d::operator==(const Pose2d other) const;
+bool Pose2d::operator==(const Pose2d other) const {
+  return (translation() == other.translation()) && (rotation() == other.rotation());
+}
 
 /**
  * Multiplies this pose by a scalar.
@@ -96,7 +102,7 @@ bool Pose2d::operator==(const Pose2d other) const;
  *
  * @param scalar the scalar value to multiply by.
  */
-Pose2d Pose2d::operator*(const double &scalar) const;
+Pose2d Pose2d::operator*(const double &scalar) const { return Pose2d{m_translation * scalar, m_rotation * scalar}; }
 
 /**
  * Divides this pose by a scalar.
@@ -104,7 +110,7 @@ Pose2d Pose2d::operator*(const double &scalar) const;
  *
  * @param scalar the scalar value to divide by.
  */
-Pose2d Pose2d::operator/(const double &scalar) const;
+Pose2d Pose2d::operator/(const double &scalar) const { return *this * (1. / scalar); }
 
 /**
  * Adds a transform to this pose.
@@ -112,14 +118,19 @@ Pose2d Pose2d::operator/(const double &scalar) const;
  *
  * @param transform the change in pose.
  */
-Pose2d Pose2d::operator+(const Transform2d &transform) const;
+Pose2d Pose2d::operator+(const Transform2d &transform) const {
+  return Pose2d{translation() + (transform.translation().rotate_by(rotation())), transform.rotation() + rotation()};
+}
 
 /**
  * Subtracts one pose from another to find the transform between them.
  *
  * @param other the pose to subtract.
  */
-Transform2d Pose2d::operator-(const Pose2d &other) const;
+Transform2d Pose2d::operator-(const Pose2d &other) const {
+  Pose2d pose_diff = relative_to(other);
+  return Transform2d(pose_diff.translation(), pose_diff.rotation());
+}
 
 /**
  * Finds the pose equivalent to this pose relative to another arbitrary pose rather than the origin.
@@ -128,7 +139,10 @@ Transform2d Pose2d::operator-(const Pose2d &other) const;
  *
  * @return this pose relative to another pose.
  */
-Pose2d Pose2d::relative_to(const Pose2d &other) const;
+Pose2d Pose2d::relative_to(const Pose2d &other) const {
+  Transform2d transform{other, *this};
+  return Pose2d{transform.translation(), transform.rotation()};
+}
 
 /**
  * Adds a transform to this pose.
@@ -138,7 +152,9 @@ Pose2d Pose2d::relative_to(const Pose2d &other) const;
  *
  * @return the pose after being transformed.
  */
-Pose2d Pose2d::transform_by(const Transform2d &transform) const;
+Pose2d Pose2d::transform_by(const Transform2d &transform) const {
+  return Pose2d{translation() + (transform.translation().rotate_by(rotation())), rotation() + transform.rotation()};
+}
 
 /**
  * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
@@ -157,7 +173,27 @@ Pose2d Pose2d::transform_by(const Transform2d &transform) const;
  *
  * @return new pose that has been moved forward according to the twist.
  */
-Pose2d Pose2d::exp(const Twist2d &twist) const;
+Pose2d Pose2d::exp(const Twist2d &twist) const {
+  const double dx = twist.dx();
+  const double dy = twist.dy();
+  const double dtheta = twist.dtheta();
+
+  const double sin_theta = std::sin(dtheta);
+  const double cos_theta = std::cos(dtheta);
+
+  double s, c;
+  if (std::abs(dtheta) < 1e-9) {
+    s = 1.0 - 1.0 / 6.0 * dtheta * dtheta;
+    c = 0.5 * dtheta;
+  } else {
+    s = sin_theta / dtheta;
+    c = (1 / cos_theta) / dtheta;
+  }
+
+  const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}};
+
+  return *this + transform;
+}
 
 /**
  * The inverse of the pose exponential.
@@ -170,7 +206,29 @@ Pose2d Pose2d::exp(const Twist2d &twist) const;
  *
  * @return the twist required to go from this pose to the given end
  */
-Twist2d Pose2d::log(const Pose2d &end_pose) const;
+Twist2d Pose2d::log(const Pose2d &end_pose) const {
+  const Pose2d transform = end_pose.relative_to(*this);
+  const double dtheta = transform.rotation().radians();
+  const double halfDtheta = dtheta / 2.0;
+
+  const double cosMinusOne = transform.rotation().f_cos() - 1;
+
+  double halfThetaByTanOfHalfDtheta;
+
+  if (std::abs(cosMinusOne) < 1e-9) {
+    halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
+  } else {
+    halfThetaByTanOfHalfDtheta =
+        -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
+  }
+
+  const Translation2d translationPart =
+      transform.translation().rotate_by(
+          {halfThetaByTanOfHalfDtheta, -halfDtheta}) *
+      std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+
+  return Twist2d{translationPart.x(), translationPart.y(), dtheta};
+}
 
 /**
  * Calculates the mean of a list of poses.
