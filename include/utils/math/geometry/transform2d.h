@@ -9,6 +9,8 @@
 #include "../core/include/utils/math/geometry/rotation2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
 
+class Pose2d;
+
 /**
  * Class representing a transformation of a pose2d, or a linear difference between the components of poses.
  *
@@ -67,7 +69,7 @@ public:
    * @param translation the translational component of the transform.
    * @param rotation the rotational component of the transform.
    */
-  // Transform2d(const Pose2d &start, const Pose2d &end);
+  Transform2d(const Pose2d &start, const Pose2d &end);
 
   /**
    * Returns the translational component of the transform.
@@ -117,6 +119,13 @@ public:
    * @param scalar the scalar to divide this transform by.
    */
   Transform2d operator/(const double &scalar) const;
+
+  /**
+   * Inverts the transform.
+   *
+   * @return the inverted transform.
+   */
+  Transform2d operator-() const;
 
   /**
    * Compares this to another transform.

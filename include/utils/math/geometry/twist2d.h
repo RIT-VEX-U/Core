@@ -39,21 +39,21 @@ public:
    *
    * @return the linear dx component.
    */
-  double dx();
+  double dx() const;
 
   /**
    * Returns the linear dy component.
    *
    * @return the linear dy component.
    */
-  double dy();
+  double dy() const;
 
   /**
    * Returns the angular dtheta component.
    *
    * @return the angular dtheta component.
    */
-  double dtheta();
+  double dtheta() const;
 
   /**
    * Compares this to another twist.
@@ -62,21 +62,21 @@ public:
    *
    * @return true if each of the components are within 1e-9 of each other.
    */
-  bool operator==(const Twist2d &other);
+  bool operator==(const Twist2d &other) const;
 
   /**
    * Multiplies this twist by a scalar.
    *
    * @param scalar the scalar value to multiply by.
    */
-  Twist2d operator*(const double &scalar);
+  Twist2d operator*(const double &scalar) const;
 
   /**
    * Divides this twist by a scalar.
    *
    * @param scalar the scalar value to divide by.
    */
-  Twist2d operator/(const double &scalar);
+  Twist2d operator/(const double &scalar) const;
 
 private:
   double m_dx;

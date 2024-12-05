@@ -7,6 +7,7 @@
 #include "../core/include/utils/math/geometry/rotation2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/math/geometry/transform2d.h"
+#include "../core/include/utils/math/geometry/pose2d.h"
 
 /**
  * Constructs a transform given translation and rotation components.
@@ -57,7 +58,7 @@ Transform2d::Transform2d(const Eigen::Vector3d &transform_vector) : m_translatio
  * @param translation the translational component of the transform.
  * @param rotation the rotational component of the transform.
  */
-// Transform2d(const Pose2d &start, const Pose2d &end);
+Transform2d::Transform2d(const Pose2d &start, const Pose2d &end) : m_translation{(end.translation() - start.translation()).rotate_by(-start.rotation())}, m_rotation{end.rotation() - start.rotation()} {}
 
 /**
  * Returns the translational component of the transform.
@@ -120,6 +121,15 @@ Transform2d Transform2d::operator*(const double &scalar) const {
  */
 Transform2d Transform2d::operator/(const double &scalar) const {
   return *this * (1. / scalar);
+}
+
+/**
+ * Inverts the transform.
+ *
+ * @return the inverted transform.
+ */
+Transform2d Transform2d::operator-() const {
+  return inverse();
 }
 
 /**
