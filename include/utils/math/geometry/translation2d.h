@@ -4,7 +4,7 @@
 // https://www.vexforum.com/t/eigen-integration-issue/61474/5
 #undef __ARM_NEON__
 #undef __ARM_NEON
-#include <Eigen/Core>
+#include <Eigen/Dense>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
@@ -61,28 +61,28 @@ public:
    *
    * @return the angle of the translation.
    */
-  Rotation2d theta();
+  Rotation2d theta() const;
 
   /**
    * Returns the vector as an Eigen::Vector2d.
    *
    * @return Eigen::Vector2d with the same values as the translation.
    */
-  Eigen::Vector2d as_vector();
+  Eigen::Vector2d as_vector() const;
 
   /**
    * Returns the norm/radius/magnitude/distance from origin.
    *
    * @return the norm of the translation.
    */
-  double norm();
+  double norm() const;
 
   /**
    * Returns the distance between two translations.
    *
    * @return the distance between two translations.
    */
-  double distance(const Translation2d &other);
+  double distance(const Translation2d &other) const;
 
   /**
    * Applies a rotation to this translation around the origin.
@@ -95,7 +95,7 @@ public:
    *
    * @return the new translation that has been rotated around the origin.
    */
-  Translation2d rotate_by(const Rotation2d &rotation);
+  Translation2d rotate_by(const Rotation2d &rotation) const;
 
   /**
    * Applies a rotation to this translation around another given point.
@@ -108,7 +108,7 @@ public:
    *
    * @return the translation that has been rotated.
    */
-  Translation2d rotate_around(const Translation2d &other, const Rotation2d &rotation);
+  Translation2d rotate_around(const Translation2d &other, const Rotation2d &rotation) const;
 
   /**
    * Calculates the mean of the translations in the list.
@@ -117,7 +117,7 @@ public:
    *
    * @return the single translation mean of the list of translations.
    */
-  Translation2d mean(const std::vector<Translation2d> &list);
+  Translation2d mean(const std::vector<Translation2d> &list) const;
 
   /**
    * Returns the sum of two translations.
@@ -129,7 +129,7 @@ public:
    *
    * @return the sum of the two translations.
    */
-  Translation2d operator+(const Translation2d &other);
+  Translation2d operator+(const Translation2d &other) const;
 
   /**
    * Returns the difference of two translations.
@@ -141,7 +141,7 @@ public:
    *
    * @return the difference of the two translations.
    */
-  Translation2d operator-(const Translation2d &other);
+  Translation2d operator-(const Translation2d &other) const;
 
   /**
    * Returns the inverse of this translation.
@@ -152,7 +152,7 @@ public:
    *
    * @return the inverse of this translation.
    */
-  Translation2d operator-();
+  Translation2d operator-() const;
 
   /**
    * Returns this translation multiplied by a scalar.
@@ -164,7 +164,7 @@ public:
    *
    * @return this translation multiplied by a scalar.
    */
-  Translation2d operator*(const double &scalar);
+  Translation2d operator*(const double &scalar) const;
 
   /**
    * Returns this translation divided by a scalar.
@@ -176,7 +176,7 @@ public:
    *
    * @return this translation divided by a scalar.
    */
-  Translation2d operator/(const double &scalar);
+  Translation2d operator/(const double &scalar) const;
 
   /**
    * Returns the dot product of two translations.
@@ -187,7 +187,7 @@ public:
    *
    * @return the scalar valued dot product.
    */
-  double operator*(const Translation2d &other);
+  double operator*(const Translation2d &other) const;
 
   /**
    * Compares two translations.
@@ -197,9 +197,18 @@ public:
    *
    * @return whether the two translations are equal.
    */
-  bool operator==(const Translation2d &other);
+  bool operator==(const Translation2d &other) const;
 
 private:
   double m_x;
   double m_y;
 };
+
+/**
+ * Calculates the mean of a list of translations.
+ *
+ * @param list std::vector containing a list of translations.
+ *
+ * @return the single translation mean of the list of translation.
+ */
+Translation2d wrapped_mean(const std::vector<Translation2d> &list);
