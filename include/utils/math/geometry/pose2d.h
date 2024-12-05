@@ -118,7 +118,7 @@ public:
 
   /**
    * Adds a transform to this pose.
-   * Simply adds each component.
+   * Transforms the pose in the pose's frame.
    *
    * @param transform the change in pose.
    */
