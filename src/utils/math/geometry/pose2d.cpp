@@ -237,4 +237,20 @@ Twist2d Pose2d::log(const Pose2d &end_pose) const {
  *
  * @return the single pose mean of the list of poses.
  */
-Pose2d wrapped_mean(const std::vector<Pose2d> &list);
+Pose2d pose_mean(const std::vector<Pose2d> &list) {
+  double sumx = 0;
+  double sumy = 0;
+
+  double sum_sin = 0;
+  double sum_cos = 0;
+
+  for (int i = 0; i < list.size(); i++) {
+    sumx += list.at(i).x();
+    sumy += list.at(i).y();
+
+    sum_sin += list.at(i).rotation().f_sin();
+    sum_cos += list.at(i).rotation().f_cos();
+  }
+
+  return Pose2d{Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}}; 
+}
