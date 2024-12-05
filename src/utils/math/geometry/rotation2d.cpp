@@ -8,11 +8,7 @@
  *
  * @param radians the value of the rotation in radians.
  */
-Rotation2d::Rotation2d(const double &radians) {
-  m_radians = radians;
-  m_cos = std::cos(radians);
-  m_sin = std::sin(radians);
-}
+Rotation2d::Rotation2d(const double &radians) : m_radians{radians}, m_cos{std::cos(radians)}, m_sin{std::sin(radians)} {}
 
 /**
  * Constructs a rotation given x and y values.
@@ -24,11 +20,7 @@ Rotation2d::Rotation2d(const double &radians) {
  * @param x the x value of the point
  * @param y the y value of the point
  */
-Rotation2d::Rotation2d(const double &x, const double &y) {
-  m_radians = std::atan2(y, x);
-  m_cos = std::cos(m_radians);
-  m_sin = std::sin(m_radians);
-}
+Rotation2d::Rotation2d(const double &x, const double &y) : m_radians{std::atan2(y, x)}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
 
 /**
  * Constructs a rotation given radian angle value.

@@ -68,28 +68,28 @@ public:
    *
    * @return the translational component.
    */
-  Translation2d &translation();
+  Translation2d translation() const;
 
   /**
    * Returns the x value of the translational component.
    *
    * @return the x value of the translational component.
    */
-  double x();
+  double x() const;
 
   /**
    * Returns the y value of the translational component.
    *
    * @return the y value of the translational component.
    */
-  double y();
+  double y() const;
 
   /**
    * Returns the rotational component.
    *
    * @return the rotational component.
    */
-  Rotation2d &rotation();
+  Rotation2d rotation() const;
 
   /**
    * Compares this to another pose.
@@ -98,7 +98,7 @@ public:
    *
    * @return true if each of the components are within 1e-9 of each other.
    */
-  bool operator==(const Pose2d other);
+  bool operator==(const Pose2d other) const;
 
   /**
    * Multiplies this pose by a scalar.
@@ -106,7 +106,7 @@ public:
    *
    * @param scalar the scalar value to multiply by.
    */
-  Pose2d operator*(const double &scalar);
+  Pose2d operator*(const double &scalar) const;
 
   /**
    * Divides this pose by a scalar.
@@ -114,7 +114,7 @@ public:
    *
    * @param scalar the scalar value to divide by.
    */
-  Pose2d operator/(const double &scalar);
+  Pose2d operator/(const double &scalar) const;
 
   /**
    * Adds a transform to this pose.
@@ -122,14 +122,14 @@ public:
    *
    * @param transform the change in pose.
    */
-  Pose2d operator+(const Transform2d &transform);
+  Pose2d operator+(const Transform2d &transform) const;
 
   /**
    * Subtracts one pose from another to find the transform between them.
    *
    * @param other the pose to subtract.
    */
-  Transform2d operator-(const Pose2d &other);
+  Transform2d operator-(const Pose2d &other) const;
 
   /**
    * Finds the pose equivalent to this pose relative to another arbitrary pose rather than the origin.
@@ -138,7 +138,7 @@ public:
    *
    * @return this pose relative to another pose.
    */
-  Pose2d relative_to(const Pose2d &other);
+  Pose2d relative_to(const Pose2d &other) const;
 
   /**
    * Adds a transform to this pose.
@@ -148,7 +148,7 @@ public:
    *
    * @return the pose after being transformed.
    */
-  Pose2d transform_by(const Transform2d &transform);
+  Pose2d transform_by(const Transform2d &transform) const;
 
   /**
    * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
@@ -167,7 +167,7 @@ public:
    *
    * @return new pose that has been moved forward according to the twist.
    */
-  Pose2d exp(const Twist2d &twist);
+  Pose2d exp(const Twist2d &twist) const;
 
   /**
    * The inverse of the pose exponential.
@@ -180,9 +180,18 @@ public:
    *
    * @return the twist required to go from this pose to the given end
    */
-  Twist2d log(const Pose2d &end_pose);
+  Twist2d log(const Pose2d &end_pose) const;
 
 private:
   Translation2d m_translation;
   Rotation2d m_rotation;
 };
+
+/**
+ * Calculates the mean of a list of poses.
+ *
+ * @param list std::vector containing a list of poses.
+ *
+ * @return the single pose mean of the list of poses.
+ */
+Pose2d wrapped_mean(const std::vector<Pose2d> &list);

@@ -74,63 +74,49 @@ public:
    *
    * @return the translational component of the transform.
    */
-  Translation2d translation();
+  Translation2d translation() const;
 
   /**
    * Returns the x component of the transform.
    *
    * @return the x component of the transform.
    */
-  double x();
+  double x() const;
 
   /**
    * Returns the y component of the transform.
    *
    * @return the y component of the transform.
    */
-  double y();
+  double y() const;
 
   /**
    * Returns the rotational component of the transform.
    *
    * @return the rotational component of the transform.
    */
-  Rotation2d rotation();
+  Rotation2d rotation() const;
 
   /**
    * Inverts the transform.
    *
    * @return the inverted transform.
    */
-  Transform2d inverse();
-
-  /**
-   * Composes two transforms, does this transform first then other after.
-   *
-   * @param other the other transform to add to this transform.
-   */
-  Transform2d operator+(const Transform2d &other);
-
-  /**
-   * Subtracts a transform from this transform, composes this transform and the inverse of the other transform.
-   *
-   * @param other the other transform to subtract from this transform.
-   */
-  Transform2d operator-(const Transform2d &other);
+  Transform2d inverse() const;
 
   /**
    * Multiplies this transform by a scalar.
    *
    * @param scalar the scalar to multiply this transform by.
    */
-  Transform2d operator*(const double &scalar);
+  Transform2d operator*(const double &scalar) const;
 
   /**
    * Divides this transform by a scalar.
    *
    * @param scalar the scalar to divide this transform by.
    */
-  Transform2d operator/(const double &scalar);
+  Transform2d operator/(const double &scalar) const;
 
   /**
    * Compares this to another transform.
@@ -139,9 +125,9 @@ public:
    *
    * @return true if the components are within 1e-9 of each other.
    */
-  bool operator==(const Transform2d &other);
+  bool operator==(const Transform2d &other) const;
 
 private:
-  Translation2d translation;
-  Rotation2d rotation;
+  Translation2d m_translation;
+  Rotation2d m_rotation;
 };

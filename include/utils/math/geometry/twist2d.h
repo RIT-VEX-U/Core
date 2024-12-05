@@ -79,7 +79,7 @@ public:
   Twist2d operator/(const double &scalar);
 
 private:
-  double dx;
-  double dy;
-  double dtheta;
+  double m_dx;
+  double m_dy;
+  double m_dtheta;
 };
