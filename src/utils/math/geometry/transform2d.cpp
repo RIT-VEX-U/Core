@@ -1,13 +1,12 @@
-// These are required for Eigen to compile
-// https://www.vexforum.com/t/eigen-integration-issue/61474/5
-#undef __ARM_NEON__
-#undef __ARM_NEON
 #include <Eigen/Dense>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/math/geometry/transform2d.h"
+#include <cmath>
+#include <vector>
+
 #include "../core/include/utils/math/geometry/pose2d.h"
+#include "../core/include/utils/math/geometry/rotation2d.h"
+#include "../core/include/utils/math/geometry/transform2d.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 
 /**
  * Constructs a transform given translation and rotation components.
