@@ -22,6 +22,11 @@ To setup core for a new project:
   2. git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen
   3. Add the following to the `makefile`: `INC += -Ivendor/eigen`
 
+If you require any features that make use of [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page), you can do the following.
+1. `mkdir vendor`
+2. git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen
+3. Add the following to the `makefile`: `INC += -Ivendor/eigen`
+
 Or, you can use the [template](https://github.com/RIT-VEX-U/RobotTemplate) from the RIT VEX U organization.
 
 If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.
