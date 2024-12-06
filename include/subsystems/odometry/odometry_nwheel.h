@@ -9,6 +9,7 @@
 #include "../core/include/subsystems/custom_encoder.h"
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/utils/math_util.h"
+#include <iostream>
 
 /**
  * OdometryNWheel
@@ -116,6 +117,8 @@ public:
 
     pose_t updated_pos = calculate_new_pos(radian_deltas, current_pos);
 
+    // std::cout << "x: " << updated_pos.x << " y: " << updated_pos.y << " rot: " << updated_pos.rot << std::endl;
+
     // if we do not pass in an IMU we use the wheels for rotation
     if (imu != nullptr) {
       angle = 0;
@@ -186,7 +189,7 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  pose_t get_position(void) {
+  pose_t get_position(void) override {
     pose_t unwrapped_radians = OdometryBase::get_position();
     pose_t wrapped_degrees = {unwrapped_radians.x, unwrapped_radians.y, wrap_angle_deg((unwrapped_radians.rot / (2 * M_PI)) * 360)};
     return wrapped_degrees;
