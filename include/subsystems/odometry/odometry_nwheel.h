@@ -186,7 +186,7 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  pose_t get_position(void) {
+  pose_t get_position(void) override {
     pose_t unwrapped_radians = OdometryBase::get_position();
     pose_t wrapped_degrees = {unwrapped_radians.x, unwrapped_radians.y, wrap_angle_deg((unwrapped_radians.rot / (2 * M_PI)) * 360)};
     return wrapped_degrees;
