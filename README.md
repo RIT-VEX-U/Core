@@ -9,20 +9,20 @@ There is also a downloadable [reference manual](https://rit-vex-u.github.io/Core
 
 ## Getting Started
 
+If you just want to start a project with Core, make a fork of the [Fork Template](https://github.com/RIT-VEX-U/ForkTemplate) and follow it's instructions.
 
-The recommended way to use this repo is through [git subtree](https://git-memo.readthedocs.io/en/latest/subtree.html).
-
-To setup core for a new project:
+To setup core for an existing project:
 1. Create a new vex project (using the VSCode extension or other methods)
 2. Initialize a git repository for the project
 3. Execute `git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main`
-4. Update the vex Makefile (or any other build system) to know about the core files (`core/src` for source files, `core/include` for headers)
-5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page):
-  1. `mkdir vendor`
-  2. git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen
-  3. Add the following to the `makefile`: `INC += -Ivendor/eigen`
+4. Update the vex Makefile (or any other build system) to know about the core files (`core/src` for source files, `core/include` for headers) (See [here](https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L15) for an example) 
+5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) (Latest supported version is 3.4.0):
+    - `mkdir vendor`
+    - `git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen`
+    - `cd vendor/eigen`
+    - `git checkout 3.4.0`
+    - Add the following to the `makefile` to give Core access to the library: `INC += -Ivendor/eigen` (See [here](https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L34) for an example)
 
-Or, you can use the [template](https://github.com/RIT-VEX-U/RobotTemplate) from the RIT VEX U organization.
 
 If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.
 
