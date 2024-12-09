@@ -111,20 +111,21 @@ $(function(){initNavTree('md_README.html',''); initResizable(true); });
 <p><img src="https://github.com/RIT-VEX-U/Core/assets/12285261/e91c680b-5bf4-431c-b164-6631bef2a853" alt="core_logo" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Getting Started</h1>
-<p>The recommended way to use this repo is through <a href="https://git-memo.readthedocs.io/en/latest/subtree.html">git subtree</a>.</p>
-<p>To setup core for a new project:</p><ol type="1">
+<p>If you just want to start a project with Core, make a fork of the <a href="https://github.com/RIT-VEX-U/ForkTemplate">Fork Template</a> and follow it's instructions.</p>
+<p>To setup core for an existing project:</p><ol type="1">
 <li>Create a new vex project (using the VSCode extension or other methods)</li>
 <li>Initialize a git repository for the project</li>
 <li>Execute <code>git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main</code></li>
-<li>Update the vex Makefile (or any other build system) to know about the core files (<code>core/src</code> for source files, <code>core/include</code> for headers)</li>
-<li>Enable <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a>:<ol type="a">
+<li>Update the vex Makefile (or any other build system) to know about the core files (<code>core/src</code> for source files, <code>core/include</code> for headers) (See <a href="https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L15">here</a> for an example)</li>
+<li>Enable <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a> (Latest supported version is 3.4.0):<ul>
 <li><code>mkdir vendor</code></li>
-<li>git submodule add <a href="https://gitlab.com/libeigen/eigen.git">https://gitlab.com/libeigen/eigen.git</a> vendor/eigen</li>
-<li>Add the following to the <code>makefile</code>: <code>INC += -Ivendor/eigen</code></li>
-</ol>
+<li><code>git submodule add <a href="https://gitlab.com/libeigen/eigen.git">https://gitlab.com/libeigen/eigen.git</a> vendor/eigen</code></li>
+<li><code>cd vendor/eigen</code></li>
+<li><code>git checkout 3.4.0</code></li>
+<li>Add the following to the <code>makefile</code> to give Core access to the library: <code>INC += -Ivendor/eigen</code> (See <a href="https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L34">here</a> for an example)</li>
+</ul>
 </li>
 </ol>
-<p>Or, you can use the <a href="https://github.com/RIT-VEX-U/RobotTemplate">template</a> from the RIT VEX U organization.</p>
 <p>If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.</p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Features</h1>
