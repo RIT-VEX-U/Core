@@ -184,7 +184,7 @@ Pose2d Pose2d::exp(const Twist2d &twist) const {
     c = 0.5 * dtheta;
   } else {
     s = sin_theta / dtheta;
-    c = (1 / cos_theta) / dtheta;
+    c = (1 - cos_theta) / dtheta;
   }
 
   const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}};

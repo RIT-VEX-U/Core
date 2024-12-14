@@ -8,7 +8,8 @@
  *
  * @param radians the value of the rotation in radians.
  */
-Rotation2d::Rotation2d(const double &radians) : m_radians{radians}, m_cos{std::cos(radians)}, m_sin{std::sin(radians)} {}
+Rotation2d::Rotation2d(const double &radians)
+    : m_radians{radians}, m_cos{std::cos(radians)}, m_sin{std::sin(radians)} {}
 
 /**
  * Constructs a rotation given x and y values.
@@ -20,7 +21,8 @@ Rotation2d::Rotation2d(const double &radians) : m_radians{radians}, m_cos{std::c
  * @param x the x value of the point
  * @param y the y value of the point
  */
-Rotation2d::Rotation2d(const double &x, const double &y) : m_radians{std::atan2(y, x)}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
+Rotation2d::Rotation2d(const double &x, const double &y)
+    : m_radians{std::atan2(y, x)}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
 
 /**
  * Constructs a rotation given radian angle value.
@@ -41,7 +43,7 @@ Rotation2d from_degrees(const double &degrees) { return Rotation2d((degrees / 18
  *
  * @param revolutions angle in revolutions.
  */
-Rotation2d from_revolutions(const double &revolutions) { return Rotation2d(revolutions * 2 * M_PI); }
+Rotation2d from_revolutions(const double &revolutions) { return Rotation2d(revolutions * M_TWOPI); }
 
 /**
  * Returns the radian angle value.
@@ -55,14 +57,14 @@ double Rotation2d::radians() const { return m_radians; }
  *
  * @return the degree angle value.
  */
-double Rotation2d::degrees() const { return 360 * (m_radians / 2 * M_PI); }
+double Rotation2d::degrees() const { return 360 * (m_radians / M_TWOPI); }
 
 /**
  * Returns the revolution angle value.
  *
  * @return the revolution angle value.
  */
-double Rotation2d::revolutions() const { return (m_radians / 2 * M_PI); }
+double Rotation2d::revolutions() const { return (m_radians / M_TWOPI); }
 
 /**
  * Returns the cosine of the angle value.
@@ -104,7 +106,7 @@ double Rotation2d::wrapped_degrees_180() const { return wrap_radians_180(m_radia
  *
  * @return the revolution angle value, wrapped from [-0.5, 0.5)
  */
-double Rotation2d::wrapped_revolutions_180() const { return wrap_radians_180(m_radians) / (2 * M_PI); }
+double Rotation2d::wrapped_revolutions_180() const { return wrap_radians_180(m_radians) / M_TWOPI; }
 
 /**
  * Returns the radian angle value, wrapped from [0, 2pi).
@@ -125,7 +127,7 @@ double Rotation2d::wrapped_degrees_360() const { return wrap_radians_360(m_radia
  *
  * @return the revolution angle value, wrapped from [0, 1)
  */
-double Rotation2d::wrapped_revolutions_360() const { return wrap_radians_360(m_radians) / (2 * M_PI); }
+double Rotation2d::wrapped_revolutions_360() const { return wrap_radians_360(m_radians) / M_TWOPI; }
 
 /**
  * Adds the values of two rotations using a rotation matrix.
@@ -188,6 +190,18 @@ bool Rotation2d::operator==(const Rotation2d &other) const {
   return std::abs(this->radians() - other.radians()) < 1e-9;
 }
 
+/**
+ * Sends a rotation to an output stream.
+ * Ex.
+ * std::cout << rotation;
+ * 
+ * prints "Rotation2d[rad: (radians), deg: (degrees)]"
+ */
+std::ostream& operator<<(std::ostream& os, const Rotation2d& rotation) {
+    os << "Rotation2d[rad: " << rotation.radians() << ", deg: " << rotation.degrees() << "]";
+    return os;
+}
+
 // functions that don't belong in the class because they're useful elsewhere
 
 /**
@@ -198,9 +212,9 @@ bool Rotation2d::operator==(const Rotation2d &other) const {
  * @return the wrapped radian angle value from [-pi, pi).
  */
 double wrap_radians_180(const double &angle) {
-  double x = fmod(angle + M_PI, 2 * M_PI);
+  double x = fmod(angle + M_PI, M_TWOPI);
   if (x < 0) {
-    x += (2 * M_PI);
+    x += M_TWOPI;
   }
   return x - M_PI;
 }
@@ -243,9 +257,9 @@ double wrap_revolutions_180(const double &angle) {
  * @return the wrapped radian angle value from [0, 2pi).
  */
 double wrap_radians_360(const double &angle) {
-  double x = fmod(angle, 2 * M_PI);
+  double x = fmod(angle, M_TWOPI);
   if (x < 0) {
-    x += (2 * M_PI);
+    x += M_TWOPI;
   }
   return x;
 }
@@ -315,5 +329,5 @@ Rotation2d wrapped_mean(const std::vector<Rotation2d> &list) {
     sum_cos += list.at(i).f_cos();
   }
 
-  return Rotation2d((sum_sin / list.size()), (sum_cos / list.size()));
+  return Rotation2d(sum_cos, sum_sin);
 }
