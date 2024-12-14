@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 /**
@@ -185,6 +186,15 @@ public:
    * @return whether the values of the rotations are within 1e-9 radians of each other
    */
   bool operator==(const Rotation2d &other) const;
+
+  /**
+   * Sends a rotation to an output stream.
+   * Ex.
+   * std::cout << rotation;
+   *
+   * prints "Rotation2d[rad: (radians), deg: (degrees)]"
+   */
+  friend std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation);
 
 private:
   double m_radians;

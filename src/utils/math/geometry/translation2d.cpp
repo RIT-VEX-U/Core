@@ -99,7 +99,7 @@ Translation2d Translation2d::rotate_by(const Rotation2d &rotation) const {
  */
 Translation2d Translation2d::rotate_around(const Translation2d &other, const Rotation2d &rotation) const {
   Translation2d diff = *this - other;
-  return diff.rotate_by(rotation);
+  return diff.rotate_by(rotation) + other;
 }
 
 /**
