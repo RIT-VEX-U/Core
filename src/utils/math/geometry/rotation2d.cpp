@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 
 /**
  * Constructs a rotation with the given value in radians.
@@ -24,6 +25,18 @@ Rotation2d::Rotation2d(const double &radians)
  */
 Rotation2d::Rotation2d(const double &x, const double &y)
     : m_radians{std::atan2(y, x)}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
+
+/**
+ * Constructs a rotation given x and y values in the form of a Translation2d.
+ * Does not have to be normalized.
+ * The angle from the x axis to the point.
+ *
+ * [theta] = [atan2(y, x)]
+ *
+ * @param translation
+ */
+Rotation2d::Rotation2d(const Translation2d &translation)
+    : m_radians{std::atan2(translation.y(), translation.x())}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
 
 /**
  * Constructs a rotation given radian angle value.

@@ -8,6 +8,8 @@
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
+class Rotation2d;
+
 /**
  * Class representing a point in 2d space with x and y coordinates.
  *

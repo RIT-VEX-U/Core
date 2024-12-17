@@ -16,7 +16,7 @@
  * @param rotation the rotational component of the transform.
  */
 Transform2d::Transform2d(const Translation2d &translation, const Rotation2d &rotation)
-    : m_translation{std::move(translation)}, m_rotation{std::move(rotation)} {}
+    : m_translation{translation}, m_rotation{rotation} {}
 
 /**
  * Constructs a transform given translation and rotation components.
@@ -26,7 +26,7 @@ Transform2d::Transform2d(const Translation2d &translation, const Rotation2d &rot
  * @param rotation the rotational component of the transform.
  */
 Transform2d::Transform2d(const double &x, const double &y, const Rotation2d &rotation)
-    : m_translation{x, y}, m_rotation{std::move(rotation)} {}
+    : m_translation{x, y}, m_rotation{rotation} {}
 
 /**
  * Constructs a transform given translation and rotation components.
@@ -45,7 +45,7 @@ Transform2d::Transform2d(const double &x, const double &y, const double &radians
  * @param radians the rotational component of the transform in radians.
  */
 Transform2d::Transform2d(const Translation2d &translation, const double &radians)
-    : m_translation{std::move(translation)}, m_rotation{radians} {}
+    : m_translation{translation}, m_rotation{radians} {}
 
 /**
  * Constructs a transform given translation and rotation components given as a vector.
@@ -143,6 +143,6 @@ bool Transform2d::operator==(const Transform2d &other) const {
  */
 std::ostream &operator<<(std::ostream &os, const Transform2d &transform) {
   os << "Transform2d[x: " << transform.x() << ", y: " << transform.y() << ", rad: " << transform.rotation().radians()
-     << ", deg: " << transform.rotation().radians() << "]";
+     << ", deg: " << transform.rotation().degrees() << "]";
   return os;
 }
