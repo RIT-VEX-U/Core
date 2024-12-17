@@ -141,3 +141,15 @@ Transform2d Transform2d::operator-() const {
 bool Transform2d::operator==(const Transform2d &other) const {
   return (translation() == other.translation()) && (rotation() == other.rotation()); 
 }
+
+/**
+ * Sends a transform to an output stream.
+ * Ex.
+ * std::cout << transform;
+ * 
+ * prints "Transform2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
+ */
+std::ostream& operator<<(std::ostream& os, const Transform2d& transform) {
+    os << "Transform2d[x: " << transform.x() << ", y: " << transform.y() << ", rad: " << transform.rotation().radians() << ", deg: " << transform.rotation().radians() << "]";
+    return os;
+}

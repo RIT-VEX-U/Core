@@ -72,3 +72,15 @@ Twist2d Twist2d::operator*(const double &scalar) const {
 Twist2d Twist2d::operator/(const double &scalar) const {
     return *this * (1. / scalar);
 }
+
+/**
+ * Sends a twist to an output stream.
+ * Ex.
+ * std::cout << twist;
+ * 
+ * prints "Twist2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
+ */
+std::ostream& operator<<(std::ostream& os, const Twist2d& twist) {
+    os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
+    return os;
+}
