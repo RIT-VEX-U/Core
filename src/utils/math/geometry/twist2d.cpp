@@ -1,6 +1,7 @@
 #include <Eigen/Dense>
 
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/twist2d.h"
@@ -19,7 +20,8 @@ Twist2d::Twist2d(const double &dx, const double &dy, const double &dtheta) : m_d
  *
  * @param twist_vector vector of the form [dx, dy, dtheta]
  */
-Twist2d::Twist2d(const Eigen::Vector3d &twist_vector) : m_dx{twist_vector(0)}, m_dy{twist_vector(1)}, m_dtheta{twist_vector(2)} {}
+Twist2d::Twist2d(const Eigen::Vector3d &twist_vector)
+    : m_dx{twist_vector(0)}, m_dy{twist_vector(1)}, m_dtheta{twist_vector(2)} {}
 
 /**
  * Returns the linear dx component.
@@ -50,9 +52,8 @@ double Twist2d::dtheta() const { return m_dtheta; }
  * @return true if each of the components are within 1e-9 of each other.
  */
 bool Twist2d::operator==(const Twist2d &other) const {
-    return std::abs(dx() - other.dx()) < 1e-9 &&
-           std::abs(dy() - other.dy()) < 1e-9 &&
-           std::abs(dtheta() - other.dtheta()) < 1e-9;
+  return std::abs(dx() - other.dx()) < 1e-9 && std::abs(dy() - other.dy()) < 1e-9 &&
+         std::abs(dtheta() - other.dtheta()) < 1e-9;
 }
 
 /**
@@ -61,7 +62,7 @@ bool Twist2d::operator==(const Twist2d &other) const {
  * @param scalar the scalar value to multiply by.
  */
 Twist2d Twist2d::operator*(const double &scalar) const {
-    return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
+  return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
 }
 
 /**
@@ -69,18 +70,16 @@ Twist2d Twist2d::operator*(const double &scalar) const {
  *
  * @param scalar the scalar value to divide by.
  */
-Twist2d Twist2d::operator/(const double &scalar) const {
-    return *this * (1. / scalar);
-}
+Twist2d Twist2d::operator/(const double &scalar) const { return *this * (1. / scalar); }
 
 /**
  * Sends a twist to an output stream.
  * Ex.
  * std::cout << twist;
- * 
+ *
  * prints "Twist2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Twist2d& twist) {
-    os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
-    return os;
+std::ostream &operator<<(std::ostream &os, const Twist2d &twist) {
+  os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
+  return os;
 }

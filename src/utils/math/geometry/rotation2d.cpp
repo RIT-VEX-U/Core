@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
@@ -194,12 +195,12 @@ bool Rotation2d::operator==(const Rotation2d &other) const {
  * Sends a rotation to an output stream.
  * Ex.
  * std::cout << rotation;
- * 
+ *
  * prints "Rotation2d[rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Rotation2d& rotation) {
-    os << "Rotation2d[rad: " << rotation.radians() << ", deg: " << rotation.degrees() << "]";
-    return os;
+std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation) {
+  os << "Rotation2d[rad: " << rotation.radians() << ", deg: " << rotation.degrees() << "]";
+  return os;
 }
 
 // functions that don't belong in the class because they're useful elsewhere

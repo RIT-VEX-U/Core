@@ -1,6 +1,7 @@
 #include <Eigen/Dense>
 
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/pose2d.h"
@@ -133,12 +134,13 @@ Transform2d Pose2d::operator-(const Pose2d &other) const {
  * Sends a pose to an output stream.
  * Ex.
  * std::cout << pose;
- * 
+ *
  * prints "Pose2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Pose2d& pose) {
-    os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians() << ", deg: " << pose.rotation().radians() << "]";
-    return os;
+std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
+  os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians()
+     << ", deg: " << pose.rotation().radians() << "]";
+  return os;
 }
 
 /**
@@ -227,14 +229,11 @@ Twist2d Pose2d::log(const Pose2d &end_pose) const {
   if (std::abs(cosMinusOne) < 1e-9) {
     halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
   } else {
-    halfThetaByTanOfHalfDtheta =
-        -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
+    halfThetaByTanOfHalfDtheta = -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
   }
 
-  const Translation2d translationPart =
-      transform.translation().rotate_by(
-          {halfThetaByTanOfHalfDtheta, -halfDtheta}) *
-      std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+  const Translation2d translationPart = transform.translation().rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
+                                        std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
 
   return Twist2d{translationPart.x(), translationPart.y(), dtheta};
 }
@@ -261,5 +260,7 @@ Pose2d pose_mean(const std::vector<Pose2d> &list) {
     sum_cos += list.at(i).rotation().f_cos();
   }
 
-  return Pose2d{Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}}; 
+  return Pose2d{
+    Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}
+  };
 }

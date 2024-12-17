@@ -1,6 +1,7 @@
 #include <Eigen/Dense>
 
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
@@ -27,7 +28,8 @@ Translation2d::Translation2d(const Eigen::Vector2d &vector) : m_x{vector(0)}, m_
  * @param r The radius (magnitude) of the vector.
  * @param theta The angle (direction) of the vector.
  */
-Translation2d::Translation2d(const double &r, const Rotation2d &theta) : m_x{r * theta.f_cos()}, m_y{r * theta.f_sin()} {}
+Translation2d::Translation2d(const double &r, const Rotation2d &theta)
+    : m_x{r * theta.f_cos()}, m_y{r * theta.f_sin()} {}
 
 /**
  * Returns the x value of the translation.
@@ -69,7 +71,9 @@ double Translation2d::norm() const { return std::hypot(m_x, m_y); }
  *
  * @return the distance between two translations.
  */
-double Translation2d::distance(const Translation2d &other) const { return std::hypot(m_x - other.x(), m_y - other.y()); }
+double Translation2d::distance(const Translation2d &other) const {
+  return std::hypot(m_x - other.x(), m_y - other.y());
+}
 
 /**
  * Applies a rotation to this translation around the origin.
@@ -180,18 +184,20 @@ double Translation2d::operator*(const Translation2d &other) const { return (m_x 
  *
  * @return whether the two translations are equal.
  */
-bool Translation2d::operator==(const Translation2d &other) const { return std::abs(m_x - other.m_x) < 1e-9 && std::abs(m_y - other.m_y) < 1e-9; }
+bool Translation2d::operator==(const Translation2d &other) const {
+  return std::abs(m_x - other.m_x) < 1e-9 && std::abs(m_y - other.m_y) < 1e-9;
+}
 
 /**
  * Sends a translation to an output stream.
  * Ex.
  * std::cout << translation;
- * 
+ *
  * prints "Translation2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Translation2d& translation) {
-    os << "Translation2d[x: " << translation.x() << ", y: " << translation.y() << "]";
-    return os;
+std::ostream &operator<<(std::ostream &os, const Translation2d &translation) {
+  os << "Translation2d[x: " << translation.x() << ", y: " << translation.y() << "]";
+  return os;
 }
 
 /**
