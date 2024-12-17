@@ -29,17 +29,6 @@ public:
   Rotation2d(const double &radians);
 
   /**
-   * Constructs a rotation given a translation.
-   * Does not have to be normalized.
-   * The angle from the x axis to the translation.
-   *
-   * [theta] = [atan2(y, x)]
-   *
-   * @param translation the translation
-   */
-  // Rotation2d(const Translation2d &translation);
-
-  /**
    * Constructs a rotation given x and y values.
    * Does not have to be normalized.
    * The angle from the x axis to the point.
