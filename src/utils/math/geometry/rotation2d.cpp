@@ -89,6 +89,15 @@ double Rotation2d::f_sin() const { return m_sin; }
 double Rotation2d::f_tan() const { return (m_sin / m_cos); }
 
 /**
+ * Returns the rotation matrix equivalent to this rotation
+ *     [cos, -sin]
+ * R = [sin,  cos]
+ *
+ * @return the rotation matrix equivalent to this rotation
+ */
+Eigen::Matrix2d Rotation2d::rotation_matrix() const { return Eigen::Matrix2d{{m_cos, -m_sin}, {m_sin, m_cos}}; }
+
+/**
  * Returns the radian angle value, wrapped from [-pi, pi).
  *
  * @return the radian angle value, wrapped from [-pi, pi)
