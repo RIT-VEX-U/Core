@@ -6,6 +6,10 @@
 #include <iostream>
 #include <vector>
 
+#include "../core/include/utils/math/geometry/translation2d.h"
+
+class Translation2d;
+
 /**
  * Class representing a rotation in 2d space.
  * Stores theta in radians, as well as cos and sin.
@@ -46,6 +50,17 @@ public:
    * @param y the y value of the point
    */
   Rotation2d(const double &x, const double &y);
+
+  /**
+   * Constructs a rotation given x and y values in the form of a Translation2d.
+   * Does not have to be normalized.
+   * The angle from the x axis to the point.
+   *
+   * [theta] = [atan2(y, x)]
+   *
+   * @param translation
+   */
+  Rotation2d(const Translation2d &translation);
 
   /**
    * Returns the radian angle value.

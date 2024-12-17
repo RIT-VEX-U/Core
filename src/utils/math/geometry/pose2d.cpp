@@ -139,7 +139,7 @@ Transform2d Pose2d::operator-(const Pose2d &other) const {
  */
 std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
   os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians()
-     << ", deg: " << pose.rotation().radians() << "]";
+     << ", deg: " << pose.rotation().degrees() << "]";
   return os;
 }
 
