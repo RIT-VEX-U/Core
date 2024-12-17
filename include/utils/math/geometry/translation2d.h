@@ -198,6 +198,15 @@ public:
    */
   bool operator==(const Translation2d &other) const;
 
+  /**
+   * Sends a translation to an output stream.
+   * Ex.
+   * std::cout << translation;
+   *
+   * prints "Translation2d[x: (value), y: (value)]"
+   */
+  friend std::ostream &operator<<(std::ostream &os, const Translation2d &translation);
+
 private:
   double m_x;
   double m_y;

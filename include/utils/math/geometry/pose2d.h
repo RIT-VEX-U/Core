@@ -131,6 +131,15 @@ public:
   Transform2d operator-(const Pose2d &other) const;
 
   /**
+   * Sends a pose to an output stream.
+   * Ex.
+   * std::cout << pose;
+   *
+   * prints "Pose2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
+   */
+  friend std::ostream &operator<<(std::ostream &os, const Pose2d &pose);
+
+  /**
    * Finds the pose equivalent to this pose relative to another arbitrary pose rather than the origin.
    *
    * @param other the pose representing the new origin.

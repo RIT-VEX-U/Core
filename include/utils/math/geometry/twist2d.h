@@ -77,6 +77,15 @@ public:
    */
   Twist2d operator/(const double &scalar) const;
 
+  /**
+   * Sends a twist to an output stream.
+   * Ex.
+   * std::cout << twist;
+   *
+   * prints "Twist2d[dx: (value), dy: (value), drad: (radians)]"
+   */
+  friend std::ostream &operator<<(std::ostream &os, const Twist2d &twist);
+
 private:
   double m_dx;
   double m_dy;

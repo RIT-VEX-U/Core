@@ -183,6 +183,18 @@ double Translation2d::operator*(const Translation2d &other) const { return (m_x 
 bool Translation2d::operator==(const Translation2d &other) const { return std::abs(m_x - other.m_x) < 1e-9 && std::abs(m_y - other.m_y) < 1e-9; }
 
 /**
+ * Sends a translation to an output stream.
+ * Ex.
+ * std::cout << translation;
+ * 
+ * prints "Translation2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
+ */
+std::ostream& operator<<(std::ostream& os, const Translation2d& translation) {
+    os << "Translation2d[x: " << translation.x() << ", y: " << translation.y() << "]";
+    return os;
+}
+
+/**
  * Calculates the mean of the translations in the list.
  *
  * @param list std::vector containing a list of translations.

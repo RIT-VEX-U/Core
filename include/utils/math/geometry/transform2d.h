@@ -135,6 +135,15 @@ public:
    */
   bool operator==(const Transform2d &other) const;
 
+  /**
+   * Sends a transform to an output stream.
+   * Ex.
+   * std::cout << transform;
+   *
+   * prints "Transform2d[dx: (value), dy: (value), drad: (radians), ddeg: (degrees)]"
+   */
+  friend std::ostream &operator<<(std::ostream &os, const Transform2d &transform);
+
 private:
   Translation2d m_translation;
   Rotation2d m_rotation;
