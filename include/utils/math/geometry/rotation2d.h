@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Eigen/Dense>
+
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -86,6 +88,15 @@ public:
    * @return the tangent of the angle value.
    */
   double f_tan() const;
+
+  /**
+   * Returns the rotation matrix equivalent to this rotation
+   *     [cos, -sin]
+   * R = [sin,  cos]
+   * 
+   * @return the rotation matrix equivalent to this rotation
+   */
+  Eigen::Matrix2d rotation_matrix() const;
 
   /**
    * Returns the radian angle value, wrapped from [-pi, pi).
