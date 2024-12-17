@@ -113,15 +113,6 @@ public:
   Translation2d rotate_around(const Translation2d &other, const Rotation2d &rotation) const;
 
   /**
-   * Calculates the mean of the translations in the list.
-   *
-   * @param list std::vector containing a list of translations.
-   *
-   * @return the single translation mean of the list of translations.
-   */
-  Translation2d mean(const std::vector<Translation2d> &list) const;
-
-  /**
    * Returns the sum of two translations.
    *
    * [x] = [x] + [otherx];
@@ -222,4 +213,4 @@ private:
  *
  * @return the single translation mean of the list of translation.
  */
-Translation2d wrapped_mean(const std::vector<Translation2d> &list);
+Translation2d mean(const std::vector<Translation2d> &list);
