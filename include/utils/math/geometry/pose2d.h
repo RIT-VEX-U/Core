@@ -3,6 +3,7 @@
 #include <Eigen/Dense>
 
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
