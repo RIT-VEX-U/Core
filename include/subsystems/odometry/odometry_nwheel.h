@@ -1,9 +1,5 @@
 #pragma once
 
-// These are required for Eigen to compile
-// https://www.vexforum.com/t/eigen-integration-issue/61474/5
-#undef __ARM_NEON__
-#undef __ARM_NEON
 #include <Eigen/Dense>
 
 #include "../core/include/subsystems/custom_encoder.h"
