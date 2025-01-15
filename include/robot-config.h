@@ -9,7 +9,9 @@ extern vex::controller con;
 // Digital sensors
 
 // Analog sensors
-
+extern CustomEncoder Left_enc;
+extern CustomEncoder right_enc;
+extern CustomEncoder front_enc;
 
 // ================ OUTPUTS ================
 // Motors
@@ -23,9 +25,17 @@ extern vex::motor right_center_bottom;
 extern vex::motor right_front_top;
 extern vex::motor right_back_top;
 
+extern vex::motor conveyor;
+extern vex::motor intake;
+
+void conveyor_intake(double volts);
+void intake_spin(double volts);
+
 extern vex::motor_group left_drive_motors;
 extern vex::motor_group right_drive_motors;
+
 // Pneumatics
+extern vex::digital_out goal_grabber_sol;
 
 // ================ SUBSYSTEMS ================
 extern PID drive_pid;
