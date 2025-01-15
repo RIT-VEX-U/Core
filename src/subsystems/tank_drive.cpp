@@ -142,11 +142,24 @@ void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
  */
 bool captured_position = false;
 bool was_breaking = false;
+
 void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
 
   left = modify_inputs(left, power);
   right = modify_inputs(right, power);
   double brake_threshold = 0.05;
+  if(((left_motors.velocity(vex::velocityUnits::rpm) * (right_motors.velocity(vex::velocityUnits::rpm))) < 0)){
+    bt = BrakeType::ZeroVelocity;
+  }
+  else{
+    bt = BrakeType::None;
+  }
+  if(bt == BrakeType::None){
+    printf("bt None \n");
+  }
+  else if(bt == BrakeType::ZeroVelocity){
+    printf("bt zerovel \n");
+  }
   bool should_brake = (bt != BrakeType::None) && fabs(left) < brake_threshold && fabs(right) < brake_threshold;
 
   if (!should_brake) {
