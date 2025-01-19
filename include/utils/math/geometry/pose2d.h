@@ -11,6 +11,8 @@
 #include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/math/geometry/twist2d.h"
 
+class Transform2d;
+
 /**
  * Class representing a pose in 2d space with x, y, and rotational components
  *

@@ -140,7 +140,6 @@ public:
    */
   static pose_t pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist);
 
-protected:
   /**
    * handle to the vex task that is running the odometry code
    */
