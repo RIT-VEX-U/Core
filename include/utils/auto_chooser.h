@@ -14,7 +14,7 @@
  * This class was built as a way of using the robot screen to list autonomous programs, and the touchscreen to select
  * them.
  */
-class AutoChooser : public screen::Page {
+class AutoChooser : public screen_pages::Page {
 public:
   /**
    * Initialize the auto-chooser. This class places a choice menu on the brain screen,

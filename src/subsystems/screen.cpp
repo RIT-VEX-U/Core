@@ -1,38 +1,17 @@
 #include "../core/include/subsystems/screen.h"
 #include "../core/include/utils/math_util.h"
-namespace screen {
-void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
-  uint32_t height = scr.getStringHeight(lbl.c_str());
-  scr.printAt(rect.x1 + 1, rect.y1 + height, true, "%s", lbl.c_str());
-}
-void draw_widget(vex::brain::lcd &scr, WidgetConfig &widget, ScreenRect rect) {
-  switch (widget.type) {
-  case WidgetConfig::Type::Col:
-  case WidgetConfig::Type::Row:
-  case WidgetConfig::Type::Slider:
-  case WidgetConfig::Type::Button:
-  case WidgetConfig::Type::Checkbox:
-  case WidgetConfig::Type::Graph:
-    printf("unimplemented\n");
-    break;
-  case WidgetConfig::Type::Text:
-    draw_label(scr, widget.config.text.text(), rect);
-    break;
-  case WidgetConfig::Type::Label:
-    draw_label(scr, widget.config.label.label, rect);
-    break;
-  }
-}
 
+namespace screen {
 /**
  * @brief The ScreenData class holds the data that will be passed to the
  * screen thread
- * you probably shouldnt have to use it
+ * 
+ * You probably shouldn't have to use it
  */
 struct ScreenData {
-  ScreenData(const std::vector<Page *> &m_pages, int m_page, vex::brain::lcd &m_screen)
+  ScreenData(const std::vector<screen_pages::Page *> &m_pages, int m_page, vex::brain::lcd &m_screen)
       : pages(m_pages), page(m_page), screen(m_screen) {}
-  std::vector<Page *> pages;
+  std::vector<screen_pages::Page *> pages;
   int page = 0;
   vex::brain::lcd screen;
 };
@@ -42,14 +21,17 @@ static bool running = false;
 static int screen_thread_func(void *screen_data_v);
 static ScreenData *screen_data_ptr;
 
-/// @brief start_screen begins a screen. only call this once per program (a
-/// good place is vexcodeInit)
-/// This is a set and forget type function. You don't have to wait on it or
-/// start it in a new thread
-/// @param screen the brain screen
-/// @param pages the list of pages in your UI slideshow
-/// @param first_page the page to start on (by default 0)
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page) {
+/**
+ * @brief start_screen begins a screen. Only call this once per program (a good
+ * place is vexcodeInit)
+ *
+ * This is a set and forget type function. You don't have to wait on it or start
+ * it in a new thread
+ * @param screen The brain screen
+ * @param pages The list of pages in the UI slideshow
+ * @param first_page The page to start on (default is 0)
+ */
+void start_screen(vex::brain::lcd &screen, std::vector<screen_pages::Page *> pages, int first_page) {
   if (pages.size() == 0) {
     printf("No pages, not starting screen");
     return;
@@ -66,26 +48,16 @@ void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_
   screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
 }
 
+/**
+ * @brief stop_screen stops a screen
+ */
 void stop_screen() { running = false; }
 
-void prev_page() {
-  screen_data_ptr->page--;
-  if (screen_data_ptr->page < 0) {
-    screen_data_ptr->page += screen_data_ptr->pages.size();
-  }
-}
-void next_page() {
-  screen_data_ptr->page++;
-  screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
-void goto_page(size_t page) {
-  screen_data_ptr->page = page;
-  screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
-
 /**
- * @brief runs the screen thread
+ * @brief Runs the screen thread
+ *
  * This should only be called by start_screen
+ *
  * If you are calling this, maybe don't
  */
 int screen_thread_func(void *screen_data_v) {
@@ -99,7 +71,7 @@ int screen_thread_func(void *screen_data_v) {
   int y_press = 0;
 
   while (running) {
-    Page *front_page = screen_data.pages[screen_data.page];
+    screen_pages::Page *front_page = screen_data.pages[screen_data.page];
     bool pressing = screen_data.screen.pressing();
 
     if (pressing) {
@@ -129,7 +101,7 @@ int screen_thread_func(void *screen_data_v) {
       }
     }
 
-    // Draw First Page
+    // Draw first page
     if (frame % 2 == 0) {
       screen_data.screen.clearScreen(vex::color::black);
       screen_data.screen.setPenColor("#FFFFFF");
@@ -142,10 +114,10 @@ int screen_thread_func(void *screen_data_v) {
       screen_data.screen.drawRectangle(0, 0, 40, 240);
       screen_data.screen.drawRectangle(440, 0, 40, 240);
       screen_data.screen.setPenColor("#FFFFFF");
-      // left arrow
+      // Left arrow
       screen_data.screen.drawLine(30, 100, 15, 120);
       screen_data.screen.drawLine(30, 140, 15, 120);
-      // right arrow
+      // Right arrow
       screen_data.screen.drawLine(450, 100, 465, 120);
       screen_data.screen.drawLine(450, 140, 465, 120);
     }
@@ -158,16 +130,138 @@ int screen_thread_func(void *screen_data_v) {
 
   return 0;
 }
+} // End namespace screen
+
+
+namespace screen_widgets {
 /**
- * @brief FunctionPage
- * @param update_f drawing function
- * @param draw_f drawing function
+ * @brief Draws a label on the screen
+ * @param scr The screen to draw to
+ * @param lbl The string to write
+ * @param rect Where to put the text
  */
+void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
+  uint32_t height = scr.getStringHeight(lbl.c_str());
+  scr.printAt(rect.x1 + 1, rect.y1 + height, true, "%s", lbl.c_str());
+}
+
+/**
+ * @brief Draws a specific widget depending on the type
+ *
+ * Currently the only ones implemented in this method are label widgets
+ */
+void draw_widget(vex::brain::lcd &scr, WidgetConfig &widget, ScreenRect rect) {
+  switch (widget.type) {
+  case screen_widgets::WidgetConfig::Type::Col:
+  case screen_widgets::WidgetConfig::Type::Row:
+  case screen_widgets::WidgetConfig::Type::Slider:
+  case screen_widgets::WidgetConfig::Type::Button:
+  case screen_widgets::WidgetConfig::Type::Checkbox:
+  case screen_widgets::WidgetConfig::Type::Graph:
+    printf("unimplemented\n");
+    break;
+  case screen_widgets::WidgetConfig::Type::Label:
+    draw_label(scr, widget.config.label.label, rect);
+    break;
+  }
+}
+
+bool SliderWidget::update(bool was_pressed, int x, int y) {
+  const double margin = 10.0;
+  if (was_pressed) {
+    double dx = x;
+    double dy = y;
+    if (rect.contains(point_t{dx, dy})) {
+      double pct = (dx - rect.min.x - margin) / (rect.dimensions().x - 2 * margin);
+      pct = clamp(pct, 0.0, 1.0);
+      value = (low + pct * (high - low));
+    }
+    return true;
+  }
+  return false;
+}
+
+void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+                        unsigned int frame_number [[maybe_unused]]) {
+  if (rect.height() <= 0) {
+    printf("Slider: %s has no height. Cant use it.", name.c_str());
+  }
+  double xl = rect.min.x;
+  double xh = rect.max.x;
+  double xmid = (xl + xh) / 2.0;
+  double y = rect.min.y + rect.height() / 2;
+  const double margin = 5.0;
+
+  scr.setPenColor(vex::color(50, 50, 50));
+  scr.setFillColor(vex::color(50, 50, 50));
+  scr.setPenWidth(1);
+
+  scr.drawRectangle(rect.min.x, rect.min.y, rect.dimensions().x, rect.dimensions().y);
+
+  scr.setPenColor(vex::color(200, 200, 200));
+  scr.setPenWidth(4);
+
+  scr.drawLine(xl + margin, y, xh - margin, y);
+
+  double pct = (value - low) / (high - low);
+  double vx = pct * (rect.dimensions().x - (2 * margin)) + rect.min.x + margin;
+  const double handle_width = 4;
+  const double handle_height = 4;
+
+  scr.drawRectangle(vx - (handle_width / 2), y - (handle_height / 2), handle_width, handle_height);
+  int text_w = scr.getStringWidth((name + "        ").c_str());
+  scr.printAt(xmid - text_w / 2, y - 15, false, "%s: %.5f", name.c_str(), value);
+}
+
+bool ButtonWidget::update(bool was_pressed, int x, int y) {
+  if (was_pressed && !was_pressed_last && rect.contains({(double)x, (double)y})) {
+    onpress();
+    was_pressed_last = was_pressed;
+    return true;
+  }
+  was_pressed_last = was_pressed;
+  return false;
+}
+
+void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+                        unsigned int frame_number [[maybe_unused]]) {
+  scr.setPenColor(vex::white);
+  scr.setPenWidth(1);
+  scr.setFillColor(vex::color(50, 50, 50));
+  scr.drawRectangle(rect.min.x, rect.min.y, rect.width(), rect.height());
+  int w = scr.getStringWidth(name.c_str());
+  int h = scr.getStringHeight(name.c_str());
+  scr.printAt(rect.center().x - w / 2, rect.center().y + h / 2, name.c_str());
+}
+} // End namespace screen_widgets
+
+namespace screen_pages {
+void prev_page() {
+  screen::screen_data_ptr->page--;
+  if (screen::screen_data_ptr->page < 0) {
+    screen::screen_data_ptr->page += screen::screen_data_ptr->pages.size();
+  }
+}
+void next_page() {
+  screen::screen_data_ptr->page++;
+  screen::screen_data_ptr->page %= screen::screen_data_ptr->pages.size();
+}
+void goto_page(size_t page) {
+  screen::screen_data_ptr->page = page;
+  screen::screen_data_ptr->page %= screen::screen_data_ptr->pages.size();
+}
+
 FunctionPage::FunctionPage(update_func_t update_f, draw_func_t draw_f) : update_f(update_f), draw_f(draw_f) {}
 
-/// @brief update uses the supplied update function to update this page
-void FunctionPage::update(bool was_pressed, int x, int y) { update_f(was_pressed, x, y); }
-/// @brief draw uses the supplied draw function to draw to the screen
+/**
+ * @brief Update uses the supplied update function to update this page
+ */
+void FunctionPage::update(bool was_pressed, int x, int y) {
+  update_f(was_pressed, x, y);
+}
+/**
+ * @brief Draw uses the supplied draw function to draw to the screen
+ */
 void FunctionPage::draw(vex::brain::lcd &screen, bool first_draw, unsigned int frame_number) {
   draw_f(screen, first_draw, frame_number);
 }
@@ -178,6 +272,15 @@ void StatsPage::update(bool was_pressed, int x, int y) {
   (void)y;
   (void)was_pressed;
 }
+
+/**
+ * @brief Draws the stats of a specific motor to the screen
+ * @param name The motor name
+ * @param mot The vex motor
+ * @param frame The frame to draw to
+ * @param x The x-position to draw to
+ * @param y The y-position to draw to
+ */
 void StatsPage::draw_motor_stats(const std::string &name, vex::motor &mot, unsigned int frame, int x, int y,
                                  vex::brain::lcd &scr) {
   const vex::color hot_col = vex::color(120, 0, 0);
@@ -204,6 +307,11 @@ void StatsPage::draw_motor_stats(const std::string &name, vex::motor &mot, unsig
   scr.drawRectangle(x, y, row_width, row_height, col);
   scr.printAt(x + 2, y + 16, false, " %2d   %2.0fC   %.7s", port, temp, name.c_str());
 }
+
+/**
+ * @brief Draws the stats of all the motors and the battery to the screen
+ * @param scr The screen to draw to
+ */
 void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
                      unsigned int frame_number [[maybe_unused]]) {
   int num = 0;
@@ -212,11 +320,11 @@ void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.setPenWidth(1);
 
   scr.drawRectangle(x, y_start, row_width, row_height);
-  scr.printAt(x, y_start + 16, false, " port temp  name");
+  scr.printAt(x, y_start + 16, false, " port temp name");
   for (auto &kv : motors) {
     if (num > per_column) {
       scr.drawRectangle(x + row_width, y_start, row_width, row_height);
-      scr.printAt(x + row_width, y_start + 16, false, " port temp  name");
+      scr.printAt(x + row_width, y_start + 16, false, " port temp name");
 
       y = y_start + row_height;
       x += row_width;
@@ -247,11 +355,20 @@ OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool
   }
 }
 
+/**
+ * @brief Converts inches to pixels
+ * @param in The number of inches to convert
+ * @return The number of pixels
+ */
 int in_to_px(double in) {
   double p = in / (6.0 * 24.0);
   return (int)(p * 240);
 }
 
+/**
+ * @brief Draws the odometry data to the screen
+ * @param scr The screen to draw to
+ */
 void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
                         unsigned int frame_number [[maybe_unused]]) {
   pose_t pose = odom.get_position();
@@ -318,77 +435,17 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
 
   draw_line(pos, front);
 }
+
+/**
+ * @brief Updates the odometry page
+ * @param was_pressed If the screen was pressed
+ * @param x The x-position of where the screen was pressed
+ * @param y The y-position of where the screen was pressed
+ */
 void OdometryPage::update(bool was_pressed, int x, int y) {
   (void)x;
   (void)y;
   (void)was_pressed;
-}
-
-bool SliderWidget::update(bool was_pressed, int x, int y) {
-  const double margin = 10.0;
-  if (was_pressed) {
-    double dx = x;
-    double dy = y;
-    if (rect.contains(point_t{dx, dy})) {
-      double pct = (dx - rect.min.x - margin) / (rect.dimensions().x - 2 * margin);
-      pct = clamp(pct, 0.0, 1.0);
-      value = (low + pct * (high - low));
-    }
-    return true;
-  }
-  return false;
-}
-void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
-                        unsigned int frame_number [[maybe_unused]]) {
-  if (rect.height() <= 0) {
-    printf("Slider: %s has no height. Cant use it.", name.c_str());
-  }
-  double xl = rect.min.x;
-  double xh = rect.max.x;
-  double xmid = (xl + xh) / 2.0;
-  double y = rect.min.y + rect.height() / 2;
-  const double margin = 5.0;
-
-  scr.setPenColor(vex::color(50, 50, 50));
-  scr.setFillColor(vex::color(50, 50, 50));
-  scr.setPenWidth(1);
-
-  scr.drawRectangle(rect.min.x, rect.min.y, rect.dimensions().x, rect.dimensions().y);
-
-  scr.setPenColor(vex::color(200, 200, 200));
-  scr.setPenWidth(4);
-
-  scr.drawLine(xl + margin, y, xh - margin, y);
-
-  double pct = (value - low) / (high - low);
-  double vx = pct * (rect.dimensions().x - (2 * margin)) + rect.min.x + margin;
-  const double handle_width = 4;
-  const double handle_height = 4;
-
-  scr.drawRectangle(vx - (handle_width / 2), y - (handle_height / 2), handle_width, handle_height);
-  int text_w = scr.getStringWidth((name + "        ").c_str());
-  scr.printAt(xmid - text_w / 2, y - 15, false, "%s: %.5f", name.c_str(), value);
-}
-
-bool ButtonWidget::update(bool was_pressed, int x, int y) {
-  if (was_pressed && !was_pressed_last && rect.contains({(double)x, (double)y})) {
-    onpress();
-    was_pressed_last = was_pressed;
-    return true;
-  }
-  was_pressed_last = was_pressed;
-  return false;
-}
-
-void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
-                        unsigned int frame_number [[maybe_unused]]) {
-  scr.setPenColor(vex::white);
-  scr.setPenWidth(1);
-  scr.setFillColor(vex::color(50, 50, 50));
-  scr.drawRectangle(rect.min.x, rect.min.y, rect.width(), rect.height());
-  int w = scr.getStringWidth(name.c_str());
-  int h = scr.getStringHeight(name.c_str());
-  scr.printAt(rect.center().x - w / 2, rect.center().y + h / 2, name.c_str());
 }
 
 PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
@@ -402,6 +459,14 @@ PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
 PIDPage::PIDPage(PIDFF &pidff, std::string name, std::function<void(void)> onchange)
     : PIDPage((pidff.pid), name, onchange) {}
 
+/**
+ * @brief Updates the PIDPage with new data
+ * 
+ * Passes in the data to the update function of each widget seprately
+ * @param was_pressed If the screen was pressed or not
+ * @param x The x-position of where the screen was pressed
+ * @param y The y-position of where the screen was pressed
+ */
 void PIDPage::update(bool was_pressed, int x, int y) {
   bool updated = false;
   updated |= p_slider.update(was_pressed, x, y);
@@ -414,6 +479,13 @@ void PIDPage::update(bool was_pressed, int x, int y) {
     onchange();
   }
 }
+
+/**
+ * @brief Draws the PIDPage
+ *
+ * Draws each widget separately then writes the PID data to the screen
+ * @param scr The screen to draw to
+ */
 void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
   p_slider.draw(scr, first_draw, frame_number);
   i_slider.draw(scr, first_draw, frame_number);
@@ -433,5 +505,4 @@ void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsig
   scr.setPenColor(vex::green);
   scr.printAt(300, 20, false, "%.2f", pid.get_sensor_val());
 }
-
-} // namespace screen
+} // End namespace screen_pages

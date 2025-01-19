@@ -75,7 +75,7 @@ public:
    *  @brief Creates a page displaying info about the flywheel
    *  @return the page should be used for `screen::start_screen(screen, {fw.Page()});
    */
-  screen::Page *Page() const;
+  screen_pages::Page *Page() const;
 
   /**
    * @brief Creates a new auto command to spin the flywheel at the desired velocity
