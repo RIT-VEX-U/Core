@@ -9,7 +9,6 @@
 #include "../core/include/subsystems/custom_encoder.h"
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/utils/math_util.h"
-#include <iostream>
 
 /**
  * OdometryNWheel
@@ -116,8 +115,6 @@ public:
     }
 
     pose_t updated_pos = calculate_new_pos(radian_deltas, current_pos);
-
-    // std::cout << "x: " << updated_pos.x << " y: " << updated_pos.y << " rot: " << updated_pos.rot << std::endl;
 
     // if we do not pass in an IMU we use the wheels for rotation
     if (imu != nullptr) {
