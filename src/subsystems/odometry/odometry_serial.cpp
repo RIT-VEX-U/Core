@@ -34,8 +34,8 @@
  * Construct a new Odometry Serial Object
  */
 OdometrySerial::OdometrySerial(
-  const bool &is_async, const bool &calc_vel_acc_on_brain, const pose_t &initial_pose, const int32_t &port,
-  const int32_t &baudrate
+  bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, int32_t port,
+  int32_t baudrate
 )
     : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
       pose_offset(Transform2d(0, 0, 0)), _port(port) {

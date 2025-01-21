@@ -34,7 +34,7 @@ class OdometrySerial : OdometryBase {
     /**
      * Construct a new Odometry Serial Object
      */
-    OdometrySerial(const bool &is_async, const bool &calc_vel_acc_on_brain, const pose_t &initial_pose, const int32_t &port, const int32_t &baudrate);
+    OdometrySerial(bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, int32_t port, int32_t baudrate);
 
     void send_config(const pose_t &initial_pose, const bool &calc_vel_acc_on_brain);
 
