@@ -37,7 +37,7 @@ OdometrySerial::OdometrySerial(
   bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, int32_t port,
   int32_t baudrate
 )
-    : OdometryBase(false), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
+    : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
       pose_offset(Transform2d(0, 0, 0)), _port(port) {
     // vexDelay(200);  
     vexGenericSerialEnable(_port, 0);
@@ -173,6 +173,8 @@ pose_t OdometrySerial::update() {
             this->ang_speed_deg = ang_speed_local;
             this->ang_accel_deg = ang_accel_local;
         }
+
+        std::cout << pose << std::endl;
 
         return {pose.x(), pose.y(), pose.rotation().wrapped_degrees_180()};
     }
