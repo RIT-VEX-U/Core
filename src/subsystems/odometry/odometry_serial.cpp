@@ -34,40 +34,45 @@
  * Construct a new Odometry Serial Object
  */
 OdometrySerial::OdometrySerial(
-  bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, int32_t port,
+  bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, pose_t sensor_offset, int32_t port,
   int32_t baudrate
 )
     : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
       pose_offset(Transform2d(0, 0, 0)), _port(port) {
-    // vexDelay(200);  
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
-    // vexDelay(200);
-    // send_config(initial_pose, calc_vel_acc_on_brain);
+    send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
 
     if (is_async) {
       printf("thread started\n");
     }
-    // update();
 }
 
-void OdometrySerial::send_config(const pose_t &initial_pose, const bool &calc_vel_acc_on_brain) {
-    uint8_t raw[(sizeof(initial_pose) / 2) + sizeof(calc_vel_acc_on_brain)];
+void OdometrySerial::send_config(const pose_t &initial_pose, const pose_t &sensor_offset, const bool &calc_vel_acc_on_brain) {
+    uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
 
-    float x = static_cast<float>(initial_pose.x);
-    float y = static_cast<float>(initial_pose.y);
-    float rot = static_cast<float>(initial_pose.rot);
+    float initialx = (float)initial_pose.x;
+    float initialy = (float)initial_pose.y;
+    float initialrot = (float)initial_pose.rot;
 
-    memcpy(&raw[0], &x, sizeof(float));
-    memcpy(&raw[4], &y, sizeof(float));
-    memcpy(&raw[8], &rot, sizeof(float));
-    raw[12] = static_cast<uint8_t>(calc_vel_acc_on_brain);
+    float offsetx = (float)initial_pose.x;
+    float offsety = (float)initial_pose.y;
+    float offsetrot = (float)initial_pose.rot;
+
+    memcpy(&raw[0], &initial_pose.x, sizeof(float));
+    memcpy(&raw[4], &initial_pose.y, sizeof(float));
+    memcpy(&raw[8], &initial_pose.rot, sizeof(float));
+    memcpy(&raw[12], &sensor_offset.x, sizeof(float));
+    memcpy(&raw[16], &sensor_offset.y, sizeof(float));
+    memcpy(&raw[20], &sensor_offset.rot, sizeof(float));
+    memcpy(&raw[24], &calc_vel_acc_on_brain, sizeof(bool));
+
     cobs_encode(raw, sizeof(raw), cobs_encoded);
 
-    // vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
+    vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
 
-    vexDelay(100);
+    // vexDelay(100);
 }
 
 int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size) {
@@ -174,7 +179,7 @@ pose_t OdometrySerial::update() {
             this->ang_accel_deg = ang_accel_local;
         }
 
-        std::cout << pose << std::endl;
+        std::cout << vexSystemHighResTimeGet() << ", " << pose.rotation().wrapped_degrees_360() << std::endl;
 
         return {pose.x(), pose.y(), pose.rotation().wrapped_degrees_180()};
     }
