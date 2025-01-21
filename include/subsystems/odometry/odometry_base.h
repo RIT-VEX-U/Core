@@ -54,6 +54,7 @@ public:
    */
   virtual pose_t update() = 0;
 
+
   /**
    * Function that runs in the background task. This function pointer is passed
    * to the vex::task constructor.

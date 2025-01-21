@@ -37,16 +37,15 @@ OdometrySerial::OdometrySerial(
   bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, int32_t port,
   int32_t baudrate
 )
-    : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
+    : OdometryBase(false), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
       pose_offset(Transform2d(0, 0, 0)), _port(port) {
-    vexDelay(200);
-    // vexGenericSerialEnable(_port, 0);
-    // vexGenericSerialBaudrate(_port, baudrate);
-    vexDelay(200);
+    // vexDelay(200);  
+    vexGenericSerialEnable(_port, 0);
+    vexGenericSerialBaudrate(_port, baudrate);
+    // vexDelay(200);
     // send_config(initial_pose, calc_vel_acc_on_brain);
 
     if (is_async) {
-      // handle = new vex::task(background_task, (void *)this);
       printf("thread started\n");
     }
     // update();
@@ -66,29 +65,9 @@ void OdometrySerial::send_config(const pose_t &initial_pose, const bool &calc_ve
     raw[12] = static_cast<uint8_t>(calc_vel_acc_on_brain);
     cobs_encode(raw, sizeof(raw), cobs_encoded);
 
-    vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
+    // vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
 
     vexDelay(100);
-}
-
-/**
- * Function that runs in the background task. This function pointer is passed
- * to the vex::task constructor.
- *
- * @param ptr Pointer to OdometryBase object
- * @return Required integer return code. Unused.
- */
-int OdometrySerial::background_task(void *ptr) {
-    OdometryBase &obj = *((OdometryBase *)ptr);
-    vexDelay(1000);
-    while (!obj.end_task) {
-        obj.mut.lock();
-        obj.update();
-        obj.mut.unlock();
-        vexDelay(20);
-    }
-
-    return 0;
 }
 
 int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size) {

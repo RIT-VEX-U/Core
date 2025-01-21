@@ -38,6 +38,8 @@ class OdometrySerial : OdometryBase {
 
     void send_config(const pose_t &initial_pose, const bool &calc_vel_acc_on_brain);
 
+    int background_task(void *ptr);
+
     /**
      * Update the current position of the robot once by reading a single packet from the serial port
      *
@@ -55,8 +57,6 @@ class OdometrySerial : OdometryBase {
     pose_t get_position(void);
 
     Pose2d get_pose2d(void);
-
-    static int background_task(void *ptr);
 
     size_t cobs_decode(const uint8_t *buffer, size_t length, void *data);
 
