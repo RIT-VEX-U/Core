@@ -148,7 +148,8 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
   left = modify_inputs(left, power);
   right = modify_inputs(right, power);
   double brake_threshold = 0.05;
-
+  //if the BrakeType is TurnOnly and both sides motor groups are going opposite directions, use the ZeroVelocity BrakeType,
+  //otherwise if the BrakeType is just TurnOnly use the None BrakeType.
   if(bt == BrakeType::TurnOnly && ((left_motors.velocity(vex::velocityUnits::rpm) * (right_motors.velocity(vex::velocityUnits::rpm))) < 0)){
     bt = BrakeType::ZeroVelocity;
   }
