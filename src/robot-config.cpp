@@ -47,6 +47,7 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
 };
 
+OdometrySerial odom(true, true, pose_t{0, 0, 0}, pose_t{-3.83, 0.2647, 180}, 9, 115200);
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg);
 
 // ================ UTILS ================
