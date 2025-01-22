@@ -60,17 +60,18 @@ void OdometrySerial::send_config(const pose_t &initial_pose, const pose_t &senso
     float offsety = (float)initial_pose.y;
     float offsetrot = (float)initial_pose.rot;
 
-    memcpy(&raw[0], &initial_pose.x, sizeof(float));
-    memcpy(&raw[4], &initial_pose.y, sizeof(float));
-    memcpy(&raw[8], &initial_pose.rot, sizeof(float));
-    memcpy(&raw[12], &sensor_offset.x, sizeof(float));
-    memcpy(&raw[16], &sensor_offset.y, sizeof(float));
-    memcpy(&raw[20], &sensor_offset.rot, sizeof(float));
+    memcpy(&raw[0], &initialx, sizeof(float));
+    memcpy(&raw[4], &initialy, sizeof(float));
+    memcpy(&raw[8], &initialrot, sizeof(float));
+    memcpy(&raw[12], &offsetx, sizeof(float));
+    memcpy(&raw[16], &offsety, sizeof(float));
+    memcpy(&raw[20], &offsetrot, sizeof(float));
     memcpy(&raw[24], &calc_vel_acc_on_brain, sizeof(bool));
 
     cobs_encode(raw, sizeof(raw), cobs_encoded);
 
     vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
+    printf("encoded %f %f %f\n", initialx, initialy, offsetrot);
 
     // vexDelay(100);
 }
