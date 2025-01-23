@@ -69,7 +69,7 @@ class OdometrySerial : OdometryBase {
 
     Pose2d pose;
 
-    Transform2d pose_offset;
+    Pose2d pose_offset;
 
     double speed;
     double accel;
