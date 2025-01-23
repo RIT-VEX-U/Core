@@ -8,6 +8,10 @@ const vex::controller::button &conveyor_button_rev = con.ButtonR1;
 const vex::controller::button &intake_button =con.ButtonL2;
 const vex::controller::button &intake_button_rev = con.ButtonL1;
 
+const vex::controller::button &wallstake_handoff = con.ButtonUp;
+const vex::controller::button &wallstake_above_neutral = con.ButtonLeft;
+const vex::controller::button &wallstake_on_neutral = con.ButtonDown;
+
 /**
  * Main entrypoint for the driver control period
 */
@@ -36,6 +40,20 @@ intake_button_rev.pressed([](){
 
 });
 
+wallstake_handoff.pressed([](){
+    wallstake_mech.set_state(HANDOFF);
+});
+
+wallstake_above_neutral.pressed([](){
+    wallstake_mech.set_state(ABOVE_NEUTRAL);
+});
+
+wallstake_on_neutral.pressed([](){
+    wallstake_mech.set_state(ON_NEUTRAL);
+});
+
+
+
 
 
     // ================ INIT ================
@@ -54,7 +72,7 @@ intake_button_rev.pressed([](){
 
         //pose_t pos = odom.get_position();
         //printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
-        vexDelay(10);
+        vexDelay(20);
         
          
     }
