@@ -38,16 +38,15 @@ OdometrySerial::OdometrySerial(
   int32_t baudrate
 )
     : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
-      pose_offset(Transform2d(0, 0, 0)), _port(port) {
+      pose_offset(Pose2d(0, 0, 0)), _port(port) {
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
     send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
-
-    if (is_async) {
-      printf("thread started\n");
-    }
 }
 
+/**
+ * Send 
+ */
 void OdometrySerial::send_config(const pose_t &initial_pose, const pose_t &sensor_offset, const bool &calc_vel_acc_on_brain) {
     uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
@@ -73,12 +72,19 @@ void OdometrySerial::send_config(const pose_t &initial_pose, const pose_t &senso
     vexGenericSerialTransmit(_port, cobs_encoded, sizeof(cobs_encoded));
 }
 
+/**
+ * Attempts to recieve an entire packet encoded with COBS, stops at delimiter or there's a buffer overflow
+ * 
+ * @param port the port number the serial is plugged into, counts from 0 instead of 1
+ * @param buffer pointer to a uint8_t[] where we put the data
+ * @param buffer_size length in bytes of the buffer
+ * @return 0 success
+ */
 int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size) {
     size_t index = 0;
 
     while (true) {
-        // wait for a byte (we read byte by byte into our own buffer rather than grabbing the whole packet all at
-        // once)
+        // wait for a byte (we read byte by byte into our own buffer rather than grabbing the whole packet all at once)
         if (vexGenericSerialReceiveAvail(port) > 0) {
             uint8_t character = vexGenericSerialReadChar(port);
 
@@ -100,7 +106,7 @@ int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t b
 }
 
 /**
- * Update the current position of the robot once by reading a single packet from the serial port
+ * Update the current position of the robot once by reading a single packet from the serial port, then updating all over values, velocity, accel
  *
  * @return the robot's updated position
  */
@@ -185,14 +191,16 @@ pose_t OdometrySerial::update() {
 
 /**
  * Resets the position and rotational data to the input.
+ * 
+ * @param new_pose the pose to set the odometry to
  */
 void OdometrySerial::set_position(const Pose2d &new_pose) {
-    // regrettably we can't use the functions for this because it rotates the translation... ughies
-    pose_offset = Transform2d(new_pose.translation() - pose.translation(), new_pose.rotation() - pose.rotation());
+    pose_offset = new_pose;
 }
 
 /**
  * Gets the current position and rotation
+ * 
  * @return the position that the odometry believes the robot is at
  */
 pose_t OdometrySerial::get_position(void) {
@@ -200,17 +208,23 @@ pose_t OdometrySerial::get_position(void) {
     return pose_t{pose.x(), pose.y(), pose.rotation().wrapped_degrees_360()};
 }
 
+/**
+ * Gets the current position and rotation
+ * 
+ * @return the position that the odometry believes the robot is at
+ */
 Pose2d OdometrySerial::get_pose2d(void) {
-    // regrettably we can't use the functions for this because it rotates the translation... ughies
-    return Pose2d(pose.translation() + pose_offset.translation(), pose.rotation() + pose_offset.rotation());
+    return pose.relative_to(pose_offset);
 }
 
 /** COBS encode data to buffer
-      @param data Pointer to input data to encode
-      @param length Number of bytes to encode
-      @param buffer Pointer to encoded output buffer
-      @return Encoded buffer length in bytes
-      @note Does not output delimiter byte
+ * 
+ * @param data Pointer to input data to encode
+ * @param length Number of bytes to encode
+ * @param buffer Pointer to encoded output buffer
+ * 
+ * @return Encoded buffer length in bytes
+ * @note Does not output delimiter byte
 */
 size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buffer) {
     assert(data && buffer);
@@ -236,11 +250,12 @@ size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buf
 }
 
 /** COBS decode data from buffer
-  @param buffer Pointer to encoded input bytes
-  @param length Number of bytes to decode
-  @param data Pointer to decoded output data
-  @return Number of bytes successfully decoded
-  @note Stops decoding if delimiter byte is found
+ * @param buffer Pointer to encoded input bytes
+ * @param length Number of bytes to decode
+ * @param data Pointer to decoded output data
+ * 
+ * @return Number of bytes successfully decoded
+ * @note Stops decoding if delimiter byte is found
 */
 size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *data) {
     assert(buffer && data);
