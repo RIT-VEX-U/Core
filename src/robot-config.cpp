@@ -75,6 +75,21 @@ PID::pid_config_t correction_pid_cfg{
     .d = 0.0025,
 };
 
+FeedForward::ff_config_t drive_ff_cfg{
+    .kS = 0,
+    .kV = 0,
+    .kA = 0,
+    .kG = 0
+};
+
+MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
+    .max_v = 12,
+    .accel = 120,
+    .pid_cfg = drive_pid_cfg,
+    .ff_cfg = drive_ff_cfg
+};
+MotionController drive_motioncontroller{drive_motioncontroller_cfg};
+
 
 PID turn_pid{turn_pid_cfg};
 // ======== SUBSYSTEMS ========
@@ -84,10 +99,11 @@ robot_specs_t robot_cfg = {
     .odom_wheel_diam = 2.75,
     .odom_gear_ratio = 0.75,
 
+    .drive_correction_cutoff = 10,
+
     .drive_feedback = &drive_pid,
     .turn_feedback = &turn_pid,
     .correction_pid = correction_pid_cfg,
-    .drive_correction_cutoff = 10,
 };
 pose_t skills_start{19.25, 96, 0};
 pose_t auto_start{122, 53.125, 30};
