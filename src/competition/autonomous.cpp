@@ -17,47 +17,47 @@ void autonomous()
 }
 
 AutoCommand *intake_command(double amt = 12.0) {
-	return new FunctionCommand([=]() {
-        
-		intake(amt);
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    smart_intake.conveyor_start();
+    return true;
+  });
 }
 
 AutoCommand *outtake_command(double amt = 12.0) {
-	return new FunctionCommand([=]() {
-		outtake(amt);
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    smart_intake.intake_out();
+    return true;
+  });
 }
 
 AutoCommand *stop_intake() {
-	return new FunctionCommand([=]() {
-		intake(0);
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    // intake(0);
+    smart_intake.intake_in();
+    return true;
+  });
 }
 
 AutoCommand *conveyor_intake_command(double amt = 12.0) {
-	return new FunctionCommand([=]() {
-		conveyor_intake(amt);
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    // conveyor_intake(amt);
+    smart_intake.conveyor_start();
+    return true;
+  });
 }
 
 AutoCommand *conveyor_stop_command() {
-	return new FunctionCommand([=]() {
-		conveyor_intake(0);
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    smart_intake.conveyor_stop();
+    return true;
+  });
 }
 
 AutoCommand *goal_grabber_command(bool value) {
-	return new FunctionCommand([=]() {
-		goal_grabber_sol.set(value);
-        goal_countera = 10;
-		return true;
-	});
+  return new FunctionCommand([=]() {
+    goal_grabber_sol.set(value);
+    return true;
+  });
 }
 
 class DebugCommand : public AutoCommand {

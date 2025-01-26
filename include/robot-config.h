@@ -31,11 +31,12 @@ extern vex::motor right_front_top;
 extern vex::motor right_back_top;
 
 extern vex::motor conveyor;
-extern vex::motor intake_motor;
+extern vex::motor intake_roller;
 
 extern vex::motor wallstake_left;
 extern vex::motor wallstake_right;
 extern vex::motor_group wallstake_motors;
+
 
 extern Rotation2d initial;
 extern Rotation2d tolerance;
@@ -55,6 +56,9 @@ void conveyor_intake(double volts);
 
 void conveyor_intake();
 
+void conveyor_outtake();
+
+void conveyor_outtake(double volts);
 
 void intake_spin(double volts);
 

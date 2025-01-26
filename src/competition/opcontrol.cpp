@@ -3,10 +3,10 @@
 #include "robot-config.h"
 
 const vex::controller::button &goal_grabber =con.ButtonRight;
-const vex::controller::button &conveyor_button =con.ButtonR2;
-const vex::controller::button &conveyor_button_rev = con.ButtonR1;
-const vex::controller::button &intake_button =con.ButtonL2;
-const vex::controller::button &intake_button_rev = con.ButtonL1;
+// const vex::controller::button &conveyor_button =con.ButtonR2;
+// const vex::controller::button &conveyor_button_rev = con.ButtonR1;
+const vex::controller::button &intake_button =con.ButtonR1;
+const vex::controller::button &intake_button_rev = con.ButtonR2;
 
 const vex::controller::button &wallstake_handoff = con.ButtonUp;
 const vex::controller::button &wallstake_above_neutral = con.ButtonLeft;
@@ -37,20 +37,26 @@ goal_grabber.pressed([](){
     
 });
 
-conveyor_button.pressed([](){
-    conveyor.spin(vex::directionType::fwd,12,vex::volt);
+// conveyor_button.pressed([](){
+//     conveyor.spin(vex::directionType::fwd,12,vex::volt);
+//     intake_roller.spin(vex::directionType::fwd,12,vex::volt);
 
-});
-conveyor_button_rev.pressed([](){
-    conveyor.spin(vex::directionType::rev,12,vex::volt);
-
-});
+// });
+// conveyor_button_rev.pressed([](){
+//     conveyor.spin(vex::directionType::rev,12,vex::volt);
+//     intake_roller.spin(vex::directionType::rev,12,vex::volt);
+// });
 
 intake_button.pressed([](){
+    printf("intaking... \n");
     intake();
+    conveyor_intake();
 });
+
 intake_button_rev.pressed([](){
+    printf("outtaking... \n");
     outtake();
+    conveyor_outtake();
 
 });
 
@@ -74,19 +80,24 @@ intake_button_rev.pressed([](){
 
     while (true)
     {
-        if(!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
-            conveyor.stop();
-        }
+        // if(!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
+        //     conveyor.stop();
+        // }
         if(!intake_button.pressing() && ! intake_button_rev.pressing()){
             intake(0);
         }
-        double straight = (double)con.Axis3.position() / 100;
-        double turn = (double)con.Axis1.position() / 100;
+        double left = (double)con.Axis3.position() / 100;
+        double right = (double)con.Axis2.position() / 100;
 
-        drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         pose_t pos = odom.get_position();
         printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+
+        if(!intake_button.pressing() && !intake_button_rev.pressing()) {
+            intake_roller.stop();
+            conveyor.stop();
+        }
 
 
         if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
@@ -120,10 +131,10 @@ void testing() {
       pose_t pos = odom.get_position();
       printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
       while (true) {
-        double straight = (double)con.Axis3.position() / 100;
-        double turn = (double)con.Axis1.position() / 100;
+        double left = (double)con.Axis3.position() / 100;
+        double right = (double)con.Axis2.position() / 100;
 
-        drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         vexDelay(100);
       }

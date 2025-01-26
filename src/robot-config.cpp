@@ -10,27 +10,32 @@ vex::controller con;
 
 // ================ INPUTS ================
 // Digital sensors
-
+vex::triport expander(vex::PORT18);
+vex::optical conveyor_optical(vex::PORT17);
 // ================ OUTPUTS ================
 // Motors
-vex::motor left_back_bottom(vex::PORT11, vex::gearSetting::ratio6_1, false);
-vex::motor left_center_bottom(vex::PORT12, vex::gearSetting::ratio6_1, false);
-vex::motor left_front_top(vex::PORT13, vex::gearSetting::ratio6_1, false);
-vex::motor left_back_top(vex::PORT14, vex::gearSetting::ratio6_1, false);
+vex::motor left_back_bottom(vex::PORT10, vex::gearSetting::ratio6_1, false);
+vex::motor left_center_bottom(vex::PORT9, vex::gearSetting::ratio6_1, false);
+vex::motor left_front_top(vex::PORT20, vex::gearSetting::ratio6_1, false);
+vex::motor left_back_top(vex::PORT19, vex::gearSetting::ratio6_1, false);
 vex::motor_group left_drive_motors({left_back_bottom, left_center_bottom, left_back_top, left_front_top});
 
-vex::motor right_back_bottom(vex::PORT1, vex::gearSetting::ratio6_1, true);
-vex::motor right_center_bottom(vex::PORT2, vex::gearSetting::ratio6_1, true);
-vex::motor right_front_top(vex::PORT3, vex::gearSetting::ratio6_1, true);
-vex::motor right_back_top(vex::PORT4, vex::gearSetting::ratio6_1, true);
+vex::motor right_back_bottom(vex::PORT8, vex::gearSetting::ratio6_1, true);
+vex::motor right_center_bottom(vex::PORT7, vex::gearSetting::ratio6_1, true);
+vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, true);
+vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, true);
 vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, right_back_top, right_front_top});
 
-vex::motor conveyor(vex::PORT20, vex::gearSetting::ratio6_1,true);
-vex::motor intake_motor(vex::PORT19, vex::gearSetting::ratio6_1,false);
+vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1,true);
+vex::motor intake_roller(vex::PORT16, vex::gearSetting::ratio6_1,false);
 
-vex::motor wallstake_left(vex::PORT15, vex::gearSetting::ratio18_1, false);
-vex::motor wallstake_right(vex::PORT16, vex::gearSetting::ratio18_1, true);
-vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
+
+
+
+
+// vex::motor wallstake_left(vex::PORT1, vex::gearSetting::ratio18_1, false);
+// vex::motor wallstake_right(vex::PORT1, vex::gearSetting::ratio18_1, false);
+// vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
 Rotation2d initial(from_degrees(1));
 Rotation2d tolerance(from_degrees(1));
@@ -40,7 +45,7 @@ vex::pot wall_pot(Brain.ThreeWirePort.H);
 PID::pid_config_t wallstake_pid_config {.p = 0.2, .d = 0.01};
 PID wallstake_pid(wallstake_pid_config);
 
-vex::distance goal_sensor(vex::PORT8);
+vex::distance goal_sensor(vex::PORT6);
 // WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
 
 //pnematices
@@ -126,34 +131,38 @@ void robot_init()
 const double intake_volts = 12.0;
 
 void intake(double volts) {
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
+    intake_roller.spin(vex::directionType::fwd, volts, vex::volt);
 }
 
 void intake() {
-    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
+    intake_roller.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 
 void outtake(double volts) {
-    intake_motor.spin(vex::directionType::rev, volts, vex::volt);
+    intake_roller.spin(vex::directionType::rev, volts, vex::volt);
 }
 
 void outtake() {
-    intake_motor.spin(vex::directionType::rev, intake_volts, vex::volt);
+    intake_roller.spin(vex::directionType::rev, intake_volts, vex::volt);
 }
 
 void conveyor_intake() {
+    printf("Spinning conveyor\n");
     conveyor.spin(vex::directionType::fwd, intake_volts, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 
 void conveyor_intake(double volts) {
     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-
+}
+void conveyor_outtake() {
+    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
+}
+void conveyor_outtake(double volts) {
+    conveyor.spin(vex::directionType::rev, volts, vex::volt);
 }
 
-void intake_spin(double volts) {
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-    vex::this_thread::yield();
+// void intake_spin(double volts) {
+//     intake_roller.spin(vex::directionType::fwd, volts, vex::volt);
+//     vex::this_thread::yield();
 
-}
+// }
