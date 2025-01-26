@@ -149,40 +149,6 @@ void testing() {
 			}
 			return true;
 		})),
-
-
-        drive_sys.DriveForwardCmd(48, fwd, 0.6),
-        // drive_sys.TurnDegreesCmd(90, 0.8),
-    //   drive_sys.DriveToPointCmd({.x = 48.0, .y = 0}, vex::fwd, 0.8),
-      // drive_sys.PurePursuitCmd(PurePursuit::Path({
-      //     {.x=48.0, .y=0},
-      //     {.x=72.0, .y=0},
-      // }, 2), vex::directionType::fwd, 0.6),
-      // new RepeatUntil({
-      //     drive_sys.DriveForwardCmd(24.0, vex::fwd, 0.6)->withTimeout(12),
-      //     new DelayCommand(500),
-      // }, new TimesTestedCondition(4)),
-      // drive_sys.DriveToPointCmd(point_t{48, 0}, vex::fwd, 0.4)->withTimeout(10),
-      // drive_sys.TurnToHeadingCmd(210, 0.6)->withTimeout(3),
-      // drive_sys.DriveToPointCmd(point_t{24, -24}, vex::fwd, 0.7)->withTimeout(3),
-      // drive_sys.TurnToHeadingCmd(180, 0.7)->withTimeout(3),
-      // drive_sys.DriveToPointCmd(point_t{0, -24}, vex::fwd, 0.7)->withTimeout(3),
-      // drive_sys.TurnToHeadingCmd(90, 0.7)->withTimeout(3),
-      // drive_sys.DriveToPointCmd(point_t{0, 0}, vex::fwd, 0.7)->withTimeout(3),
-      // drive_sys.TurnToHeadingCmd(0, 0.7)->withTimeout(3),
-
-      // drive_sys.TurnToHeadingCmd(90.0, 0.7)->withTimeout(3),
-
-      // drive_sys.TurnToHeadingCmd(90, 0.6)->withTimeout(5),
-      // new DelayCommand(500),
-      // drive_sys.TurnToHeadingCmd(180, 0.6)->withTimeout(5),
-      // new DelayCommand(500),
-      // drive_sys.TurnToHeadingCmd(270, 0.6)->withTimeout(5),
-      // new DelayCommand(500),
-      // drive_sys.TurnToHeadingCmd(0, 0.6)->withTimeout(5),
-      // new DelayCommand(500),
-      // drive_sys.TurnToHeadingCmd(180, 0.7)->withTimeout(5),
-    //   new DebugCommand(),
     };
     cc.run();
   });
