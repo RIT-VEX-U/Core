@@ -92,7 +92,7 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct,
+FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryBase &odometry, double pct,
                                                             double duration) {
   FeedForward::ff_config_t out = {};
 
