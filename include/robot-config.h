@@ -75,8 +75,8 @@ extern vex::pot wall_pot;
 extern PID drive_pid;
 extern PID turn_pid;
 extern PID::pid_config_t correction_pid_cfg;
-extern OdometrySerial odom;
-extern OdometryTank tankodom;
+// extern OdometrySerial odom;
+extern OdometryTank odom;
 
 extern robot_specs_t robot_cfg;
 extern TankDrive drive_sys;
