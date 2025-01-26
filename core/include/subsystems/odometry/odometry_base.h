@@ -40,7 +40,7 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  pose_t get_position(void);
+  virtual pose_t get_position(void);
 
   /**
    * Sets the current position of the robot

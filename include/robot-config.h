@@ -31,7 +31,7 @@ extern vex::motor right_front_top;
 extern vex::motor right_back_top;
 
 extern vex::motor conveyor;
-extern vex::motor intake;
+extern vex::motor intake_motor;
 
 extern vex::motor wallstake_left;
 extern vex::motor wallstake_right;
@@ -43,9 +43,20 @@ extern double pot_offset;
 extern vex::pot wall_pot;
 extern WallStakeMech wallstake_mech;
 
-void conveyor_intake(double volts);
-void intake_spin(double volts);
+void intake(double volts);
 
+void intake();
+
+void outtake(double volts);
+
+void outtake();
+
+void conveyor_intake(double volts);
+
+void conveyor_intake();
+
+
+void intake_spin(double volts);
 
 extern vex::motor_group left_drive_motors;
 extern vex::motor_group right_drive_motors;
@@ -54,6 +65,8 @@ extern vex::motor_group right_drive_motors;
 extern vex::digital_out goal_grabber_sol;
 extern vex::inertial imu;
 
+extern vex::distance goal_sensor;
+
 extern vex::pot wall_pot;
 
 
@@ -61,6 +74,7 @@ extern vex::pot wall_pot;
 // ================ SUBSYSTEMS ================
 extern PID drive_pid;
 extern PID turn_pid;
+extern PID::pid_config_t correction_pid_cfg;
 extern OdometrySerial odom;
 extern OdometryTank tankodom;
 
