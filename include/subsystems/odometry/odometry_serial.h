@@ -29,7 +29,7 @@
  * @author Jack Cammarata
  * @date Jan 16 2025
  */
-class OdometrySerial : OdometryBase {
+class OdometrySerial : public OdometryBase {
   public:
     /**
      * Construct a new Odometry Serial Object
@@ -45,7 +45,7 @@ class OdometrySerial : OdometryBase {
      *
      * @return the robot's updated position
      */
-    pose_t update();
+    pose_t update() override;
 
     /**
      * Resets the position and rotational data to the input.
@@ -54,7 +54,7 @@ class OdometrySerial : OdometryBase {
 
     int receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size);
 
-    pose_t get_position(void);
+    pose_t get_position(void) override;
 
     Pose2d get_pose2d(void);
 
