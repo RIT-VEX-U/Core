@@ -55,6 +55,10 @@ void conveyor_intake(double volts);
 
 void conveyor_intake();
 
+void conveyor_outtake(double volts);
+
+void conveyor_outtake();
+
 
 void intake_spin(double volts);
 

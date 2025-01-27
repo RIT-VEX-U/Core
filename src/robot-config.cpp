@@ -164,12 +164,17 @@ void outtake() {
 
 void conveyor_intake() {
     conveyor.spin(vex::directionType::fwd, intake_volts, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
+}
+
+void conveyor_outtake() {
+    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
+}
+void conveyor_outtake(double volts) {
+    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
 }
 
 void conveyor_intake(double volts) {
     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
 
 }
 
