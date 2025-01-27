@@ -152,7 +152,7 @@ pose_t OdometrySerial::update() {
         double accel_local = 0;
         double ang_speed_local = 0;
         double ang_accel_local = 0;
-        bool update_vel_accel = tmr.time(sec) > 0.1;
+        bool update_vel_accel = tmr.time(sec) > 0.02;
 
         // This loop runs too fast. Only check at LEAST every 1/10th sec
         if (update_vel_accel) {
@@ -278,3 +278,17 @@ size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *d
 
     return (size_t)(decode - (uint8_t *)data);
 }
+
+
+double OdometrySerial::get_speed() {
+  double retval = speed;
+
+  return retval;
+}
+
+double OdometrySerial::get_accel() {
+  double retval = accel;
+
+  return retval;
+}
+
