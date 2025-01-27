@@ -47,12 +47,14 @@ PID wallstake_pid(wallstake_pid_config);
 vex::distance goal_sensor(vex::PORT8);
 // WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
 
+vex::optical color_sensor(vex::PORT17);
+
 //pnematices
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.25,
+  .p = 0.2,
   .i = 0.0,
   .d = 0.02,
   .deadband = 0.5,
@@ -62,9 +64,9 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.035,
-  .i = 0.001,
-  .d = 0.0025,
+  .p = 0.01,
+  .i = 0.00,
+  .d = 0.00,
   .deadband = 1.5,
   .on_target_time = 0.2,
 };
@@ -76,18 +78,28 @@ PID::pid_config_t correction_pid_cfg{
 };
 
 FeedForward::ff_config_t drive_ff_cfg{
-    .kS = 0,
-    .kV = 0,
-    .kA = 0,
+    .kS = 0.08,
+    .kV = 0.05,
+    .kA = 0.0005,
     .kG = 0
 };
 
 MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
-    .max_v = 12,
-    .accel = 120,
+    .max_v = 50,
+    .accel = 150,
     .pid_cfg = drive_pid_cfg,
     .ff_cfg = drive_ff_cfg
 };
+
+AsymmetricMotionController::a_m_profile_cfg_t drive_motioncontroller_slow_decel_cfg {
+    .max_v = 50,
+    .accel = 200,
+    .decel = 70,
+    .pid_cfg = drive_pid_cfg,
+    .ff_cfg = drive_ff_cfg
+};
+
+AsymmetricMotionController drive_motioncontroller_slow_decel{drive_motioncontroller_slow_decel_cfg};
 MotionController drive_motioncontroller{drive_motioncontroller_cfg};
 
 
@@ -106,7 +118,8 @@ robot_specs_t robot_cfg = {
     .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{122, 53.125, 30};
+pose_t auto_start{121.73, 54.77, 30};
+pose_t zero{0, 0, 0};
 
 OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 180}, 9, 115200);
 OdometryBase* base = &odom;
@@ -126,6 +139,8 @@ void robot_init()
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
     vexDelay(50);
     printf("started!\n");
+    color_sensor.setLight(vex::ledState::on);
+    color_sensor.setLightPower(100, vex::pct);
     // wallstake_mech.set_voltage(5);
     
     
@@ -169,7 +184,6 @@ void conveyor_intake() {
 void conveyor_intake(double volts) {
     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
     intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-
 }
 
 void intake_spin(double volts) {

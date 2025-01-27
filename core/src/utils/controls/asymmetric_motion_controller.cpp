@@ -1,4 +1,4 @@
-#include "../core/include/utils/controls/motion_controller.h"
+#include "../core/include/utils/controls/asymmetric_motion_controller.h"
 #include "../core/include/utils/math_util.h"
 #include <vector>
 
@@ -11,8 +11,8 @@
  *    pid_cfg Definitions of kP, kI, and kD
  *    ff_cfg Definitions of kS, kV, and kA
  */
-MotionController::MotionController(m_profile_cfg_t &config)
-    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(config.max_v, config.accel) {}
+AsymmetricMotionController::AsymmetricMotionController(a_m_profile_cfg_t &config)
+    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(config.max_v, config.accel, config.decel) {}
 
 /**
  * @brief Initialize the motion profile for a new movement
@@ -20,7 +20,7 @@ MotionController::MotionController(m_profile_cfg_t &config)
  * @param start_pt Movement starting position
  * @param end_pt Movement ending posiiton
  */
-void MotionController::init(double start_pt, double end_pt) {
+void AsymmetricMotionController::init(double start_pt, double end_pt) {
   profile.set_endpts(start_pt, end_pt);
   pid.reset();
   tmr.reset();
@@ -32,7 +32,7 @@ void MotionController::init(double start_pt, double end_pt) {
  * @param sensor_val Value from the sensor
  * @return the motor input generated from the motion profile
  */
-double MotionController::update(double sensor_val) {
+double AsymmetricMotionController::update(double sensor_val) {
   cur_motion = profile.calculate(tmr.time(timeUnits::sec));
   pid.set_target(cur_motion.pos);
   pid.update(sensor_val, cur_motion.vel);
@@ -44,11 +44,11 @@ double MotionController::update(double sensor_val) {
 
   return out;
 }
-
+ 
 /**
  * @return the last saved result from the feedback controller
  */
-double MotionController::get() { return out; }
+double AsymmetricMotionController::get() { return out; }
 
 /**
  * Clamp the upper and lower limits of the output. If both are 0, no limits should be applied.
@@ -56,7 +56,7 @@ double MotionController::get() { return out; }
  * @param lower Upper limit
  * @param upper Lower limit
  */
-void MotionController::set_limits(double lower, double upper) {
+void AsymmetricMotionController::set_limits(double lower, double upper) {
   lower_limit = lower;
   upper_limit = upper;
 }
@@ -65,14 +65,14 @@ void MotionController::set_limits(double lower, double upper) {
  * @return Whether or not the movement has finished, and the PID
  * confirms it is on target
  */
-bool MotionController::is_on_target() {
+bool AsymmetricMotionController::is_on_target() {
   return (tmr.time(timeUnits::sec) > profile.get_movement_time()) && pid.is_on_target();
 }
 
 /**
  * @return The current postion, velocity and acceleration setpoints
  */
-motion_t MotionController::get_motion() const { return cur_motion; }
+a_motion_t AsymmetricMotionController::get_motion() const { return cur_motion; }
 
 /**
  * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
@@ -92,7 +92,7 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryBase &odometry, double pct,
+FeedForward::ff_config_t AsymmetricMotionController::tune_feedforward(TankDrive &drive, OdometryBase &odometry, double pct,
                                                             double duration) {
   FeedForward::ff_config_t out = {};
 

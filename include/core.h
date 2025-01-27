@@ -26,10 +26,12 @@
 #include "../core/include/utils/controls/feedback_base.h"
 #include "../core/include/utils/controls/feedforward.h"
 #include "../core/include/utils/controls/motion_controller.h"
+#include "../core/include/utils/controls/asymmetric_motion_controller.h"
 #include "../core/include/utils/controls/pid.h"
 #include "../core/include/utils/controls/pidff.h"
 #include "../core/include/utils/controls/take_back_half.h"
 #include "../core/include/utils/controls/trapezoid_profile.h"
+#include "../core/include/utils/controls/asymmetric_trapezoid_profile.h"
 
 #include "../core/include/utils/auto_chooser.h"
 #include "../core/include/utils/generic_auto.h"
