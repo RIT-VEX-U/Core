@@ -10,31 +10,30 @@ vex::controller con;
 
 // ================ INPUTS ================
 // Digital sensors
-vex::triport expander(vex::PORT18);
-vex::optical conveyor_optical(vex::PORT17);
+
+// Analog sensors
+CustomEncoder Left_enc(Brain.ThreeWirePort.C, 2048);
+CustomEncoder right_enc(Brain.ThreeWirePort.E, 2048);
+CustomEncoder front_enc(Brain.ThreeWirePort.G, 2048);
 // ================ OUTPUTS ================
 // Motors
-vex::motor left_back_bottom(vex::PORT10, vex::gearSetting::ratio6_1, false);
-vex::motor left_center_bottom(vex::PORT9, vex::gearSetting::ratio6_1, false);
-vex::motor left_front_top(vex::PORT20, vex::gearSetting::ratio6_1, false);
-vex::motor left_back_top(vex::PORT19, vex::gearSetting::ratio6_1, false);
+vex::motor left_back_bottom(vex::PORT4, vex::gearSetting::ratio6_1, true);
+vex::motor left_center_bottom(vex::PORT9, vex::gearSetting::ratio6_1, true);
+vex::motor left_front_top(vex::PORT20, vex::gearSetting::ratio6_1, true);
+vex::motor left_back_top(vex::PORT19, vex::gearSetting::ratio6_1, true);
 vex::motor_group left_drive_motors({left_back_bottom, left_center_bottom, left_back_top, left_front_top});
 
-vex::motor right_back_bottom(vex::PORT8, vex::gearSetting::ratio6_1, true);
-vex::motor right_center_bottom(vex::PORT7, vex::gearSetting::ratio6_1, true);
-vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, true);
-vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, true);
+vex::motor right_back_bottom(vex::PORT8, vex::gearSetting::ratio6_1, false);
+vex::motor right_center_bottom(vex::PORT7, vex::gearSetting::ratio6_1, false);
+vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, false);
+vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, false);
 vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, right_back_top, right_front_top});
 
 vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1,true);
-vex::motor intake_roller(vex::PORT16, vex::gearSetting::ratio6_1,false);
+vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1,false);
 
-
-
-
-
-// vex::motor wallstake_left(vex::PORT1, vex::gearSetting::ratio18_1, false);
-// vex::motor wallstake_right(vex::PORT1, vex::gearSetting::ratio18_1, false);
+// vex::motor wallstake_left(vex::PORT15, vex::gearSetting::ratio18_1, false);
+// vex::motor wallstake_right(vex::PORT16, vex::gearSetting::ratio18_1, true);
 // vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
 Rotation2d initial(from_degrees(1));
@@ -53,7 +52,7 @@ vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.25,
+  .p = 0.2,
   .i = 0.0,
   .d = 0.02,
   .deadband = 0.5,
@@ -63,9 +62,9 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.035,
-  .i = 0.001,
-  .d = 0.0025,
+  .p = 0.01,
+  .i = 0.00,
+  .d = 0.00,
   .deadband = 1.5,
   .on_target_time = 0.2,
 };
@@ -76,6 +75,21 @@ PID::pid_config_t correction_pid_cfg{
     .d = 0.0025,
 };
 
+FeedForward::ff_config_t drive_ff_cfg{
+    .kS = 0.08,
+    .kV = 0.05,
+    .kA = 0.0005,
+    .kG = 0
+};
+
+MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
+    .max_v = 50,
+    .accel = 150,
+    .pid_cfg = drive_pid_cfg,
+    .ff_cfg = drive_ff_cfg
+};
+MotionController drive_motioncontroller{drive_motioncontroller_cfg};
+
 
 PID turn_pid{turn_pid_cfg};
 // ======== SUBSYSTEMS ========
@@ -85,19 +99,21 @@ robot_specs_t robot_cfg = {
     .odom_wheel_diam = 2.75,
     .odom_gear_ratio = 0.75,
 
+    .drive_correction_cutoff = 10,
+
     .drive_feedback = &drive_pid,
     .turn_feedback = &turn_pid,
     .correction_pid = correction_pid_cfg,
-    .drive_correction_cutoff = 10,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{122, 53.125, 30};
+pose_t auto_start{121.73, 54.77, 30};
+pose_t zero{0, 0, 0};
 
-OdometryTank odom{left_drive_motors, right_drive_motors, robot_cfg, &imu};
-// OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 180}, 9, 115200);
+OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 180}, 9, 115200);
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
+// OdometryTank tankodom{left_drive_motors, right_drive_motors, robot_cfg, &imu};
 vex::inertial imu(vex::PORT18);
 
 
@@ -131,38 +147,34 @@ void robot_init()
 const double intake_volts = 12.0;
 
 void intake(double volts) {
-    intake_roller.spin(vex::directionType::fwd, volts, vex::volt);
+    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
 }
 
 void intake() {
-    intake_roller.spin(vex::directionType::fwd, intake_volts, vex::volt);
+    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 
 void outtake(double volts) {
-    intake_roller.spin(vex::directionType::rev, volts, vex::volt);
+    intake_motor.spin(vex::directionType::rev, volts, vex::volt);
 }
 
 void outtake() {
-    intake_roller.spin(vex::directionType::rev, intake_volts, vex::volt);
+    intake_motor.spin(vex::directionType::rev, intake_volts, vex::volt);
 }
 
 void conveyor_intake() {
-    printf("Spinning conveyor\n");
     conveyor.spin(vex::directionType::fwd, intake_volts, vex::volt);
+    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 
 void conveyor_intake(double volts) {
     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-}
-void conveyor_outtake() {
-    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
-}
-void conveyor_outtake(double volts) {
-    conveyor.spin(vex::directionType::rev, volts, vex::volt);
+    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
+
 }
 
-// void intake_spin(double volts) {
-//     intake_roller.spin(vex::directionType::fwd, volts, vex::volt);
-//     vex::this_thread::yield();
+void intake_spin(double volts) {
+    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
+    vex::this_thread::yield();
 
-// }
+}

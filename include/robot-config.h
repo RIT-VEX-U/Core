@@ -31,12 +31,11 @@ extern vex::motor right_front_top;
 extern vex::motor right_back_top;
 
 extern vex::motor conveyor;
-extern vex::motor intake_roller;
+extern vex::motor intake_motor;
 
 extern vex::motor wallstake_left;
 extern vex::motor wallstake_right;
 extern vex::motor_group wallstake_motors;
-
 
 extern Rotation2d initial;
 extern Rotation2d tolerance;
@@ -56,9 +55,6 @@ void conveyor_intake(double volts);
 
 void conveyor_intake();
 
-void conveyor_outtake();
-
-void conveyor_outtake(double volts);
 
 void intake_spin(double volts);
 
@@ -78,9 +74,12 @@ extern vex::pot wall_pot;
 // ================ SUBSYSTEMS ================
 extern PID drive_pid;
 extern PID turn_pid;
+extern MotionController::m_profile_cfg_t drive_motioncontroller_cfg;
+extern MotionController drive_motioncontroller;
+
 extern PID::pid_config_t correction_pid_cfg;
-// extern OdometrySerial odom;
-extern OdometryTank odom;
+extern OdometrySerial odom;
+extern OdometryTank tankodom;
 
 extern robot_specs_t robot_cfg;
 extern TankDrive drive_sys;
