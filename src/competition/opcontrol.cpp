@@ -72,6 +72,32 @@ intake_button_rev.pressed([](){
 //     wallstake_mech.set_state(ON_NEUTRAL);
 // });
 
+con.ButtonA.pressed([]() {
+    printf("Button A Pressed \n");
+    CommandController cc{
+        new Async(new FunctionCommand([]() {
+			while(true) {
+                pose_t pos = odom.get_position();
+            	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+				vexDelay(100);
+
+				if((conveyor.current() > 2) && conveyor.velocity(rpm) < 0.5){
+					printf("Conveyor Stalling");
+					conveyor_intake(-12);
+					vexDelay(500);
+					conveyor_intake(12);
+				}
+			}
+			return true;
+		})),
+        odom.SetPositionCmd({.x=0, .y = 0,.rot =0}),
+        drive_sys.DriveForwardCmd(48, vex::forward, 1, 0),
+
+
+    };
+    cc.run();
+  });
+
 
 
 
@@ -91,8 +117,9 @@ intake_button_rev.pressed([](){
 
         drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
-        pose_t pos = odom.get_position();
-        printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+        pose_t pose = odom.get_position();
+
+        printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pose.x, pose.y, pose.rot);
 
         if(!intake_button.pressing() && !intake_button_rev.pressing()) {
             intake_motor.stop();
@@ -137,14 +164,15 @@ void testing() {
       }
       return true;
     }
+
   };
 
   con.ButtonA.pressed([]() {
+    printf("Button A Pressed \n");
     CommandController cc{
         new Async(new FunctionCommand([]() {
 			while(true) {
-				OdometryBase *odombase = &odom;
-                pose_t pos = odombase->get_position();
+                pose_t pos = odom.get_position();
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
@@ -157,12 +185,22 @@ void testing() {
 			}
 			return true;
 		})),
+        odom.SetPositionCmd({.x=0, .y = 0,.rot =0}),
+        drive_sys.DriveForwardCmd(48, vex::forward, 1, 0),
+
+
     };
     cc.run();
   });
 
-}
+  while(true){
+    pose_t pos = odom.get_position();
+    printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+    vexDelay(100);
+  }
 
+
+}
 
 
 

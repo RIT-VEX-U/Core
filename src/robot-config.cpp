@@ -11,10 +11,6 @@ vex::controller con;
 // ================ INPUTS ================
 // Digital sensors
 
-// Analog sensors
-CustomEncoder Left_enc(Brain.ThreeWirePort.C, 2048);
-CustomEncoder right_enc(Brain.ThreeWirePort.E, 2048);
-CustomEncoder front_enc(Brain.ThreeWirePort.G, 2048);
 // ================ OUTPUTS ================
 // Motors
 vex::motor left_back_bottom(vex::PORT4, vex::gearSetting::ratio6_1, true);
@@ -109,13 +105,11 @@ pose_t skills_start{19.25, 96, 0};
 pose_t auto_start{121.73, 54.77, 30};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 180}, 9, 115200);
+OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 180}, vex::PORT1, 115200);
+
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
-// OdometryTank tankodom{left_drive_motors, right_drive_motors, robot_cfg, &imu};
-vex::inertial imu(vex::PORT18);
-
 
 // ================ UTILS ================
 

@@ -67,7 +67,6 @@ extern vex::motor_group right_drive_motors;
 
 // Pneumatics
 extern vex::digital_out goal_grabber_sol;
-extern vex::inertial imu;
 
 extern vex::distance goal_sensor;
 
@@ -83,10 +82,12 @@ extern MotionController drive_motioncontroller;
 
 extern PID::pid_config_t correction_pid_cfg;
 extern OdometrySerial odom;
-extern OdometryTank tankodom;
+// extern OdometryTank odom;
 
 extern robot_specs_t robot_cfg;
 extern TankDrive drive_sys;
+
+extern vex::digital_out mcglight_board;
 
 // ================ UTILS ================
 
