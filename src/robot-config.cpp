@@ -48,9 +48,9 @@ vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.2,
+  .p = 0.25,
   .i = 0.0,
-  .d = 0.02,
+  .d = 0.03,
   .deadband = 0.5,
   .on_target_time = 0.1,
 };
@@ -58,23 +58,26 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.01,
-  .i = 0.00,
-  .d = 0.00,
-  .deadband = 1.5,
-  .on_target_time = 0.2,
+  .p = 0.036,
+  .i = 0.0001,
+  .d = 0.0036,
+  .deadband = 2,
+  .on_target_time = 0.1,
+  .error_method = PID::ERROR_TYPE::ANGULAR,
+  
 };
 
 PID::pid_config_t correction_pid_cfg{
-    .p = 0.01,
-    .i = 0.0001,
-    .d = 0.0025,
+    .p = 0.036,
+  .i = 0.0001,
+  .d = 0.0036,
+  .deadband = 2,
 };
 
 FeedForward::ff_config_t drive_ff_cfg{
-    .kS = 0.08,
-    .kV = 0.05,
-    .kA = 0.0005,
+    .kS = 0.01,
+    .kV = 0.015,
+    .kA = 0.002,
     .kG = 0
 };
 
@@ -105,7 +108,7 @@ pose_t skills_start{19.25, 96, 0};
 pose_t auto_start{121.73, 54.77, 30};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 180}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 

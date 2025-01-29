@@ -78,7 +78,7 @@ con.ButtonA.pressed([]() {
         new Async(new FunctionCommand([]() {
 			while(true) {
                 pose_t pos = odom.get_position();
-            	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+            	// printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
 				if((conveyor.current() > 2) && conveyor.velocity(rpm) < 0.5){
@@ -90,8 +90,20 @@ con.ButtonA.pressed([]() {
 			}
 			return true;
 		})),
-        odom.SetPositionCmd({.x=0, .y = 0,.rot =0}),
-        drive_sys.DriveForwardCmd(48, vex::forward, 1, 0),
+        // drive_sys.DriveToPointCmd({.x = 48,.y = 0,}, vex::directionType::fwd, 1.0, 0.0),
+        drive_sys.PurePursuitCmd(PurePursuit::Path({
+      {.x=24, .y=-8},
+      {.x=48, .y=8},
+      {.x=72, .y=-8},
+      {.x=96, .y=0}}, 4),
+      vex::forward, 1 , 0),
+        // new DelayCommand(1000),
+        // drive_sys.TurnDegreesCmd(180, 1, 0),
+        // new DelayCommand(1000),
+        // drive_sys.TurnDegreesCmd(90, 1, 0),
+        // new DelayCommand(1000),
+        // drive_sys.TurnDegreesCmd(270, 1, 0),
+        
 
 
     };
@@ -115,7 +127,7 @@ con.ButtonA.pressed([]() {
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
 
-        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
+        // drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         pose_t pose = odom.get_position();
 
@@ -136,7 +148,7 @@ con.ButtonA.pressed([]() {
         }
 
         
-        vexDelay(20);
+        vexDelay(100);
         
          
     }
@@ -195,7 +207,7 @@ void testing() {
 
   while(true){
     pose_t pos = odom.get_position();
-    printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+    // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
     vexDelay(100);
   }
 
