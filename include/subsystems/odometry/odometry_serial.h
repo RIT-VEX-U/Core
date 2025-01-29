@@ -62,6 +62,11 @@ class OdometrySerial : public OdometryBase {
 
     size_t cobs_encode(const void *data, size_t length, uint8_t *buffer);
 
+    double get_speed() override;
+
+    double get_accel() override;
+
+
   private:
     int32_t _port;
 

@@ -97,6 +97,7 @@ int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t b
                 buffer[index++] = character;
             } else {
                 // buffer overflow
+                printf("bufferoverflow\n");
                 return -1;
             }
         }
@@ -113,13 +114,8 @@ pose_t OdometrySerial::update() {
     uint8_t cobs_encoded_size;
     uint8_t packet_size;
 
-    if (calc_vel_acc_on_brain) {
-        cobs_encoded_size = 13;
-        packet_size = 12;
-    } else {
-        cobs_encoded_size = 37;
-        packet_size = 36;
-    }
+    cobs_encoded_size = 29;
+    packet_size = 28;
 
     uint8_t cobs_encoded[cobs_encoded_size];
     uint8_t decoded_packet[packet_size];
@@ -128,10 +124,15 @@ pose_t OdometrySerial::update() {
     Pose2d updated_pose(0, 0, 0);
 
     if (packet_length == cobs_encoded_size) {
-        if (cobs_decode(cobs_encoded, packet_length, decoded_packet) == 12) {
+        if (cobs_decode(cobs_encoded, packet_length, decoded_packet) == packet_size) {
             float *floats = (float *)decoded_packet;
+        
             updated_pose = Pose2d(Translation2d(floats[0], floats[1]), from_degrees(floats[2]));
-
+            this->pose = updated_pose;
+            this->speed = floats[3];
+            this->accel = floats[4];
+            this->ang_speed_deg = floats[5];
+            this->ang_accel_deg = floats[6];
         } else {
             printf("OdometrySerial: Invalid COBS encoding\n");
             return {0, 0, 0};
@@ -140,51 +141,6 @@ pose_t OdometrySerial::update() {
         printf("OdometrySerial: Buffer overflow\n");
         return {0, 0, 0};
     }
-
-    if (calc_vel_acc_on_brain) {
-        static Pose2d last_pose = updated_pose;
-        static double last_speed = 0;
-        static double last_ang_speed = 0;
-        static timer tmr;
-
-        double speed_local = 0;
-        double accel_local = 0;
-        double ang_speed_local = 0;
-        double ang_accel_local = 0;
-        bool update_vel_accel = tmr.time(sec) > 0.1;
-
-        // This loop runs too fast. Only check at LEAST every 1/10th sec
-        if (update_vel_accel) {
-            // Calculate robot velocity
-            speed_local = (updated_pose.translation().distance(last_pose.translation())) / tmr.time(sec);
-
-            // Calculate robot acceleration
-            accel_local = (speed_local - last_speed) / tmr.time(sec);
-
-            // Calculate robot angular velocity (deg/sec)
-            ang_speed_local =
-              (updated_pose.rotation() - last_pose.rotation()).wrapped_degrees_180() / tmr.time(sec);
-
-            // Calculate robot angular acceleration (deg/sec^2)
-            ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
-
-            tmr.reset();
-            last_pose = updated_pose;
-            last_speed = speed_local;
-            last_ang_speed = ang_speed_local;
-        }
-
-        this->pose = updated_pose;
-        if (update_vel_accel) {
-            this->speed = speed_local;
-            this->accel = accel_local;
-            this->ang_speed_deg = ang_speed_local;
-            this->ang_accel_deg = ang_accel_local;
-        }
-
-        return {pose.x(), pose.y(), pose.rotation().wrapped_degrees_180()};
-    }
-
     return {pose.x(), pose.y(), pose.rotation().wrapped_degrees_360()};
 }
 
@@ -277,3 +233,17 @@ size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *d
 
     return (size_t)(decode - (uint8_t *)data);
 }
+
+
+double OdometrySerial::get_speed() {
+  double retval = speed;
+
+  return retval;
+}
+
+double OdometrySerial::get_accel() {
+  double retval = accel;
+
+  return retval;
+}
+
