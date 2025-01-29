@@ -54,9 +54,9 @@ vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.2,
+  .p = 0.3,
   .i = 0.0,
-  .d = 0.02,
+  .d = 0.03,
   .deadband = 0.5,
   .on_target_time = 0.1,
 };
@@ -64,11 +64,12 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.01,
+  .p = 0.03,
   .i = 0.00,
   .d = 0.00,
-  .deadband = 1.5,
-  .on_target_time = 0.2,
+  .deadband = 2,
+  .on_target_time = 0.1,
+  
 };
 
 PID::pid_config_t correction_pid_cfg{
@@ -78,15 +79,15 @@ PID::pid_config_t correction_pid_cfg{
 };
 
 FeedForward::ff_config_t drive_ff_cfg{
-    .kS = 0.08,
-    .kV = 0.05,
-    .kA = 0.0005,
+    .kS = 0.01,
+    .kV = 0.015,
+    .kA = 0.002,
     .kG = 0
 };
 
 MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
-    .max_v = 50,
-    .accel = 150,
+    .max_v = 100,
+    .accel = 120,
     .pid_cfg = drive_pid_cfg,
     .ff_cfg = drive_ff_cfg
 };
@@ -128,6 +129,8 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 // OdometryTank tankodom{left_drive_motors, right_drive_motors, robot_cfg, &imu};
 vex::inertial imu(vex::PORT18);
 
+vex::digital_out mcglight_board(Brain.ThreeWirePort.B);
+
 
 // ================ UTILS ================
 
@@ -136,11 +139,15 @@ vex::inertial imu(vex::PORT18);
  */
 void robot_init()
 {
-    screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
+    screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid")});
     vexDelay(50);
     printf("started!\n");
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
+    turn_pid.set_limits(0.5, 1);
+    // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 1, 1);
+    // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
+    // mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     
     
@@ -148,13 +155,13 @@ void robot_init()
     // while (true) {
     //     pose_t pose = base->get_position();
     //     // pose_t posetank = tankodom.get_position();
-    //     printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+    //     // printf("%" PRIu64 ", %f, %f, %f, %f\n", vexSystemHighResTimeGet(), base->get_speed(), base->get_accel(), base->get_angular_speed_deg(), base->get_angular_accel_deg());
     //     // wallstake_mech.update();
     //     // printf("%f\n", wallstake_mech.get_angle().degrees());
     //     // wallstake_mech.set_setpoint(from_degrees(0));
     //     // vexDelay(5000);
     //     // wallstake_mech.set_setpoint(from_degrees(180));
-    //     vexDelay(20);
+    //     vexDelay(100);
     // }
 }
 
