@@ -30,113 +30,113 @@ void opcontrol() {
     // auto__();
     // return;
 
-    // goal_grabber.pressed([]() {
-    //     goal_grabber_sol.set(!goal_grabber_sol);
-    //     goal_counter = 50;
-    // });
+    goal_grabber.pressed([]() {
+        goal_grabber_sol.set(!goal_grabber_sol);
+        goal_counter = 50;
+    });
 
-    // conveyor_button.pressed([]() {
-    //     double volts;
-    //     if (color_sensor_counter == 0) {
-    //         volts = 10;
-    //         conveyor.setBrake(vex::brakeType::coast);
+    conveyor_button.pressed([]() {
+        double volts;
+        if (color_sensor_counter == 0) {
+            volts = 10;
+            conveyor.setBrake(vex::brakeType::coast);
+        } else {
+            volts = 4;
+            conveyor.setBrake(vex::brakeType::brake);
+        }
+
+        conveyor.spin(vex::directionType::fwd, volts, vex::volt);
+        intake();
+        mcglight_board.set(true);
+    });
+    conveyor_button_rev.pressed([]() {
+        conveyor.spin(vex::directionType::rev, 10, vex::volt);
+        outtake();
+    });
+
+    // wallstake_up.pressed([](){
+    //     if (wallstake_mech.is_below_handoff()) {
+    //         wallstake_mech.set_state(HANDOFF);
+    //         wallstake_mech.hold = true;
     //     } else {
-    //         volts = 4;
-    //         conveyor.setBrake(vex::brakeType::brake);
+    //         wallstake_mech.set_voltage(-4);
+    //         wallstake_mech.hold = false;
     //     }
-
-    //     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-    //     intake();
-    //     mcglight_board.set(true);
-    // });
-    // conveyor_button_rev.pressed([]() {
-    //     conveyor.spin(vex::directionType::rev, 10, vex::volt);
-    //     outtake();
     // });
 
-    // // wallstake_up.pressed([](){
-    // //     if (wallstake_mech.is_below_handoff()) {
-    // //         wallstake_mech.set_state(HANDOFF);
-    // //         wallstake_mech.hold = true;
-    // //     } else {
-    // //         wallstake_mech.set_voltage(-4);
-    // //         wallstake_mech.hold = false;
-    // //     }
-    // // });
-
-    // // wallstake_down.pressed([](){
-    // //     if (!wallstake_mech.is_below_handoff()) {
-    // //         wallstake_mech.set_voltage(4);
-    // //         wallstake_mech.hold = false;
-    // //     }
-    // // });
-
-
-    // // ================ INIT ================
-    // color_sensor.setLight(vex::ledState::on);
-    // color_sensor.setLightPower(100, vex::pct);
-
-    // while (true) {
-    //     if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
-    //         conveyor.stop();
-    //         intake(0);
-    //         mcglight_board.set(false);
+    // wallstake_down.pressed([](){
+    //     if (!wallstake_mech.is_below_handoff()) {
+    //         wallstake_mech.set_voltage(4);
+    //         wallstake_mech.hold = false;
     //     }
+    // });
 
-    //     // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
-    //     //     wallstake_mech.hold = true;
-    //     // } else {
-    //     //     wallstake_mech.hold = false;
-    //     // }
 
-    //     // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
-    //     //     intake(0);
-    //     // }
-    //     double straight = (double)con.Axis3.position() / 100;
-    //     double turn = (double)con.Axis1.position() / 100;
+    // ================ INIT ================
+    color_sensor.setLight(vex::ledState::on);
+    color_sensor.setLightPower(100, vex::pct);
 
-    //     drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+    while (true) {
+        if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
+            conveyor.stop();
+            intake(0);
+            mcglight_board.set(false);
+        }
 
-    //     pose_t pos = odom.get_position();
-    //     // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
-    //     printf("%f\n", color_sensor.hue());
+        // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
+        //     wallstake_mech.hold = true;
+        // } else {
+        //     wallstake_mech.hold = false;
+        // }
 
-    //     if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
-    //         goal_grabber_sol.set(true);
-    //     }
+        // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
+        //     intake(0);
+        // }
+        double straight = (double)con.Axis3.position() / 100;
+        double turn = (double)con.Axis1.position() / 100;
 
-    //     if (goal_counter > 0) {
-    //         goal_counter--;
-    //     }
+        drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
 
-    //     if (blue_alliance) {
-    //         if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-    //             color_sensor_counter = 30;
-    //         }
-    //     } else {
-    //         if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-    //             color_sensor_counter = 30;
-    //         }
-    //     }
+        pose_t pos = odom.get_position();
+        // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+        printf("%f\n", color_sensor.hue());
 
-    //     if (color_sensor_counter == 25) {
-    //         color_sensor_counter--;
-    //         conveyor.stop();
-    //     }
+        if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
+            goal_grabber_sol.set(true);
+        }
 
-    //     if (color_sensor_counter > 0) {
-    //         color_sensor_counter--;
+        if (goal_counter > 0) {
+            goal_counter--;
+        }
+
+        if (blue_alliance) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+                color_sensor_counter = 30;
+            }
+        } else {
+            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+                color_sensor_counter = 30;
+            }
+        }
+
+        if (color_sensor_counter == 25) {
+            color_sensor_counter--;
+            conveyor.stop();
+        }
+
+        if (color_sensor_counter > 0) {
+            color_sensor_counter--;
             
-    //     }
+        }
 
-    //     if (color_sensor_counter == 0 && conveyor_button.pressing()) {
-    //       conveyor_intake();
-    //     }
+        if (color_sensor_counter == 0 && conveyor_button.pressing()) {
+          conveyor_intake();
+        }
 
-    //     vexDelay(20);
-    // }
+        vexDelay(20);
+    }
 
-    // ================ PERIODIC ================
+    ================ PERIODIC ================
 }
 
 void testing() {
