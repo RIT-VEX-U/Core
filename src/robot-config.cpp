@@ -54,9 +54,9 @@ vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.3,
+  .p = 0.2,
   .i = 0.0,
-  .d = 0.03,
+  .d = 0.02,
   .deadband = 0.5,
   .on_target_time = 0.1,
 };
@@ -66,7 +66,7 @@ PID drive_pid{drive_pid_cfg};
 PID::pid_config_t turn_pid_cfg{
   .p = 0.03,
   .i = 0.00,
-  .d = 0.00,
+  .d = 0.003,
   .deadband = 2,
   .on_target_time = 0.1,
   
@@ -86,8 +86,8 @@ FeedForward::ff_config_t drive_ff_cfg{
 };
 
 MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
-    .max_v = 100,
-    .accel = 120,
+    .max_v = 150,
+    .accel = 70,
     .pid_cfg = drive_pid_cfg,
     .ff_cfg = drive_ff_cfg
 };
@@ -119,10 +119,10 @@ robot_specs_t robot_cfg = {
     .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{121.73, 54.77, 30};
+pose_t auto_start{122.37, 54.54, 30.3};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 180}, 9, 115200);
+OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
@@ -147,22 +147,22 @@ void robot_init()
     turn_pid.set_limits(0.5, 1);
     // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 1, 1);
     // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
-    // mcglight_board.set(true);
+    mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     
     
 
-    // while (true) {
-    //     pose_t pose = base->get_position();
-    //     // pose_t posetank = tankodom.get_position();
-    //     // printf("%" PRIu64 ", %f, %f, %f, %f\n", vexSystemHighResTimeGet(), base->get_speed(), base->get_accel(), base->get_angular_speed_deg(), base->get_angular_accel_deg());
-    //     // wallstake_mech.update();
-    //     // printf("%f\n", wallstake_mech.get_angle().degrees());
-    //     // wallstake_mech.set_setpoint(from_degrees(0));
-    //     // vexDelay(5000);
-    //     // wallstake_mech.set_setpoint(from_degrees(180));
-    //     vexDelay(100);
-    // }
+    while (true) {
+        pose_t pose = base->get_position();
+        // pose_t posetank = tankodom.get_position();
+        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        // wallstake_mech.update();
+        printf("%f\n", color_sensor.hue());
+        // wallstake_mech.set_setpoint(from_degrees(0));
+        // vexDelay(5000);
+        // wallstake_mech.set_setpoint(from_degrees(180));
+        vexDelay(100);
+    }
 }
 
 const double intake_volts = 12.0;
@@ -184,7 +184,7 @@ void outtake() {
 }
 
 void conveyor_intake() {
-    conveyor.spin(vex::directionType::fwd, intake_volts, vex::volt);
+    conveyor.spin(vex::directionType::fwd, 10, vex::volt);
     intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 

@@ -5,12 +5,10 @@
 const vex::controller::button &goal_grabber = con.ButtonRight;
 const vex::controller::button &conveyor_button = con.ButtonR2;
 const vex::controller::button &conveyor_button_rev = con.ButtonR1;
-const vex::controller::button &intake_button = con.ButtonL2;
-const vex::controller::button &intake_button_rev = con.ButtonL1;
 
 const vex::controller::button &wallstake_handoff = con.ButtonUp;
-const vex::controller::button &wallstake_above_neutral = con.ButtonLeft;
-const vex::controller::button &wallstake_on_neutral = con.ButtonDown;
+const vex::controller::button &wallstake_up = con.ButtonL1;
+const vex::controller::button &wallstake_down = con.ButtonL2;
 
 void testing();
 
@@ -18,6 +16,8 @@ void auto__();
 
 int goal_counter = 0;
 int color_sensor_counter = 0;
+
+bool blue_alliance = true;
 
 /**
  * Main entrypoint for the driver control period
@@ -38,7 +38,7 @@ void opcontrol() {
     // conveyor_button.pressed([]() {
     //     double volts;
     //     if (color_sensor_counter == 0) {
-    //         volts = 12;
+    //         volts = 10;
     //         conveyor.setBrake(vex::brakeType::coast);
     //     } else {
     //         volts = 4;
@@ -50,24 +50,27 @@ void opcontrol() {
     //     mcglight_board.set(true);
     // });
     // conveyor_button_rev.pressed([]() {
-    //     conveyor.spin(vex::directionType::rev, 12, vex::volt);
+    //     conveyor.spin(vex::directionType::rev, 10, vex::volt);
     //     outtake();
     // });
 
-    // intake_button.pressed([]() { intake(); });
-    // intake_button_rev.pressed([]() { outtake(); });
-
-    // // wallstake_handoff.pressed([](){
-    // //     wallstake_mech.set_state(HANDOFF);
+    // // wallstake_up.pressed([](){
+    // //     if (wallstake_mech.is_below_handoff()) {
+    // //         wallstake_mech.set_state(HANDOFF);
+    // //         wallstake_mech.hold = true;
+    // //     } else {
+    // //         wallstake_mech.set_voltage(-4);
+    // //         wallstake_mech.hold = false;
+    // //     }
     // // });
 
-    // // wallstake_above_neutral.pressed([](){
-    // //     wallstake_mech.set_state(ABOVE_NEUTRAL);
+    // // wallstake_down.pressed([](){
+    // //     if (!wallstake_mech.is_below_handoff()) {
+    // //         wallstake_mech.set_voltage(4);
+    // //         wallstake_mech.hold = false;
+    // //     }
     // // });
 
-    // // wallstake_on_neutral.pressed([](){
-    // //     wallstake_mech.set_state(ON_NEUTRAL);
-    // // });
 
     // // ================ INIT ================
     // color_sensor.setLight(vex::ledState::on);
@@ -79,6 +82,12 @@ void opcontrol() {
     //         intake(0);
     //         mcglight_board.set(false);
     //     }
+
+    //     // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
+    //     //     wallstake_mech.hold = true;
+    //     // } else {
+    //     //     wallstake_mech.hold = false;
+    //     // }
 
     //     // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
     //     //     intake(0);
@@ -100,15 +109,19 @@ void opcontrol() {
     //         goal_counter--;
     //     }
 
-    //     if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-    //         color_sensor_counter = 30;
-
+    //     if (blue_alliance) {
+    //         if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+    //             color_sensor_counter = 30;
+    //         }
+    //     } else {
+    //         if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+    //             color_sensor_counter = 30;
+    //         }
     //     }
 
     //     if (color_sensor_counter == 25) {
     //         color_sensor_counter--;
     //         conveyor.stop();
-    //         // conveyor_intake(12);
     //     }
 
     //     if (color_sensor_counter > 0) {
@@ -123,7 +136,7 @@ void opcontrol() {
     //     vexDelay(20);
     // }
 
-    // // ================ PERIODIC ================
+    // ================ PERIODIC ================
 }
 
 void testing() {
@@ -141,7 +154,7 @@ void testing() {
                 double straight = (double)con.Axis3.position() / 100;
                 double turn = (double)con.Axis1.position() / 100;
 
-                drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+                // drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
 
                 vexDelay(100);
             }
@@ -180,12 +193,14 @@ void testing() {
               return true;
           })),
 
-          new DriveForwardCommand(drive_sys, drive_motioncontroller, 53, vex::reverse, 1, 0),
+          new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
           new DriveForwardCommand(drive_sys, drive_motioncontroller, 10, vex::forward, 1, 0),
+          
           drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
           new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0),
         //   drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
         //   drive_sys.DriveToPointCmd({96, 24}, vex::forward, 1, 0),
+        // drive_sys.DriveForwardCmd(24, vex::fwd, 1, 0),
         // drive_sys.TurnDegreesCmd(90, 1, 0),
           //   drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
           //   new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0)
