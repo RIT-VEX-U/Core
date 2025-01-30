@@ -48,7 +48,7 @@ AutoCommand *TankDrive::TurnToPointCmd(double x, double y, vex::directionType di
         double dx = x - pose.x;
         heading = rad2deg(atan2(dy, dx));
         if (dir != vex::directionType::fwd) {
-          heading += 90.0;
+          heading += 180.0;
         }
         func_initialized = true;
       }

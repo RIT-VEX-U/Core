@@ -4,18 +4,16 @@
 #include "vex.h"
 
 enum WallStakeState {
-    STOW = 210,
-    HANDOFF = 180,
-    VERTICAL = 90,
-    ABOVE_NEUTRAL = 75,
-    ON_NEUTRAL = 13,
-    ABOVE_ALLIANCE = 40,
-    ON_ALLIANCE = 13,
-    FLAT = 0    
+    STOW = 199,
+    HANDOFF = 170,
+    ABOVE_ALLIANCE = 80,
+    ON_ALLIANCE = 10
 };
 
 class WallStakeMech {
     public:
+
+    bool hold = false;
 
     WallStakeMech(const vex::motor_group &motors, const vex::pot &pot, const Rotation2d &tolerance, const Rotation2d &setpoint, const double &pot_offset, PID pid);
 
@@ -51,6 +49,10 @@ class WallStakeMech {
      * they must run the update() function manually from then on.
      */
     void end_async();
+    
+    bool is_below_handoff();
+
+    void spin(double volts);
 
     private:
     

@@ -7,7 +7,9 @@
 
 void skills();
 
-int goal_countera = 0;
+int goal_counter_auto = 0;
+int color_sensor_counter_auto = 0;
+bool blue_alliance_auto = false;
 
 void autonomous()
 {
@@ -55,7 +57,7 @@ AutoCommand *conveyor_stop_command() {
 AutoCommand *goal_grabber_command(bool value) {
 	return new FunctionCommand([=]() {
 		goal_grabber_sol.set(value);
-        goal_countera = 10;
+        goal_counter_auto = 10;
 		return true;
 	});
 }
@@ -101,34 +103,74 @@ void auto_() {
 					conveyor_intake(12);
 				}
 
-                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_countera == 0) {
+                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
                 goal_grabber_sol.set(true);
                 }
 
-                if (goal_countera > 0) {
-                    goal_countera--;
+                if (goal_counter_auto > 0) {
+                    goal_counter_auto--;
                 }
 			}
 			return true;
 		})),
+		// drive_sys.DriveToPointCmd({72, 120}, vex::directionType::fwd, 1, 0),
+		drive_sys.DriveForwardCmd(34, vex::reverse, 1, 1),
+		drive_sys.DriveForwardCmd(15, vex::reverse, 0.3 , 0),
+		goal_grabber_command(true),
+		intake_command(10),
+		conveyor_intake_command(10),
+		new DelayCommand(100),
+		drive_sys.TurnToPointCmd(48, 120,vex::forward, 1, 0)->withTimeout(0.5),
+		drive_sys.DriveToPointCmd({48, 120}, vex::forward, 0.6 , 0.6),
+		drive_sys.TurnToPointCmd(24, 120,vex::forward, 0.6, 0)->withTimeout(0.5),
+		drive_sys.DriveToPointCmd({24, 120}, vex::forward, 0.3 , 0.3),
+		drive_sys.TurnToPointCmd(0, 144, vex::forward, 1)->withTimeout(0.5),
+		drive_sys.DriveToPointCmd({12, 132}, vex::forward, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
 
-		// First Ring
-
-        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-        // drive_sys.TurnToHeadingCmd(90, 0.6),
-        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-        // drive_sys.TurnToHeadingCmd(180, 0.6),
-        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-        // drive_sys.TurnToHeadingCmd(270, 0.6),
-        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-        // drive_sys.TurnToHeadingCmd(360, 0.6),
-
-        // intake_command(),
-		drive_sys.DriveToPointCmd({90, 31}, vex::reverse, 1, 0.5) -> withTimeout(4),
-		drive_sys.DriveToPointCmd({82.7, 26.4}, vex::reverse, 0.5) -> withTimeout(4),
 
         };
 	cc.run();
+
+	while(true){
+		if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
+            goal_grabber_sol.set(true);
+        }
+
+        if (goal_counter_auto > 0) {
+            goal_counter_auto--;
+        }
+
+		if (blue_alliance_auto) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
+                color_sensor_counter_auto = 30;
+				printf("wrong color here\n");
+            }
+        } else {
+            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter_auto == 0) {
+				printf("wrong color here\n");
+                color_sensor_counter_auto = 30;
+            }
+        }
+
+        if (color_sensor_counter_auto == 25) {
+            color_sensor_counter_auto--;
+            conveyor.stop();
+            // conveyor_intake(12);
+        }
+
+        if (color_sensor_counter_auto > 0) {
+            color_sensor_counter_auto--;
+            
+        }
+	}
 }
 
 void skills() {
@@ -149,12 +191,12 @@ void skills() {
 					conveyor_intake(12);
 				}
 
-                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_countera == 0) {
+                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
                 goal_grabber_sol.set(true);
                 }
 
-                if (goal_countera > 0) {
-                    goal_countera--;
+                if (goal_counter_auto > 0) {
+                    goal_counter_auto--;
                 }
 			}
 			return true;
@@ -168,7 +210,7 @@ void skills() {
         // drive_sys.TurnToHeadingCmd(180, 0.6),
         // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
         // drive_sys.TurnToHeadingCmd(270, 0.6),
-        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
+        // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimevout(2),
         // drive_sys.TurnToHeadingCmd(360, 0.6),
 
         intake_command(),

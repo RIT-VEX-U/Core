@@ -28,22 +28,25 @@ vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, rig
 vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1,true);
 vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1,false);
 
-// vex::motor wallstake_left(vex::PORT15, vex::gearSetting::ratio18_1, false);
-// vex::motor wallstake_right(vex::PORT16, vex::gearSetting::ratio18_1, true);
-// vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
+vex::optical color_sensor(vex::PORT5);
+
+vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
+vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
+vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
 Rotation2d initial(from_degrees(1));
 Rotation2d tolerance(from_degrees(1));
-double offset(41.8);
-vex::pot wall_pot(Brain.ThreeWirePort.H);
+double offset(40);
+vex::pot wall_pot(Brain.ThreeWirePort.B);
 
 PID::pid_config_t wallstake_pid_config {.p = 0.2, .d = 0.01};
 PID wallstake_pid(wallstake_pid_config);
 
 vex::distance goal_sensor(vex::PORT6);
-// WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
+WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
 
 //pnematices
+vex::digital_out mcglight_board(Brain.ThreeWirePort.C);
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
 // ================ SUBSYSTEMS ================
@@ -102,13 +105,13 @@ robot_specs_t robot_cfg = {
 
     .drive_feedback = &drive_pid,
     .turn_feedback = &turn_pid,
-    .correction_pid = correction_pid_cfg,
+    // .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{121.73, 54.77, 30};
+pose_t auto_start{21.63, 89.46, 210};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
@@ -124,6 +127,10 @@ void robot_init()
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
     vexDelay(50);
     printf("started!\n");
+    color_sensor.setLight(vex::ledState::on);
+    color_sensor.setLightPower(100, vex::pct);
+    turn_pid.set_limits(0.5, 1);
+    mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     
     
