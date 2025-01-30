@@ -56,7 +56,7 @@ vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 PID::pid_config_t drive_pid_cfg{
   .p = 0.2,
   .i = 0.0,
-  .d = 0.02,
+  .d = 0.022,
   .deadband = 0.5,
   .on_target_time = 0.1,
 };
@@ -65,10 +65,11 @@ PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
   .p = 0.03,
-  .i = 0.00,
+  .i = 0.01,
   .d = 0.003,
   .deadband = 2,
   .on_target_time = 0.1,
+
   
 };
 
@@ -87,7 +88,7 @@ FeedForward::ff_config_t drive_ff_cfg{
 
 MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
     .max_v = 150,
-    .accel = 70,
+    .accel = 120,
     .pid_cfg = drive_pid_cfg,
     .ff_cfg = drive_ff_cfg
 };
@@ -119,7 +120,7 @@ robot_specs_t robot_cfg = {
     .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{122.37, 54.54, 30.3};
+pose_t auto_start{122.37, 56.54, 30.3};
 pose_t zero{0, 0, 0};
 
 OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
@@ -155,9 +156,9 @@ void robot_init()
     while (true) {
         pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
-        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
-        printf("%f\n", color_sensor.hue());
+        // printf("%f\n", color_sensor.hue());
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));

@@ -16,69 +16,69 @@ void autonomous()
 // Some of these AutoCommands are basically the exact same as the previous
 // Junior's commands, although some previous commands weren't needed
 
-AutoCommand *intake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        intake(amt);
-        return true;
-    });
-}
+// AutoCommand *intake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         intake(amt);
+//         return true;
+//     });
+// }
 
-AutoCommand *outtake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        intake(-amt);
-        return true;
-    });
-}
+// AutoCommand *outtake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         intake(-amt);
+//         return true;
+//     });
+// }
 
-AutoCommand *stop_intake_command() {
-    return new FunctionCommand([=]() {
-        intake_motor.stop();
-        return true;
-    });
-}
+// AutoCommand *stop_intake_command() {
+//     return new FunctionCommand([=]() {
+//         intake_motor.stop();
+//         return true;
+//     });
+// }
 
-class ConveyorStalled : public Condition {
-    bool test() override {
-        return conveyor.current() > 1.5;
-    }
-};
+// class ConveyorStalled : public Condition {
+//     bool test() override {
+//         return conveyor.current() > 1.5;
+//     }
+// };
 
-AutoCommand *conveyor_intake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        conveyor.spin(vex::directionType::fwd, amt, vex::volt);
-        while (conveyor.current() > 1.5) {
-            printf("stalls");
-            conveyor.spin(vex::directionType::rev, -1 * amt, vex::volt);
-        }
-        return true;
-    });
-}
+// AutoCommand *conveyor_intake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         conveyor.spin(vex::directionType::fwd, amt, vex::volt);
+//         while (conveyor.current() > 1.5) {
+//             printf("stalls");
+//             conveyor.spin(vex::directionType::rev, -1 * amt, vex::volt);
+//         }
+//         return true;
+//     });
+// }
 
-AutoCommand *conveyor_outtake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        conveyor.spin(vex::directionType::rev, amt, vex::volt);
-        while (conveyor.current() > 1.5) {
-            printf("stalls");
-            conveyor.spin(vex::directionType::fwd, amt, vex::volt);
-        }
-        return true;
-    });
-}
+// AutoCommand *conveyor_outtake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         conveyor.spin(vex::directionType::rev, amt, vex::volt);
+//         while (conveyor.current() > 1.5) {
+//             printf("stalls");
+//             conveyor.spin(vex::directionType::fwd, amt, vex::volt);
+//         }
+//         return true;
+//     });
+// }
 
-AutoCommand *stop_conveyor_command() {
-    return new FunctionCommand([=]() {
-        conveyor.spin(vex::directionType::rev, 0.0, vex::volt);
-        return true;
-    });
-}
+// AutoCommand *stop_conveyor_command() {
+//     return new FunctionCommand([=]() {
+//         conveyor.spin(vex::directionType::rev, 0.0, vex::volt);
+//         return true;
+//     });
+// }
 
-AutoCommand *goal_grabber_command(bool value) {
-	return new FunctionCommand([=]() {
-		goal_grabber_sol.set(value);
-        goal_countera = 10;
-		return true;
-	});
-}
+// AutoCommand *goal_grabber_command(bool value) {
+// 	return new FunctionCommand([=]() {
+// 		goal_grabber_sol.set(value);
+//         goal_countera = 10;
+// 		return true;
+// 	});
+// }
 
 /**
  * Approximate game auto path for Junior Jr. (what the new 15 inch robot will

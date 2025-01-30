@@ -17,7 +17,60 @@ void auto__();
 int goal_counter = 0;
 int color_sensor_counter = 0;
 
+bool conveyor_started = false;
+
 bool blue_alliance = true;
+
+AutoCommand *intake_command(double amt = 12.0) {
+    return new FunctionCommand([=]() {
+        intake(amt);
+        return true;
+    });
+}
+
+AutoCommand *outtake_command(double amt = 12.0) {
+    return new FunctionCommand([=]() {
+        intake(-amt);
+        return true;
+    });
+}
+
+AutoCommand *stop_intake_command() {
+    return new FunctionCommand([=]() {
+        intake_motor.stop();
+        return true;
+    });
+}
+
+AutoCommand *conveyor_intake_command(double amt = 12.0) {
+    return new FunctionCommand([=]() {
+        conveyor_intake(amt);
+        conveyor_started = true;
+        return true;
+    });
+}
+
+AutoCommand *conveyor_outtake_command(double amt = 12.0) {
+    return new FunctionCommand([=]() {
+        conveyor_intake(-amt);
+        return true;
+    });
+}
+
+AutoCommand *stop_conveyor_command() {
+    return new FunctionCommand([=]() {
+        conveyor.stop();
+        return true;
+    });
+}
+
+AutoCommand *goal_grabber_command(bool value) {
+    return new FunctionCommand([=]() {
+        goal_grabber_sol.set(value);
+        goal_counter = 1000;
+        return true;
+    });
+}
 
 /**
  * Main entrypoint for the driver control period
@@ -30,113 +83,112 @@ void opcontrol() {
     // auto__();
     // return;
 
-    goal_grabber.pressed([]() {
-        goal_grabber_sol.set(!goal_grabber_sol);
-        goal_counter = 50;
-    });
+    // goal_grabber.pressed([]() {
+    //     goal_grabber_sol.set(!goal_grabber_sol);
+    //     goal_counter = 50;
+    // });
 
-    conveyor_button.pressed([]() {
-        double volts;
-        if (color_sensor_counter == 0) {
-            volts = 10;
-            conveyor.setBrake(vex::brakeType::coast);
-        } else {
-            volts = 4;
-            conveyor.setBrake(vex::brakeType::brake);
-        }
-
-        conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-        intake();
-        mcglight_board.set(true);
-    });
-    conveyor_button_rev.pressed([]() {
-        conveyor.spin(vex::directionType::rev, 10, vex::volt);
-        outtake();
-    });
-
-    // wallstake_up.pressed([](){
-    //     if (wallstake_mech.is_below_handoff()) {
-    //         wallstake_mech.set_state(HANDOFF);
-    //         wallstake_mech.hold = true;
+    // conveyor_button.pressed([]() {
+    //     double volts;
+    //     if (color_sensor_counter == 0) {
+    //         volts = 10;
+    //         conveyor.setBrake(vex::brakeType::coast);
     //     } else {
-    //         wallstake_mech.set_voltage(-4);
-    //         wallstake_mech.hold = false;
+    //         volts = 4;
+    //         conveyor.setBrake(vex::brakeType::brake);
     //     }
+
+    //     conveyor.spin(vex::directionType::fwd, volts, vex::volt);
+    //     intake();
+    //     mcglight_board.set(true);
+    // });
+    // conveyor_button_rev.pressed([]() {
+    //     conveyor.spin(vex::directionType::rev, 10, vex::volt);
+    //     outtake();
     // });
 
-    // wallstake_down.pressed([](){
-    //     if (!wallstake_mech.is_below_handoff()) {
-    //         wallstake_mech.set_voltage(4);
-    //         wallstake_mech.hold = false;
+    // // wallstake_up.pressed([](){
+    // //     if (wallstake_mech.is_below_handoff()) {
+    // //         wallstake_mech.set_state(HANDOFF);
+    // //         wallstake_mech.hold = true;
+    // //     } else {
+    // //         wallstake_mech.set_voltage(-4);
+    // //         wallstake_mech.hold = false;
+    // //     }
+    // // });
+
+    // // wallstake_down.pressed([](){
+    // //     if (!wallstake_mech.is_below_handoff()) {
+    // //         wallstake_mech.set_voltage(4);
+    // //         wallstake_mech.hold = false;
+    // //     }
+    // // });
+
+    // // ================ INIT ================
+    // color_sensor.setLight(vex::ledState::on);
+    // color_sensor.setLightPower(100, vex::pct);
+
+    // while (true) {
+    //     if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
+    //         conveyor.stop();
+    //         intake(0);
+    //         mcglight_board.set(false);
     //     }
-    // });
 
+    //     // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
+    //     //     wallstake_mech.hold = true;
+    //     // } else {
+    //     //     wallstake_mech.hold = false;
+    //     // }
 
-    // ================ INIT ================
-    color_sensor.setLight(vex::ledState::on);
-    color_sensor.setLightPower(100, vex::pct);
+    //     // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
+    //     //     intake(0);
+    //     // }
+    //     double straight = (double)con.Axis3.position() / 100;
+    //     double turn = (double)con.Axis1.position() / 100;
 
-    while (true) {
-        if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
-            conveyor.stop();
-            intake(0);
-            mcglight_board.set(false);
-        }
+    //     drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
 
-        // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
-        //     wallstake_mech.hold = true;
-        // } else {
-        //     wallstake_mech.hold = false;
-        // }
+    //     pose_t pos = odom.get_position();
+    //     // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+    //     printf("%f\n", color_sensor.hue());
 
-        // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
-        //     intake(0);
-        // }
-        double straight = (double)con.Axis3.position() / 100;
-        double turn = (double)con.Axis1.position() / 100;
+    //     if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
+    //         goal_grabber_sol.set(true);
+    //     }
 
-        drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+    //     if (goal_counter > 0) {
+    //         goal_counter--;
+    //     }
 
-        pose_t pos = odom.get_position();
-        // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
-        printf("%f\n", color_sensor.hue());
+    //     if (blue_alliance) {
+    //         if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+    //             color_sensor_counter = 30;
+    //         }
+    //     } else {
+    //         if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+    //             color_sensor_counter = 30;
+    //         }
+    //     }
 
-        if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
-            goal_grabber_sol.set(true);
-        }
+    //     if (color_sensor_counter == 25) {
+    //         color_sensor_counter--;
+    //         conveyor.stop();
+    //     }
 
-        if (goal_counter > 0) {
-            goal_counter--;
-        }
+    //     if (color_sensor_counter > 0) {
+    //         color_sensor_counter--;
 
-        if (blue_alliance) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-                color_sensor_counter = 30;
-            }
-        } else {
-            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-                color_sensor_counter = 30;
-            }
-        }
+    //     }
 
-        if (color_sensor_counter == 25) {
-            color_sensor_counter--;
-            conveyor.stop();
-        }
+    //     if (color_sensor_counter == 0 && conveyor_button.pressing()) {
+    //       conveyor_intake();
+    //     }
 
-        if (color_sensor_counter > 0) {
-            color_sensor_counter--;
-            
-        }
+    //     vexDelay(20);
+    // }
 
-        if (color_sensor_counter == 0 && conveyor_button.pressing()) {
-          conveyor_intake();
-        }
-
-        vexDelay(20);
-    }
-
-    ================ PERIODIC ================
+    // ================ PERIODIC ================
 }
 
 void testing() {
@@ -172,120 +224,86 @@ void testing() {
               while (true) {
                   OdometryBase *odombase = &odom;
                   pose_t pos = odombase->get_position();
-                  printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+                //   printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
                   vexDelay(20);
 
-                  //   if ((conveyor.current() > 2) && conveyor.velocity(rpm) < 0.5) {
-                  //       printf("Conveyor Stalling");
-                  //       conveyor_intake(-12);
-                  //       vexDelay(500);
-                  //       conveyor_intake(12);
-                  //   }
-
-                  if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
+                  if (goal_sensor.objectDistance(vex::mm) < 40 && goal_counter == 0) {
                       goal_grabber_sol.set(true);
                   }
 
                   if (goal_counter > 0) {
                       goal_counter--;
                   }
+
+                  if (blue_alliance) {
+                      if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+                          color_sensor_counter = 30;
+                      }
+                  } else {
+                      if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+                          color_sensor_counter = 30;
+                      }
+                  }
+
+                  if (color_sensor_counter == 25) {
+                      color_sensor_counter--;
+                      conveyor.stop();
+                  }
+
+                  if (color_sensor_counter > 0) {
+                      color_sensor_counter--;
+                  }
+
+                  if (conveyor_started && color_sensor_counter == 0) {
+                      conveyor_intake();
+                  }
               }
               return true;
           })),
 
-          new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
-          new DriveForwardCommand(drive_sys, drive_motioncontroller, 10, vex::forward, 1, 0),
-          
-          drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
+          // Goal Rush
+          new Parallel{
+            new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
+            new InOrder{new DelayCommand(1380), goal_grabber_command(true)}
+          },
+
+          // Reverse a bit with the goal
+          new DriveForwardCommand(drive_sys, drive_motioncontroller, 22, vex::forward, 1, 0),
+
+          // First set of rings
+          drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0), 
+          conveyor_intake_command(),
           new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0),
-        //   drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
-        //   drive_sys.DriveToPointCmd({96, 24}, vex::forward, 1, 0),
-        // drive_sys.DriveForwardCmd(24, vex::fwd, 1, 0),
-        // drive_sys.TurnDegreesCmd(90, 1, 0),
-          //   drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0),
-          //   new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0)
+          drive_sys.DriveForwardCmd(10, vex::forward, 0.8, 0)->withTimeout(2), 
+          drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
 
-          // new DriveForwardCommand(drive_sys, drive_motioncontroller, 72, vex::forward, 1, 0),
-          // drive_sys.DriveForwardCmd(72, vex::forward, 1, 0),
-          // drive_sys.TurnDegreesCmd(90, 0.8),
-          //   drive_sys.DriveToPointCmd({.x = 48.0, .y = 0}, vex::fwd, 0.8),
-          // drive_sys.PurePursuitCmd(PurePursuit::Path({
-          //     {.x=48.0, .y=0},
-          //     {.x=72.0, .y=0},
-          // }, 2), vex::directionType::fwd, 0.6),
-          // new RepeatUntil({
-          //     drive_sys.DriveForwardCmd(24.0, vex::fwd, 0.6)->withTimeout(12),
-          //     new DelayCommand(500),
-          // }, new TimesTestedCondition(4)),
-          // drive_sys.DriveToPointCmd(point_t{48, 0}, vex::fwd, 0.4)->withTimeout(10),
-          // drive_sys.TurnToHeadingCmd(210, 0.6)->withTimeout(3),
-          // drive_sys.DriveToPointCmd(point_t{24, -24}, vex::fwd, 0.7)->withTimeout(3),
-          // drive_sys.TurnToHeadingCmd(180, 0.7)->withTimeout(3),
-          // drive_sys.DriveToPointCmd(point_t{0, -24}, vex::fwd, 0.7)->withTimeout(3),
-          // drive_sys.TurnToHeadingCmd(90, 0.7)->withTimeout(3),
-          // drive_sys.DriveToPointCmd(point_t{0, 0}, vex::fwd, 0.7)->withTimeout(3),
-          // drive_sys.TurnToHeadingCmd(0, 0.7)->withTimeout(3),
+          // Second set of rings
+          drive_sys.TurnToHeadingCmd(0, 1, 0)->withTimeout(1),
+          drive_sys.DriveToPointCmd({120, 24}, vex::fwd, 1, 0)->withTimeout(2),
+          drive_sys.DriveForwardCmd(10, vex::forward, 0.8, 0)->withTimeout(2),
+          drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
 
-          // drive_sys.TurnToHeadingCmd(90.0, 0.7)->withTimeout(3),
+          // Corner shit
+          drive_sys.TurnToHeadingCmd(-43, 1, 0)->withTimeout(1), 
+          drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+          drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5), 
+          drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+          drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5), 
+          drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+          drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5), 
+          drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+          drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+          
+          // UNTESTED
+          // Final rings
+          drive_sys.TurnToHeadingCmd(135, 1, 0)->withTimeout(0.5),
+          goal_grabber_command(false),
+          drive_sys.DriveForwardCmd(14, vex::reverse, 0.6, 0)->withTimeout(1),
+          drive_sys.DriveForwardCmd(8, vex::fwd, 1, 0)->withTimeout(1),
 
-          // drive_sys.TurnToHeadingCmd(90, 0.6)->withTimeout(5),
-          // new DelayCommand(500),
-          // drive_sys.TurnToHeadingCmd(180, 0.6)->withTimeout(5),
-          // new DelayCommand(500),
-          // drive_sys.TurnToHeadingCmd(270, 0.6)->withTimeout(5),
-          // new DelayCommand(500),
-          // drive_sys.TurnToHeadingCmd(0, 0.6)->withTimeout(5),
-          // new DelayCommand(500),
-          // drive_sys.TurnToHeadingCmd(180, 0.7)->withTimeout(5),
           //   new DebugCommand(),
         };
         cc.run();
     });
 }
 
-void auto__() {
-    CommandController cc{
-      // odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
-
-      new Async(new FunctionCommand([]() {
-          while (true) {
-              OdometryBase *odombase = &odom;
-              pose_t pos = odombase->get_position();
-              printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
-              vexDelay(100);
-
-              if ((conveyor.current() > 2) && conveyor.velocity(rpm) < 0.5) {
-                  printf("Conveyor Stalling");
-                  conveyor_intake(-12);
-                  vexDelay(500);
-                  conveyor_intake(12);
-              }
-
-              if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
-                  goal_grabber_sol.set(true);
-              }
-
-              if (goal_counter > 0) {
-                  goal_counter--;
-              }
-          }
-          return true;
-      })),
-
-      // First Ring
-
-      // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-      // drive_sys.TurnToHeadingCmd(90, 0.6),
-      // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-      // drive_sys.TurnToHeadingCmd(180, 0.6),
-      // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-      // drive_sys.TurnToHeadingCmd(270, 0.6),
-      // drive_sys.DriveForwardCmd(24, fwd, 0.6)->withTimeout(2),
-      // drive_sys.TurnToHeadingCmd(360, 0.6),
-
-      // intake_command(),
-      drive_sys.DriveToPointCmd({29.5, 80}, vex::reverse, 0.5)->withTimeout(4),
-
-    };
-    cc.run();
-}
