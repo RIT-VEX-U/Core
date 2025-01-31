@@ -5,4 +5,6 @@
 */
 void autonomous();
 
-void auto_();
+void auto_red();
+
+void auto_blue();

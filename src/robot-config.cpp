@@ -118,12 +118,13 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
-pose_t skills_start{19.25, 96, 0};
+pose_t skills_start{19.25, 48, 0};
 pose_t test{24, 96, 0};
-pose_t auto_start{19.7, 89.25, 180};
+pose_t auto_start_red{19.7, 89.25, 180};
+pose_t auto_start_blue{124.3, 89.25, 0};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 

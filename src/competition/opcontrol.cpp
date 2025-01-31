@@ -16,7 +16,7 @@ void auto__();
 
 int goal_counter = 0;
 int color_sensor_counter = 0;
-bool blue_alliance = true;
+bool blue_alliance = false;
 
 /**
  * Main entrypoint for the driver control period
@@ -32,7 +32,7 @@ void opcontrol() {
     conveyor_button.pressed([]() {
         conveyor.spin(vex::directionType::fwd, 10, vex::volt);
         intake();
-        // mcglight_board.set(true);
+        mcglight_board.set(true);
     });
     conveyor_button_rev.pressed([]() {
         conveyor.spin(vex::directionType::rev, 10, vex::volt);
@@ -64,7 +64,7 @@ void opcontrol() {
         if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
             conveyor.stop();
             intake(0);
-            // mcglight_board.set(false);
+            mcglight_board.set(false);
         }
 
         double left = (double)con.Axis3.position() / 100;
@@ -81,28 +81,6 @@ void opcontrol() {
 
         if (goal_counter > 0) {
             goal_counter--;
-        }
-
-        if (blue_alliance) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-                printf("wrong color detected");
-                color_sensor_counter = 30;
-            }
-        } else {
-            if (color_sensor.hue() > 180 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-                printf("wrong color detected");
-                color_sensor_counter = 30;
-            }
-        }
-
-        if (color_sensor_counter == 25) {
-            color_sensor_counter--;
-            conveyor.stop();
-        }
-
-        if (color_sensor_counter > 0) {
-            color_sensor_counter--;
-            
         }
 
         if (color_sensor_counter == 0 && conveyor_button.pressing()) {
