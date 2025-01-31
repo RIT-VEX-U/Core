@@ -123,7 +123,7 @@ pose_t skills_start{19.25, 96, 0};
 pose_t auto_start{122.37, 56.54, 30.3};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
+OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
@@ -150,7 +150,7 @@ void robot_init()
     // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
     mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
-    
+    bool lighton = false;
     
 
     while (true) {
@@ -162,6 +162,20 @@ void robot_init()
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));
+        
+        // if (pose.rot > 270 || pose.rot < 90) {
+        //     if (!lighton) {
+        //         mcglight_board.set(true);
+        //         lighton = true;
+
+        //     } else {
+        //         mcglight_board.set(false);
+        //         lighton = false;
+        //     }
+        // } else {
+        //     mcglight_board.set(false);
+        // }
+
         vexDelay(100);
     }
 }
