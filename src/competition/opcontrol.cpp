@@ -401,16 +401,17 @@ void testing() {
 
       // Goal Rush
       new Parallel{
-        new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
-        new InOrder{new DelayCommand(1380), goal_grabber_command(true)}
+        drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
+        new Async{new InOrder{new DelayCommand(970), goal_grabber_command(true)}}
       },
 
       // Reverse a bit with the goal
-      new DriveForwardCommand(drive_sys, drive_motioncontroller, 22, vex::forward, 1, 0),
+      drive_sys.DriveForwardCmd(22, vex::forward, 1, 0)->withTimeout(2),
 
       // First set of rings
-      drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0), conveyor_intake_command(),
-      new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0),
+      drive_sys.TurnToPointCmd(96, 24, vex::forward, 0.8, 0)->withTimeout(0.5), 
+      conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({96, 24}, vex::forward, 1, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
 
