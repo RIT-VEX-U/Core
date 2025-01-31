@@ -154,7 +154,7 @@ void game_auto() {
     // cc.run();
 }
 
-void skills() {
+// void skills() {
 	// CommandController cc {
 	// 	// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
 
@@ -243,4 +243,4 @@ void skills() {
 
     //     };
 	// cc.run();
-}
+// }
