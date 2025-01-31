@@ -10,6 +10,8 @@ void skills();
 int goal_counter_auto = 0;
 int color_sensor_counter_auto = 0;
 bool blue_alliance_auto = false;
+bool conveyor_started = false;
+
 
 void autonomous()
 {
@@ -43,6 +45,7 @@ AutoCommand *stop_intake() {
 AutoCommand *conveyor_intake_command(double amt = 12.0) {
 	return new FunctionCommand([=]() {
 		conveyor_intake(amt);
+		conveyor_started = true;
 		return true;
 	});
 }
@@ -50,6 +53,7 @@ AutoCommand *conveyor_intake_command(double amt = 12.0) {
 AutoCommand *conveyor_stop_command() {
 	return new FunctionCommand([=]() {
 		conveyor_intake(0);
+		conveyor_started = false;
 		return true;
 	});
 }
@@ -58,6 +62,30 @@ AutoCommand *goal_grabber_command(bool value) {
 	return new FunctionCommand([=]() {
 		goal_grabber_sol.set(value);
         goal_counter_auto = 10;
+		return true;
+	});
+}
+
+AutoCommand *alliance_score_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(0));
+		return true;
+	});
+}
+
+AutoCommand *stow_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(198.5));
+		return true;
+	});
+}
+
+AutoCommand *handoff_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(170));
 		return true;
 	});
 }
@@ -86,6 +114,7 @@ public:
 };
 
 void auto_() {
+	mcglight_board.set(true);
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
 
@@ -110,37 +139,8 @@ void auto_() {
                 if (goal_counter_auto > 0) {
                     goal_counter_auto--;
                 }
-			}
-			return true;
-		})),
-		// drive_sys.DriveToPointCmd({72, 120}, vex::directionType::fwd, 1, 0),
-		drive_sys.DriveForwardCmd(34, vex::reverse, 1, 1),
-		drive_sys.DriveForwardCmd(15, vex::reverse, 0.3 , 0),
-		goal_grabber_command(true),
-		intake_command(10),
-		conveyor_intake_command(10),
-		new DelayCommand(100),
-		drive_sys.TurnToPointCmd(48, 120,vex::forward, 1, 0)->withTimeout(0.5),
-		drive_sys.DriveToPointCmd({48, 120}, vex::forward, 0.6 , 0.6),
-		drive_sys.TurnToPointCmd(24, 120,vex::forward, 0.6, 0)->withTimeout(0.5),
-		drive_sys.DriveToPointCmd({24, 120}, vex::forward, 0.3 , 0.3),
-		drive_sys.TurnToPointCmd(0, 144, vex::forward, 1)->withTimeout(0.5),
-		drive_sys.DriveToPointCmd({12, 132}, vex::forward, 1)->withTimeout(1),
-		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
-		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
-		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
-		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
-		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
-		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
-		drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
-		drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
 
-
-        };
-	cc.run();
-
-	while(true){
-		if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
+				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
             goal_grabber_sol.set(true);
         }
 
@@ -150,12 +150,26 @@ void auto_() {
 
 		if (blue_alliance_auto) {
             if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
+                printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+
                 color_sensor_counter_auto = 30;
-				printf("wrong color here\n");
             }
         } else {
-            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter_auto == 0) {
-				printf("wrong color here\n");
+            if (color_sensor.hue() > 180 && color_sensor.hue() < 220 && color_sensor_counter_auto == 0) {
+                printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
+				printf("wrong color detected\n");
                 color_sensor_counter_auto = 30;
             }
         }
@@ -170,7 +184,76 @@ void auto_() {
             color_sensor_counter_auto--;
             
         }
-	}
+
+		 if (conveyor_started && color_sensor_counter_auto == 0) {
+                      conveyor_intake();
+                  }
+			}
+			return true;
+		})),
+		// drive_sys.DriveToPointCmd({72, 120}, vex::directionType::fwd, 1, 0),
+		// drive_sys.DriveForwardCmd(34, vex::reverse, 1, 1),
+		// drive_sys.DriveForwardCmd(15, vex::reverse, 0.3 , 0),
+		// goal_grabber_command(true),
+		// intake_command(10),
+		// conveyor_intake_command(10),
+		// new DelayCommand(100),
+		// drive_sys.TurnToPointCmd(48, 120,vex::forward, 1, 0)->withTimeout(0.5),
+		// drive_sys.DriveToPointCmd({48, 120}, vex::forward, 0.6 , 0.6),
+		// drive_sys.TurnToPointCmd(24, 120,vex::forward, 0.6, 0)->withTimeout(0.5),
+		// drive_sys.DriveToPointCmd({24, 120}, vex::forward, 0.3 , 0.3),
+		// drive_sys.TurnToPointCmd(0, 144, vex::forward, 1)->withTimeout(0.5),
+		// drive_sys.DriveToPointCmd({12, 132}, vex::forward, 1)->withTimeout(1),
+		// drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		// drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		// drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		// drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		// drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		// drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		// drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1),
+		// drive_sys.DriveForwardCmd(14, vex::forward, 0.3)->withTimeout(1.5),
+		// goal_grabber_command(true),
+		// new DelayCommand(100),
+		// drive_sys.TurnDegreesCmd(180),
+		handoff_command(),
+		drive_sys.DriveToPointCmd({24, 89.25}, vex::reverse, 1),
+		drive_sys.TurnToPointCmd(24, 72, vex::reverse, 1)->withTimeout(1),
+		drive_sys.DriveToPointCmd({24, 72}, vex::reverse, 0.5),
+		goal_grabber_command(true),
+		new DelayCommand(50),
+		// new TurnToHeadingCommand(drive_sys, turn_pidBigI, 180, 1),
+		drive_sys.TurnToHeadingCmd(180, 1)->withTimeout(1),
+		drive_sys.DriveToPointCmd({19.5, 72}, vex::reverse, 1)->withTimeout(1),
+		alliance_score_command(),
+		new DelayCommand(1000),
+		intake_command(10),
+		conveyor_intake_command(10),
+		drive_sys.DriveForwardCmd(6, vex::reverse, 1)->withTimeout(0.3),
+		stow_command(),
+		new DelayCommand(1000),
+		drive_sys.DriveForwardCmd(16, vex::forward, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(16, vex::reverse, 0.5)->withTimeout(1),
+		drive_sys.TurnToPointCmd(48, 96, vex::forward, 1)->withTimeout(1),
+		outtake_command(10),
+		conveyor_stop_command(),
+		drive_sys.DriveToPointCmd({48, 96}, vex::forward, 1),
+		drive_sys.TurnToPointCmd(48, 120, vex::forward, 1)->withTimeout(1),
+		intake_command(10),
+		conveyor_intake_command(10),
+		drive_sys.DriveToPointCmd({48, 120}, vex::forward, 0.5),
+		new DelayCommand(100),
+		drive_sys.DriveToPointCmd({48, 138}, vex::forward, 0.5)->withTimeout(1),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.5)->withTimeout(1),
+		drive_sys.TurnToPointCmd(24, 120, vex::forward, 1)->withTimeout(1),
+		drive_sys.DriveToPointCmd({24, 120}, vex::forward, 1)->withTimeout(1),
+
+
+
+
+		
+        };
+	cc.run();
+
 }
 
 void skills() {

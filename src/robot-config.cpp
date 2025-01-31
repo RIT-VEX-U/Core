@@ -70,6 +70,16 @@ PID::pid_config_t turn_pid_cfg{
   
 };
 
+PID::pid_config_t turn_pid_cfg_bigI{
+  .p = 0.036,
+  .i = 0.001,
+  .d = 0.0036,
+  .deadband = 2,
+  .on_target_time = 0.1,
+  .error_method = PID::ERROR_TYPE::ANGULAR,
+  
+};
+
 PID::pid_config_t correction_pid_cfg{
     .p = 0.036,
   .i = 0.0001,
@@ -94,6 +104,7 @@ MotionController drive_motioncontroller{drive_motioncontroller_cfg};
 
 
 PID turn_pid{turn_pid_cfg};
+PID turn_pidBigI{turn_pid_cfg_bigI};
 // ======== SUBSYSTEMS ========
 
 robot_specs_t robot_cfg = {
@@ -108,7 +119,8 @@ robot_specs_t robot_cfg = {
     // .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{21.63, 89.46, 210};
+pose_t test{24, 96, 0};
+pose_t auto_start{19.7, 89.25, 180};
 pose_t zero{0, 0, 0};
 
 OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
@@ -130,25 +142,25 @@ void robot_init()
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
     turn_pid.set_limits(0.5, 1);
-    mcglight_board.set(true);
+    // mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     
     
 
-    // while (true) {
-    //     pose_t pose = base->get_position();
-    //     // pose_t posetank = tankodom.get_position();
-    //     printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
-    //     // wallstake_mech.update();
-    //     // printf("%f\n", wallstake_mech.get_angle().degrees());
-    //     // wallstake_mech.set_setpoint(from_degrees(0));
-    //     // vexDelay(5000);
-    //     // wallstake_mech.set_setpoint(from_degrees(180));
-    //     vexDelay(20);
-    // }
+    while (true) {
+        pose_t pose = base->get_position();
+        // pose_t posetank = tankodom.get_position();
+        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        // wallstake_mech.update();
+        // printf("%f\n", color_sensor.hue());
+        // wallstake_mech.set_setpoint(from_degrees(0));
+        // vexDelay(5000);
+        // wallstake_mech.set_setpoint(from_degrees(180));
+        vexDelay(100);
+    }
 }
 
-const double intake_volts = 12.0;
+const double intake_volts = 10.0;
 
 void intake(double volts) {
     intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
