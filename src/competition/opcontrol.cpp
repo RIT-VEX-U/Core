@@ -20,7 +20,7 @@ int color_sensor_counterd = 0;
 
 bool conveyor_startedd = false;
 
-bool blue_allianced = true;
+bool blue_allianced = false;
 
 bool color_sort_enabledd = true;
 
@@ -94,7 +94,7 @@ void opcontrol() {
 
     conveyor_button.pressed([]() {
         double volts;
-        volts = 10;
+        volts = 12;
 
         conveyor.spin(vex::directionType::fwd, volts, vex::volt);
         intake();
@@ -105,7 +105,7 @@ void opcontrol() {
         }
     });
     conveyor_button_rev.pressed([]() {
-        conveyor.spin(vex::directionType::rev, 10, vex::volt);
+        conveyor.spin(vex::directionType::rev, 12, vex::volt);
         outtake();
     });
 
@@ -138,11 +138,14 @@ void opcontrol() {
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
 
+    conveyor_intake(0);
+
+
     while (true) {
         if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
             conveyor.stop();
             intake(0);
-            mcglight_board.set(true);
+            mcglight_board.set(false);
         }
 
         // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
@@ -161,15 +164,15 @@ void opcontrol() {
 
         pose_t pos = odom.get_position();
         // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
-        printf("%f\n", color_sensor.hue());
+        // printf("%f\n", color_sensor.hue());
 
-        if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counterd == 0) {
-            goal_grabber_sol.set(true);
-        }
+        // if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counterd == 0) {
+        //     goal_grabber_sol.set(true);
+        // }
 
-        if (goal_counterd > 0) {
-            goal_counterd--;
-        }
+        // if (goal_counterd > 0) {
+        //     goal_counterd--;
+        // }
 
         if (color_sort_enabledd) {
 

@@ -10,7 +10,7 @@ int color_sensor_counter = 0;
 
 bool conveyor_started = false;
 
-bool blue_alliance = true;
+bool blue_alliance = false;
 
 bool color_sensor_enabled = true;
 
@@ -77,8 +77,9 @@ AutoCommand *goal_grabber_command(bool value) {
 
 void game_auto_red() {
     CommandController cc{
-      new Async(new FunctionCommand([]() {
+      (new Async((new FunctionCommand([]() {
         while (true) {
+		mcglight_board.set(true);
           OdometryBase *odombase = &odom;
           pose_t pos = odombase->get_position();
           // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
@@ -116,12 +117,12 @@ void game_auto_red() {
           }
         }
         return true;
-      })),
+      }))->withTimeout(30)))->withTimeout(30),
 
       // Goal Rush
       new Parallel{
         drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
-        new Async{new InOrder{new DelayCommand(970), goal_grabber_command(true)}}
+        new Async{new InOrder{new DelayCommand(955), goal_grabber_command(true)}}
       },
 
       // Reverse a bit with the goal
@@ -130,18 +131,18 @@ void game_auto_red() {
       // First set of rings
       drive_sys.TurnToPointCmd(48, 24, vex::forward, 0.8, 0)->withTimeout(0.5), 
       conveyor_intake_command(),
-      drive_sys.DriveToPointCmd({48, 24}, vex::forward, 1, 0)->withTimeout(2),
+      drive_sys.DriveToPointCmd({48, 24}, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Second set of rings
       drive_sys.TurnToHeadingCmd(180, 0.8, 0)->withTimeout(1),
-      drive_sys.DriveToPointCmd({24, 24}, vex::fwd, 1, 0)->withTimeout(2),
+      drive_sys.DriveToPointCmd({24, 24}, vex::fwd, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(10, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Corner shit
-      drive_sys.TurnToHeadingCmd(-208, 0.8, 0)->withTimeout(1),
+      drive_sys.TurnToHeadingCmd(-135, 0.8, 0)->withTimeout(1),
       drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
       drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
       drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
@@ -168,8 +169,9 @@ void game_auto_red() {
 
 void game_auto_blue() {
     CommandController cc{
-      new Async(new FunctionCommand([]() {
+      (new Async((new FunctionCommand([]() {
         while (true) {
+			mcglight_board.set(true);
           OdometryBase *odombase = &odom;
           pose_t pos = odombase->get_position();
           // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
@@ -207,26 +209,28 @@ void game_auto_blue() {
           }
         }
         return true;
-      })),
+      }))->withTimeout(30)))->withTimeout(30),
 
       // Goal Rush
       new Parallel{
-        new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
-        new InOrder{new DelayCommand(1380), goal_grabber_command(true)}
+        drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
+        new Async{new InOrder{new DelayCommand(955), goal_grabber_command(true)}}
       },
 
       // Reverse a bit with the goal
-      new DriveForwardCommand(drive_sys, drive_motioncontroller, 22, vex::forward, 1, 0),
+      drive_sys.DriveForwardCmd(22, vex::forward, 1, 0)->withTimeout(2),
 
       // First set of rings
-      drive_sys.TurnToPointCmd(96, 24, vex::forward, 1, 0), conveyor_intake_command(),
-      new DriveToPointCommand(drive_sys, drive_motioncontroller, {96, 24}, vex::forward, 1, 0),
+      drive_sys.TurnToPointCmd(96, 24, vex::fwd, 0.6, 0)->withTimeout(1), 
+	//   drive_sys.TurnDegreesCmd(180, 0.8, 0)->withTimeout(1),
+      conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({96, 24}, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Second set of rings
-      drive_sys.TurnToHeadingCmd(0, 1, 0)->withTimeout(1),
-      drive_sys.DriveToPointCmd({120, 24}, vex::fwd, 1, 0)->withTimeout(2),
+      drive_sys.TurnToHeadingCmd(0, 0.8, 0)->withTimeout(1),
+      drive_sys.DriveToPointCmd({120, 24}, vex::fwd, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(10, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
 
@@ -252,6 +256,7 @@ void game_auto_blue() {
       drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
 
       // new DebugCommand(),
+	  stop_conveyor_command()
     };
     cc.run();
 }
@@ -275,11 +280,7 @@ void skills() {
       }
   };
 
-  con.ButtonA.pressed([]() {
-    // printf("testing\n");
-    // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 0.6, 1);
-    // printf("done\n");
-    // printf("%f, %f, %f, %f\n", config.kS, config.kG, config.kV, config.kA);
+
     CommandController cc{
       new Async(new FunctionCommand([]() {
         while (true) {
@@ -385,5 +386,4 @@ void skills() {
       //   new DebugCommand(),
     };
     cc.run();
-  });
 }
