@@ -7,20 +7,14 @@
 
 void skills();
 
-int goal_counter_auto = 0;
-int color_sensor_counter_auto = 0;
-bool blue_alliance_auto = false;
-bool conveyor_started = false;
-
-
 void autonomous()
 {
 	vexDelay(700);
 
-	skills();
+	auto_blue();
 }
 
-AutoCommand *intake_command(double amt = 12.0) {
+AutoCommand *intake_command(double amt = 10.0) {
 	return new FunctionCommand([=]() {
         
 		intake(amt);
@@ -28,7 +22,7 @@ AutoCommand *intake_command(double amt = 12.0) {
 	});
 }
 
-AutoCommand *outtake_command(double amt = 12.0) {
+AutoCommand *outtake_command(double amt = 10.0) {
 	return new FunctionCommand([=]() {
 		outtake(amt);
 		return true;
@@ -42,7 +36,7 @@ AutoCommand *stop_intake() {
 	});
 }
 
-AutoCommand *conveyor_intake_command(double amt = 12.0) {
+AutoCommand *conveyor_intake_command(double amt = 10.0) {
 	return new FunctionCommand([=]() {
 		conveyor_intake(amt);
 		conveyor_started = true;
@@ -61,7 +55,6 @@ AutoCommand *conveyor_stop_command() {
 AutoCommand *goal_grabber_command(bool value) {
 	return new FunctionCommand([=]() {
 		goal_grabber_sol.set(value);
-        goal_counter_auto = 10;
 		return true;
 	});
 }
@@ -122,33 +115,17 @@ public:
 };
 
 void auto_red() {
-	blue_alliance_auto= false;
+	blue_alliance_auto = false;
 	mcglight_board.set(true);
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
 
-		new Async(new FunctionCommand([]() {
+		(new Async((new FunctionCommand([]() {
 			while(true) {
 				OdometryBase *odombase = &odom;
                 pose_t pos = odombase->get_position();
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
-
-                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-                goal_grabber_sol.set(true);
-                }
-
-                if (goal_counter_auto > 0) {
-                    goal_counter_auto--;
-                }
-
-				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-            goal_grabber_sol.set(true);
-        }
-
-        if (goal_counter_auto > 0) {
-            goal_counter_auto--;
-        }
 
 		if (blue_alliance_auto) {
             if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
@@ -194,7 +171,10 @@ void auto_red() {
                   }
 			}
 			return true;
-		})),
+		}))->withTimeout(28))),
+		conveyor_stop_command()->withTimeout(1),
+		// wallstake_mech.set_state(STOW))->withTimeout(1),
+		stow_command()->withTimeout(1),
 		// drive_sys.DriveToPointCmd({72, 120}, vex::directionType::fwd, 1, 0),
 		// drive_sys.DriveForwardCmd(34, vex::reverse, 1, 1),
 		// drive_sys.DriveForwardCmd(15, vex::reverse, 0.3 , 0),
@@ -306,28 +286,12 @@ void auto_blue() {
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
 
-		new Async(new FunctionCommand([]() {
+		(new Async((new FunctionCommand([]() {
 			while(true) {
 				OdometryBase *odombase = &odom;
                 pose_t pos = odombase->get_position();
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
-
-                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-                goal_grabber_sol.set(true);
-                }
-
-                if (goal_counter_auto > 0) {
-                    goal_counter_auto--;
-                }
-
-				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-            goal_grabber_sol.set(true);
-        }
-
-        if (goal_counter_auto > 0) {
-            goal_counter_auto--;
-        }
 
 		if (blue_alliance_auto) {
             if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
@@ -373,7 +337,10 @@ void auto_blue() {
                   }
 			}
 			return true;
-		})),
+		}))->withTimeout(28))),
+		conveyor_stop_command()->withTimeout(1),
+		// wallstake_mech.set_state(STOW))->withTimeout(1),
+		stow_command()->withTimeout(1),
 		// drive_sys.DriveToPointCmd({72, 120}, vex::directionType::fwd, 1, 0),
 		// drive_sys.DriveForwardCmd(34, vex::reverse, 1, 1),
 		// drive_sys.DriveForwardCmd(15, vex::reverse, 0.3 , 0),
@@ -493,30 +460,6 @@ void skills() {
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
-                if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-                goal_grabber_sol.set(true);
-                }
-
-                if (goal_counter_auto > 0) {
-                    goal_counter_auto--;
-                }
-
-				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-                goal_grabber_sol.set(true);
-                }
-
-                if (goal_counter_auto > 0) {
-                    goal_counter_auto--;
-                }
-
-				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-            goal_grabber_sol.set(true);
-        }
-
-        if (goal_counter_auto > 0) {
-            goal_counter_auto--;
-        }
-
 		if (blue_alliance_auto) {
             if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
                 printf("wrong color detected\n");
@@ -554,22 +497,6 @@ void skills() {
         if (color_sensor_counter_auto > 0) {
             color_sensor_counter_auto--;
             
-        }
-
-		if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-                goal_grabber_sol.set(true);
-                }
-
-                if (goal_counter_auto > 0) {
-                    goal_counter_auto--;
-                }
-
-				if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter_auto == 0) {
-            goal_grabber_sol.set(true);
-        }
-
-        if (goal_counter_auto > 0) {
-            goal_counter_auto--;
         }
 
 		 if (conveyor_started && color_sensor_counter_auto == 0) {

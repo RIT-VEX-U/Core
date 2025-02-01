@@ -92,5 +92,23 @@ extern robot_specs_t robot_cfg;
 extern TankDrive drive_sys;
 
 // ================ UTILS ================
+enum MatchPaths{
+	BLUE_SAFE_AUTO,
+	RED_SAFE_AUTO,
+	BASIC_SKILLS,
+};
 
+bool color_sort_on = false;
+extern MatchPaths matchpath;
+bool conveyor_started;
+int color_sensor_counter = 0;
+
+bool blue_alliance(){
+    switch(matchpath){
+        case BLUE_SAFE_AUTO:
+            return true;
+        default:
+            return false;
+    }
+}
 void robot_init();

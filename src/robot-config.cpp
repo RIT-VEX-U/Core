@@ -120,11 +120,13 @@ robot_specs_t robot_cfg = {
 };
 pose_t skills_start{19.25, 48, 0};
 pose_t test{24, 96, 0};
-pose_t auto_start_red{19.7, 89.25, 180};
-pose_t auto_start_blue{124.3, 89.25, 0};
+pose_t auto_start_red{16.75, 89.25, 180};
+pose_t auto_start_blue{127.25, 89.25, 0};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+
+
+OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
@@ -137,9 +139,24 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
  */
 void robot_init()
 {
+
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
-    vexDelay(50);
+    vexDelay(100);
+    switch(matchpath){
+        case RED_SAFE_AUTO:
+            odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+        case BLUE_SAFE_AUTO:
+            odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
+        case BASIC_SKILLS:
+            odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
+        default:
+            printf("ERROR: NO PATH GIVEN");
+    }
+    odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
     printf("started!\n");
+    printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
+    competition::bStopAllTasksBetweenModes = true;
+    competition::bStopTasksBetweenModes = true;
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
     turn_pid.set_limits(0.5, 1);
@@ -151,7 +168,7 @@ void robot_init()
     while (true) {
         pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
-        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
         // printf("%f\n", color_sensor.hue());
         // wallstake_mech.set_setpoint(from_degrees(0));
