@@ -115,7 +115,6 @@ public:
 };
 
 void auto_red() {
-	blue_alliance_auto = false;
 	mcglight_board.set(true);
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
@@ -127,8 +126,8 @@ void auto_red() {
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
-		if (blue_alliance_auto) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
+		if (blue_alliance()) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -136,11 +135,11 @@ void auto_red() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         } else {
-            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter_auto == 0) {
+            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -150,23 +149,23 @@ void auto_red() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         }
 
-        if (color_sensor_counter_auto == 25) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter == 25) {
+            color_sensor_counter--;
             conveyor.stop();
             // conveyor_intake(12);
         }
 
-        if (color_sensor_counter_auto > 0) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter > 0) {
+            color_sensor_counter--;
             
         }
 
-		 if (conveyor_started && color_sensor_counter_auto == 0) {
+		 if (conveyor_started && color_sensor_counter == 0) {
                       conveyor_intake();
                   }
 			}
@@ -281,7 +280,6 @@ void auto_red() {
 }
 
 void auto_blue() {
-	blue_alliance_auto = true;
 	mcglight_board.set(true);
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
@@ -293,8 +291,8 @@ void auto_blue() {
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
-		if (blue_alliance_auto) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
+		if (blue_alliance()) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -302,11 +300,11 @@ void auto_blue() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         } else {
-            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter_auto == 0) {
+            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -316,23 +314,23 @@ void auto_blue() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         }
 
-        if (color_sensor_counter_auto == 25) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter == 25) {
+            color_sensor_counter--;
             conveyor.stop();
             // conveyor_intake(12);
         }
 
-        if (color_sensor_counter_auto > 0) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter > 0) {
+            color_sensor_counter--;
             
         }
 
-		 if (conveyor_started && color_sensor_counter_auto == 0) {
+		 if (conveyor_started && color_sensor_counter == 0) {
                       conveyor_intake();
                   }
 			}
@@ -448,7 +446,6 @@ void auto_blue() {
 }
 
 void skills() {
-	blue_alliance_auto = false;
 	mcglight_board.set(true);
 	CommandController cc {
 		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
@@ -460,8 +457,8 @@ void skills() {
             	printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 				vexDelay(100);
 
-		if (blue_alliance_auto) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter_auto == 0) {
+		if (blue_alliance) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -469,11 +466,11 @@ void skills() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         } else {
-            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter_auto == 0) {
+            if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
@@ -483,23 +480,23 @@ void skills() {
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
 				printf("wrong color detected\n");
-                color_sensor_counter_auto = 30;
+                color_sensor_counter = 30;
 				conveyor_intake(12);
             }
         }
 
-        if (color_sensor_counter_auto == 25) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter == 25) {
+            color_sensor_counter--;
             conveyor.stop();
             // conveyor_intake(12);
         }
 
-        if (color_sensor_counter_auto > 0) {
-            color_sensor_counter_auto--;
+        if (color_sensor_counter > 0) {
+            color_sensor_counter--;
             
         }
 
-		 if (conveyor_started && color_sensor_counter_auto == 0) {
+		 if (conveyor_started && color_sensor_counter == 0) {
                       conveyor_intake();
                   }
 			}
