@@ -9,6 +9,7 @@ const vex::controller::button &conveyor_button_rev = con.ButtonR1;
 const vex::controller::button &wallstake_handoff = con.ButtonUp;
 const vex::controller::button &wallstake_up = con.ButtonL1;
 const vex::controller::button &wallstake_down = con.ButtonL2;
+const vex::controller::button &toggle_colorsort = con.ButtonLeft;
 
 void testing();
 
@@ -20,6 +21,8 @@ int color_sensor_counter = 0;
 bool conveyor_started = false;
 
 bool blue_alliance = true;
+
+bool color_sort_enabled = true;
 
 AutoCommand *intake_command(double amt = 12.0) {
     return new FunctionCommand([=]() {
@@ -91,21 +94,27 @@ void opcontrol() {
 
     conveyor_button.pressed([]() {
         double volts;
-        if (color_sensor_counter == 0) {
-            volts = 10;
-            conveyor.setBrake(vex::brakeType::coast);
-        } else {
-            volts = 4;
-            conveyor.setBrake(vex::brakeType::brake);
-        }
+        volts = 10;
 
         conveyor.spin(vex::directionType::fwd, volts, vex::volt);
         intake();
-        mcglight_board.set(true);
+        if (color_sort_enabled) {
+          mcglight_board.set(true);
+        } else {
+          mcglight_board.set(false);
+        }
     });
     conveyor_button_rev.pressed([]() {
         conveyor.spin(vex::directionType::rev, 10, vex::volt);
         outtake();
+    });
+
+    toggle_colorsort.pressed([] () {
+      if (color_sort_enabled) {
+        color_sort_enabled = false;
+      } else {
+        color_sort_enabled = true;
+      }
     });
 
     // wallstake_up.pressed([](){
@@ -162,28 +171,31 @@ void opcontrol() {
             goal_counter--;
         }
 
-        if (blue_alliance) {
-            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-                color_sensor_counter = 30;
-            }
-        } else {
-            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-                color_sensor_counter = 30;
-            }
-        }
+        if (color_sort_enabled) {
 
-        if (color_sensor_counter == 25) {
-            color_sensor_counter--;
-            conveyor.stop();
-        }
+          if (blue_alliance) {
+              if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+                  color_sensor_counter = 30;
+              }
+          } else {
+              if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+                  color_sensor_counter = 30;
+              }
+          }
 
-        if (color_sensor_counter > 0) {
-            color_sensor_counter--;
+          if (color_sensor_counter == 25) {
+              color_sensor_counter--;
+              conveyor.stop();
+          }
 
-        }
+          if (color_sensor_counter > 0) {
+              color_sensor_counter--;
 
-        if (color_sensor_counter == 0 && conveyor_button.pressing()) {
-          conveyor_intake();
+          }
+
+          if (color_sensor_counter == 0 && conveyor_button.pressing()) {
+            conveyor_intake();
+          }
         }
 
         vexDelay(20);

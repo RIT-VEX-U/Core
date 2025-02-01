@@ -72,78 +72,95 @@ AutoCommand *goal_grabber_command(bool value) {
     });
 }
 
-/**
- * Approximate game auto path for Junior Jr. (what the new 15 inch robot will
- * likely be called)
- *
- * (Some values will definitely need to be changed, because these values are
- * trying to make the center of the robot move to the center of each point - so
- * it would try to drive to where the goal is instead of next to it)
- *
- * - Start at the point (12, 48) with the back of the robot (the goal grabber)
- *   facing 21.8 degrees south of east
- * - Drive 64.62 inches to the point (72, 24) and pick up the goal there
- * - Turn counterclockwise 21.8 degrees
- * - Drive 48 inches to the point (24, 24) and pick up the two rings of our
- *   color on that path
- * - Turn counterclockwise 45 degrees
- * - Drive 33.94 inches to the point (0, 0) and pick up the two rings in the
- *   corner
- * - Turn 180 degrees (clockwise is probably best so we can continue turning
- *   after more easily) and drop the goal in the positive corner
- * - Turn 153.43 degrees clockwise
- * - Drive 75.9 inches to the point (24, 72) and pick up the goal there
- * - Turn 71.57 degrees clockwise
- * - Drive 12 inches to (12, 72) and pick up the ring there
- * - Turn 158.2 degrees counterclockwise
- * - Drive 64.62 inches to the point (72, 48) to finish auton by touching the
- *   ladder
- */
 void game_auto_red() {
-    // CommandController cc {
-    //     odom.SetPositionCmd({.x = 12, .y = 48, .rot = -21.8}),
+    CommandController cc{
+      new Async(new FunctionCommand([]() {
+        while (true) {
+          OdometryBase *odombase = &odom;
+          pose_t pos = odombase->get_position();
+          // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
+          vexDelay(20);
 
-    //     // NOTE: None of these have timeouts or cancel conditions since I don't
-    //     // know how long each command will take to run, so those should get
-    //     // added (probably during testing/debugging)
+          if (goal_sensor.objectDistance(vex::mm) < 40 && goal_counter == 0) {
+            goal_grabber_sol.set(true);
+          }
 
-    //     // NOTE 2: Most (if not all) of these position values are going to be
-    //     // wrong, but they should get the robot to somewhere near the correct
-    //     // position
+          if (goal_counter > 0) {
+            goal_counter--;
+          }
 
-    //     // Drive to the first goal
-    //     drive_sys.DriveToPointCommand({72, 24}, vex::reverse, .6),
-    //     // Grab the goal
-    //     goal_grabber_command(true),
-    //     // Turn towards the next rings
-    //     drive_sys.TurnDegreesCommand(21.8),
-    //     // Start the intake and conveyor
-    //     conveyor_intake_command(),
-    //     intake_command(),
-    //     // Drive while picking up the rings
-    //     drive_sys.DriveToPointCommand({24, 24}, vex::forward, .6),
-    //     // Turn and drive to the corner
-    //     drive_sys.TurnDegreesCommand(45, .6),
-    //     drive_sys.DriveToPointCommand({0, 0}, vex::forward, .6),
-    //     // Turn and drop the goal in the positive corner
-    //     drive_sys.TurnDegreesCommand(-180, .6),
-    //     goal_grabber_command(false),
-    //     // Turn and drive to the next goal
-    //     drive_sys.TurnDegreesCommand(-153.43, .6),
-    //     drive_sys.DriveToPointCommand({24, 72}, vex::reverse, .6),
-    //     // Grab the goal
-    //     goal_grabber_command(true),
-    //     // Turn and drive to the next ring
-    //     drive_sys.TurnDegreesCommand(-71.57),
-    //     drive_sys.DriveToPointCommand({12, 72}, vex::forward, .6),
-    //     // Turn and drive to the ladder
-    //     drive_sys.TurnDegreesCommand(158.2, .6),
-    //     drive_sys.DriveToPointCommand({72, 48}, vex::forward, .6),
-    //     // Stop the intake and conveyor
-    //     stop_conveyor_command(),
-    //     stop_intake_command(),
-    // };
-    // cc.run();
+          if (blue_alliance) {
+            if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
+              color_sensor_counter = 30;
+            }
+          } else {
+            if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
+              color_sensor_counter = 30;
+            }
+          }
+
+          if (color_sensor_counter == 25) {
+            color_sensor_counter--;
+            conveyor.stop();
+          }
+
+          if (color_sensor_counter > 0) {
+            color_sensor_counter--;
+          }
+
+          if (conveyor_started && color_sensor_counter == 0) {
+            conveyor_intake();
+          }
+        }
+        return true;
+      })),
+
+      // Goal Rush
+      new Parallel{
+        drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
+        new Async{new InOrder{new DelayCommand(970), goal_grabber_command(true)}}
+      },
+
+      // Reverse a bit with the goal
+      drive_sys.DriveForwardCmd(22, vex::forward, 1, 0)->withTimeout(2),
+
+      // First set of rings
+      drive_sys.TurnToPointCmd(48, 24, vex::forward, 0.8, 0)->withTimeout(0.5), 
+      conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({48, 24}, vex::forward, 1, 0)->withTimeout(2),
+      drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
+      drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
+
+      // Second set of rings
+      drive_sys.TurnToHeadingCmd(180, 0.8, 0)->withTimeout(1),
+      drive_sys.DriveToPointCmd({24, 24}, vex::fwd, 1, 0)->withTimeout(2),
+      drive_sys.DriveForwardCmd(10, vex::forward, 0.8, 0)->withTimeout(2),
+      drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
+
+      // Corner shit
+      drive_sys.TurnToHeadingCmd(-208, 0.8, 0)->withTimeout(1),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+
+      // Drop goal in corner
+      drive_sys.TurnToHeadingCmd(45, 0.8, 0)->withTimeout(0.5),
+      goal_grabber_command(false),
+      drive_sys.DriveTankCmd(-0.3, -0.3)->withTimeout(0.5),
+
+      // Align for goal handoff
+      drive_sys.DriveForwardCmd(8, vex::forward, 0.5, 0)->withTimeout(1),
+      drive_sys.TurnToHeadingCmd(-45, 0.8, 0)->withTimeout(0.5),
+      drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
+
+      // new DebugCommand(),
+    };
+    cc.run();
 }
 
 void game_auto_blue() {

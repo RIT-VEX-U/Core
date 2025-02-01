@@ -121,10 +121,11 @@ robot_specs_t robot_cfg = {
     .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{122.37, 56.54, 30.3};
+pose_t blue_auto_start{122.37, 56.54, 30.3};
+pose_t red_auto_start{21.63, 56.54, 149.7};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
+OdometrySerial odom(true, true, blue_auto_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
