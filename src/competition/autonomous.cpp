@@ -1,7 +1,8 @@
 #include "competition/autonomous.h"
 #include "robot-config.h"
 
-void game_auto();
+void game_auto_blue();
+void game_auto_red();
 void skills();
 
 int goal_counter = 0;
@@ -11,11 +12,13 @@ bool conveyor_started = false;
 
 bool blue_alliance = true;
 
+bool color_sensor_enabled = true;
+
 void autonomous()
 {
-	vexDelay(700);
+	// vexDelay(700);
 
-	game_auto();
+	game_auto_blue();
 }
 
 

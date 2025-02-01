@@ -15,66 +15,66 @@ void testing();
 
 void auto__();
 
-int goal_counter = 0;
-int color_sensor_counter = 0;
+int goal_counterd = 0;
+int color_sensor_counterd = 0;
 
-bool conveyor_started = false;
+bool conveyor_startedd = false;
 
-bool blue_alliance = true;
+bool blue_allianced = true;
 
-bool color_sort_enabled = true;
+bool color_sort_enabledd = true;
 
-AutoCommand *intake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        intake(amt);
-        return true;
-    });
-}
+// AutoCommand *intake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         intake(amt);
+//         return true;
+//     });
+// }
 
-AutoCommand *outtake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        intake(-amt);
-        return true;
-    });
-}
+// AutoCommand *outtake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         intake(-amt);
+//         return true;
+//     });
+// }
 
-AutoCommand *stop_intake_command() {
-    return new FunctionCommand([=]() {
-        intake_motor.stop();
-        return true;
-    });
-}
+// AutoCommand *stop_intake_command() {
+//     return new FunctionCommand([=]() {
+//         intake_motor.stop();
+//         return true;
+//     });
+// }
 
-AutoCommand *conveyor_intake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        conveyor_intake(amt);
-        conveyor_started = true;
-        return true;
-    });
-}
+// AutoCommand *conveyor_intake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         conveyor_intake(amt);
+//         conveyor_started = true;
+//         return true;
+//     });
+// }
 
-AutoCommand *conveyor_outtake_command(double amt = 12.0) {
-    return new FunctionCommand([=]() {
-        conveyor_intake(-amt);
-        return true;
-    });
-}
+// AutoCommand *conveyor_outtake_command(double amt = 12.0) {
+//     return new FunctionCommand([=]() {
+//         conveyor_intake(-amt);
+//         return true;
+//     });
+// }
 
-AutoCommand *stop_conveyor_command() {
-    return new FunctionCommand([=]() {
-        conveyor.stop();
-        conveyor_started = false;
-        return true;
-    });
-}
+// AutoCommand *stop_conveyor_command() {
+//     return new FunctionCommand([=]() {
+//         conveyor.stop();
+//         conveyor_started = false;
+//         return true;
+//     });
+// }
 
-AutoCommand *goal_grabber_command(bool value) {
-    return new FunctionCommand([=]() {
-        goal_grabber_sol.set(value);
-        goal_counter = 50;
-        return true;
-    });
-}
+// AutoCommand *goal_grabber_command(bool value) {
+//     return new FunctionCommand([=]() {
+//         goal_grabber_sol.set(value);
+//         goal_counter = 50;
+//         return true;
+//     });
+// }
 
 /**
  * Main entrypoint for the driver control period
@@ -89,7 +89,7 @@ void opcontrol() {
 
     goal_grabber.pressed([]() {
         goal_grabber_sol.set(!goal_grabber_sol);
-        goal_counter = 50;
+        goal_counterd = 50;
     });
 
     conveyor_button.pressed([]() {
@@ -98,7 +98,7 @@ void opcontrol() {
 
         conveyor.spin(vex::directionType::fwd, volts, vex::volt);
         intake();
-        if (color_sort_enabled) {
+        if (color_sort_enabledd) {
           mcglight_board.set(true);
         } else {
           mcglight_board.set(false);
@@ -110,10 +110,10 @@ void opcontrol() {
     });
 
     toggle_colorsort.pressed([] () {
-      if (color_sort_enabled) {
-        color_sort_enabled = false;
+      if (color_sort_enabledd) {
+        color_sort_enabledd = false;
       } else {
-        color_sort_enabled = true;
+        color_sort_enabledd = true;
       }
     });
 
@@ -163,37 +163,37 @@ void opcontrol() {
         // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
         printf("%f\n", color_sensor.hue());
 
-        if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
+        if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counterd == 0) {
             goal_grabber_sol.set(true);
         }
 
-        if (goal_counter > 0) {
-            goal_counter--;
+        if (goal_counterd > 0) {
+            goal_counterd--;
         }
 
-        if (color_sort_enabled) {
+        if (color_sort_enabledd) {
 
-          if (blue_alliance) {
-              if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-                  color_sensor_counter = 30;
+          if (blue_allianced) {
+              if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counterd == 0) {
+                  color_sensor_counterd = 30;
               }
           } else {
-              if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0) {
-                  color_sensor_counter = 30;
+              if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counterd == 0) {
+                  color_sensor_counterd = 30;
               }
           }
 
-          if (color_sensor_counter == 25) {
-              color_sensor_counter--;
+          if (color_sensor_counterd == 25) {
+              color_sensor_counterd--;
               conveyor.stop();
           }
 
-          if (color_sensor_counter > 0) {
-              color_sensor_counter--;
+          if (color_sensor_counterd > 0) {
+              color_sensor_counterd--;
 
           }
 
-          if (color_sensor_counter == 0 && conveyor_button.pressing()) {
+          if (color_sensor_counterd == 0 && conveyor_button.pressing()) {
             conveyor_intake();
           }
         }
