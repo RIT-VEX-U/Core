@@ -69,6 +69,7 @@ PID::pid_config_t turn_pid_cfg{
   .d = 0.003,
   .deadband = 2,
   .on_target_time = 0.1,
+  .error_method = PID::ANGULAR
 
   
 };
@@ -131,6 +132,7 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 vex::inertial imu(vex::PORT18);
 
 vex::digital_out mcglight_board(Brain.ThreeWirePort.B);
+// vex::pwm_out mcglight_board(Brain.ThreeWirePort.B);
 
 
 // ================ UTILS ================
@@ -148,6 +150,7 @@ void robot_init()
     turn_pid.set_limits(0.5, 1);
     // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 1, 1);
     // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
+    // mcglight_board.state(-100, vex::percent);
     mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     bool lighton = false;
@@ -164,17 +167,11 @@ void robot_init()
         // wallstake_mech.set_setpoint(from_degrees(180));
         
         // if (pose.rot > 270 || pose.rot < 90) {
-        //     if (!lighton) {
-        //         mcglight_board.set(true);
-        //         lighton = true;
 
-        //     } else {
-        //         mcglight_board.set(false);
-        //         lighton = false;
-        //     }
         // } else {
         //     mcglight_board.set(false);
         // }
+
 
         vexDelay(100);
     }

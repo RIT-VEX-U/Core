@@ -81,6 +81,7 @@ extern AsymmetricMotionController::a_m_profile_cfg_t drive_motioncontroller_slow
 extern AsymmetricMotionController drive_motioncontroller_slow_decel;
 
 extern vex::digital_out mcglight_board;
+// extern vex::pwm_out mcglight_board;
 
 extern vex::optical color_sensor;
 
