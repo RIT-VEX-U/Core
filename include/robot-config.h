@@ -3,6 +3,7 @@
 #include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
 #include "wallstake_mech.h"
+#include "auto-red-safe.cpp"
 
 #define WALLSTAKE_POT_OFFSET 
 
@@ -98,17 +99,86 @@ enum MatchPaths{
 	BASIC_SKILLS,
 };
 
-bool color_sort_on = false;
+extern bool color_sort_on;
+extern bool conveyor_started;
+extern int color_sensor_counter;
 extern MatchPaths matchpath;
-bool conveyor_started;
-int color_sensor_counter = 0;
-
-bool blue_alliance(){
-    switch(matchpath){
-        case BLUE_SAFE_AUTO:
-            return true;
-        default:
-            return false;
-    }
-}
+extern bool blue_alliance();
 void robot_init();
+
+AutoCommand *intake_command(double amt = 10.0) {
+	return new FunctionCommand([=]() {
+		intake(amt);
+		return true;
+	});
+}
+
+AutoCommand *outtake_command(double amt = 10.0) {
+	return new FunctionCommand([=]() {
+		intake(-amt);
+		return true;
+	});
+}
+
+
+AutoCommand *stop_intake() {
+	return new FunctionCommand([=]() {
+		intake(0);
+		return true;
+	});
+}
+
+AutoCommand *conveyor_intake_command(double amt = 10.0) {
+	return new FunctionCommand([=]() {
+		conveyor_intake(amt);
+		conveyor_started = true;
+		return true;
+	});
+}
+
+AutoCommand *conveyor_stop_command() {
+	return new FunctionCommand([=]() {
+		conveyor_intake(0);
+		conveyor_started = false;
+		return true;
+	});
+}
+
+AutoCommand *goal_grabber_command(bool value) {
+	return new FunctionCommand([=]() {
+		goal_grabber_sol.set(value);
+		return true;
+	});
+}
+
+AutoCommand *alliance_score_command(bool hold = true) {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = hold;
+        wallstake_mech.set_setpoint(from_degrees(0));
+		return true;
+	});
+}
+
+AutoCommand *stow_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(198.5));
+		return true;
+	});
+}
+
+AutoCommand *handoff_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_state(HANDOFF);
+		return true;
+	});
+}
+
+AutoCommand *wallstake_command() {
+	return new FunctionCommand([=]() {
+		wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(80));
+		return true;
+	});
+}

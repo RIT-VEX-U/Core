@@ -118,6 +118,21 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
+
+bool conveyor_started;
+int color_sensor_counter = 0;
+bool color_sort_on = false;
+
+MatchPaths matchpath = BLUE_SAFE_AUTO;
+bool blue_alliance(){
+    switch(matchpath){
+        case BLUE_SAFE_AUTO:
+            return true;
+        default:
+            return false;
+    }
+}
+
 pose_t skills_start{19.25, 48, 0};
 pose_t test{24, 96, 0};
 pose_t auto_start_red{16.75, 89.25, 180};

@@ -5,6 +5,8 @@
 */
 void autonomous();
 
-void auto_red();
+void colorSort();
 
-void auto_blue();
+void auto_blue_safe();
+
+void skills_basic();

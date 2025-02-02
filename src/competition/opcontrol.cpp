@@ -204,7 +204,7 @@ void testing() {
         //     goal_counter--;
         // }
 
-		if (blue_alliance) {
+		if (blue_alliance()) {
             if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
                 printf("wrong color detected\n");
 				printf("wrong color detected\n");
