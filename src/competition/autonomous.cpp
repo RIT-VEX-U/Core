@@ -18,7 +18,7 @@ void autonomous()
 {
 	// vexDelay(700);
 
-	game_auto_blue();
+	skills();
 }
 
 
@@ -121,9 +121,9 @@ void game_auto_red() {
 
       // Goal Rush
       new Parallel{
-        drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
-        new Async{new InOrder{new DelayCommand(955), goal_grabber_command(true)}}
-      },
+			new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
+			new InOrder{new DelayCommand(1380), goal_grabber_command(true)}
+		},
 
       // Reverse a bit with the goal
       drive_sys.DriveForwardCmd(22, vex::forward, 1, 0)->withTimeout(2),
@@ -212,17 +212,17 @@ void game_auto_blue() {
       }))->withTimeout(30)))->withTimeout(30),
 
       // Goal Rush
-      new Parallel{
-        drive_sys.DriveForwardCmd(49, vex::reverse, 1, 0),
-        new Async{new InOrder{new DelayCommand(955), goal_grabber_command(true)}}
-      },
+      // Goal Rush
+		new Parallel{
+			new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
+			new InOrder{new DelayCommand(1380), goal_grabber_command(true)}
+		},
 
       // Reverse a bit with the goal
       drive_sys.DriveForwardCmd(22, vex::forward, 1, 0)->withTimeout(2),
 
       // First set of rings
       drive_sys.TurnToPointCmd(96, 24, vex::fwd, 0.6, 0)->withTimeout(1), 
-	//   drive_sys.TurnDegreesCmd(180, 0.8, 0)->withTimeout(1),
       conveyor_intake_command(),
       drive_sys.DriveToPointCmd({96, 24}, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),

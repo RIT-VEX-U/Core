@@ -20,7 +20,7 @@ int color_sensor_counterd = 0;
 
 bool conveyor_startedd = false;
 
-bool blue_allianced = false;
+bool blue_allianced = true;
 
 bool color_sort_enabledd = true;
 
