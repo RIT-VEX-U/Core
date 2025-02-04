@@ -65,10 +65,11 @@ PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
   .p = 0.03,
-  .i = 0.01,
+  .i = 0.001,
   .d = 0.003,
   .deadband = 2,
   .on_target_time = 0.1,
+//   .error_method = PID::ANGULAR
 
   
 };
@@ -120,7 +121,8 @@ robot_specs_t robot_cfg = {
     .correction_pid = correction_pid_cfg,
 };
 pose_t skills_start{19.25, 96, 0};
-pose_t auto_start{122.37, 56.54, 30.3};
+pose_t blue_auto_start{122.37, 56.54, 30.3};
+pose_t red_auto_start{21.63, 56.54, 149.7};
 pose_t zero{0, 0, 0};
 
 OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
@@ -131,6 +133,7 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 vex::inertial imu(vex::PORT18);
 
 vex::digital_out mcglight_board(Brain.ThreeWirePort.B);
+// vex::pwm_out mcglight_board(Brain.ThreeWirePort.B);
 
 
 // ================ UTILS ================
@@ -141,16 +144,18 @@ vex::digital_out mcglight_board(Brain.ThreeWirePort.B);
 void robot_init()
 {
     screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid")});
-    vexDelay(50);
+    vexDelay(100);
+    odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, true);
     printf("started!\n");
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
     turn_pid.set_limits(0.5, 1);
     // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 1, 1);
     // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
+    // mcglight_board.state(-100, vex::percent);
     mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
-    
+    bool lighton = false;
     
 
     while (true) {
@@ -162,6 +167,14 @@ void robot_init()
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));
+        
+        // if (pose.rot > 270 || pose.rot < 90) {
+
+        // } else {
+        //     mcglight_board.set(false);
+        // }
+
+
         vexDelay(100);
     }
 }
@@ -185,7 +198,7 @@ void outtake() {
 }
 
 void conveyor_intake() {
-    conveyor.spin(vex::directionType::fwd, 10, vex::volt);
+    conveyor.spin(vex::directionType::fwd, 12, vex::volt);
     intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
 }
 
