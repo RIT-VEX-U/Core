@@ -2,7 +2,7 @@
 #include "inttypes.h"
 #include "wallstake_mech.h"
 #include "core.h"
-
+// #include "autopathing/auto-red-safe.cpp"
 
 
 vex::brain Brain;
@@ -123,7 +123,7 @@ bool conveyor_started;
 int color_sensor_counter = 0;
 bool color_sort_on = false;
 
-MatchPaths matchpath = BLUE_SAFE_AUTO;
+MatchPaths matchpath = RED_SAFE_AUTO;
 bool blue_alliance(){
     switch(matchpath){
         case BLUE_SAFE_AUTO:
