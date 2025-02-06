@@ -3,9 +3,6 @@
 #include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
 #include "wallstake_mech.h"
-#include "autopathing/auto-red-safe.h"
-#include "autopathing/auto-blue-safe.h"
-#include "autopathing/basic-skills.h"
 
 
 #define WALLSTAKE_POT_OFFSET 
