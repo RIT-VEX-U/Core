@@ -5,14 +5,15 @@
 #include "wallstake_mech.h"
 
 WallStakeMech::WallStakeMech(
-  const vex::motor_group &motors, const vex::pot &pot, const Rotation2d &tolerance, const Rotation2d &setpoint,
+  const vex::motor_group &motors, const vex::rotation &rotation, const Rotation2d &tolerance, const Rotation2d &setpoint,
   const double &pot_offset, PID pid
 )
-    : motors(motors), pot(pot), tolerance(tolerance), setpoint(setpoint), pot_offset(pot_offset), wallstake_pid(pid) {
+    : motors(motors), rotation(rotation), tolerance(tolerance), setpoint(setpoint), pot_offset(pot_offset), wallstake_pid(pid) {
     handle = new vex::task(background_task, (void *)this);
+    hold = true;
 }
 
-Rotation2d WallStakeMech::get_angle() { return (from_degrees(1.1 * pot.angle(vex::deg) - pot_offset)); }
+Rotation2d WallStakeMech::get_angle() { return (from_degrees(wrap_degrees_360(rotation.angle(vex::deg) - pot_offset))); }
 
 void WallStakeMech::set_setpoint(const Rotation2d &new_setpoint) { setpoint = new_setpoint; }
 
@@ -57,9 +58,11 @@ void WallStakeMech::update() {
         // double pout = kp * (setpoint.degrees() - get_angle().degrees());
         wallstake_pid.set_target(get_setpoint().degrees());
         double pidout = wallstake_pid.update(get_angle().degrees());
-        set_voltage(ffout + pidout);
-        
+        set_voltage(ffout + (-pidout));
+
+        printf("%f\n", (get_angle().degrees()));
     }
+    // printf("%f\n", (get_angle().degrees()));
 }
 
 void WallStakeMech::set_voltage(const double &voltage) {

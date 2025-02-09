@@ -42,7 +42,7 @@ void opcontrol() {
     wallstake_toggler.pressed([]() {
         wallstake_mech.hold = true;
         if (wallstake_mech.get_angle().degrees() > 180) {
-            wallstake_mech.set_setpoint(from_degrees(173));
+            wallstake_mech.set_setpoint(from_degrees(170));
         } else if (wallstake_mech.get_angle().degrees() < 180) {
             wallstake_mech.set_setpoint(from_degrees(50));
         }
@@ -50,12 +50,7 @@ void opcontrol() {
 
     wallstake_stow.pressed([]() {
         wallstake_mech.hold = true;
-        wallstake_mech.set_setpoint(from_degrees(198.5));
-    });
-
-    wallstake_alliancestake.pressed([]() {
-        wallstake_mech.hold = true;
-        wallstake_mech.set_setpoint(from_degrees(0));
+        wallstake_mech.set_setpoint(from_degrees(200));
     });
 
     // ================ INIT ================
@@ -73,7 +68,7 @@ void opcontrol() {
         drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         pose_t pos = odom.get_position();
-        printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+        // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
 
         if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counter == 0) {
             goal_grabber_sol.set(true);
@@ -100,7 +95,7 @@ void testing() {
         bool run() override {
             drive_sys.stop();
             pose_t pos = odom.get_position();
-            printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+            // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
             while (true) {
                 double left = (double)con.Axis3.position() / 100;
                 double right = (double)con.Axis2.position() / 100;

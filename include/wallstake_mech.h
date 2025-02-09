@@ -4,18 +4,16 @@
 #include "vex.h"
 
 enum WallStakeState {
-    STOW = 199,
-    HANDOFF = 170,
-    ABOVE_ALLIANCE = 80,
-    ON_ALLIANCE = 10
+    STOW = 210,
+    HANDOFF = 180
 };
 
 class WallStakeMech {
     public:
 
-    bool hold = false;
+    bool hold;
 
-    WallStakeMech(const vex::motor_group &motors, const vex::pot &pot, const Rotation2d &tolerance, const Rotation2d &setpoint, const double &pot_offset, PID pid);
+    WallStakeMech(const vex::motor_group &motors, const vex::rotation &rotation, const Rotation2d &tolerance, const Rotation2d &setpoint, const double &pot_offset, PID pid);
 
     Rotation2d get_angle();
     
@@ -57,7 +55,7 @@ class WallStakeMech {
     private:
     
     vex::motor_group motors;
-    vex::pot pot;
+    vex::rotation rotation;
 
     Rotation2d tolerance;
     Rotation2d setpoint;
@@ -70,3 +68,4 @@ class WallStakeMech {
     PID wallstake_pid;
 
 };
+
