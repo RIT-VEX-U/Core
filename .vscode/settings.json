@@ -4,6 +4,7 @@
 	],
 	"cmake.sourceDirectory": "C:/Users/jack/Documents/vscode/Grazerer/vendor/eigen/bench/btl",
 	"files.associations": {
-		"new": "cpp"
+		"new": "cpp",
+		"system_error": "cpp"
 	}
 }

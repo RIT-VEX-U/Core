@@ -2,7 +2,7 @@
 #include "vex.h"
 
 #include "../core/include/utils/controls/pid.h"
-#include "wallstake_mech.h"
+#include "TempSubSystems/wallstake_mech.h"
 
 WallStakeMech::WallStakeMech(
   const vex::motor_group &motors, const vex::pot &pot, const Rotation2d &tolerance, const Rotation2d &setpoint,
@@ -37,6 +37,7 @@ bool WallStakeMech::is_at_state(const WallStakeState &state) { return is_at_angl
 AutoCommand *WallStakeMech::set_setpoint_command(const Rotation2d &new_setpoint) {
     return new FunctionCommand([&]() {
         set_setpoint(new_setpoint);
+        hold = true;
         return true;
     });
 }
@@ -44,9 +45,12 @@ AutoCommand *WallStakeMech::set_setpoint_command(const Rotation2d &new_setpoint)
 AutoCommand *WallStakeMech::set_state_command(const WallStakeState &new_state) {
     return new FunctionCommand([&]() {
         set_state(new_state);
+        hold = true;
         return true;
     });
 }
+
+
 
 void WallStakeMech::update() {
     if (hold) {

@@ -1,6 +1,5 @@
 #include "robot-config.h"
 #include "inttypes.h"
-#include "wallstake_mech.h"
 #include "core.h"
 // #include "autopathing/auto-red-safe.cpp"
 
@@ -119,9 +118,6 @@ robot_specs_t robot_cfg = {
     // .correction_pid = correction_pid_cfg,
 };
 
-bool conveyor_started;
-int color_sensor_counter = 0;
-bool color_sort_on = false;
 
 MatchPaths matchpath = RED_SAFE_AUTO;
 bool blue_alliance(){
@@ -132,6 +128,8 @@ bool blue_alliance(){
             return false;
     }
 }
+ClamperSys clamper_sys{};
+IntakeSys intake_sys{};
 
 pose_t skills_start{19.25, 48, 0};
 pose_t test{24, 96, 0};
@@ -191,44 +189,4 @@ void robot_init()
         // wallstake_mech.set_setpoint(from_degrees(180));
         vexDelay(100);
     }
-}
-
-const double intake_volts = 10.0;
-
-void intake(double volts) {
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-}
-
-void intake() {
-    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
-}
-
-void outtake(double volts) {
-    intake_motor.spin(vex::directionType::rev, volts, vex::volt);
-}
-
-void outtake() {
-    intake_motor.spin(vex::directionType::rev, intake_volts, vex::volt);
-}
-
-void conveyor_intake() {
-    conveyor.spin(vex::directionType::fwd, intake_volts, vex::volt);
-}
-
-void conveyor_outtake() {
-    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
-}
-void conveyor_outtake(double volts) {
-    conveyor.spin(vex::directionType::rev, intake_volts, vex::volt);
-}
-
-void conveyor_intake(double volts) {
-    conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-
-}
-
-void intake_spin(double volts) {
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-    vex::this_thread::yield();
-
 }

@@ -2,7 +2,7 @@
 #include "vex.h"
 #include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
-#include "wallstake_mech.h"
+#include "TempSubSystems/TempSubSystems.h"
 
 
 #define WALLSTAKE_POT_OFFSET 
@@ -46,25 +46,6 @@ extern WallStakeMech wallstake_mech;
 extern vex::optical color_sensor;
 extern vex::digital_out mcglight_board;
 
-void intake(double volts);
-
-void intake();
-
-void outtake(double volts);
-
-void outtake();
-
-void conveyor_intake(double volts);
-
-void conveyor_intake();
-
-void conveyor_outtake(double volts);
-
-void conveyor_outtake();
-
-
-void intake_spin(double volts);
-
 extern vex::motor_group left_drive_motors;
 extern vex::motor_group right_drive_motors;
 
@@ -79,6 +60,8 @@ extern vex::pot wall_pot;
 
 
 // ================ SUBSYSTEMS ================
+extern ClamperSys clamper_sys;
+extern IntakeSys intake_sys;
 extern PID drive_pid;
 extern PID turn_pid;
 extern PID turn_pidBigI;
@@ -98,10 +81,6 @@ enum MatchPaths{
 	RED_SAFE_AUTO,
 	BASIC_SKILLS,
 };
-
-extern bool color_sort_on;
-extern bool conveyor_started;
-extern int color_sensor_counter;
 extern MatchPaths matchpath;
 extern bool blue_alliance();
 void robot_init();
