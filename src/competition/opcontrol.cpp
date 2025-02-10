@@ -17,9 +17,6 @@ void testing();
 
 void auto__();
 
-// int goal_counter = 0;
-
-
 /**
  * Main entrypoint for the driver control period
  */
@@ -27,8 +24,8 @@ void opcontrol() {
     // testing();
     conveyor.stop();
 
-    wallstake_mech.set_state(STOW);
-    wallstake_mech.hold = true;
+    wallstakemech_sys.set_state(WallStakeMech::STOW);
+    wallstakemech_sys.hold = true;
 
     ColorSortToggle.pressed([]() {
         intake_sys.setColorSortOn(!intake_sys.getColorSortOn());
@@ -48,22 +45,22 @@ void opcontrol() {
     });
 
     wallstake_toggler.pressed([]() {
-        wallstake_mech.hold = true;
-        if (wallstake_mech.get_angle().degrees() > 180) {
-            wallstake_mech.set_setpoint(from_degrees(173));
-        } else if (wallstake_mech.get_angle().degrees() < 180) {
-            wallstake_mech.set_setpoint(from_degrees(50));
+        wallstakemech_sys.hold = true;
+        if (wallstakemech_sys.get_angle().degrees() > 180) {
+            wallstakemech_sys.set_setpoint(from_degrees(170));
+        } else if (wallstakemech_sys.get_angle().degrees() < 180) {
+            wallstakemech_sys.set_setpoint(from_degrees(50));
         }
     });
 
     wallstake_stow.pressed([]() {
-        wallstake_mech.hold = true;
-        wallstake_mech.set_setpoint(from_degrees(198.5));
+        wallstakemech_sys.hold = true;
+        wallstakemech_sys.set_setpoint(from_degrees(200));
     });
 
     wallstake_alliancestake.pressed([]() {
-        wallstake_mech.hold = true;
-        wallstake_mech.set_setpoint(from_degrees(0));
+        wallstakemech_sys.hold = true;
+        wallstakemech_sys.set_setpoint(from_degrees(0));
     });
 
     // ================ INIT ================

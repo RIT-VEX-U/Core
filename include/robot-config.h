@@ -42,7 +42,7 @@ extern Rotation2d initial;
 extern Rotation2d tolerance;
 extern double pot_offset;
 extern vex::pot wall_pot;
-extern WallStakeMech wallstake_mech;
+extern WallStakeMech wallstakemech_sys;
 extern vex::optical color_sensor;
 extern vex::digital_out mcglight_board;
 

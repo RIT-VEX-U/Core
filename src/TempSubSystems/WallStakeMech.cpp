@@ -2,17 +2,18 @@
 #include "vex.h"
 
 #include "../core/include/utils/controls/pid.h"
-#include "TempSubSystems/wallstake_mech.h"
+#include "TempSubSystems/WallStakeMech.h"
 
 WallStakeMech::WallStakeMech(
-  const vex::motor_group &motors, const vex::pot &pot, const Rotation2d &tolerance, const Rotation2d &setpoint,
+  const vex::motor_group &motors, const vex::rotation &rotation, const Rotation2d &tolerance, const Rotation2d &setpoint,
   const double &pot_offset, PID pid
 )
-    : motors(motors), pot(pot), tolerance(tolerance), setpoint(setpoint), pot_offset(pot_offset), wallstake_pid(pid) {
+    : motors(motors), rotation(rotation), tolerance(tolerance), setpoint(setpoint), pot_offset(pot_offset), wallstake_pid(pid) {
     handle = new vex::task(background_task, (void *)this);
+    hold = true;
 }
 
-Rotation2d WallStakeMech::get_angle() { return (from_degrees(1.1 * pot.angle(vex::deg) - pot_offset)); }
+Rotation2d WallStakeMech::get_angle() { return (from_degrees(wrap_degrees_360(rotation.angle(vex::deg) - pot_offset))); }
 
 void WallStakeMech::set_setpoint(const Rotation2d &new_setpoint) { setpoint = new_setpoint; }
 
@@ -37,7 +38,6 @@ bool WallStakeMech::is_at_state(const WallStakeState &state) { return is_at_angl
 AutoCommand *WallStakeMech::set_setpoint_command(const Rotation2d &new_setpoint) {
     return new FunctionCommand([&]() {
         set_setpoint(new_setpoint);
-        hold = true;
         return true;
     });
 }
@@ -45,12 +45,9 @@ AutoCommand *WallStakeMech::set_setpoint_command(const Rotation2d &new_setpoint)
 AutoCommand *WallStakeMech::set_state_command(const WallStakeState &new_state) {
     return new FunctionCommand([&]() {
         set_state(new_state);
-        hold = true;
         return true;
     });
 }
-
-
 
 void WallStakeMech::update() {
     if (hold) {
@@ -61,9 +58,11 @@ void WallStakeMech::update() {
         // double pout = kp * (setpoint.degrees() - get_angle().degrees());
         wallstake_pid.set_target(get_setpoint().degrees());
         double pidout = wallstake_pid.update(get_angle().degrees());
-        set_voltage(ffout + pidout);
-        
+        set_voltage(ffout + (-pidout));
+
+        printf("%f\n", (get_angle().degrees()));
     }
+    // printf("%f\n", (get_angle().degrees()));
 }
 
 void WallStakeMech::set_voltage(const double &voltage) {

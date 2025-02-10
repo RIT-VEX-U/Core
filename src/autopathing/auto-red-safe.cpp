@@ -17,7 +17,7 @@ void auto_red_safe() {
 			return true;
 		})))),
 		//set up alliance stake
-		wallstake_mech.set_state_command(HANDOFF),
+		wallstakemech_sys.set_state_command(WallStakeMech::HANDOFF),
 		drive_sys.DriveToPointCmd({24, 89.25}, vex::reverse, 1),
 		drive_sys.TurnToPointCmd(24, 72, vex::reverse, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({24, 72}, vex::reverse, 0.5),
@@ -26,12 +26,12 @@ void auto_red_safe() {
 		// new TurnToHeadingCommand(drive_sys, turn_pidBigI, 180, 1),
 		drive_sys.TurnToHeadingCmd(180, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({19.5, 72}, vex::reverse, 1)->withTimeout(1),
-		wallstake_mech.set_state_command(ON_ALLIANCE),
+		// wallstakemech_sys.set_state_command(WallStakeMech::),
 		new DelayCommand(1000),
 		intake_sys.IntakeCmd(),
 		intake_sys.ConveyorInCmd(),
 		drive_sys.DriveForwardCmd(6, vex::reverse, 1)->withTimeout(0.3),
-		wallstake_mech.set_state_command(STOW),
+		wallstakemech_sys.set_state_command(WallStakeMech::STOW),
 		new DelayCommand(1000),
 		drive_sys.DriveForwardCmd(16, vex::forward, 0.5)->withTimeout(1),
 		drive_sys.DriveForwardCmd(16, vex::reverse, 0.5)->withTimeout(1),
@@ -86,13 +86,9 @@ void auto_red_safe() {
 		drive_sys.TurnToPointCmd(52, 96, vex::forward, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({52, 96}, vex::forward, 1)->withTimeout(1),
 		drive_sys.TurnToHeadingCmd(280, 1)->withTimeout(1),
-		wallstake_mech.set_state_command(ON_ALLIANCE),
+		// wallstakemech_sys.set_state_command(ON_ALLIANCE),
 		// new DelayCommand(100),
 		// alliance_score_command(false),
-
-
-
-
 		
         };
 	cc.run();

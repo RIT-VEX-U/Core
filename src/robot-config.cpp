@@ -33,16 +33,16 @@ vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
 vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
 vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
-Rotation2d initial(from_degrees(1));
+Rotation2d initial(from_degrees(43));
 Rotation2d tolerance(from_degrees(1));
-double offset(40);
-vex::pot wall_pot(Brain.ThreeWirePort.B);
+double offset(166);
 
-PID::pid_config_t wallstake_pid_config {.p = 0.2, .d = 0.01};
+vex::rotation wall_rot(vex::PORT11);
+PID::pid_config_t wallstake_pid_config {.p = 0.3, .d = 0.005, .error_method = PID::ANGULAR};
 PID wallstake_pid(wallstake_pid_config);
 
 vex::distance goal_sensor(vex::PORT6);
-WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
+WallStakeMech wallstakemech_sys(wallstake_motors, wall_rot, tolerance, initial, offset, wallstake_pid);
 
 //pnematices
 vex::digital_out mcglight_board(Brain.ThreeWirePort.C);
