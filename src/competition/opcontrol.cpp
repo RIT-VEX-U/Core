@@ -49,18 +49,9 @@ void opcontrol() {
         wallstakemech_sys.set_setpoint(from_degrees(200));
     });
 
-    wallstake_alliancestake.pressed([]() {
-        wallstakemech_sys.hold = true;
-        wallstakemech_sys.set_setpoint(from_degrees(0));
-    });
-
     // ================ INIT ================
 
     while (true) {
-        if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
-            intake_sys.conveyor_stop();
-            intake_sys.intake_stop();
-        }
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
 

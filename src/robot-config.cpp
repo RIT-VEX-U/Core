@@ -34,7 +34,6 @@ vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
 vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
 Rotation2d initial(from_degrees(43));
-Rotation2d initial(from_degrees(43));
 Rotation2d tolerance(from_degrees(1));
 double offset(166);
 
@@ -196,7 +195,7 @@ void robot_init()
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
         // printf("%f\n", color_sensor.hue());
-        printf("%f\n", wallstake_mech.get_angle().degrees());
+        printf("%f\n", wallstakemech_sys.get_angle().degrees());
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));
