@@ -3,16 +3,6 @@
 #include "robot-config.h"
 #include "vex.h"
 
-const vex::controller::button &goal_grabber = con.ButtonB;
-const vex::controller::button &conveyor_button = con.ButtonR1;
-const vex::controller::button &conveyor_button_rev = con.ButtonR2;
-
-const vex::controller::button &wallstake_toggler = con.ButtonL1;
-const vex::controller::button &wallstake_stow = con.ButtonL2;
-const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
-
-const vex::controller::button &ColorSortToggle = con.ButtonLeft;
-
 void testing();
 
 void auto__();
@@ -26,9 +16,10 @@ void opcontrol() {
 
     wallstakemech_sys.set_state(WallStakeMech::STOW);
     wallstakemech_sys.hold = true;
+    intake_sys.opcontrol_init();
 
     ColorSortToggle.pressed([]() {
-        intake_sys.setColorSortOn(!intake_sys.getColorSortOn());
+        intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool());
     });
 
     goal_grabber.pressed([]() {

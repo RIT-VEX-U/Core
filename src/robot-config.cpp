@@ -48,6 +48,17 @@ WallStakeMech wallstakemech_sys(wallstake_motors, wall_rot, tolerance, initial, 
 vex::digital_out mcglight_board(Brain.ThreeWirePort.C);
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
+//Button Definitions
+const vex::controller::button &goal_grabber = con.ButtonB;
+const vex::controller::button &conveyor_button = con.ButtonR1;
+const vex::controller::button &conveyor_button_rev = con.ButtonR2;
+
+const vex::controller::button &wallstake_toggler = con.ButtonL1;
+const vex::controller::button &wallstake_stow = con.ButtonL2;
+const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
+
+const vex::controller::button &ColorSortToggle = con.ButtonLeft;
+
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
   .p = 0.25,

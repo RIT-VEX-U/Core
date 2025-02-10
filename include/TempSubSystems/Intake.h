@@ -4,13 +4,11 @@
 class IntakeSys{
     public:
     IntakeSys();
-
-    enum class ConveyorState {
-        STOP,
-        IN,
-        OUT,
-    };
     
+    enum RunningType{
+        OPCONTROL,
+        AUTONOMOUS,
+    };
     
 
     enum IntakeState {
@@ -19,16 +17,32 @@ class IntakeSys{
         OUT,
 
     };
+
+    enum ColorSortState{
+        ON,
+        OFF,
+    };
+    ColorSortState get_color_sort_state(){
+        return color_sort_state;
+    }
+    bool get_color_sort_bool(){
+        if(color_sort_state == ColorSortState::ON){
+            return true;
+        }
+        else if(color_sort_state == ColorSortState::OFF){
+            return false;
+        }
+    }
+    RunningType get_run_type(){
+        return run_type;
+    }
     IntakeState get_intake_state(){
         return intake_state;
     }
-    ConveyorState get_conveyor_state(){
+    IntakeState get_conveyor_state(){
         return conveyor_state;
     }
     
-
-    void setColorSortOn(bool ColorSortOn);
-    bool getColorSortOn();
 
     void colorSort();
     void intake(double volts = 12);
@@ -44,6 +58,14 @@ class IntakeSys{
     void conveyor_out(double volts = 10);
 
     void setLight(bool state);
+
+    void color_sort_on();
+    void color_sort_off();
+    void set_color_sort_bool(bool colorSortingOn);
+    void opcontrol_init();
+    void autonomous_init();
+
+
     static int thread_fn(void *ptr);
 
     AutoCommand *IntakeCmd(double amt = 10.0);
@@ -57,11 +79,12 @@ class IntakeSys{
     private:
     vex::task task;
     IntakeState intake_state = IntakeState::STOP;
-    ConveyorState conveyor_state = ConveyorState::STOP;
+    IntakeState conveyor_state = IntakeState::STOP;
+    ColorSortState color_sort_state = ColorSortState::OFF;
+    RunningType run_type = RunningType::OPCONTROL;
     double intakeVolts = 12;
     double conveyorVolts = 10;
     int color_sensor_counter = 0;
     bool conveyorStarted = false;
     double sortConveyorVolts = 12;
-    bool colorSortEnabled = false;
 };

@@ -56,7 +56,16 @@ extern vex::inertial imu;
 extern vex::distance goal_sensor;
 
 extern vex::pot wall_pot;
+//Button Definitions
+extern const controller::button &goal_grabber;
+extern const controller::button &conveyor_button;
+extern const controller::button &conveyor_button_rev;
 
+extern const controller::button &wallstake_toggler;
+extern const controller::button &wallstake_stow;
+extern const controller::button &wallstake_alliancestake;
+
+extern const controller::button &ColorSortToggle;
 
 
 // ================ SUBSYSTEMS ================
