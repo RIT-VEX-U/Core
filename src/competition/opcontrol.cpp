@@ -2,6 +2,15 @@
 #include "robot-config.h"
 #include "vex.h"
 
+const vex::controller::button &goal_grabber = con.ButtonRight;
+const vex::controller::button &conveyor_button = con.ButtonR2;
+const vex::controller::button &conveyor_button_rev = con.ButtonR1;
+
+const vex::controller::button &wallstake_toggler = con.ButtonL1;
+const vex::controller::button &wallstake_stow = con.ButtonL2;
+const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
+const vex::controller::button &toggle_colorsort = con.ButtonLeft;
+
 void testing();
 
 void auto__();
@@ -32,7 +41,7 @@ void opcontrol() {
         if (wallstakemech_sys.get_angle().degrees() > 180) {
             wallstakemech_sys.set_setpoint(from_degrees(170));
         } else if (wallstakemech_sys.get_angle().degrees() < 180) {
-            wallstakemech_sys.set_setpoint(from_degrees(50));
+            wallstakemech_sys.set_setpoint(from_degrees(45));
         }
     });
 
@@ -42,30 +51,12 @@ void opcontrol() {
     });
 
     // ================ INIT ================
-    color_sensor.setLight(vex::ledState::on);
-    color_sensor.setLightPower(100, vex::pct);
-
     while (true) {
         if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
             intake_sys.intake_stop();
             intake_sys.conveyor_stop();
-            // if (self.color_sort_state == ColorSortState::ON) {
-            // mcglight_board.set(true);
-            // self.colorSort();
-            // } else {
-            // mcglight_board.set(false);
-            // }
         }
 
-        // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
-        //     wallstake_mech.hold = true;
-        // } else {
-        //     wallstake_mech.hold = false;
-        // }
-
-        // if (!intake_button.pressing() && !intake_button_rev.pressing()) {
-        //     intake(0);
-        // }
         double straight = (double)con.Axis3.position() / 100;
         double turn = (double)con.Axis1.position() / 100;
 

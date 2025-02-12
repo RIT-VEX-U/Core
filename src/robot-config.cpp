@@ -5,15 +5,6 @@
 vex::brain Brain;
 vex::controller con;
 
-const vex::controller::button &goal_grabber = con.ButtonRight;
-const vex::controller::button &conveyor_button = con.ButtonR2;
-const vex::controller::button &conveyor_button_rev = con.ButtonR1;
-
-const vex::controller::button &wallstake_toggler = con.ButtonL1;
-const vex::controller::button &wallstake_stow = con.ButtonL2;
-const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
-const vex::controller::button &toggle_colorsort = con.ButtonLeft;
-
 bool blue_alliance() { return false; }
 
 // ================ INPUTS ================
@@ -144,8 +135,6 @@ void robot_init() {
     odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, true);
     printf("started!\n");
     color_sensor.setLight(vex::ledState::on);
-    color_sensor.setLightPower(100, vex::pct);
-    turn_pid.set_limits(0.5, 1);
     // FeedForward::ff_config_t config = drive_motioncontroller.tune_feedforward(drive_sys, odom, 1, 1);
     // printf("%f, %f, %f\n", config.kS, config.kV, config.kA);
     // mcglight_board.state(-100, vex::percent);

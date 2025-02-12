@@ -9,15 +9,6 @@
 extern vex::brain brain;
 extern vex::controller con;
 
-extern const vex::controller::button &goal_grabber;
-extern const vex::controller::button &conveyor_button;
-extern const vex::controller::button &conveyor_button_rev;
-
-extern const vex::controller::button &wallstake_toggler;
-extern const vex::controller::button &wallstake_stow;
-extern const vex::controller::button &wallstake_alliancestake;
-extern const vex::controller::button &toggle_colorsort;
-
 bool blue_alliance();
 // ================ INPUTS ================
 // Digital sensors

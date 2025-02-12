@@ -10,8 +10,6 @@ class ClamperSys {
         UNCLAMPED,
     };
 
-    void autoClamp();
-
     void start_auto_clamping();
     void stop_auto_clamping();
     void toggle_clamp();
@@ -23,6 +21,7 @@ class ClamperSys {
     AutoCommand *ClampCmd(ClamperState state);
 
   private:
+    void autoClamp();
     static int thread_fn(void *ptr);
 
     vex::task task;

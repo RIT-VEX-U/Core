@@ -45,5 +45,5 @@ int ClamperSys::thread_fn(void *ptr) {
             goal_grabber_sol.set(false);
         }
     }
-    return 420;
+    return 0;
 }

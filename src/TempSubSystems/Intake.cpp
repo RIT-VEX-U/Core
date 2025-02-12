@@ -16,7 +16,6 @@ void IntakeSys::set_color_sort_bool(bool ColorSortOn) {
 }
 
 bool IntakeSys::should_stop_for_colorsort() {
-    printf("ColrSort On: %d\n", (int)(color_sort_state == ColorSortState::ON));
     if (color_sort_state == ColorSortState::OFF) {
         return false;
     }
@@ -68,6 +67,9 @@ void IntakeSys::setLight(bool state) { mcglight_board.set(state); }
 
 int IntakeSys::thread_fn(void *ptr) {
     IntakeSys &self = *(IntakeSys *)ptr;
+    color_sensor.setLight(vex::ledState::on);
+    color_sensor.setLightPower(100, vex::pct);
+
     while (true) {
         if (self.color_sort_state == ColorSortState::ON) {
             mcglight_board.set(true);
@@ -87,12 +89,9 @@ int IntakeSys::thread_fn(void *ptr) {
         }
         if (self.conveyor_state == IntakeState::IN) {
             // printf("ConveyorState IN \n");
-            printf("coutn: %d\n", self.color_sensor_counter);
             if (self.should_stop_for_colorsort()) {
-                printf("stopping\n");
                 conveyor.stop();
             } else {
-                printf("starting\n");
                 intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
                 conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
             }
@@ -105,7 +104,7 @@ int IntakeSys::thread_fn(void *ptr) {
         }
         vexDelay(20);
     }
-    return 69;
+    return 0;
 }
 
 AutoCommand *IntakeSys::IntakeCmd(double amt) {
