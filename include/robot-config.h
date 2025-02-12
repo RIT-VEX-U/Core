@@ -1,15 +1,15 @@
 #pragma once
-#include "vex.h"
-#include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
-#include "wallstake_mech.h"
+#include "TempSubSystems/TempSubSystems.h"
+#include "core.h"
+#include "vex.h"
 
-#define WALLSTAKE_POT_OFFSET 
+#define WALLSTAKE_POT_OFFSET
 
 extern vex::brain brain;
 extern vex::controller con;
 
-
+bool blue_alliance();
 // ================ INPUTS ================
 // Digital sensors
 
@@ -41,22 +41,7 @@ extern Rotation2d initial;
 extern Rotation2d tolerance;
 extern double pot_offset;
 extern vex::pot wall_pot;
-extern WallStakeMech wallstake_mech;
-
-void intake(double volts);
-
-void intake();
-
-void outtake(double volts);
-
-void outtake();
-
-void conveyor_intake(double volts);
-
-void conveyor_intake();
-
-
-void intake_spin(double volts);
+extern WallStakeMech wallstakemech_sys;
 
 extern vex::motor_group left_drive_motors;
 extern vex::motor_group right_drive_motors;
@@ -69,9 +54,9 @@ extern vex::distance goal_sensor;
 
 extern vex::pot wall_pot;
 
-
-
 // ================ SUBSYSTEMS ================
+extern ClamperSys clamper_sys;
+extern IntakeSys intake_sys;
 extern PID drive_pid;
 extern PID turn_pid;
 extern MotionController::m_profile_cfg_t drive_motioncontroller_cfg;
