@@ -63,16 +63,6 @@ void opcontrol() {
         drive_sys.drive_arcade(straight, turn * 1.75, 1, TankDrive::BrakeType::None);
 
         pose_t pos = odom.get_position();
-        // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
-        // printf("%f\n", color_sensor.hue());
-
-        // if (goal_sensor.objectDistance(vex::mm) < 25 && goal_counterd == 0) {
-        //     goal_grabber_sol.set(true);
-        // }
-
-        // if (goal_counterd > 0) {
-        //     goal_counterd--;
-        // }
 
         vexDelay(20);
     }
