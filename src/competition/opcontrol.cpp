@@ -6,9 +6,9 @@ const vex::controller::button &goal_grabber = con.ButtonRight;
 const vex::controller::button &conveyor_button = con.ButtonR2;
 const vex::controller::button &conveyor_button_rev = con.ButtonR1;
 
-const vex::controller::button &wallstake_handoff = con.ButtonUp;
-const vex::controller::button &wallstake_up = con.ButtonL1;
-const vex::controller::button &wallstake_down = con.ButtonL2;
+const vex::controller::button &wallstake_toggler = con.ButtonL1;
+const vex::controller::button &wallstake_stow = con.ButtonL2;
+const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
 const vex::controller::button &toggle_colorsort = con.ButtonLeft;
 
 void testing();
@@ -117,21 +117,23 @@ void opcontrol() {
       }
     });
 
-    // wallstake_up.pressed([](){
-    //     if (wallstake_mech.is_below_handoff()) {
-    //         wallstake_mech.set_state(HANDOFF);
-    //         wallstake_mech.hold = true;
-    //     } else {
-    //         wallstake_mech.set_voltage(-4);
-    //         wallstake_mech.hold = false;
-    //     }
-    // });
+    wallstake_toggler.pressed([]() {
+        wallstake_mech.hold = true;
+        if (wallstake_mech.get_angle().degrees() > 180) {
+            wallstake_mech.set_setpoint(from_degrees(170));
+        } else if (wallstake_mech.get_angle().degrees() < 180) {
+            wallstake_mech.set_setpoint(from_degrees(50));
+        }
+    });
 
-    // wallstake_down.pressed([](){
-    //     if (!wallstake_mech.is_below_handoff()) {
-    //         wallstake_mech.set_voltage(4);
-    //         wallstake_mech.hold = false;
-    //     }
+    wallstake_stow.pressed([]() {
+        wallstake_mech.hold = true;
+        wallstake_mech.set_setpoint(from_degrees(200));
+    });
+
+    // wallstake_alliancestake.pressed([]() {
+    //     wallstake_mech.hold = true;
+    //     wallstake_mech.set_setpoint(from_degrees(0));
     // });
 
     // ================ INIT ================
@@ -160,7 +162,7 @@ void opcontrol() {
         double straight = (double)con.Axis3.position() / 100;
         double turn = (double)con.Axis1.position() / 100;
 
-        drive_sys.drive_arcade(straight, turn * -1.75, 1, TankDrive::BrakeType::None);
+        drive_sys.drive_arcade(straight, turn * 1.75, 1, TankDrive::BrakeType::None);
 
         pose_t pos = odom.get_position();
         // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);

@@ -17,40 +17,43 @@ CustomEncoder right_enc(Brain.ThreeWirePort.E, 2048);
 CustomEncoder front_enc(Brain.ThreeWirePort.G, 2048);
 // ================ OUTPUTS ================
 // Motors
-vex::motor left_back_bottom(vex::PORT11, vex::gearSetting::ratio6_1, false);
-vex::motor left_center_bottom(vex::PORT12, vex::gearSetting::ratio6_1, false);
-vex::motor left_front_top(vex::PORT13, vex::gearSetting::ratio6_1, false);
-vex::motor left_back_top(vex::PORT14, vex::gearSetting::ratio6_1, false);
+vex::motor left_back_bottom(vex::PORT4, vex::gearSetting::ratio6_1, true);
+vex::motor left_center_bottom(vex::PORT9, vex::gearSetting::ratio6_1, true);
+vex::motor left_front_top(vex::PORT20, vex::gearSetting::ratio6_1, true);
+vex::motor left_back_top(vex::PORT19, vex::gearSetting::ratio6_1, true);
 vex::motor_group left_drive_motors({left_back_bottom, left_center_bottom, left_back_top, left_front_top});
 
-vex::motor right_back_bottom(vex::PORT1, vex::gearSetting::ratio6_1, true);
-vex::motor right_center_bottom(vex::PORT2, vex::gearSetting::ratio6_1, true);
-vex::motor right_front_top(vex::PORT3, vex::gearSetting::ratio6_1, true);
-vex::motor right_back_top(vex::PORT4, vex::gearSetting::ratio6_1, true);
+vex::motor right_back_bottom(vex::PORT8, vex::gearSetting::ratio6_1, false);
+vex::motor right_center_bottom(vex::PORT7, vex::gearSetting::ratio6_1, false);
+vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, false);
+vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, false);
 vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, right_back_top, right_front_top});
 
-vex::motor conveyor(vex::PORT20, vex::gearSetting::ratio6_1,true);
-vex::motor intake_motor(vex::PORT19, vex::gearSetting::ratio6_1,false);
+vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1,true);
+vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1,false);
 
-vex::motor wallstake_left(vex::PORT15, vex::gearSetting::ratio18_1, false);
-vex::motor wallstake_right(vex::PORT16, vex::gearSetting::ratio18_1, true);
+vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
+vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
 vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
-Rotation2d initial(from_degrees(1));
+Rotation2d initial(from_degrees(43));
 Rotation2d tolerance(from_degrees(1));
-double offset(41.8);
-vex::pot wall_pot(Brain.ThreeWirePort.H);
+// double offset(241.26);
+double offset(0);
 
-PID::pid_config_t wallstake_pid_config {.p = 0.2, .d = 0.01};
+vex::rotation wall_rot(vex::PORT11);
+
+PID::pid_config_t wallstake_pid_config {.p = 0.3, .d = 0.005, .error_method = PID::ANGULAR};
 PID wallstake_pid(wallstake_pid_config);
 
-vex::distance goal_sensor(vex::PORT8);
-// WallStakeMech wallstake_mech(wallstake_motors, wall_pot, tolerance, initial, offset, wallstake_pid);
+vex::distance goal_sensor(vex::PORT6);
+WallStakeMech wallstake_mech(wallstake_motors, wall_rot, tolerance, initial, offset, wallstake_pid);
 
-vex::optical color_sensor(vex::PORT17);
+vex::optical color_sensor(vex::PORT5);
 
 //pnematices
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
+// vex::analog_in enc{Brain.ThreeWirePort.G};
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
@@ -125,12 +128,12 @@ pose_t blue_auto_start{122.37, 56.54, 30.3};
 pose_t red_auto_start{21.63, 56.54, 149.7};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT15, 115200);
+OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT14, 115200);
 OdometryBase* base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 // OdometryTank tankodom{left_drive_motors, right_drive_motors, robot_cfg, &imu};
-vex::inertial imu(vex::PORT18);
+// vex::inertial imu(vex::PORT18);
 
 vex::digital_out mcglight_board(Brain.ThreeWirePort.B);
 // vex::pwm_out mcglight_board(Brain.ThreeWirePort.B);
@@ -156,14 +159,16 @@ void robot_init()
     mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
     bool lighton = false;
-    
+
+    wall_rot.setReversed(true);
+
 
     while (true) {
         pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
-        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
-        // printf("%f\n", color_sensor.hue());
+        // printf("%f\n", wall_rot.position(vex::rotationUnits::deg));
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));
@@ -174,6 +179,7 @@ void robot_init()
         //     mcglight_board.set(false);
         // }
 
+        wallstake_mech.hold = true;
 
         vexDelay(100);
     }
