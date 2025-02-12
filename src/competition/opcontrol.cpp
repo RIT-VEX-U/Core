@@ -13,7 +13,6 @@ void opcontrol() {
     wallstakemech_sys.set_state(WallStakeMech::STOW);
     wallstakemech_sys.hold = true;
     clamper_sys.unclamp();
-    intake_sys.opcontrol_init();
 
     toggle_colorsort.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
 
@@ -50,8 +49,6 @@ void opcontrol() {
     // ================ INIT ================
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
-
-    conveyor_intake(0);
 
     while (true) {
         if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {

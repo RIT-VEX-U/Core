@@ -173,28 +173,3 @@ void robot_init() {
         vexDelay(100);
     }
 }
-
-const double intake_volts = 12.0;
-
-void intake(double volts) { intake_motor.spin(vex::directionType::fwd, volts, vex::volt); }
-
-void intake() { intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt); }
-
-void outtake(double volts) { intake_motor.spin(vex::directionType::rev, volts, vex::volt); }
-
-void outtake() { intake_motor.spin(vex::directionType::rev, intake_volts, vex::volt); }
-
-void conveyor_intake() {
-    conveyor.spin(vex::directionType::fwd, 12, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, intake_volts, vex::volt);
-}
-
-void conveyor_intake(double volts) {
-    conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-}
-
-void intake_spin(double volts) {
-    intake_motor.spin(vex::directionType::fwd, volts, vex::volt);
-    vex::this_thread::yield();
-}

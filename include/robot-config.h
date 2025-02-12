@@ -52,20 +52,6 @@ extern double pot_offset;
 extern vex::pot wall_pot;
 extern WallStakeMech wallstakemech_sys;
 
-void intake(double volts);
-
-void intake();
-
-void outtake(double volts);
-
-void outtake();
-
-void conveyor_intake(double volts);
-
-void conveyor_intake();
-
-void intake_spin(double volts);
-
 extern vex::motor_group left_drive_motors;
 extern vex::motor_group right_drive_motors;
 

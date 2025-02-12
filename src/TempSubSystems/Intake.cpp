@@ -15,10 +15,16 @@ void IntakeSys::set_color_sort_bool(bool ColorSortOn) {
     }
 }
 
-void IntakeSys::opcontrol_init() { run_type = IntakeSys::RunningType::OPCONTROL; }
-void IntakeSys::autonomous_init() { run_type = IntakeSys::RunningType::AUTONOMOUS; }
+bool IntakeSys::should_stop_for_colorsort() {
+    printf("ColrSort On: %d\n", (int)(color_sort_state == ColorSortState::ON));
+    if (color_sort_state == ColorSortState::OFF) {
+        return false;
+    }
+    return color_sensor_counter > 0 && color_sensor_counter < 25;
+}
 
 void IntakeSys::colorSort() {
+    // printf("colorsorting, %d\n", color_sensor_counter);
     mcglight_board.set(true);
     if (blue_alliance()) {
         if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
@@ -32,17 +38,8 @@ void IntakeSys::colorSort() {
         }
     }
 
-    if (color_sensor_counter == 25) {
-        color_sensor_counter--;
-        conveyor.stop();
-    }
-
     if (color_sensor_counter > 0) {
         color_sensor_counter--;
-    }
-
-    if (conveyorStarted && color_sensor_counter == 0) {
-        conveyor.spin(vex::forward, conveyorVolts, vex::volt);
     }
 }
 void IntakeSys::intake(double volts) {
@@ -68,6 +65,48 @@ void IntakeSys::conveyor_out(double volts) {
 }
 
 void IntakeSys::setLight(bool state) { mcglight_board.set(state); }
+
+int IntakeSys::thread_fn(void *ptr) {
+    IntakeSys &self = *(IntakeSys *)ptr;
+    while (true) {
+        if (self.color_sort_state == ColorSortState::ON) {
+            mcglight_board.set(true);
+            self.colorSort();
+        } else {
+            mcglight_board.set(false);
+        }
+
+        if (self.intake_state == IntakeState::IN) {
+            intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
+        } else if (self.intake_state == IntakeState::OUT) {
+            // printf("IntakeState OUT ");
+            intake_motor.spin(vex::reverse, self.intakeVolts, vex::volt);
+        } else if (self.intake_state == IntakeState::STOP) {
+            // printf("IntakeState STOP ");
+            intake_motor.stop();
+        }
+        if (self.conveyor_state == IntakeState::IN) {
+            // printf("ConveyorState IN \n");
+            printf("coutn: %d\n", self.color_sensor_counter);
+            if (self.should_stop_for_colorsort()) {
+                printf("stopping\n");
+                conveyor.stop();
+            } else {
+                printf("starting\n");
+                intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
+                conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
+            }
+        } else if (self.conveyor_state == IntakeState::OUT) {
+            // printf("ConveyorState OUT \n");
+            conveyor.spin(vex::reverse, self.conveyorVolts, vex::volt);
+        } else if (self.conveyor_state == IntakeState::STOP) {
+            // printf("ConveyorState STOP \n");
+            conveyor.stop();
+        }
+        vexDelay(20);
+    }
+    return 69;
+}
 
 AutoCommand *IntakeSys::IntakeCmd(double amt) {
     return new FunctionCommand([this, amt]() {
@@ -112,42 +151,4 @@ AutoCommand *IntakeSys::ConveyorStopCmd() {
         conveyorStarted = false;
         return true;
     });
-}
-
-int IntakeSys::thread_fn(void *ptr) {
-    IntakeSys &self = *(IntakeSys *)ptr;
-    while (true) {
-        if (self.run_type == RunningType::OPCONTROL) {
-        } else if (self.run_type == RunningType::AUTONOMOUS) {
-            if (self.color_sort_state == ColorSortState::ON) {
-                mcglight_board.set(true);
-                self.colorSort();
-            } else {
-                mcglight_board.set(false);
-            }
-        }
-
-        if (self.intake_state == IntakeState::IN) {
-            printf("IntakeState IN ");
-            intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
-        } else if (self.intake_state == IntakeState::OUT) {
-            printf("IntakeState OUT ");
-            intake_motor.spin(vex::reverse, self.intakeVolts, vex::volt);
-        } else if (self.intake_state == IntakeState::STOP) {
-            printf("IntakeState STOP ");
-            intake_motor.stop();
-        }
-        if (self.conveyor_state == IntakeState::IN) {
-            printf("ConveyorState IN \n");
-            conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
-        } else if (self.conveyor_state == IntakeState::OUT) {
-            printf("ConveyorState OUT \n");
-            conveyor.spin(vex::reverse, self.conveyorVolts, vex::volt);
-        } else if (self.conveyor_state == IntakeState::STOP) {
-            printf("ConveyorState STOP \n");
-            conveyor.stop();
-        }
-        vexDelay(20);
-    }
-    return 69;
 }
