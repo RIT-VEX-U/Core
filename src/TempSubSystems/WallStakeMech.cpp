@@ -63,7 +63,7 @@ void WallStakeMech::update() {
         double pidout = wallstake_pid.update(get_angle().degrees());
         set_voltage(ffout + (-pidout));
 
-        // printf("%f\n", (get_angle().degrees()));
+        printf("%.2f, %.2f\n", get_setpoint().degrees(), (get_angle().degrees()));
     }
     // printf("%f\n", (get_angle().degrees()));
 }

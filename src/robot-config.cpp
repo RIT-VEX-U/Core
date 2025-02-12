@@ -42,20 +42,20 @@ vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1, false);
 
 vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
 vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
-// vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
-vex::motor_group wallstake_motors{};
+vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
+// vex::motor_group wallstake_motors{};
 
 // Rotation2d initial(from_degrees(43));
 Rotation2d tolerance(from_degrees(1));
 
-double offset(0);
+double offset(-115);
 
 vex::rotation wall_rot(vex::PORT11);
 
 PID::pid_config_t wallstake_pid_config{.p = 0.3, .d = 0.005, .error_method = PID::ANGULAR};
 PID wallstake_pid(wallstake_pid_config);
 
-WallStakeMech wallstakemech_sys{wallstake_motors, wall_rot, tolerance, offset, 280, wallstake_pid_config};
+WallStakeMech wallstakemech_sys{wallstake_motors, wall_rot, tolerance, 0, offset, wallstake_pid_config};
 
 vex::distance goal_sensor(vex::PORT6);
 

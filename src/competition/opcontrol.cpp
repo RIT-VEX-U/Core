@@ -36,15 +36,10 @@ void opcontrol() {
         }
     });
 
-    // wallstake_stow.pressed([]() {
-    //     wallstakemech_sys.hold = true;
-    //     wallstakemech_sys.set_setpoint(from_degrees(200));
-    // });
-
-    // wallstake_alliancestake.pressed([]() {
-    //     wallstake_mech.hold = true;
-    //     wallstake_mech.set_setpoint(from_degrees(0));
-    // });
+    wallstake_stow.pressed([]() {
+        wallstakemech_sys.hold = true;
+        wallstakemech_sys.set_setpoint(from_degrees(200));
+    });
 
     // ================ INIT ================
     color_sensor.setLight(vex::ledState::on);
