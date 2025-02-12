@@ -25,7 +25,7 @@ class IntakeSys {
     bool get_color_sort_bool() {
         if (color_sort_state == ColorSortState::ON) {
             return true;
-        } else if (color_sort_state == ColorSortState::OFF) {
+        } else {
             return false;
         }
     }
