@@ -3,6 +3,7 @@
 #include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
 #include "wallstake_mech.h"
+#include "TempSubSystems/TempSubSystems.h"
 
 #define WALLSTAKE_POT_OFFSET 
 
@@ -72,6 +73,8 @@ extern vex::pot wall_pot;
 
 
 // ================ SUBSYSTEMS ================
+extern ClamperSys clamper_sys;
+extern IntakeSys intake_sys;
 extern PID drive_pid;
 extern PID turn_pid;
 extern MotionController::m_profile_cfg_t drive_motioncontroller_cfg;

@@ -15,77 +15,7 @@ void testing();
 
 void auto__();
 
-int goal_counterd = 0;
-int color_sensor_counterd = 0;
-
-bool conveyor_startedd = false;
-
-bool blue_allianced = true;
-
-bool color_sort_enabledd = true;
-
-// AutoCommand *intake_command(double amt = 12.0) {
-//     return new FunctionCommand([=]() {
-//         intake(amt);
-//         return true;
-//     });
-// }
-
-// AutoCommand *outtake_command(double amt = 12.0) {
-//     return new FunctionCommand([=]() {
-//         intake(-amt);
-//         return true;
-//     });
-// }
-
-// AutoCommand *stop_intake_command() {
-//     return new FunctionCommand([=]() {
-//         intake_motor.stop();
-//         return true;
-//     });
-// }
-
-// AutoCommand *conveyor_intake_command(double amt = 12.0) {
-//     return new FunctionCommand([=]() {
-//         conveyor_intake(amt);
-//         conveyor_started = true;
-//         return true;
-//     });
-// }
-
-// AutoCommand *conveyor_outtake_command(double amt = 12.0) {
-//     return new FunctionCommand([=]() {
-//         conveyor_intake(-amt);
-//         return true;
-//     });
-// }
-
-// AutoCommand *stop_conveyor_command() {
-//     return new FunctionCommand([=]() {
-//         conveyor.stop();
-//         conveyor_started = false;
-//         return true;
-//     });
-// }
-
-// AutoCommand *goal_grabber_command(bool value) {
-//     return new FunctionCommand([=]() {
-//         goal_grabber_sol.set(value);
-//         goal_counter = 50;
-//         return true;
-//     });
-// }
-
-/**
- * Main entrypoint for the driver control period
- */
 void opcontrol() {
-
-    // con.ButtonA.pressed([]() {
-    //     auto_();
-    // });
-    // auto__();
-    // return;
 
     goal_grabber.pressed([]() {
         goal_grabber_sol.set(!goal_grabber_sol);

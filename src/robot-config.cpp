@@ -123,6 +123,9 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     .correction_pid = correction_pid_cfg,
 };
+ClamperSys clamper_sys{};
+IntakeSys intake_sys{};
+
 pose_t skills_start{19.25, 96, 0};
 pose_t blue_auto_start{122.37, 56.54, 30.3};
 pose_t red_auto_start{21.63, 56.54, 149.7};
