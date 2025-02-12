@@ -2,64 +2,45 @@
 #include "robot-config.h"
 #include "vex.h"
 
-const vex::controller::button &goal_grabber = con.ButtonRight;
-const vex::controller::button &conveyor_button = con.ButtonR2;
-const vex::controller::button &conveyor_button_rev = con.ButtonR1;
-
-const vex::controller::button &wallstake_toggler = con.ButtonL1;
-const vex::controller::button &wallstake_stow = con.ButtonL2;
-const vex::controller::button &wallstake_alliancestake = con.ButtonDown;
-const vex::controller::button &toggle_colorsort = con.ButtonLeft;
-
 void testing();
 
 void auto__();
 
 void opcontrol() {
 
-    goal_grabber.pressed([]() {
-        goal_grabber_sol.set(!goal_grabber_sol);
-        goal_counterd = 50;
-    });
+    conveyor.stop();
+
+    wallstakemech_sys.set_state(WallStakeMech::STOW);
+    wallstakemech_sys.hold = true;
+    clamper_sys.unclamp();
+    intake_sys.opcontrol_init();
+
+    toggle_colorsort.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
+
+    goal_grabber.pressed([]() { clamper_sys.toggle_clamp(); });
 
     conveyor_button.pressed([]() {
-        double volts;
-        volts = 12;
-
-        conveyor.spin(vex::directionType::fwd, volts, vex::volt);
-        intake();
-        if (color_sort_enabledd) {
-          mcglight_board.set(true);
-        } else {
-          mcglight_board.set(false);
-        }
+        intake_sys.intake();
+        intake_sys.conveyor_in();
     });
     conveyor_button_rev.pressed([]() {
-        conveyor.spin(vex::directionType::rev, 12, vex::volt);
-        outtake();
-    });
-
-    toggle_colorsort.pressed([] () {
-      if (color_sort_enabledd) {
-        color_sort_enabledd = false;
-      } else {
-        color_sort_enabledd = true;
-      }
+        intake_sys.outtake();
+        intake_sys.conveyor_out();
     });
 
     wallstake_toggler.pressed([]() {
-        wallstake_mech.hold = true;
-        if (wallstake_mech.get_angle().degrees() > 180) {
-            wallstake_mech.set_setpoint(from_degrees(170));
-        } else if (wallstake_mech.get_angle().degrees() < 180) {
-            wallstake_mech.set_setpoint(from_degrees(50));
+        wallstakemech_sys.hold = true;
+        if (wallstakemech_sys.get_angle().degrees() > 180) {
+            wallstakemech_sys.set_setpoint(from_degrees(170));
+        } else if (wallstakemech_sys.get_angle().degrees() < 180) {
+            wallstakemech_sys.set_setpoint(from_degrees(50));
         }
     });
 
-    wallstake_stow.pressed([]() {
-        wallstake_mech.hold = true;
-        wallstake_mech.set_setpoint(from_degrees(200));
-    });
+    // wallstake_stow.pressed([]() {
+    //     wallstakemech_sys.hold = true;
+    //     wallstakemech_sys.set_setpoint(from_degrees(200));
+    // });
 
     // wallstake_alliancestake.pressed([]() {
     //     wallstake_mech.hold = true;
@@ -72,12 +53,16 @@ void opcontrol() {
 
     conveyor_intake(0);
 
-
     while (true) {
         if (!conveyor_button.pressing() && !conveyor_button_rev.pressing()) {
-            conveyor.stop();
-            intake(0);
-            mcglight_board.set(false);
+            intake_sys.intake_stop();
+            intake_sys.conveyor_stop();
+            // if (self.color_sort_state == ColorSortState::ON) {
+            // mcglight_board.set(true);
+            // self.colorSort();
+            // } else {
+            // mcglight_board.set(false);
+            // }
         }
 
         // if (!wallstake_down.pressing() || !wallstake_up.pressing()) {
@@ -106,37 +91,8 @@ void opcontrol() {
         //     goal_counterd--;
         // }
 
-        if (color_sort_enabledd) {
-
-          if (blue_allianced) {
-              if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counterd == 0) {
-                  color_sensor_counterd = 30;
-              }
-          } else {
-              if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counterd == 0) {
-                  color_sensor_counterd = 30;
-              }
-          }
-
-          if (color_sensor_counterd == 25) {
-              color_sensor_counterd--;
-              conveyor.stop();
-          }
-
-          if (color_sensor_counterd > 0) {
-              color_sensor_counterd--;
-
-          }
-
-          if (color_sensor_counterd == 0 && conveyor_button.pressing()) {
-            conveyor_intake();
-          }
-        }
-
         vexDelay(20);
     }
 
     // ================ PERIODIC ================
 }
-
-

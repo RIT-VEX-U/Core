@@ -1,16 +1,24 @@
 #pragma once
-#include "vex.h"
-#include "core.h"
 #include "../core/include/subsystems/odometry/odometry_serial.h"
-#include "wallstake_mech.h"
 #include "TempSubSystems/TempSubSystems.h"
+#include "core.h"
+#include "vex.h"
 
-#define WALLSTAKE_POT_OFFSET 
+#define WALLSTAKE_POT_OFFSET
 
 extern vex::brain brain;
 extern vex::controller con;
 
+extern const vex::controller::button &goal_grabber;
+extern const vex::controller::button &conveyor_button;
+extern const vex::controller::button &conveyor_button_rev;
 
+extern const vex::controller::button &wallstake_toggler;
+extern const vex::controller::button &wallstake_stow;
+extern const vex::controller::button &wallstake_alliancestake;
+extern const vex::controller::button &toggle_colorsort;
+
+bool blue_alliance();
 // ================ INPUTS ================
 // Digital sensors
 
@@ -42,7 +50,7 @@ extern Rotation2d initial;
 extern Rotation2d tolerance;
 extern double pot_offset;
 extern vex::pot wall_pot;
-extern WallStakeMech wallstake_mech;
+extern WallStakeMech wallstakemech_sys;
 
 void intake(double volts);
 
@@ -56,7 +64,6 @@ void conveyor_intake(double volts);
 
 void conveyor_intake();
 
-
 void intake_spin(double volts);
 
 extern vex::motor_group left_drive_motors;
@@ -69,8 +76,6 @@ extern vex::inertial imu;
 extern vex::distance goal_sensor;
 
 extern vex::pot wall_pot;
-
-
 
 // ================ SUBSYSTEMS ================
 extern ClamperSys clamper_sys;

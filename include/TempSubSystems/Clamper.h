@@ -1,26 +1,28 @@
 #pragma once
-#include "vex.h"
 #include "../core/include/utils/command_structure/auto_command.h"
+#include "vex.h"
 
-class ClamperSys{
-    public:
+class ClamperSys {
+  public:
     ClamperSys();
-    enum ClamperState{
+    enum ClamperState {
         CLAMPED,
         UNCLAMPED,
     };
-    
+
     void autoClamp();
 
     void start_auto_clamping();
     void stop_auto_clamping();
+    void toggle_clamp();
 
     void clamp();
     void unclamp();
 
     bool is_clamped();
     AutoCommand *ClampCmd(ClamperState state);
-    private:
+
+  private:
     static int thread_fn(void *ptr);
 
     vex::task task;
