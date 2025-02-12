@@ -4,19 +4,17 @@
 #include "vex.h"
 
 class WallStakeMech {
-    public:
-
-    enum WallStakeState {
-        STOW = 210,
-        HANDOFF = 180
-    };
+  public:
+    enum WallStakeState { STOW = 210, HANDOFF = 180 };
 
     bool hold;
 
-    WallStakeMech(const vex::motor_group &motors, const vex::rotation &rotation, const Rotation2d &tolerance, const Rotation2d &setpoint, const double &pot_offset, PID pid);
+    WallStakeMech(
+      const vex::motor_group &motors, const vex::rotation &rotation, const Rotation2d &tolerance,
+      const Rotation2d &setpoint, const double &pot_offset, PID pid
+    );
 
     Rotation2d get_angle();
-    
 
     bool is_at_setpoint();
     bool is_at_angle(const double &angle);
@@ -30,7 +28,6 @@ class WallStakeMech {
 
     AutoCommand *set_setpoint_command(const Rotation2d &new_setpoint);
     AutoCommand *set_state_command(const WallStakeState &new_state);
-
 
     /**
      * Function that runs in the background task. This function pointer is passed
@@ -47,13 +44,12 @@ class WallStakeMech {
      * they must run the update() function manually from then on.
      */
     void end_async();
-    
+
     bool is_below_handoff();
 
     void spin(double volts);
 
-    private:
-    
+  private:
     vex::motor_group motors;
     vex::rotation rotation;
 
@@ -66,6 +62,4 @@ class WallStakeMech {
     vex::task *handle;
 
     PID wallstake_pid;
-
 };
-

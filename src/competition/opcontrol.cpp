@@ -12,19 +12,14 @@ void auto__();
  */
 void opcontrol() {
     // testing();
-    conveyor.stop();
+    intake_sys.conveyor_stop();
 
     wallstakemech_sys.set_state(WallStakeMech::STOW);
     wallstakemech_sys.hold = true;
-    intake_sys.opcontrol_init();
 
-    ColorSortToggle.pressed([]() {
-        intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool());
-    });
+    ColorSortToggle.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
 
-    goal_grabber.pressed([]() {
-        clamper_sys.clamp();
-    });
+    goal_grabber.pressed([]() { clamper_sys.clamp(); });
 
     conveyor_button.pressed([]() {
         intake_sys.intake();
@@ -63,7 +58,6 @@ void opcontrol() {
     // ================ PERIODIC ================
 }
 
-
 void testing() {
 
     class DebugCommand : public AutoCommand {
@@ -85,22 +79,18 @@ void testing() {
         }
     };
 
-    
-
     con.ButtonA.pressed([]() {
-    printf("running test");
-	mcglight_board.set(true);
-	CommandController cc {
-		// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
+        printf("running test");
+        mcglight_board.set(true);
+        CommandController cc{// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
 
-		new Async(new FunctionCommand([]() {
-			while(true) {
-				vexDelay(20);
-            }
-			return true;
-		}))
+                             new Async(new FunctionCommand([]() {
+                                 while (true) {
+                                     vexDelay(20);
+                                 }
+                                 return true;
+                             }))
         };
         cc.run();
     });
 }
-
