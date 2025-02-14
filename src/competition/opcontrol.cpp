@@ -11,7 +11,7 @@ void auto__();
  * Main entrypoint for the driver control period
  */
 void opcontrol() {
-    // testing();
+    testing();
     intake_sys.conveyor_stop();
 
     wallstakemech_sys.set_state(WallStakeMech::STOW);
@@ -49,8 +49,13 @@ void opcontrol() {
     while (true) {
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
-
-        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
+        if(intake_sys.get_color_sort_bool()){
+            drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
+            if(!conveyor_button.pressing() && !conveyor_button_rev.pressing()){
+                intake_sys.intake_stop();
+                intake_sys.conveyor_stop();
+            }
+        }
 
         vexDelay(20);
     }
@@ -79,17 +84,27 @@ void testing() {
         }
     };
 
-    con.ButtonA.pressed([]() {
+    con.ButtonX.pressed([]() {
         printf("running test");
-        mcglight_board.set(true);
-        CommandController cc{// odom.SetPositionCmd({.x = 9.5, .y = 72, .rot = 0}),
-
-                             new Async(new FunctionCommand([]() {
-                                 while (true) {
-                                     vexDelay(20);
-                                 }
-                                 return true;
-                             }))
+        CommandController cc{
+            new Async(new FunctionCommand([]() {
+                while (true) {
+                    printf("ODO X: %f ODO Y: %f, ODO ROT: %f DRIVEPID ERROR: %f\n", odom.get_position().x, odom.get_position().y, odom.get_position().rot, drive_pid.get_error());
+                    vexDelay(20);
+                }
+                return true;
+            })),
+            intake_sys.IntakeCmd(10),
+            new DelayCommand(1000),
+            intake_sys.OuttakeCmd(10),
+            new DelayCommand(1000),
+            intake_sys.IntakeStopCmd(),
+            // drive_sys.TurnDegreesCmd(15, 1),
+            // drive_sys.TurnDegreesCmd(30, 1),
+            // drive_sys.TurnDegreesCmd(45, 1),
+            // drive_sys.TurnDegreesCmd(90, 1),
+            // drive_sys.TurnDegreesCmd(180, 1),
+            // drive_sys.TurnDegreesCmd(360, 1),
         };
         cc.run();
     });

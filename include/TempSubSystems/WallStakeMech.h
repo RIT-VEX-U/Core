@@ -26,8 +26,8 @@ class WallStakeMech {
     void set_setpoint(const Rotation2d &new_setpoint);
     Rotation2d get_setpoint();
 
-    AutoCommand *set_setpoint_command(const Rotation2d &new_setpoint);
-    AutoCommand *set_state_command(const WallStakeState &new_state);
+    AutoCommand *SetSetPointCmd(const Rotation2d &new_setpoint);
+    AutoCommand *SetStateCmd(const WallStakeState &new_state);
 
     /**
      * Function that runs in the background task. This function pointer is passed

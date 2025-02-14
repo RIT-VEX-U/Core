@@ -80,11 +80,12 @@ int IntakeSys::thread_fn(void *ptr) {
 
         if (self.intake_state == IntakeState::IN) {
             intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
+            // printf("IntakeState IN \n");
         } else if (self.intake_state == IntakeState::OUT) {
-            // printf("IntakeState OUT ");
+            // printf("IntakeState OUT \n");
             intake_motor.spin(vex::reverse, self.intakeVolts, vex::volt);
         } else if (self.intake_state == IntakeState::STOP) {
-            // printf("IntakeState STOP ");
+            // printf("IntakeState STOP \n");
             intake_motor.stop();
         }
         if (self.conveyor_state == IntakeState::IN) {

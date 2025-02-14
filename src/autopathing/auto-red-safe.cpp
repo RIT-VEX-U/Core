@@ -17,7 +17,7 @@ void auto_red_safe() {
 			return true;
 		})))),
 		//set up alliance stake
-		wallstakemech_sys.set_state_command(WallStakeMech::HANDOFF),
+		wallstakemech_sys.SetStateCmd(WallStakeMech::HANDOFF),
 		drive_sys.DriveToPointCmd({24, 89.25}, vex::reverse, 1),
 		drive_sys.TurnToPointCmd(24, 72, vex::reverse, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({24, 72}, vex::reverse, 0.5),
@@ -31,7 +31,7 @@ void auto_red_safe() {
 		intake_sys.IntakeCmd(),
 		intake_sys.ConveyorInCmd(),
 		drive_sys.DriveForwardCmd(6, vex::reverse, 1)->withTimeout(0.3),
-		wallstakemech_sys.set_state_command(WallStakeMech::STOW),
+		wallstakemech_sys.SetStateCmd(WallStakeMech::STOW),
 		new DelayCommand(1000),
 		drive_sys.DriveForwardCmd(16, vex::forward, 0.5)->withTimeout(1),
 		drive_sys.DriveForwardCmd(16, vex::reverse, 0.5)->withTimeout(1),

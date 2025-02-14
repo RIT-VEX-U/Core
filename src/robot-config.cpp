@@ -61,9 +61,9 @@ const vex::controller::button &ColorSortToggle = con.ButtonLeft;
 
 // ================ SUBSYSTEMS ================
 PID::pid_config_t drive_pid_cfg{
-  .p = 0.25,
-  .i = 0.0,
-  .d = 0.03,
+  .p = 0.08,
+  .i = 0.002,
+  .d = 0.008,
   .deadband = 0.5,
   .on_target_time = 0.1,
 };
@@ -71,10 +71,10 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.036,
-  .i = 0.0001,
-  .d = 0.0036,
-  .deadband = 2,
+  .p = 0.04,
+  .i = 0.0042,
+  .d = 0.004,
+  .deadband = 0.5,
   .on_target_time = 0.1,
   .error_method = PID::ERROR_TYPE::ANGULAR,
   
@@ -128,9 +128,8 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
+MatchPaths matchpath;
 
-
-MatchPaths matchpath = RED_SAFE_AUTO;
 bool blue_alliance(){
     switch(matchpath){
         case BLUE_SAFE_AUTO:
@@ -144,8 +143,8 @@ IntakeSys intake_sys{};
 
 pose_t skills_start{19.25, 48, 0};
 pose_t test{24, 96, 0};
-pose_t auto_start_red{16.75, 89.25, 180};
-pose_t auto_start_blue{127.25, 89.25, 0};
+pose_t auto_start_red{16.25, 88.75, 180};
+pose_t auto_start_blue{127.75, 88.75, 0};
 pose_t zero{0, 0, 0};
 
 
@@ -165,20 +164,22 @@ void robot_init()
 {
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
+    matchpath = BLUE_SAFE_AUTO;
     vexDelay(100);
-    switch(matchpath){
-        case RED_SAFE_AUTO:
-            odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-        case BLUE_SAFE_AUTO:
-            odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
-        case BASIC_SKILLS:
-            odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
-        default:
-            printf("ERROR: NO PATH GIVEN");
+    if(matchpath == RED_SAFE_AUTO){
+        odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     }
-    odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
+    else if(matchpath == BLUE_SAFE_AUTO){
+        odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
+    }
+    else if(matchpath == BLUE_SAFE_AUTO){
+        odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
+    }
+    else{
+        printf("ERROR: NO PATH GIVEN\n");
+    }
     printf("started!\n");
-    printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
+    // printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
     competition::bStopAllTasksBetweenModes = true;
     competition::bStopTasksBetweenModes = true;
     color_sensor.setLight(vex::ledState::on);
@@ -189,7 +190,7 @@ void robot_init()
     wall_rot.setReversed(true);    
 
     while (true) {
-        pose_t pose = base->get_position();
+        // pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);

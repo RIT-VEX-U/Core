@@ -38,14 +38,14 @@ bool WallStakeMech::is_at_angle(const double &angle) {
 
 bool WallStakeMech::is_at_state(const WallStakeState &state) { return is_at_angle(state); }
 
-AutoCommand *WallStakeMech::set_setpoint_command(const Rotation2d &new_setpoint) {
+AutoCommand *WallStakeMech::SetSetPointCmd(const Rotation2d &new_setpoint) {
     return new FunctionCommand([&]() {
         set_setpoint(new_setpoint);
         return true;
     });
 }
 
-AutoCommand *WallStakeMech::set_state_command(const WallStakeState &new_state) {
+AutoCommand *WallStakeMech::SetStateCmd(const WallStakeState &new_state) {
     return new FunctionCommand([&]() {
         set_state(new_state);
         return true;

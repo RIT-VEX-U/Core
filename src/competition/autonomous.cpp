@@ -8,6 +8,7 @@ void skills();
 
 void autonomous()
 {
+	intake_sys.color_sort_on();
 	switch(matchpath){
 		case BLUE_SAFE_AUTO:
 			auto_blue_safe();
