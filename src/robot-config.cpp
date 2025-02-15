@@ -128,7 +128,7 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
-MatchPaths matchpath;
+MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
 
 bool blue_alliance(){
     switch(matchpath){
@@ -164,7 +164,7 @@ void robot_init()
 {
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
-    matchpath = BLUE_SAFE_AUTO;
+    matchpath = RED_SAFE_AUTO;
     vexDelay(100);
     if(matchpath == RED_SAFE_AUTO){
         odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
