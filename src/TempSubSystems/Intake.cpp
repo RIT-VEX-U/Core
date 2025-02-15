@@ -19,7 +19,7 @@ bool IntakeSys::should_stop_for_colorsort() {
     if (color_sort_state == ColorSortState::OFF) {
         return false;
     }
-    return color_sensor_counter > 0 && color_sensor_counter < 25;
+    return color_sensor_counter > 0 && color_sensor_counter < 23;
 }
 
 void IntakeSys::colorSort() {
@@ -69,9 +69,10 @@ int IntakeSys::thread_fn(void *ptr) {
     IntakeSys &self = *(IntakeSys *)ptr;
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
+    
 
     while (true) {
-        if (self.color_sort_state == ColorSortState::ON) {
+        if (self.color_sort_state == ColorSortState::ON && self.intake_state == IntakeState::IN) {
             mcglight_board.set(true);
             self.colorSort();
         } else {
@@ -102,7 +103,7 @@ int IntakeSys::thread_fn(void *ptr) {
             // printf("ConveyorState STOP \n");
             conveyor.stop();
         }
-        vexDelay(20);
+        this_thread::sleep_for(20);
     }
     return 0;
 }

@@ -38,7 +38,7 @@ void opcontrol() {
 
     wallstake_toggler.pressed([]() {
         wallstakemech_sys.hold = true;
-        if (wallstakemech_sys.get_angle().degrees() > 180) {
+        if (wallstakemech_sys.get_angle().degrees() > 180 || wallstake_motors.velocity(vex::velocityUnits::dps) > 5) {
             wallstakemech_sys.set_setpoint(from_degrees(170));
         } else if (wallstakemech_sys.get_angle().degrees() < 180) {
             wallstakemech_sys.set_setpoint(from_degrees(45));

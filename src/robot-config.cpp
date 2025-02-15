@@ -24,12 +24,12 @@ vex::motor_group left_drive_motors({left_back_bottom, left_center_bottom, left_b
 
 vex::motor right_back_bottom(vex::PORT8, vex::gearSetting::ratio6_1, false);
 vex::motor right_center_bottom(vex::PORT7, vex::gearSetting::ratio6_1, false);
-vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, false);
-vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, false);
+vex::motor right_front_top(vex::PORT17, vex::gearSetting::ratio6_1, false);
+vex::motor right_back_top(vex::PORT16, vex::gearSetting::ratio6_1, false);
 vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, right_back_top, right_front_top});
 
-vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1, true);
-vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1, false);
+vex::motor conveyor(vex::PORT14, vex::gearSetting::ratio6_1, true);
+vex::motor intake_motor(vex::PORT15, vex::gearSetting::ratio6_1, false);
 
 vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
 vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
@@ -39,7 +39,7 @@ vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 // Rotation2d initial(from_degrees(43));
 Rotation2d tolerance(from_degrees(1));
 
-double offset(-115);
+double offset(0);
 
 vex::rotation wall_rot(vex::PORT11);
 
@@ -50,7 +50,7 @@ WallStakeMech wallstakemech_sys{wallstake_motors, wall_rot, tolerance, 0, offset
 
 vex::distance goal_sensor(vex::PORT6);
 
-vex::optical color_sensor(vex::PORT5);
+vex::optical color_sensor(vex::PORT10);
 
 // pnematices
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
@@ -114,7 +114,7 @@ pose_t blue_auto_start{122.37, 56.54, 30.3};
 pose_t red_auto_start{21.63, 56.54, 149.7};
 pose_t zero{0, 0, 0};
 
-OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT14, 115200);
+OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT13, 115200);
 OdometryBase *base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
