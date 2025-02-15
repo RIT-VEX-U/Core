@@ -16,7 +16,7 @@ void auto_red_safe() {
 		})))),
 		//set up alliance stake
 		wallstakemech_sys.SetSetPointCmd(from_degrees(140)),
-		drive_sys.DriveToPointCmd({24, 89.25}, vex::reverse, 1)->withTimeout(1),
+		drive_sys.DriveToPointCmd({24, 88.75}, vex::reverse, 1)->withTimeout(1),
 		drive_sys.TurnToPointCmd(24, 72, vex::reverse, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({24, 72}, vex::reverse, 0.5)->withTimeout(1),
 		clamper_sys.ClampCmd(ClamperSys::ClamperState::CLAMPED),
@@ -74,7 +74,7 @@ void auto_red_safe() {
 		// drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(1.5),
 		// drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(1),
 		new DelayCommand(1000),
-		// //drop off goal
+		//drop off goal
 		intake_sys.OuttakeCmd(),
 		drive_sys.TurnToPointCmd(36,36, vex::forward, 1)->withTimeout(0.5),
 		drive_sys.DriveToPointCmd({36,42}, vex::forward, 1)->withTimeout(2),
@@ -87,9 +87,6 @@ void auto_red_safe() {
 		drive_sys.DriveToPointCmd({54, 100}, vex::forward, 1)->withTimeout(1),
 		drive_sys.TurnToHeadingCmd(-80, 1)->withTimeout(0.5),
 		wallstakemech_sys.SetSetPointCmd(from_degrees(50))
-		// new DelayCommand(100),
-		// alliance_score_command(false),
-
 
 
 

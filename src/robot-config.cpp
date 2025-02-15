@@ -131,13 +131,14 @@ robot_specs_t robot_cfg = {
 MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
 
 bool blue_alliance(){
-    // switch(matchpath){
-    //     case BLUE_SAFE_AUTO:
-    //         return true;
-    //     default:
-    //         return false;
-    // }
-    return false;
+    if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
+        return true;
+        printf("BLUEA\n");
+    }
+    else{
+        return true;
+        printf("REDA\n");
+    }
 }
 ClamperSys clamper_sys{};
 IntakeSys intake_sys{};
@@ -165,21 +166,21 @@ void robot_init()
 {
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
-    matchpath = RED_SAFE_AUTO;
+    matchpath = MatchPaths::RED_SAFE_AUTO;
     vexDelay(100);
-    odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-    // if(matchpath == RED_SAFE_AUTO){
-    //     odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-    // }
-    // else if(matchpath == BLUE_SAFE_AUTO){
-    //     odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
-    // }
-    // else if(matchpath == BLUE_SAFE_AUTO){
-    //     odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
-    // }
-    // else{
-    //     printf("ERROR: NO PATH GIVEN\n");
-    // }
+    // odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    if(matchpath == MatchPaths::RED_SAFE_AUTO){
+        odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    }
+    else if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
+        odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
+    }
+    else if(matchpath == MatchPaths::BASIC_SKILLS){
+        odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
+    }
+    else{
+        printf("ERROR: NO PATH GIVEN\n");
+    }
     printf("started!\n");
     // printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
     competition::bStopAllTasksBetweenModes = true;
@@ -194,7 +195,7 @@ void robot_init()
     while (true) {
         pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
-        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
         // printf("%f\n", color_sensor.hue());
