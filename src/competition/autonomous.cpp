@@ -9,17 +9,18 @@ void skills();
 void autonomous()
 {
 	intake_sys.color_sort_on();
-	switch(matchpath){
-		case BLUE_SAFE_AUTO:
-			auto_blue_safe();
-			break;
-		case RED_SAFE_AUTO:
-			auto_red_safe();
-			break;
-		case BASIC_SKILLS:
-			skills_basic();
+	// switch(matchpath){
+	// 	case BLUE_SAFE_AUTO:
+	// 		auto_blue_safe();
+	// 		break;
+	// 	case RED_SAFE_AUTO:
+	// 		auto_red_safe();
+	// 		break;
+	// 	case BASIC_SKILLS:
+	// 		skills_basic();
 
-	}
+	// }
+	// auto_red_safe();
 }
 
 class DebugCommand : public AutoCommand {

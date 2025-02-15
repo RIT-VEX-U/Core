@@ -131,12 +131,13 @@ robot_specs_t robot_cfg = {
 MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
 
 bool blue_alliance(){
-    switch(matchpath){
-        case BLUE_SAFE_AUTO:
-            return true;
-        default:
-            return false;
-    }
+    // switch(matchpath){
+    //     case BLUE_SAFE_AUTO:
+    //         return true;
+    //     default:
+    //         return false;
+    // }
+    return false;
 }
 ClamperSys clamper_sys{};
 IntakeSys intake_sys{};
@@ -149,7 +150,7 @@ pose_t zero{0, 0, 0};
 
 
 
-OdometrySerial odom(true, true, zero, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, auto_start_red, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
@@ -166,18 +167,19 @@ void robot_init()
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
     matchpath = RED_SAFE_AUTO;
     vexDelay(100);
-    if(matchpath == RED_SAFE_AUTO){
-        odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else if(matchpath == BLUE_SAFE_AUTO){
-        odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else if(matchpath == BLUE_SAFE_AUTO){
-        odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else{
-        printf("ERROR: NO PATH GIVEN\n");
-    }
+    odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    // if(matchpath == RED_SAFE_AUTO){
+    //     odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    // }
+    // else if(matchpath == BLUE_SAFE_AUTO){
+    //     odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
+    // }
+    // else if(matchpath == BLUE_SAFE_AUTO){
+    //     odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
+    // }
+    // else{
+    //     printf("ERROR: NO PATH GIVEN\n");
+    // }
     printf("started!\n");
     // printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
     competition::bStopAllTasksBetweenModes = true;
@@ -190,9 +192,9 @@ void robot_init()
     wall_rot.setReversed(true);    
 
     while (true) {
-        // pose_t pose = base->get_position();
+        pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
-        // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
+        printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // wallstake_mech.update();
         // printf("%f\n", color_sensor.hue());

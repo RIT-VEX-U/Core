@@ -61,7 +61,11 @@ void WallStakeMech::update() {
         // double pout = kp * (setpoint.degrees() - get_angle().degrees());
         wallstake_pid.set_target(get_setpoint().degrees());
         double pidout = wallstake_pid.update(get_angle().degrees());
-        set_voltage(ffout + (-pidout));
+        if (get_angle().degrees() < 20 || get_angle().degrees() > 270) {
+            set_voltage(12);
+        } else {
+            set_voltage(ffout + (-pidout));
+        }
     }
     // printf("%f\n", (get_angle().degrees()));
 }
