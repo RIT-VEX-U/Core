@@ -14,8 +14,8 @@ void opcontrol() {
     // testing();
     intake_sys.conveyor_stop();
 
-    wallstakemech_sys.set_state(WallStakeMech::STOW);
-    wallstakemech_sys.hold = true;
+    // wallstakemech_sys.set_state(WallStakeMech::STOW);
+    // wallstakemech_sys.hold = true;
 
     ColorSortToggle.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
 
@@ -65,7 +65,7 @@ void opcontrol() {
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
         
-        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
+        // drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         vexDelay(20);
     }
@@ -93,28 +93,27 @@ void testing() {
             return true;
         }
     };
-
     con.ButtonX.pressed([]() {
         printf("running test");
         CommandController cc{
             new Async(new FunctionCommand([]() {
                 while (true) {
-                    printf("ODO X: %f ODO Y: %f, ODO ROT: %f DRIVEPID ERROR: %f\n", odom.get_position().x, odom.get_position().y, odom.get_position().rot, drive_pid.get_error());
+                    printf("ODO X: %f ODO Y: %f, ODO ROT: %f TURNPID ERROR: %f\n", odom.get_position().x, odom.get_position().y, odom.get_position().rot, turn_pid.get_error());
                     vexDelay(20);
                 }
                 return true;
             })),
-            intake_sys.IntakeCmd(10),
-            new DelayCommand(1000),
-            intake_sys.OuttakeCmd(10),
-            new DelayCommand(1000),
-            intake_sys.IntakeStopCmd(),
-            // drive_sys.TurnDegreesCmd(15, 1),
-            // drive_sys.TurnDegreesCmd(30, 1),
-            // drive_sys.TurnDegreesCmd(45, 1),
-            // drive_sys.TurnDegreesCmd(90, 1),
-            // drive_sys.TurnDegreesCmd(180, 1),
-            // drive_sys.TurnDegreesCmd(360, 1),
+            // intake_sys.IntakeCmd(10),
+            // new DelayCommand(1000),
+            // intake_sys.OuttakeCmd(10),
+            // new DelayCommand(1000),
+            // intake_sys.IntakeStopCmd(),
+            drive_sys.TurnDegreesCmd(15, 1),
+            drive_sys.TurnDegreesCmd(30, 1),
+            drive_sys.TurnDegreesCmd(45, 1),
+            drive_sys.TurnDegreesCmd(90, 1),
+            drive_sys.TurnDegreesCmd(180, 1),
+            drive_sys.TurnDegreesCmd(360, 1),
         };
         cc.run();
     });

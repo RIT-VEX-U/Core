@@ -136,7 +136,7 @@ bool blue_alliance(){
         printf("BLUEA\n");
     }
     else{
-        return true;
+        return false;
         printf("REDA\n");
     }
 }
@@ -167,8 +167,8 @@ void robot_init()
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
     matchpath = MatchPaths::RED_SAFE_AUTO;
-    vexDelay(100);
     // odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    vexDelay(500);
     if(matchpath == MatchPaths::RED_SAFE_AUTO){
         odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     }
@@ -190,16 +190,16 @@ void robot_init()
     turn_pid.set_limits(0.5, 1);
     // mcglight_board.set(true);
     // wallstake_mech.set_voltage(5);
-    wall_rot.setReversed(true);    
+    wall_rot.setReversed(true);
 
     while (true) {
-        pose_t pose = base->get_position();
+        // pose_t pose = base->get_position();
         // pose_t posetank = tankodom.get_position();
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
         // printf("%" PRIu64 ", %f, %f, %f\n", vexSystemHighResTimeGet(), pose.x, pose.y, pose.rot);
-        // wallstake_mech.update();
+        // wallstakemech_sys.hold = false;
         // printf("%f\n", color_sensor.hue());
-        // printf("%f\n", wallstakemech_sys.get_angle().degrees());
+        // printf("Wallstake Angle: %f\n", wallstakemech_sys.get_angle().degrees());
         // wallstake_mech.set_setpoint(from_degrees(0));
         // vexDelay(5000);
         // wallstake_mech.set_setpoint(from_degrees(180));
