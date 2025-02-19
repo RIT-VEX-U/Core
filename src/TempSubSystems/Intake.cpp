@@ -19,7 +19,7 @@ bool IntakeSys::should_stop_for_colorsort() {
     if (color_sort_state == ColorSortState::OFF) {
         return false;
     }
-    return color_sensor_counter > 0 && color_sensor_counter < 15;
+    return color_sensor_counter > 0 && color_sensor_counter < 16;
 }
 
 void IntakeSys::colorSort() {
@@ -114,6 +114,7 @@ int IntakeSys::thread_fn(void *ptr) {
             conveyor.stop();
         }
         this_thread::sleep_for(10);
+        this_thread::yield();
     }
     return 0;
 }

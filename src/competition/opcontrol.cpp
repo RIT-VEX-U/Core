@@ -19,7 +19,7 @@ void opcontrol() {
 
     conveyor.stop();
 
-    wallstakemech_sys.set_state(WallStakeMech::STOW);
+    wallstakemech_sys.set_setpoint(from_degrees(200));
     wallstakemech_sys.hold = true;
     clamper_sys.unclamp();
 

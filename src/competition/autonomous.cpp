@@ -12,58 +12,14 @@ void skills();
 void autonomous() {
     // vexDelay(700);
 
-    game_auto_blue();
+    game_auto_red();
 }
 
 void game_auto_red() {
   intake_sys.color_sort_on();
+  
+  
     CommandController cc{
-      // (new Async((new FunctionCommand([]() {
-      //                while (true) {
-      //                    mcglight_board.set(true);
-      //                    OdometryBase *odombase = &odom;
-      //                    pose_t pos = odombase->get_position();
-      //                    // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot,
-      //                    // conveyor.current());
-      //                    vexDelay(20);
-
-      //                    if (goal_sensor.objectDistance(vex::mm) < 40 && goal_counter == 0) {
-      //                        goal_grabber_sol.set(true);
-      //                    }
-
-      //                    if (goal_counter > 0) {
-      //                        goal_counter--;
-      //                    }
-
-      //                    if (blue_alliance) {
-      //                        if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-      //                            color_sensor_counter = 30;
-      //                        }
-      //                    } else {
-      //                        if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter == 0)
-      //                        {
-      //                            color_sensor_counter = 30;
-      //                        }
-      //                    }
-
-      //                    if (color_sensor_counter == 25) {
-      //                        color_sensor_counter--;
-      //                        conveyor.stop();
-      //                    }
-
-      //                    if (color_sensor_counter > 0) {
-      //                        color_sensor_counter--;
-      //                    }
-
-      //                    if (conveyor_started && color_sensor_counter == 0) {
-      //                        //  conveyor_intake();
-      //                    }
-      //                }
-      //                return true;
-      //            })
-      //  )->withTimeout(30)))
-      //   ->withTimeout(30),
-
       // Goal Rush
       new Parallel{
         new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
@@ -79,10 +35,10 @@ void game_auto_red() {
       intake_sys.IntakeCmd(),
 
       // First set of rings
-      drive_sys.TurnToPointCmd(48, 24, vex::forward, 0.8, 0)->withTimeout(0.5), // conveyor_intake_command(),
+      drive_sys.TurnToPointCmd(48, 24, vex::fwd, 0.6, 0)->withTimeout(1), // conveyor_intake_command(),
       drive_sys.DriveToPointCmd({48, 24}, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
-      drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
+      drive_sys.DriveToPointCmd({48, 24}, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Second set of rings
       drive_sys.TurnToHeadingCmd(180, 0.8, 0)->withTimeout(1),
@@ -91,28 +47,32 @@ void game_auto_red() {
       drive_sys.DriveForwardCmd(10, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Corner shit
-      drive_sys.TurnToHeadingCmd(-135, 0.8, 0)->withTimeout(1),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-137, 1, 0)->withTimeout(1),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-137, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-137, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-137, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      
 
       // Drop goal in corner
-      drive_sys.TurnToHeadingCmd(45, 0.8, 0)->withTimeout(0.5), // goal_grabber_command(false),
+      drive_sys.TurnToHeadingCmd(45, 0.8, 0)->withTimeout(1),
+      
+
       clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
       intake_sys.IntakeStopCmd(),
       intake_sys.ConveyorStopCmd(),
-      drive_sys.DriveTankCmd(-0.3, -0.3)->withTimeout(0.5),
-
-      // Align for goal handoff
-      drive_sys.DriveForwardCmd(8, vex::forward, 0.5, 0)->withTimeout(1),
-      drive_sys.TurnToHeadingCmd(-135, 0.8, 0)->withTimeout(0.5), drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
-
-      // new DebugCommand(),
+      drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(0.5),
+      drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(0.1),
     };
     cc.run();
 }
@@ -122,54 +82,6 @@ void game_auto_blue() {
   
   
     CommandController cc{
-      // (new Async((new FunctionCommand([]() {
-      //                while (true) {
-      //                    mcglight_board.set(true);
-      //                    OdometryBase *odombase = &odom;
-      //                    pose_t pos = odombase->get_position();
-      //                    // printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot,
-      //                    // conveyor.current());
-      //                    vexDelay(20);
-
-      //                    if (goal_sensor.objectDistance(vex::mm) < 40 && goal_counter == 0) {
-      //                        goal_grabber_sol.set(true);
-      //                    }
-
-      //                    if (goal_counter > 0) {
-      //                        goal_counter--;
-      //                    }
-
-      //                    if (blue_alliance) {
-      //                        if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0)
-      //                        {
-      //                            color_sensor_counter = 30;
-      //                        }
-      //                    } else {
-      //                        if (color_sensor.hue() > 100 && color_sensor.hue() < 220 && color_sensor_counter ==
-      //                        0) {
-      //                            color_sensor_counter = 30;
-      //                        }
-      //                    }
-
-      //                    if (color_sensor_counter == 25) {
-      //                        color_sensor_counter--;
-      //                        conveyor.stop();
-      //                    }
-
-      //                    if (color_sensor_counter > 0) {
-      //                        color_sensor_counter--;
-      //                    }
-
-      //                    if (conveyor_started && color_sensor_counter == 0) {
-      //                        conveyor_intake();
-      //                    }
-      //                }
-      //                return true;
-      //            })
-      //  )->withTimeout(30)))
-      //   ->withTimeout(30),
-
-      // Goal Rush
       // Goal Rush
       new Parallel{
         new DriveForwardCommand(drive_sys, drive_motioncontroller, 49, vex::reverse, 1, 0),
@@ -222,14 +134,7 @@ void game_auto_blue() {
       intake_sys.IntakeStopCmd(),
       intake_sys.ConveyorStopCmd(),
       drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(0.5),
-      drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(0.3),
-
-      // // Align for goal handoff
-      // drive_sys.DriveForwardCmd(8, vex::forward, 0.5, 0)->withTimeout(1),
-      // drive_sys.TurnToHeadingCmd(-45, 0.8, 0)->withTimeout(0.5), drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
-
-      // new DebugCommand(),
-      // stop_conveyor_command()
+      drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(0.1),
     };
     cc.run();
 }
