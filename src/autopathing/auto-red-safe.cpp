@@ -38,24 +38,26 @@ void auto_red_safe() {
 		drive_sys.DriveToPointCmd({48, 96}, vex::forward, 1)->withTimeout(1),
 
 		drive_sys.TurnToPointCmd(48, 120, vex::forward, 1)->withTimeout(1),
+		// drive_sys.TurnToHeadingCmd(90, 1)->withTimeout(1),
 		intake_sys.IntakeCmd(10),
 		intake_sys.ConveyorInCmd(10),
-		// drive_sys.DriveTankCmd(1, 1)->withTimeout(1),
-		// drive_sys.DriveTankCmd(-1, -1)->withTimeout(1),
-		drive_sys.DriveToPointCmd({24, 144}, vex::forward, 1)->withTimeout(1),
-		drive_sys.DriveForwardCmd(24, vex::reverse, 1),
+		// drive_sys.DriveToPointCmd({24, 144}, vex::forward, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(48, vex::forward, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(48, vex::reverse, 1)->withTimeout(1),
 		//turn to last duo ring
 		drive_sys.TurnToPointCmd(24, 120, vex::forward, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({24, 120}, vex::forward, 0.4)->withTimeout(2),
 		// //goes to corner
-		drive_sys.TurnToHeadingCmd(135)->withTimeout(2),
+		drive_sys.TurnToPointCmd(0, 144, vex::forward, 1)->withTimeout(1),
 		intake_sys.IntakeCmd(),
-		drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(1.5),
-		drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(1),
-		drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(1.5),
-		drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(1),
-		drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(1.5),
-		drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(1),
+		drive_sys.DriveForwardCmd(35, vex::forward, 1)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(30, vex::reverse, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(35, vex::forward, 1)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(30, vex::reverse, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(35, vex::forward, 1)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(30, vex::reverse, 1)->withTimeout(1),
+		drive_sys.DriveForwardCmd(35, vex::forward, 1)->withTimeout(1.5),
+		drive_sys.DriveForwardCmd(30, vex::reverse, 1)->withTimeout(1),
 		new DelayCommand(1000),
 		//drop off goal
 		intake_sys.OuttakeCmd(),
@@ -63,7 +65,7 @@ void auto_red_safe() {
 		drive_sys.DriveToPointCmd({36,42}, vex::forward, 1)->withTimeout(2),
 		clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
 		//get to last position
-		drive_sys.TurnToPointCmd(60, 60, vex::reverse, 1),
+		drive_sys.TurnToPointCmd(60, 60, vex::reverse, 1)->withTimeout(1),
 		drive_sys.DriveToPointCmd({60, 60}, vex::reverse, 1)
 
 
