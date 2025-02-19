@@ -71,12 +71,12 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-  .p = 0.04,
-  .i = 0.0042,
-  .d = 0.004,
-  .deadband = 0.5,
-  .on_target_time = 0.1,
-  .error_method = PID::ERROR_TYPE::ANGULAR,
+    .p = 0.04,
+    .i = 0.0042,
+    .d = 0.004,
+    .deadband = 2,
+    .on_target_time = 0.1,
+    .error_method = PID::ERROR_TYPE::ANGULAR,
   
 };
 
@@ -128,7 +128,7 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
-MatchPaths matchpath = MatchPaths::BASIC_SKILLS;
+MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
 
 bool blue_alliance(){
     if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
@@ -165,10 +165,10 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 void robot_init()
 {
 
-    screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
+    screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid")});
     //matchpath = MatchPaths::RED_SAFE_AUTO;
     // odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-    vexDelay(500);
+    vexDelay(1000);
     if(matchpath == MatchPaths::RED_SAFE_AUTO){
         odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     }

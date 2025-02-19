@@ -73,7 +73,6 @@ extern ClamperSys clamper_sys;
 extern IntakeSys intake_sys;
 extern PID drive_pid;
 extern PID turn_pid;
-extern PID turn_pidBigI;
 extern MotionController::m_profile_cfg_t drive_motioncontroller_cfg;
 extern MotionController drive_motioncontroller;
 

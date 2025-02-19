@@ -12,10 +12,10 @@ void auto__();
  */
 void opcontrol() {
     // testing();
-    intake_sys.conveyor_stop();
+    // intake_sys.conveyor_stop();
 
-    // wallstakemech_sys.set_state(WallStakeMech::STOW);
-    // wallstakemech_sys.hold = true;
+    wallstakemech_sys.set_setpoint(from_degrees(200));
+    wallstakemech_sys.hold = false;
 
     ColorSortToggle.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
 
@@ -61,11 +61,13 @@ void opcontrol() {
             intake_sys.intake_stop();
             intake_sys.conveyor_stop();
         }
+        pose_t pos = odom.get_position();
+        printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
 
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
         
-        // drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
+        drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         vexDelay(20);
     }
@@ -83,8 +85,8 @@ void testing() {
             // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
             // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
             while (true) {
-                double left = (double)con.Axis3.position() / 100;
-                double right = (double)con.Axis2.position() / 100;
+                // double left = (double)con.Axis3.position() / 100;
+                // double right = (double)con.Axis2.position() / 100;
 
                 // drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
@@ -93,27 +95,22 @@ void testing() {
             return true;
         }
     };
+
     con.ButtonX.pressed([]() {
         printf("running test");
         CommandController cc{
             new Async(new FunctionCommand([]() {
                 while (true) {
                     printf("ODO X: %f ODO Y: %f, ODO ROT: %f TURNPID ERROR: %f\n", odom.get_position().x, odom.get_position().y, odom.get_position().rot, turn_pid.get_error());
-                    vexDelay(20);
+                    vexDelay(100);
                 }
                 return true;
             })),
-            // intake_sys.IntakeCmd(10),
-            // new DelayCommand(1000),
-            // intake_sys.OuttakeCmd(10),
-            // new DelayCommand(1000),
-            // intake_sys.IntakeStopCmd(),
-            drive_sys.TurnDegreesCmd(15, 1),
-            drive_sys.TurnDegreesCmd(30, 1),
-            drive_sys.TurnDegreesCmd(45, 1),
-            drive_sys.TurnDegreesCmd(90, 1),
-            drive_sys.TurnDegreesCmd(180, 1),
-            drive_sys.TurnDegreesCmd(360, 1),
+            drive_sys.TurnDegreesCmd(15, 1)->withTimeout(3),
+            drive_sys.TurnDegreesCmd(30, 1)->withTimeout(3),
+            drive_sys.TurnDegreesCmd(45, 1)->withTimeout(3),
+            drive_sys.TurnDegreesCmd(90, 1)->withTimeout(3),
+            drive_sys.TurnDegreesCmd(180, 1)->withTimeout(3),
         };
         cc.run();
     });
