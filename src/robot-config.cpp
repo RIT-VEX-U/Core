@@ -128,7 +128,7 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
-MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
+MatchPaths matchpath = MatchPaths::BASIC_SKILLS;
 
 bool blue_alliance(){
     if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
@@ -143,7 +143,7 @@ bool blue_alliance(){
 ClamperSys clamper_sys{};
 IntakeSys intake_sys{};
 
-pose_t skills_start{19.25, 48, 0};
+pose_t skills_start{19, 96, 0};
 pose_t test{24, 96, 0};
 pose_t auto_start_red{16.25, 88.75, 180};
 pose_t auto_start_blue{127.75, 88.75, 0};
@@ -151,7 +151,7 @@ pose_t zero{0, 0, 0};
 
 
 
-OdometrySerial odom(true, true, auto_start_red, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
@@ -166,7 +166,7 @@ void robot_init()
 {
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(drive_pid, "drivepid")});
-    matchpath = MatchPaths::RED_SAFE_AUTO;
+    //matchpath = MatchPaths::RED_SAFE_AUTO;
     // odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     vexDelay(500);
     if(matchpath == MatchPaths::RED_SAFE_AUTO){
