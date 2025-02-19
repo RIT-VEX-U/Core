@@ -38,13 +38,16 @@ void auto_red_safe() {
 		drive_sys.DriveToPointCmd({48, 96}, vex::forward, 1)->withTimeout(1),
 		//get first duo ring
 		drive_sys.TurnToPointCmd(48, 120, vex::forward, 1)->withTimeout(1),
+		drive_sys.TurnToHeadingCmd(90, 1)->withTimeout(0.01),
 		intake_sys.IntakeCmd(10),
 		intake_sys.ConveyorInCmd(10),
-		drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(1.5),
-		drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(0.6),
+		drive_sys.DriveForwardCmd(12, vex::forward, 0.5)->withTimeout(1.5),
+		drive_sys.TurnToHeadingCmd(90, 1)->withTimeout(0.01),
+		drive_sys.DriveForwardCmd(12, vex::reverse, 0.5)->withTimeout(1.5),
 		// drive_sys.DriveForwardCmd(12, vex::reverse, 0.4)->withTimeout(1),
 		//turn to last duo ring
 		drive_sys.TurnToPointCmd(24, 120, vex::forward, 1)->withTimeout(2),
+		drive_sys.TurnToHeadingCmd(180, 1)->withTimeout(0.01),
 		drive_sys.DriveToPointCmd({24, 120}, vex::forward, 0.4)->withTimeout(1),
 		// //goes to corner
 		drive_sys.TurnToPointCmd(0, 144, vex::forward, 1)->withTimeout(1),
