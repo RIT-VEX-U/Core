@@ -91,9 +91,9 @@ PID::pid_config_t turn_pid_cfg_bigI{
 };
 
 PID::pid_config_t correction_pid_cfg{
-    .p = 0.036,
-  .i = 0.0001,
-  .d = 0.0036,
+    .p = 0.01,
+    .i = 0.0001,
+    .d = 0.0025,
   .deadband = 2,
 };
 
@@ -151,7 +151,7 @@ pose_t zero{0, 0, 0};
 
 
 
-OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, auto_start_red, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
