@@ -7,6 +7,13 @@ void IntakeSys::color_sort_on() { color_sort_state = IntakeSys::ColorSortState::
 
 void IntakeSys::color_sort_off() { color_sort_state = IntakeSys::ColorSortState::OFF; }
 
+AutoCommand *IntakeSys::SetColorSortCmd(bool colorsort_on) {
+    return new FunctionCommand([&]() {
+        set_color_sort_bool(colorsort_on);
+        return true;
+    });
+}
+
 void IntakeSys::set_color_sort_bool(bool ColorSortOn) {
     if (ColorSortOn) {
         color_sort_state = IntakeSys::ColorSortState::ON;
@@ -71,7 +78,6 @@ int IntakeSys::thread_fn(void *ptr) {
     IntakeSys &self = *(IntakeSys *)ptr;
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
-    
 
     while (true) {
         if (self.color_sort_state == ColorSortState::ON && self.intake_state == IntakeState::IN) {
@@ -95,16 +101,14 @@ int IntakeSys::thread_fn(void *ptr) {
             if (self.should_stop_for_colorsort()) {
                 // conveyor.stop();
                 wallstakemech_sys.set_setpoint(from_degrees(130));
-                
+
             } else {
                 intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
-                conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt); 
+                conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
                 if (self.color_sort_state == ColorSortState::ON && self.color_sensor_counter <= 0) {
                     wallstakemech_sys.set_setpoint(from_degrees(200));
                 }
-                           
             }
-
 
         } else if (self.conveyor_state == IntakeState::OUT) {
             // printf("ConveyorState OUT \n");

@@ -49,6 +49,8 @@ class WallStakeMech {
 
     void spin(double volts);
 
+    AutoCommand*SetAngleCmd(double ang);
+
   private:
     vex::motor_group motors;
     vex::rotation rotation;

@@ -2,6 +2,7 @@
 #include "robot-config.h"
 #include "vex.h"
 
+#include "competition/autonomous.h"
 const vex::controller::button &goal_grabber = con.ButtonRight;
 const vex::controller::button &conveyor_button = con.ButtonR2;
 const vex::controller::button &conveyor_button_rev = con.ButtonR1;

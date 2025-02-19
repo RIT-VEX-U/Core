@@ -19,6 +19,7 @@ class ClamperSys {
 
     bool is_clamped();
     AutoCommand *ClampCmd(ClamperState state);
+    AutoCommand *AutoClampCmd(bool do_autoclamp);
 
   private:
     void autoClamp();

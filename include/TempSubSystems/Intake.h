@@ -60,6 +60,8 @@ class IntakeSys {
     AutoCommand *ConveyorOutCmd(double amt = 10.0);
     AutoCommand *ConveyorStopCmd();
 
+    AutoCommand *SetColorSortCmd(bool colorsort_on);
+
   private:
     vex::task task;
     IntakeState intake_state = IntakeState::STOP;

@@ -9,6 +9,12 @@ void ClamperSys::autoClamp() {
     }
 }
 
+AutoCommand *ClamperSys::AutoClampCmd(bool do_autoclamp) {
+    return new FunctionCommand([&]() {
+        AutoClamping = do_autoclamp;
+        return true;
+    });
+}
 void ClamperSys::start_auto_clamping() { AutoClamping = true; };
 void ClamperSys::stop_auto_clamping() { AutoClamping = false; };
 
