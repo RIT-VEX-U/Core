@@ -188,7 +188,7 @@ void game_auto_blue() {
       drive_sys.TurnToPointCmd(96, 24, vex::fwd, 0.6, 0)->withTimeout(1), // conveyor_intake_command(),
       drive_sys.DriveToPointCmd({96, 24}, vex::forward, 0.8, 0)->withTimeout(2),
       drive_sys.DriveForwardCmd(8, vex::forward, 0.8, 0)->withTimeout(2),
-      drive_sys.DriveForwardCmd(8, vex::reverse, 0.8, 0)->withTimeout(2),
+      drive_sys.DriveToPointCmd({96, 24}, vex::reverse, 0.8, 0)->withTimeout(2),
 
       // Second set of rings
       drive_sys.TurnToHeadingCmd(0, 0.8, 0)->withTimeout(1),
@@ -198,25 +198,35 @@ void game_auto_blue() {
 
       // Corner shit
       drive_sys.TurnToHeadingCmd(-43, 1, 0)->withTimeout(1),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(16, vex::forward, 0.4, 0)->withTimeout(1.5),
-      drive_sys.DriveForwardCmd(13, vex::reverse, 0.4, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-43, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-43, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      drive_sys.TurnToHeadingCmd(-43, 1, 0)->withTimeout(1),
+      new DelayCommand(1500),
+      drive_sys.DriveForwardCmd(16, vex::forward, 0.7, 0)->withTimeout(1.5),
+      drive_sys.DriveForwardCmd(13, vex::reverse, 0.5, 0)->withTimeout(1.5),
+      
 
       // Drop goal in corner
-      drive_sys.TurnToHeadingCmd(135, 0.8, 0)->withTimeout(0.5), 
+      drive_sys.TurnToHeadingCmd(135, 0.8, 0)->withTimeout(1),
+      
+
       clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
       intake_sys.IntakeStopCmd(),
       intake_sys.ConveyorStopCmd(),
-      drive_sys.DriveTankCmd(-0.3, -0.3)->withTimeout(0.5),
+      drive_sys.DriveTankCmd(-0.4, -0.4)->withTimeout(0.5),
+      drive_sys.DriveTankCmd(0.4, 0.4)->withTimeout(0.3),
 
-      // Align for goal handoff
-      drive_sys.DriveForwardCmd(8, vex::forward, 0.5, 0)->withTimeout(1),
-      drive_sys.TurnToHeadingCmd(-45, 0.8, 0)->withTimeout(0.5), drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
+      // // Align for goal handoff
+      // drive_sys.DriveForwardCmd(8, vex::forward, 0.5, 0)->withTimeout(1),
+      // drive_sys.TurnToHeadingCmd(-45, 0.8, 0)->withTimeout(0.5), drive_sys.DriveForwardCmd(6, vex::forward, 0.5, 0),
 
       // new DebugCommand(),
       // stop_conveyor_command()

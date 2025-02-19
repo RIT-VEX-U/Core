@@ -19,7 +19,7 @@ bool IntakeSys::should_stop_for_colorsort() {
     if (color_sort_state == ColorSortState::OFF) {
         return false;
     }
-    return color_sensor_counter > 0 && color_sensor_counter < 23;
+    return color_sensor_counter > 0 && color_sensor_counter < 15;
 }
 
 void IntakeSys::colorSort() {
@@ -27,13 +27,15 @@ void IntakeSys::colorSort() {
     mcglight_board.set(true);
     if (blue_alliance()) {
         if (color_sensor.hue() > 0 && color_sensor.hue() < 30 && color_sensor_counter == 0) {
-            color_sensor_counter = 30;
+            color_sensor_counter = 20;
             conveyor.spin(vex::forward, intakeVolts, vex::volt);
+            // wallstakemech_sys.set_setpoint(from_degrees(130));
         }
     } else {
         if (color_sensor.hue() > 160 && color_sensor.hue() < 240 && color_sensor_counter == 0) {
-            color_sensor_counter = 30;
+            color_sensor_counter = 20;
             conveyor.spin(vex::forward, intakeVolts, vex::volt);
+            // wallstakemech_sys.set_setpoint(from_degrees(130));
         }
     }
 
@@ -91,11 +93,19 @@ int IntakeSys::thread_fn(void *ptr) {
         if (self.conveyor_state == IntakeState::IN) {
             // printf("ConveyorState IN \n");
             if (self.should_stop_for_colorsort()) {
-                conveyor.stop();
+                // conveyor.stop();
+                wallstakemech_sys.set_setpoint(from_degrees(130));
+                
             } else {
                 intake_motor.spin(vex::fwd, self.intakeVolts, vex::volt);
-                conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
+                conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt); 
+                if (self.color_sort_state == ColorSortState::ON && self.color_sensor_counter <= 0) {
+                    wallstakemech_sys.set_setpoint(from_degrees(200));
+                }
+                           
             }
+
+
         } else if (self.conveyor_state == IntakeState::OUT) {
             // printf("ConveyorState OUT \n");
             conveyor.spin(vex::reverse, self.conveyorVolts, vex::volt);
@@ -103,7 +113,7 @@ int IntakeSys::thread_fn(void *ptr) {
             // printf("ConveyorState STOP \n");
             conveyor.stop();
         }
-        this_thread::sleep_for(20);
+        this_thread::sleep_for(10);
     }
     return 0;
 }
