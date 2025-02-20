@@ -11,6 +11,9 @@ void auto__();
  * Main entrypoint for the driver control period
  */
 void opcontrol() {
+    vexDelay(1000);
+    autonomous();
+    return;
     // testing();
     wallstakemech_sys.hold = false;
     // intake_sys.conveyor_stop();
@@ -40,7 +43,7 @@ void opcontrol() {
         intake_sys.intake_stop();
         intake_sys.conveyor_stop();
     });
-    
+
     wallstake_toggler.pressed([]() {
         wallstakemech_sys.hold = true;
         if (wallstakemech_sys.get_angle().degrees() > 180 || wallstake_motors.velocity(vex::velocityUnits::dps) > 5) {
@@ -67,7 +70,7 @@ void opcontrol() {
 
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
-        
+
         drive_sys.drive_tank(left, right, 1, TankDrive::BrakeType::None);
 
         vexDelay(20);
@@ -100,18 +103,21 @@ void testing() {
     con.ButtonX.pressed([]() {
         printf("running test");
         CommandController cc{
-            new Async(new FunctionCommand([]() {
-                while (true) {
-                    printf("ODO X: %f ODO Y: %f, ODO ROT: %f TURNPID ERROR: %f\n", odom.get_position().x, odom.get_position().y, odom.get_position().rot, turn_pid.get_error());
-                    vexDelay(100);
-                }
-                return true;
-            })),
-            drive_sys.TurnDegreesCmd(15, 1),
-            // drive_sys.TurnDegreesCmd(30, 1)->withTimeout(3),
-            // drive_sys.TurnDegreesCmd(45, 1)->withTimeout(3),
-            // drive_sys.TurnDegreesCmd(90, 1)->withTimeout(3),
-            // drive_sys.TurnDegreesCmd(180, 1)->withTimeout(3),
+          new Async(new FunctionCommand([]() {
+              while (true) {
+                  printf(
+                    "ODO X: %f ODO Y: %f, ODO ROT: %f TURNPID ERROR: %f\n", odom.get_position().x,
+                    odom.get_position().y, odom.get_position().rot, turn_pid.get_error()
+                  );
+                  vexDelay(100);
+              }
+              return true;
+          })),
+          drive_sys.TurnDegreesCmd(15, 1),
+          // drive_sys.TurnDegreesCmd(30, 1)->withTimeout(3),
+          // drive_sys.TurnDegreesCmd(45, 1)->withTimeout(3),
+          // drive_sys.TurnDegreesCmd(90, 1)->withTimeout(3),
+          // drive_sys.TurnDegreesCmd(180, 1)->withTimeout(3),
         };
         cc.run();
     });

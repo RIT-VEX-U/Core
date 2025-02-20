@@ -1,8 +1,7 @@
 #include "robot-config.h"
-#include "inttypes.h"
 #include "core.h"
+#include "inttypes.h"
 // #include "autopathing/auto-red-safe.cpp"
-
 
 vex::brain Brain;
 vex::controller con;
@@ -24,8 +23,8 @@ vex::motor right_front_top(vex::PORT18, vex::gearSetting::ratio6_1, false);
 vex::motor right_back_top(vex::PORT17, vex::gearSetting::ratio6_1, false);
 vex::motor_group right_drive_motors({right_back_bottom, right_center_bottom, right_back_top, right_front_top});
 
-vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1,true);
-vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1,false);
+vex::motor conveyor(vex::PORT15, vex::gearSetting::ratio6_1, true);
+vex::motor intake_motor(vex::PORT16, vex::gearSetting::ratio6_1, false);
 
 vex::optical color_sensor(vex::PORT5);
 
@@ -38,17 +37,17 @@ Rotation2d tolerance(from_degrees(1));
 double offset(0);
 
 vex::rotation wall_rot(vex::PORT11);
-PID::pid_config_t wallstake_pid_config {.p = 0.3, .d = 0.005, .error_method = PID::ANGULAR};
+PID::pid_config_t wallstake_pid_config{.p = 0.3, .d = 0.005, .error_method = PID::ANGULAR};
 PID wallstake_pid(wallstake_pid_config);
 
 vex::distance goal_sensor(vex::PORT6);
 WallStakeMech wallstakemech_sys(wallstake_motors, wall_rot, tolerance, initial, offset, wallstake_pid);
 
-//pnematices
+// pnematices
 vex::digital_out mcglight_board(Brain.ThreeWirePort.C);
 vex::digital_out goal_grabber_sol{Brain.ThreeWirePort.A};
 
-//Button Definitions
+// Button Definitions
 const vex::controller::button &goal_grabber = con.ButtonB;
 const vex::controller::button &conveyor_button = con.ButtonR1;
 const vex::controller::button &conveyor_button_rev = con.ButtonR2;
@@ -71,13 +70,13 @@ PID::pid_config_t drive_pid_cfg{
 PID drive_pid{drive_pid_cfg};
 
 PID::pid_config_t turn_pid_cfg{
-    .p = 0.04,
-    .i = 0.0042,
-    .d = 0.004,
-    .deadband = 2,
-    .on_target_time = 0.1,
-    .error_method = PID::ERROR_TYPE::ANGULAR,
-  
+  .p = 0.04,
+  .i = 0.0042,
+  .d = 0.004,
+  .deadband = 2,
+  .on_target_time = 0.1,
+  .error_method = PID::ERROR_TYPE::ANGULAR,
+
 };
 
 PID::pid_config_t turn_pid_cfg_bigI{
@@ -87,55 +86,45 @@ PID::pid_config_t turn_pid_cfg_bigI{
   .deadband = 2,
   .on_target_time = 0.1,
   .error_method = PID::ERROR_TYPE::ANGULAR,
-  
+
 };
 
 PID::pid_config_t correction_pid_cfg{
-    .p = 0.01,
-    .i = 0.0001,
-    .d = 0.0025,
+  .p = 0.01,
+  .i = 0.0001,
+  .d = 0.0025,
   .deadband = 2,
 };
 
-FeedForward::ff_config_t drive_ff_cfg{
-    .kS = 0.01,
-    .kV = 0.015,
-    .kA = 0.002,
-    .kG = 0
-};
+FeedForward::ff_config_t drive_ff_cfg{.kS = 0.01, .kV = 0.015, .kA = 0.002, .kG = 0};
 
 MotionController::m_profile_cfg_t drive_motioncontroller_cfg{
-    .max_v = 50,
-    .accel = 150,
-    .pid_cfg = drive_pid_cfg,
-    .ff_cfg = drive_ff_cfg
+  .max_v = 50, .accel = 150, .pid_cfg = drive_pid_cfg, .ff_cfg = drive_ff_cfg
 };
 MotionController drive_motioncontroller{drive_motioncontroller_cfg};
-
 
 PID turn_pid{turn_pid_cfg};
 PID turn_pidBigI{turn_pid_cfg_bigI};
 // ======== SUBSYSTEMS ========
 
 robot_specs_t robot_cfg = {
-    .robot_radius = 12,
-    .odom_wheel_diam = 2.75,
-    .odom_gear_ratio = 0.75,
+  .robot_radius = 12,
+  .odom_wheel_diam = 2.75,
+  .odom_gear_ratio = 0.75,
 
-    .drive_correction_cutoff = 10,
+  .drive_correction_cutoff = 10,
 
-    .drive_feedback = &drive_pid,
-    .turn_feedback = &turn_pid,
-    // .correction_pid = correction_pid_cfg,
+  .drive_feedback = &drive_pid,
+  .turn_feedback = &turn_pid,
+  // .correction_pid = correction_pid_cfg,
 };
-MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
+MatchPaths matchpath = MatchPaths::BASIC_SKILLS;
 
-bool blue_alliance(){
-    if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
+bool blue_alliance() {
+    if (matchpath == MatchPaths::BLUE_SAFE_AUTO) {
         return true;
         printf("BLUEA\n");
-    }
-    else{
+    } else {
         return false;
         printf("REDA\n");
     }
@@ -149,11 +138,9 @@ pose_t auto_start_red{16.25, 88.75, 180};
 pose_t auto_start_blue{127.75, 88.75, 0};
 pose_t zero{0, 0, 0};
 
+OdometrySerial odom(true, true, skills_start, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
-
-OdometrySerial odom(true, true, auto_start_red, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
-
-OdometryBase* base = &odom;
+OdometryBase *base = &odom;
 
 TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 
@@ -162,29 +149,28 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
 /**
  * Main robot initialization on startup. Runs before opcontrol and autonomous are started.
  */
-void robot_init()
-{
+void robot_init() {
 
     screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid")});
-    //matchpath = MatchPaths::RED_SAFE_AUTO;
-    // odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
+    // matchpath = MatchPaths::RED_SAFE_AUTO;
+    //  odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     vexDelay(1000);
-    if(matchpath == MatchPaths::RED_SAFE_AUTO){
+    if (matchpath == MatchPaths::RED_SAFE_AUTO) {
+        printf("RED\n");
         odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
+    } else if (matchpath == MatchPaths::BLUE_SAFE_AUTO) {
+        printf("BLUE\n");
         odom.send_config(auto_start_blue, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else if(matchpath == MatchPaths::BASIC_SKILLS){
+    } else if (matchpath == MatchPaths::BASIC_SKILLS) {
+        printf("SKILLS\n");
         odom.send_config(skills_start, pose_t{-3.83, 0.2647, 270}, false);
-    }
-    else{
+    } else {
         printf("ERROR: NO PATH GIVEN\n");
     }
     printf("started!\n");
     // printf("%d, %d\n", competition::bStopTasksBetweenModes, competition::bStopAllTasksBetweenModes);
-    competition::bStopAllTasksBetweenModes = true;
-    competition::bStopTasksBetweenModes = true;
+    // competition::bStopTasksBetweenModes = true;
+    // competition::bStopAllTasksBetweenModes = true;
     color_sensor.setLight(vex::ledState::on);
     color_sensor.setLightPower(100, vex::pct);
     turn_pid.set_limits(0.5, 1);
