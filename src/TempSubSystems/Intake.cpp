@@ -100,6 +100,7 @@ int IntakeSys::thread_fn(void *ptr) {
             // printf("ConveyorState IN \n");
             if (self.should_stop_for_colorsort()) {
                 // conveyor.stop();
+                printf("AHHHHHH\n");
                 wallstakemech_sys.set_setpoint(from_degrees(130));
 
             } else {
@@ -107,6 +108,7 @@ int IntakeSys::thread_fn(void *ptr) {
                 conveyor.spin(vex::fwd, self.conveyorVolts, vex::volt);
                 if (self.color_sort_state == ColorSortState::ON && self.color_sensor_counter <= 0) {
                     wallstakemech_sys.set_setpoint(from_degrees(200));
+                    printf("AHHHHHH\n");
                 }
             }
 
@@ -118,7 +120,6 @@ int IntakeSys::thread_fn(void *ptr) {
             conveyor.stop();
         }
         this_thread::sleep_for(10);
-        this_thread::yield();
     }
     return 0;
 }

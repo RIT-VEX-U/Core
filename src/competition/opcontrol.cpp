@@ -18,6 +18,8 @@ void auto__();
 
 void opcontrol() {
 
+    autonomous();
+    return;
     conveyor.stop();
 
     wallstakemech_sys.set_setpoint(from_degrees(200));

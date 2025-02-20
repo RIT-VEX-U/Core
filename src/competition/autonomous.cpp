@@ -172,7 +172,6 @@ void skills() {
     vexDelay(1000);
     // clang-format off
     CommandController cc{
-
       // drop the intake
       // drive_sys.DriveForwardCmd(1, vex::reverse, 1, 0)->withTimeout(0.3), intake_sys.IntakeCmd(),
       intake_sys.IntakeCmd(),
@@ -199,16 +198,13 @@ void skills() {
 
       drive_sys.DriveForwardCmd(8, vex::fwd, 0.4)->withTimeout(2.0),
       get_into_wallstake(),
-      drive_sys.DriveForwardCmd(12, vex::fwd, 0.3)->withTimeout(3.0),
+      drive_sys.DriveForwardCmd(12, vex::fwd, 0.3)->withTimeout(1.5),
       wallstakemech_sys.set_setpoint_command(from_degrees(45)),
       new DelayCommand(1000),
       drive_sys.DriveForwardCmd(8, vex::reverse, 0.3)->withTimeout(1.0),
 
-      wallstakemech_sys.set_setpoint_command(90),
-
-      
       drive_sys.TurnToPointCmd(36, 36,vex::fwd, 1)->withTimeout(0.5),
-      wallstakemech_sys.set_setpoint_command(200),
+      wallstakemech_sys.set_setpoint_command(from_degrees(200)),
       
       // Stage for center
       drive_sys.TurnToPointCmd(40 ,43.5, vex::fwd, 1)->withTimeout(0.5),
@@ -219,12 +215,12 @@ void skills() {
 
       // center
       drive_sys.TurnToPointCmd(69, 69,vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({71, 71}, vex::fwd, 0.2, 0)->withTimeout(2.0), // conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({71, 71}, vex::fwd, 0.2, 0)->withTimeout(2.0),
 
       drive_sys.DriveToPointCmd({40,40},vex::reverse,0.5),
 
       drive_sys.TurnToPointCmd(16.15, 20, vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({16.15, 20}, vex::fwd, 0.2, 0)->withTimeout(2.0), // conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({16.15, 20}, vex::fwd, 0.2, 0)->withTimeout(2.0), 
 
       drive_sys.TurnToHeadingCmd(45, 1.0),
       drive_sys.DriveForwardCmd(12, vex::reverse, 0.3),
