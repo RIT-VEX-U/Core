@@ -19,7 +19,7 @@ bool IntakeSys::should_stop_for_colorsort() {
     if (color_sort_state == ColorSortState::OFF) {
         return false;
     }
-    return color_sensor_counter > 0 && color_sensor_counter < 22;
+    return color_sensor_counter > 0 && color_sensor_counter < 23;
 }
 
 void IntakeSys::colorSort() {

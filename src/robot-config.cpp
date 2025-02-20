@@ -32,7 +32,7 @@ vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
 vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
 vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
-Rotation2d initial(from_degrees(170));
+Rotation2d initial(from_degrees(210));
 Rotation2d tolerance(from_degrees(1));
 double offset(0);
 

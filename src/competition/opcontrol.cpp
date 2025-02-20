@@ -17,9 +17,8 @@ void opcontrol() {
     // testing();
     wallstakemech_sys.hold = false;
     // intake_sys.conveyor_stop();
-
-    // wallstakemech_sys.set_setpoint(from_degrees(200));
-    wallstakemech_sys.hold = false;
+    intake_sys.setLight(false);
+    wallstakemech_sys.set_setpoint(from_degrees(210));
 
     ColorSortToggle.pressed([]() { intake_sys.set_color_sort_bool(!intake_sys.get_color_sort_bool()); });
 
@@ -65,8 +64,9 @@ void opcontrol() {
             intake_sys.intake_stop();
             intake_sys.conveyor_stop();
         }
-        // pose_t pos = odom.get_position();
-        // printf("ODO X: %.2f, Y: %.2f, R:%.2f\n", pos.x, pos.y, pos.rot);
+        OdometryBase *odombase = &odom;
+        pose_t pos = odombase->get_position();
+        printf("ODO X: %.2f, Y: %.2f, R:%.2f, Concurr: %f\n", pos.x, pos.y, pos.rot, conveyor.current());
 
         double left = (double)con.Axis3.position() / 100;
         double right = (double)con.Axis2.position() / 100;
