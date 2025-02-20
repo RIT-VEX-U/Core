@@ -197,37 +197,48 @@ void skills() {
 
 
       drive_sys.DriveForwardCmd(8, vex::fwd, 0.4)->withTimeout(2.0),
+      drive_sys.DriveForwardCmd(3, vex::reverse, 0.4)->withTimeout(2.0),
+      drive_sys.DriveForwardCmd(3, vex::fwd, 0.4)->withTimeout(2.0),
+
       get_into_wallstake(),
       drive_sys.DriveForwardCmd(12, vex::fwd, 0.3)->withTimeout(1.5),
       wallstakemech_sys.set_setpoint_command(from_degrees(45)),
+      drive_sys.DriveForwardCmd(0.5, vex::reverse, 1)->withTimeout(0.8),
+      drive_sys.DriveForwardCmd(1.5, vex::fwd, 1)->withTimeout(0.8),
+
       new DelayCommand(1000),
+      intake_sys.OuttakeCmd(),
       drive_sys.DriveForwardCmd(8, vex::reverse, 0.3)->withTimeout(1.0),
 
       drive_sys.TurnToPointCmd(36, 36,vex::fwd, 1)->withTimeout(0.5),
       wallstakemech_sys.set_setpoint_command(from_degrees(200)),
-      
+      intake_sys.IntakeCmd(),
+      intake_sys.ConveyorInCmd(),      
       // Stage for center
       drive_sys.TurnToPointCmd(40 ,43.5, vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({40, 43.5}, vex::fwd, 0.4, 0)->withTimeout(1), // conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({40, 43.5}, vex::fwd, 0.4, 0)->withTimeout(1),
       // center
       drive_sys.TurnToPointCmd(58,58,vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({52.9, 58}, vex::fwd, 0.4, 0)->withTimeout(1), // conveyor_intake_command(),
+      drive_sys.DriveToPointCmd({53.9, 58}, vex::fwd, 0.4, 0)->withTimeout(1),
 
       // center
       drive_sys.TurnToPointCmd(69, 69,vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({71, 71}, vex::fwd, 0.2, 0)->withTimeout(2.0),
-
+      drive_sys.DriveToPointCmd({76, 72}, vex::fwd, 0.2, 0)->withTimeout(2.0),
+      drive_sys.TurnToHeadingCmd(45, 1.0)->withTimeout(1.0),
       drive_sys.DriveToPointCmd({40,40},vex::reverse,0.5),
 
-      drive_sys.TurnToPointCmd(16.15, 20, vex::fwd, 1)->withTimeout(0.5),
-      drive_sys.DriveToPointCmd({16.15, 20}, vex::fwd, 0.2, 0)->withTimeout(2.0), 
+      drive_sys.TurnToPointCmd(16.15, 17, vex::fwd, 1)->withTimeout(0.5),
+      drive_sys.DriveToPointCmd({16.15, 17}, vex::fwd, 0.2, 0)->withTimeout(2.0), 
 
-      drive_sys.TurnToHeadingCmd(45, 1.0),
-      drive_sys.DriveForwardCmd(12, vex::reverse, 0.3),
+      drive_sys.TurnToPointCmd(10, 10.0, vex::fwd, 1.0)->withTimeout(1.0),
+      drive_sys.DriveToPointCmd({10.0, 10.0}, vex::fwd, 0.2)->withTimeout(1.0),
+      drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1.0),
+      drive_sys.TurnToHeadingCmd(45, 1.0)->withTimeout(1.0),
+      drive_sys.DriveForwardCmd(12, vex::reverse, 0.3)->withTimeout(1.0),
       clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
       drive_sys.DriveForwardCmd(12, vex::fwd, 0.6),
-      new DelayCommand(1000000),
 
+      new DelayCommand(1000000),
     };
     cc.run();
     // clang-format on
