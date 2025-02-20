@@ -33,7 +33,7 @@ vex::motor wallstake_left(vex::PORT2, vex::gearSetting::ratio18_1, false);
 vex::motor wallstake_right(vex::PORT3, vex::gearSetting::ratio18_1, true);
 vex::motor_group wallstake_motors({wallstake_left, wallstake_right});
 
-Rotation2d initial(from_degrees(170));
+Rotation2d initial(from_degrees(210));
 Rotation2d tolerance(from_degrees(1));
 double offset(0);
 
@@ -128,7 +128,7 @@ robot_specs_t robot_cfg = {
     .turn_feedback = &turn_pid,
     // .correction_pid = correction_pid_cfg,
 };
-MatchPaths matchpath = MatchPaths::RED_SAFE_AUTO;
+MatchPaths matchpath = MatchPaths::BLUE_SAFE_AUTO;
 
 bool blue_alliance(){
     if(matchpath == MatchPaths::BLUE_SAFE_AUTO){
@@ -151,7 +151,7 @@ pose_t zero{0, 0, 0};
 
 
 
-OdometrySerial odom(true, true, auto_start_red, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
+OdometrySerial odom(true, true, auto_start_blue, pose_t{-3.83, 0.2647, 270}, vex::PORT1, 115200);
 
 OdometryBase* base = &odom;
 
