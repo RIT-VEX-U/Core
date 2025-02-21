@@ -27,8 +27,10 @@ void skills_basic() {
 		})),
 
 
+      new DelayCommand(5000),
       wallstakemech_sys.SetSetPointCmd(from_degrees(200)),
 	  intake_sys.IntakeCmd(),
+
       // First Ring
       drive_sys.DriveToPointCmd({ 48.41,  96.69}, vex::fwd, .5)->withTimeout(2.0),
 
@@ -47,7 +49,7 @@ void skills_basic() {
       wallstakemech_sys.SetSetPointCmd(from_degrees(170)),
 
       drive_sys.TurnToPointCmd(72, 140, vex::fwd, 0.5)->withTimeout(1.0),
-      drive_sys.DriveToPointCmd({72, 138}, vex::fwd, 0.3)->withTimeout(1.5),
+      drive_sys.DriveToPointCmd({72, 136}, vex::fwd, 0.3)->withTimeout(2),
 
       get_into_wallstake(),        
       wallstakemech_sys.SetSetPointCmd(from_degrees(45)),
@@ -76,9 +78,10 @@ void skills_basic() {
       drive_sys.DriveForwardCmd(3, vex::fwd, 0.4)->withTimeout(0.4),
 
      // Pull back out from under tower
-      drive_sys.DriveToPointCmd({24, 120}, vex::reverse, 0.4)->withTimeout(2.0),
+      drive_sys.DriveToPointCmd({24, 120}, vex::reverse, 0.4)->withTimeout(4.0),
 
-    drive_sys.TurnToHeadingCmd(-45)->withTimeout(0.6),
+    // drive_sys.TurnToHeadingCmd(-45)->withTimeout(0.6),
+    drive_sys.TurnToPointCmd(7, 137, vex::reverse, 0.5)->withTimeout(0.6),
     drive_sys.DriveToPointCmd({7,137}, vex::reverse, 0.3)->withTimeout(2.5),
     intake_sys.ConveyorOutCmd(),
     clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
