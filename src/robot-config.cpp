@@ -132,7 +132,7 @@ bool blue_alliance() {
 ClamperSys clamper_sys{};
 IntakeSys intake_sys{};
 
-pose_t skills_start{18, 96, 0};
+pose_t skills_start{18.5, 96, 0};
 pose_t test{24, 96, 0};
 pose_t auto_start_red{16.25, 88.75, 180};
 pose_t auto_start_blue{127.75, 88.75, 0};

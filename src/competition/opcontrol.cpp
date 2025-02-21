@@ -11,9 +11,9 @@ void auto__();
  * Main entrypoint for the driver control period
  */
 void opcontrol() {
-    vexDelay(1000);
-    autonomous();
-    return;
+    // vexDelay(1000);
+    // autonomous();
+    // return;
     // testing();
     wallstakemech_sys.hold = false;
     // intake_sys.conveyor_stop();
