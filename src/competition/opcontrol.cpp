@@ -17,6 +17,7 @@ void testing();
 void auto__();
 
 void opcontrol() {
+    vexDelay(1000);
 
     autonomous();
     return;
