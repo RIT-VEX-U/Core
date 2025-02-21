@@ -107,11 +107,11 @@ void skills_basic() {
 
     // Back-side ring stack 1
     drive_sys.TurnToPointCmd(96, 120, vex::fwd, .5)->withTimeout(1.5),
-    drive_sys.DriveToPointCmd({96,120}, vex::fwd, .7)->withTimeout(3),
+    drive_sys.DriveToPointCmd({95,120}, vex::fwd, .7)->withTimeout(3),
 
     // Back-side mobile stake
-    drive_sys.TurnToPointCmd(96, 96, vex::reverse, .5)->withTimeout(1.5),
-    drive_sys.DriveToPointCmd({96,96}, vex::reverse, .5)->withTimeout(1.5),
+    drive_sys.TurnToPointCmd(95, 96, vex::reverse, .5)->withTimeout(1.5),
+    drive_sys.DriveToPointCmd({95,96}, vex::reverse, .5)->withTimeout(1.5),
     clamper_sys.ClampCmd(ClamperSys::CLAMPED),
     intake_sys.ConveyorInCmd(),
     new DelayCommand(500),
@@ -130,16 +130,14 @@ void skills_basic() {
     drive_sys.TurnToPointCmd(144, 144,vex::fwd, 0.5)->withTimeout(1.5),
     drive_sys.DriveToPointCmd({137,137}, vex::fwd, 0.3)->withTimeout(1.5),
     new DelayCommand(400),
-    drive_sys.DriveForwardCmd(24, vex::reverse, .65)->withTimeout(1),
+    drive_sys.DriveForwardCmd(24, vex::reverse, .8)->withTimeout(1),
 
     // Back corner deposit
-    drive_sys.TurnToPointCmd(144, 144,vex::reverse, 0.5)->withTimeout(1.5),
+    drive_sys.TurnToPointCmd(144, 144,vex::reverse, 0.75)->withTimeout(1.5),
+    intake_sys.ConveyorStopCmd(),
     clamper_sys.ClampCmd(ClamperSys::UNCLAMPED),
     drive_sys.DriveForwardCmd(30, vex::reverse, 1)->withTimeout(2),
-    
-    
-    intake_sys.ConveyorStopCmd(),
-    drive_sys.DriveForwardCmd(24, vex::fwd, 0.6)->withTimeout(1),
+    drive_sys.DriveForwardCmd(24, vex::fwd, 1)->withTimeout(1),
     };
     // clang-format on
     cc.run();
