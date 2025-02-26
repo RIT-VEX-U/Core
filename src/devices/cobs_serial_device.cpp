@@ -129,23 +129,16 @@ int COBSSerialDevice::serial_thread(void *vself) {
     return 0;
 }
 
-bool COBSSerialDevice::send_cobs_packet(const Packet &pac) {
+bool COBSSerialDevice::send_cobs_packet(const Packet &pac, bool add_front_delimeter) {
     outbound_mutex.lock();
     size_t size = outbound_packets.size();
     outbound_mutex.unlock();
     if (size >= MAX_OUT_QUEUE_SIZE) {
-        // printf("Too many packets in out queue. dropping\n");
         return false;
     }
 
     std::vector<uint8_t> encoded;
-    cobs_encode(pac, encoded, false);
-
-    printf("\nEncoded:\n");
-    for (int i = 0; i < encoded.size(); i++) {
-        printf("%02x ", encoded[i]);
-    }
-    printf("\n");
+    cobs_encode(pac, encoded, add_front_delimeter);
 
     outbound_mutex.lock();
     outbound_packets.push_front(encoded);
