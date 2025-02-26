@@ -59,7 +59,6 @@ int video_player() {
             frame_ready = true;
             uint32_t elapsed_ms = vex::timer::system() - start_ms;
 
-            printf("Took: %d\n", elapsed_ms);
             vexDelay(33 - elapsed_ms);
             if (should_restart) {
                 should_restart = false;
