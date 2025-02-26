@@ -23,23 +23,6 @@ class COBSSerialDevice {
      */
     bool send_cobs_packet(const Packet &pac, bool add_front_delimeter = false);
 
-  protected:
-    /**
-     * @param port the port that the peripheral is on (vex::PORTX)
-     * @param baud_rate the baud rate of the serial communication
-     */
-    COBSSerialDevice(int32_t port, int32_t baud_rate);
-    
-    virtual ~COBSSerialDevice() {}
-
-    /**
-     * Callback when a packet comes in
-     * Overload this with your child class to have this called when a packet comes in
-     * @param pac the decoded packet that has been received
-     */
-    virtual void cobs_packet_callback(const Packet &pac) = 0;
-
-  private:
     /**
      * Encode a packet using consistent overhead byte stuffing
      * @param[in] in the data to send
@@ -54,6 +37,24 @@ class COBSSerialDevice {
      * @param[out] out the buffer to write the data into
      */
     static void cobs_decode(const WirePacket &in, Packet &out);
+
+  protected:
+    /**
+     * @param port the port that the peripheral is on (vex::PORTX)
+     * @param baud_rate the baud rate of the serial communication
+     */
+    COBSSerialDevice(int32_t port, int32_t baud_rate);
+
+    virtual ~COBSSerialDevice() {}
+
+    /**
+     * Callback when a packet comes in
+     * Overload this with your child class to have this called when a packet comes in
+     * @param pac the decoded packet that has been received
+     */
+    virtual void cobs_packet_callback(const Packet &pac) = 0;
+
+  private:
     /**
      * Handle byte recieved from the wire. Will build up a packet until a delimeter is reached then send it to be
      * decoded
