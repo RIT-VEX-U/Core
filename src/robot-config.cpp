@@ -1,4 +1,6 @@
 #include "robot-config.h"
+#include "../core/include/subsystems/fun/video.h"
+
 #include "core.h"
 #include "inttypes.h"
 // #include "autopathing/auto-red-safe.cpp"
@@ -150,8 +152,9 @@ TankDrive drive_sys(left_drive_motors, right_drive_motors, robot_cfg, &odom);
  * Main robot initialization on startup. Runs before opcontrol and autonomous are started.
  */
 void robot_init() {
+    set_video("Flipped.mpreg");
 
-    screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid")});
+    screen::start_screen(Brain.Screen, {new screen::PIDPage(turn_pid, "turnpid"), new VideoPlayer()}, 1);
     // matchpath = MatchPaths::RED_SAFE_AUTO;
     //  odom.send_config(auto_start_red, pose_t{-3.83, 0.2647, 270}, false);
     vexDelay(1000);
