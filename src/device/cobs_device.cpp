@@ -27,6 +27,7 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
     while (write_head < encoded_write.size()) {
         if (num_free < 0) {
             // error on port
+            serial_access_mut.unlock();
             return num_free;
         } else if (num_free == 0) {
             vexGenericSerialFlush(port);
@@ -39,6 +40,8 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
         int32_t sent = vexGenericSerialTransmit(port, encoded_write.data() + write_head, num_to_transmit);
         if (sent != num_to_transmit) {
             // error on port
+
+            serial_access_mut.unlock();
             return -1;
         }
         write_head += sent;
@@ -99,12 +102,13 @@ int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_siz
 
     for (size_t index = 0; index < last_decoded_packet.size(); index++) {
         if (index >= max_size) {
+            serial_access_mut.unlock();
             return max_size;
         }
         data[index] = last_decoded_packet[index];
     }
-    serial_access_mut.unlock();
 
+    serial_access_mut.unlock();
     return last_decoded_packet.size();
 }
 
