@@ -48,7 +48,7 @@ AutoCommand *TankDrive::TurnToPointCmd(double x, double y, vex::directionType di
         double dx = x - pose.x;
         heading = rad2deg(atan2(dy, dx));
         if (dir != vex::directionType::fwd) {
-          heading += 180.0;
+          heading += 90.0;
         }
         func_initialized = true;
       }
@@ -450,8 +450,8 @@ bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, Feedb
   }
 
   // Combine the two pid outputs
-  double lside = drive_pid_rval - correction;
-  double rside = drive_pid_rval + correction;
+  double lside = drive_pid_rval + correction;
+  double rside = drive_pid_rval - correction;
 
   // limit the outputs between -1 and +1
   lside = clamp(lside, -max_speed, max_speed);
@@ -533,7 +533,7 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
 
   fflush(stdout);
 
-  drive_tank(feedback.get(), -feedback.get());
+  drive_tank(-feedback.get(), feedback.get());
 
   // When the robot has reached it's angle, return true.
   if (feedback.is_on_target()) {
