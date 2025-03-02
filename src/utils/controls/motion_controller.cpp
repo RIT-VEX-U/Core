@@ -92,7 +92,7 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryBase &odometry, double pct,
+FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct,
                                                             double duration) {
   FeedForward::ff_config_t out = {};
 
@@ -124,7 +124,6 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
   // Move the robot forward at a fixed percentage for X seconds while taking velocity and accel measurements
   do {
     time = tmr.time(sec);
-    drive.drive_tank(1, 1, pct);
 
     vel_ma.add_entry(odometry.get_speed());
     accel_ma.add_entry(odometry.get_accel());
@@ -164,6 +163,6 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
   // kA is the reciprocal of the slope of the linear regression
   double regres_slope = calculate_linear_regression(accel_per_pct).first;
   out.kA = 1.0 / regres_slope;
-  
+
   return out;
 }
