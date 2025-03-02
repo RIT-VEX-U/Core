@@ -40,7 +40,7 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  virtual pose_t get_position(void);
+  pose_t get_position(void);
 
   /**
    * Sets the current position of the robot
@@ -53,7 +53,6 @@ public:
    * @return the location that the robot is at after the odometry does its calculations
    */
   virtual pose_t update() = 0;
-
 
   /**
    * Function that runs in the background task. This function pointer is passed
@@ -105,13 +104,13 @@ public:
    * Get the current speed
    * @return the speed at which the robot is moving and grooving (inch/s)
    */
-  virtual double get_speed();
+  double get_speed();
 
   /**
    * Get the current acceleration
    * @return the acceleration rate of the robot (inch/s^2)
    */
-  virtual double get_accel();
+  double get_accel();
 
   /**
    * Get the current angular speed in degrees
@@ -141,6 +140,7 @@ public:
    */
   static pose_t pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist);
 
+protected:
   /**
    * handle to the vex task that is running the odometry code
    */
