@@ -89,10 +89,17 @@ bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
         return false;
     }
 }
-int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_size) {
+int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_size, uint32_t timeout_us) {
 
     serial_access_mut.lock();
+    size_t start_time = vexSystemHighResTimeGet();
     while (true) {
+        // Timed out
+        size_t elapsed = vexSystemHighResTimeGet() - start_time;
+        if (elapsed > timeout_us && timeout_us != 0) {
+            serial_access_mut.unlock();
+            return -2;
+        }
         bool got_packet = poll_incoming_data_once();
         if (got_packet) {
             break;

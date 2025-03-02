@@ -33,9 +33,10 @@ class COBSSerialDevice {
      * this function polls the port for incoming data and returns when a valid COBS packet has been delivered
      * @param buffer the buffer to write the decoded data into
      * @param max_size the maximum amount of data to read into buffer (buffer size)
-     * @return the number of bytes received
+     * @param timeout_us if nothing is received for this many us, return -2. The default value of 0 will never timeout
+     * @return the number of bytes received or <0 if an error (-1 general error, -2 timeout)
      */
-    int receive_cobs_packet_blocking(uint8_t *buffer, size_t max_size);
+    int receive_cobs_packet_blocking(uint8_t *buffer, size_t max_size, uint32_t timeout_us = 0);
 
     /**
      * Encode a packet using consistent overhead byte stuffing
