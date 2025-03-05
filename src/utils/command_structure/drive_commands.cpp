@@ -96,7 +96,7 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
 DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir,
                                          double max_speed, double end_speed)
     : drive_sys(drive_sys), feedback(feedback), x(point.x), y(point.y), dir(dir), max_speed(max_speed),
-      end_speed(end_speed) {}
+      end_speed(end_speed) {x = point.x; y  = point.y;}
 
 /**
  * Run drive_to_point
@@ -111,6 +111,28 @@ void DriveToPointCommand::on_timeout() {
   drive_sys.stop();
   drive_sys.reset_auto();
 }
+
+TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed, double end_speed)
+  : drive_sys(drive_sys), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed){}
+
+TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, point_t point, vex::directionType dir, double max_speed, double end_speed)
+  : drive_sys(drive_sys), x(point.x), y(point.y), dir(dir), max_speed(max_speed), end_speed(end_speed){x = point.x; y = point.y;}
+
+bool TurnToPointCommand::run() {
+  if (!func_initialized) {
+    pose_t pose = drive_sys.odometry->get_position();
+    double dy = y - pose.y;
+    double dx = x - pose.x;
+    heading = rad2deg(atan2(dy, dx));
+    if (dir != vex::directionType::fwd) {
+      heading += 180.0;
+    }
+    func_initialized = true;
+  }
+  return drive_sys.turn_to_heading(heading, max_speed, end_speed);
+}
+
+void TurnToPointCommand::on_timeout() { drive_sys.stop(); }
 
 /**
  * Construct a TurnToHeadingCommand Command

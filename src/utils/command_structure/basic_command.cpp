@@ -40,7 +40,7 @@ bool BasicSpinCommand::run() {
   case percent: // Percentage Setting
     motor.spin(dir, power, vex::percent);
     break;
-  case veocity: // Velocity Setting
+  case velocity: // Velocity Setting
     motor.spin(dir, power, vex::velocityUnits::rpm);
     break;
   }

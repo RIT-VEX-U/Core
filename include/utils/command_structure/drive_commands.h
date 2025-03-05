@@ -43,6 +43,24 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+  std::string toString(){
+    std::string returnStr = "Driving ";
+    switch(dir){
+      case directionType::fwd:
+        returnStr = returnStr + " forwards ";
+        break;
+      case directionType::rev:
+      returnStr = returnStr + " reverse ";
+      default:
+        break;
+    }
+    char inStr[21];
+    sprintf(inStr, "%d", inches);
+    char speedStr[21];
+    sprintf(speedStr, "%d", (max_speed*100));
+    returnStr = returnStr + inStr + " inches at " + speedStr + " percent speed";
+    return returnStr;
+  }
   /**
    * Cleans up drive system if we time out before finishing
    */
@@ -77,9 +95,21 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+  std::string toString(){
+    char degreeStr[32];
+    sprintf(degreeStr, "5d", degrees);
+    char max_speedStr[32];
+    sprintf(max_speedStr, "5d", max_speed);
+    std::string returnStr = "Turning ";
+    returnStr.append(degreeStr);
+    returnStr.append(" degrees at ");
+    returnStr.append(max_speedStr);
+    return returnStr;
+  }
   /**
    * Cleans up drive system if we time out before finishing
    */
+
   void on_timeout() override;
 
 private:
@@ -112,7 +142,28 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-
+  std::string toString(){
+    std::string returnStr = "Driving ";
+    switch(dir){
+      case directionType::fwd:
+        returnStr = returnStr + " forwards ";
+        break;
+      case directionType::rev:
+      returnStr = returnStr + " reverse ";
+      default:
+        break;
+    }
+    char xStr[21];
+    sprintf(xStr, "%d", x);
+    char yStr[21];
+    sprintf(yStr, "%d", y);
+    
+    returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
+    char speedStr[21];
+    sprintf(speedStr, "%d", (max_speed*100));
+    returnStr = returnStr + " at " + speedStr + " percent speed";
+    return returnStr;
+  }
 private:
   // drive system to run the function on
   TankDrive &drive_sys;
@@ -131,6 +182,49 @@ private:
   directionType dir;
   double max_speed;
   double end_speed;
+};
+
+class TurnToPointCommand: public AutoCommand{
+  public:
+
+    TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+    TurnToPointCommand(TankDrive &drive_sys, point_t point, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+
+    bool run() override;
+
+    std::string toString(){
+      std::string returnStr = "Turning ";
+      switch(dir){
+        case directionType::fwd:
+          returnStr = returnStr + " forwards ";
+          break;
+        case directionType::rev:
+        returnStr = returnStr + " reverse ";
+        default:
+          break;
+      }
+      char xStr[21];
+      sprintf(xStr, "%d", x);
+      char yStr[21];
+      sprintf(yStr, "%d", y);
+      
+      returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
+      char speedStr[21];
+      sprintf(speedStr, "%d", (max_speed*100));
+      returnStr = returnStr + " at " + speedStr + " percent speed";
+      return returnStr;
+    }
+
+  private:
+
+    void on_timeout() override;
+    TankDrive &drive_sys;
+    double x, y;
+    vex::directionType dir;
+    double max_speed;
+    double end_speed;
+    bool func_initialized;
+    double heading;
 };
 
 /**
@@ -152,6 +246,15 @@ public:
   /**
    * Cleans up drive system if we time out before finishing
    */
+  std::string toString(){
+    std::string returnStr = "Turning to ";
+    char headStr[21];
+    sprintf(headStr, "%d", heading_deg);
+    char speedStr[21];
+    sprintf(speedStr, "%d", (max_speed*100));
+    returnStr = returnStr + headStr + " degrees at " + speedStr + " percent speed";
+    return returnStr;
+  }
   void on_timeout() override;
 
 private:
@@ -187,7 +290,21 @@ public:
    * Direct call to TankDrive::pure_pursuit
    */
   bool run() override;
+  std::string toString(){
+    std::string returnStr = "Driving through ";
+    std::vector<point_t> thePoints = path.get_points();
+    char xStr[21];
+    char yStr[21];
+    for (int i = 0; i < thePoints.size(); i++){
+      sprintf(xStr, "%d", thePoints.at(i).x);
+      sprintf(yStr, "%d", thePoints.at(i).y);
+      returnStr = returnStr + "(" + xStr + ", " + yStr + ") \n";
+    }
+    char speedStr[21];
+    sprintf(speedStr, "%d", (max_speed*100));
+    returnStr = returnStr + " at " + speedStr + " percent speed";
 
+  }
   /**
    * Reset the drive system when it times out
    */
@@ -217,6 +334,9 @@ public:
    */
   bool run() override;
   void on_timeout() override;
+  std::string toString(){
+    return "Stopping the drive";
+  }
 
 private:
   // drive system to run the function on
@@ -244,6 +364,18 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+  std::string toString(){
+    char headStr[21];
+    sprintf(headStr, "%d", newpos.rot);
+    char speedStr[21];
+    char xStr[21];
+    sprintf(xStr, "%d", newpos.x);
+    char yStr[21];
+    sprintf(yStr, "%d", newpos.y);
+    std::string returnStr = "Setting positon to X: ";
+    returnStr = returnStr + xStr + ", Y: " + yStr + ", ROT: " + headStr;
+    return returnStr;
+  }
 
 private:
   // drive system with an odometry config

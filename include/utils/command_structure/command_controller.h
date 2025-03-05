@@ -69,6 +69,14 @@ public:
    */
   void run();
 
+  std::string toString(){
+    char sizeStr[21];
+    sprintf(sizeStr, "%d", command_queue.size());
+    std::string returnStr = "Command controller with ";
+    returnStr = returnStr + sizeStr + " commands";
+    return returnStr;
+  };
+
   /**
    * last_command_timed_out tells how the last command ended
    * Use this if you want to make decisions based on the end of the last
@@ -77,6 +85,7 @@ public:
    * regularly
    */
   bool last_command_timed_out();
+  bool printBool = true;
 
 private:
   std::queue<AutoCommand *> command_queue;

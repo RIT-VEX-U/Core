@@ -36,35 +36,12 @@ AutoCommand *TankDrive::TurnToHeadingCmd(Feedback &fb, double heading, double ma
   return new TurnToHeadingCommand(*this, fb, heading, max_speed, end_speed);
 }
 
-AutoCommand *TankDrive::TurnToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
-  class TurnToPointCmd : public AutoCommand {
-  public:
-    TurnToPointCmd(TankDrive &td, double x, double y, vex::directionType dir, double max_speed, double end_speed)
-        : td(td), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed), func_initialized(false) {}
-    bool run() override {
-      if (!func_initialized) {
-        pose_t pose = td.odometry->get_position();
-        double dy = y - pose.y;
-        double dx = x - pose.x;
-        heading = rad2deg(atan2(dy, dx));
-        if (dir != vex::directionType::fwd) {
-          heading += 180.0;
-        }
-        func_initialized = true;
-      }
-      return td.turn_to_heading(heading, max_speed, end_speed);
-    }
-    void on_timeout() override { td.stop(); }
-    TankDrive &td;
-    double x, y;
-    vex::directionType dir;
-    double max_speed;
-    double end_speed;
-    bool func_initialized;
-    double heading;
-  };
-  return new TurnToPointCmd(*this, x, y, dir, max_speed, end_speed);
-}
+AutoCommand *TankDrive::TurnToPointCmd(point_t point, vex::directionType dir, double max_speed, double end_speed){
+    return new TurnToPointCommand(*this, point, dir, max_speed, end_speed);
+  }
+  AutoCommand *TankDrive::TurnToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed){
+    return new TurnToPointCommand(*this, x, y, dir, max_speed, end_speed);
+  }
 
 AutoCommand *TankDrive::TurnDegreesCmd(double degrees, double max_speed, double end_speed) {
   return new TurnDegreesCommand(*this, *turn_default_feedback, degrees, max_speed, end_speed);

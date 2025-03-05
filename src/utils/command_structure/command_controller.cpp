@@ -73,7 +73,12 @@ void CommandController::run() {
 
   while (!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
+    
     next_cmd = command_queue.front();
+    if(printBool){
+      printf(next_cmd->toString().c_str());
+      printf("\n");
+    }
     command_queue.pop();
     command_timed_out = false;
 

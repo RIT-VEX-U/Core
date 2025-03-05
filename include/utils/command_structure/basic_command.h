@@ -24,7 +24,7 @@
 class BasicSpinCommand : public AutoCommand {
 public:
   // Enumurator for the type of power setting in the motor
-  enum type { percent, voltage, veocity };
+  enum type { percent, voltage, velocity };
 
   /**
    * @brief Construct a new BasicSpinCommand
@@ -43,6 +43,29 @@ public:
    * @return True Async running command
    */
   bool run() override;
+  std::string toString(){
+    std::string str = "Spinnning motors ";
+    if(dir == vex::directionType::fwd){
+      str = (str + " forwards at ");
+    }
+    else if(dir == vex::directionType::rev){
+      str = (str + " reverse at ");
+    }
+    char powerStr[21];
+    sprintf(powerStr, "%d", power);
+    str = str + powerStr;
+    switch (setting) { // Switch Statement taking the setting Enum
+      case voltage:      // Voltage Setting
+        str = str + "V";
+        break;
+      case percent: // Percentage Setting
+      str = str + "%";
+        break;
+      case velocity: // Velocity Setting
+      str = str + "Dps";
+        break;
+      }
+  };
 
 private:
   vex::motor &motor;
@@ -74,6 +97,21 @@ public:
    * @return True Command runs once
    */
   bool run() override;
+  std::string toString(){
+    switch(setting){
+      case vex::brakeType::brake:
+        return "Braking motors";
+        break;
+        case vex::brakeType::coast:
+        return "Coasting motors";
+        break;
+        case vex::brakeType::hold:
+        return "Holding motors";
+        break;
+        default:
+        break;
+    }
+  }
 
 private:
   vex::motor &motor;
@@ -104,6 +142,14 @@ public:
    * @return True Command runs once
    */
   bool run() override;
+  std::string toString(){
+    if(setting){
+      return "Activating solonoid";
+    }
+    else{
+      return "Deactivating solonoid";
+    }
+  };
 
 private:
   vex::pneumatics &solenoid;

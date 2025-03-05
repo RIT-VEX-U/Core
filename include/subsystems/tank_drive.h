@@ -52,6 +52,8 @@ public:
 
   AutoCommand *TurnToPointCmd(double x, double y, vex::directionType dir = vex::directionType::fwd,
                               double max_speed = 1.0, double end_speed = 0.0);
+  AutoCommand *TurnToPointCmd(point_t point, vex::directionType dir = vex::directionType::fwd,
+                              double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
   AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
@@ -260,7 +262,8 @@ public:
    * @return True when the path is complete
    */
   bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
-
+  OdometryBase *odometry; ///< odometry system to track position and rotation.
+                          ///< necessary for autonomous driving
 private:
   motor_group &left_motors;  ///< left drive motors
   motor_group &right_motors; ///< right drive motors
@@ -270,8 +273,6 @@ private:
   Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
   Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified
 
-  OdometryBase *odometry; ///< odometry system to track position and rotation.
-                          ///< necessary for autonomous driving
 
   robot_specs_t
       &config; ///< configuration holding physical dimensions of the robot. see robot_specs_t for more information

@@ -26,6 +26,9 @@ public:
   Condition *Or(Condition *b);
   Condition *And(Condition *b);
   virtual bool test() = 0;
+  virtual std::string toString(){
+    return "Condition";
+  }
 };
 
 class AutoCommand {
@@ -37,6 +40,8 @@ public:
    * @returns true when the command is finished, false otherwise
    */
   virtual bool run() { return true; }
+
+  virtual std::string toString() {return "AutoCommand";}
   /**
    * What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
    */
@@ -74,6 +79,7 @@ class FunctionCommand : public AutoCommand {
 public:
   FunctionCommand(std::function<bool(void)> f) : f(f) {}
   bool run() { return f(); }
+  std::string toString() {return "Function Command";}
 
 private:
   std::function<bool(void)> f;
@@ -131,6 +137,9 @@ class WaitUntilCondition : public AutoCommand {
 public:
   WaitUntilCondition(Condition *cond) : cond(cond) {}
   bool run() override { return cond->test(); }
+  std::string toString(){
+    return "waiting until %s" + cond->toString();
+  }
 
 private:
   Condition *cond;
@@ -148,6 +157,9 @@ public:
   InOrder(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
+  std::string toString() {
+    return "Running Inorder with length: " + cmds.size();
+  }
 
 private:
   AutoCommand *current_command = nullptr;
@@ -162,6 +174,9 @@ public:
   Parallel(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
+  std::string toString(){
+    return runners.size() + " commands running in parallel";
+  }
 
 private:
   std::vector<AutoCommand *> cmds;
@@ -176,6 +191,9 @@ public:
   Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice);
   ~Branch();
   bool run() override;
+  std::string toString(){
+    return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " + cond->toString();
+  }
   void on_timeout() override;
 
 private:
@@ -194,6 +212,9 @@ class Async : public AutoCommand {
 public:
   Async(AutoCommand *cmd) : cmd(cmd) {}
   bool run() override;
+  std::string toString(){
+    return "Async of " + cmd->toString();
+  }
 
 private:
   AutoCommand *cmd = nullptr;
@@ -210,9 +231,14 @@ public:
   /// @param true_to_end we will repeat until true_or_end.test() returns true
   RepeatUntil(InOrder cmds, Condition *true_to_end);
   bool run() override;
+  std::string toString(){
+    InOrder pHCmds = cmds;
+    return "Repeating " + pHCmds.toString() + " until " + true_to_end->toString();
+  }
   void on_timeout() override;
 
 private:
+  size_t repeats;
   const InOrder cmds;
   InOrder *working_cmds;
   Condition *cond;
