@@ -51,5 +51,5 @@ var NAVTREEINDEX =
 "structrobot__specs__t.html#a37a65da54459d805cf1370cc6330bce0"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
