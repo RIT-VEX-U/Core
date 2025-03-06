@@ -1,5 +1,5 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
-#include "../core/include/utils/vector2d.h"
+#include "../core/include/utils/math/geometry/pose2d.h"
 
 /**
  * Construct a new Odometry Base object
@@ -42,11 +42,11 @@ void OdometryBase::end_async() { this->end_task = true; }
 /**
  * Gets the current position and rotation
  */
-pose_t OdometryBase::get_position(void) {
+Pose2d OdometryBase::get_position(void) {
   mut.lock();
 
   // Create a new struct to pass-by-value
-  pose_t out = current_pos;
+  Pose2d out = current_pos;
 
   mut.unlock();
 
@@ -56,7 +56,7 @@ pose_t OdometryBase::get_position(void) {
 /**
  * Sets the current position of the robot
  */
-void OdometryBase::set_position(const pose_t &newpos) {
+void OdometryBase::set_position(const Pose2d &newpos) {
   mut.lock();
 
   current_pos = newpos;
@@ -64,7 +64,7 @@ void OdometryBase::set_position(const pose_t &newpos) {
   mut.unlock();
 }
 
-AutoCommand *OdometryBase::SetPositionCmd(const pose_t &newpos) {
+AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
   return new FunctionCommand([&]() {
     set_position(newpos);
     return true;

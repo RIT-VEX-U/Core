@@ -8,7 +8,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/translation2d.h"
+#include "../core/include/utils/vector2d.h"
+
 
 class Translation2d;
 
@@ -61,11 +62,21 @@ public:
   double radians() const;
 
   /**
+   * sets the angle value in radians
+   */
+  void setRad(double radRot);
+
+  /**
    * Returns the degree angle value.
    *
    * @return the degree angle value.
    */
   double degrees() const;
+
+  /**
+   * sets the angle value in degrees
+   */
+  void setDeg(double degRot);
 
   /**
    * Returns the revolution angle value.

@@ -89,14 +89,14 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
  * Construct a DriveForward Command
  * @param drive_sys the drive system we are commanding
  * @param feedback the feedback controller we are using to execute the drive
- * @param point the point to drive to
+ * @param translation the point to drive to
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir,
+DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir,
                                          double max_speed, double end_speed)
-    : drive_sys(drive_sys), feedback(feedback), x(point.x), y(point.y), dir(dir), max_speed(max_speed),
-      end_speed(end_speed) {x = point.x; y  = point.y;}
+    : drive_sys(drive_sys), feedback(feedback), x(translation.x()), y(translation.y()), dir(dir), max_speed(max_speed),
+      end_speed(end_speed) {x = translation.x(); y  = translation.y();}
 
 /**
  * Run drive_to_point
@@ -115,14 +115,14 @@ void DriveToPointCommand::on_timeout() {
 TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed, double end_speed)
   : drive_sys(drive_sys), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed){}
 
-TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, point_t point, vex::directionType dir, double max_speed, double end_speed)
-  : drive_sys(drive_sys), x(point.x), y(point.y), dir(dir), max_speed(max_speed), end_speed(end_speed){x = point.x; y = point.y;}
+TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed, double end_speed)
+  : drive_sys(drive_sys), x(translation.x()), y(translation.y()), dir(dir), max_speed(max_speed), end_speed(end_speed){x = translation.x(); y = translation.y();}
 
 bool TurnToPointCommand::run() {
   if (!func_initialized) {
-    pose_t pose = drive_sys.odometry->get_position();
-    double dy = y - pose.y;
-    double dx = x - pose.x;
+    Pose2d pose = drive_sys.odometry->get_position();
+    double dy = y - pose.y();
+    double dx = x - pose.x();
     heading = rad2deg(atan2(dy, dx));
     if (dir != vex::directionType::fwd) {
       heading += 180.0;
@@ -208,7 +208,7 @@ bool DriveStopCommand::run() {
  * @param odom the odometry system we are setting
  * @param newpos the now position to set the odometry to
  */
-OdomSetPosition::OdomSetPosition(OdometryBase &odom, const pose_t &newpos) : odom(odom), newpos(newpos) {}
+OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odom(odom), newpos(newpos) {}
 
 bool OdomSetPosition::run() {
   odom.set_position(newpos);

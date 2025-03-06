@@ -2,6 +2,8 @@
 
 #include "../core/include/utils/geometry.h"
 #include "../core/include/utils/vector2d.h"
+#include "../core/include/utils/math/geometry/pose2d.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 #include "vex.h"
 #include <vector>
 
@@ -18,12 +20,12 @@ public:
    * @param points the points that make up the path
    * @param radius the lookahead radius for pure pursuit
    */
-  Path(std::vector<point_t> points, double radius);
+  Path(std::vector<Translation2d> points, double radius);
 
   /**
    * Get the points associated with this Path
    */
-  std::vector<point_t> get_points();
+  std::vector<Translation2d> get_points();
 
   /**
    * Get the radius associated with this Path
@@ -36,7 +38,7 @@ public:
   bool is_valid();
 
 private:
-  std::vector<point_t> points;
+  std::vector<Translation2d> points;
   double radius;
   bool valid;
 };
@@ -59,7 +61,7 @@ struct hermite_point {
   double dir;
   double mag;
 
-  point_t getPoint() const { return {x, y}; }
+  Translation2d getPoint() const { return Translation2d(x, y); }
 
   Vector2D getTangent() const { return Vector2D(dir, mag); }
 };
@@ -68,16 +70,16 @@ struct hermite_point {
  * Returns points of the intersections of a line segment and a circle. The line
  * segment is defined by two points, and the circle is defined by a center and radius.
  */
-extern std::vector<point_t> line_circle_intersections(point_t center, double r, point_t point1, point_t point2);
+extern std::vector<Translation2d> line_circle_intersections(Translation2d center, double r, Translation2d point1, Translation2d point2);
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-extern point_t get_lookahead(const std::vector<point_t> &path, pose_t robot_loc, double radius);
+extern Translation2d get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_loc, double radius);
 
 /**
  * Injects points in a path without changing the curvature with a certain spacing.
  */
-extern std::vector<point_t> inject_path(const std::vector<point_t> &path, double spacing);
+extern std::vector<Translation2d> inject_path(const std::vector<Translation2d> &path, double spacing);
 
 /**
  * Returns a smoothed path maintaining the start and end of the path.
@@ -90,10 +92,10 @@ extern std::vector<point_t> inject_path(const std::vector<point_t> &path, double
  * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
  */
 
-extern std::vector<point_t> smooth_path(const std::vector<point_t> &path, double weight_data, double weight_smooth,
+extern std::vector<Translation2d> smooth_path(const std::vector<Translation2d> &path, double weight_data, double weight_smooth,
                                         double tolerance);
 
-extern std::vector<point_t> smooth_path_cubic(const std::vector<point_t> &path, double res);
+extern std::vector<Translation2d> smooth_path_cubic(const std::vector<Translation2d> &path, double res);
 
 /**
  * Interpolates a smooth path given a list of waypoints using hermite splines.
@@ -103,7 +105,7 @@ extern std::vector<point_t> smooth_path_cubic(const std::vector<point_t> &path, 
  * @param steps The number of points interpolated between points.
  * @return The smoothed path.
  */
-extern std::vector<point_t> smooth_path_hermite(const std::vector<hermite_point> &path, double step);
+extern std::vector<Translation2d> smooth_path_hermite(const std::vector<hermite_point> &path, double step);
 
 /**
  * Estimates the remaining distance from the robot's position to the end,
@@ -115,6 +117,6 @@ extern std::vector<point_t> smooth_path_hermite(const std::vector<hermite_point>
  * @param radius Pure pursuit "radius", used to search for the robot along the path
  * @return A rough estimate of the remaining distance
  */
-extern double estimate_remaining_dist(const std::vector<point_t> &path, pose_t robot_pose, double radius);
+extern double estimate_remaining_dist(const std::vector<Translation2d> &path, Pose2d robot_pose, double radius);
 
 } // namespace PurePursuit

@@ -34,9 +34,9 @@ class OdometrySerial : public OdometryBase {
     /**
      * Construct a new Odometry Serial Object
      */
-    OdometrySerial(bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, pose_t sensor_offset, int32_t port, int32_t baudrate);
+    OdometrySerial(bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate);
 
-    void send_config(const pose_t &initial_pose, const pose_t &sensor_offset, const bool &calc_vel_acc_on_brain);
+    void send_config(const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain);
 
     int background_task(void *ptr);
 
@@ -45,7 +45,7 @@ class OdometrySerial : public OdometryBase {
      *
      * @return the robot's updated position
      */
-    pose_t update() override;
+    Pose2d update() override;
 
     /**
      * Resets the position and rotational data to the input.
@@ -54,9 +54,7 @@ class OdometrySerial : public OdometryBase {
 
     int receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size);
 
-    pose_t get_position(void) override;
-
-    Pose2d get_pose2d(void);
+    Pose2d get_position(void);
 
     size_t cobs_decode(const uint8_t *buffer, size_t length, void *data);
 

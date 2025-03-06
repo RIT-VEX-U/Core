@@ -33,7 +33,7 @@
  * Construct a new Odometry Serial Object
  */
 OdometrySerial::OdometrySerial(
-  bool is_async, bool calc_vel_acc_on_brain, pose_t initial_pose, pose_t sensor_offset, int32_t port,
+  bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port,
   int32_t baudrate
 )
     : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
@@ -46,17 +46,17 @@ OdometrySerial::OdometrySerial(
 /**
  * Send 
  */
-void OdometrySerial::send_config(const pose_t &initial_pose, const pose_t &sensor_offset, const bool &calc_vel_acc_on_brain) {
+void OdometrySerial::send_config(const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain) {
     uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
 
-    float initialx = (float)initial_pose.x;
-    float initialy = (float)initial_pose.y;
-    float initialrot = (float)initial_pose.rot;
+    float initialx = (float)initial_pose.x();
+    float initialy = (float)initial_pose.y();
+    float initialrot = (float)initial_pose.rotation().degrees();
 
-    float offsetx = (float)sensor_offset.x;
-    float offsety = (float)sensor_offset.y;
-    float offsetrot = (float)sensor_offset.rot;
+    float offsetx = (float)sensor_offset.x();
+    float offsety = (float)sensor_offset.y();
+    float offsetrot = (float)sensor_offset.rotation().degrees();
 
     memcpy(&raw[0], &initialx, sizeof(float));
     memcpy(&raw[4], &initialy, sizeof(float));
@@ -110,7 +110,7 @@ int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t b
  *
  * @return the robot's updated position
  */
-pose_t OdometrySerial::update() {
+Pose2d OdometrySerial::update() {
     uint8_t cobs_encoded_size;
     uint8_t packet_size;
 
@@ -158,17 +158,7 @@ void OdometrySerial::set_position(const Pose2d &new_pose) {
  * 
  * @return the position that the odometry believes the robot is at
  */
-pose_t OdometrySerial::get_position(void) {
-    Pose2d pose = get_pose2d();
-    return pose_t{pose.x(), pose.y(), pose.rotation().wrapped_degrees_360()};
-}
-
-/**
- * Gets the current position and rotation
- * 
- * @return the position that the odometry believes the robot is at
- */
-Pose2d OdometrySerial::get_pose2d(void) {
+Pose2d OdometrySerial::get_position(void){
     return pose.relative_to(pose_offset);
 }
 

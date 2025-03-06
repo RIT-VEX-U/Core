@@ -231,7 +231,7 @@ void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(),
               b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
 }
-
+//Currently does not work with Pos2d Implementation
 OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail)
     : odom(odom), robot_width(width), robot_height(height), do_trail(do_trail),
       velocity_graph(30, 0.0, 0.0, {vex::green}, 1) {
@@ -241,7 +241,7 @@ OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool
     buf = (uint8_t *)malloc(buf_size);
     b.SDcard.loadfile(field_filename, buf, buf_size);
   }
-  pose_t pos = odom.get_position();
+  Pose2d pos = odom.get_position();
   for (int i = 0; i < path_len; i++) {
     path[i] = pos;
   }
@@ -254,7 +254,7 @@ int in_to_px(double in) {
 
 void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
                         unsigned int frame_number [[maybe_unused]]) {
-  pose_t pose = odom.get_position();
+  Pose2d pose = odom.get_position();
   path[path_index] = pose;
 
   if (do_trail && frame_number % 5 == 0) {
@@ -262,20 +262,20 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
     path_index %= path_len;
   }
 
-  auto to_px = [](const point_t p) -> point_t { return {(double)in_to_px(p.x) + 200, (double)in_to_px(-p.y) + 240}; };
+  auto to_px = [](const Translation2d p) -> Translation2d { return {(double)in_to_px(p.x()) + 200, (double)in_to_px(-p.y()) + 240}; };
 
-  auto draw_line = [to_px, &scr](const point_t from, const point_t to) {
-    scr.drawLine((int)to_px(from).x, (int)to_px(from).y, (int)to_px(to).x, (int)to_px(to).y);
+  auto draw_line = [to_px, &scr](const Translation2d from, const Translation2d to) {
+    scr.drawLine((int)to_px(from).x(), (int)to_px(from).y(), (int)to_px(to).x(), (int)to_px(to).y());
   };
 
-  point_t pos = pose.get_point();
+  Translation2d pos = pose.translation();
   fflush(stdout);
-  scr.printAt(45, 30, "(%.2f, %.2f)", pose.x, pose.y);
-  scr.printAt(45, 50, "%.2f deg", pose.rot);
+  scr.printAt(45, 30, "(%.2f, %.2f)", pose.x(), pose.y());
+  scr.printAt(45, 50, "%.2f deg", pose.rotation().degrees());
 
   double speed = odom.get_speed();
   scr.printAt(45, 80, "%.2f speed", speed);
-  velocity_graph.add_samples({speed});
+  velocity_graph.add_samples(std::vector<double>{speed});
   velocity_graph.draw(scr, 30, 100, 170, 120);
 
   if (buf == nullptr) {
@@ -285,31 +285,31 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
 
   scr.drawImageFromBuffer(buf, 200, 0, buf_size);
 
-  point_t pos_px = to_px(pos);
-  scr.drawCircle((int)pos_px.x, (int)pos_px.y, 3, vex::color::white);
+  Translation2d pos_px = to_px(pos);
+  scr.drawCircle((int)pos_px.x(), (int)pos_px.y(), 3, vex::color::white);
 
   if (do_trail) {
-    pose_t last_pos = path[(path_index + 1) % path_len];
+    Pose2d last_pos = path[(path_index + 1) % path_len];
     for (int i = path_index + 2; i < path_index + path_len; i++) {
       int j = i % path_len;
-      pose_t pose = path[j];
+      Pose2d pose = path[j];
       scr.setPenWidth(2);
       scr.setPenColor(vex::color(255, 255, 80));
-      draw_line(pose.get_point(), last_pos.get_point());
+      draw_line(pose.translation(), last_pos.translation());
       last_pos = pose;
     }
   }
   scr.setPenColor(vex::color::white);
 
-  Mat2 mat = Mat2::FromRotationDegrees(pose.rot - 90);
-  const point_t to_left = point_t{-robot_width / 2.0, 0};
-  const point_t to_front = point_t{0.0, robot_height / 2.0};
+  Mat2 mat = Mat2::FromRotationDegrees(pose.rotation().degrees() - 90);
+  const Translation2d to_left(-robot_width / 2.0, 0);
+  const Translation2d to_front(0.0, robot_height / 2.0);
 
-  const point_t fl = pos + mat * (+to_left + to_front);
-  const point_t fr = pos + mat * (-to_left + to_front);
-  const point_t bl = pos + mat * (+to_left - to_front);
-  const point_t br = pos + mat * (-to_left - to_front);
-  const point_t front = pos + mat * (to_front * 2.0);
+  const Translation2d fl = pos + mat * (to_left + to_front);
+  const Translation2d fr = pos + mat * (-to_left + to_front);
+  const Translation2d bl = pos + mat * (to_left - to_front);
+  const Translation2d br = pos + mat * (-to_left - to_front);
+  const Translation2d front = pos + mat * (to_front * 2.0);
 
   draw_line(fl, fr);
   draw_line(fr, br);
@@ -318,6 +318,7 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
 
   draw_line(pos, front);
 }
+
 void OdometryPage::update(bool was_pressed, int x, int y) {
   (void)x;
   (void)y;
@@ -329,8 +330,8 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
   if (was_pressed) {
     double dx = x;
     double dy = y;
-    if (rect.contains(point_t{dx, dy})) {
-      double pct = (dx - rect.min.x - margin) / (rect.dimensions().x - 2 * margin);
+    if (rect.contains(Translation2d(dx, dy))) {
+      double pct = (dx - rect.min.x() - margin) / (rect.dimensions().x() - 2 * margin);
       pct = clamp(pct, 0.0, 1.0);
       value = (low + pct * (high - low));
     }
@@ -343,17 +344,17 @@ void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   if (rect.height() <= 0) {
     printf("Slider: %s has no height. Cant use it.", name.c_str());
   }
-  double xl = rect.min.x;
-  double xh = rect.max.x;
+  double xl = rect.min.x();
+  double xh = rect.max.x();
   double xmid = (xl + xh) / 2.0;
-  double y = rect.min.y + rect.height() / 2;
+  double y = rect.min.y() + rect.height() / 2;
   const double margin = 5.0;
 
   scr.setPenColor(vex::color(50, 50, 50));
   scr.setFillColor(vex::color(50, 50, 50));
   scr.setPenWidth(1);
 
-  scr.drawRectangle(rect.min.x, rect.min.y, rect.dimensions().x, rect.dimensions().y);
+  scr.drawRectangle(rect.min.x(), rect.min.y(), rect.dimensions().x(), rect.dimensions().y());
 
   scr.setPenColor(vex::color(200, 200, 200));
   scr.setPenWidth(4);
@@ -361,7 +362,7 @@ void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.drawLine(xl + margin, y, xh - margin, y);
 
   double pct = (value - low) / (high - low);
-  double vx = pct * (rect.dimensions().x - (2 * margin)) + rect.min.x + margin;
+  double vx = pct * (rect.dimensions().x() - (2 * margin)) + rect.min.x() + margin;
   const double handle_width = 4;
   const double handle_height = 4;
 
@@ -385,10 +386,10 @@ void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.setPenColor(vex::white);
   scr.setPenWidth(1);
   scr.setFillColor(vex::color(50, 50, 50));
-  scr.drawRectangle(rect.min.x, rect.min.y, rect.width(), rect.height());
+  scr.drawRectangle(rect.min.x(), rect.min.y(), rect.width(), rect.height());
   int w = scr.getStringWidth(name.c_str());
   int h = scr.getStringHeight(name.c_str());
-  scr.printAt(rect.center().x - w / 2, rect.center().y + h / 2, name.c_str());
+  scr.printAt(rect.center().x() - w / 2, rect.center().y() + h / 2, name.c_str());
 }
 
 PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
@@ -421,7 +422,7 @@ void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsig
   zero_i.draw(scr, first_draw, frame_number);
   zero_d.draw(scr, first_draw, frame_number);
 
-  graph.add_samples({pid.get_target(), pid.get_sensor_val()});
+  graph.add_samples(std::vector<double> {pid.get_target(), pid.get_sensor_val()});
 
   graph.draw(scr, 230, 20, 200, 200);
 

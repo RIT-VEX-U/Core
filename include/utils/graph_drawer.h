@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/include/utils/geometry.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/vector2d.h"
 #include "vex.h"
 #include <cmath>
@@ -22,7 +22,7 @@ public:
    * add_samples adds a point to the graph, removing one from the back
    * @param sample an x, y coordinate of the next point to graph
    */
-  void add_samples(std::vector<point_t> sample);
+  void add_samples(std::vector<Translation2d> sample);
 
   /**
    * add_samples adds a point to the graph, removing one from the back
@@ -41,7 +41,7 @@ public:
   void draw(vex::brain::lcd &screen, int x, int y, int width, int height);
 
 private:
-  std::vector<std::vector<point_t>> series;
+  std::vector<std::vector<Translation2d>> series;
   int sample_index = 0;
   std::vector<vex::color> cols;
   vex::color bgcol = vex::transparent;

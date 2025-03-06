@@ -100,7 +100,7 @@ public:
    *
    * @return the robot's updated position
    */
-  pose_t update() override {
+  Pose2d update() override {
     Eigen::Vector<double, WHEELS> radian_deltas;
 
     for (int i = 0; i < WHEELS; i++) {
@@ -110,7 +110,7 @@ public:
       old_wheel_angles[i] = angle_rad;
     }
 
-    pose_t updated_pos = calculate_new_pos(radian_deltas, current_pos);
+    Pose2d updated_pos = calculate_new_pos(radian_deltas, current_pos);
 
     // if we do not pass in an IMU we use the wheels for rotation
     if (imu != nullptr) {
@@ -121,7 +121,7 @@ public:
       angle += angle_offset;
     }
 
-    static pose_t last_pos = updated_pos;
+    static Pose2d last_pos = updated_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
     static timer tmr;
@@ -135,13 +135,13 @@ public:
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
       // Calculate robot velocity
-      speed_local = pos_diff(updated_pos, last_pos) / tmr.time(sec);
+      speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
 
       // Calculate robot acceleration
       accel_local = (speed_local - last_speed) / tmr.time(sec);
 
       // Calculate robot angular velocity (deg/sec)
-      ang_speed_local = smallest_angle(updated_pos.rot, last_pos.rot) / tmr.time(sec);
+      ang_speed_local = smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
 
       // Calculate robot angular acceleration (deg/sec^2)
       ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
@@ -170,9 +170,9 @@ public:
   /**
    * Resets the position and rotational data to the input.
    */
-  void set_position(const pose_t &newpos) override {
+  void set_position(const Pose2d &newpos) override {
     mut.lock();
-    angle_offset = newpos.rot - (current_pos.rot - angle_offset);
+    angle_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - angle_offset);
     mut.unlock();
 
     OdometryBase::set_position(newpos);
@@ -182,9 +182,9 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  pose_t get_position(void) {
-    pose_t unwrapped_radians = OdometryBase::get_position();
-    pose_t wrapped_degrees = {unwrapped_radians.x, unwrapped_radians.y, wrap_angle_deg((unwrapped_radians.rot / (2 * M_PI)) * 360)};
+  Pose2d get_position(void) {
+    Pose2d unwrapped_radians = OdometryBase::get_position();
+    Pose2d wrapped_degrees(unwrapped_radians.x(), unwrapped_radians.y(), wrap_angle_deg((unwrapped_radians.rotation().degrees() / (2 * M_PI)) * 360));
     return wrapped_degrees;
   }
 
@@ -194,28 +194,28 @@ private:
    * configurations are stored as class members.
    *
    * @param radian_deltas vector containing the change of angle of each wheel (radians)
-   * @param old_pose The robot's previous position (x, y, rot)
-   * @return The robot's new position (x, y, rot)
+   * @param old_pose The robot's previous position Pose2d(x, y, Rotation2d(degrees in radians))
+   * @return The robot's new position Pose2d(x, y, Rotation2d(degrees in radians))
    */
-  pose_t calculate_new_pos(Eigen::Vector<double, WHEELS> radian_deltas, pose_t old_pose) {
+  Pose2d calculate_new_pos(Eigen::Vector<double, WHEELS> radian_deltas, Pose2d old_pose) {
     // Mr T = E -> Mr^{+} E = T
     // We take the diagonal of radian_deltas to do a coefficient wise multiplication rather than a dot product
     Eigen::Vector3d pose_delta = transfer_matrix_pseudoinverse * (radian_deltas.asDiagonal() * wheel_radii);
-    Eigen::Vector3d old_pose_vector{old_pose.x, old_pose.y, old_pose.rot};
-
+    Eigen::Vector3d old_pose_vector{old_pose.x(), old_pose.y(), old_pose.rotation().degrees()};
     // we achieve better performance by using the imu for rotation directly when possible
     // If an imu is not passed in when constructing, simply use the wheels for rotation
     if (imu != nullptr) {
       pose_delta(2) = angle - old_angle;
     }
+    Pose2d pose_delta2d(pose_delta);
+    Pose2d old_pose_Pose2d(old_pose_vector);
 
-    pose_t new_pose = pose_exponential(old_pose_vector, pose_delta);
+    Pose2d new_pose = old_pose_Pose2d.exp(pose_delta);
 
     // simply replaces the calculated angle with the imu angle directly
     if (imu != nullptr) {
-      new_pose.rot = angle;
+      new_pose.setRotationDeg(angle);
     }
-
     return new_pose;
   }
 

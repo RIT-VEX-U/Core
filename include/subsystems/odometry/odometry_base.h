@@ -9,12 +9,13 @@
 #include "../core/include/robot_specs.h"
 #include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/utils/geometry.h"
+#include "../core/include/utils/math/geometry/pose2d.h"
 #include "vex.h"
 
 #ifndef PI
 #define PI 3.141592654
 #endif
-
+const Pose2d zero_pos(0.0L, 0.0L, 90.0L);
 /**
  * OdometryBase
  *
@@ -40,19 +41,19 @@ public:
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
-  virtual pose_t get_position(void);
+  virtual Pose2d get_position(void);
 
   /**
    * Sets the current position of the robot
    * @param newpos the new position that the odometry will believe it is at
    */
-  virtual void set_position(const pose_t &newpos = zero_pos);
-  AutoCommand *SetPositionCmd(const pose_t &newpos = zero_pos);
+  virtual void set_position(const Pose2d &newpos = zero_pos);
+  AutoCommand *SetPositionCmd(const Pose2d &newpos = zero_pos);
   /**
    * Update the current position on the field based on the sensors
    * @return the location that the robot is at after the odometry does its calculations
    */
-  virtual pose_t update() = 0;
+  virtual Pose2d update() = 0;
 
 
   /**
@@ -128,7 +129,6 @@ public:
   /**
    * Zeroed position. X=0, Y=0, Rotation= 90 degrees
    */
-  inline static constexpr pose_t zero_pos = {.x = 0.0L, .y = 0.0L, .rot = 90.0L};
 
   /**
    * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
@@ -154,7 +154,7 @@ public:
   /**
    * Current position of the robot in terms of x,y,rotation
    */
-  pose_t current_pos;
+  Pose2d current_pos;
 
   double speed;         /**< the speed at which we are travelling (inch/s)*/
   double accel;         /**< the rate at which we are accelerating (inch/s^2)*/

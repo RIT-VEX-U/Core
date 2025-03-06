@@ -96,12 +96,12 @@ FeedForward::ff_config_t AsymmetricMotionController::tune_feedforward(TankDrive 
                                                             double duration) {
   FeedForward::ff_config_t out = {};
 
-  pose_t start_pos = odometry.get_position();
+  Pose2d start_pos = odometry.get_position();
 
   // ========== kS Tuning =========
   // Start at 0 and slowly increase the power until the robot starts moving
   double power = 0;
-  while (odometry.pos_diff(start_pos, odometry.get_position()) < 0.05) {
+  while (start_pos.translation().distance(odometry.get_position().translation()) < 0.05) {
     drive.drive_tank(power, power, 1);
     power += 0.001;
     vexDelay(100);

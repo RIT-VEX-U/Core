@@ -22,7 +22,7 @@
 #include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/utils/geometry.h"
 #include "vex.h"
-
+#include "../core/include/utils/math/geometry/pose2d.h"
 using namespace vex;
 
 // ==== DRIVING ====
@@ -133,7 +133,7 @@ class DriveToPointCommand : public AutoCommand {
 public:
   DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir,
                       double max_speed = 1, double end_speed = 0);
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir, double max_speed = 1,
+  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed = 1,
                       double end_speed = 0);
 
   /**
@@ -188,7 +188,7 @@ class TurnToPointCommand: public AutoCommand{
   public:
 
     TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
-    TurnToPointCommand(TankDrive &drive_sys, point_t point, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+    TurnToPointCommand(TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed = 1, double end_speed = 0);
 
     bool run() override;
 
@@ -292,12 +292,12 @@ public:
   bool run() override;
   std::string toString(){
     std::string returnStr = "Driving through ";
-    std::vector<point_t> thePoints = path.get_points();
+    std::vector<Translation2d> thePoints = path.get_points();
     char xStr[21];
     char yStr[21];
     for (int i = 0; i < thePoints.size(); i++){
-      sprintf(xStr, "%d", thePoints.at(i).x);
-      sprintf(yStr, "%d", thePoints.at(i).y);
+      sprintf(xStr, "%d", thePoints.at(i).x());
+      sprintf(yStr, "%d", thePoints.at(i).y());
       returnStr = returnStr + "(" + xStr + ", " + yStr + ") \n";
     }
     char speedStr[21];
@@ -356,7 +356,7 @@ public:
    * @param odom the odometry system we are setting
    * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
    */
-  OdomSetPosition(OdometryBase &odom, const pose_t &newpos = OdometryBase::zero_pos);
+  OdomSetPosition(OdometryBase &odom, const Pose2d &newpos = zero_pos);
 
   /**
    * Run set_position
@@ -366,12 +366,12 @@ public:
   bool run() override;
   std::string toString(){
     char headStr[21];
-    sprintf(headStr, "%d", newpos.rot);
+    sprintf(headStr, "%d", newpos.rotation().degrees());
     char speedStr[21];
     char xStr[21];
-    sprintf(xStr, "%d", newpos.x);
+    sprintf(xStr, "%d", newpos.x());
     char yStr[21];
-    sprintf(yStr, "%d", newpos.y);
+    sprintf(yStr, "%d", newpos.y());
     std::string returnStr = "Setting positon to X: ";
     returnStr = returnStr + xStr + ", Y: " + yStr + ", ROT: " + headStr;
     return returnStr;
@@ -380,5 +380,5 @@ public:
 private:
   // drive system with an odometry config
   OdometryBase &odom;
-  pose_t newpos;
+  Pose2d newpos;
 };

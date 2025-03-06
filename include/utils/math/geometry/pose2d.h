@@ -29,7 +29,7 @@ public:
    * @param translation translational component.
    * @param rotation rotational component.
    */
-  Pose2d(const Translation2d &translation, const Rotation2d &rotation);
+  Pose2d(const Translation2d &translation = Translation2d(0, 0), const Rotation2d &rotation = Rotation2d(0));
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -77,6 +77,10 @@ public:
    * @return the x value of the translational component.
    */
   double x() const;
+/**
+   * sets the x value of the translational component.
+*/
+  void setX(double x);
 
   /**
    * Returns the y value of the translational component.
@@ -86,11 +90,25 @@ public:
   double y() const;
 
   /**
+   * sets the y value of the translational component.
+  */
+  void setY(double y);
+
+  /**
    * Returns the rotational component.
    *
    * @return the rotational component.
    */
   Rotation2d rotation() const;
+  /**
+   * sets the ration value of the rotational component in Radians
+  */
+  void setRotationRad(double rotRad);
+
+  /**
+   * sets the ration value of the rotational component in Degrees
+  */
+  void setRotationDeg(double rotDeg);
 
   /**
    * Compares this to another pose.

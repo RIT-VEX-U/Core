@@ -37,9 +37,9 @@ public:
    */
   TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom = NULL);
 
-  AutoCommand *DriveToPointCmd(point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
+  AutoCommand *DriveToPointCmd(Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
-  AutoCommand *DriveToPointCmd(Feedback &fb, point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
+  AutoCommand *DriveToPointCmd(Feedback &fb, Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
 
   AutoCommand *DriveForwardCmd(double dist, vex::directionType dir = vex::forward, double max_speed = 1.0,
@@ -52,7 +52,7 @@ public:
 
   AutoCommand *TurnToPointCmd(double x, double y, vex::directionType dir = vex::directionType::fwd,
                               double max_speed = 1.0, double end_speed = 0.0);
-  AutoCommand *TurnToPointCmd(point_t point, vex::directionType dir = vex::directionType::fwd,
+  AutoCommand *TurnToPointCmd(Translation2d point, vex::directionType dir = vex::directionType::fwd,
                               double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);

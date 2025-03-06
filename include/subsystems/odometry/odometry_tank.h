@@ -63,19 +63,19 @@ public:
    * Update the current position on the field based on the sensors
    * @return the position that odometry has calculated itself to be at
    */
-  pose_t update() override;
+  Pose2d update() override;
 
   /**
    * set_position tells the odometry to place itself at a position
    * @param newpos the position the odometry will take
    */
-  void set_position(const pose_t &newpos = zero_pos) override;
+  void set_position(const Pose2d &newpos = zero_pos) override;
 
 private:
   /**
    * Get information from the input hardware and an existing position, and calculate a new current position
    */
-  static pose_t calculate_new_pos(robot_specs_t &config, pose_t &stored_info, double lside_diff, double rside_diff,
+  static Pose2d calculate_new_pos(robot_specs_t &config, Pose2d &stored_info, double lside_diff, double rside_diff,
                                   double angle_deg);
 
   vex::motor_group *left_side, *right_side;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Eigen/Dense>
-
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -27,7 +25,7 @@ public:
    * @param x The x component of the translation.
    * @param y The y component of the translation.
    */
-  Translation2d(const double &x, const double &y);
+  Translation2d(const double &x = 0, const double &y = 0);
 
   /**
    * Constructs a Translation2d with the values from the given vector.
@@ -52,11 +50,21 @@ public:
   double x() const;
 
   /**
+   * Sets the x value of the translation.
+   */
+  void setX(double x);
+
+  /**
    * Returns the y value of the translation.
    *
    * @return the y value of the translation.
    */
   double y() const;
+
+  /**
+   * Sets the y value of the translation.
+   */
+  void setY(double y);
 
   /**
    * Returns the angle of the translation.

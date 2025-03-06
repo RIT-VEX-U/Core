@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
 
 /**
@@ -37,12 +36,16 @@ Translation2d::Translation2d(const double &r, const Rotation2d &theta)
  */
 double Translation2d::x() const { return m_x; }
 
+void Translation2d::setX(double x) {this->m_x = x;} 
+
 /**
  * Returns the y value of the translation.
  *
  * @return the y value of the translation.
  */
 double Translation2d::y() const { return m_y; }
+
+void Translation2d::setY(double y) {this->m_x = y;}
 
 /**
  * Returns the angle of the translation.
