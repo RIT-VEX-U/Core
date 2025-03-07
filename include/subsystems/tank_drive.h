@@ -42,6 +42,8 @@ public:
   AutoCommand *DriveToPointCmd(Feedback &fb, Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
 
+  AutoCommand *DriveToPointCmd(double x, double y, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
+
   AutoCommand *DriveForwardCmd(double dist, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
   AutoCommand *DriveForwardCmd(Feedback &fb, double dist, vex::directionType dir = vex::forward, double max_speed = 1.0,

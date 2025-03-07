@@ -20,6 +20,10 @@ AutoCommand *TankDrive::DriveToPointCmd(Translation2d pt, vex::directionType dir
   return new DriveToPointCommand(*this, *drive_default_feedback, pt, dir, max_speed, end_speed);
 }
 
+AutoCommand *TankDrive::DriveToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
+  return new DriveToPointCommand(*this, *drive_default_feedback, Translation2d(x, y), dir, max_speed, end_speed);
+}
+
 AutoCommand *TankDrive::DriveForwardCmd(double dist, vex::directionType dir, double max_speed, double end_speed) {
   return new DriveForwardCommand(*this, *drive_default_feedback, dist, dir, max_speed, end_speed);
 }
