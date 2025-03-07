@@ -41,7 +41,7 @@ OdometrySerial::OdometrySerial(
       pose_offset(Pose2d(0, 0, 0)), _port(port) {
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
-    
+    send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
 }
 
 /**
