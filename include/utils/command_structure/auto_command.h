@@ -26,9 +26,7 @@ public:
   Condition *Or(Condition *b);
   Condition *And(Condition *b);
   virtual bool test() = 0;
-  virtual std::string toString(){
-    return "Condition";
-  }
+  virtual std::string toString(){return "Condition";}
 };
 
 class AutoCommand {
@@ -137,9 +135,7 @@ class WaitUntilCondition : public AutoCommand {
 public:
   WaitUntilCondition(Condition *cond) : cond(cond) {}
   bool run() override { return cond->test(); }
-  std::string toString(){
-    return "waiting until %s" + cond->toString();
-  }
+  std::string toString(){return "waiting until %s" + cond->toString();}
 
 private:
   Condition *cond;
@@ -157,9 +153,7 @@ public:
   InOrder(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
-  std::string toString() {
-    return "Running Inorder with length: " + cmds.size();
-  }
+  std::string toString() {return "Running Inorder with length: " + cmds.size();}
 
 private:
   AutoCommand *current_command = nullptr;
@@ -174,9 +168,7 @@ public:
   Parallel(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
-  std::string toString(){
-    return runners.size() + " commands running in parallel";
-  }
+  std::string toString();
 
 private:
   std::vector<AutoCommand *> cmds;
@@ -191,9 +183,7 @@ public:
   Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice);
   ~Branch();
   bool run() override;
-  std::string toString(){
-    return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " + cond->toString();
-  }
+  std::string toString();
   void on_timeout() override;
 
 private:
@@ -231,10 +221,7 @@ public:
   /// @param true_to_end we will repeat until true_or_end.test() returns true
   RepeatUntil(InOrder cmds, Condition *true_to_end);
   bool run() override;
-  std::string toString(){
-    InOrder pHCmds = cmds;
-    return "Repeating " + pHCmds.toString() + " until " + true_to_end->toString();
-  }
+  std::string toString();
   void on_timeout() override;
 
 private:

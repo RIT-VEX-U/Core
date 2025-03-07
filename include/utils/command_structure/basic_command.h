@@ -43,29 +43,11 @@ public:
    * @return True Async running command
    */
   bool run() override;
-  std::string toString(){
-    std::string str = "Spinnning motors ";
-    if(dir == vex::directionType::fwd){
-      str = (str + " forwards at ");
-    }
-    else if(dir == vex::directionType::rev){
-      str = (str + " reverse at ");
-    }
-    char powerStr[21];
-    sprintf(powerStr, "%d", power);
-    str = str + powerStr;
-    switch (setting) { // Switch Statement taking the setting Enum
-      case voltage:      // Voltage Setting
-        str = str + "V";
-        break;
-      case percent: // Percentage Setting
-      str = str + "%";
-        break;
-      case velocity: // Velocity Setting
-      str = str + "Dps";
-        break;
-      }
-  };
+
+  /*
+  * returns a to string that describes the commands functionality
+  */
+  std::string toString();
 
 private:
   vex::motor &motor;
@@ -97,21 +79,11 @@ public:
    * @return True Command runs once
    */
   bool run() override;
-  std::string toString(){
-    switch(setting){
-      case vex::brakeType::brake:
-        return "Braking motors";
-        break;
-        case vex::brakeType::coast:
-        return "Coasting motors";
-        break;
-        case vex::brakeType::hold:
-        return "Holding motors";
-        break;
-        default:
-        break;
-    }
-  }
+
+  /*
+  * returns a to string that describes the commands functionality
+  */
+  std::string toString();
 
 private:
   vex::motor &motor;
@@ -142,14 +114,10 @@ public:
    * @return True Command runs once
    */
   bool run() override;
-  std::string toString(){
-    if(setting){
-      return "Activating solonoid";
-    }
-    else{
-      return "Deactivating solonoid";
-    }
-  };
+  /*
+  * returns a to string that describes the commands functionality
+  */
+  std::string toString();
 
 private:
   vex::pneumatics &solenoid;

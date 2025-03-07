@@ -47,6 +47,34 @@ bool BasicSpinCommand::run() {
   return true; // Always return True to send next on CommandController
 }
 
+/*
+* returns a to string that describes the commands functionality
+*/
+std::string BasicSpinCommand::toString(){
+  std::string str = "Spinnning motors ";
+  if(dir == vex::directionType::fwd){
+    str.append(" forwards at ");
+  }
+  else if(dir == vex::directionType::rev){
+    str.append(" reverse at ");
+  }
+  char powerStr[21];
+  sprintf(powerStr, "%f", power);
+  str.append(powerStr);
+  switch (setting) { // Switch Statement taking the setting Enum
+    case voltage:      // Voltage Setting
+      str.append("V");
+      break;
+    case percent: // Percentage Setting
+    str.append("%");
+      break;
+    case velocity: // Velocity Setting
+    str.append("Dps");
+      break;
+  }
+  return str;
+};
+
 /**
  * @brief Construct a BasicMotorStop Command
  *
@@ -64,6 +92,26 @@ BasicStopCommand::BasicStopCommand(vex::motor &motor, vex::brakeType setting) : 
 bool BasicStopCommand::run() {
   motor.stop(setting);
   return true;
+}
+
+/*
+* returns a to string that describes the commands functionality
+*/
+std::string BasicStopCommand::toString(){
+  switch(setting){
+    case vex::brakeType::brake:
+      return "Braking motors";
+      break;
+      case vex::brakeType::coast:
+      return "Coasting motors";
+      break;
+      case vex::brakeType::hold:
+      return "Holding motors";
+      break;
+      default:
+      return "";
+      break;
+  }
 }
 
 // Basic Solenoid Commands-----------------------------------
@@ -85,3 +133,15 @@ bool BasicSolenoidSet::run() {
   solenoid.set(setting);
   return true;
 }
+
+/*
+  * returns a to string that describes the commands functionality
+  */
+ std::string BasicSolenoidSet::toString(){
+  if(setting){
+    return "Activating solonoid";
+  }
+  else{
+    return "Deactivating solonoid";
+  }
+};

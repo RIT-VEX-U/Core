@@ -48,7 +48,7 @@ bool InOrder::run() {
   }
   // retrieve and remove command at the front of the queue
   if (current_command == nullptr) {
-    printf("TAKING INORDER: len =  %d\n", cmds.size());
+    printf("TAKING INORDER: len =  %f\n", cmds.size());
     current_command = cmds.front();
     cmds.pop();
     tmr.reset();
@@ -143,6 +143,16 @@ bool Parallel::run() {
   }
   return all_finished;
 }
+
+std::string Parallel::toString(){
+  std::string returnStr;
+  char runnersizeStr[32];
+  sprintf(runnersizeStr, "%f", runners.size());
+  returnStr.append(runnersizeStr);
+  returnStr.append(" commands running in parallel");
+  return returnStr;
+}
+
 void Parallel::on_timeout() {
   for (int i = 0; i < runners.size(); i++) {
 
@@ -202,6 +212,10 @@ bool Branch::run() {
     }
   }
   return false;
+}
+
+std::string Branch::toString(){
+  return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " + cond->toString();
 }
 void Branch::on_timeout() {
   if (!chosen) {
@@ -272,6 +286,11 @@ bool RepeatUntil::run() {
   working_cmds = new InOrder(cmds);
 
   return false;
+}
+
+std::string RepeatUntil::toString(){
+  InOrder pHCmds = cmds;
+  return "Repeating " + pHCmds.toString() + " until " + true_to_end->toString();
 }
 
 void RepeatUntil::on_timeout() { working_cmds->on_timeout(); }

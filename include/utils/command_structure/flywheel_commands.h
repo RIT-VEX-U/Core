@@ -94,10 +94,10 @@ public:
    */
   bool run() override;
 
-  std::string toString(){
-    std::string returnStr = "Stopping Flywheel";
-    return returnStr;
-  }
+  /*
+  * returns a to string command describing the commands functionality
+  */
+  std::string toString();
 
 private:
   // Flywheel instance to run the function on
@@ -123,10 +123,11 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-  std::string toString(){
-    std::string returnStr = "Stopping Flywheel Motors";
-    return returnStr;
-  }
+
+  /*
+  * returns a to string command describing the commands functionality
+  */
+  std::string toString();
 
 private:
   // Flywheel instance to run the function on
@@ -148,10 +149,10 @@ class FlywheelStopNonTasksCommand : public AutoCommand {
    */
   bool run() override;
 
-  std::string toString(){
-    std::string returnStr = "Stopping Flywheel Non Tasks";
-    return returnStr;
-  }
+  /*
+  * returns a to string command describing the commands functionality
+  */
+  std::string toString();
 
 private:
   // Flywheel instance to run the function on

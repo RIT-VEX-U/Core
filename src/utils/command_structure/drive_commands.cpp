@@ -39,6 +39,31 @@ DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, Feedback &feedbac
  */
 bool DriveForwardCommand::run() { return drive_sys.drive_forward(inches, dir, feedback, max_speed, end_speed); }
 
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string DriveForwardCommand::toString(){
+  std::string returnStr = "Driving ";
+  switch(dir){
+    case directionType::fwd:
+      returnStr.append(" forwards ");
+      break;
+    case directionType::rev:
+    returnStr.append(" reverse ");
+    default:
+      break;
+  }
+  char inStr[21];
+  sprintf(inStr, "%f", inches);
+  returnStr.append(inStr);
+  returnStr.append(" inches at ");
+  char speedStr[21];
+  sprintf(speedStr, "%f", (max_speed*100));
+  returnStr.append(speedStr);
+  returnStr.append("%% speed");
+  return returnStr;
+}
+
 /**
  * reset the drive system if we timeout
  */
@@ -57,13 +82,29 @@ void DriveForwardCommand::on_timeout() {
 TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed,
                                        double end_speed)
     : drive_sys(drive_sys), feedback(feedback), degrees(degrees), max_speed(max_speed), end_speed(end_speed) {}
-
 /**
  * Run turn_degrees
  * Overrides run from AutoCommand
  * @returns true when execution is complete, false otherwise
  */
 bool TurnDegreesCommand::run() { return drive_sys.turn_degrees(degrees, max_speed, end_speed); }
+
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string TurnDegreesCommand::toString(){
+  char degreeStr[32];
+  sprintf(degreeStr, "%f", degrees);
+  char max_speedStr[32];
+  sprintf(max_speedStr, "%f", max_speed*100);
+  std::string returnStr = "Turning ";
+  returnStr.append(degreeStr);
+  returnStr.append(" degrees at ");
+  returnStr.append(max_speedStr);
+  returnStr.append("%% speed");
+  return returnStr;
+}
+
 /**
  * reset the drive system if we timeout
  */
@@ -103,7 +144,42 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
  * Overrides run from AutoCommand
  * @returns true when execution is complete, false otherwise
  */
+
 bool DriveToPointCommand::run() { return drive_sys.drive_to_point(x, y, dir, feedback, max_speed, end_speed); }
+
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string DriveToPointCommand::toString(){
+  std::string returnStr = "Driving ";
+  switch(dir){
+    case directionType::fwd:
+      returnStr.append(" forwards ");
+      break;
+    case directionType::rev:
+    returnStr.append(" reverse ");
+    default:
+      break;
+  }
+  returnStr.append(" to (");
+  char xStr[21];
+  sprintf(xStr, "%f", x);
+  returnStr.append(xStr);
+
+  returnStr.append(", ");
+  char yStr[21];
+  sprintf(yStr, "%f", y);
+  returnStr.append(yStr);
+  returnStr.append(") at ");
+  
+  returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
+  char speedStr[21];
+  sprintf(speedStr, "%f", (max_speed*100));
+  returnStr.append(speedStr);
+  returnStr.append("%% speed");
+  return returnStr;
+}
+
 /**
  * reset the drive system if we don't hit our target
  */
@@ -132,6 +208,39 @@ bool TurnToPointCommand::run() {
   return drive_sys.turn_to_heading(heading, max_speed, end_speed);
 }
 
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string TurnToPointCommand::toString(){
+  std::string returnStr = "Turning ";
+  switch(dir){
+    case directionType::fwd:
+      returnStr.append(" forwards ");
+      break;
+    case directionType::rev:
+    returnStr.append(" reverse ");
+    default:
+      break;
+  }
+  returnStr.append(" to (");
+  char xStr[21];
+  sprintf(xStr, "%f", x);
+  returnStr.append(xStr);
+
+  returnStr.append(", ");
+  char yStr[21];
+  sprintf(yStr, "%f", y);
+  returnStr.append(yStr);
+  returnStr.append(") at ");
+  
+  returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
+  char speedStr[21];
+  sprintf(speedStr, "%f", (max_speed*100));
+  returnStr.append(speedStr);
+  returnStr.append("%% speed");
+  return returnStr;
+}
+
 void TurnToPointCommand::on_timeout() { drive_sys.stop(); }
 
 /**
@@ -151,6 +260,25 @@ TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedb
  * @returns true when execution is complete, false otherwise
  */
 bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg, feedback, max_speed, end_speed); }
+
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string TurnToHeadingCommand::toString(){
+  std::string returnStr = "Turning to ";
+  char headStr[21];
+  sprintf(headStr, "%f", heading_deg);
+  returnStr.append(headStr);
+  returnStr.append(" degrees at ");
+
+  char speedStr[21];
+  sprintf(speedStr, "%f", (max_speed*100));
+  returnStr.append(speedStr);
+  returnStr.append("");
+  returnStr = returnStr + headStr + " degrees at " + speedStr + "%% speed";
+  return returnStr;
+}
+
 /**
  * reset the drive system if we don't hit our target
  */
@@ -176,6 +304,33 @@ PurePursuitCommand::PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback,
  */
 bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedback, max_speed, end_speed); }
 
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string PurePursuitCommand::toString(){
+  std::string returnStr = "Driving through ";
+  std::vector<Translation2d> thePoints = path.get_points();
+  char xStr[21];
+  char yStr[21];
+  for (int i = 0; i < thePoints.size(); i++){
+    sprintf(xStr, "%f", thePoints.at(i).x());
+    returnStr.append("(");
+    returnStr.append(xStr);
+    returnStr.append(", ");
+    sprintf(yStr, "%f", thePoints.at(i).y());
+    returnStr.append(yStr);
+    returnStr.append(") \n");
+
+  }
+  returnStr.append(" at ");
+
+  char speedStr[21];
+  sprintf(speedStr, "%f", (max_speed*100));
+  returnStr.append(speedStr);
+  returnStr.append("%% speed");
+  return returnStr;  
+}
+
 /**
  * Reset the drive system when it times out
  */
@@ -190,7 +345,16 @@ void PurePursuitCommand::on_timeout() {
  */
 DriveStopCommand::DriveStopCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
 
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string DriveStopCommand::toString(){
+  return "Stopping the drive";
+}
+
 void DriveStopCommand::on_timeout() { drive_sys.reset_auto(); }
+
+
 
 /**
  * Stop the drive train
