@@ -35,7 +35,7 @@ public:
    * @param translation the translational component of the transform.
    * @param rotation the rotational component of the transform.
    */
-  constexpr Transform2d(const Translation2d &translation, const Rotation2d &rotation);
+  Transform2d(const Translation2d &translation, const Rotation2d &rotation);
 
   /**
    * Constructs a transform given translation and rotation components.
@@ -44,7 +44,7 @@ public:
    * @param y the y component of the transform.
    * @param rotation the rotational component of the transform.
    */
-  constexpr Transform2d(const double &x, const double &y, const Rotation2d &rotation);
+  Transform2d(const double &x, const double &y, const Rotation2d &rotation);
 
   /**
    * Constructs a transform given translation and rotation components.
@@ -53,7 +53,7 @@ public:
    * @param y the y component of the transform.
    * @param radians the rotational component of the transform in radians.
    */
-  constexpr Transform2d(const double &x, const double &y, const double &radians);
+  Transform2d(const double &x, const double &y, const double &radians);
 
   /**
    * Constructs a transform given translation and rotation components.
@@ -61,14 +61,14 @@ public:
    * @param translation the translational component of the transform.
    * @param radians the rotational component of the transform in radians.
    */
-  constexpr Transform2d(const Translation2d &translation, const double &radians);
+  Transform2d(const Translation2d &translation, const double &radians);
 
   /**
    * Constructs a transform given translation and rotation components given as a vector.
    *
    * @param transform_vector vector of the form [x, y, theta]
    */
-  constexpr Transform2d(const Eigen::Vector3d &transform_vector);
+  Transform2d(const Eigen::Vector3d &transform_vector);
 
   /**
    * Constructs a transform given translation and rotation components.
@@ -76,7 +76,7 @@ public:
    * @param translation the translational component of the transform.
    * @param rotation the rotational component of the transform.
    */
-  constexpr Transform2d(const Pose2d &start, const Pose2d &end);
+  Transform2d(const Pose2d &start, const Pose2d &end);
 
   /**
    * Returns the translational component of the transform.

@@ -35,7 +35,7 @@ public:
    * @param translation translational component.
    * @param rotation rotational component.
    */
-  constexpr Pose2d(const Translation2d &translation, const Rotation2d &rotation);
+Pose2d(const Translation2d &translation, const Rotation2d &rotation);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -44,7 +44,7 @@ public:
    * @param y y component.
    * @param rotation rotational component.
    */
-  constexpr Pose2d(const double &x, const double &y, const Rotation2d &rotation);
+  Pose2d(const double &x, const double &y, const Rotation2d &rotation);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -53,7 +53,7 @@ public:
    * @param y y component.
    * @param radians rotational component in radians.
    */
-  constexpr Pose2d(const double &x, const double &y, const double &radians);
+  Pose2d(const double &x, const double &y, const double &radians);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -61,14 +61,14 @@ public:
    * @param translation translational component.
    * @param radians rotational component in radians.
    */
-  constexpr Pose2d(const Translation2d &translation, const double &radians);
+  Pose2d(const Translation2d &translation, const double &radians);
 
   /**
    * Constructs a pose with given translation and rotation components.
    *
    * @param pose_vector vector of the form [x, y, theta].
    */
-  constexpr Pose2d(const Eigen::Vector3d &pose_vector);
+  Pose2d(const Eigen::Vector3d &pose_vector);
 
   /**
    * Returns the translational component.

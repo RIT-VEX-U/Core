@@ -1,12 +1,11 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
-#include "../core/include/utils/math/geometry/pose2d.h"
 
 /**
  * Construct a new Odometry Base object
  *
  * @param is_async True to run constantly in the background, false to call update() manually
  */
-OdometryBase::OdometryBase(bool is_async) : current_pos(zero_pos) {
+OdometryBase::OdometryBase(bool is_async) : current_pos(this->zero_pos()) {
   if (is_async) {
     handle = new vex::task(background_task, (void *)this);
   }

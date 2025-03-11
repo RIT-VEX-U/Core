@@ -5,18 +5,14 @@
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
 
-Rotation2d::Rotation2d(){
-  m_radians = 0;
-  m_cos = std::cos(0);
-  m_sin = std::sin(0);
-}
+constexpr Rotation2d::Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {}
 
 /**
  * Constructs a rotation with the given value in radians.
  *
  * @param radians the value of the rotation in radians.
  */
-constexpr Rotation2d::Rotation2d(const double &radians)
+Rotation2d::Rotation2d(const double &radians)
     : m_radians{radians}, m_cos{std::cos(radians)}, m_sin{std::sin(radians)} {}
 
 /**
@@ -29,7 +25,7 @@ constexpr Rotation2d::Rotation2d(const double &radians)
  * @param x the x value of the point
  * @param y the y value of the point
  */
-constexpr Rotation2d::Rotation2d(const double &x, const double &y)
+Rotation2d::Rotation2d(const double &x, const double &y)
     : m_radians{std::atan2(y, x)}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
 
 /**
@@ -41,7 +37,7 @@ constexpr Rotation2d::Rotation2d(const double &x, const double &y)
  *
  * @param translation
  */
-constexpr Rotation2d::Rotation2d(const Translation2d &translation)
+Rotation2d::Rotation2d(const Translation2d &translation)
     : m_radians{std::atan2(translation.y(), translation.x())}, m_cos{std::cos(m_radians)}, m_sin{std::sin(m_radians)} {}
 
 /**

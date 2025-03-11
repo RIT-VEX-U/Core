@@ -69,7 +69,7 @@ public:
    * set_position tells the odometry to place itself at a position
    * @param newpos the position the odometry will take
    */
-  void set_position(const Pose2d &newpos = zero_pos) override;
+  void set_position(const Pose2d &newpos = zero_pos()) override;
 
 private:
   /**

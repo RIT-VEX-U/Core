@@ -33,7 +33,7 @@ public:
    *
    * @param radians the value of the rotation in radians.
    */
-  constexpr Rotation2d(const double &radians);
+  Rotation2d(const double &radians);
 
   /**
    * Constructs a rotation given x and y values.
@@ -45,7 +45,7 @@ public:
    * @param x the x value of the point
    * @param y the y value of the point
    */
-  constexpr Rotation2d(const double &x, const double &y);
+  Rotation2d(const double &x, const double &y);
 
   /**
    * Constructs a rotation given x and y values in the form of a Translation2d.
@@ -56,7 +56,7 @@ public:
    *
    * @param translation
    */
-  constexpr Rotation2d(const Translation2d &translation);
+  Rotation2d(const Translation2d &translation);
 
   /**
    * Returns the radian angle value.

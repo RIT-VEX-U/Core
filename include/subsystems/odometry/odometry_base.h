@@ -15,7 +15,7 @@
 #ifndef PI
 #define PI 3.141592654
 #endif
-const Pose2d zero_pos(0.0L, 0.0L, 90.0L);
+
 /**
  * OdometryBase
  *
@@ -47,8 +47,8 @@ public:
    * Sets the current position of the robot
    * @param newpos the new position that the odometry will believe it is at
    */
-  virtual void set_position(const Pose2d &newpos = zero_pos);
-  AutoCommand *SetPositionCmd(const Pose2d &newpos = zero_pos);
+  virtual void set_position(const Pose2d &newpos = zero_pos());
+  AutoCommand *SetPositionCmd(const Pose2d &newpos = zero_pos());
   /**
    * Update the current position on the field based on the sensors
    * @return the location that the robot is at after the odometry does its calculations
@@ -110,6 +110,8 @@ public:
    * @return the angular acceleration at which we are turning (deg/s^2)
    */
   double get_angular_accel_deg();
+
+  inline static constexpr Pose2d zero_pos{}; 
 
   /**
    * handle to the vex task that is running the odometry code
