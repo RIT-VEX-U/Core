@@ -9,11 +9,6 @@
 #include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/math/geometry/twist2d.h"
 
-/*
-* Default Pose2d Constructor
-*/
-constexpr Pose2d::Pose2d() : m_translation(Translation2d()), m_rotation(Rotation2d()){}
-
 /**
  * Constructs a pose with given translation and rotation components.
  *
@@ -72,7 +67,7 @@ Translation2d Pose2d::translation() const { return m_translation; }
  * @return the x value of the translational component.
  */
 double Pose2d::x() const { return m_translation.x(); }
-void Pose2d::setX(double x) {m_translation.setX(x);}
+void Pose2d::setX(double x) { m_translation.setX(x); }
 
 /**
  * Returns the y value of the translational component.
@@ -80,7 +75,7 @@ void Pose2d::setX(double x) {m_translation.setX(x);}
  * @return the y value of the translational component.
  */
 double Pose2d::y() const { return m_translation.y(); }
-void Pose2d::setY(double y) {m_translation.setY(y);}
+void Pose2d::setY(double y) { m_translation.setY(y); }
 
 /**
  * Returns the rotational component.
@@ -89,10 +84,9 @@ void Pose2d::setY(double y) {m_translation.setY(y);}
  */
 Rotation2d Pose2d::rotation() const { return m_rotation; }
 
-void Pose2d::setRotationRad(double radRot) {this->m_rotation.setRad(radRot);}
+void Pose2d::setRotationRad(double radRot) { this->m_rotation.setRad(radRot); }
 
-void Pose2d::setRotationDeg(double degRot) {this->m_rotation.setDeg(degRot);}
-
+void Pose2d::setRotationDeg(double degRot) { this->m_rotation.setDeg(degRot); }
 
 /**
  * Compares this to another pose.
@@ -102,7 +96,7 @@ void Pose2d::setRotationDeg(double degRot) {this->m_rotation.setDeg(degRot);}
  * @return true if each of the components are within 1e-9 of each other.
  */
 bool Pose2d::operator==(const Pose2d other) const {
-  return (translation() == other.translation()) && (rotation() == other.rotation());
+    return (translation() == other.translation()) && (rotation() == other.rotation());
 }
 
 /**
@@ -128,7 +122,7 @@ Pose2d Pose2d::operator/(const double &scalar) const { return *this * (1. / scal
  * @param transform the change in pose.
  */
 Pose2d Pose2d::operator+(const Transform2d &transform) const {
-  return Pose2d{translation() + (transform.translation().rotate_by(rotation())), transform.rotation() + rotation()};
+    return Pose2d{translation() + (transform.translation().rotate_by(rotation())), transform.rotation() + rotation()};
 }
 
 /**
@@ -137,8 +131,8 @@ Pose2d Pose2d::operator+(const Transform2d &transform) const {
  * @param other the pose to subtract.
  */
 Transform2d Pose2d::operator-(const Pose2d &other) const {
-  Pose2d pose_diff = relative_to(other);
-  return Transform2d(pose_diff.translation(), pose_diff.rotation());
+    Pose2d pose_diff = relative_to(other);
+    return Transform2d(pose_diff.translation(), pose_diff.rotation());
 }
 
 /**
@@ -149,9 +143,9 @@ Transform2d Pose2d::operator-(const Pose2d &other) const {
  * prints "Pose2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
 std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
-  os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians()
-     << ", deg: " << pose.rotation().degrees() << "]";
-  return os;
+    os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians()
+       << ", deg: " << pose.rotation().degrees() << "]";
+    return os;
 }
 
 /**
@@ -162,8 +156,8 @@ std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
  * @return this pose relative to another pose.
  */
 Pose2d Pose2d::relative_to(const Pose2d &other) const {
-  Transform2d transform{other, *this};
-  return Pose2d{transform.translation(), transform.rotation()};
+    Transform2d transform{other, *this};
+    return Pose2d{transform.translation(), transform.rotation()};
 }
 
 /**
@@ -175,7 +169,7 @@ Pose2d Pose2d::relative_to(const Pose2d &other) const {
  * @return the pose after being transformed.
  */
 Pose2d Pose2d::transform_by(const Transform2d &transform) const {
-  return Pose2d{translation() + (transform.translation().rotate_by(rotation())), rotation() + transform.rotation()};
+    return Pose2d{translation() + (transform.translation().rotate_by(rotation())), rotation() + transform.rotation()};
 }
 
 /**
@@ -196,25 +190,25 @@ Pose2d Pose2d::transform_by(const Transform2d &transform) const {
  * @return new pose that has been moved forward according to the twist.
  */
 Pose2d Pose2d::exp(const Twist2d &twist) const {
-  const double dx = twist.dx();
-  const double dy = twist.dy();
-  const double dtheta = twist.dtheta();
+    const double dx = twist.dx();
+    const double dy = twist.dy();
+    const double dtheta = twist.dtheta();
 
-  const double sin_theta = std::sin(dtheta);
-  const double cos_theta = std::cos(dtheta);
+    const double sin_theta = std::sin(dtheta);
+    const double cos_theta = std::cos(dtheta);
 
-  double s, c;
-  if (std::abs(dtheta) < 1e-9) {
-    s = 1.0 - 1.0 / 6.0 * dtheta * dtheta;
-    c = 0.5 * dtheta;
-  } else {
-    s = sin_theta / dtheta;
-    c = (1 - cos_theta) / dtheta;
-  }
+    double s, c;
+    if (std::abs(dtheta) < 1e-9) {
+        s = 1.0 - 1.0 / 6.0 * dtheta * dtheta;
+        c = 0.5 * dtheta;
+    } else {
+        s = sin_theta / dtheta;
+        c = (1 - cos_theta) / dtheta;
+    }
 
-  const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}};
+    const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}};
 
-  return *this + transform;
+    return *this + transform;
 }
 
 /**
@@ -229,24 +223,24 @@ Pose2d Pose2d::exp(const Twist2d &twist) const {
  * @return the twist required to go from this pose to the given end
  */
 Twist2d Pose2d::log(const Pose2d &end_pose) const {
-  const Pose2d transform = end_pose.relative_to(*this);
-  const double dtheta = transform.rotation().radians();
-  const double halfDtheta = dtheta / 2.0;
+    const Pose2d transform = end_pose.relative_to(*this);
+    const double dtheta = transform.rotation().radians();
+    const double halfDtheta = dtheta / 2.0;
 
-  const double cosMinusOne = transform.rotation().f_cos() - 1;
+    const double cosMinusOne = transform.rotation().f_cos() - 1;
 
-  double halfThetaByTanOfHalfDtheta;
+    double halfThetaByTanOfHalfDtheta;
 
-  if (std::abs(cosMinusOne) < 1e-9) {
-    halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
-  } else {
-    halfThetaByTanOfHalfDtheta = -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
-  }
+    if (std::abs(cosMinusOne) < 1e-9) {
+        halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
+    } else {
+        halfThetaByTanOfHalfDtheta = -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
+    }
 
-  const Translation2d translationPart = transform.translation().rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
-                                        std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+    const Translation2d translationPart = transform.translation().rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
+                                          std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
 
-  return Twist2d{translationPart.x(), translationPart.y(), dtheta};
+    return Twist2d{translationPart.x(), translationPart.y(), dtheta};
 }
 
 /**
@@ -257,21 +251,21 @@ Twist2d Pose2d::log(const Pose2d &end_pose) const {
  * @return the single pose mean of the list of poses.
  */
 Pose2d pose_mean(const std::vector<Pose2d> &list) {
-  double sumx = 0;
-  double sumy = 0;
+    double sumx = 0;
+    double sumy = 0;
 
-  double sum_sin = 0;
-  double sum_cos = 0;
+    double sum_sin = 0;
+    double sum_cos = 0;
 
-  for (int i = 0; i < list.size(); i++) {
-    sumx += list.at(i).x();
-    sumy += list.at(i).y();
+    for (int i = 0; i < list.size(); i++) {
+        sumx += list.at(i).x();
+        sumy += list.at(i).y();
 
-    sum_sin += list.at(i).rotation().f_sin();
-    sum_cos += list.at(i).rotation().f_cos();
-  }
+        sum_sin += list.at(i).rotation().f_sin();
+        sum_cos += list.at(i).rotation().f_cos();
+    }
 
-  return Pose2d{
-    Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}
-  };
+    return Pose2d{
+      Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}
+    };
 }

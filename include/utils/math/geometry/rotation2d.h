@@ -3,13 +3,11 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
-
 #include <cmath>
 #include <iostream>
 #include <vector>
 
 #include "../core/include/utils/vector2d.h"
-
 
 class Translation2d;
 
@@ -23,215 +21,215 @@ class Translation2d;
  * "360" is from [0, 2pi), [0, 360), [0, 1)
  */
 class Rotation2d {
-public:
-  /**
-   * Default Constructor for Rotation2d
-   */
-  constexpr Rotation2d();
-  /**
-   * Constructs a rotation with the given value in radians.
-   *
-   * @param radians the value of the rotation in radians.
-   */
-  Rotation2d(const double &radians);
+  public:
+    /**
+     * Default Constructor for Rotation2d
+     */
+    constexpr Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {};
+    /**
+     * Constructs a rotation with the given value in radians.
+     *
+     * @param radians the value of the rotation in radians.
+     */
+    Rotation2d(const double &radians);
 
-  /**
-   * Constructs a rotation given x and y values.
-   * Does not have to be normalized.
-   * The angle from the x axis to the point.
-   *
-   * [theta] = [atan2(y, x)]
-   *
-   * @param x the x value of the point
-   * @param y the y value of the point
-   */
-  Rotation2d(const double &x, const double &y);
+    /**
+     * Constructs a rotation given x and y values.
+     * Does not have to be normalized.
+     * The angle from the x axis to the point.
+     *
+     * [theta] = [atan2(y, x)]
+     *
+     * @param x the x value of the point
+     * @param y the y value of the point
+     */
+    Rotation2d(const double &x, const double &y);
 
-  /**
-   * Constructs a rotation given x and y values in the form of a Translation2d.
-   * Does not have to be normalized.
-   * The angle from the x axis to the point.
-   *
-   * [theta] = [atan2(y, x)]
-   *
-   * @param translation
-   */
-  Rotation2d(const Translation2d &translation);
+    /**
+     * Constructs a rotation given x and y values in the form of a Translation2d.
+     * Does not have to be normalized.
+     * The angle from the x axis to the point.
+     *
+     * [theta] = [atan2(y, x)]
+     *
+     * @param translation
+     */
+    Rotation2d(const Translation2d &translation);
 
-  /**
-   * Returns the radian angle value.
-   *
-   * @return the radian angle value.
-   */
-  double radians() const;
+    /**
+     * Returns the radian angle value.
+     *
+     * @return the radian angle value.
+     */
+    double radians() const;
 
-  /**
-   * sets the angle value in radians
-   */
-  void setRad(double radRot);
+    /**
+     * sets the angle value in radians
+     */
+    void setRad(double radRot);
 
-  /**
-   * Returns the degree angle value.
-   *
-   * @return the degree angle value.
-   */
-  double degrees() const;
+    /**
+     * Returns the degree angle value.
+     *
+     * @return the degree angle value.
+     */
+    double degrees() const;
 
-  /**
-   * sets the angle value in degrees
-   */
-  void setDeg(double degRot);
+    /**
+     * sets the angle value in degrees
+     */
+    void setDeg(double degRot);
 
-  /**
-   * Returns the revolution angle value.
-   *
-   * @return the revolution angle value.
-   */
-  double revolutions() const;
+    /**
+     * Returns the revolution angle value.
+     *
+     * @return the revolution angle value.
+     */
+    double revolutions() const;
 
-  /**
-   * Returns the cosine of the angle value.
-   *
-   * @return the cosine of the angle value
-   */
-  double f_cos() const;
+    /**
+     * Returns the cosine of the angle value.
+     *
+     * @return the cosine of the angle value
+     */
+    double f_cos() const;
 
-  /**
-   * Returns the sine of the angle value.
-   *
-   * @return the sine of the angle value.
-   */
-  double f_sin() const;
+    /**
+     * Returns the sine of the angle value.
+     *
+     * @return the sine of the angle value.
+     */
+    double f_sin() const;
 
-  /**
-   * Returns the tangent of the angle value.
-   *
-   * @return the tangent of the angle value.
-   */
-  double f_tan() const;
+    /**
+     * Returns the tangent of the angle value.
+     *
+     * @return the tangent of the angle value.
+     */
+    double f_tan() const;
 
-  /**
-   * Returns the rotation matrix equivalent to this rotation
-   *     [cos, -sin]
-   * R = [sin,  cos]
-   * 
-   * @return the rotation matrix equivalent to this rotation
-   */
-  Eigen::Matrix2d rotation_matrix() const;
+    /**
+     * Returns the rotation matrix equivalent to this rotation
+     *     [cos, -sin]
+     * R = [sin,  cos]
+     *
+     * @return the rotation matrix equivalent to this rotation
+     */
+    Eigen::Matrix2d rotation_matrix() const;
 
-  /**
-   * Returns the radian angle value, wrapped from [-pi, pi).
-   *
-   * @return the radian angle value, wrapped from [-pi, pi)
-   */
-  double wrapped_radians_180() const;
+    /**
+     * Returns the radian angle value, wrapped from [-pi, pi).
+     *
+     * @return the radian angle value, wrapped from [-pi, pi)
+     */
+    double wrapped_radians_180() const;
 
-  /**
-   * Returns the degree angle value, wrapped from [-180, 180).
-   *
-   * @return the degree angle value, wrapped from [-180, 180)
-   */
-  double wrapped_degrees_180() const;
+    /**
+     * Returns the degree angle value, wrapped from [-180, 180).
+     *
+     * @return the degree angle value, wrapped from [-180, 180)
+     */
+    double wrapped_degrees_180() const;
 
-  /**
-   * Returns the revolution angle value, wrapped from [-0.5, 0.5).
-   *
-   * @return the revolution angle value, wrapped from [-0.5, 0.5)
-   */
-  double wrapped_revolutions_180() const;
+    /**
+     * Returns the revolution angle value, wrapped from [-0.5, 0.5).
+     *
+     * @return the revolution angle value, wrapped from [-0.5, 0.5)
+     */
+    double wrapped_revolutions_180() const;
 
-  /**
-   * Returns the radian angle value, wrapped from [0, 2pi).
-   *
-   * @return the radian angle value, wrapped from [0, 2pi)
-   */
-  double wrapped_radians_360() const;
+    /**
+     * Returns the radian angle value, wrapped from [0, 2pi).
+     *
+     * @return the radian angle value, wrapped from [0, 2pi)
+     */
+    double wrapped_radians_360() const;
 
-  /**
-   * Returns the degree angle value, wrapped from [0, 360).
-   *
-   * @return the degree angle value, wrapped from [0, 360)
-   */
-  double wrapped_degrees_360() const;
+    /**
+     * Returns the degree angle value, wrapped from [0, 360).
+     *
+     * @return the degree angle value, wrapped from [0, 360)
+     */
+    double wrapped_degrees_360() const;
 
-  /**
-   * Returns the revolution angle value, wrapped from [0, 1).
-   *
-   * @return the revolution angle value, wrapped from [0, 1)
-   */
-  double wrapped_revolutions_360() const;
+    /**
+     * Returns the revolution angle value, wrapped from [0, 1).
+     *
+     * @return the revolution angle value, wrapped from [0, 1)
+     */
+    double wrapped_revolutions_360() const;
 
-  /**
-   * Adds the values of two rotations using a rotation matrix
-   *
-   * [new_cos] = [other.cos, -other.sin][cos]
-   * [new_sin] = [other.sin,  other.cos][sin]
-   * new_value = atan2(new_sin, new_cos)
-   *
-   * @param other the other rotation to add to this rotation.
-   *
-   * @return the sum of the two rotations.
-   */
-  Rotation2d operator+(const Rotation2d &other) const;
+    /**
+     * Adds the values of two rotations using a rotation matrix
+     *
+     * [new_cos] = [other.cos, -other.sin][cos]
+     * [new_sin] = [other.sin,  other.cos][sin]
+     * new_value = atan2(new_sin, new_cos)
+     *
+     * @param other the other rotation to add to this rotation.
+     *
+     * @return the sum of the two rotations.
+     */
+    Rotation2d operator+(const Rotation2d &other) const;
 
-  /**
-   * Subtracts the values of two rotations.
-   *
-   * @param other the other rotation to subtract from this rotation.
-   *
-   * @return the difference between the two rotations.
-   */
-  Rotation2d operator-(const Rotation2d &other) const;
+    /**
+     * Subtracts the values of two rotations.
+     *
+     * @param other the other rotation to subtract from this rotation.
+     *
+     * @return the difference between the two rotations.
+     */
+    Rotation2d operator-(const Rotation2d &other) const;
 
-  /**
-   * Takes the inverse of this rotation by flipping it.
-   * Equivalent to adding 180 degrees.
-   *
-   * @return this inverse of the rotation.
-   */
-  Rotation2d operator-() const;
+    /**
+     * Takes the inverse of this rotation by flipping it.
+     * Equivalent to adding 180 degrees.
+     *
+     * @return this inverse of the rotation.
+     */
+    Rotation2d operator-() const;
 
-  /**
-   * Multiplies this rotation by a scalar.
-   *
-   * @param scalar the scalar value to multiply the rotation by.
-   *
-   * @return the rotation multiplied by the scalar.
-   */
-  Rotation2d operator*(const double &scalar) const;
+    /**
+     * Multiplies this rotation by a scalar.
+     *
+     * @param scalar the scalar value to multiply the rotation by.
+     *
+     * @return the rotation multiplied by the scalar.
+     */
+    Rotation2d operator*(const double &scalar) const;
 
-  /**
-   * Divides this rotation by a scalar.
-   *
-   * @param scalar the scalar value to divide the rotation by.
-   *
-   * @return the rotation divided by the scalar.
-   */
-  Rotation2d operator/(const double &scalar) const;
+    /**
+     * Divides this rotation by a scalar.
+     *
+     * @param scalar the scalar value to divide the rotation by.
+     *
+     * @return the rotation divided by the scalar.
+     */
+    Rotation2d operator/(const double &scalar) const;
 
-  /**
-   * Compares two rotations.
-   * Returns true if their values are within 1e-9 radians of each other, to account for floating point error.
-   *
-   * @param other the other rotation to compare to
-   *
-   * @return whether the values of the rotations are within 1e-9 radians of each other
-   */
-  bool operator==(const Rotation2d &other) const;
+    /**
+     * Compares two rotations.
+     * Returns true if their values are within 1e-9 radians of each other, to account for floating point error.
+     *
+     * @param other the other rotation to compare to
+     *
+     * @return whether the values of the rotations are within 1e-9 radians of each other
+     */
+    bool operator==(const Rotation2d &other) const;
 
-  /**
-   * Sends a rotation to an output stream.
-   * Ex.
-   * std::cout << rotation;
-   *
-   * prints "Rotation2d[rad: (radians), deg: (degrees)]"
-   */
-  friend std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation);
+    /**
+     * Sends a rotation to an output stream.
+     * Ex.
+     * std::cout << rotation;
+     *
+     * prints "Rotation2d[rad: (radians), deg: (degrees)]"
+     */
+    friend std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation);
 
-private:
-  double m_radians;
-  double m_cos;
-  double m_sin;
+  private:
+    double m_radians;
+    double m_cos;
+    double m_sin;
 };
 
 // functions that don't belong in the class because they're useful elsewhere

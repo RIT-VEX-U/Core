@@ -5,8 +5,6 @@
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
 
-constexpr Rotation2d::Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {}
-
 /**
  * Constructs a rotation with the given value in radians.
  *
