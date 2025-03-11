@@ -9,13 +9,21 @@
 #include "../core/include/utils/math/geometry/translation2d.h"
 #include "../core/include/utils/math/geometry/twist2d.h"
 
+/*
+* Default Pose2d Constructor
+*/
+constexpr Pose2d::Pose2d(){
+  m_translation = Translation2d(0,0);
+  m_rotation = Rotation2d(0);
+}
+
 /**
  * Constructs a pose with given translation and rotation components.
  *
  * @param translation translational component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
+constexpr Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
     : m_translation{translation}, m_rotation{rotation} {}
 
 /**
@@ -25,7 +33,7 @@ Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
  * @param y y component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
+constexpr Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
     : m_translation{x, y}, m_rotation{rotation} {}
 
 /**
@@ -35,7 +43,7 @@ Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
  * @param y y component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_translation{x, y}, m_rotation{radians} {}
+constexpr Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_translation{x, y}, m_rotation{radians} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -43,7 +51,7 @@ Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_tran
  * @param translation translational component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const Translation2d &translation, const double &radians)
+constexpr Pose2d::Pose2d(const Translation2d &translation, const double &radians)
     : m_translation{translation}, m_rotation{radians} {}
 
 /**
@@ -51,7 +59,7 @@ Pose2d::Pose2d(const Translation2d &translation, const double &radians)
  *
  * @param pose_vector vector of the form [x, y, theta].
  */
-Pose2d::Pose2d(const Eigen::Vector3d &pose_vector)
+constexpr Pose2d::Pose2d(const Eigen::Vector3d &pose_vector)
     : m_translation{pose_vector(0), pose_vector(1)}, m_rotation{pose_vector(2)} {}
 
 /**

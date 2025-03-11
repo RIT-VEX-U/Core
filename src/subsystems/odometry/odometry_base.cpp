@@ -72,24 +72,6 @@ AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
 }
 
 /**
- * Get the distance between two points
- * @param start_pos distance from this point
- * @param end_pos to this point
- * @return the euclidean distance between start_pos and end_pos
- */
-double OdometryBase::pos_diff(pose_t start_pos, pose_t end_pos) {
-  // Use the pythagorean theorem
-  double retval = sqrt(pow(end_pos.x - start_pos.x, 2) + pow(end_pos.y - start_pos.y, 2));
-
-  return retval;
-}
-
-/**
- * Get the change in rotation between two points
- */
-double OdometryBase::rot_diff(pose_t pos1, pose_t pos2) { return pos1.rot - pos2.rot; }
-
-/**
  * Get the smallest difference in angle between a start heading and end heading.
  * Returns the difference between -180 degrees and +180 degrees, representing the robot
  * turning left or right, respectively.
@@ -140,39 +122,4 @@ double OdometryBase::get_angular_accel_deg() {
   mut.unlock();
 
   return retval;
-}
-
-
-pose_t OdometryBase::pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist) {
-  double dtheta = twist(2);
-
-  double sinTheta = sin(dtheta);
-  double cosTheta = cos(dtheta);
-
-  double sinOldTheta = sin(old_pose(2));
-  double cosOldTheta = cos(old_pose(2));
-
-  Eigen::Matrix3d rotation{{cosOldTheta, -sinOldTheta, 0}, {sinOldTheta, cosOldTheta, 0}, {0, 0, 1}};
-  Eigen::Matrix3d integrated_rotation;
-
-  // when the angle change is very small, we use a taylor series to approximate
-  if (std::abs(dtheta) < 1e-9) {
-    integrated_rotation.row(0) << 1.0 - ((dtheta * dtheta) / 6.0), -(dtheta / 2.0), 0;
-    integrated_rotation.row(1) << (dtheta / 2.0), 1.0 - ((dtheta * dtheta) / 6.0), 0;
-    integrated_rotation.row(2) << 0, 0, 1;
-  } else {
-    integrated_rotation.row(0) << sinTheta / dtheta, (cosTheta - 1.0) / dtheta, 0;
-    integrated_rotation.row(1) << (1 - cosTheta) / dtheta, sinTheta / dtheta, 0;
-    integrated_rotation.row(2) << 0, 0, 1;
-  }
-
-  Eigen::Vector3d global_pose_delta = rotation * integrated_rotation * twist;
-
-  pose_t newPose;
-
-  newPose.x = old_pose(0) + global_pose_delta(0);
-  newPose.y = old_pose(1) + global_pose_delta(1);
-  newPose.rot = old_pose(2) + global_pose_delta(2); //wrap_angle_rad(old_pose(2) + global_pose_delta(2));
-
-  return newPose;
 }

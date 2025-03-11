@@ -122,4 +122,8 @@ void CommandController::run() {
   printf("Finished commands in %f seconds\n", tmr.time(vex::sec));
 }
 
+std::string CommandController::toString(){
+  return "Command controller with " + double_to_string(command_queue.size()) + " commands";
+};
+
 bool CommandController::last_command_timed_out() { return command_timed_out; }

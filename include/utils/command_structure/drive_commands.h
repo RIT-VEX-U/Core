@@ -302,19 +302,10 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-  std::string toString(){
-    char headStr[21];
-    sprintf(headStr, "%d", newpos.rotation().degrees());
-    char speedStr[21];
-    char xStr[21];
-    sprintf(xStr, "%d", newpos.x());
-    char yStr[21];
-    sprintf(yStr, "%d", newpos.y());
-    std::string returnStr = "Setting positon to X: ";
-    returnStr = returnStr + xStr + ", Y: " + yStr + ", ROT: " + headStr;
-    return returnStr;
-  }
-
+  /*
+  * returns a to string command describing the commands functionality
+  */
+  std::string toString();
 private:
   // drive system with an odometry config
   OdometryBase &odom;

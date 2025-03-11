@@ -6,20 +6,29 @@
 #include "../core/include/utils/math/geometry/twist2d.h"
 
 /**
+ * Default Constructor for Twist2d
+ */
+Twist2d::Twist2d(){
+  m_dx = 0;
+  m_dy = 0;
+  m_dtheta = 0;
+}
+
+/**
  * Constructs a twist with given translation and angle deltas.
  *
  * @param dx the linear dx component.
  * @param dy the linear dy component.
  * @param dtheta the angular dtheta component.
  */
-Twist2d::Twist2d(const double &dx, const double &dy, const double &dtheta) : m_dx{dx}, m_dy{dy}, m_dtheta{dtheta} {}
+constexpr Twist2d::Twist2d(const double &dx, const double &dy, const double &dtheta) : m_dx{dx}, m_dy{dy}, m_dtheta{dtheta} {}
 
 /**
  * Constructs a twist with given translation and angle deltas.
  *
  * @param twist_vector vector of the form [dx, dy, dtheta]
  */
-Twist2d::Twist2d(const Eigen::Vector3d &twist_vector)
+constexpr Twist2d::Twist2d(const Eigen::Vector3d &twist_vector)
     : m_dx{twist_vector(0)}, m_dy{twist_vector(1)}, m_dtheta{twist_vector(2)} {}
 
 /**

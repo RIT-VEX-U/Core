@@ -19,6 +19,12 @@
  */
 class Twist2d {
 public:
+
+/**
+   * Default Constructor for Twist2d
+   */
+  constexpr Twist2d();
+
   /**
    * Constructs a twist with given translation and angle deltas.
    *
@@ -26,14 +32,14 @@ public:
    * @param dy the linear dy component.
    * @param dtheta the angular dtheta component.
    */
-  Twist2d(const double &dx, const double &dy, const double &dtheta);
+  constexpr Twist2d(const double &dx, const double &dy, const double &dtheta);
 
   /**
    * Constructs a twist with given translation and angle deltas.
    *
    * @param twist_vector vector of the form [dx, dy, dtheta]
    */
-  Twist2d(const Eigen::Vector3d &twist_vector);
+  constexpr Twist2d(const Eigen::Vector3d &twist_vector);
 
   /**
    * Returns the linear dx component.

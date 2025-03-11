@@ -46,21 +46,14 @@ std::string DriveForwardCommand::toString(){
   std::string returnStr = "Driving ";
   switch(dir){
     case directionType::fwd:
-      returnStr.append(" forwards ");
+      returnStr.append("forwards ");
       break;
     case directionType::rev:
-    returnStr.append(" reverse ");
+    returnStr.append("reverse ");
     default:
       break;
   }
-  char inStr[21];
-  sprintf(inStr, "%f", inches);
-  returnStr.append(inStr);
-  returnStr.append(" inches at ");
-  char speedStr[21];
-  sprintf(speedStr, "%f", (max_speed*100));
-  returnStr.append(speedStr);
-  returnStr.append("%% speed");
+  returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed*100) + "%% speed");
   return returnStr;
 }
 
@@ -93,16 +86,7 @@ bool TurnDegreesCommand::run() { return drive_sys.turn_degrees(degrees, max_spee
 * returns a to string command describing the commands functionality
 */
 std::string TurnDegreesCommand::toString(){
-  char degreeStr[32];
-  sprintf(degreeStr, "%f", degrees);
-  char max_speedStr[32];
-  sprintf(max_speedStr, "%f", max_speed*100);
-  std::string returnStr = "Turning ";
-  returnStr.append(degreeStr);
-  returnStr.append(" degrees at ");
-  returnStr.append(max_speedStr);
-  returnStr.append("%% speed");
-  return returnStr;
+  return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed*100) + "%% speed";
 }
 
 /**
@@ -161,22 +145,8 @@ std::string DriveToPointCommand::toString(){
     default:
       break;
   }
-  returnStr.append(" to (");
-  char xStr[21];
-  sprintf(xStr, "%f", x);
-  returnStr.append(xStr);
 
-  returnStr.append(", ");
-  char yStr[21];
-  sprintf(yStr, "%f", y);
-  returnStr.append(yStr);
-  returnStr.append(") at ");
-  
-  returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
-  char speedStr[21];
-  sprintf(speedStr, "%f", (max_speed*100));
-  returnStr.append(speedStr);
-  returnStr.append("%% speed");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "%% speed");
   return returnStr;
 }
 
@@ -222,22 +192,7 @@ std::string TurnToPointCommand::toString(){
     default:
       break;
   }
-  returnStr.append(" to (");
-  char xStr[21];
-  sprintf(xStr, "%f", x);
-  returnStr.append(xStr);
-
-  returnStr.append(", ");
-  char yStr[21];
-  sprintf(yStr, "%f", y);
-  returnStr.append(yStr);
-  returnStr.append(") at ");
-  
-  returnStr = returnStr + " to (" + xStr + ", " + yStr + ") ";
-  char speedStr[21];
-  sprintf(speedStr, "%f", (max_speed*100));
-  returnStr.append(speedStr);
-  returnStr.append("%% speed");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "%% speed");
   return returnStr;
 }
 
@@ -265,18 +220,7 @@ bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg,
 * returns a to string command describing the commands functionality
 */
 std::string TurnToHeadingCommand::toString(){
-  std::string returnStr = "Turning to ";
-  char headStr[21];
-  sprintf(headStr, "%f", heading_deg);
-  returnStr.append(headStr);
-  returnStr.append(" degrees at ");
-
-  char speedStr[21];
-  sprintf(speedStr, "%f", (max_speed*100));
-  returnStr.append(speedStr);
-  returnStr.append("");
-  returnStr = returnStr + headStr + " degrees at " + speedStr + "%% speed";
-  return returnStr;
+  return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed*100) + "%% speed";
 }
 
 /**
@@ -310,24 +254,12 @@ bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedba
 std::string PurePursuitCommand::toString(){
   std::string returnStr = "Driving through ";
   std::vector<Translation2d> thePoints = path.get_points();
-  char xStr[21];
-  char yStr[21];
   for (int i = 0; i < thePoints.size(); i++){
-    sprintf(xStr, "%f", thePoints.at(i).x());
     returnStr.append("(");
-    returnStr.append(xStr);
-    returnStr.append(", ");
-    sprintf(yStr, "%f", thePoints.at(i).y());
-    returnStr.append(yStr);
-    returnStr.append(") \n");
+    returnStr.append(double_to_string(thePoints.at(i).x()) + ", " + double_to_string(thePoints.at(i).y()) + ") \n");
 
   }
-  returnStr.append(" at ");
-
-  char speedStr[21];
-  sprintf(speedStr, "%f", (max_speed*100));
-  returnStr.append(speedStr);
-  returnStr.append("%% speed");
+  returnStr.append(" at " + double_to_string(max_speed*100) + "%% speed");
   return returnStr;  
 }
 
@@ -373,6 +305,13 @@ bool DriveStopCommand::run() {
  * @param newpos the now position to set the odometry to
  */
 OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odom(odom), newpos(newpos) {}
+
+/*
+* returns a to string command describing the commands functionality
+*/
+std::string OdomSetPosition::toString(){
+  return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) + ", ROT: " + double_to_string(newpos.rotation().degrees());
+}
 
 bool OdomSetPosition::run() {
   odom.set_position(newpos);

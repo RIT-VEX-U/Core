@@ -9,12 +9,20 @@
 #include "../core/include/utils/math/geometry/translation2d.h"
 
 /**
+ * Default Constructor for Transform2d
+ */
+constexpr Transform2d::Transform2d(){
+  m_translation = Translation2d();
+  m_rotation = Rotation2d();
+}
+
+/**
  * Constructs a transform given translation and rotation components.
  *
  * @param translation the translational component of the transform.
  * @param rotation the rotational component of the transform.
  */
-Transform2d::Transform2d(const Translation2d &translation, const Rotation2d &rotation)
+constexpr Transform2d::Transform2d(const Translation2d &translation, const Rotation2d &rotation)
     : m_translation{translation}, m_rotation{rotation} {}
 
 /**
@@ -24,7 +32,7 @@ Transform2d::Transform2d(const Translation2d &translation, const Rotation2d &rot
  * @param y the y component of the transform.
  * @param rotation the rotational component of the transform.
  */
-Transform2d::Transform2d(const double &x, const double &y, const Rotation2d &rotation)
+constexpr Transform2d::Transform2d(const double &x, const double &y, const Rotation2d &rotation)
     : m_translation{x, y}, m_rotation{rotation} {}
 
 /**
@@ -34,7 +42,7 @@ Transform2d::Transform2d(const double &x, const double &y, const Rotation2d &rot
  * @param y the y component of the transform.
  * @param radians the rotational component of the transform in radians.
  */
-Transform2d::Transform2d(const double &x, const double &y, const double &radians)
+constexpr Transform2d::Transform2d(const double &x, const double &y, const double &radians)
     : m_translation{x, y}, m_rotation{radians} {}
 
 /**
@@ -43,7 +51,7 @@ Transform2d::Transform2d(const double &x, const double &y, const double &radians
  * @param translation the translational component of the transform.
  * @param radians the rotational component of the transform in radians.
  */
-Transform2d::Transform2d(const Translation2d &translation, const double &radians)
+constexpr Transform2d::Transform2d(const Translation2d &translation, const double &radians)
     : m_translation{translation}, m_rotation{radians} {}
 
 /**
@@ -51,7 +59,7 @@ Transform2d::Transform2d(const Translation2d &translation, const double &radians
  *
  * @param transform_vector vector of the form [x, y, theta]
  */
-Transform2d::Transform2d(const Eigen::Vector3d &transform_vector)
+constexpr Transform2d::Transform2d(const Eigen::Vector3d &transform_vector)
     : m_translation{transform_vector(0), transform_vector(1)}, m_rotation{transform_vector(2)} {}
 
 /**
@@ -60,7 +68,7 @@ Transform2d::Transform2d(const Eigen::Vector3d &transform_vector)
  * @param translation the translational component of the transform.
  * @param rotation the rotational component of the transform.
  */
-Transform2d::Transform2d(const Pose2d &start, const Pose2d &end)
+constexpr Transform2d::Transform2d(const Pose2d &start, const Pose2d &end)
     : m_translation{(end.translation() - start.translation()).rotate_by(-start.rotation())},
       m_rotation{end.rotation() - start.rotation()} {}
 

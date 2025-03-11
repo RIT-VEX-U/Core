@@ -69,13 +69,10 @@ public:
    */
   void run();
 
-  std::string toString(){
-    char sizeStr[21];
-    sprintf(sizeStr, "%d", command_queue.size());
-    std::string returnStr = "Command controller with ";
-    returnStr = returnStr + sizeStr + " commands";
-    return returnStr;
-  };
+  /*
+  * returns the amount of commands in the controller
+  */
+  std::string toString();
 
   /**
    * last_command_timed_out tells how the last command ended

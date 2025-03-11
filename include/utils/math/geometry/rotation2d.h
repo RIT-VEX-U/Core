@@ -25,11 +25,15 @@ class Translation2d;
 class Rotation2d {
 public:
   /**
+   * Default Constructor for Rotation2d
+   */
+  constexpr Rotation2d();
+  /**
    * Constructs a rotation with the given value in radians.
    *
    * @param radians the value of the rotation in radians.
    */
-  Rotation2d(const double &radians);
+  constexpr Rotation2d(const double &radians);
 
   /**
    * Constructs a rotation given x and y values.
@@ -41,7 +45,7 @@ public:
    * @param x the x value of the point
    * @param y the y value of the point
    */
-  Rotation2d(const double &x, const double &y);
+  constexpr Rotation2d(const double &x, const double &y);
 
   /**
    * Constructs a rotation given x and y values in the form of a Translation2d.
@@ -52,7 +56,7 @@ public:
    *
    * @param translation
    */
-  Rotation2d(const Translation2d &translation);
+  constexpr Rotation2d(const Translation2d &translation);
 
   /**
    * Returns the radian angle value.

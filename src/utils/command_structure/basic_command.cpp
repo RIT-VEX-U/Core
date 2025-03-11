@@ -13,6 +13,7 @@
  */
 #include "../core/include/utils/command_structure/basic_command.h"
 
+
 // Basic Motor Commands--------------------------------------
 /**
  * @brief a BasicMotorSpin Command
@@ -58,18 +59,15 @@ std::string BasicSpinCommand::toString(){
   else if(dir == vex::directionType::rev){
     str.append(" reverse at ");
   }
-  char powerStr[21];
-  sprintf(powerStr, "%f", power);
-  str.append(powerStr);
   switch (setting) { // Switch Statement taking the setting Enum
     case voltage:      // Voltage Setting
-      str.append("V");
+    str.append(double_to_string(power) + "V");
       break;
     case percent: // Percentage Setting
-    str.append("%");
+    str.append(double_to_string(power*100) + "%");
       break;
     case velocity: // Velocity Setting
-    str.append("Dps");
+    str.append(double_to_string(power) + "Dps");
       break;
   }
   return str;

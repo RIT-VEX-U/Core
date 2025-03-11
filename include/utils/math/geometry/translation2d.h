@@ -19,20 +19,26 @@ class Rotation2d;
  */
 class Translation2d {
 public:
+
+/**
+   * Default Constructor for Translation2d
+   */
+
+  Translation2d();
   /**
    * Constructs a Translation2d with the given x and y values.
    *
    * @param x The x component of the translation.
    * @param y The y component of the translation.
    */
-  Translation2d(const double &x = 0, const double &y = 0);
+  constexpr Translation2d(const double &x, const double &y);
 
   /**
    * Constructs a Translation2d with the values from the given vector.
    *
    * @param vector The vector whose values will be used.
    */
-  Translation2d(const Eigen::Vector2d &vector);
+  constexpr Translation2d(const Eigen::Vector2d &vector);
 
   /**
    * Constructs a Translation2d given polar coordinates of the form (r, theta).
@@ -40,7 +46,7 @@ public:
    * @param r The radius (magnitude) of the vector.
    * @param theta The angle (direction) of the vector.
    */
-  Translation2d(const double &r, const Rotation2d &theta);
+  constexpr Translation2d(const double &r, const Rotation2d &theta);
 
   /**
    * Returns the x value of the translation.

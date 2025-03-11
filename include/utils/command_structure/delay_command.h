@@ -26,12 +26,9 @@ public:
     vexDelay(ms);
     return true;
   }
+  
   std::string toString(){
-    std::string returnStr = "Delaying for ";
-    char msStr[21];
-    sprintf(msStr, "%d", ms);
-    returnStr = returnStr + msStr + "ms";
-    return returnStr;
+    return "Delaying for " + double_to_string(ms) + "ms";
   }
 
 private:

@@ -5,20 +5,27 @@
 
 #include "../core/include/utils/math/geometry/translation2d.h"
 
+/*
+* Default Constructor for Translation2d
+*/
+constexpr Translation2d::Translation2d(){
+  m_x = 0;
+  m_y = 0;
+}
 /**
  * Constructs a Translation2d with the given x and y values.
  *
  * @param x The x component of the translation.
  * @param y The y component of the translation.
  */
-Translation2d::Translation2d(const double &x, const double &y) : m_x{x}, m_y{y} {}
+constexpr Translation2d::Translation2d(const double &x, const double &y) : m_x{x}, m_y{y} {}
 
 /**
  * Constructs a Translation2d with the values from the given vector.
  *
  * @param vector The vector whose values will be used.
  */
-Translation2d::Translation2d(const Eigen::Vector2d &vector) : m_x{vector(0)}, m_y{vector(1)} {}
+constexpr Translation2d::Translation2d(const Eigen::Vector2d &vector) : m_x{vector(0)}, m_y{vector(1)} {}
 
 /**
  * Constructs a Translation2d given polar coordinates of the form (r, theta).
@@ -26,7 +33,7 @@ Translation2d::Translation2d(const Eigen::Vector2d &vector) : m_x{vector(0)}, m_
  * @param r The radius (magnitude) of the vector.
  * @param theta The angle (direction) of the vector.
  */
-Translation2d::Translation2d(const double &r, const Rotation2d &theta)
+constexpr Translation2d::Translation2d(const double &r, const Rotation2d &theta)
     : m_x{r * theta.f_cos()}, m_y{r * theta.f_sin()} {}
 
 /**

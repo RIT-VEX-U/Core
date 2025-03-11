@@ -72,21 +72,6 @@ public:
    */
   void end_async();
 
-  /**
-   * Get the distance between two points
-   * @param start_pos distance from this point
-   * @param end_pos to this point
-   * @return the euclidean distance between start_pos and end_pos
-   */
-  static double pos_diff(pose_t start_pos, pose_t end_pos);
-
-  /**
-   * Get the change in rotation between two points
-   * @param pos1 position with initial rotation
-   * @param pos2 position with final rotation
-   * @return change in rotation between pos1 and pos2
-   */
-  static double rot_diff(pose_t pos1, pose_t pos2);
 
   /**
    * Get the smallest difference in angle between a start heading and end heading.
@@ -125,21 +110,6 @@ public:
    * @return the angular acceleration at which we are turning (deg/s^2)
    */
   double get_angular_accel_deg();
-
-  /**
-   * Zeroed position. X=0, Y=0, Rotation= 90 degrees
-   */
-
-  /**
-   * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
-   * Can be thought of as applying a twist as following an arc rather than a straight line.
-   *
-   * https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2
-   *
-   * @param old_pose  The pose to which the twist will be applied
-   * @param twist     The twist, represents a pose delta
-   */
-  static pose_t pose_exponential(const Eigen::Vector3d old_pose, const Eigen::Vector3d twist);
 
   /**
    * handle to the vex task that is running the odometry code

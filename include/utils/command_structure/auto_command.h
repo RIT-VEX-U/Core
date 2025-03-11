@@ -11,6 +11,8 @@
 #include <functional>
 #include <queue>
 #include <vector>
+#include "../core/include/utils/formatting.h"
+
 
 /**
  * A Condition is a function that returns true or false

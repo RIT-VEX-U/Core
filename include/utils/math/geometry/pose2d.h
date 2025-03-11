@@ -23,13 +23,19 @@
  */
 class Pose2d {
 public:
+
+  /**
+   * Default Constructor for Pose2d
+   */
+  constexpr Pose2d();
+
   /**
    * Constructs a pose with given translation and rotation components.
    *
    * @param translation translational component.
    * @param rotation rotational component.
    */
-  Pose2d(const Translation2d &translation = Translation2d(0, 0), const Rotation2d &rotation = Rotation2d(0));
+  constexpr Pose2d(const Translation2d &translation, const Rotation2d &rotation);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -38,7 +44,7 @@ public:
    * @param y y component.
    * @param rotation rotational component.
    */
-  Pose2d(const double &x, const double &y, const Rotation2d &rotation);
+  constexpr Pose2d(const double &x, const double &y, const Rotation2d &rotation);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -47,7 +53,7 @@ public:
    * @param y y component.
    * @param radians rotational component in radians.
    */
-  Pose2d(const double &x, const double &y, const double &radians);
+  constexpr Pose2d(const double &x, const double &y, const double &radians);
 
   /**
    * Constructs a pose with given translation and rotation components.
@@ -55,14 +61,14 @@ public:
    * @param translation translational component.
    * @param radians rotational component in radians.
    */
-  Pose2d(const Translation2d &translation, const double &radians);
+  constexpr Pose2d(const Translation2d &translation, const double &radians);
 
   /**
    * Constructs a pose with given translation and rotation components.
    *
    * @param pose_vector vector of the form [x, y, theta].
    */
-  Pose2d(const Eigen::Vector3d &pose_vector);
+  constexpr Pose2d(const Eigen::Vector3d &pose_vector);
 
   /**
    * Returns the translational component.

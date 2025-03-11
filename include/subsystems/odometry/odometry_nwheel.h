@@ -183,9 +183,9 @@ public:
    * @return the position that the odometry believes the robot is at
    */
   Pose2d get_position(void) {
-    Pose2d unwrapped_radians = OdometryBase::get_position();
-    Pose2d wrapped_degrees(unwrapped_radians.x(), unwrapped_radians.y(), wrap_angle_deg((unwrapped_radians.rotation().degrees() / (2 * M_PI)) * 360));
-    return wrapped_degrees;
+    Pose2d without_wrapped_angle  = OdometryBase::get_position();
+    Pose2d with_wrapped_angle(without_wrapped_angle.x(), without_wrapped_angle.y(), wrap_angle_deg(without_wrapped_angle.rotation().degrees()));
+    return with_wrapped_angle;
   }
 
 private:

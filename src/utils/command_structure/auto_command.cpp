@@ -145,12 +145,7 @@ bool Parallel::run() {
 }
 
 std::string Parallel::toString(){
-  std::string returnStr;
-  char runnersizeStr[32];
-  sprintf(runnersizeStr, "%f", runners.size());
-  returnStr.append(runnersizeStr);
-  returnStr.append(" commands running in parallel");
-  return returnStr;
+  return double_to_string(runners.size()) + " commands running in parallel";
 }
 
 void Parallel::on_timeout() {
