@@ -75,7 +75,7 @@ void CommandController::run() {
     // retrieve and remove command at the front of the queue
     
     next_cmd = command_queue.front();
-    if(printBool){
+    if(printPathLogs){
       printf(next_cmd->toString().c_str());
       printf("\n");
     }

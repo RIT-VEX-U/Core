@@ -300,21 +300,26 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
     }
   }
   scr.setPenColor(vex::color::white);
-
-  Mat2 mat = Mat2::FromRotationDegrees(pose.rotation().degrees() - 90);
   const Translation2d to_left(-robot_width / 2.0, 0);
   const Translation2d to_front(0.0, robot_height / 2.0);
 
-  const Translation2d fl = pos + mat * (to_left + to_front);
-  const Translation2d fr = pos + mat * (-to_left + to_front);
-  const Translation2d bl = pos + mat * (to_left - to_front);
-  const Translation2d br = pos + mat * (-to_left - to_front);
-  const Translation2d front = pos + mat * (to_front * 2.0);
+  Translation2d front_left(-robot_width/2, robot_width/2);
+  Translation2d front_right(robot_width/2, robot_width/2);
+  Translation2d back_left(-robot_width/2, -robot_width/2);
+  Translation2d back_right(robot_width/2, -robot_width/2);
 
-  draw_line(fl, fr);
-  draw_line(fr, br);
-  draw_line(br, bl);
-  draw_line(bl, fl);
+  front_left = pos + front_left.rotate_by(pose.rotation().degrees() - 90);
+  front_right = pos + front_right.rotate_by(pose.rotation().degrees() - 90);
+  back_left = pos + back_left.rotate_by(pose.rotation().degrees() - 90);
+  back_right = pos + back_right.rotate_by(pose.rotation().degrees() - 90);
+
+
+  const Translation2d front = to_front.rotate_by(pose.rotation().degrees() - 90);
+
+  draw_line(front_left, front_right);
+  draw_line(front_right, back_right);
+  draw_line(back_right, back_left);
+  draw_line(back_left, front);
 
   draw_line(pos, front);
 }

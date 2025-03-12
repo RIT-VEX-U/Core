@@ -107,7 +107,7 @@ std::string BasicStopCommand::toString(){
       return "Holding motors";
       break;
       default:
-      return "";
+      return "UNKNOWN BRAKE TYPE";
       break;
   }
 }

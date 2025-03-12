@@ -7,8 +7,6 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/vector2d.h"
-
 class Translation2d;
 
 /**

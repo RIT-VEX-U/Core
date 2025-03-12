@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
+#include "../core/include/utils/vector2d.h"
+
 
 
 /**

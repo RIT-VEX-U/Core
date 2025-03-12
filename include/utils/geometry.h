@@ -20,20 +20,3 @@ struct Rect {
     return xin && yin;
   }
 };
-
-struct Mat2 {
-  double X11, X12;
-  double X21, X22;
-  Translation2d operator*(const Translation2d p) const {
-    double outx = p.x() * X11 + p.y() * X12;
-    double outy = p.x() * X21 + p.y() * X22;
-    return {outx, outy};
-  }
-
-  static Mat2 FromRotationDegrees(double degrees) {
-    double rad = degrees * (M_PI / 180.0);
-    double c = cos(rad);
-    double s = sin(rad);
-    return {c, -s, s, c};
-  }
-};

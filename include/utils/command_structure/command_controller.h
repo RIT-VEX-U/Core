@@ -82,7 +82,7 @@ public:
    * regularly
    */
   bool last_command_timed_out();
-  bool printBool = true;
+  bool printPathLogs = true;
 
 private:
   std::queue<AutoCommand *> command_queue;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/vector2d.h"
 #include "vex.h"
 #include <cmath>
 #include <stdio.h>

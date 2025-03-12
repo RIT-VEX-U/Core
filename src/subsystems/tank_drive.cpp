@@ -225,7 +225,7 @@ bool TankDrive::drive_forward(double inches, directionType dir, Feedback &feedba
     }
     // Use vector math to get an X and Y
     Vector2D cur_pos_vec(Translation2d(cur_pos.x(), cur_pos.y()));
-    Vector2D delta_pos_vec(deg2rad(cur_pos.rotation().degrees()), inches);
+    Vector2D delta_pos_vec(cur_pos.rotation().radians(), inches);
     Vector2D setpt_vec = cur_pos_vec + delta_pos_vec;
 
     // Save the new X and Y values
