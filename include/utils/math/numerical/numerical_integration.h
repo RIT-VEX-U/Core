@@ -12,7 +12,12 @@
  * and time-variant ODEs:
  * dy/dt = f(t, y)
  * 
- * Each function requires a function input, this can, and often is vector valued.
+ * Each function here takes a std::function as an input. This must be a vector
+ * valued function where x is some Eigen::Vector<double, X>, u is some
+ * Eigen::Vector<double, U>, and t is a double.
+ * 
+ * The template arguments are determined by the compiler as long as they are
+ * valid, so you do not need to explicity state them when calling a function.
  */
 
 
