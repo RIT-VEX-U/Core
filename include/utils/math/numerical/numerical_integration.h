@@ -10,7 +10,8 @@
  * provided, with first order being the fastest and least accurate, and fourth
  * order being the slowest but most accurate.
  * 
- * Each method also provides a function for solving time-invariant ODEs:
+ * Each method also provides a function for solving time-invariant non-autonomous
+ * and autonomous ODEs:
  * dx/dt = f(x, u)
  * dx/dt = f(x)
  * and time-variant ODEs:
@@ -22,6 +23,12 @@
  * 
  * The template arguments are determined by the compiler as long as they are
  * valid, so you do not need to explicity state them when calling a function.
+ * 
+ * To learn about Runge-Kutta methods in general read:
+ * https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+ * 
+ * To see the specific methods used here read:
+ * https://en.wikipedia.org/wiki/List_of_Runge%E2%80%93Kutta_methods
  */
 
 
