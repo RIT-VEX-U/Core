@@ -218,7 +218,7 @@ Eigen::Vector<double, X> RK4_autonomous(const std::function<Eigen::Vector<double
  * @param h The time over which to integrate.
  */
 template <int Y>
-Eigen::Vector<double, Y> RK2_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+Eigen::Vector<double, Y> RK4_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
   Eigen::Vector<double, Y> k1 = f(t, y);
   Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
   Eigen::Vector<double, Y> k3 = f(t + h * 0.5, y + h * 0.5 * k2);
