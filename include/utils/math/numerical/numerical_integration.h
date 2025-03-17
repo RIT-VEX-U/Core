@@ -1,5 +1,9 @@
 #pragma once
 
+#include <../vendor/eigen/Eigen/Dense>
+
+#include <functional>
+
 /**
  * This header provides a variety of methods for solving ODEs depending on the
  * needs of the system. First, second, and fourth order methods are
@@ -23,8 +27,8 @@
 
 
 /**
- * Performs first order numerical integration of dx/dt = f(x, u) using Euler's
- * method.
+ * Performs first order numerical integration of the non-autonomous differential
+ * equation dx/dt = f(x, u) using Euler's method.
  *
  *   0|
  * ---|---
@@ -33,19 +37,18 @@
  * @param f The function to integrate, with two arguments x and u.
  * @param x The initial value of x.
  * @param u The input value u held constant over the integration period.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T, typename U>
-T euler(F &&f, T x, U u, double dt) {
-  double h = dt;
-  T k1 = f(x, u);
+template <int X, int U>
+Eigen::Vector<double, X> euler_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x, u);
 
   return x + h * k1;
 }
 
 /**
- * Performs first order numerical integration of dx/dt = f(x) using Euler's
- * method.
+ * Performs first order numerical integration of the autonomous differential
+ * equation dx/dt = f(x) using Euler's method.
  *
  *   0|
  * ---|---
@@ -53,19 +56,18 @@ T euler(F &&f, T x, U u, double dt) {
  *
  * @param f The function to integrate, with one argument x.
  * @param x The initial value of x.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T>
-T euler(F &&f, T x, double dt) {
-  double h = dt;
-  T k1 = f(x);
+template <int X>
+Eigen::Vector<double, X> euler_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x);
 
   return x + h * k1;
 }
 
 /**
- * Performs first order numerical integration of the time-varying system
- * dy/dt = f(t, y) using Euler's method.
+ * Performs first order numerical integration of the time-variant differential
+ * equation dy/dt = f(t, y) using Euler's method.
  *
  *   0|
  * ---|---
@@ -74,19 +76,18 @@ T euler(F &&f, T x, double dt) {
  * @param f The function to integrate, with two arguments t and y.
  * @param t The initial value of t.
  * @param y The initial value of y.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T>
-T euler(F &&f, double t, T y, double dt) {
-  double h = dt;
-  T k1 = f(t, y);
+template <int Y>
+Eigen::Vector<double, Y> euler_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+  Eigen::Vector<double, Y> k1 = f(t, y);
 
   return y + h * k1;
 }
 
 /**
- * Performs second order numerical integration of dx/dt = f(x, u) using the
- * explicit midpoint method.
+ * Performs second order numerical integration of the non-autonomous differential
+ * equation dx/dt = f(x, u) using the explicit midpoint method.
  *
  *   0|
  * 1/2|1/2
@@ -96,44 +97,40 @@ T euler(F &&f, double t, T y, double dt) {
  * @param f The function to integrate, with one argument x.
  * @param x The initial value of x.
  * @param u The input value u held constant over the integration period.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T, typename U>
-T RK2(F &&f, T x, U u, double dt) {
-    const double h = dt;
-
-    T k1 = f(x, u);
-    T k2 = f(x + h * 0.5 * k1, u);
-
-    return x + h * k2;
-}
-
-/**
- * Performs second order numerical integration of dx/dt = f(x) using the
- * explicit midpoint method.
- *
- *   0|
- * 1/2|1/2
- * ---|-------
- *    |  0   1
- * 
- * @param f The function to integrate, with one argument x.
- * @param x The initial value of x.
- * @param dt The time over which to integrate.
- */
-template <typename F, typename T>
-T RK2(F &&f, T x, double dt) {
-  const double h = dt;
-
-  T k1 = f(x);
-  T k2 = f(x + h * 0.5 * k1);
+template <int X, int U>
+Eigen::Vector<double, X> RK2_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x, u);
+  Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
 
   return x + h * k2;
 }
 
 /**
- * Performs second order numerical integration of the time-varying system
- * dy/dt = f(t, y) using the explicit midpoint method.
+ * Performs second order numerical integration of the autonomous differential
+ * equation dx/dt = f(x) using the explicit midpoint method.
+ *
+ *   0|
+ * 1/2|1/2
+ * ---|-------
+ *    |  0   1
+ * 
+ * @param f The function to integrate, with one argument x.
+ * @param x The initial value of x.
+ * @param h The time over which to integrate.
+ */
+template <int X>
+Eigen::Vector<double, X> RK2_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x);
+  Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
+
+  return x + h * k2;
+}
+
+/**
+ * Performs second order numerical integration of the time-variant differential
+ * equation dy/dt = f(t, y) using the explicit midpoint method.
  *
  *   0|
  * 1/2|1/2
@@ -143,21 +140,19 @@ T RK2(F &&f, T x, double dt) {
  * @param f The function to integrate, with two arguments t and y.
  * @param t The initial value of t.
  * @param y The initial value of y.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T>
-T RK2(F &&f, double t, T y, double dt) {
-  const double h = dt;
-
-  T k1 = f(t, y);
-  T k2 = f(t + h * 0.5, y + h * 0.5 * k1);
+template <int Y>
+Eigen::Vector<double, Y> RK2_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+  Eigen::Vector<double, Y> k1 = f(t, y);
+  Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
 
   return y + h * k2;
 }
 
 /**
- * Performs fourth order numerical integration of dx/dt = f(x, u) using the
- * fourth order Runge-Kutta method.
+ * Performs fourth order numerical integration of the non-autonomous differential
+ * equation dx/dt = f(x, u) using the fourth order Runge-Kutta method.
  *
  *   0|
  * 1/2|1/2
@@ -169,23 +164,21 @@ T RK2(F &&f, double t, T y, double dt) {
  * @param f The function to integrate, with one argument x.
  * @param x The initial value of x.
  * @param u The input value u held constant over the integration period.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T, typename U>
-T RK4(F &&f, T x, U u, double dt) {
-  const double h = dt;
-
-  T k1 = f(x, u);
-  T k2 = f(x + h * 0.5 * k1, u);
-  T k3 = f(x + h * 0.5 * k2, u);
-  T k4 = f(x + h * k3, u);
+template <int X, int U>
+Eigen::Vector<double, X> RK4_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x, u);
+  Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
+  Eigen::Vector<double, X> k3 = f(x + h * 0.5 * k2, u);
+  Eigen::Vector<double, X> k4 = f(x + h * k3, u);
 
   return x + h / 6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
 }
 
 /**
- * Performs fourth order numerical integration of dx/dt = f(x) using the
- * fourth order Runge-Kutta method.
+ * Performs fourth order numerical integration of the autonomous differential
+ * equation dx/dt = f(x) using the fourth order Runge-Kutta method.
  *
  *   0|
  * 1/2|1/2
@@ -196,23 +189,21 @@ T RK4(F &&f, T x, U u, double dt) {
  * 
  * @param f The function to integrate, with one argument x.
  * @param x The initial value of x.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T>
-T RK4(F &&f, T x, double dt) {
-  const double h = dt;
-
-  T k1 = f(x);
-  T k2 = f(x + h * 0.5 * k1);
-  T k3 = f(x + h * 0.5 * k2);
-  T k4 = f(x + h * k3);
+template <int X>
+Eigen::Vector<double, X> RK4_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+  Eigen::Vector<double, X> k1 = f(x);
+  Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
+  Eigen::Vector<double, X> k3 = f(x + h * 0.5 * k2);
+  Eigen::Vector<double, X> k4 = f(x + h * k3);
 
   return x + h / 6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
 }
 
 /**
- * Performs fourth order numerical integration of dy/dt = f(t, y) using the
- * fourth order Runge-Kutta method.
+ * Performs second order numerical integration of the time-variant differential
+ * equation dy/dt = f(t, y) using the fourth order Runge-Kutta method.
  *
  *   0|
  * 1/2|1/2
@@ -224,16 +215,14 @@ T RK4(F &&f, T x, double dt) {
  * @param f The function to integrate, with two arguments t and y.
  * @param t The initial value of t.
  * @param y The initial value of y.
- * @param dt The time over which to integrate.
+ * @param h The time over which to integrate.
  */
-template <typename F, typename T>
-T RK4(F &&f, double t, T y, double dt) {
-  const double h = dt;
-
-  T k1 = f(t, y);
-  T k2 = f(t + h * 0.5, y + h * 0.5 * k1);
-  T k3 = f(t + h * 0.5, y + h * 0.5 * k2);
-  T k4 = f(t + h, y + h * k3);
+template <int Y>
+Eigen::Vector<double, Y> RK2_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+  Eigen::Vector<double, Y> k1 = f(t, y);
+  Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
+  Eigen::Vector<double, Y> k3 = f(t + h * 0.5, y + h * 0.5 * k2);
+  Eigen::Vector<double, Y> k4 = f(t + h, y + h * k3);
 
   return y + h / 6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
 }
