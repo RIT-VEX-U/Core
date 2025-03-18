@@ -129,7 +129,7 @@ Inheritance diagram for OdometryBase:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a61286bd1c5105adbfa5b52c74f9e9466" id="r_a61286bd1c5105adbfa5b52c74f9e9466"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61286bd1c5105adbfa5b52c74f9e9466">OdometryBase</a> (bool is_async)</td></tr>
 <tr class="separator:a61286bd1c5105adbfa5b52c74f9e9466"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a423e398bd9ec7038abe7786482db6dd0" id="r_a423e398bd9ec7038abe7786482db6dd0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a423e398bd9ec7038abe7786482db6dd0">get_position</a> (void)</td></tr>
+<tr class="memitem:a423e398bd9ec7038abe7786482db6dd0" id="r_a423e398bd9ec7038abe7786482db6dd0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a423e398bd9ec7038abe7786482db6dd0">get_position</a> (void)</td></tr>
 <tr class="separator:a423e398bd9ec7038abe7786482db6dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0abfc14f2b809c9bcf4ed8485f0b30d3" id="r_a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0abfc14f2b809c9bcf4ed8485f0b30d3">set_position</a> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>)</td></tr>
 <tr class="separator:a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -330,6 +330,9 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="structpose__t.html">pose_t</a> OdometryBase::get_position </td>
@@ -338,6 +341,11 @@ Protected Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Gets the current position and rotation </p><dl class="section return"><dt>Returns</dt><dd>the position that the odometry believes the robot is at</dd></dl>
 <p>Gets the current position and rotation </p>
