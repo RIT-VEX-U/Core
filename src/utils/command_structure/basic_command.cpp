@@ -49,7 +49,7 @@ bool BasicSpinCommand::run() {
 }
 
 /*
-* returns a to string that describes the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string BasicSpinCommand::toString(){
   std::string str = "Spinnning motors ";
@@ -93,7 +93,7 @@ bool BasicStopCommand::run() {
 }
 
 /*
-* returns a to string that describes the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string BasicStopCommand::toString(){
   switch(setting){
@@ -133,7 +133,7 @@ bool BasicSolenoidSet::run() {
 }
 
 /*
-  * returns a to string that describes the commands functionality
+  * Returns a string describing the commands functionality
   */
  std::string BasicSolenoidSet::toString(){
   if(setting){

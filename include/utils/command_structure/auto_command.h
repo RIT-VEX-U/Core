@@ -225,7 +225,6 @@ public:
   void on_timeout() override;
 
 private:
-  size_t repeats;
   const InOrder cmds;
   InOrder *working_cmds;
   Condition *cond;

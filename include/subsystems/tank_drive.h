@@ -263,10 +263,10 @@ public:
    * by its completion
    * @return True when the path is complete
    */
-  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
   OdometryBase *odometry; ///< odometry system to track position and rotation.
                           ///< necessary for autonomous driving
 private:
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
   motor_group &left_motors;  ///< left drive motors
   motor_group &right_motors; ///< right drive motors
 

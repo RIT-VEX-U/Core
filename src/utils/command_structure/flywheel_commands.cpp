@@ -43,7 +43,7 @@ bool FlywheelStopCommand::run() {
 }
 
 /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
  std::string FlywheelStopCommand::toString(){
   std::string returnStr = "Stopping Flywheel";
@@ -58,7 +58,7 @@ bool FlywheelStopMotorsCommand::run() {
 }
 
 /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
  std::string FlywheelStopMotorsCommand::toString(){
   std::string returnStr = "Stopping Flywheel Motors";
@@ -73,7 +73,7 @@ bool FlywheelStopNonTasksCommand::run() {
 }
 
 /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
  std::string FlywheelStopNonTasksCommand::toString(){
   std::string returnStr = "Stopping Flywheel Non Tasks";

@@ -45,9 +45,9 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
-  std::string toString()override;
+  std::string toString() override;
   
   /**
    * Cleans up drive system if we time out before finishing
@@ -85,7 +85,7 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
   /**
@@ -126,7 +126,7 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
 private:
@@ -158,7 +158,7 @@ class TurnToPointCommand: public AutoCommand{
     bool run() override;
 
     /*
-    * returns a to string command describing the commands functionality
+    * Returns a string describing the commands functionality
     */
     std::string toString() override;
 
@@ -192,7 +192,7 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
 
@@ -236,7 +236,7 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
 
@@ -270,7 +270,7 @@ public:
   bool run() override;
 
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
   
@@ -303,7 +303,7 @@ public:
    */
   bool run() override;
   /*
-  * returns a to string command describing the commands functionality
+  * Returns a string describing the commands functionality
   */
   std::string toString() override;
 private:

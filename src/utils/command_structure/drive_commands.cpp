@@ -40,7 +40,7 @@ DriveForwardCommand::DriveForwardCommand(TankDrive &drive_sys, Feedback &feedbac
 bool DriveForwardCommand::run() { return drive_sys.drive_forward(inches, dir, feedback, max_speed, end_speed); }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string DriveForwardCommand::toString(){
   std::string returnStr = "Driving ";
@@ -53,7 +53,7 @@ std::string DriveForwardCommand::toString(){
     default:
       break;
   }
-  returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed*100) + "%% speed");
+  returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed*100) + "% speed");
   return returnStr;
 }
 
@@ -83,10 +83,10 @@ TurnDegreesCommand::TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback,
 bool TurnDegreesCommand::run() { return drive_sys.turn_degrees(degrees, max_speed, end_speed); }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string TurnDegreesCommand::toString(){
-  return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed*100) + "%% speed";
+  return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed*100) + "% speed";
 }
 
 /**
@@ -132,7 +132,7 @@ DriveToPointCommand::DriveToPointCommand(TankDrive &drive_sys, Feedback &feedbac
 bool DriveToPointCommand::run() { return drive_sys.drive_to_point(x, y, dir, feedback, max_speed, end_speed); }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string DriveToPointCommand::toString(){
   std::string returnStr = "Driving ";
@@ -146,7 +146,7 @@ std::string DriveToPointCommand::toString(){
       break;
   }
 
-  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "%% speed");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "% speed");
   return returnStr;
 }
 
@@ -179,7 +179,7 @@ bool TurnToPointCommand::run() {
 }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string TurnToPointCommand::toString(){
   std::string returnStr = "Turning ";
@@ -192,7 +192,7 @@ std::string TurnToPointCommand::toString(){
     default:
       break;
   }
-  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "%% speed");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed*100) + "% speed");
   return returnStr;
 }
 
@@ -217,10 +217,10 @@ TurnToHeadingCommand::TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedb
 bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg, feedback, max_speed, end_speed); }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string TurnToHeadingCommand::toString(){
-  return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed*100) + "%% speed";
+  return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed*100) + "% speed";
 }
 
 /**
@@ -249,7 +249,7 @@ PurePursuitCommand::PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback,
 bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedback, max_speed, end_speed); }
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string PurePursuitCommand::toString(){
   std::string returnStr = "Driving through ";
@@ -259,7 +259,7 @@ std::string PurePursuitCommand::toString(){
     returnStr.append(double_to_string(thePoints.at(i).x()) + ", " + double_to_string(thePoints.at(i).y()) + ") \n");
 
   }
-  returnStr.append(" at " + double_to_string(max_speed*100) + "%% speed");
+  returnStr.append(" at " + double_to_string(max_speed*100) + "% speed");
   return returnStr;  
 }
 
@@ -278,7 +278,7 @@ void PurePursuitCommand::on_timeout() {
 DriveStopCommand::DriveStopCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string DriveStopCommand::toString(){
   return "Stopping the drive";
@@ -307,7 +307,7 @@ bool DriveStopCommand::run() {
 OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odom(odom), newpos(newpos) {}
 
 /*
-* returns a to string command describing the commands functionality
+* Returns a string describing the commands functionality
 */
 std::string OdomSetPosition::toString(){
   return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) + ", ROT: " + double_to_string(newpos.rotation().degrees());
