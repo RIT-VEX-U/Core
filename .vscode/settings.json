@@ -5,5 +5,6 @@
 	"cmake.sourceDirectory": "C:/Users/brayd/Documents/ritearlybot/NamePending/vendor/eigen/scripts",
 	"files.associations": {
 		"new": "cpp"
-	}
+	},
+	"C_Cpp.default.compilerPath": "C:/TDM-GCC-64/bin/g++.exe"
 }
