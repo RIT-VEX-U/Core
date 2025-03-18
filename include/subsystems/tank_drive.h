@@ -26,6 +26,7 @@ public:
     None,         ///< just send 0 volts to the motors
     ZeroVelocity, ///< try to bring the robot to rest. But don't try to hold position
     Smart,        ///< bring the robot to rest and once it's stopped, try to hold that position
+    TurnOnly,
   };
   /**
    * Create the TankDrive object
