@@ -31,7 +31,14 @@
  * https://en.wikipedia.org/wiki/List_of_Runge%E2%80%93Kutta_methods
  */
 
+template <int X, int U>
+using NonAutonomousDerivative = std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)>;
 
+template <int X>
+using AutonomousDerivative = std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)>;
+
+template <int Y>
+using TimeVariantDerivative = std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)>;
 
 /**
  * Performs first order numerical integration of the non-autonomous differential
@@ -47,7 +54,7 @@
  * @param h The time over which to integrate.
  */
 template <int X, int U>
-Eigen::Vector<double, X> euler_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+Eigen::Vector<double, X> euler_nonautonomous(const NonAutonomousDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
   Eigen::Vector<double, X> k1 = f(x, u);
 
   return x + h * k1;
@@ -66,7 +73,7 @@ Eigen::Vector<double, X> euler_nonautonomous(const std::function<Eigen::Vector<d
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X> euler_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> euler_autonomous(const AutonomousDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
   Eigen::Vector<double, X> k1 = f(x);
 
   return x + h * k1;
@@ -86,7 +93,7 @@ Eigen::Vector<double, X> euler_autonomous(const std::function<Eigen::Vector<doub
  * @param h The time over which to integrate.
  */
 template <int Y>
-Eigen::Vector<double, Y> euler_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+Eigen::Vector<double, Y> euler_timevariant(const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
   Eigen::Vector<double, Y> k1 = f(t, y);
 
   return y + h * k1;
@@ -107,7 +114,7 @@ Eigen::Vector<double, Y> euler_timevariant(const std::function<Eigen::Vector<dou
  * @param h The time over which to integrate.
  */
 template <int X, int U>
-Eigen::Vector<double, X> RK2_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+Eigen::Vector<double, X> RK2_nonautonomous(const NonAutonomousDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
   Eigen::Vector<double, X> k1 = f(x, u);
   Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
 
@@ -128,7 +135,7 @@ Eigen::Vector<double, X> RK2_nonautonomous(const std::function<Eigen::Vector<dou
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X> RK2_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> RK2_autonomous(const AutonomousDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
   Eigen::Vector<double, X> k1 = f(x);
   Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
 
@@ -150,7 +157,7 @@ Eigen::Vector<double, X> RK2_autonomous(const std::function<Eigen::Vector<double
  * @param h The time over which to integrate.
  */
 template <int Y>
-Eigen::Vector<double, Y> RK2_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+Eigen::Vector<double, Y> RK2_timevariant(const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
   Eigen::Vector<double, Y> k1 = f(t, y);
   Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
 
@@ -174,7 +181,7 @@ Eigen::Vector<double, Y> RK2_timevariant(const std::function<Eigen::Vector<doubl
  * @param h The time over which to integrate.
  */
 template <int X, int U>
-Eigen::Vector<double, X> RK4_nonautonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
+Eigen::Vector<double, X> RK4_nonautonomous(const NonAutonomousDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u, const double &h) {
   Eigen::Vector<double, X> k1 = f(x, u);
   Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
   Eigen::Vector<double, X> k3 = f(x + h * 0.5 * k2, u);
@@ -199,7 +206,7 @@ Eigen::Vector<double, X> RK4_nonautonomous(const std::function<Eigen::Vector<dou
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X> RK4_autonomous(const std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> RK4_autonomous(const AutonomousDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
   Eigen::Vector<double, X> k1 = f(x);
   Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
   Eigen::Vector<double, X> k3 = f(x + h * 0.5 * k2);
@@ -225,7 +232,7 @@ Eigen::Vector<double, X> RK4_autonomous(const std::function<Eigen::Vector<double
  * @param h The time over which to integrate.
  */
 template <int Y>
-Eigen::Vector<double, Y> RK4_timevariant(const std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
+Eigen::Vector<double, Y> RK4_timevariant(const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h) {
   Eigen::Vector<double, Y> k1 = f(t, y);
   Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
   Eigen::Vector<double, Y> k3 = f(t + h * 0.5, y + h * 0.5 * k2);
