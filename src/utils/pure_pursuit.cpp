@@ -44,7 +44,7 @@ PurePursuit::Path::Path(std::vector<Translation2d> points, double radius){
 /**
  * Get the points associated with this Path
  */
-const std::vector<Translation2d>& PurePursuit::Path::get_points() { return this->points; }
+const std::vector<Translation2d> PurePursuit::Path::get_points() { return this->points; }
 
 /**
  * Get the radius associated with this Path
@@ -105,7 +105,7 @@ std::vector<Translation2d> intersections = {};
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-[[maybe_unused]] Translation2d get_lookahead(const std::vector<Translation2d>& path, Pose2d robot_loc, double radius){
+[[maybe_unused]] Translation2d PurePursuit::get_lookahead(const std::vector<Translation2d>& path, Pose2d robot_loc, double radius){
   // Default: the end of the path
   Translation2d target = path.back();
 
@@ -245,7 +245,7 @@ std::vector<Translation2d> intersections = {};
  * @param radius Pure pursuit "radius", used to search for the robot along the path
  * @return A rough estimate of the remaining distance
  */
-double estimate_remaining_dist(const std::vector<Translation2d> &path, Pose2d robot_pose, double radius) {
+double PurePursuit::estimate_remaining_dist(const std::vector<Translation2d> &path, Pose2d robot_pose, double radius) {
   Translation2d lookahead_pt = PurePursuit::get_lookahead(path, robot_pose, radius);
 
   if (lookahead_pt == path[path.size() - 1]) {

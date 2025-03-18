@@ -13,6 +13,11 @@ bool SpinRPMCommand::run() {
   return true;
 }
 
+std::string SpinRPMCommand::toString() {
+  std::string returnStr = "Spiinning at %d Rpm", rpm;
+  return returnStr;
+}
+
 WaitUntilUpToSpeedCommand::WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm)
     : flywheel(flywheel), threshold_rpm(threshold_rpm) {}
 
@@ -23,6 +28,11 @@ bool WaitUntilUpToSpeedCommand::run() {
   }
   // else, keep waiting
   return false;
+}
+
+std::string WaitUntilUpToSpeedCommand::toString() {
+  std::string returnStr = "Waiting until at %d Rpm", rpm;
+  return returnStr;
 }
 
 FlywheelStopCommand::FlywheelStopCommand(Flywheel &flywheel) : flywheel(flywheel) {}

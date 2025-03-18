@@ -47,7 +47,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString()override;
   
   /**
    * Cleans up drive system if we time out before finishing
@@ -87,7 +87,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
   /**
    * Cleans up drive system if we time out before finishing
    */
@@ -128,7 +128,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 private:
   // drive system to run the function on
   TankDrive &drive_sys;
@@ -160,7 +160,7 @@ class TurnToPointCommand: public AutoCommand{
     /*
     * returns a to string command describing the commands functionality
     */
-    std::string toString();
+    std::string toString() override;
 
   private:
 
@@ -194,7 +194,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
   /**
    * Cleans up drive system if we time out before finishing
@@ -238,7 +238,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
   /**
    * Reset the drive system when it times out
@@ -272,7 +272,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
   
   void on_timeout() override;
 
@@ -305,7 +305,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 private:
   // drive system with an odometry config
   OdometryBase &odom;

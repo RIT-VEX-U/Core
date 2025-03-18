@@ -47,7 +47,7 @@ public:
   /*
   * returns a to string that describes the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   vex::motor &motor;
@@ -83,7 +83,7 @@ public:
   /*
   * returns a to string that describes the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   vex::motor &motor;
@@ -117,7 +117,7 @@ public:
   /*
   * returns a to string that describes the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   vex::pneumatics &solenoid;

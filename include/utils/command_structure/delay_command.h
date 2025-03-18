@@ -27,7 +27,7 @@ public:
     return true;
   }
   
-  std::string toString(){
+  std::string toString() override{
     return "Delaying for " + double_to_string(ms) + "ms";
   }
 

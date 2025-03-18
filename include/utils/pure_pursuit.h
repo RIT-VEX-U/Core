@@ -25,7 +25,7 @@ public:
   /**
    * Get the points associated with this Path
    */
-  const std::vector<Translation2d>& get_points();
+  const std::vector<Translation2d> get_points();
 
   /**
    * Get the radius associated with this Path
@@ -92,7 +92,7 @@ extern std::vector<Translation2d> inject_path(const std::vector<Translation2d>& 
  * https://medium.com/@jaems33/understanding-robot-motion-path-smoothing-5970c8363bc4
  */
 
-extern std::vector<Translation2d> smooth_path(const std::vector<Translation2d> &path, double weight_data, double weight_smooth,
+ extern std::vector<Translation2d> smooth_path(const std::vector<Translation2d> &path, double weight_data, double weight_smooth,
                                         double tolerance);
 
 extern std::vector<Translation2d> smooth_path_cubic(const std::vector<Translation2d> &path, double res);

@@ -90,7 +90,7 @@ AutoCommand *TankDrive::DriveTankCmd(double left, double right) {
       td.drive_tank(left, right);
       return false;
     }
-    std::string toString(){
+    std::string toString() override{
       return "Driving Tank with left: " + double_to_string(left) + " right: " + double_to_string(right);
     }
     void on_timeout() override { td.stop(); }

@@ -28,7 +28,7 @@ public:
   Condition *Or(Condition *b);
   Condition *And(Condition *b);
   virtual bool test() = 0;
-  virtual std::string toString(){return "Condition";}
+  virtual std::string toString();
 };
 
 class AutoCommand {
@@ -79,7 +79,7 @@ class FunctionCommand : public AutoCommand {
 public:
   FunctionCommand(std::function<bool(void)> f) : f(f) {}
   bool run() { return f(); }
-  std::string toString() {return "Function Command";}
+  std::string toString() override {return "Function Command";}
 
 private:
   std::function<bool(void)> f;
@@ -137,7 +137,7 @@ class WaitUntilCondition : public AutoCommand {
 public:
   WaitUntilCondition(Condition *cond) : cond(cond) {}
   bool run() override { return cond->test(); }
-  std::string toString(){return "waiting until %s" + cond->toString();}
+  std::string toString() override {return "waiting until %s" + cond->toString();}
 
 private:
   Condition *cond;
@@ -155,7 +155,7 @@ public:
   InOrder(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
-  std::string toString() {return "Running Inorder with length: " + cmds.size();}
+  std::string toString() override;
 
 private:
   AutoCommand *current_command = nullptr;
@@ -170,7 +170,7 @@ public:
   Parallel(std::initializer_list<AutoCommand *> cmds);
   bool run() override;
   void on_timeout() override;
-  std::string toString();
+  std::string toString() override;
 
 private:
   std::vector<AutoCommand *> cmds;
@@ -185,7 +185,7 @@ public:
   Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice);
   ~Branch();
   bool run() override;
-  std::string toString();
+  std::string toString() override;
   void on_timeout() override;
 
 private:
@@ -204,9 +204,7 @@ class Async : public AutoCommand {
 public:
   Async(AutoCommand *cmd) : cmd(cmd) {}
   bool run() override;
-  std::string toString(){
-    return "Async of " + cmd->toString();
-  }
+  std::string toString() override;
 
 private:
   AutoCommand *cmd = nullptr;
@@ -223,7 +221,7 @@ public:
   /// @param true_to_end we will repeat until true_or_end.test() returns true
   RepeatUntil(InOrder cmds, Condition *true_to_end);
   bool run() override;
-  std::string toString();
+  std::string toString() override;
   void on_timeout() override;
 
 private:

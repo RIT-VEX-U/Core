@@ -27,6 +27,7 @@ private:
   Condition *A;
   Condition *B;
 };
+std::string Condition::toString() {return "Condition";}
 
 Condition *Condition::Or(Condition *b) { return new OrCondition(this, b); }
 
@@ -78,6 +79,10 @@ bool InOrder::run() {
     return false;
   }
   return false;
+}
+
+std::string InOrder::toString() {
+  return "Running Inorder with length: " + cmds.size();
 }
 
 void InOrder::on_timeout() {
@@ -144,7 +149,7 @@ bool Parallel::run() {
   return all_finished;
 }
 
-std::string Parallel::toString(){
+std::string Parallel::toString() {
   return double_to_string(runners.size()) + " commands running in parallel";
 }
 
@@ -255,6 +260,10 @@ bool Async::run() {
   (void)t;
   // lmao get memory leaked
   return true;
+}
+
+std::string Async::toString() {
+  return "Async of " + cmd->toString();
 }
 
 RepeatUntil::RepeatUntil(InOrder cmds, size_t times) : RepeatUntil(cmds, new TimesTestedCondition(times)) {

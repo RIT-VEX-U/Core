@@ -29,10 +29,7 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-  std::string toString(){
-    std::string returnStr = "Spiinning at %d Rpm", rpm;
-    return returnStr;
-  }
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -61,10 +58,7 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-  std::string toString(){
-    std::string returnStr = "Waiting until at %d Rpm", rpm;
-    return returnStr;
-  }
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -97,7 +91,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -127,7 +121,7 @@ public:
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -152,7 +146,7 @@ class FlywheelStopNonTasksCommand : public AutoCommand {
   /*
   * returns a to string command describing the commands functionality
   */
-  std::string toString();
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
