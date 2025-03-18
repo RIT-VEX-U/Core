@@ -25,7 +25,7 @@ public:
   /**
    * Get the points associated with this Path
    */
-  std::vector<Translation2d> get_points();
+  const std::vector<Translation2d>& get_points();
 
   /**
    * Get the radius associated with this Path
@@ -74,12 +74,12 @@ extern std::vector<Translation2d> line_circle_intersections(Translation2d center
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-extern Translation2d get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_loc, double radius);
+extern Translation2d get_lookahead(const std::vector<Translation2d>& path, Pose2d robot_loc, double radius);
 
 /**
  * Injects points in a path without changing the curvature with a certain spacing.
  */
-extern std::vector<Translation2d> inject_path(const std::vector<Translation2d> &path, double spacing);
+extern std::vector<Translation2d> inject_path(const std::vector<Translation2d>& path, double spacing);
 
 /**
  * Returns a smoothed path maintaining the start and end of the path.

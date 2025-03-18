@@ -1,13 +1,11 @@
 #include "../core/include/utils/pure_pursuit.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/math/geometry/pose2d.h"
 
 /**
  * Create a Path
  * @param points the points that make up the path
  * @param radius the lookahead radius for pure pursuit
  */
-PurePursuit::Path::Path(std::vector<Translation2d> points, double radius) {
+PurePursuit::Path::Path(std::vector<Translation2d> points, double radius){
   this->points = points;
   this->radius = radius;
   this->valid = true;
@@ -46,7 +44,7 @@ PurePursuit::Path::Path(std::vector<Translation2d> points, double radius) {
 /**
  * Get the points associated with this Path
  */
-std::vector<Translation2d> PurePursuit::Path::get_points() { return this->points; }
+const std::vector<Translation2d>& PurePursuit::Path::get_points() { return this->points; }
 
 /**
  * Get the radius associated with this Path
@@ -63,7 +61,7 @@ bool PurePursuit::Path::is_valid() { return this->valid; }
  * segment is defined by two points, and the circle is defined by a center and radius.
  */
 std::vector<Translation2d> PurePursuit::line_circle_intersections(Translation2d center, double r, Translation2d point1, Translation2d point2) {
-  std::vector<Translation2d> intersections = {};
+std::vector<Translation2d> intersections = {};
 
   // Do future calculations relative to the circle's center
   
@@ -107,7 +105,7 @@ std::vector<Translation2d> PurePursuit::line_circle_intersections(Translation2d 
 /**
  * Selects a look ahead from all the intersections in the path.
  */
-[[maybe_unused]] Translation2d get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_loc, double radius) {
+[[maybe_unused]] Translation2d get_lookahead(const std::vector<Translation2d>& path, Pose2d robot_loc, double radius){
   // Default: the end of the path
   Translation2d target = path.back();
 
@@ -136,7 +134,7 @@ std::vector<Translation2d> PurePursuit::line_circle_intersections(Translation2d 
 /**
  Injects points in a path without changing the curvature with a certain spacing.
 */
-[[maybe_unused]] std::vector<Translation2d> PurePursuit::inject_path(const std::vector<Translation2d> &path, double spacing) {
+[[maybe_unused]] std::vector<Translation2d> PurePursuit::inject_path(const std::vector<Translation2d>& path, double spacing) {
   std::vector<Translation2d> new_path;
 
   // Injecting points for each line segment
