@@ -1,5 +1,5 @@
 ---
-name: Clang Format
+name: Clang Format (Non modifying)
 on:
   push:
     branches:
@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: sudo apt-get install -y doxygen-latex poppler-utils
 
       - name: Clang Format
         uses: DoozyX/clang-format-lint-action@v0.18.1
@@ -22,3 +24,20 @@ jobs:
           clangFormatVersion: 18
           style: file
 
+      - name: Doxygen Action
+        uses: mattnotmitt/doxygen-action@v1.1.0
+        with:
+          doxyfile-path: ./Doxyfile
+          working-directory: .
+
+    - name: Fix Button
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Click this button (not a virus)'
+            })
