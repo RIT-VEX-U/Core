@@ -52,7 +52,7 @@ bool BasicSpinCommand::run() {
 * Returns a string describing the commands functionality
 */
 std::string BasicSpinCommand::toString(){
-  std::string str = "Spinnning motors ";
+  std::string str = "Spinnning motors";
   if(dir == vex::directionType::fwd){
     str.append(" forwards at ");
   }
