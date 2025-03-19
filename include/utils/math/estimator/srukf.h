@@ -220,6 +220,9 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * @param dt The timestep in seconds.
      */
     void predict(const InputVector &u, double dt) {
+        // Our noise is continuous, so we need to discretize
+        const EMat<STATES, STATES> Q = m_sqrt_Q * sqrt(dt);
+
         // Generate sigma points around the state mean
         //
         // equation (17)
