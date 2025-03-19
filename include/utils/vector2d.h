@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/include/utils/geometry.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 #include <cmath>
 
 #ifndef PI
@@ -11,6 +11,8 @@
  * Used to represent 2D locations on the field.
  * It can also be treated as a direction and magnitude
  */
+class Translation2d;
+
 class Vector2D {
 public:
   /**
@@ -24,9 +26,9 @@ public:
   /**
    * Construct a vector object from a cartesian point.
    *
-   * @param p point_t.x , point_t.y
+   * @param p Translation2d(x, y)
    */
-  Vector2D(point_t p);
+  Vector2D(Translation2d p);
 
   /**
    * Get the direction of the vector, in radians.
@@ -62,7 +64,7 @@ public:
    * Returns a point from the vector
    * @return the point represented by the vector
    */
-  point_t point();
+  Translation2d point();
 
   /**
    * Scales a Vector2D by a scalar with the * operator

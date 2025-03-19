@@ -29,6 +29,7 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -57,6 +58,7 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on
@@ -86,6 +88,11 @@ public:
    */
   bool run() override;
 
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+
 private:
   // Flywheel instance to run the function on
   Flywheel &flywheel;
@@ -111,6 +118,11 @@ public:
    */
   bool run() override;
 
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+
 private:
   // Flywheel instance to run the function on
   Flywheel &flywheel;
@@ -130,6 +142,11 @@ class FlywheelStopNonTasksCommand : public AutoCommand {
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
 
 private:
   // Flywheel instance to run the function on

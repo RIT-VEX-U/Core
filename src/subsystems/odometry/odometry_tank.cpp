@@ -49,9 +49,9 @@ OdometryTank::OdometryTank(vex::encoder &left_vex_enc, vex::encoder &right_vex_e
  * Resets the position and rotational data to the input.
  *
  */
-void OdometryTank::set_position(const pose_t &newpos) {
+void OdometryTank::set_position(const Pose2d &newpos) {
   mut.lock();
-  rotation_offset = newpos.rot - (current_pos.rot - rotation_offset);
+  rotation_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - rotation_offset);
   mut.unlock();
 
   OdometryBase::set_position(newpos);
@@ -61,7 +61,7 @@ void OdometryTank::set_position(const pose_t &newpos) {
  * Update, store and return the current position of the robot. Only use if not initializing
  * with a separate thread.
  */
-pose_t OdometryTank::update() {
+Pose2d OdometryTank::update() {
   double lside_revs = 0, rside_revs = 0;
 
   if (left_side != NULL && right_side != NULL) {
@@ -106,7 +106,7 @@ pose_t OdometryTank::update() {
 
   current_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
 
-  static pose_t last_pos = current_pos;
+  static Pose2d last_pos = current_pos;
   static double last_speed = 0;
   static double last_ang_speed = 0;
   static timer tmr;
@@ -115,14 +115,14 @@ pose_t OdometryTank::update() {
   // This loop runs too fast. Only check at LEAST every 1/10th sec
   if (update_vel_accel) {
     // Calculate robot velocity
-    double this_speed = pos_diff(current_pos, last_pos) / tmr.time(sec);
+    double this_speed = current_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
     ema.add_entry(this_speed);
     speed = ema.get_value();
     // Calculate robot acceleration
     accel = (speed - last_speed) / tmr.time(sec);
 
     // Calculate robot angular velocity (deg/sec)
-    ang_speed_deg = smallest_angle(current_pos.rot, last_pos.rot) / tmr.time(sec);
+    ang_speed_deg = smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
 
     // Calculate robot angular acceleration (deg/sec^2)
     ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(sec);
@@ -140,9 +140,9 @@ pose_t OdometryTank::update() {
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-pose_t OdometryTank::calculate_new_pos(robot_specs_t &config, pose_t &curr_pos, double lside_revs, double rside_revs,
+Pose2d OdometryTank::calculate_new_pos(robot_specs_t &config, Pose2d &curr_pos, double lside_revs, double rside_revs,
                                        double angle_deg) {
-  pose_t new_pos;
+  Pose2d new_pos(0, 0, 0);
 
   static double stored_lside_revs = lside_revs;
   static double stored_rside_revs = rside_revs;
@@ -159,15 +159,12 @@ pose_t OdometryTank::calculate_new_pos(robot_specs_t &config, pose_t &curr_pos, 
   Vector2D chg_vec(angle, dist_driven);
 
   // Create a vector from the current position in reference to X,Y=0,0
-  point_t curr_point = {.x = curr_pos.x, .y = curr_pos.y};
+  Translation2d curr_point(curr_pos.x(), curr_pos.y());
   Vector2D curr_vec(curr_point);
 
   // Tack on the "difference" vector to the current vector
   Vector2D new_vec = curr_vec + chg_vec;
-
-  new_pos.x = new_vec.get_x();
-  new_pos.y = new_vec.get_y();
-  new_pos.rot = angle_deg;
+  new_pos = Pose2d(new_vec.get_x(), new_vec.get_y(), deg2rad(angle_deg));
 
   // Store the left and right encoder values to find the difference in the next iteration
   stored_lside_revs = lside_revs;
