@@ -246,8 +246,8 @@ var NAVTREEINDEX0 =
 "classRotation2d.html#aeb95183483206912d4f8c53e34ac6fb0":[1,0,44,8],
 "classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272":[1,0,44,19],
 "classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b":[1,0,44,15],
-"classSerializer.html":[1,0,45],
-"classSerializer.html#a096df4d062c6402bee7b6853cdcc849b":[1,0,45,3],
-"classSerializer.html#a09aa4bb5eb33a01069204490f48bcaec":[1,0,45,6],
-"classSerializer.html#a111cbc8ff43cb3bd23f68d5560a958ab":[1,0,45,1]
+"classScaledSphericalSimplexSigmaPoints.html":[1,0,45],
+"classScaledSphericalSimplexSigmaPoints.html#a3dc2a94e709b720d8a544c09a0bfaf69":[1,0,45,5],
+"classScaledSphericalSimplexSigmaPoints.html#a4a69b937d6c92ac4cb95b5f2973fab4c":[1,0,45,4],
+"classScaledSphericalSimplexSigmaPoints.html#a6ffa27a1ea7808a0f546a2b296b3c451":[1,0,45,1]
 };
