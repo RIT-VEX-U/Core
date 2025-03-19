@@ -19,6 +19,12 @@
  */
 class Twist2d {
 public:
+
+/**
+   * Default Constructor for Twist2d
+   */
+  constexpr Twist2d();
+
   /**
    * Constructs a twist with given translation and angle deltas.
    *

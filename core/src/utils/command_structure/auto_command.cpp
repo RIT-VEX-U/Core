@@ -27,6 +27,7 @@ private:
   Condition *A;
   Condition *B;
 };
+std::string Condition::toString() {return "Condition";}
 
 Condition *Condition::Or(Condition *b) { return new OrCondition(this, b); }
 
@@ -48,7 +49,7 @@ bool InOrder::run() {
   }
   // retrieve and remove command at the front of the queue
   if (current_command == nullptr) {
-    printf("TAKING INORDER: len =  %d\n", cmds.size());
+    printf("TAKING INORDER: len =  %d\n", cmds.size());   
     current_command = cmds.front();
     cmds.pop();
     tmr.reset();
@@ -78,6 +79,10 @@ bool InOrder::run() {
     return false;
   }
   return false;
+}
+
+std::string InOrder::toString() {
+  return "Running Inorder with length: " + int_to_string(cmds.size());
 }
 
 void InOrder::on_timeout() {
@@ -143,6 +148,11 @@ bool Parallel::run() {
   }
   return all_finished;
 }
+
+std::string Parallel::toString() {
+  return double_to_string(runners.size()) + " commands running in parallel";
+}
+
 void Parallel::on_timeout() {
   for (int i = 0; i < runners.size(); i++) {
 
@@ -203,6 +213,10 @@ bool Branch::run() {
   }
   return false;
 }
+
+std::string Branch::toString(){
+  return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " + cond->toString();
+}
 void Branch::on_timeout() {
   if (!chosen) {
     // dont need to do anything
@@ -248,6 +262,10 @@ bool Async::run() {
   return true;
 }
 
+std::string Async::toString() {
+  return "Async of " + cmd->toString();
+}
+
 RepeatUntil::RepeatUntil(InOrder cmds, size_t times) : RepeatUntil(cmds, new TimesTestedCondition(times)) {
   timeout_seconds = -1.0;
 }
@@ -272,6 +290,11 @@ bool RepeatUntil::run() {
   working_cmds = new InOrder(cmds);
 
   return false;
+}
+
+std::string RepeatUntil::toString(){
+  InOrder pHCmds = cmds;
+  return "Repeating " + pHCmds.toString() + " until " + true_to_end->toString();
 }
 
 void RepeatUntil::on_timeout() { working_cmds->on_timeout(); }
