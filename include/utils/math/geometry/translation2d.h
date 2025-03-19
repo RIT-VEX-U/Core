@@ -1,12 +1,11 @@
 #pragma once
 
+#include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
 #include <vector>
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
-
-class Rotation2d;
 
 /**
  * Class representing a point in 2d space with x and y coordinates.
