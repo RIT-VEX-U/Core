@@ -1,2 +1,0 @@
-
-void skills_basic();

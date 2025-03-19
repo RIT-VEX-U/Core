@@ -1,1 +1,0 @@
-void auto_blue_safe();
