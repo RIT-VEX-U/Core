@@ -444,8 +444,8 @@ bool TankDrive::drive_to_point(
     }
 
     // Combine the two pid outputs
-    double lside = drive_pid_rval - correction;
-    double rside = drive_pid_rval + correction;
+    double lside = drive_pid_rval + correction;
+    double rside = drive_pid_rval - correction;
 
     // limit the outputs between -1 and +1
     lside = clamp(lside, -max_speed, max_speed);
