@@ -166,7 +166,7 @@ TurnToPointCommand::TurnToPointCommand(TankDrive &drive_sys, Translation2d trans
 
 bool TurnToPointCommand::run() {
   if (!func_initialized) {
-    Pose2d pose = drive_sys.odometry->get_position();
+    Pose2d pose = drive_sys.get_position();
     double dy = y - pose.y();
     double dx = x - pose.x();
     heading = rad2deg(atan2(dy, dx));

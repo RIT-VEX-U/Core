@@ -184,7 +184,7 @@ public:
    */
   Pose2d get_position(void) {
     Pose2d without_wrapped_angle  = OdometryBase::get_position();
-    Pose2d with_wrapped_angle(without_wrapped_angle.x(), without_wrapped_angle.y(), wrap_angle_deg(without_wrapped_angle.rotation().degrees()));
+    Pose2d with_wrapped_angle(without_wrapped_angle.translation(),  without_wrapped_angle.rotation().wrapped_radians_360());
     return with_wrapped_angle;
   }
 
@@ -194,8 +194,8 @@ private:
    * configurations are stored as class members.
    *
    * @param radian_deltas vector containing the change of angle of each wheel (radians)
-   * @param old_pose The robot's previous position Pose2d(x, y, Rotation2d(degrees in radians))
-   * @return The robot's new position Pose2d(x, y, Rotation2d(degrees in radians))
+   * @param old_pose The robot's previous position Pose2d(x, y, Rotation2d(radians))
+   * @return The robot's new position Pose2d(x, y, Rotation2d(radians))
    */
   Pose2d calculate_new_pos(Eigen::Vector<double, WHEELS> radian_deltas, Pose2d old_pose) {
     // Mr T = E -> Mr^{+} E = T

@@ -49,7 +49,7 @@ bool InOrder::run() {
   }
   // retrieve and remove command at the front of the queue
   if (current_command == nullptr) {
-    printf("TAKING INORDER: len =  %f\n", cmds.size());   
+    printf("TAKING INORDER: len =  %d\n", cmds.size());   
     current_command = cmds.front();
     cmds.pop();
     tmr.reset();

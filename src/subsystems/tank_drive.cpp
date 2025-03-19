@@ -114,6 +114,13 @@ void TankDrive::stop() {
   right_motors.stop();
 }
 
+/**
+   * Returns the Robot position as a Pose2d
+   */
+  Pose2d TankDrive::get_position(){
+    return this->odometry->get_position();
+  }
+
 void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
   left_motors.spin(directionType::fwd, left_norm * 12, voltageUnits::volt);
   right_motors.spin(directionType::fwd, right_norm * 12, voltageUnits::volt);

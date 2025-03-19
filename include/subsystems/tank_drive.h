@@ -72,6 +72,11 @@ public:
   void stop();
 
   /**
+   * Returns the Robot position as a Pose2d
+   */
+  Pose2d get_position();
+
+  /**
    * Drive the robot using differential style controls. left_motors controls
    * the left motors, right_motors controls the right motors.
    *
@@ -263,12 +268,13 @@ public:
    * by its completion
    * @return True when the path is complete
    */
-  OdometryBase *odometry; ///< odometry system to track position and rotation.
-                          ///< necessary for autonomous driving
 private:
   bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
   motor_group &left_motors;  ///< left drive motors
   motor_group &right_motors; ///< right drive motors
+  
+  OdometryBase *odometry; ///< odometry system to track position and rotation.
+                          ///< necessary for autonomous driving
 
   PID correction_pid;                      ///< PID controller used to drive in as straight a line
                                            ///< as possible
