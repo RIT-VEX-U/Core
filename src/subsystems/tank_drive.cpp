@@ -134,6 +134,7 @@ void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
  */
 bool captured_position = false;
 bool was_breaking = false;
+
 void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
 
     left = modify_inputs(left, power);
@@ -527,7 +528,7 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
 
     fflush(stdout);
 
-    drive_tank(feedback.get(), -feedback.get());
+    drive_tank(-feedback.get(), feedback.get());
 
     // When the robot has reached it's angle, return true.
     if (feedback.is_on_target()) {
@@ -535,7 +536,6 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
         stop();
         return true;
     }
-
     return false;
 }
 /**
