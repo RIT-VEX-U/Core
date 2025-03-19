@@ -417,7 +417,7 @@ class SquareRootUnscentedKalmanFilter {
     // Compute cross covariance of the predicted state and measurement sigma
     // points given as:
     //
-    //           2n
+    //           L+1
     //   P_{xy} = Σ Wᵢ⁽ᶜ⁾[𝒳ᵢ - x̂][𝒴ᵢ - ŷ⁻]ᵀ
     //           i=0
     //
@@ -432,9 +432,10 @@ class SquareRootUnscentedKalmanFilter {
                  .transpose();
     }
 
-    // Compute the Kalman gain. We use Eigen's QR decomposition to solve. This
-    // is equivalent syntactically to MATLAB's \ operator, so we need to rearrange
-    // to use that.
+    // Compute the Kalman gain. We use Eigen's forward and backward substitution
+    // to solve. The equation in the paper uses MATLAB's / operator, but Eigen's
+    // solvers act like the \ operator, so we need to rearrange the equation to
+    // use those.
     //
     //   K = (P_{xy} / S_{y}ᵀ) / S_{y}
     //   K = (S_{y} \ P_{xy})ᵀ / S_{y}
@@ -533,7 +534,7 @@ square_root_ut(const EMat<COV_DIM, NUM_SIGMAS> &sigmas,
                const EMat<COV_DIM, COV_DIM> &sqrt_R) {
   // New mean is usually just the sum of the sigmas * weights:
   //
-  //      2n
+  //      L+1
   //   x̂ = Σ Wᵢ⁽ᵐ⁾𝒳ᵢ
   //      i=0
   //
@@ -543,7 +544,7 @@ square_root_ut(const EMat<COV_DIM, NUM_SIGMAS> &sigmas,
 
   // Form an intermediate matrix S⁻ as:
   //
-  //   [√{W₁⁽ᶜ⁾}(𝒳_{1:2L} - x̂) √{Rᵛ}]
+  //   [√{W₁⁽ᶜ⁾}(𝒳_{1:L+1} - x̂) √{Rᵛ}]
   //
   // the part of equations (20) and (24) within the "qr{}"
   EMat<COV_DIM, NUM_SIGMAS - 1 + COV_DIM> S_bar;
