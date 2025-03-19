@@ -137,7 +137,7 @@ class WaitUntilCondition : public AutoCommand {
   public:
     WaitUntilCondition(Condition *cond) : cond(cond) {}
     bool run() override { return cond->test(); }
-    std::string toString() override { return "waiting until %s" + cond->toString(); }
+    std::string toString() override { return "waiting until " + cond->toString(); }
 
   private:
     Condition *cond;

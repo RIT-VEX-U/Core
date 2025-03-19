@@ -9,73 +9,64 @@
 SpinRPMCommand::SpinRPMCommand(Flywheel &flywheel, int rpm) : flywheel(flywheel), rpm(rpm) {}
 
 bool SpinRPMCommand::run() {
-  flywheel.spin_rpm(rpm);
-  return true;
+    flywheel.spin_rpm(rpm);
+    return true;
 }
 
 std::string SpinRPMCommand::toString() {
-  std::string returnStr = "Spiinning at %d Rpm", rpm;
-  return returnStr;
+    std::string returnStr = "Spiinning at %d Rpm", rpm;
+    return returnStr;
 }
 
 WaitUntilUpToSpeedCommand::WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm)
     : flywheel(flywheel), threshold_rpm(threshold_rpm) {}
 
 bool WaitUntilUpToSpeedCommand::run() {
-  // If we're withing the specified threshold, we're ready to fire
-  if (fabs(flywheel.get_target() - flywheel.getRPM()) < threshold_rpm) {
-    return true;
-  }
-  // else, keep waiting
-  return false;
+    // If we're withing the specified threshold, we're ready to fire
+    if (fabs(flywheel.get_target() - flywheel.getRPM()) < threshold_rpm) {
+        return true;
+    }
+    // else, keep waiting
+    return false;
 }
 
 std::string WaitUntilUpToSpeedCommand::toString() {
-  std::string returnStr = "Waiting until at %d Rpm", rpm;
-  return returnStr;
+    std::string returnStr = "Waiting until at %d Rpm", rpm;
+    return returnStr;
 }
 
 FlywheelStopCommand::FlywheelStopCommand(Flywheel &flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopCommand::run() {
-  flywheel.stop();
-  return true;
+    flywheel.stop();
+    return true;
 }
 
 /*
-  * Returns a string describing the commands functionality
-  */
- std::string FlywheelStopCommand::toString(){
-  std::string returnStr = "Stopping Flywheel";
-  return returnStr;
-}
+ * Returns a string describing the commands functionality
+ */
+std::string FlywheelStopCommand::toString() { return "Stopping Flywheel"; }
 
 FlywheelStopMotorsCommand::FlywheelStopMotorsCommand(Flywheel &flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopMotorsCommand::run() {
-  flywheel.stop();
-  return true;
+    flywheel.stop();
+    return true;
 }
 
 /*
-  * Returns a string describing the commands functionality
-  */
- std::string FlywheelStopMotorsCommand::toString(){
-  std::string returnStr = "Stopping Flywheel Motors";
-  return returnStr;
-}
+ * Returns a string describing the commands functionality
+ */
+std::string FlywheelStopMotorsCommand::toString() { return "Stopping Flywheel Motors"; }
 
 FlywheelStopNonTasksCommand::FlywheelStopNonTasksCommand(Flywheel &flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopNonTasksCommand::run() {
-  flywheel.stop();
-  return true;
+    flywheel.stop();
+    return true;
 }
 
 /*
-  * Returns a string describing the commands functionality
-  */
- std::string FlywheelStopNonTasksCommand::toString(){
-  std::string returnStr = "Stopping Flywheel Non Tasks";
-  return returnStr;
-}
+ * Returns a string describing the commands functionality
+ */
+std::string FlywheelStopNonTasksCommand::toString() { return "Stopping Flywheel Non Tasks"; }
