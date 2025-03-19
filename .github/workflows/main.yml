@@ -6,7 +6,9 @@ on:
       - main
   pull_request:
     branches:
-      - "*"
+      - '*'
+  schedule:
+    - cron: "0 0 * * 1"
   workflow_dispatch: null
 jobs:
   build:
@@ -20,19 +22,15 @@ jobs:
           extensions: h,hpp,c,cpp
           clangFormatVersion: 18
           style: file
-      - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@v1.1.0
-        with:
-          doxyfile-path: ./Doxyfile
-          working-directory: .
+
       - name: Fix Button
         uses: actions/github-script@v7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
+            script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Click this button (not a virus)'
-            })
+              body: ''Click this [button](http.cat/404) (not a virus)''
+              })
