@@ -115,7 +115,7 @@ Getting Started</h1>
 <p>To setup core for an existing project:</p><ol type="1">
 <li>Create a new vex project (using the VSCode extension or other methods)</li>
 <li>Initialize a git repository for the project</li>
-<li>Execute <code>git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main</code></li>
+<li>Execute <code>git subtree add --prefix=core <a href="https://github.com/RIT-VEX-U/Core.git">https://github.com/RIT-VEX-U/Core.git</a> main</code></li>
 <li>Update the vex Makefile (or any other build system) to know about the core files (<code>core/src</code> for source files, <code>core/include</code> for headers) (See <a href="https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L15">here</a> for an example)</li>
 <li>Enable <a href="https://eigen.tuxfamily.org/index.php?title=Main_Page">Eigen</a> (Latest supported version is 3.4.0):<ul>
 <li><code>mkdir vendor</code></li>
