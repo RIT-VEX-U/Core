@@ -115,8 +115,8 @@ $(function(){initNavTree('classDriveToPointCommand.html',''); initResizable(true
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ce50ba932039e7f66be48ac22f3b92e" id="r_a9ce50ba932039e7f66be48ac22f3b92e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ce50ba932039e7f66be48ac22f3b92e">DriveToPointCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, double x, double y, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
 <tr class="separator:a9ce50ba932039e7f66be48ac22f3b92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab98e7521e0d255683e8dc6e140e79b16" id="r_ab98e7521e0d255683e8dc6e140e79b16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab98e7521e0d255683e8dc6e140e79b16">DriveToPointCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="el" href="structpoint__t.html">point_t</a> point, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
-<tr class="separator:ab98e7521e0d255683e8dc6e140e79b16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a97b20f58d2439551c4410c54346a01" id="r_a1a97b20f58d2439551c4410c54346a01"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a97b20f58d2439551c4410c54346a01">DriveToPointCommand</a> (<a class="el" href="classTankDrive.html">TankDrive</a> &amp;drive_sys, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="el" href="classTranslation2d.html">Translation2d</a> translation, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
+<tr class="separator:a1a97b20f58d2439551c4410c54346a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ed58921bc3eeb8c04d0b11b4f7e4fbe" id="r_a8ed58921bc3eeb8c04d0b11b4f7e4fbe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ed58921bc3eeb8c04d0b11b4f7e4fbe">run</a> () override</td></tr>
 <tr class="separator:a8ed58921bc3eeb8c04d0b11b4f7e4fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -180,8 +180,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab98e7521e0d255683e8dc6e140e79b16" name="ab98e7521e0d255683e8dc6e140e79b16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab98e7521e0d255683e8dc6e140e79b16">&#9670;&#160;</a></span>DriveToPointCommand() <span class="overload">[2/2]</span></h2>
+<a id="a1a97b20f58d2439551c4410c54346a01" name="a1a97b20f58d2439551c4410c54346a01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a97b20f58d2439551c4410c54346a01">&#9670;&#160;</a></span>DriveToPointCommand() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,7 +199,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structpoint__t.html">point_t</a></td>          <td class="paramname"><span class="paramname"><em>point</em></span>, </td>
+          <td class="paramtype"><a class="el" href="classTranslation2d.html">Translation2d</a></td>          <td class="paramname"><span class="paramname"><em>translation</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -222,7 +222,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">drive_sys</td><td>the drive system we are commanding </td></tr>
     <tr><td class="paramname">feedback</td><td>the feedback controller we are using to execute the drive </td></tr>
-    <tr><td class="paramname">point</td><td>the point to drive to </td></tr>
+    <tr><td class="paramname">translation</td><td>the point to drive to </td></tr>
     <tr><td class="paramname">dir</td><td>the direction to drive </td></tr>
     <tr><td class="paramname">max_speed</td><td>0 -&gt; 1 percentage of the drive systems speed to drive at </td></tr>
   </table>

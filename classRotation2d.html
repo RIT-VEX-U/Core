@@ -114,6 +114,8 @@ $(function(){initNavTree('classRotation2d.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a8ce4db09bffbdde271417b20272e6c61" id="r_a8ce4db09bffbdde271417b20272e6c61"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a> ()</td></tr>
+<tr class="separator:a8ce4db09bffbdde271417b20272e6c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf0946e40a886d77c3ddc74613ce6ab1" id="r_abf0946e40a886d77c3ddc74613ce6ab1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf0946e40a886d77c3ddc74613ce6ab1">Rotation2d</a> (const double &amp;<a class="el" href="#ab556389e936ea8d53da111de7c01b444">radians</a>)</td></tr>
 <tr class="separator:abf0946e40a886d77c3ddc74613ce6ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a93e3c8cfade97a3a58293249f314ce" id="r_a3a93e3c8cfade97a3a58293249f314ce"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a93e3c8cfade97a3a58293249f314ce">Rotation2d</a> (const double &amp;x, const double &amp;y)</td></tr>
@@ -122,8 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a75ef8ca7c26cc78422e74cb0ccdea3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab556389e936ea8d53da111de7c01b444" id="r_ab556389e936ea8d53da111de7c01b444"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab556389e936ea8d53da111de7c01b444">radians</a> () const</td></tr>
 <tr class="separator:ab556389e936ea8d53da111de7c01b444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd78071836aee6923d0c859230e830b" id="r_a0fd78071836aee6923d0c859230e830b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0fd78071836aee6923d0c859230e830b">setRad</a> (double radRot)</td></tr>
+<tr class="separator:a0fd78071836aee6923d0c859230e830b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc210a4c4d86af4fd8bb1a9337bafd65" id="r_abc210a4c4d86af4fd8bb1a9337bafd65"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abc210a4c4d86af4fd8bb1a9337bafd65">degrees</a> () const</td></tr>
 <tr class="separator:abc210a4c4d86af4fd8bb1a9337bafd65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad29a16c93dd9a0fa1305273ac57ed92e" id="r_ad29a16c93dd9a0fa1305273ac57ed92e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad29a16c93dd9a0fa1305273ac57ed92e">setDeg</a> (double degRot)</td></tr>
+<tr class="separator:ad29a16c93dd9a0fa1305273ac57ed92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa1ba21a97a8b9437456e86e13c73e2b" id="r_afa1ba21a97a8b9437456e86e13c73e2b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa1ba21a97a8b9437456e86e13c73e2b">revolutions</a> () const</td></tr>
 <tr class="separator:afa1ba21a97a8b9437456e86e13c73e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b380f6e439754fac923716f77a3f727" id="r_a7b380f6e439754fac923716f77a3f727"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b380f6e439754fac923716f77a3f727">f_cos</a> () const</td></tr>
@@ -168,8 +174,34 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Class representing a rotation in 2d space. Stores theta in radians, as well as cos and sin.</p>
 <p>Internally this angle is stored continuously, however there are functions that return wrapped angles: "180" is from [-pi, pi), [-180, 180), [-0.5, 0.5) "360" is from [0, 2pi), [0, 360), [0, 1) </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a8ce4db09bffbdde271417b20272e6c61" name="a8ce4db09bffbdde271417b20272e6c61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce4db09bffbdde271417b20272e6c61">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Rotation2d::Rotation2d </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Default Constructor for <a class="el" href="classRotation2d.html">Rotation2d</a> </p>
+
+</div>
+</div>
 <a id="abf0946e40a886d77c3ddc74613ce6ab1" name="abf0946e40a886d77c3ddc74613ce6ab1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf0946e40a886d77c3ddc74613ce6ab1">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf0946e40a886d77c3ddc74613ce6ab1">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +225,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a3a93e3c8cfade97a3a58293249f314ce" name="a3a93e3c8cfade97a3a58293249f314ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a93e3c8cfade97a3a58293249f314ce">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a93e3c8cfade97a3a58293249f314ce">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +255,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a75ef8ca7c26cc78422e74cb0ccdea3b2" name="a75ef8ca7c26cc78422e74cb0ccdea3b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75ef8ca7c26cc78422e74cb0ccdea3b2">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a75ef8ca7c26cc78422e74cb0ccdea3b2">&#9670;&#160;</a></span>Rotation2d() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -534,6 +566,42 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 <p>Returns the rotation matrix equivalent to this rotation [cos, -sin] R = [sin, cos]</p>
 <dl class="section return"><dt>Returns</dt><dd>the rotation matrix equivalent to this rotation </dd></dl>
+
+</div>
+</div>
+<a id="ad29a16c93dd9a0fa1305273ac57ed92e" name="ad29a16c93dd9a0fa1305273ac57ed92e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad29a16c93dd9a0fa1305273ac57ed92e">&#9670;&#160;</a></span>setDeg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rotation2d::setDeg </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>degRot</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>sets the angle value in degrees </p>
+
+</div>
+</div>
+<a id="a0fd78071836aee6923d0c859230e830b" name="a0fd78071836aee6923d0c859230e830b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd78071836aee6923d0c859230e830b">&#9670;&#160;</a></span>setRad()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Rotation2d::setRad </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>radRot</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>sets the angle value in radians </p>
 
 </div>
 </div>

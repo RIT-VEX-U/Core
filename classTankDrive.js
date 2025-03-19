@@ -13,7 +13,7 @@ var classTankDrive =
     [ "drive_tank_raw", "classTankDrive.html#a14c8836f50de0fa44286e07dd6d385de", null ],
     [ "drive_to_point", "classTankDrive.html#acc2e23100b9dcd1135822f5eeb9e12ad", null ],
     [ "drive_to_point", "classTankDrive.html#aec7b356dfa524b79339fbc0d744ffa7f", null ],
-    [ "pure_pursuit", "classTankDrive.html#a2c820f92bc185bc29095c83e772bea46", null ],
+    [ "get_position", "classTankDrive.html#ad1d1acecd19e61b3d0507b87f27b8b9f", null ],
     [ "pure_pursuit", "classTankDrive.html#acfe67e3b630c4898a3cb4b911013a4c6", null ],
     [ "reset_auto", "classTankDrive.html#aaa68eae1521e5b87ecfed2a60b15bf34", null ],
     [ "stop", "classTankDrive.html#af10e648e4de35fa72859fb96a9a80485", null ],

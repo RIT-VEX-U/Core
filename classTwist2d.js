@@ -1,5 +1,6 @@
 var classTwist2d =
 [
+    [ "Twist2d", "classTwist2d.html#a91da185054003a795d22b1cd0f0b8f5c", null ],
     [ "Twist2d", "classTwist2d.html#a1d4268294459d09b941dc5ec3cfcdb98", null ],
     [ "Twist2d", "classTwist2d.html#a036131e9610a26f6f2771d52ac52c633", null ],
     [ "dtheta", "classTwist2d.html#a514aaefaf528438ef785b4b1427f658c", null ],

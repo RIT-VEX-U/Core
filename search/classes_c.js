@@ -6,8 +6,6 @@ var searchData=
   ['pid_3',['PID',['../classPID.html',1,'']]],
   ['pid_5fconfig_5ft_4',['pid_config_t',['../structPID_1_1pid__config__t.html',1,'PID']]],
   ['pidpage_5',['PIDPage',['../classscreen_1_1PIDPage.html',1,'screen']]],
-  ['point_5ft_6',['point_t',['../structpoint__t.html',1,'']]],
-  ['pose2d_7',['Pose2d',['../classPose2d.html',1,'']]],
-  ['pose_5ft_8',['pose_t',['../structpose__t.html',1,'']]],
-  ['purepursuitcommand_9',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'']]]
+  ['pose2d_6',['Pose2d',['../classPose2d.html',1,'']]],
+  ['purepursuitcommand_7',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'']]]
 ];

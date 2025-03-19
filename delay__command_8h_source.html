@@ -122,11 +122,15 @@ $(function(){initNavTree('delay__command_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  }</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="comment">// amount of milliseconds to wait</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">int</span> ms;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  std::string toString()<span class="keyword"> override</span>{</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Delaying for &quot;</span> + double_to_string(ms) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// amount of milliseconds to wait</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">int</span> ms;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
 </div>
 <div class="ttc" id="aclassDelayCommand_html_a6cff8fe05b3ca36ec2ab20e411cfd9ab"><div class="ttname"><a href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">DelayCommand::run</a></div><div class="ttdeci">bool run() override</div><div class="ttdef"><b>Definition</b> delay_command.h:25</div></div>
 <div class="ttc" id="aclassDelayCommand_html_a7dc6d1e547ec24b51d91aada84d1febb"><div class="ttname"><a href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">DelayCommand::DelayCommand</a></div><div class="ttdeci">DelayCommand(int ms)</div><div class="ttdef"><b>Definition</b> delay_command.h:18</div></div>

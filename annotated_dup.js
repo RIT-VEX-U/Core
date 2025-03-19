@@ -53,10 +53,9 @@ var annotated_dup =
     [ "OdomSetPosition", "classOdomSetPosition.html", "classOdomSetPosition" ],
     [ "Parallel", "classParallel.html", null ],
     [ "PID", "classPID.html", "classPID" ],
-    [ "point_t", "structpoint__t.html", "structpoint__t" ],
     [ "Pose2d", "classPose2d.html", "classPose2d" ],
-    [ "pose_t", "structpose__t.html", "structpose__t" ],
     [ "PurePursuitCommand", "classPurePursuitCommand.html", "classPurePursuitCommand" ],
+    [ "Rect", "structRect.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", "structrobot__specs__t" ],
     [ "Rotation2d", "classRotation2d.html", "classRotation2d" ],
     [ "Serializer", "classSerializer.html", "classSerializer" ],
@@ -71,7 +70,6 @@ var annotated_dup =
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", "classTurnDegreesCommand" ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", "classTurnToHeadingCommand" ],
     [ "Twist2d", "classTwist2d.html", "classTwist2d" ],
-    [ "Vector2D", "classVector2D.html", "classVector2D" ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", "classWaitUntilUpToSpeedCommand" ]
 ];

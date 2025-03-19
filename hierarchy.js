@@ -60,10 +60,9 @@ var hierarchy =
     [ "Parallel", "classParallel.html", null ],
     [ "PurePursuit::Path", "classPurePursuit_1_1Path.html", null ],
     [ "PID::pid_config_t", "structPID_1_1pid__config__t.html", null ],
-    [ "point_t", "structpoint__t.html", null ],
     [ "Pose2d", "classPose2d.html", null ],
-    [ "pose_t", "structpose__t.html", null ],
     [ "PurePursuitCommand", "classPurePursuitCommand.html", null ],
+    [ "Rect", "structRect.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
     [ "Rotation2d", "classRotation2d.html", null ],
     [ "screen::ScreenData", "structscreen_1_1ScreenData.html", null ],
@@ -81,7 +80,6 @@ var hierarchy =
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],
     [ "Twist2d", "classTwist2d.html", null ],
-    [ "Vector2D", "classVector2D.html", null ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
 ];

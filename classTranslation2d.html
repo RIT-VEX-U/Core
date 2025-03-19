@@ -114,6 +114,8 @@ $(function(){initNavTree('classTranslation2d.html',''); initResizable(true); });
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a4ffe71573cdc6510539c4a13d0753fc7" id="r_a4ffe71573cdc6510539c4a13d0753fc7"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ffe71573cdc6510539c4a13d0753fc7">Translation2d</a> ()</td></tr>
+<tr class="separator:a4ffe71573cdc6510539c4a13d0753fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf7f2764c944345f4c2e51fd65b02fd4" id="r_abf7f2764c944345f4c2e51fd65b02fd4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf7f2764c944345f4c2e51fd65b02fd4">Translation2d</a> (const double &amp;<a class="el" href="#a6da88127a3739d3936e3d8ab003e052f">x</a>, const double &amp;<a class="el" href="#aae8b6ca05574b9095c8facfd0465f422">y</a>)</td></tr>
 <tr class="separator:abf7f2764c944345f4c2e51fd65b02fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c654dc08629745c21576dba12fad11b" id="r_a1c654dc08629745c21576dba12fad11b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1c654dc08629745c21576dba12fad11b">Translation2d</a> (const Eigen::Vector2d &amp;vector)</td></tr>
@@ -122,8 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a40fa2a7a2b2531c80055ba3954c6cf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6da88127a3739d3936e3d8ab003e052f" id="r_a6da88127a3739d3936e3d8ab003e052f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6da88127a3739d3936e3d8ab003e052f">x</a> () const</td></tr>
 <tr class="separator:a6da88127a3739d3936e3d8ab003e052f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20f79559b7f9a66f41cff3166b6ba8a" id="r_aa20f79559b7f9a66f41cff3166b6ba8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa20f79559b7f9a66f41cff3166b6ba8a">setX</a> (double <a class="el" href="#a6da88127a3739d3936e3d8ab003e052f">x</a>)</td></tr>
+<tr class="separator:aa20f79559b7f9a66f41cff3166b6ba8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae8b6ca05574b9095c8facfd0465f422" id="r_aae8b6ca05574b9095c8facfd0465f422"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae8b6ca05574b9095c8facfd0465f422">y</a> () const</td></tr>
 <tr class="separator:aae8b6ca05574b9095c8facfd0465f422"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d57875a766b8d60ef9d4cc3e18c18e" id="r_aa4d57875a766b8d60ef9d4cc3e18c18e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4d57875a766b8d60ef9d4cc3e18c18e">setY</a> (double <a class="el" href="#aae8b6ca05574b9095c8facfd0465f422">y</a>)</td></tr>
+<tr class="separator:aa4d57875a766b8d60ef9d4cc3e18c18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98290422bba63a14ce9634838218301e" id="r_a98290422bba63a14ce9634838218301e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRotation2d.html">Rotation2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98290422bba63a14ce9634838218301e">theta</a> () const</td></tr>
 <tr class="separator:a98290422bba63a14ce9634838218301e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d6d449b8eba8e4a6280eef066a1ca49" id="r_a8d6d449b8eba8e4a6280eef066a1ca49"><td class="memItemLeft" align="right" valign="top">Eigen::Vector2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d6d449b8eba8e4a6280eef066a1ca49">as_vector</a> () const</td></tr>
@@ -160,8 +166,34 @@ Friends</h2></td></tr>
 <div class="textblock"><p>Class representing a point in 2d space with x and y coordinates.</p>
 <p>Assumes conventional cartesian coordinate system: Looking down at the coordinate plane, +X is right +Y is up +Theta is counterclockwise </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a4ffe71573cdc6510539c4a13d0753fc7" name="a4ffe71573cdc6510539c4a13d0753fc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ffe71573cdc6510539c4a13d0753fc7">&#9670;&#160;</a></span>Translation2d() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Translation2d::Translation2d </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Default Constructor for <a class="el" href="classTranslation2d.html">Translation2d</a> </p>
+
+</div>
+</div>
 <a id="abf7f2764c944345f4c2e51fd65b02fd4" name="abf7f2764c944345f4c2e51fd65b02fd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf7f2764c944345f4c2e51fd65b02fd4">&#9670;&#160;</a></span>Translation2d() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf7f2764c944345f4c2e51fd65b02fd4">&#9670;&#160;</a></span>Translation2d() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +222,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a1c654dc08629745c21576dba12fad11b" name="a1c654dc08629745c21576dba12fad11b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c654dc08629745c21576dba12fad11b">&#9670;&#160;</a></span>Translation2d() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c654dc08629745c21576dba12fad11b">&#9670;&#160;</a></span>Translation2d() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +246,7 @@ Friends</h2></td></tr>
 </div>
 </div>
 <a id="a40fa2a7a2b2531c80055ba3954c6cf2e" name="a40fa2a7a2b2531c80055ba3954c6cf2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40fa2a7a2b2531c80055ba3954c6cf2e">&#9670;&#160;</a></span>Translation2d() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a40fa2a7a2b2531c80055ba3954c6cf2e">&#9670;&#160;</a></span>Translation2d() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -529,6 +561,42 @@ Friends</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the new translation that has been rotated around the origin. </dd></dl>
+
+</div>
+</div>
+<a id="aa20f79559b7f9a66f41cff3166b6ba8a" name="aa20f79559b7f9a66f41cff3166b6ba8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa20f79559b7f9a66f41cff3166b6ba8a">&#9670;&#160;</a></span>setX()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Translation2d::setX </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the x value of the translation. </p>
+
+</div>
+</div>
+<a id="aa4d57875a766b8d60ef9d4cc3e18c18e" name="aa4d57875a766b8d60ef9d4cc3e18c18e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d57875a766b8d60ef9d4cc3e18c18e">&#9670;&#160;</a></span>setY()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Translation2d::setY </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>y</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the y value of the translation. </p>
 
 </div>
 </div>

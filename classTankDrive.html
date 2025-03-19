@@ -128,6 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a34f305bb1c996e3748c925af259aeeb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10e648e4de35fa72859fb96a9a80485" id="r_af10e648e4de35fa72859fb96a9a80485"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af10e648e4de35fa72859fb96a9a80485">stop</a> ()</td></tr>
 <tr class="separator:af10e648e4de35fa72859fb96a9a80485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1d1acecd19e61b3d0507b87f27b8b9f" id="r_ad1d1acecd19e61b3d0507b87f27b8b9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPose2d.html">Pose2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1d1acecd19e61b3d0507b87f27b8b9f">get_position</a> ()</td></tr>
+<tr class="separator:ad1d1acecd19e61b3d0507b87f27b8b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9027c483d373582bfe24662c6ab0e286" id="r_a9027c483d373582bfe24662c6ab0e286"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9027c483d373582bfe24662c6ab0e286">drive_tank</a> (double left, double right, int power=1, <a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54a">BrakeType</a> bt=<a class="el" href="#a64d4e4346eff9e3c6f8ee3d39099a54aa6adf97f83acf6453d4a6a4b1070f3754">BrakeType::None</a>)</td></tr>
 <tr class="separator:a9027c483d373582bfe24662c6ab0e286"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14c8836f50de0fa44286e07dd6d385de" id="r_a14c8836f50de0fa44286e07dd6d385de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a14c8836f50de0fa44286e07dd6d385de">drive_tank_raw</a> (double left, double right)</td></tr>
@@ -154,8 +156,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaa68eae1521e5b87ecfed2a60b15bf34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfe67e3b630c4898a3cb4b911013a4c6" id="r_acfe67e3b630c4898a3cb4b911013a4c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acfe67e3b630c4898a3cb4b911013a4c6">pure_pursuit</a> (<a class="el" href="classPurePursuit_1_1Path.html">PurePursuit::Path</a> path, directionType dir, <a class="el" href="classFeedback.html">Feedback</a> &amp;feedback, double max_speed=1, double end_speed=0)</td></tr>
 <tr class="separator:acfe67e3b630c4898a3cb4b911013a4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c820f92bc185bc29095c83e772bea46" id="r_a2c820f92bc185bc29095c83e772bea46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c820f92bc185bc29095c83e772bea46">pure_pursuit</a> (<a class="el" href="classPurePursuit_1_1Path.html">PurePursuit::Path</a> path, directionType dir, double max_speed=1, double end_speed=0)</td></tr>
-<tr class="separator:a2c820f92bc185bc29095c83e772bea46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -586,6 +586,24 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad1d1acecd19e61b3d0507b87f27b8b9f" name="ad1d1acecd19e61b3d0507b87f27b8b9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1d1acecd19e61b3d0507b87f27b8b9f">&#9670;&#160;</a></span>get_position()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classPose2d.html">Pose2d</a> TankDrive::get_position </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns the Robot position as a <a class="el" href="classPose2d.html">Pose2d</a> </p>
+
+</div>
+</div>
 <a id="abb511cf1be40ef7be89c2ccff6a09cab" name="abb511cf1be40ef7be89c2ccff6a09cab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb511cf1be40ef7be89c2ccff6a09cab">&#9670;&#160;</a></span>modify_inputs()</h2>
 
@@ -632,62 +650,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2c820f92bc185bc29095c83e772bea46" name="a2c820f92bc185bc29095c83e772bea46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c820f92bc185bc29095c83e772bea46">&#9670;&#160;</a></span>pure_pursuit() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool TankDrive::pure_pursuit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classPurePursuit_1_1Path.html">PurePursuit::Path</a></td>          <td class="paramname"><span class="paramname"><em>path</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">directionType</td>          <td class="paramname"><span class="paramname"><em>dir</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>max_speed</em></span><span class="paramdefsep"> = </span><span class="paramdefval">1</span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end_speed</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of waypoints - the robot will attempt to follow the points while cutting corners (radius) to save time (compared to stop / turn / start)</p>
-<p>Use the default drive feedback</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The list of coordinates to follow, in order </td></tr>
-    <tr><td class="paramname">dir</td><td>Run the bot forwards or backwards </td></tr>
-    <tr><td class="paramname">max_speed</td><td>Limit the speed of the robot (for pid / pidff feedbacks) </td></tr>
-    <tr><td class="paramname">end_speed</td><td>the movement profile will attempt to reach this velocity by its completion </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True when the path is complete</dd></dl>
-<p>Drive the robot autonomously using a pure-pursuit algorithm - Input path with a set of waypoints - the robot will attempt to follow the points while cutting corners (radius) to save time (compared to stop / turn / start)</p>
-<p>Use the default drive feedback</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The list of coordinates to follow, in order </td></tr>
-    <tr><td class="paramname">dir</td><td>Run the bot forwards or backwards </td></tr>
-    <tr><td class="paramname">max_speed</td><td>Limit the speed of the robot (for pid / pidff feedbacks) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True when the path is complete </dd></dl>
-
-</div>
-</div>
 <a id="acfe67e3b630c4898a3cb4b911013a4c6" name="acfe67e3b630c4898a3cb4b911013a4c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acfe67e3b630c4898a3cb4b911013a4c6">&#9670;&#160;</a></span>pure_pursuit() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acfe67e3b630c4898a3cb4b911013a4c6">&#9670;&#160;</a></span>pure_pursuit()</h2>
 
 <div class="memitem">
 <div class="memproto">

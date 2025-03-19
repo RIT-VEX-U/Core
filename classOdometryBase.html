@@ -106,8 +106,6 @@ $(function(){initNavTree('classOdometryBase.html',''); initResizable(true); });
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classOdometryBase-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">OdometryBase Class Reference<span class="mlabels"><span class="mlabel abstract">abstract</span></span></div></div>
 </div><!--header-->
@@ -129,17 +127,17 @@ Inheritance diagram for OdometryBase:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a61286bd1c5105adbfa5b52c74f9e9466" id="r_a61286bd1c5105adbfa5b52c74f9e9466"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61286bd1c5105adbfa5b52c74f9e9466">OdometryBase</a> (bool is_async)</td></tr>
 <tr class="separator:a61286bd1c5105adbfa5b52c74f9e9466"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a423e398bd9ec7038abe7786482db6dd0" id="r_a423e398bd9ec7038abe7786482db6dd0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a423e398bd9ec7038abe7786482db6dd0">get_position</a> (void)</td></tr>
-<tr class="separator:a423e398bd9ec7038abe7786482db6dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0abfc14f2b809c9bcf4ed8485f0b30d3" id="r_a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0abfc14f2b809c9bcf4ed8485f0b30d3">set_position</a> (const <a class="el" href="structpose__t.html">pose_t</a> &amp;newpos=<a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a>)</td></tr>
-<tr class="separator:a0abfc14f2b809c9bcf4ed8485f0b30d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bbff671a85247fff3a39e7b0c2cb242" id="r_a3bbff671a85247fff3a39e7b0c2cb242"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bbff671a85247fff3a39e7b0c2cb242">update</a> ()=0</td></tr>
-<tr class="separator:a3bbff671a85247fff3a39e7b0c2cb242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae45d1b8f686fcd2597b77d1239a09b12" id="r_ae45d1b8f686fcd2597b77d1239a09b12"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPose2d.html">Pose2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae45d1b8f686fcd2597b77d1239a09b12">get_position</a> (void)</td></tr>
+<tr class="separator:ae45d1b8f686fcd2597b77d1239a09b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeae498f6b1c9b9bf6f61162121f3051e" id="r_aeae498f6b1c9b9bf6f61162121f3051e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeae498f6b1c9b9bf6f61162121f3051e">set_position</a> (const <a class="el" href="classPose2d.html">Pose2d</a> &amp;newpos=zero_pos)</td></tr>
+<tr class="separator:aeae498f6b1c9b9bf6f61162121f3051e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab563cd3eef7c6568911903a7cbddecee" id="r_ab563cd3eef7c6568911903a7cbddecee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classPose2d.html">Pose2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab563cd3eef7c6568911903a7cbddecee">update</a> ()=0</td></tr>
+<tr class="separator:ab563cd3eef7c6568911903a7cbddecee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab65ccaa80d4bb0d0aa20e82b3b991436" id="r_ab65ccaa80d4bb0d0aa20e82b3b991436"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab65ccaa80d4bb0d0aa20e82b3b991436">end_async</a> ()</td></tr>
 <tr class="separator:ab65ccaa80d4bb0d0aa20e82b3b991436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96c7be68db7424ddbe3704770dd1889f" id="r_a96c7be68db7424ddbe3704770dd1889f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96c7be68db7424ddbe3704770dd1889f">get_speed</a> ()</td></tr>
+<tr class="memitem:a96c7be68db7424ddbe3704770dd1889f" id="r_a96c7be68db7424ddbe3704770dd1889f"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96c7be68db7424ddbe3704770dd1889f">get_speed</a> ()</td></tr>
 <tr class="separator:a96c7be68db7424ddbe3704770dd1889f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3223bac952f79bf910b979690499b965" id="r_a3223bac952f79bf910b979690499b965"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3223bac952f79bf910b979690499b965">get_accel</a> ()</td></tr>
+<tr class="memitem:a3223bac952f79bf910b979690499b965" id="r_a3223bac952f79bf910b979690499b965"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3223bac952f79bf910b979690499b965">get_accel</a> ()</td></tr>
 <tr class="separator:a3223bac952f79bf910b979690499b965"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af30d97a35e9e9c4f9be0a81390e6c0f1" id="r_af30d97a35e9e9c4f9be0a81390e6c0f1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af30d97a35e9e9c4f9be0a81390e6c0f1">get_angular_speed_deg</a> ()</td></tr>
 <tr class="separator:af30d97a35e9e9c4f9be0a81390e6c0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,14 +148,8 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a17a014f79b282ddfb715835214f3e2fb" id="r_a17a014f79b282ddfb715835214f3e2fb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a17a014f79b282ddfb715835214f3e2fb">background_task</a> (void *ptr)</td></tr>
 <tr class="separator:a17a014f79b282ddfb715835214f3e2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58d8c7bfd6456038d025c39580971bd6" id="r_a58d8c7bfd6456038d025c39580971bd6"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a58d8c7bfd6456038d025c39580971bd6">pos_diff</a> (<a class="el" href="structpose__t.html">pose_t</a> start_pos, <a class="el" href="structpose__t.html">pose_t</a> end_pos)</td></tr>
-<tr class="separator:a58d8c7bfd6456038d025c39580971bd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af179c9d2004d114e1ab066bf8e7f00ca" id="r_af179c9d2004d114e1ab066bf8e7f00ca"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af179c9d2004d114e1ab066bf8e7f00ca">rot_diff</a> (<a class="el" href="structpose__t.html">pose_t</a> pos1, <a class="el" href="structpose__t.html">pose_t</a> pos2)</td></tr>
-<tr class="separator:af179c9d2004d114e1ab066bf8e7f00ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ec71e9fb2e14f0a191a6bac927d36b" id="r_a70ec71e9fb2e14f0a191a6bac927d36b"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70ec71e9fb2e14f0a191a6bac927d36b">smallest_angle</a> (double start_deg, double end_deg)</td></tr>
 <tr class="separator:a70ec71e9fb2e14f0a191a6bac927d36b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acae6966f4b618fe27e7c140701fc6ac4" id="r_acae6966f4b618fe27e7c140701fc6ac4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acae6966f4b618fe27e7c140701fc6ac4">pose_exponential</a> (const Eigen::Vector3d old_pose, const Eigen::Vector3d twist)</td></tr>
-<tr class="separator:acae6966f4b618fe27e7c140701fc6ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -165,20 +157,12 @@ Public Attributes</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>end_task</b> = false</td></tr>
 <tr class="memdesc:ae6e35ee98b4410f034cd37c0d2055a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">end_task is true if we instruct the odometry thread to shut down <br /></td></tr>
 <tr class="separator:ae6e35ee98b4410f034cd37c0d2055a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a60141a41df6a5599c952b74578c95c7f" id="r_a60141a41df6a5599c952b74578c95c7f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a> = {.x = 0.0L, .y = 0.0L, .rot = 90.0L}</td></tr>
-<tr class="separator:a60141a41df6a5599c952b74578c95c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
 <tr class="memitem:ae5308f20a4dfef9594631010c7612dab" id="r_ae5308f20a4dfef9594631010c7612dab"><td class="memItemLeft" align="right" valign="top">vex::task *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae5308f20a4dfef9594631010c7612dab">handle</a></td></tr>
 <tr class="separator:ae5308f20a4dfef9594631010c7612dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88bb48858ca6ff8300a41e23482ec6f6" id="r_a88bb48858ca6ff8300a41e23482ec6f6"><td class="memItemLeft" align="right" valign="top">vex::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88bb48858ca6ff8300a41e23482ec6f6">mut</a></td></tr>
 <tr class="separator:a88bb48858ca6ff8300a41e23482ec6f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f85d2eb4866a86d4c39ceae87ea79e2" id="r_a6f85d2eb4866a86d4c39ceae87ea79e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structpose__t.html">pose_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f85d2eb4866a86d4c39ceae87ea79e2">current_pos</a></td></tr>
-<tr class="separator:a6f85d2eb4866a86d4c39ceae87ea79e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cff7e2ac1a8860f047acd4f4b8a0465" id="r_a2cff7e2ac1a8860f047acd4f4b8a0465"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classPose2d.html">Pose2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2cff7e2ac1a8860f047acd4f4b8a0465">current_pos</a></td></tr>
+<tr class="separator:a2cff7e2ac1a8860f047acd4f4b8a0465"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6119ab3ce0b685e67a8b57871e0a2c26" id="r_a6119ab3ce0b685e67a8b57871e0a2c26"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6119ab3ce0b685e67a8b57871e0a2c26">speed</a></td></tr>
 <tr class="separator:a6119ab3ce0b685e67a8b57871e0a2c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94c814dfb542dd891d84db7e74537249" id="r_a94c814dfb542dd891d84db7e74537249"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94c814dfb542dd891d84db7e74537249">accel</a></td></tr>
@@ -191,7 +175,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classOdometryBase.html">OdometryBase</a></p>
 <p>This base class contains all the shared code between different implementations of odometry. It handles the asynchronous management, position input/output and basic math functions, and holds positional types specific to field orientation.</p>
-<p>All future odometry implementations should extend this file and redefine <a class="el" href="#a3bbff671a85247fff3a39e7b0c2cb242">update()</a> function.</p>
+<p>All future odometry implementations should extend this file and redefine <a class="el" href="#ab563cd3eef7c6568911903a7cbddecee">update()</a> function.</p>
 <dl class="section author"><dt>Author</dt><dd>Ryan McGee </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Aug 11 2021 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -212,7 +196,7 @@ Protected Attributes</h2></td></tr>
 <p>Construct a new Odometry Base object</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">is_async</td><td>True to run constantly in the background, false to call <a class="el" href="#a3bbff671a85247fff3a39e7b0c2cb242">update()</a> manually </td></tr>
+    <tr><td class="paramname">is_async</td><td>True to run constantly in the background, false to call <a class="el" href="#ab563cd3eef7c6568911903a7cbddecee">update()</a> manually </td></tr>
   </table>
   </dd>
 </dl>
@@ -267,7 +251,7 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>End the background task. Cannot be restarted. If the user wants to end the thread but keep the data up to date, they must run the <a class="el" href="#a3bbff671a85247fff3a39e7b0c2cb242">update()</a> function manually from then on. </p>
+<p>End the background task. Cannot be restarted. If the user wants to end the thread but keep the data up to date, they must run the <a class="el" href="#ab563cd3eef7c6568911903a7cbddecee">update()</a> function manually from then on. </p>
 
 </div>
 </div>
@@ -276,6 +260,9 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::get_accel </td>
@@ -284,6 +271,11 @@ Protected Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Get the current acceleration </p><dl class="section return"><dt>Returns</dt><dd>the acceleration rate of the robot (inch/s^2) </dd></dl>
 
@@ -325,8 +317,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a423e398bd9ec7038abe7786482db6dd0" name="a423e398bd9ec7038abe7786482db6dd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a423e398bd9ec7038abe7786482db6dd0">&#9670;&#160;</a></span>get_position()</h2>
+<a id="ae45d1b8f686fcd2597b77d1239a09b12" name="ae45d1b8f686fcd2597b77d1239a09b12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae45d1b8f686fcd2597b77d1239a09b12">&#9670;&#160;</a></span>get_position()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -335,7 +327,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structpose__t.html">pose_t</a> OdometryBase::get_position </td>
+          <td class="memname"><a class="el" href="classPose2d.html">Pose2d</a> OdometryBase::get_position </td>
           <td>(</td>
           <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -357,6 +349,9 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::get_speed </td>
@@ -365,126 +360,18 @@ Protected Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Get the current speed </p><dl class="section return"><dt>Returns</dt><dd>the speed at which the robot is moving and grooving (inch/s) </dd></dl>
 
 </div>
 </div>
-<a id="a58d8c7bfd6456038d025c39580971bd6" name="a58d8c7bfd6456038d025c39580971bd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58d8c7bfd6456038d025c39580971bd6">&#9670;&#160;</a></span>pos_diff()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double OdometryBase::pos_diff </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structpose__t.html">pose_t</a></td>          <td class="paramname"><span class="paramname"><em>start_pos</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structpose__t.html">pose_t</a></td>          <td class="paramname"><span class="paramname"><em>end_pos</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get the distance between two points </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">start_pos</td><td>distance from this point </td></tr>
-    <tr><td class="paramname">end_pos</td><td>to this point </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the euclidean distance between start_pos and end_pos </dd></dl>
-
-</div>
-</div>
-<a id="acae6966f4b618fe27e7c140701fc6ac4" name="acae6966f4b618fe27e7c140701fc6ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acae6966f4b618fe27e7c140701fc6ac4">&#9670;&#160;</a></span>pose_exponential()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpose__t.html">pose_t</a> OdometryBase::pose_exponential </td>
-          <td>(</td>
-          <td class="paramtype">const Eigen::Vector3d</td>          <td class="paramname"><span class="paramname"><em>old_pose</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const Eigen::Vector3d</td>          <td class="paramname"><span class="paramname"><em>twist</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Applies a twist (pose delta) to a pose by including first order dynamics of heading. Can be thought of as applying a twist as following an arc rather than a straight line.</p>
-<p><a href="https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2">https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2</a></p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">old_pose</td><td>The pose to which the twist will be applied </td></tr>
-    <tr><td class="paramname">twist</td><td>The twist, represents a pose delta </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af179c9d2004d114e1ab066bf8e7f00ca" name="af179c9d2004d114e1ab066bf8e7f00ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af179c9d2004d114e1ab066bf8e7f00ca">&#9670;&#160;</a></span>rot_diff()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double OdometryBase::rot_diff </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structpose__t.html">pose_t</a></td>          <td class="paramname"><span class="paramname"><em>pos1</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structpose__t.html">pose_t</a></td>          <td class="paramname"><span class="paramname"><em>pos2</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Get the change in rotation between two points </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pos1</td><td>position with initial rotation </td></tr>
-    <tr><td class="paramname">pos2</td><td>position with final rotation </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>change in rotation between pos1 and pos2</dd></dl>
-<p>Get the change in rotation between two points </p>
-
-</div>
-</div>
-<a id="a0abfc14f2b809c9bcf4ed8485f0b30d3" name="a0abfc14f2b809c9bcf4ed8485f0b30d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0abfc14f2b809c9bcf4ed8485f0b30d3">&#9670;&#160;</a></span>set_position()</h2>
+<a id="aeae498f6b1c9b9bf6f61162121f3051e" name="aeae498f6b1c9b9bf6f61162121f3051e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeae498f6b1c9b9bf6f61162121f3051e">&#9670;&#160;</a></span>set_position()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,7 +382,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void OdometryBase::set_position </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structpose__t.html">pose_t</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>newpos</em></span><span class="paramdefsep"> = </span><span class="paramdefval"><a class="el" href="#a60141a41df6a5599c952b74578c95c7f">zero_pos</a></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classPose2d.html">Pose2d</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>newpos</em></span><span class="paramdefsep"> = </span><span class="paramdefval">zero_pos</span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -513,7 +400,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <p>Sets the current position of the robot </p>
 
-<p>Reimplemented in <a class="el" href="classOdometryTank.html#a6c24c0854b526a6f3aaa78cb1dab50ee">OdometryTank</a>.</p>
+<p>Reimplemented in <a class="el" href="classOdometryTank.html#ab1ca46b3a7db2a5d47ca526fa3f52c66">OdometryTank</a>.</p>
 
 </div>
 </div>
@@ -555,8 +442,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3bbff671a85247fff3a39e7b0c2cb242" name="a3bbff671a85247fff3a39e7b0c2cb242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bbff671a85247fff3a39e7b0c2cb242">&#9670;&#160;</a></span>update()</h2>
+<a id="ab563cd3eef7c6568911903a7cbddecee" name="ab563cd3eef7c6568911903a7cbddecee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab563cd3eef7c6568911903a7cbddecee">&#9670;&#160;</a></span>update()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -565,7 +452,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="structpose__t.html">pose_t</a> OdometryBase::update </td>
+          <td class="memname">virtual <a class="el" href="classPose2d.html">Pose2d</a> OdometryBase::update </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -579,7 +466,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Update the current position on the field based on the sensors </p><dl class="section return"><dt>Returns</dt><dd>the location that the robot is at after the odometry does its calculations </dd></dl>
 
-<p>Implemented in <a class="el" href="classOdometry3Wheel.html#ab14ab2f9a7047b5852840daed957bb34">Odometry3Wheel</a>, and <a class="el" href="classOdometryTank.html#a1a8f1251f7bce81e9153391df1ab42f7">OdometryTank</a>.</p>
+<p>Implemented in <a class="el" href="classOdometry3Wheel.html#a4b570312ff2d0038d2fd3668cb332a07">Odometry3Wheel</a>, and <a class="el" href="classOdometryTank.html#ad4d102e16485ee301070974977c0f972">OdometryTank</a>.</p>
 
 </div>
 </div>
@@ -589,19 +476,11 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::accel</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>the rate at which we are accelerating (inch/s^2) </p>
 
@@ -612,19 +491,11 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::ang_accel_deg</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>the rate at which we are accelerating our turn (deg/s^2) </p>
 
@@ -635,42 +506,26 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::ang_speed_deg</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>the speed at which we are turning (deg/s) </p>
 
 </div>
 </div>
-<a id="a6f85d2eb4866a86d4c39ceae87ea79e2" name="a6f85d2eb4866a86d4c39ceae87ea79e2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f85d2eb4866a86d4c39ceae87ea79e2">&#9670;&#160;</a></span>current_pos</h2>
+<a id="a2cff7e2ac1a8860f047acd4f4b8a0465" name="a2cff7e2ac1a8860f047acd4f4b8a0465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cff7e2ac1a8860f047acd4f4b8a0465">&#9670;&#160;</a></span>current_pos</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structpose__t.html">pose_t</a> OdometryBase::current_pos</td>
+          <td class="memname"><a class="el" href="classPose2d.html">Pose2d</a> OdometryBase::current_pos</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Current position of the robot in terms of x,y,rotation </p>
 
@@ -681,19 +536,11 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">vex::task* OdometryBase::handle</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>handle to the vex task that is running the odometry code </p>
 
@@ -704,19 +551,11 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">vex::mutex OdometryBase::mut</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Mutex to control multithreading </p>
 
@@ -727,44 +566,13 @@ Protected Attributes</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">double OdometryBase::speed</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>the speed at which we are travelling (inch/s) </p>
-
-</div>
-</div>
-<a id="a60141a41df6a5599c952b74578c95c7f" name="a60141a41df6a5599c952b74578c95c7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60141a41df6a5599c952b74578c95c7f">&#9670;&#160;</a></span>zero_pos</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structpose__t.html">pose_t</a> OdometryBase::zero_pos = {.x = 0.0L, .y = 0.0L, .rot = 90.0L}</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Zeroed position. X=0, Y=0, Rotation= 90 degrees </p>
 
 </div>
 </div>
