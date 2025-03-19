@@ -14,7 +14,7 @@ If you just want to start a project with Core, make a fork of the [Fork Template
 To setup core for an existing project:
 1. Create a new vex project (using the VSCode extension or other methods)
 2. Initialize a git repository for the project
-3. Execute `git subtree add --prefix=core git@github.com:RIT-VEX-U/Core.git main`
+3. Execute `git subtree add --prefix=core https://github.com/RIT-VEX-U/Core.git main`
 4. Update the vex Makefile (or any other build system) to know about the core files (`core/src` for source files, `core/include` for headers) (See [here](https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L15) for an example) 
 5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) (Latest supported version is 3.4.0):
     - `mkdir vendor`
