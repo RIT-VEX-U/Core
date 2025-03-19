@@ -45,77 +45,79 @@ AsymmetricTrapezoidProfile::AsymmetricTrapezoidProfile(double max_v, double acce
  * @return motion_t Position, velocity and acceleration
  */
 a_motion_t AsymmetricTrapezoidProfile::calculate(double time_s) {
-  double delta_pos = end - start;
+    double delta_pos = end - start;
 
-  // redefine accel and max_v in this scope for negative calcs
-  double accel_local = this->accel;
-  double decel_local = this->decel;
-  double max_v_local = this->max_v;
-  if (delta_pos < 0) {
-    accel_local = -this->accel;
-    decel_local = -this->decel;
-    max_v_local = -this->max_v;
-  }
+    // redefine accel and max_v in this scope for negative calcs
+    double accel_local = this->accel;
+    double decel_local = this->decel;
+    double max_v_local = this->max_v;
+    if (delta_pos < 0) {
+        accel_local = -this->accel;
+        decel_local = -this->decel;
+        max_v_local = -this->max_v;
+    }
 
-  // Calculate the time spent during the acceleration / maximum velocity / deceleration stages
-  double accel_time = max_v_local / accel_local;
-  double decel_time = max_v_local / decel_local;
-  double max_vel_time = (delta_pos - (0.5 * accel_local * accel_time * accel_time) - (0.5 * decel_local * decel_time * decel_time)) / max_v_local;
-  this->time = accel_time + max_vel_time + decel_time;
+    // Calculate the time spent during the acceleration / maximum velocity / deceleration stages
+    double accel_time = max_v_local / accel_local;
+    double decel_time = max_v_local / decel_local;
+    double max_vel_time =
+      (delta_pos - (0.5 * accel_local * accel_time * accel_time) - (0.5 * decel_local * decel_time * decel_time)) /
+      max_v_local;
+    this->time = accel_time + max_vel_time + decel_time;
 
-  // If the time during the "max velocity" state is negative, use an S profile
-  if (max_vel_time < 0) {
-    accel_time = sqrt(fabs(delta_pos / accel));
-    decel_time = sqrt(fabs(delta_pos / decel));
-    max_vel_time = 0;
-    this->time = accel_time + decel_time;
-  }
+    // If the time during the "max velocity" state is negative, use an S profile
+    if (max_vel_time < 0) {
+        accel_time = sqrt(fabs(delta_pos / accel));
+        decel_time = sqrt(fabs(delta_pos / decel));
+        max_vel_time = 0;
+        this->time = accel_time + decel_time;
+    }
 
-  a_motion_t out;
+    a_motion_t out;
 
-  // Handle if a bad time is put in
-  if (time_s < 0) {
-    out.pos = start;
-    out.vel = 0;
-    out.accel = 0;
+    // Handle if a bad time is put in
+    if (time_s < 0) {
+        out.pos = start;
+        out.vel = 0;
+        out.accel = 0;
+        return out;
+    }
+
+    // Handle after the setpoint is reached
+    if (time_s > accel_local + max_vel_time + decel_local) {
+        out.pos = end;
+        out.vel = 0;
+        out.accel = 0;
+        return out;
+    }
+
+    // ======== KINEMATIC EQUATIONS ========
+
+    // Displacement from initial acceleration
+    if (time_s < accel_time) {
+        out.pos = start + CALC_POS(time_s, accel_local, 0, 0);
+        out.vel = CALC_VEL(time_s, accel_local, 0);
+        out.accel = accel_local;
+        return out;
+    }
+
+    double s_accel = CALC_POS(accel_time, accel_local, 0, 0);
+
+    // Displacement during maximum velocity
+    if (time_s < accel_time + max_vel_time) {
+        out.pos = start + CALC_POS(time_s - accel_time, 0, max_v_local, s_accel);
+        out.vel = sign(delta_pos) * max_v;
+        out.accel = 0;
+        return out;
+    }
+
+    double s_max_vel = CALC_POS(max_vel_time, 0, max_v_local, s_accel);
+
+    // Displacement during deceleration
+    out.pos = start + CALC_POS(time_s - accel_time - max_vel_time, -decel_local, 0, s_accel + s_max_vel);
+    out.vel = CALC_VEL(time_s - accel_time - max_vel_time, -decel_local, max_v_local);
+    out.accel = -decel_local;
     return out;
-  }
-
-  // Handle after the setpoint is reached
-  if (time_s > accel_local + max_vel_time + decel_local) {
-    out.pos = end;
-    out.vel = 0;
-    out.accel = 0;
-    return out;
-  }
-
-  // ======== KINEMATIC EQUATIONS ========
-
-  // Displacement from initial acceleration
-  if (time_s < accel_time) {
-    out.pos = start + CALC_POS(time_s, accel_local, 0, 0);
-    out.vel = CALC_VEL(time_s, accel_local, 0);
-    out.accel = accel_local;
-    return out;
-  }
-
-  double s_accel = CALC_POS(accel_time, accel_local, 0, 0);
-
-  // Displacement during maximum velocity
-  if (time_s < accel_time + max_vel_time) {
-    out.pos = start + CALC_POS(time_s - accel_time, 0, max_v_local, s_accel);
-    out.vel = sign(delta_pos) * max_v;
-    out.accel = 0;
-    return out;
-  }
-
-  double s_max_vel = CALC_POS(max_vel_time, 0, max_v_local, s_accel);
-
-  // Displacement during deceleration
-  out.pos = start + CALC_POS(time_s - accel_time - max_vel_time, -decel_local, 0, s_accel + s_max_vel);
-  out.vel = CALC_VEL(time_s - accel_time - max_vel_time, -decel_local, max_v_local);
-  out.accel = -decel_local;
-  return out;
 }
 
 /**

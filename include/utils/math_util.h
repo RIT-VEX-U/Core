@@ -1,10 +1,10 @@
 #pragma once
-#include "Eigen/Dense"
 #include "../core/include/utils/geometry.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
+#include "Eigen/Dense"
 #include "math.h"
 #include "vex.h"
 #include <vector>
-#include "../core/include/utils/math/geometry/translation2d.h"
 
 /**
  * Constrain the input between a minimum and a maximum value

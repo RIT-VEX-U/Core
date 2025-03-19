@@ -33,8 +33,7 @@
  * Construct a new Odometry Serial Object
  */
 OdometrySerial::OdometrySerial(
-  bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port,
-  int32_t baudrate
+  bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate
 )
     : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
       pose_offset(Pose2d(0, 0, 0)), _port(port) {
@@ -44,9 +43,11 @@ OdometrySerial::OdometrySerial(
 }
 
 /**
- * Send 
+ * Send
  */
-void OdometrySerial::send_config(const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain) {
+void OdometrySerial::send_config(
+  const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain
+) {
     uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
 
@@ -73,7 +74,7 @@ void OdometrySerial::send_config(const Pose2d &initial_pose, const Pose2d &senso
 
 /**
  * Attempts to recieve an entire packet encoded with COBS, stops at delimiter or there's a buffer overflow
- * 
+ *
  * @param port the port number the serial is plugged into, counts from 0 instead of 1
  * @param buffer pointer to a uint8_t[] where we put the data
  * @param buffer_size length in bytes of the buffer
@@ -106,7 +107,8 @@ int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t b
 }
 
 /**
- * Update the current position of the robot once by reading a single packet from the serial port, then updating all over values, velocity, accel
+ * Update the current position of the robot once by reading a single packet from the serial port, then updating all over
+ * values, velocity, accel
  *
  * @return the robot's updated position
  */
@@ -126,7 +128,7 @@ Pose2d OdometrySerial::update() {
     if (packet_length == cobs_encoded_size) {
         if (cobs_decode(cobs_encoded, packet_length, decoded_packet) == packet_size) {
             float *floats = (float *)decoded_packet;
-        
+
             updated_pose = Pose2d(Translation2d(floats[0], floats[1]), from_degrees(floats[2]));
             this->pose = updated_pose;
             this->speed = floats[3];
@@ -146,31 +148,27 @@ Pose2d OdometrySerial::update() {
 
 /**
  * Resets the position and rotational data to the input.
- * 
+ *
  * @param new_pose the pose to set the odometry to
  */
-void OdometrySerial::set_position(const Pose2d &new_pose) {
-    pose_offset = new_pose;
-}
+void OdometrySerial::set_position(const Pose2d &new_pose) { pose_offset = new_pose; }
 
 /**
  * Gets the current position and rotation
- * 
+ *
  * @return the position that the odometry believes the robot is at
  */
-Pose2d OdometrySerial::get_position(void){
-    return pose.relative_to(pose_offset);
-}
+Pose2d OdometrySerial::get_position(void) { return pose.relative_to(pose_offset); }
 
 /** COBS encode data to buffer
- * 
+ *
  * @param data Pointer to input data to encode
  * @param length Number of bytes to encode
  * @param buffer Pointer to encoded output buffer
- * 
+ *
  * @return Encoded buffer length in bytes
  * @note Does not output delimiter byte
-*/
+ */
 size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buffer) {
     assert(data && buffer);
 
@@ -198,10 +196,10 @@ size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buf
  * @param buffer Pointer to encoded input bytes
  * @param length Number of bytes to decode
  * @param data Pointer to decoded output data
- * 
+ *
  * @return Number of bytes successfully decoded
  * @note Stops decoding if delimiter byte is found
-*/
+ */
 size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *data) {
     assert(buffer && data);
 
@@ -224,16 +222,14 @@ size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *d
     return (size_t)(decode - (uint8_t *)data);
 }
 
-
 double OdometrySerial::get_speed() {
-  double retval = speed;
+    double retval = speed;
 
-  return retval;
+    return retval;
 }
 
 double OdometrySerial::get_accel() {
-  double retval = accel;
+    double retval = accel;
 
-  return retval;
+    return retval;
 }
-

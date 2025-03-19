@@ -34,7 +34,10 @@ class OdometrySerial : public OdometryBase {
     /**
      * Construct a new Odometry Serial Object
      */
-    OdometrySerial(bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate);
+    OdometrySerial(
+      bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port,
+      int32_t baudrate
+    );
 
     void send_config(const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain);
 
@@ -63,7 +66,6 @@ class OdometrySerial : public OdometryBase {
     double get_speed() override;
 
     double get_accel() override;
-
 
   private:
     int32_t _port;
