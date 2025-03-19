@@ -28,7 +28,10 @@ jobs:
       run: sudo apt-get install -y doxygen-latex poppler-utils
 
 
-        
+    - name: Clang Format Github Action
+      uses: RafikFarhad/clang-format-github-action@v4
+      style: file
+
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
       with:
@@ -37,17 +40,6 @@ jobs:
         # Working directory
         working-directory: "." # default is .
 
-
-    - name: Generate Reference Manual
-      run: sudo make --directory=documentation/latex
-
-    
-    - name: Copy file
-      uses: canastro/copy-action@0.0.2
-      with:
-        source: "documentation/latex/refman.pdf"
-        target: "documentation/html/refman.pdf"
-
     - name: Copy log
       uses: canastro/copy-action@0.0.2
       with:
@@ -55,24 +47,6 @@ jobs:
         target: "documentation/html/refman.log"
 
 
-    - name: Get Notebook Link 
-      shell: bash
-      run: |
-        echo "NOTEBOOK_URL=$(curl -s https://docs.google.com/document/d/1MXCeYx3YnUjLv4AaNY4qdkM84N3KkZn0HwgL6a-Di8U/export\?format\=pdf |grep HREF |sed -E "s|.*HREF=\"([^\"]*).*|\1|g")" >> "$GITHUB_ENV"  
-
-
-    - name: Download Notebook
-      uses: wei/curl@master
-      with: 
-        args: ${{ env.NOTEBOOK_URL }} --output documentation/html/notebook_top.pdf
-
-
-
-    - name: Concatenate Manual and Notebook
-      run: sudo pdfunite documentation/html/notebook_top.pdf documentation/html/refman.pdf documentation/html/notebook.pdf
-
-    
-    - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
