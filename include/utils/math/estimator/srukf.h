@@ -386,7 +386,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
         //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
         //
         // equation (27)
-        EMat<STATES, ROWS> K = (Sy.transpose().fullPivHouseholderQr().solve(Sy.fullPivHouseholderQr().solve(Pxy.transpose()))).transpose();
+        EMat<STATES, ROWS> K = (Sy.transpose().template triangularView<Eigen::Upper>().solve(Sy.template triangularView<Eigen::Lower>().solve(Pxy.transpose()))).transpose();
 
         // Compute the posterior state mean
         //
