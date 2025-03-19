@@ -213,7 +213,7 @@ class Rotation2d {
      *
      * @return whether the values of the rotations are within 1e-9 radians of each other
      */
-          bool operator==(const Rotation2d &other) const;
+    bool operator==(const Rotation2d &other) const;
 
     /**
      * Sends a rotation to an output stream.

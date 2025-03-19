@@ -52,13 +52,8 @@ bool BasicSpinCommand::run() {
 * Returns a string describing the commands functionality
 */
 std::string BasicSpinCommand::toString(){
-  std::string str = "Spinnning motors";
-  if(dir == vex::directionType::fwd){
-    str.append(" forwards at ");
-  }
-  else if(dir == vex::directionType::rev){
-    str.append(" reverse at ");
-  }
+  std::string str = "Spinnning motors ";
+  str.append( (dir==vex::directionType::fwd) ? "forwards at " : "reverse at " );
   switch (setting) { // Switch Statement taking the setting Enum
     case voltage:      // Voltage Setting
     str.append(double_to_string(power) + "V");
@@ -99,16 +94,12 @@ std::string BasicStopCommand::toString(){
   switch(setting){
     case vex::brakeType::brake:
       return "Braking motors";
-      break;
       case vex::brakeType::coast:
       return "Coasting motors";
-      break;
       case vex::brakeType::hold:
       return "Holding motors";
-      break;
       default:
       return "UNKNOWN BRAKE TYPE";
-      break;
   }
 }
 

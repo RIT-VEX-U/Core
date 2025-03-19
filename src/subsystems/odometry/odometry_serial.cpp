@@ -159,7 +159,7 @@ void OdometrySerial::set_position(const Pose2d &new_pose) {
  * @return the position that the odometry believes the robot is at
  */
 Pose2d OdometrySerial::get_position(void){
-    return pose.relative_to(pose_offset);
+    return pose;
 }
 
 /** COBS encode data to buffer

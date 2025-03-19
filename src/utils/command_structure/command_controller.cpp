@@ -76,8 +76,7 @@ void CommandController::run() {
     
     next_cmd = command_queue.front();
     if(printPathLogs){
-      printf(next_cmd->toString().c_str());
-      printf("\n");
+      printf("%s\n", next_cmd->toString().c_str());
     }
     command_queue.pop();
     command_timed_out = false;

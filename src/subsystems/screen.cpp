@@ -231,7 +231,6 @@ void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(),
               b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
 }
-//Currently does not work with Pos2d Implementation
 OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail)
     : odom(odom), robot_width(width), robot_height(height), do_trail(do_trail),
       velocity_graph(30, 0.0, 0.0, {vex::green}, 1) {
