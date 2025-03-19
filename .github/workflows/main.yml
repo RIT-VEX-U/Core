@@ -19,6 +19,8 @@ jobs:
         uses: RafikFarhad/clang-format-github-action@v4
         with:
           style: file
+          sources: "include/**/*.h,include/**/*.hpp,src/**/*.c, src/**/*.cpp
+
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
