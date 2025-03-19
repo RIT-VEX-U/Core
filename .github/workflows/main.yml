@@ -17,7 +17,8 @@ jobs:
         run: sudo apt-get install -y doxygen-latex poppler-utils
       - name: Clang Format Github Action
         uses: RafikFarhad/clang-format-github-action@v4
-        style: file
+        with:
+          style: file
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.1.0
         with:
