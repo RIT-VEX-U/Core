@@ -26,6 +26,10 @@ public:
     vexDelay(ms);
     return true;
   }
+  
+  std::string toString() override{
+    return "Delaying for " + double_to_string(ms) + "ms";
+  }
 
 private:
   // amount of milliseconds to wait

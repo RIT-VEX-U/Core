@@ -73,7 +73,11 @@ void CommandController::run() {
 
   while (!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
+    
     next_cmd = command_queue.front();
+    if(printPathLogs){
+      printf("%s\n", next_cmd->toString().c_str());
+    }
     command_queue.pop();
     command_timed_out = false;
 
@@ -116,5 +120,9 @@ void CommandController::run() {
   }
   printf("Finished commands in %f seconds\n", tmr.time(vex::sec));
 }
+
+std::string CommandController::toString(){
+  return "Command controller with " + double_to_string(command_queue.size()) + " commands";
+};
 
 bool CommandController::last_command_timed_out() { return command_timed_out; }

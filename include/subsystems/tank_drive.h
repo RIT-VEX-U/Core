@@ -38,10 +38,12 @@ public:
    */
   TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom = NULL);
 
-  AutoCommand *DriveToPointCmd(point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
+  AutoCommand *DriveToPointCmd(Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
-  AutoCommand *DriveToPointCmd(Feedback &fb, point_t pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
+  AutoCommand *DriveToPointCmd(Feedback &fb, Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
+
+  AutoCommand *DriveToPointCmd(double x, double y, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *DriveForwardCmd(double dist, vex::directionType dir = vex::forward, double max_speed = 1.0,
                                double end_speed = 0.0);
@@ -52,6 +54,8 @@ public:
   AutoCommand *TurnToHeadingCmd(Feedback &fb, double heading, double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *TurnToPointCmd(double x, double y, vex::directionType dir = vex::directionType::fwd,
+                              double max_speed = 1.0, double end_speed = 0.0);
+  AutoCommand *TurnToPointCmd(Translation2d point, vex::directionType dir = vex::directionType::fwd,
                               double max_speed = 1.0, double end_speed = 0.0);
 
   AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
@@ -67,6 +71,11 @@ public:
    * Stops rotation of all the motors using their "brake mode"
    */
   void stop();
+
+  /**
+   * Returns the Robot position as a Pose2d
+   */
+  Pose2d get_position();
 
   /**
    * Drive the robot using differential style controls. left_motors controls
@@ -260,19 +269,19 @@ public:
    * by its completion
    * @return True when the path is complete
    */
-  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
-
 private:
+  bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
   motor_group &left_motors;  ///< left drive motors
   motor_group &right_motors; ///< right drive motors
+  
+  OdometryBase *odometry; ///< odometry system to track position and rotation.
+                          ///< necessary for autonomous driving
 
   PID correction_pid;                      ///< PID controller used to drive in as straight a line
                                            ///< as possible
   Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
   Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified
 
-  OdometryBase *odometry; ///< odometry system to track position and rotation.
-                          ///< necessary for autonomous driving
 
   robot_specs_t
       &config; ///< configuration holding physical dimensions of the robot. see robot_specs_t for more information

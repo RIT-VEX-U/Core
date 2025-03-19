@@ -24,7 +24,7 @@
 class BasicSpinCommand : public AutoCommand {
 public:
   // Enumurator for the type of power setting in the motor
-  enum type { percent, voltage, veocity };
+  enum type { percent, voltage, velocity };
 
   /**
    * @brief Construct a new BasicSpinCommand
@@ -43,6 +43,11 @@ public:
    * @return True Async running command
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
 
 private:
   vex::motor &motor;
@@ -75,6 +80,11 @@ public:
    */
   bool run() override;
 
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+
 private:
   vex::motor &motor;
 
@@ -104,6 +114,10 @@ public:
    * @return True Command runs once
    */
   bool run() override;
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
 
 private:
   vex::pneumatics &solenoid;

@@ -48,10 +48,10 @@ void AutoChooser::draw(vex::brain::lcd &scr, [[maybe_unused]] bool first_draw,
     if (choice == i) {
       scr.setFillColor(vex::green);
     }
-    scr.drawRectangle(e.rect.min.x, e.rect.min.y, e.rect.width(), e.rect.height());
+    scr.drawRectangle(e.rect.min.x(), e.rect.min.y(), e.rect.width(), e.rect.height());
 
     int width = scr.getStringWidth(e.name.c_str());
-    scr.printAt(e.rect.center().x - width / 2, e.rect.center().y - 10, e.name.c_str());
+    scr.printAt(e.rect.center().x() - width / 2, e.rect.center().y() - 10, e.name.c_str());
   }
 }
 

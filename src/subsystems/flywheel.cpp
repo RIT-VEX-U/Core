@@ -145,7 +145,7 @@ public:
 
     avg_err.add_entry(err);
     double volts = fw.fb.get() * 12.0;
-    gd.add_samples({target, actual, volts / 12.0 * 1000.0});
+    gd.add_samples(std::vector<double>{target, actual, volts / 12.0 * 1000.0});
 
     gd.draw(screen, 200, 10, 220, 220);
     screen.setPenColor(vex::white);

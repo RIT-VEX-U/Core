@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../core/include/utils/vector2d.h"
 #include "../core/include/utils/controls/pid.h"
 #include "vex.h"
 

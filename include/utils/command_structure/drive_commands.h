@@ -22,7 +22,7 @@
 #include "../core/include/utils/command_structure/auto_command.h"
 #include "../core/include/utils/geometry.h"
 #include "vex.h"
-
+#include "../core/include/utils/math/geometry/pose2d.h"
 using namespace vex;
 
 // ==== DRIVING ====
@@ -43,6 +43,12 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+  
   /**
    * Cleans up drive system if we time out before finishing
    */
@@ -77,9 +83,15 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
   /**
    * Cleans up drive system if we time out before finishing
    */
+
   void on_timeout() override;
 
 private:
@@ -103,7 +115,7 @@ class DriveToPointCommand : public AutoCommand {
 public:
   DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir,
                       double max_speed = 1, double end_speed = 0);
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, point_t point, directionType dir, double max_speed = 1,
+  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed = 1,
                       double end_speed = 0);
 
   /**
@@ -113,6 +125,10 @@ public:
    */
   bool run() override;
 
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
 private:
   // drive system to run the function on
   TankDrive &drive_sys;
@@ -133,6 +149,31 @@ private:
   double end_speed;
 };
 
+class TurnToPointCommand: public AutoCommand{
+  public:
+
+    TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+    TurnToPointCommand(TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+
+    bool run() override;
+
+    /*
+    * Returns a string describing the commands functionality
+    */
+    std::string toString() override;
+
+  private:
+
+    void on_timeout() override;
+    TankDrive &drive_sys;
+    double x, y;
+    vex::directionType dir;
+    double max_speed;
+    double end_speed;
+    bool func_initialized;
+    double heading;
+};
+
 /**
  * AutoCommand wrapper class for the turn_to_heading() function in the
  * TankDrive class
@@ -149,6 +190,12 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+
   /**
    * Cleans up drive system if we time out before finishing
    */
@@ -188,6 +235,11 @@ public:
    */
   bool run() override;
 
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+
   /**
    * Reset the drive system when it times out
    */
@@ -216,6 +268,12 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
+
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
+  
   void on_timeout() override;
 
 private:
@@ -236,7 +294,7 @@ public:
    * @param odom the odometry system we are setting
    * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
    */
-  OdomSetPosition(OdometryBase &odom, const pose_t &newpos = OdometryBase::zero_pos);
+  OdomSetPosition(OdometryBase &odom, const Pose2d &newpos = OdometryBase::zero_pos);
 
   /**
    * Run set_position
@@ -244,9 +302,12 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-
+  /*
+  * Returns a string describing the commands functionality
+  */
+  std::string toString() override;
 private:
   // drive system with an odometry config
   OdometryBase &odom;
-  pose_t newpos;
+  Pose2d newpos;
 };

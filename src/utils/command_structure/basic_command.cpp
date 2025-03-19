@@ -13,6 +13,7 @@
  */
 #include "../core/include/utils/command_structure/basic_command.h"
 
+
 // Basic Motor Commands--------------------------------------
 /**
  * @brief a BasicMotorSpin Command
@@ -40,12 +41,32 @@ bool BasicSpinCommand::run() {
   case percent: // Percentage Setting
     motor.spin(dir, power, vex::percent);
     break;
-  case veocity: // Velocity Setting
+  case velocity: // Velocity Setting
     motor.spin(dir, power, vex::velocityUnits::rpm);
     break;
   }
   return true; // Always return True to send next on CommandController
 }
+
+/*
+* Returns a string describing the commands functionality
+*/
+std::string BasicSpinCommand::toString(){
+  std::string str = "Spinnning motors ";
+  str.append( (dir==vex::directionType::fwd) ? "forwards at " : "reverse at " );
+  switch (setting) { // Switch Statement taking the setting Enum
+    case voltage:      // Voltage Setting
+    str.append(double_to_string(power) + "V");
+      break;
+    case percent: // Percentage Setting
+    str.append(double_to_string(power*100) + "%");
+      break;
+    case velocity: // Velocity Setting
+    str.append(double_to_string(power) + "Dps");
+      break;
+  }
+  return str;
+};
 
 /**
  * @brief Construct a BasicMotorStop Command
@@ -64,6 +85,22 @@ BasicStopCommand::BasicStopCommand(vex::motor &motor, vex::brakeType setting) : 
 bool BasicStopCommand::run() {
   motor.stop(setting);
   return true;
+}
+
+/*
+* Returns a string describing the commands functionality
+*/
+std::string BasicStopCommand::toString(){
+  switch(setting){
+    case vex::brakeType::brake:
+      return "Braking motors";
+      case vex::brakeType::coast:
+      return "Coasting motors";
+      case vex::brakeType::hold:
+      return "Holding motors";
+      default:
+      return "UNKNOWN BRAKE TYPE";
+  }
 }
 
 // Basic Solenoid Commands-----------------------------------
@@ -85,3 +122,15 @@ bool BasicSolenoidSet::run() {
   solenoid.set(setting);
   return true;
 }
+
+/*
+  * Returns a string describing the commands functionality
+  */
+ std::string BasicSolenoidSet::toString(){
+  if(setting){
+    return "Activating solonoid";
+  }
+  else{
+    return "Deactivating solonoid";
+  }
+};

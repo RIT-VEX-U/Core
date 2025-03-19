@@ -8,6 +8,8 @@
 #include <functional>
 #include <map>
 #include <vector>
+#include "../core/include/utils/math/geometry/pose2d.h"
+#include "../core/include/utils/math/geometry/translation2d.h"
 
 namespace screen {
 /// @brief Widget that does something when you tap it. The function is only called once when you first tap it
@@ -233,7 +235,7 @@ private:
   double robot_height;
   uint8_t *buf = nullptr;
   int buf_size = 0;
-  pose_t path[path_len];
+  Pose2d path[path_len];
   int path_index = 0;
   bool do_trail;
   GraphDrawer velocity_graph;

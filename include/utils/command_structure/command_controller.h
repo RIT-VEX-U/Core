@@ -69,6 +69,11 @@ public:
    */
   void run();
 
+  /*
+  * returns the amount of commands in the controller
+  */
+  std::string toString();
+
   /**
    * last_command_timed_out tells how the last command ended
    * Use this if you want to make decisions based on the end of the last
@@ -77,6 +82,7 @@ public:
    * regularly
    */
   bool last_command_timed_out();
+  bool printPathLogs = true;
 
 private:
   std::queue<AutoCommand *> command_queue;
