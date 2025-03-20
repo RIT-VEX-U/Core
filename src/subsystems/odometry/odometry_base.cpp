@@ -122,4 +122,3 @@ double OdometryBase::get_angular_accel_deg() {
 
     return retval;
 }
-

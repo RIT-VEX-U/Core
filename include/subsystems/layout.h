@@ -2,7 +2,7 @@
 #include <functional>
 
 struct SliderCfg {
-  double &val;
-  double min;
-  double max;
+    double &val;
+    double min;
+    double max;
 };

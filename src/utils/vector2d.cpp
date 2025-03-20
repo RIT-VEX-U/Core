@@ -13,8 +13,8 @@ Vector2D::Vector2D(double dir, double mag) : dir(dir), mag(mag) {}
  * @param p Translation2d(x, y)
  */
 Vector2D::Vector2D(Translation2d p) {
-  this->dir = atan2(p.y(), p.x());
-  this->mag = sqrt((p.x() * p.x()) + (p.y() * p.y()));
+    this->dir = atan2(p.y(), p.x());
+    this->mag = sqrt((p.x() * p.x()) + (p.y() * p.y()));
 }
 
 /**
@@ -50,8 +50,8 @@ Vector2D Vector2D::normalize() { return Vector2D(this->dir, 1); }
  * @return the x, y representation of the vector
  */
 Translation2d Vector2D::point() {
-  Translation2d p(this->mag * cos(this->dir), this->mag * sin(this->dir));
-  return p;
+    Translation2d p(this->mag * cos(this->dir), this->mag * sin(this->dir));
+    return p;
 }
 
 /**
@@ -62,9 +62,9 @@ Translation2d Vector2D::point() {
  */
 
 Vector2D Vector2D::operator+(const Vector2D &other) {
-  Translation2d p(this->get_x() + other.get_x(), this->get_y() + other.get_y());
+    Translation2d p(this->get_x() + other.get_x(), this->get_y() + other.get_y());
 
-  return Vector2D(p);
+    return Vector2D(p);
 }
 
 /**
@@ -74,8 +74,8 @@ Vector2D Vector2D::operator+(const Vector2D &other) {
  * @return the difference of the vectors
  */
 Vector2D Vector2D::operator-(const Vector2D &other) {
-  Translation2d p(this->get_x() - other.get_x(), this->get_y() - other.get_y());
-  return Vector2D(p);
+    Translation2d p(this->get_x() - other.get_x(), this->get_y() - other.get_y());
+    return Vector2D(p);
 }
 
 /**

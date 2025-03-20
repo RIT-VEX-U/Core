@@ -3,7 +3,6 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
-
 #include <cmath>
 #include <iostream>
 #include <vector>

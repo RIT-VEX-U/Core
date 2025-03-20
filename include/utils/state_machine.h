@@ -33,170 +33,170 @@
  */
 template <typename System, typename IDType, typename Message, int32_t delay_ms, bool do_log = false>
 class StateMachine {
-  static_assert(std::is_enum<Message>::value, "Message should be an enum (it's easier that way)");
-  static_assert(std::is_enum<IDType>::value, "IDType should be an enum (it's easier that way)");
+    static_assert(std::is_enum<Message>::value, "Message should be an enum (it's easier that way)");
+    static_assert(std::is_enum<IDType>::value, "IDType should be an enum (it's easier that way)");
 
-public:
-  /**
-   * @brief MaybeMessage
-   * a message of Message type or nothing
-   * MaybeMessage m = {}; // empty
-   * MaybeMessage m = Message::EnumField1
-   */
-  class MaybeMessage {
   public:
     /**
-     * @brief Empty message - when theres no message
+     * @brief MaybeMessage
+     * a message of Message type or nothing
+     * MaybeMessage m = {}; // empty
+     * MaybeMessage m = Message::EnumField1
      */
-    MaybeMessage() : exists(false) {}
+    class MaybeMessage {
+      public:
+        /**
+         * @brief Empty message - when theres no message
+         */
+        MaybeMessage() : exists(false) {}
+        /**
+         * @brief Create a maybemessage with a message
+         * @param msg the message to hold on to
+         */
+        MaybeMessage(Message msg) : exists(true), thing(msg) {}
+        /**
+         * @brief check if the message is here
+         * @return true if there is a message
+         */
+        bool has_message() { return exists; }
+        /**
+         * @brief Get the message stored. The return value is invalid unless
+         * has_message returned true
+         * @return The message if it exists. Undefined otherwise
+         */
+        Message message() { return thing; }
+
+      private:
+        bool exists;
+        Message thing;
+    };
     /**
-     * @brief Create a maybemessage with a message
-     * @param msg the message to hold on to
+     * Abstract class that all states for this machine must inherit from
+     * States MUST override respond() and id() in order to function correctly
+     * (the compiler won't have it any other way)
      */
-    MaybeMessage(Message msg) : exists(true), thing(msg) {}
-    /**
-     * @brief check if the message is here
-     * @return true if there is a message
-     */
-    bool has_message() { return exists; }
-    /**
-     * @brief Get the message stored. The return value is invalid unless
-     * has_message returned true
-     * @return The message if it exists. Undefined otherwise
-     */
-    Message message() { return thing; }
+    struct State {
+        // run once when we enter the state
+        virtual void entry(System &) {}
+        // run continously while in the state
+        virtual MaybeMessage work(System &) { return {}; }
+        // run once when we exit the state
+        virtual void exit(System &) {}
+        // respond to a message when one comes in
+        virtual State *respond(System &s, Message m) = 0;
+        // Identify
+        virtual IDType id() const = 0;
 
-  private:
-    bool exists;
-    Message thing;
-  };
-  /**
-   * Abstract class that all states for this machine must inherit from
-   * States MUST override respond() and id() in order to function correctly
-   * (the compiler won't have it any other way)
-   */
-  struct State {
-    // run once when we enter the state
-    virtual void entry(System &) {}
-    // run continously while in the state
-    virtual MaybeMessage work(System &) { return {}; }
-    // run once when we exit the state
-    virtual void exit(System &) {}
-    // respond to a message when one comes in
-    virtual State *respond(System &s, Message m) = 0;
-    // Identify
-    virtual IDType id() const = 0;
-
-    // virtual destructor cuz c++
-    virtual ~State() {}
-  };
-
-  // Data that gets passed to the runner thread. Don't worry too much about
-  // this
-  using thread_data = std::pair<State *, StateMachine *>;
-
-  /**
-   * @brief Construct a state machine and immediatly start running it
-   * @param initial the state that the machine will begin in
-   */
-  StateMachine(State *initial) : runner(thread_runner, new thread_data{initial, this}) {}
-
-  /**
-   * @brief retrieve the current state of the state machine. This is safe to
-   * call from external threads
-   * @return the current state
-   */
-  IDType current_state() const {
-    mut.lock();
-    auto t = cur_type;
-    mut.unlock();
-    return t;
-  }
-  /**
-   * @brief send a message to the state machine from outside
-   * @param msg the message to send
-   * This is safe to call from external threads
-   */
-  void send_message(Message msg) {
-    mut.lock();
-    incoming_msg = msg;
-    mut.unlock();
-  }
-
-private:
-  vex::task runner;
-  mutable vex::mutex mut;
-  MaybeMessage incoming_msg;
-  IDType cur_type;
-
-  /**
-   * @brief the thread that does the running of the state machine.
-   * @param vptr the thread_data that we get passed to begin. cast it back
-   * @return return value of thread (the thread never ends so this doesn't
-   * really matter)
-   */
-  static int thread_runner(void *vptr) {
-    thread_data *ptr = static_cast<thread_data *>(vptr);
-    State *cur_state = ptr->first;
-
-    StateMachine &sys = *ptr->second;
-    System &derived = *static_cast<System *>(&sys);
-
-    cur_state->entry(derived);
-
-    sys.cur_type = cur_state->id();
-
-    auto respond_to_message = [&](Message msg) {
-      if (do_log) {
-        printf("responding to msg: %s\n", to_string(msg).c_str());
-        fflush(stdout);
-      }
-
-      State *next_state = cur_state->respond(derived, msg);
-
-      if (cur_state != next_state) {
-        // switched states
-        sys.mut.lock();
-
-        cur_state->exit(derived);
-        next_state->entry(derived);
-
-        delete cur_state;
-
-        cur_state = next_state;
-        sys.cur_type = cur_state->id();
-
-        sys.mut.unlock();
-      }
+        // virtual destructor cuz c++
+        virtual ~State() {}
     };
 
-    while (true) {
-      if (do_log) {
-        std::string str = to_string(cur_state->id());
-        std::string str2 = to_string(sys.cur_type);
+    // Data that gets passed to the runner thread. Don't worry too much about
+    // this
+    using thread_data = std::pair<State *, StateMachine *>;
 
-        printf("state: %s %s\n", str.c_str(), str2.c_str());
-      }
+    /**
+     * @brief Construct a state machine and immediatly start running it
+     * @param initial the state that the machine will begin in
+     */
+    StateMachine(State *initial) : runner(thread_runner, new thread_data{initial, this}) {}
 
-      // Internal Message passed
-      MaybeMessage internal_msg = cur_state->work(derived);
-
-      if (internal_msg.has_message()) {
-        respond_to_message(internal_msg.message());
-      }
-
-      // External Message passed
-      sys.mut.lock();
-      MaybeMessage incoming = sys.incoming_msg;
-      sys.incoming_msg = {};
-      sys.mut.unlock();
-
-      if (incoming.has_message()) {
-        respond_to_message(incoming.message());
-      }
-
-      vexDelay(delay_ms);
+    /**
+     * @brief retrieve the current state of the state machine. This is safe to
+     * call from external threads
+     * @return the current state
+     */
+    IDType current_state() const {
+        mut.lock();
+        auto t = cur_type;
+        mut.unlock();
+        return t;
     }
-    return 0;
-  }
+    /**
+     * @brief send a message to the state machine from outside
+     * @param msg the message to send
+     * This is safe to call from external threads
+     */
+    void send_message(Message msg) {
+        mut.lock();
+        incoming_msg = msg;
+        mut.unlock();
+    }
+
+  private:
+    vex::task runner;
+    mutable vex::mutex mut;
+    MaybeMessage incoming_msg;
+    IDType cur_type;
+
+    /**
+     * @brief the thread that does the running of the state machine.
+     * @param vptr the thread_data that we get passed to begin. cast it back
+     * @return return value of thread (the thread never ends so this doesn't
+     * really matter)
+     */
+    static int thread_runner(void *vptr) {
+        thread_data *ptr = static_cast<thread_data *>(vptr);
+        State *cur_state = ptr->first;
+
+        StateMachine &sys = *ptr->second;
+        System &derived = *static_cast<System *>(&sys);
+
+        cur_state->entry(derived);
+
+        sys.cur_type = cur_state->id();
+
+        auto respond_to_message = [&](Message msg) {
+            if (do_log) {
+                printf("responding to msg: %s\n", to_string(msg).c_str());
+                fflush(stdout);
+            }
+
+            State *next_state = cur_state->respond(derived, msg);
+
+            if (cur_state != next_state) {
+                // switched states
+                sys.mut.lock();
+
+                cur_state->exit(derived);
+                next_state->entry(derived);
+
+                delete cur_state;
+
+                cur_state = next_state;
+                sys.cur_type = cur_state->id();
+
+                sys.mut.unlock();
+            }
+        };
+
+        while (true) {
+            if (do_log) {
+                std::string str = to_string(cur_state->id());
+                std::string str2 = to_string(sys.cur_type);
+
+                printf("state: %s %s\n", str.c_str(), str2.c_str());
+            }
+
+            // Internal Message passed
+            MaybeMessage internal_msg = cur_state->work(derived);
+
+            if (internal_msg.has_message()) {
+                respond_to_message(internal_msg.message());
+            }
+
+            // External Message passed
+            sys.mut.lock();
+            MaybeMessage incoming = sys.incoming_msg;
+            sys.incoming_msg = {};
+            sys.mut.unlock();
+
+            if (incoming.has_message()) {
+                respond_to_message(incoming.message());
+            }
+
+            vexDelay(delay_ms);
+        }
+        return 0;
+    }
 };
