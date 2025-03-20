@@ -48,7 +48,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555",
-"structMotionController_1_1m__profile__cfg__t.html#a2b6415c29fcab4f9b2ccff067a390baa"
+"structrobot__specs__t.html#a828213e8d672431bd3bb87e6484db83f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
