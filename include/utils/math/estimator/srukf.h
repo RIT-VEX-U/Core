@@ -53,6 +53,12 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * N + 2 sigma points instead of the standard 2N + 1 sigma points. This reduces
  * computation up to 50%. To learn more about this method, read:
  * https://www.sciencedirect.com/science/article/pii/S0888327020308190
+ * 
+ * This filter uses a method of "recalibrating" by essentially applying a measurement
+ * twice instead of once, and only using it if it is more accurate than before the
+ * measurement was applied. To learn more about this framework for nonlinear filters,
+ * read:
+ * https://arxiv.org/pdf/2407.05717
  *
  * @tparam STATES Dimension of the state vector.
  * @tparam INPUTS Dimension of the control input vector.
@@ -410,18 +416,24 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
   
       // RECALIBRATE
   
+      // Add the change of xhat to each of the sigma points in 𝒳.
       for (int i = 0; i < NUM_SIGMAS; i++) {
           sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
       }
   
+      // Pass those sigma points through the measurement function to transform
+      // them into measurement space.
       for (int i = 0; i < NUM_SIGMAS; ++i) {
           sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
       }
   
+      // Perform a second unscented transform, this time on the recalibrated
+      // measurement sigma points.
       auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
           sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y,
           sqrt_R.template triangularView<Eigen::Lower>());
   
+      // Compute the cross covariance of the recalibrated sigma points.
       Pxy.setZero();
       for (int i = 0; i < NUM_SIGMAS; ++i) {
           Pxy += m_pts.Wc(i) *
