@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"structrobot__specs__t.html#a23d091e4a5258c11db6cd9753b598d06":[1,0,44,0],
+"structrobot__specs__t.html#a37a65da54459d805cf1370cc6330bce0":[1,0,44,6],
 "structrobot__specs__t.html#a828213e8d672431bd3bb87e6484db83f":[1,0,44,3],
 "structrobot__specs__t.html#a8c454d8b38efdd15dfa6f075c40e4ec7":[1,0,44,4],
 "structrobot__specs__t.html#aa9fc95ea4c235f455b712ac0cf5aa536":[1,0,44,2],

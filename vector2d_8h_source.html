@@ -116,29 +116,29 @@ $(function(){initNavTree('vector2d_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">class </span><a class="code hl_class" href="classTranslation2d.html">Translation2d</a>;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">class </span>Vector2D {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  Vector2D(<span class="keywordtype">double</span> dir, <span class="keywordtype">double</span> mag);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    Vector2D(<span class="keywordtype">double</span> dir, <span class="keywordtype">double</span> mag);</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  Vector2D(Translation2d p);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    Vector2D(Translation2d p);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">double</span> get_dir() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">double</span> get_dir() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">double</span> get_mag() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">double</span> get_mag() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">double</span> get_x() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">double</span> get_x() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">double</span> get_y() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordtype">double</span> get_y() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  Vector2D normalize();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    Vector2D normalize();</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  Translation2d point();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    Translation2d point();</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  Vector2D operator*(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  Vector2D operator+(<span class="keyword">const</span> Vector2D &amp;other);</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  Vector2D operator-(<span class="keyword">const</span> Vector2D &amp;other);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    Vector2D operator*(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    Vector2D operator+(<span class="keyword">const</span> Vector2D &amp;other);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    Vector2D operator-(<span class="keyword">const</span> Vector2D &amp;other);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordtype">double</span> dir, mag;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordtype">double</span> dir, mag;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keywordtype">double</span> deg2rad(<span class="keywordtype">double</span> deg);</div>
