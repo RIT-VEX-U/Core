@@ -42,6 +42,7 @@ var annotated_dup =
     [ "IfTimePassed", "classIfTimePassed.html", null ],
     [ "InOrder", "classInOrder.html", null ],
     [ "Lift", "classLift.html", "classLift" ],
+    [ "LinearSystem", "classLinearSystem.html", "classLinearSystem" ],
     [ "Logger", "classLogger.html", "classLogger" ],
     [ "MecanumDrive", "classMecanumDrive.html", "classMecanumDrive" ],
     [ "motion_t", "structmotion__t.html", "structmotion__t" ],
