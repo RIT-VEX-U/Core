@@ -69,6 +69,13 @@ Eigen::Vector2d Translation2d::as_vector() const { return Eigen::Vector2d(m_x, m
 double Translation2d::norm() const { return std::hypot(m_x, m_y); }
 
 /**
+ * Returns a translation so that it has a vector magnitude of 1
+ *
+ * @return the norm of the translation.
+ */
+Translation2d Translation2d::normalize() const { return Translation2d(1, theta()); };
+
+/**
  * Returns the distance between two translations.
  *
  * @return the distance between two translations.

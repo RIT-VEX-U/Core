@@ -237,12 +237,12 @@ bool TankDrive::drive_forward(
             inches = fabs(inches);
         }
         // Use vector math to get an X and Y
-        Vector2D cur_pos_vec(Translation2d(cur_pos.x(), cur_pos.y()));
-        Vector2D delta_pos_vec(cur_pos.rotation().radians(), inches);
-        Vector2D setpt_vec = cur_pos_vec + delta_pos_vec;
+        Eigen::Vector<double, 2> cur_pos_vec(cur_pos.x(), cur_pos.y());
+        Eigen::Vector<double, 2> delta_pos_vec(cur_pos.rotation().radians(), inches);
+        Eigen::Vector<double, 2> setpt_vec = cur_pos_vec + delta_pos_vec;
 
-        // Save the new X and Y values
-        pos_setpt = Pose2d(setpt_vec.get_x(), setpt_vec.get_y(), pos_setpt.rotation());
+        // Save the new X and Y valuesEigen::Vector<double, 2>
+        pos_setpt = Pose2d(setpt_vec[0], setpt_vec[1], pos_setpt.rotation());
     }
 
     // Call the drive_to_point with updated point values
@@ -379,7 +379,7 @@ bool TankDrive::drive_to_point(
     // Create a point (and vector) to get the direction
     Translation2d pos_diff_pt = {x - current_pos.x(), y - current_pos.y()};
 
-    Vector2D point_vec(pos_diff_pt);
+    Translation2d the_point(pos_diff_pt);
 
     // Get the distance between 2 points
     double dist_left = current_pos.translation().distance(end_pos.translation());
@@ -416,7 +416,7 @@ bool TankDrive::drive_to_point(
 
     // Get the heading difference between where we are and where we want to be
     // Optimize that heading so we don't turn clockwise all the time
-    double heading = rad2deg(point_vec.get_dir());
+    double heading = the_point.theta().wrapped_degrees_360();
     double delta_heading = 0;
 
     // Going backwards "flips" the robot's current heading
