@@ -1,6 +1,5 @@
 #include "../core/include/subsystems/odometry/odometry_3wheel.h"
 #include "../core/include/utils/math_util.h"
-#include "../core/include/utils/vector2d.h"
 
 Odometry3Wheel::Odometry3Wheel(
   CustomEncoder &lside_fwd, CustomEncoder &rside_fwd, CustomEncoder &off_axis, odometry3wheel_cfg_t &cfg, bool is_async
@@ -106,19 +105,18 @@ Pose2d Odometry3Wheel::calculate_new_pos(
     double dist_local_x = offax_dist - (delta_angle_rad * cfg.off_axis_center_dist);
 
     // Change in displacement as a vector, on the local coordinate system (+y = robot fwd)
-    Vector2D local_displacement(dist_local_x, dist_local_y);
+    Translation2d local_displacement(dist_local_x, dist_local_y);
 
     // Rotate the local displacement to match the old robot's rotation
-    double dir_delta_from_trans_rad = local_displacement.get_dir() - (PI / 2.0);
+    double dir_delta_from_trans_rad = local_displacement.theta().radians() - (PI / 2.0);
     double global_dir_rad = wrap_angle_rad(dir_delta_from_trans_rad + old_pos.rotation().radians());
-    Vector2D global_displacement(global_dir_rad, local_displacement.get_mag());
+    Eigen::Vector<double, 2> global_displacement(global_dir_rad, local_displacement.get_mag());
 
     // Tack on the position change to the old position
-    Vector2D old_pos_vec(old_pos.x(), old_pos.y());
-    Vector2D new_pos_vec = old_pos_vec + global_displacement;
+    Eigen::Vector<double, 2> old_pos_vec(old_pos.x(), old_pos.y());
+    Eigen::Vector<double, 2> new_pos_vec = old_pos_vec + global_displacement;
 
-    retval =
-      Pose2d(new_pos_vec.get_x(), new_pos_vec.get_y(), wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
+    retval = Pose2d(new_pos_vec.x(), new_pos_vec.y(), wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
 
     return retval;
 }
