@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - '*'
+      - "*"
   schedule:
     - cron: "0 0 * * 1"
   workflow_dispatch: null
@@ -32,5 +32,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Click this [button](http.cat/404) (not a virus)'
+              body: 'Go [here](https://http.cat/404) to run the formatter. Or, run it locally ([vscode plugin](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format))'
               })
