@@ -1,14 +1,6 @@
 ---
 name: Clang Format (Modifying)
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - "*"
-  schedule:
-    - cron: "0 0 * * 1"
   workflow_dispatch: null
 jobs:
   build:
