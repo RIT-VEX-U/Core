@@ -73,7 +73,6 @@ var hierarchy =
     [ "screen::SliderWidget", "classscreen_1_1SliderWidget.html", null ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
-    [ "SquareRootUnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classSquareRootUnscentedKalmanFilter.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::State", "structStateMachine_1_1State.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >", "classStateMachine.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
@@ -84,6 +83,7 @@ var hierarchy =
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],
     [ "Twist2d", "classTwist2d.html", null ],
+    [ "UnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classUnscentedKalmanFilter.html", null ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
 ];

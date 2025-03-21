@@ -2,7 +2,7 @@ var searchData=
 [
   ['radians_0',['radians',['../classRotation2d.html#ab556389e936ea8d53da111de7c01b444',1,'Rotation2d']]],
   ['relative_5fto_1',['relative_to',['../classPose2d.html#a001801fc38b4bb4fa95a5d45450a5d47',1,'Pose2d']]],
-  ['reset_2',['reset',['../classPID.html#af9677e76cb1beffbcf3f54cbc627c530',1,'PID::reset()'],['../classKalmanFilter.html#a7a81779a554d91bffaf8af3e3b1613aa',1,'KalmanFilter::reset()'],['../classSquareRootUnscentedKalmanFilter.html#a2b571053ad7a8ab83df6e89de5a8ac44',1,'SquareRootUnscentedKalmanFilter::reset()']]],
+  ['reset_2',['reset',['../classPID.html#af9677e76cb1beffbcf3f54cbc627c530',1,'PID::reset()'],['../classKalmanFilter.html#a7a81779a554d91bffaf8af3e3b1613aa',1,'KalmanFilter::reset()'],['../classUnscentedKalmanFilter.html#a795eb695962a227159cb555b6e9f69c9',1,'UnscentedKalmanFilter::reset()']]],
   ['reset_5fauto_3',['reset_auto',['../classTankDrive.html#aaa68eae1521e5b87ecfed2a60b15bf34',1,'TankDrive']]],
   ['revolutions_4',['revolutions',['../classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b',1,'Rotation2d']]],
   ['rotate_5faround_5',['rotate_around',['../classTranslation2d.html#a0f30946b3e9294a370d8285c585d37f1',1,'Translation2d']]],

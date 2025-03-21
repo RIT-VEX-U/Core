@@ -6,8 +6,7 @@ var searchData=
   ['sliderwidget_3',['SliderWidget',['../classscreen_1_1SliderWidget.html',1,'screen']]],
   ['spinrpmcommand_4',['SpinRPMCommand',['../classSpinRPMCommand.html',1,'']]],
   ['spline_5',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]],
-  ['squarerootunscentedkalmanfilter_6',['SquareRootUnscentedKalmanFilter',['../classSquareRootUnscentedKalmanFilter.html',1,'']]],
-  ['state_7',['State',['../structStateMachine_1_1State.html',1,'StateMachine']]],
-  ['statemachine_8',['StateMachine',['../classStateMachine.html',1,'']]],
-  ['statspage_9',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]]
+  ['state_6',['State',['../structStateMachine_1_1State.html',1,'StateMachine']]],
+  ['statemachine_7',['StateMachine',['../classStateMachine.html',1,'']]],
+  ['statspage_8',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]]
 ];

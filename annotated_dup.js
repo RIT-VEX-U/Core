@@ -63,7 +63,6 @@ var annotated_dup =
     [ "ScaledSphericalSimplexSigmaPoints", "classScaledSphericalSimplexSigmaPoints.html", "classScaledSphericalSimplexSigmaPoints" ],
     [ "Serializer", "classSerializer.html", "classSerializer" ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", "classSpinRPMCommand" ],
-    [ "SquareRootUnscentedKalmanFilter", "classSquareRootUnscentedKalmanFilter.html", "classSquareRootUnscentedKalmanFilter" ],
     [ "StateMachine", "classStateMachine.html", "classStateMachine" ],
     [ "TakeBackHalf", "classTakeBackHalf.html", "classTakeBackHalf" ],
     [ "TankDrive", "classTankDrive.html", "classTankDrive" ],
@@ -74,6 +73,7 @@ var annotated_dup =
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", "classTurnDegreesCommand" ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", "classTurnToHeadingCommand" ],
     [ "Twist2d", "classTwist2d.html", "classTwist2d" ],
+    [ "UnscentedKalmanFilter", "classUnscentedKalmanFilter.html", "classUnscentedKalmanFilter" ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", "classWaitUntilUpToSpeedCommand" ]
 ];

@@ -36,7 +36,7 @@ var NAVTREEINDEX2 =
 "structPurePursuit_1_1hermite__point.html":[1,0,0,0],
 "structPurePursuit_1_1spline.html":[1,0,0,2],
 "structRect.html":[1,0,44],
-"structStateMachine_1_1State.html":[1,0,51,1],
+"structStateMachine_1_1State.html":[1,0,50,1],
 "structmotion__t.html":[1,0,33],
 "structmotion__t.html#a038b39985525b904bb8257ea86adbcee":[1,0,33,2],
 "structmotion__t.html#a0bfa8ec05af92df3b8c0e7d0945824f2":[1,0,33,0],
@@ -51,9 +51,9 @@ var NAVTREEINDEX2 =
 "structrobot__specs__t.html#af8c8492ba755766847bb21b960b91bfe":[1,0,45,7],
 "structrobot__specs__t.html#afb03c2e2cbc0d8fd6686c9421e016dec":[1,0,45,1],
 "structscreen_1_1ScreenData.html":[1,0,1,5],
-"structtracking__wheel__cfg__t.html":[1,0,54],
-"structtracking__wheel__cfg__t.html#a56c2fb4edd05a7be2ec44525e8f4e6b8":[1,0,54,2],
-"structtracking__wheel__cfg__t.html#a6f1e96cbc35f9dbc8c703579e2ec1342":[1,0,54,0],
-"structtracking__wheel__cfg__t.html#ac963fde4928dcdf38482e64f2d8caf34":[1,0,54,1],
-"structtracking__wheel__cfg__t.html#aef17b69e55f62d02168df86343931cf7":[1,0,54,3]
+"structtracking__wheel__cfg__t.html":[1,0,53],
+"structtracking__wheel__cfg__t.html#a56c2fb4edd05a7be2ec44525e8f4e6b8":[1,0,53,2],
+"structtracking__wheel__cfg__t.html#a6f1e96cbc35f9dbc8c703579e2ec1342":[1,0,53,0],
+"structtracking__wheel__cfg__t.html#ac963fde4928dcdf38482e64f2d8caf34":[1,0,53,1],
+"structtracking__wheel__cfg__t.html#aef17b69e55f62d02168df86343931cf7":[1,0,53,3]
 };
