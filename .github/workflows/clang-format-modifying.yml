@@ -1,0 +1,24 @@
+---
+name: Clang Format (Modifying)
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clang Format
+        uses: DoozyX/clang-format-lint-action@v0.18.1
+        with:
+          source: src/ include/
+          extensions: h,hpp,c,cpp
+          clangFormatVersion: 18
+          style: file
+          inplace: True
+
+      - name: Commit Changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Clanged Formatted"
+          git push
