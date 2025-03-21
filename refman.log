@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.3.20)  20 MAR 2025 23:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.3.21)  21 MAR 2025 01:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -892,10 +892,10 @@ LaTeX Font Info:    Font shape `TS1/phv/b/n' will be
 (Font)              scaled to size 8.99994pt on input line 52.
  [7]) (./classAsync.tex [8]) (./classAutoChooser.tex
 Package epstopdf Info: Source file: <classAutoChooser.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3788 bytes
 (epstopdf)             Output file: <classAutoChooser-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:02
 (epstopdf)                    size: 5358 bytes
 (epstopdf)             Command: <repstopdf --outfile=classAutoChooser-eps-conve
 rted-to.pdf classAutoChooser.eps>
@@ -962,10 +962,10 @@ Underfull \hbox (badness 10000) detected at line 138
 
 ) (./classCondition.tex
 Package epstopdf Info: Source file: <classCondition.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3917 bytes
 (epstopdf)             Output file: <classCondition-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:02
 (epstopdf)                    size: 5558 bytes
 (epstopdf)             Command: <repstopdf --outfile=classCondition-eps-convert
 ed-to.pdf classCondition.eps>
@@ -1022,11 +1022,11 @@ Underfull \hbox (badness 10000) detected at line 71
 ) (./structAutoChooser_1_1entry__t.tex [25])
 (./classExponentialMovingAverage.tex
 Package epstopdf Info: Source file: <classExponentialMovingAverage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3802 bytes
 (epstopdf)             Output file: <classExponentialMovingAverage-eps-converte
 d-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:02
 (epstopdf)                    size: 5439 bytes
 (epstopdf)             Command: <repstopdf --outfile=classExponentialMovingAver
 age-eps-converted-to.pdf classExponentialMovingAverage.eps>
@@ -1058,10 +1058,10 @@ Underfull \hbox (badness 10000) detected at line 100
 
 ) (./classFeedback.tex
 Package epstopdf Info: Source file: <classFeedback.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3980 bytes
 (epstopdf)             Output file: <classFeedback-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:02
 (epstopdf)                    size: 6021 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFeedback-eps-converte
 d-to.pdf classFeedback.eps>
@@ -1122,10 +1122,10 @@ Underfull \hbox (badness 10000) detected at line 74
 
 ) (./structFeedForward_1_1ff__config__t.tex [32]) (./classFilter.tex
 Package epstopdf Info: Source file: <classFilter.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3927 bytes
 (epstopdf)             Output file: <classFilter-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:02
 (epstopdf)                    size: 5511 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFilter-eps-converted-
 to.pdf classFilter.eps>
@@ -1181,11 +1181,11 @@ Underfull \hbox (badness 10000) detected at line 40
 ) (./classFlywheelStopNonTasksCommand.tex) (./classFunctionCommand.tex)
 (./classFunctionCondition.tex
 Package epstopdf Info: Source file: <classFunctionCondition.eps>
-(epstopdf)                    date: 2025-03-20 23:31:44
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classFunctionCondition-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2025-03-20 23:31:46
+(epstopdf)                    date: 2025-03-21 01:44:03
 (epstopdf)                    size: 4588 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFunctionCondition-eps
 -converted-to.pdf classFunctionCondition.eps>
@@ -1201,11 +1201,11 @@ nput line 15.
 
 [39]) (./classscreen_1_1FunctionPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1FunctionPage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3806 bytes
 (epstopdf)             Output file: <classscreen_1_1FunctionPage-eps-converted-
 to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:47
+(epstopdf)                    date: 2025-03-21 01:44:03
 (epstopdf)                    size: 5230 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1FunctionPag
 e-eps-converted-to.pdf classscreen_1_1FunctionPage.eps>
@@ -1246,10 +1246,10 @@ Underfull \hbox (badness 10000) detected at line 72
 
 ) (./structPurePursuit_1_1hermite__point.tex) (./classIfTimePassed.tex
 Package epstopdf Info: Source file: <classIfTimePassed.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <classIfTimePassed-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:47
+(epstopdf)                    date: 2025-03-21 01:44:03
 (epstopdf)                    size: 5184 bytes
 (epstopdf)             Command: <repstopdf --outfile=classIfTimePassed-eps-conv
 erted-to.pdf classIfTimePassed.eps>
@@ -1355,11 +1355,11 @@ Underfull \hbox (badness 10000) detected at line 102
 [56]) (./structMecanumDrive_1_1mecanumdrive__config__t.tex)
 (./structmotion__t.tex [57]) (./classMotionController.tex
 Package epstopdf Info: Source file: <classMotionController.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3790 bytes
 (epstopdf)             Output file: <classMotionController-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2025-03-20 23:31:47
+(epstopdf)                    date: 2025-03-21 01:44:03
 (epstopdf)                    size: 5237 bytes
 (epstopdf)             Command: <repstopdf --outfile=classMotionController-eps-
 converted-to.pdf classMotionController.eps>
@@ -1409,10 +1409,10 @@ Underfull \hbox (badness 10000) detected at line 205
 
 ) (./classMovingAverage.tex
 Package epstopdf Info: Source file: <classMovingAverage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3780 bytes
 (epstopdf)             Output file: <classMovingAverage-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:47
+(epstopdf)                    date: 2025-03-21 01:44:03
 (epstopdf)                    size: 5103 bytes
 (epstopdf)             Command: <repstopdf --outfile=classMovingAverage-eps-con
 verted-to.pdf classMovingAverage.eps>
@@ -1443,10 +1443,10 @@ Underfull \hbox (badness 10000) detected at line 100
 
 ) (./classOdometry3Wheel.tex
 Package epstopdf Info: Source file: <classOdometry3Wheel.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classOdometry3Wheel-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:47
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 5553 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometry3Wheel-eps-co
 nverted-to.pdf classOdometry3Wheel.eps>
@@ -1478,10 +1478,10 @@ Underfull \hbox (badness 10000) detected at line 144
 ) (./structOdometry3Wheel_1_1odometry3wheel__cfg__t.tex [66])
 (./classOdometryBase.tex
 Package epstopdf Info: Source file: <classOdometryBase.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 4006 bytes
 (epstopdf)             Output file: <classOdometryBase-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 6229 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometryBase-eps-conv
 erted-to.pdf classOdometryBase.eps>
@@ -1546,11 +1546,11 @@ Underfull \hbox (badness 10000) detected at line 203
 
 [71]) (./classscreen_1_1OdometryPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1OdometryPage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3806 bytes
 (epstopdf)             Output file: <classscreen_1_1OdometryPage-eps-converted-
 to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 5488 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1OdometryPag
 e-eps-converted-to.pdf classscreen_1_1OdometryPage.eps>
@@ -1576,10 +1576,10 @@ Underfull \hbox (badness 10000) detected at line 76
 
 ) (./classOdometrySerial.tex [73]
 Package epstopdf Info: Source file: <classOdometrySerial.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classOdometrySerial-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 5362 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometrySerial-eps-co
 nverted-to.pdf classOdometrySerial.eps>
@@ -1672,10 +1672,10 @@ Underfull \hbox (badness 10000) detected at line 245
 
 ) (./classOdometryTank.tex
 Package epstopdf Info: Source file: <classOdometryTank.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3790 bytes
 (epstopdf)             Output file: <classOdometryTank-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 5356 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometryTank-eps-conv
 erted-to.pdf classOdometryTank.eps>
@@ -1706,10 +1706,10 @@ Underfull \hbox (badness 10000) detected at line 49
 
 ) (./classscreen_1_1Page.tex
 Package epstopdf Info: Source file: <classscreen_1_1Page.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 4213 bytes
 (epstopdf)             Output file: <classscreen_1_1Page-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 6652 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1Page-eps-co
 nverted-to.pdf classscreen_1_1Page.eps>
@@ -1726,10 +1726,10 @@ t line 15.
 [82]) (./classParallel.tex [83]) (./classPurePursuit_1_1Path.tex [84])
 (./classPID.tex
 Package epstopdf Info: Source file: <classPID.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3764 bytes
 (epstopdf)             Output file: <classPID-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:04
 (epstopdf)                    size: 4758 bytes
 (epstopdf)             Command: <repstopdf --outfile=classPID-eps-converted-to.
 pdf classPID.eps>
@@ -1788,11 +1788,11 @@ Underfull \hbox (badness 10000) detected at line 243
 
 ) (./structPID_1_1pid__config__t.tex [89]) (./classscreen_1_1PIDPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1PIDPage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3796 bytes
 (epstopdf)             Output file: <classscreen_1_1PIDPage-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2025-03-20 23:31:48
+(epstopdf)                    date: 2025-03-21 01:44:05
 (epstopdf)                    size: 4926 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1PIDPage-eps
 -converted-to.pdf classscreen_1_1PIDPage.eps>
@@ -2030,11 +2030,11 @@ e IDType, typename Message, int32[]_[]t delay[]_[]ms, bool do[]_[]log =
 
 ) (./classscreen_1_1StatsPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1StatsPage.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3800 bytes
 (epstopdf)             Output file: <classscreen_1_1StatsPage-eps-converted-to.
 pdf>
-(epstopdf)                    date: 2025-03-20 23:31:49
+(epstopdf)                    date: 2025-03-21 01:44:05
 (epstopdf)                    size: 5014 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1StatsPage-e
 ps-converted-to.pdf classscreen_1_1StatsPage.eps>
@@ -2060,10 +2060,10 @@ Underfull \hbox (badness 10000) detected at line 70
 
 ) (./classTakeBackHalf.tex
 Package epstopdf Info: Source file: <classTakeBackHalf.eps>
-(epstopdf)                    date: 2025-03-20 23:31:45
+(epstopdf)                    date: 2025-03-21 01:44:01
 (epstopdf)                    size: 3782 bytes
 (epstopdf)             Output file: <classTakeBackHalf-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-03-20 23:31:49
+(epstopdf)                    date: 2025-03-21 01:44:05
 (epstopdf)                    size: 4977 bytes
 (epstopdf)             Command: <repstopdf --outfile=classTakeBackHalf-eps-conv
 erted-to.pdf classTakeBackHalf.eps>
@@ -2208,87 +2208,102 @@ Underfull \hbox (badness 10000) detected at line 261
  []
 
 [138]) (./classTranslation2d.tex [139] [140]
-Underfull \hbox (badness 10000) detected at line 125
+Underfull \hbox (badness 10000) detected at line 129
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 136
+Underfull \hbox (badness 10000) detected at line 140
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 147
+Underfull \hbox (badness 10000) detected at line 149
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 160
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 171
 [][][]
  []
 
 [141]
-Underfull \hbox (badness 10000) detected at line 165
+Underfull \hbox (badness 10000) detected at line 176
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 183
+Underfull \hbox (badness 10000) detected at line 194
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 201
+Underfull \hbox (badness 10000) detected at line 212
+[][][]
+ []
+
+[142]
+Underfull \hbox (badness 10000) detected at line 230
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 214
-[][][]
- []
-
-[142] [143]
-Underfull \hbox (badness 10000) detected at line 232
+Underfull \hbox (badness 10000) detected at line 243
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 250
+Underfull \hbox (badness 10000) detected at line 261
+[][][]
+ []
+
+[143]
+Underfull \hbox (badness 10000) detected at line 279
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 266
+Underfull \hbox (badness 10000) detected at line 295
+[][][]
+ []
+
+
+Underfull \hbox (badness 10000) detected at line 315
 [][][]
  []
 
 [144]
-Underfull \hbox (badness 10000) detected at line 286
+Underfull \hbox (badness 10000) detected at line 333
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 304
+Underfull \hbox (badness 10000) detected at line 356
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 327
+Underfull \hbox (badness 10000) detected at line 367
 [][][]
  []
 
 
-Underfull \hbox (badness 10000) detected at line 338
+Underfull \hbox (badness 10000) detected at line 378
 [][][]
  []
 
-[145]
-Underfull \hbox (badness 10000) detected at line 349
-[][][]
- []
-
-) (./classTrapezoidProfile.tex [146]
+[145]) (./classTrapezoidProfile.tex
 Overfull \hbox (52.48337pt too wide) in paragraph at lines 33--34
 []\T1/phv/m/n/10 Here are the equa-tions graphed for ease of understanding[]: [
 ][] \T1/pcr/m/n/10 https[]://www.[]desmos.[]com/calculator/rkm3ivu1yk[][] 
  []
 
-
+[146]
 Underfull \hbox (badness 10000) detected at line 35
 [][][]
  []
@@ -2361,31 +2376,31 @@ Type, Mes-sage, de-
 [157
 
 ] [158]
-Underfull \hbox (badness 968) in paragraph at lines 276--278
+Underfull \hbox (badness 968) in paragraph at lines 278--280
 []| \T1/phv/m/n/10 StateMachine$\OML/cmm/m/it/10 <$ \T1/phv/m/n/10 Sys-tem, ID-
 Type, Mes-sage, de-
  []
 
 
-Underfull \hbox (badness 968) in paragraph at lines 356--358
+Underfull \hbox (badness 968) in paragraph at lines 358--360
 []| \T1/phv/m/n/10 StateMachine$\OML/cmm/m/it/10 <$ \T1/phv/m/n/10 Sys-tem, ID-
 Type, Mes-sage, de-
  []
 
 
-Underfull \hbox (badness 968) in paragraph at lines 366--368
+Underfull \hbox (badness 968) in paragraph at lines 368--370
 []| \T1/phv/m/n/10 StateMachine$\OML/cmm/m/it/10 <$ \T1/phv/m/n/10 Sys-tem, ID-
 Type, Mes-sage, de-
  []
 
 [159] [160] [161]
-Underfull \hbox (badness 968) in paragraph at lines 655--657
+Underfull \hbox (badness 968) in paragraph at lines 659--661
 []| \T1/phv/m/n/10 StateMachine$\OML/cmm/m/it/10 <$ \T1/phv/m/n/10 Sys-tem, ID-
 Type, Mes-sage, de-
  []
 
 [162]
-Underfull \hbox (badness 968) in paragraph at lines 740--742
+Underfull \hbox (badness 968) in paragraph at lines 744--746
 []| \T1/phv/m/n/10 StateMachine$\OML/cmm/m/it/10 <$ \T1/phv/m/n/10 Sys-tem, ID-
 Type, Mes-sage, de-
  []
@@ -2396,13 +2411,13 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `refman.out' has not changed.
-(rerunfilecheck)             Checksum: 6B34660D0672AF75D4BAF45B16A5786B;71010.
+(rerunfilecheck)             Checksum: 3506C5E5C52381FCABB55F6300884DAB;71010.
  ) 
 Here is how much of TeX's memory you used:
- 21553 strings out of 476182
- 385823 string characters out of 5795595
+ 21559 strings out of 476182
+ 386059 string characters out of 5795595
  1954975 words of memory out of 5000000
- 41462 multiletter control sequences out of 15000+600000
+ 41464 multiletter control sequences out of 15000+600000
  609627 words of font info for 115 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,16n,117p,839b,856s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -2452,10 +2467,10 @@ texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/urw/helvetic/uhvb8ac.pfb></usr/share/texlive/texmf-dist/font
 s/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
 helvetic/uhvro8a.pfb>
-Output written on refman.pdf (171 pages, 614216 bytes).
+Output written on refman.pdf (171 pages, 615340 bytes).
 PDF statistics:
- 5935 PDF objects out of 6186 (max. 8388607)
- 5594 compressed objects within 56 object streams
- 1603 named destinations out of 1728 (max. 500000)
+ 5945 PDF objects out of 6186 (max. 8388607)
+ 5603 compressed objects within 57 object streams
+ 1607 named destinations out of 1728 (max. 500000)
  2357 words of extra memory for PDF output out of 10000 (max. 10000000)
 
