@@ -22,6 +22,12 @@ class Pose2d;
  */
 class Transform2d {
 public:
+
+/**
+   * Default Constructor for Transform2d
+   */
+  constexpr Transform2d();
+
   /**
    * Constructs a transform given translation and rotation components.
    *
