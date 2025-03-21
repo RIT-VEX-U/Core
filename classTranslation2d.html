@@ -134,12 +134,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a98290422bba63a14ce9634838218301e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d6d449b8eba8e4a6280eef066a1ca49" id="r_a8d6d449b8eba8e4a6280eef066a1ca49"><td class="memItemLeft" align="right" valign="top">Eigen::Vector2d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d6d449b8eba8e4a6280eef066a1ca49">as_vector</a> () const</td></tr>
 <tr class="separator:a8d6d449b8eba8e4a6280eef066a1ca49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab23e5ef87d190caf5bb45004466781f3" id="r_ab23e5ef87d190caf5bb45004466781f3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab23e5ef87d190caf5bb45004466781f3">get_mag</a> () const</td></tr>
-<tr class="separator:ab23e5ef87d190caf5bb45004466781f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac311ce36aed958758a327a78337c568f" id="r_ac311ce36aed958758a327a78337c568f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac311ce36aed958758a327a78337c568f">norm</a> () const</td></tr>
 <tr class="separator:ac311ce36aed958758a327a78337c568f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45c1c74c74bc0eefcd3060908e3c13e0" id="r_a45c1c74c74bc0eefcd3060908e3c13e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTranslation2d.html">Translation2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a45c1c74c74bc0eefcd3060908e3c13e0">normalize</a> () const</td></tr>
-<tr class="separator:a45c1c74c74bc0eefcd3060908e3c13e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4642fe8ca119c2c56fa464fab717311d" id="r_a4642fe8ca119c2c56fa464fab717311d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4642fe8ca119c2c56fa464fab717311d">distance</a> (const <a class="el" href="classTranslation2d.html">Translation2d</a> &amp;other) const</td></tr>
 <tr class="separator:a4642fe8ca119c2c56fa464fab717311d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8006f853378c06c2c1924a5b441ffafb" id="r_a8006f853378c06c2c1924a5b441ffafb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classTranslation2d.html">Translation2d</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8006f853378c06c2c1924a5b441ffafb">rotate_by</a> (const <a class="el" href="classRotation2d.html">Rotation2d</a> &amp;rotation) const</td></tr>
@@ -317,24 +313,6 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ab23e5ef87d190caf5bb45004466781f3" name="ab23e5ef87d190caf5bb45004466781f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab23e5ef87d190caf5bb45004466781f3">&#9670;&#160;</a></span>get_mag()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Translation2d::get_mag </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the magnitide of the directions if it were a vector </dd></dl>
-
-</div>
-</div>
 <a id="ac311ce36aed958758a327a78337c568f" name="ac311ce36aed958758a327a78337c568f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac311ce36aed958758a327a78337c568f">&#9670;&#160;</a></span>norm()</h2>
 
@@ -350,27 +328,6 @@ Friends</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Returns the norm/radius/magnitude/distance from origin.</p>
-<dl class="section return"><dt>Returns</dt><dd>the norm of the translation. </dd></dl>
-
-</div>
-</div>
-<a id="a45c1c74c74bc0eefcd3060908e3c13e0" name="a45c1c74c74bc0eefcd3060908e3c13e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45c1c74c74bc0eefcd3060908e3c13e0">&#9670;&#160;</a></span>normalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classTranslation2d.html">Translation2d</a> Translation2d::normalize </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Changes the translation so that it has a vector magnitude of 1</p>
-<dl class="section return"><dt>Returns</dt><dd>the norm of the translation.</dd></dl>
-<p>Returns a translation so that it has a vector magnitude of 1</p>
 <dl class="section return"><dt>Returns</dt><dd>the norm of the translation. </dd></dl>
 
 </div>

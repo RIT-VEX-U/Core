@@ -47,7 +47,6 @@ var hierarchy =
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
-      [ "OdometrySerial", "classOdometrySerial.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "OdomSetPosition", "classOdomSetPosition.html", null ],
@@ -66,11 +65,13 @@ var hierarchy =
     [ "Rect", "structRect.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
     [ "Rotation2d", "classRotation2d.html", null ],
+    [ "ScaledSphericalSimplexSigmaPoints< STATES >", "classScaledSphericalSimplexSigmaPoints.html", null ],
     [ "screen::ScreenData", "structscreen_1_1ScreenData.html", null ],
     [ "Serializer", "classSerializer.html", null ],
     [ "screen::SliderWidget", "classscreen_1_1SliderWidget.html", null ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
+    [ "SquareRootUnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classSquareRootUnscentedKalmanFilter.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::State", "structStateMachine_1_1State.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >", "classStateMachine.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
