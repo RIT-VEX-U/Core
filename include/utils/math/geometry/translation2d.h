@@ -7,6 +7,8 @@
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
+class Rotation2d;
+
 /**
  * Class representing a point in 2d space with x and y coordinates.
  *
@@ -85,11 +87,23 @@ class Translation2d {
     Eigen::Vector2d as_vector() const;
 
     /**
+     * @return the magnitide of the directions if it were a vector
+     */
+    double get_mag() const;
+
+    /**
      * Returns the norm/radius/magnitude/distance from origin.
      *
      * @return the norm of the translation.
      */
     double norm() const;
+
+    /**
+     * Changes the translation so that it has a vector magnitude of 1
+     *
+     * @return the norm of the translation.
+     */
+    Translation2d normalize() const;
 
     /**
      * Returns the distance between two translations.
