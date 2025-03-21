@@ -64,7 +64,7 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * @tparam INPUTS Dimension of the control input vector.
  * @tparam OUTPUTS Dimension of the measurement vector.
  */
-template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFilter {
+template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
   public:
     static constexpr int NUM_SIGMAS = STATES + 2;
 
@@ -90,7 +90,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * @param state_stddevs Standard deviations of the states in the model.
      * @param measurement_stddevs Standard deviations of the measurements.
      */
-    SquareRootUnscentedKalmanFilter(
+    UnscentedKalmanFilter(
       const std::function<StateVector(const StateVector &, const InputVector &)> &f,
       const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
       const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs
@@ -135,7 +135,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * vectors, usually by simple subtraction.
      * @param add_funx_X A function that adds two state vectors.
      */
-    SquareRootUnscentedKalmanFilter(
+    UnscentedKalmanFilter(
       const std::function<StateVector(const StateVector &, const InputVector &)> &f,
       const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
       const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs,
@@ -680,4 +680,6 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
 };
 
 // allow using both names
-template <int STATES, int INPUTS, int OUTPUTS> using SRUKF = SquareRootUnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS> using UKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS> using SRUKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS> using SquareRootUnscentedKalmanFilter = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
