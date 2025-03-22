@@ -37,24 +37,24 @@ class LinearSystem {
     /**
      * Returns the continuous system matrix A.
      */
-    const MatrixA &A() { return m_Ac; }
+    MatrixA A() { return m_Ac; }
 
     /**
      * Returns the continuous input matrix B.
      */
-    const MatrixB &B() { return m_Bc; }
+    MatrixB B() { return m_Bc; }
 
-    const std::tuple<std::tuple<MatrixA, MatrixB>> &discAB() { return discretize_AB(m_Ac, m_Bc, dt); }
+    const std::tuple<std::tuple<MatrixA, MatrixB>> &discAB(const double &dt) { return discretize_AB(m_Ac, m_Bc, dt); }
 
     /**
      * Returns the output matrix C.
      */
-    const MatrixC &C() { return m_C; }
+    MatrixC C() { return m_C; }
 
     /**
      * Returns the feedthrough matrix D.
      */
-    const MatrixD &D() { return m_D; }
+    MatrixD D() { return m_D; }
 
     /**
      * Computes the new state vector given the previous state vector, an input
@@ -68,7 +68,7 @@ class LinearSystem {
      */
     VectorX compute_X(const VectorX &x, const VectorU &u, double dt) {
         // Discretize A and B
-        std::tuple<MatrixA, MatrixB> discAB = discretize_AB(m_Ac, m_Bc, dt);
+        auto [Ad, Bd] = discretize_AB(m_Ac, m_Bc, dt);
 
         return Ad * x + Bd * u;
     }

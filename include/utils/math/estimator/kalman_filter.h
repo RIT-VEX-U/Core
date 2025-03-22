@@ -2,7 +2,7 @@
 
 #include "../core/include/utils/math/eigen_interface.h"
 
-#include "../core/include/utils/math/systems/LinearSystem.h"
+#include "../core/include/utils/math/systems/linear_system.h"
 
 /**
  * Kalman filters combine predictions from a model and measurements to estimate
@@ -42,7 +42,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param state_stddevs The standard deviations of the states.
      * @param measurement_stddevs The standard deviations of the measurements.
      */
-    KalmanFilter(const LinearSystem &plant, const StateVector &state_stddevs, const OutputVector &measurement_stddevs)
+    KalmanFilter(LinearSystem<STATES, INPUTS, OUTPUTS> &plant, const StateVector &state_stddevs, const OutputVector &measurement_stddevs)
         : KalmanFilter(plant.A(), plant.B(), plant.C(), plant.D(), state_stddevs, measurement_stddevs) {}
 
     /**
@@ -64,8 +64,8 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
         m_C = C;
         m_D = D;
 
-        m_sqrtQ = state_std_devs.asDiagonal();
-        m_sqrtR = measurement_std_devs.asDiagonal();
+        m_sqrtQ = state_stddevs.asDiagonal();
+        m_sqrtR = measurement_stddevs.asDiagonal();
 
         reset();
     }
@@ -143,7 +143,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
     void predict(const InputVector &u, const double &dt) {
         // Q is discrete sqrt(process noise)
         EMat<STATES, STATES> Q = m_sqrtQ * sqrt(dt);
-        auto [A, B] = discretize_AB(m_A, m_B);
+        auto [A, B] = discretize_AB(m_A, m_B, dt);
 
         // Compute prior mean
         // equation (4)
@@ -216,7 +216,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
         // equation (10)
         EMat<STATES, ROWS> K =
           (Sy.template triangularView<Eigen::Upper>().solve(
-             (Sy.transpose().template triangularView<Eigen::Lower>().solve(H)) * (m_S.transpose() * m_S)
+             (Sy.transpose().template triangularView<Eigen::Lower>().solve(C)) * (m_S.transpose() * m_S)
            )).transpose();
 
         // Compute posterior state
@@ -225,7 +225,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
 
         // Form temporary matrix to compute posterior state covariance
         EMat<STATES + ROWS, STATES> S_bar;
-        S_bar.template block<STATES, STATES>(0, 0) = (m_S * (EMat<STATES, STATES>::Identity() - (K * H)).transpose());
+        S_bar.template block<STATES, STATES>(0, 0) = (m_S * (EMat<STATES, STATES>::Identity() - (K * C)).transpose());
         S_bar.template block<ROWS, STATES>(STATES, 0) = (sqrtR * K.transpose());
 
         // Compute posterior state covariance
