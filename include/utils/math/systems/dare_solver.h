@@ -2,123 +2,88 @@
 
 #include "../core/include/utils/math/eigen_interface.h"
 
-template <typename MatrixType> double cond_inf(const MatrixType &M) {
-    return M.template lpNorm<Eigen::Infinity>() * M.inverse().template lpNorm<Eigen::Infinity>();
-}
-
-template <int STATES, int INPUTS, int OUTPUTS>
-double F_gamma(
-  double gamma, const EMat<STATES, STATES> &A, const EMat<STATES, INPUTS> &B, const EMat<OUTPUTS, STATES> &C,
-  const EMat<STATES, STATES> &Q, const EMat<STATES, STATES> &R
-) {
-    EMat<STATES, STATES> I = EMat<STATES, STATES>::Identity();
-    EMat<STATES, STATES> Y = gamma * I;
-
-    EMat<INPUTS, INPUTS> R_gamma = R + B.transpose() * Y * B;
-
-    double f1 = cond_inf(R_gamma);
-
-    double f2 = gamma * gamma * f1;
-
-    auto R_gamma_ldlt = R_gamma.ldlt();
-
-    EMat<STATES, STATES> G0 = B * R_gamma_ldlt.solve(B.transpose());
-
-    EMat<STATES, STATES> A0 = (I - G0 * Y) * A - B * R_gamma_ldlt.solve(C);
-
-    EMat<STATES, STATES> H0 = Q - Y 
-        - C.transpose() * R_gamma_ldlt.solve(B.transpose() * Y * A)
-        - A.transpose() * Y * B * R_gamma_ldlt.solve(C)
-        - C.transpose() * R_gamma_ldlt.solve(C)
-        + A.transpose() * Y * (I - G0 * Y) * A;
-
-    double f3 = cond_inf(I + G0 * H0);
-
-    return std::max({f1, f2, f3});
-}
-
-template <int STATES, int INPUTS, int OUTPUTS>
-double gamma_opt(
-    const EMat<STATES, STATES>& A,
-    const EMat<STATES, INPUTS>& B,
-    const EMat<OUTPUTS, STATES>& C,
-    const EMat<STATES, STATES>& Q,
-    const EMat<STATES, STATES>& R)
-{
-    // Define search interval for gamma.
-    double a = 1e-6;
-    double b = 1e2;
-    double phi = (1.0 + std::sqrt(5.0)) / 2.0;
-    
-    double c = b - (b - a) / phi;
-    double d = a + (b - a) / phi;
-    
-    double Fc = F_gamma<STATES, INPUTS, OUTPUTS>(c, A, B, C, Q, R);
-    double Fd = F_gamma<STATES, INPUTS, OUTPUTS>(d, A, B, C, Q, R);
-    
-    // Perform exactly 4 iterations.
-    for (int i = 0; i < 5; ++i) {
-        if (Fc < Fd) {
-            b = d;
-            d = c;
-            Fd = Fc;
-            c = b - (b - a) / phi;
-            Fc = F_gamma<STATES, INPUTS, OUTPUTS>(c, A, B, C, Q, R);
-        } else {
-            a = c;
-            c = d;
-            Fc = Fd;
-            d = a + (b - a) / phi;
-            Fd = F_gamma<STATES, INPUTS, OUTPUTS>(d, A, B, C, Q, R);
-        }
-    }
-    
-    return (a + b) / 2.0;
-}
-
 /**
- * Solves the DARE for the
+ * Computes the unique stabilizing solution X to the discrete-time algebraic
+ * Riccati equation:
+ *
+ *   AᵀXA − X − AᵀXB(BᵀXB + R)⁻¹BᵀXA + Q = 0
+ *
+ * This internal function skips expensive precondition checks for increased
+ * performance. The solver may hang if any of the following occur:
+ * <ul>
+ *   <li>Q isn't symmetric positive semidefinite</li>
+ *   <li>R isn't symmetric positive definite</li>
+ *   <li>The (A, B) pair isn't stabilizable</li>
+ *   <li>The (A, C) pair where Q = CᵀC isn't detectable</li>
+ * </ul>
+ * Only use this function if you're sure the preconditions are met.
+ *
+ * @tparam States Number of states.
+ * @tparam Inputs Number of inputs.
+ * @param A The system matrix.
+ * @param B The input matrix.
+ * @param Q The state cost matrix.
+ * @param R_llt The LLT decomposition of the input cost matrix.
+ * @return Solution to the DARE.
  */
-template <int STATES, int INPUTS, int OUTPUTS>
-EMat<STATES, STATES> solve_DARE(
-  const EMat<STATES, STATES> &A, const EMat<STATES, INPUTS> &B, const EMat<OUTPUTS, STATES> &C,
-  const EMat<STATES, STATES> &Q, const EMat<STATES, STATES> &R
-) {
-    EMat<STATES, STATES> I = EMat<STATES, STATES>::Identity();
+template <int States, int Inputs>
+Eigen::Matrix<double, States, States> DARE(
+    const Eigen::Matrix<double, States, States>& A,
+    const Eigen::Matrix<double, States, Inputs>& B,
+    const Eigen::Matrix<double, States, States>& Q,
+    const Eigen::LLT<Eigen::Matrix<double, Inputs, Inputs>>& R_llt) {
+  using StateMatrix = Eigen::Matrix<double, States, States>;
 
-    double gamma = gamma_opt<STATES, INPUTS, OUTPUTS>(A, B, C, Q, R);
-    EMat<STATES, STATES> Y = gamma * I;
+  // Implements SDA algorithm on p. 5 of [1] (initial A, G, H are from (4)).
+  //
+  // [1] E. K.-W. Chu, H.-Y. Fan, W.-W. Lin & C.-S. Wang "Structure-Preserving
+  //     Algorithms for Periodic Discrete-Time Algebraic Riccati Equations",
+  //     International Journal of Control, 77:8, 767-788, 2004.
+  //     DOI: 10.1080/00207170410001714988
 
-    EMat<INPUTS, INPUTS> R_tilde = R + (B.transpose() * Y * B);
-    auto R_tilde_ldlt = R_tilde.ldlt();
+  // A₀ = A
+  // G₀ = BR⁻¹Bᵀ
+  // H₀ = Q
+  StateMatrix A_k = A;
+  StateMatrix G_k = B * R_llt.solve(B.transpose());
+  StateMatrix H_k;
+  StateMatrix H_k1 = Q;
 
-    EMat<STATES, STATES> G_k = B * R_tilde_ldlt.solve(B.transpose());
-    EMat<STATES, STATES> A_k = (I - G_k * Y) * A - B * R_tilde_ldlt.solve(C);
-    EMat<STATES, STATES> H_k = Q - Y - C.transpose() * R_tilde_ldlt.solve(B.transpose() * Y * A) -
-                               A.transpose() * Y * B * R_tilde_ldlt.solve(C) - C.transpose() * R_tilde_ldlt.solve(C) +
-                               A.transpose() * Y * (I - G_k * Y) * A;
+  do {
+    H_k = H_k1;
 
-    EMat<STATES, STATES> G_k1;
-    EMat<STATES, STATES> A_k1;
-    EMat<STATES, STATES> H_k1;
+    // W = I + GₖHₖ
+    StateMatrix W = StateMatrix::Identity(H_k.rows(), H_k.cols()) + G_k * H_k;
 
-    double error = 1;
+    auto W_solver = W.lu();
 
-    while (error > 1e-10) {
-        EMat<STATES, STATES> inv_I_GH = (I + G_k * H_k).ldlt().solve(I);
-        EMat<STATES, STATES> inv_I_HG = (I + H_k * G_k).ldlt().solve(I);
+    // Solve WV₁ = Aₖ for V₁
+    StateMatrix V_1 = W_solver.solve(A_k);
 
-        A_k1 = A_k * inv_I_GH * A_k.transpose();
-        G_k1 = G_k + (A_k * G_k * inv_I_HG * A_k.transpose());
-        H_k1 = H_k + (A_k.transpose() * inv_I_HG * H_k * A_k);
+    // Solve V₂Wᵀ = Gₖ for V₂
+    //
+    // We want to put V₂Wᵀ = Gₖ into Ax = b form so we can solve it more
+    // efficiently.
+    //
+    // V₂Wᵀ = Gₖ
+    // (V₂Wᵀ)ᵀ = Gₖᵀ
+    // WV₂ᵀ = Gₖᵀ
+    //
+    // The solution of Ax = b can be found via x = A.solve(b).
+    //
+    // V₂ᵀ = W.solve(Gₖᵀ)
+    // V₂ = W.solve(Gₖᵀ)ᵀ
+    StateMatrix V_2 = W_solver.solve(G_k.transpose()).transpose();
 
-        error = (H_k1 - H_k).norm() / (std::max(1.0, H_k.norm()));
+    // Gₖ₊₁ = Gₖ + AₖV₂Aₖᵀ
+    // Hₖ₊₁ = Hₖ + V₁ᵀHₖAₖ
+    // Aₖ₊₁ = AₖV₁
+    G_k += A_k * V_2 * A_k.transpose();
+    H_k1 = H_k + V_1.transpose() * H_k * A_k;
+    A_k *= V_1;
 
-        A_k = A_k1;
-        G_k = G_k1;
-        H_k = H_k1;
-    }
+    // while |Hₖ₊₁ − Hₖ| > ε |Hₖ₊₁|
+  } while ((H_k1 - H_k).norm() > 1e-10 * H_k1.norm());
 
-    EMat<STATES, STATES> X = H_k + Y;
-    return X;
+  return H_k1;
 }
