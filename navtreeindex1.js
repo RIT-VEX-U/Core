@@ -1,10 +1,6 @@
 var NAVTREEINDEX1 =
 {
-"classRotation2d.html#accd8639132fcee6d47c31001c263edf4":[1,0,45,12],
-"classRotation2d.html#ad29a16c93dd9a0fa1305273ac57ed92e":[1,0,45,17],
-"classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555":[1,0,45,10],
-"classRotation2d.html#aeb95183483206912d4f8c53e34ac6fb0":[1,0,45,8],
-"classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272":[1,0,45,19],
+"classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272":[1,0,45,17],
 "classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b":[1,0,45,15],
 "classScaledSphericalSimplexSigmaPoints.html":[1,0,46],
 "classScaledSphericalSimplexSigmaPoints.html#a3dc2a94e709b720d8a544c09a0bfaf69":[1,0,46,5],
@@ -249,5 +245,9 @@ var NAVTREEINDEX1 =
 "structFeedForward_1_1ff__config__t.html#a1eab464040edd69a63b528d6d21f0644":[1,0,17,0,1],
 "structFeedForward_1_1ff__config__t.html#a8528f04936dbcbf0bc406d0bfc6b8428":[1,0,17,0,0],
 "structFeedForward_1_1ff__config__t.html#af140ce6afc074040571d229b6a455c50":[1,0,17,0,2],
-"structFeedForward_1_1ff__config__t.html#afd4e01b20b64750ad2604b17ac10f57e":[1,0,17,0,3]
+"structFeedForward_1_1ff__config__t.html#afd4e01b20b64750ad2604b17ac10f57e":[1,0,17,0,3],
+"structLift_1_1lift__cfg__t.html":[1,0,28,0],
+"structMecanumDrive_1_1mecanumdrive__config__t.html":[1,0,30,0],
+"structMotionController_1_1m__profile__cfg__t.html":[1,0,32,0],
+"structMotionController_1_1m__profile__cfg__t.html#a2b6415c29fcab4f9b2ccff067a390baa":[1,0,32,0,3]
 };
