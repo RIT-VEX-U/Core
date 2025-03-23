@@ -36,10 +36,8 @@ var hierarchy =
     [ "GenericAuto", "classGenericAuto.html", null ],
     [ "PurePursuit::hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
     [ "InOrder", "classInOrder.html", null ],
-    [ "KalmanFilter< STATES, INPUTS, OUTPUTS >", "classKalmanFilter.html", null ],
     [ "Lift< T >", "classLift.html", null ],
     [ "Lift< T >::lift_cfg_t", "structLift_1_1lift__cfg__t.html", null ],
-    [ "LinearSystem< STATES, INPUTS, OUTPUTS >", "classLinearSystem.html", null ],
     [ "Logger", "classLogger.html", null ],
     [ "MotionController::m_profile_cfg_t", "structMotionController_1_1m__profile__cfg__t.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::MaybeMessage", "classStateMachine_1_1MaybeMessage.html", null ],
@@ -49,6 +47,7 @@ var hierarchy =
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
+      [ "OdometrySerial", "classOdometrySerial.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "OdomSetPosition", "classOdomSetPosition.html", null ],
@@ -73,6 +72,7 @@ var hierarchy =
     [ "screen::SliderWidget", "classscreen_1_1SliderWidget.html", null ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", null ],
     [ "PurePursuit::spline", "structPurePursuit_1_1spline.html", null ],
+    [ "SquareRootUnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classSquareRootUnscentedKalmanFilter.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::State", "structStateMachine_1_1State.html", null ],
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >", "classStateMachine.html", null ],
     [ "TankDrive", "classTankDrive.html", null ],
@@ -83,7 +83,6 @@ var hierarchy =
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],
     [ "Twist2d", "classTwist2d.html", null ],
-    [ "UnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classUnscentedKalmanFilter.html", null ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
 ];
