@@ -18,7 +18,7 @@ static int x;
 static int y;
 static bool frame_ready = false;
 static plm_t *plm;
-const int32_t video_player_priority = vex::thread::threadPrioritylow;
+const int32_t video_player_priority = 2;
 static int32_t file_size = 0;
 static bool should_restart = false;
 
