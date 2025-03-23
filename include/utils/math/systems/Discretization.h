@@ -21,17 +21,16 @@ std::tuple<EMat<STATES, STATES>, EMat<STATES, INPUTS>> discretize_AB(EMat<STATES
     // Form the intermediate matrix U
     //
     //       [A B]
-    //   U = [0 0]
+    //   M = [0 0]
     //
-    EMat<STATES + INPUTS, STATES + INPUTS> U;
-    U.template block<STATES, STATES>(0, 0) = Ac;
-    U.template block<STATES, INPUTS>(0, STATES) = Bc;
-    U.template block<INPUTS, STATES + INPUTS>(STATES, 0).setZero();
+    EMat<STATES + INPUTS, STATES + INPUTS> M;
+    M.template block<STATES, STATES>(0, 0) = Ac;
+    M.template block<STATES, INPUTS>(0, STATES) = Bc;
+    M.template block<INPUTS, STATES + INPUTS>(STATES, 0).setZero();
 
     //
-    //  [A B]
-    //  [0 0] * T     [Ad Bd]
-    // e           =  [0   I]
+    //  M * T   [Ad Bd]
+    // e      = [0   I]
     //
     EMat<STATES + INPUTS, STATES + INPUTS> phi = (U * dt).exp();
 
