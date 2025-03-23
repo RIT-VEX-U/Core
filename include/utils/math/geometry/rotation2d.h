@@ -67,21 +67,11 @@ class Rotation2d {
     double radians() const;
 
     /**
-     * sets the angle value in radians
-     */
-    void setRad(double radRot);
-
-    /**
      * Returns the degree angle value.
      *
      * @return the degree angle value.
      */
     double degrees() const;
-
-    /**
-     * sets the angle value in degrees
-     */
-    void setDeg(double degRot);
 
     /**
      * Returns the revolution angle value.

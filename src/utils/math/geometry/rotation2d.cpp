@@ -65,8 +65,6 @@ Rotation2d from_revolutions(const double &revolutions) { return Rotation2d(revol
  */
 double Rotation2d::radians() const { return m_radians; }
 
-void Rotation2d::setRad(double radRot) { this->m_radians = radRot; }
-
 /**
  * Returns the degree angle value.
  *
@@ -74,7 +72,6 @@ void Rotation2d::setRad(double radRot) { this->m_radians = radRot; }
  */
 double Rotation2d::degrees() const { return 360 * (m_radians / M_TWOPI); }
 
-void Rotation2d::setDeg(double degRot) { this->m_radians = deg2rad(degRot); }
 /**
  * Returns the revolution angle value.
  *
