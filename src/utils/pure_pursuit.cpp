@@ -23,13 +23,17 @@ PurePursuit::Path::Path(std::vector<Translation2d> points, double radius) {
             }
             for (double t1 = 0; t1 <= 1; t1 += radius / segment_i_dist) {
                 Translation2d p1(0, 0);
-                p1.setX(points[i].x() + t1 * (points[i + 1].x() - points[i].x()));
-                p1.setY(points[i].y() + t1 * (points[i + 1].y() - points[i].y()));
+                p1 = Translation2d(
+                  (points[i].x() + t1 * (points[i + 1].x() - points[i].x())),
+                  (points[i].y() + t1 * (points[i + 1].y() - points[i].y()))
+                );
 
                 for (double t2 = 0; t2 <= 1; t2 += radius / segment_j_dist) {
                     Translation2d p2(0, 0);
-                    p2.setX(points[j].x() + t2 * (points[j + 1].x() - points[j].x()));
-                    p2.setY(points[j].y() + t2 * (points[j + 1].y() - points[j].y()));
+                    p2 = Translation2d(
+                      (points[j].x() + t2 * (points[j + 1].x() - points[j].x())),
+                      (points[j].y() + t2 * (points[j + 1].y() - points[j].y()))
+                    );
 
                     if (p1.distance(p2) < radius) {
                         this->valid = false;
@@ -189,11 +193,9 @@ PurePursuit::inject_path(const std::vector<Translation2d> &path, double spacing)
 
             Translation2d y_i_saved = y_i;
 
-            y_i.setX(
-              y_i.x() + weight_data * (x_i.x() - y_i.x()) + weight_smooth * (y_next.x() + y_prev.x() - (2 * y_i.x()))
-            );
-            y_i.setY(
-              y_i.y() + weight_data * (x_i.y() - y_i.y()) + weight_smooth * (y_next.y() + y_prev.y() - (2 * y_i.y()))
+            y_i = Translation2d(
+              (y_i.x() + weight_data * (x_i.x() - y_i.x()) + weight_smooth * (y_next.x() + y_prev.x() - (2 * y_i.x()))),
+              (y_i.y() + weight_data * (x_i.y() - y_i.y()) + weight_smooth * (y_next.y() + y_prev.y() - (2 * y_i.y())))
             );
             new_path[i] = y_i;
 

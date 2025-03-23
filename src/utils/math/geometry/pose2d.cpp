@@ -67,7 +67,6 @@ Translation2d Pose2d::translation() const { return m_translation; }
  * @return the x value of the translational component.
  */
 double Pose2d::x() const { return m_translation.x(); }
-void Pose2d::setX(double x) { m_translation.setX(x); }
 
 /**
  * Returns the y value of the translational component.
@@ -75,7 +74,6 @@ void Pose2d::setX(double x) { m_translation.setX(x); }
  * @return the y value of the translational component.
  */
 double Pose2d::y() const { return m_translation.y(); }
-void Pose2d::setY(double y) { m_translation.setY(y); }
 
 /**
  * Returns the rotational component.
@@ -84,9 +82,9 @@ void Pose2d::setY(double y) { m_translation.setY(y); }
  */
 Rotation2d Pose2d::rotation() const { return m_rotation; }
 
-void Pose2d::setRotationRad(double radRot) { this->m_rotation.setRad(radRot); }
+void Pose2d::setRotationRad(double radRot) { this->m_rotation = Rotation2d(radRot); }
 
-void Pose2d::setRotationDeg(double degRot) { this->m_rotation.setDeg(degRot); }
+void Pose2d::setRotationDeg(double degRot) { this->m_rotation = Rotation2d(deg2rad(degRot)); }
 
 /**
  * Compares this to another pose.
