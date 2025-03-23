@@ -62,7 +62,7 @@ struct hermite_point {
 
     Translation2d getPoint() const { return Translation2d(x, y); }
 
-    Eigen::Vector<double, 2> getTangent() const { return Eigen::Vector<double, 2>(dir, mag); }
+    Translation2d getTangent() const { return Translation2d(mag, Rotation2d(dir)); }
 };
 
 /**

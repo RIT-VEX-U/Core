@@ -147,16 +147,15 @@ PurePursuit::inject_path(const std::vector<Translation2d> &path, double spacing)
         Translation2d end = path[i + 1];
 
         Translation2d diff = end - start;
-        Translation2d vector = Translation2d(diff);
 
-        int num_points = ceil(vector.get_mag() / spacing);
+        int num_points = ceil(diff.norm() / spacing);
 
         // This is the vector between each point
-        vector = vector.normalize() * spacing;
+        diff = diff.normalize() * spacing;
 
         for (int j = 0; j < num_points; j++) {
             // We take the start point and add additional vectors
-            Translation2d path_point = (Translation2d(start) + vector * j);
+            Translation2d path_point = (Translation2d(start) + diff * j);
             new_path.push_back(path_point);
         }
     }
@@ -219,11 +218,11 @@ PurePursuit::smooth_path_hermite(const std::vector<hermite_point> &path, double 
         for (int t = 0; t < steps; t++) {
             // Storing the start and end points and slopes at those points as Translation2ds.
             Translation2d tmp = path[i].getPoint();
-            Eigen::Vector<double, 2> p1 = Eigen::Vector<double, 2>(tmp.x(), tmp.y());
+            Translation2d p1 = Translation2d(tmp.x(), tmp.y());
             tmp = path[i + 1].getPoint();
-            Eigen::Vector<double, 2> p2 = Eigen::Vector<double, 2>(tmp.x(), tmp.y());
-            Eigen::Vector<double, 2> t1 = path[i].getTangent();
-            Eigen::Vector<double, 2> t2 = path[i + 1].getTangent();
+            Translation2d p2 = Translation2d(tmp.x(), tmp.y());
+            Translation2d t1 = path[i].getTangent();
+            Translation2d t2 = path[i + 1].getTangent();
 
             // Scale s from 0.0 to 1.0
             double s = (double)t / (double)steps;
@@ -235,9 +234,8 @@ PurePursuit::smooth_path_hermite(const std::vector<hermite_point> &path, double 
             double h4 = pow(s, 3) - pow(s, 2);
 
             // Calculate the point
-            Eigen::Vector<double, 2> pv = p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4;
-            Translation2d p{pv};
-            new_path.push_back(p);
+            Translation2d pv = p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4;
+            new_path.push_back(pv);
         }
     }
     // Adding last point

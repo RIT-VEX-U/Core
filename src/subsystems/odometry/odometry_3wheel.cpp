@@ -110,11 +110,10 @@ Pose2d Odometry3Wheel::calculate_new_pos(
     // Rotate the local displacement to match the old robot's rotation
     double dir_delta_from_trans_rad = local_displacement.theta().radians() - (PI / 2.0);
     double global_dir_rad = wrap_angle_rad(dir_delta_from_trans_rad + old_pos.rotation().radians());
-    Eigen::Vector<double, 2> global_displacement(global_dir_rad, local_displacement.get_mag());
+    Translation2d global_displacement(local_displacement.norm(), Rotation2d(global_dir_rad));
 
     // Tack on the position change to the old position
-    Eigen::Vector<double, 2> old_pos_vec(old_pos.x(), old_pos.y());
-    Eigen::Vector<double, 2> new_pos_vec = old_pos_vec + global_displacement;
+    Translation2d new_pos_vec = old_pos.translation() + global_displacement;
 
     retval = Pose2d(new_pos_vec.x(), new_pos_vec.y(), wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
 
