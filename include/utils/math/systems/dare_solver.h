@@ -20,8 +20,8 @@
  * </ul>
  * Only use this function if you're sure the preconditions are met.
  *
- * This algorithm is taken directly from WPILib, as it is faster than the
- * implementation of a different algorith I wrote.
+ * This algorithm is taken directly from WPILib. The version that I wrote was
+ * slower, unsurprisingly, so we will use theirs instead.
  *
  * @tparam STATES Number of STATES.
  * @tparam INPUTS Number of INPUTS.
@@ -36,6 +36,7 @@ EMat<STATES, STATES> DARE(
   const EMat<STATES, STATES> &A, const EMat<STATES, INPUTS> &B, const EMat<STATES, STATES> &Q,
   const EMat<INPUTS, INPUTS> &R
 ) {
+    const Eigen::LLT<EMat<INPUTS, INPUTS>> R_llt = R.llt();
     using StateMatrix = EMat<STATES, STATES>;
 
     // Implements SDA algorithm on p. 5 of [1] (initial A, G, H are from (4)).
@@ -54,7 +55,7 @@ EMat<STATES, STATES> DARE(
     StateMatrix H_k;
     StateMatrix H_k1 = Q;
 
-    const Eigen::LLT<EMat<INPUTS, INPUTS>> R_llt = R.llt();
+
 
     do {
         H_k = H_k1;
@@ -91,7 +92,7 @@ EMat<STATES, STATES> DARE(
         
 
         // while |Hₖ₊₁ − Hₖ| > ε |Hₖ₊₁|
-    } while ((H_k1 - H_k).norm() > 1e-10 * H_k1.norm());
+    } while ((H_k1 - H_k).norm() > 1e-4 * H_k1.norm());
 
     return H_k1;
 }
