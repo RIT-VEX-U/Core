@@ -32,7 +32,7 @@ std::tuple<EMat<STATES, STATES>, EMat<STATES, INPUTS>> discretize_AB(EMat<STATES
     //  M * T   [Ad Bd]
     // e      = [0   I]
     //
-    EMat<STATES + INPUTS, STATES + INPUTS> phi = (U * dt).exp();
+    EMat<STATES + INPUTS, STATES + INPUTS> phi = (M * dt).exp();
 
     // Extract Ad and Bd from phi and put them in a tuple
     return std::make_tuple(phi.template block<STATES, STATES>(0, 0), phi.template block<STATES, INPUTS>(0, STATES));
