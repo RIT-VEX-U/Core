@@ -237,12 +237,12 @@ bool TankDrive::drive_forward(
             inches = fabs(inches);
         }
         // Use vector math to get an X and Y
-        Eigen::Vector<double, 2> cur_pos_vec(cur_pos.x(), cur_pos.y());
-        Eigen::Vector<double, 2> delta_pos_vec(cur_pos.rotation().radians(), inches);
-        Eigen::Vector<double, 2> setpt_vec = cur_pos_vec + delta_pos_vec;
+        Translation2d current_pos(cur_pos.x(), cur_pos.y());
+        Translation2d delta_pos(inches, cur_pos.rotation());
+        Translation2d setpt_vec = current_pos + delta_pos;
 
-        // Save the new X and Y valuesEigen::Vector<double, 2>
-        pos_setpt = Pose2d(setpt_vec[0], setpt_vec[1], pos_setpt.rotation());
+        // Save the new X and Y values as a Pose
+        pos_setpt = Pose2d(setpt_vec.x(), setpt_vec.y(), pos_setpt.rotation());
     }
 
     // Call the drive_to_point with updated point values

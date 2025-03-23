@@ -29,7 +29,7 @@ class TankDrive {
         TurnOnly,
     };
     /**
-     * Create the
+     * Create the TankDrive Object
      * @param left_motors left side drive motors
      * @param right_motors right side drive motors
      * @param config the configuration specification defining physical dimensions about the robot. See robot_specs_t for

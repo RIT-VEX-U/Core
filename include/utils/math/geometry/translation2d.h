@@ -87,11 +87,6 @@ class Translation2d {
     Eigen::Vector2d as_vector() const;
 
     /**
-     * @return the magnitide of the directions if it were a vector
-     */
-    double get_mag() const;
-
-    /**
      * Returns the norm/radius/magnitude/distance from origin.
      *
      * @return the norm of the translation.
@@ -99,7 +94,7 @@ class Translation2d {
     double norm() const;
 
     /**
-     * Changes the translation so that it has a vector magnitude of 1
+     * returns a translation as if it were a vector with a magnitude of 1
      *
      * @return the norm of the translation.
      */
