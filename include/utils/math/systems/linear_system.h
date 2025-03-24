@@ -44,6 +44,9 @@ class LinearSystem {
      */
     MatrixB B() { return m_Bc; }
 
+    /**
+     * Returns a tuple of A and B after being discretized.
+     */
     const std::tuple<std::tuple<MatrixA, MatrixB>> &discAB(const double &dt) { return discretize_AB(m_Ac, m_Bc, dt); }
 
     /**

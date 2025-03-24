@@ -22,6 +22,8 @@
  *
  * This algorithm is taken directly from WPILib. The version that I wrote was
  * slower, unsurprisingly, so we will use theirs instead.
+ * 
+ * This is also the algorithm used by Drake, an advanced robotics library.
  *
  * @tparam STATES Number of STATES.
  * @tparam INPUTS Number of INPUTS.
@@ -92,7 +94,7 @@ EMat<STATES, STATES> DARE(
         
 
         // while |Hₖ₊₁ − Hₖ| > ε |Hₖ₊₁|
-    } while ((H_k1 - H_k).norm() > 1e-4 * H_k1.norm());
+    } while ((H_k1 - H_k).norm() > 1e-10 * H_k1.norm());
 
     return H_k1;
 }

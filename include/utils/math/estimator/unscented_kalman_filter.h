@@ -211,7 +211,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
 
     /**
      * Resets the filter.
-     * Make sure to explicitly set S after calling this.
      */
     void reset() {
         m_xhat.setZero();

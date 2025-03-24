@@ -3,6 +3,7 @@
 #include "../core/include/utils/math/eigen_interface.h"
 #include "../vendor/eigen/unsupported/Eigen/MatrixFunctions"
 
+#include <cmath>
 #include <tuple>
 
 /**
@@ -18,7 +19,7 @@
  */
 template <int STATES, int INPUTS>
 std::tuple<EMat<STATES, STATES>, EMat<STATES, INPUTS>> discretize_AB(EMat<STATES, STATES> Ac, EMat<STATES, INPUTS> Bc, const double &dt) {
-    // Form the intermediate matrix U
+    // Form the intermediate matrix M
     //
     //       [A B]
     //   M = [0 0]
