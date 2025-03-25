@@ -460,7 +460,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
   
       // We only use the posterior state and covariance if it is more certain
       // than the prior.
-      if (m_S.trace() > S.trace()) {
+      if ((m_S * m_S.transpose()).trace() > (S * S.transpose()).trace()) {
           m_xhat = xhat;
           m_S = S;
       }
