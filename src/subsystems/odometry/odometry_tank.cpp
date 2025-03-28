@@ -161,15 +161,14 @@ Pose2d OdometryTank::calculate_new_pos(
 
     // Create a vector from the change in distance in the current direction of the robot
     // deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
-    Translation2d chg_vec(angle, dist_driven);
+    Translation2d chg_point(dist_driven, Rotation2d(angle));
 
     // Create a vector from the current position in reference to X,Y=0,0
     Translation2d curr_point(curr_pos.x(), curr_pos.y());
-    Translation2d curr_vec(curr_point.x(), curr_point.y());
 
     // Tack on the "difference" vector to the current vector
-    Translation2d new_vec = curr_vec + chg_vec;
-    new_pos = Pose2d(new_vec.x(), new_vec.y(), deg2rad(angle_deg));
+    Translation2d new_point = curr_point + chg_point;
+    new_pos = Pose2d(new_point, from_degrees(angle_deg));
 
     // Store the left and right encoder values to find the difference in the next iteration
     stored_lside_revs = lside_revs;
