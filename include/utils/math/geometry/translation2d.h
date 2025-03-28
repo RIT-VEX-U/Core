@@ -7,6 +7,8 @@
 
 #include "../core/include/utils/math/geometry/rotation2d.h"
 
+class Rotation2d;
+
 /**
  * Class representing a point in 2d space with x and y coordinates.
  *
@@ -90,6 +92,13 @@ class Translation2d {
      * @return the norm of the translation.
      */
     double norm() const;
+
+    /**
+     * returns a translation as if it were a vector with a magnitude of 1
+     *
+     * @return the norm of the translation.
+     */
+    Translation2d normalize() const;
 
     /**
      * Returns the distance between two translations.
