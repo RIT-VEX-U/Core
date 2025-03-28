@@ -17,8 +17,6 @@ var classRotation2d =
     [ "radians", "classRotation2d.html#ab556389e936ea8d53da111de7c01b444", null ],
     [ "revolutions", "classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b", null ],
     [ "rotation_matrix", "classRotation2d.html#a2a50e9824a10ab3c23b112f40e7a967a", null ],
-    [ "setDeg", "classRotation2d.html#ad29a16c93dd9a0fa1305273ac57ed92e", null ],
-    [ "setRad", "classRotation2d.html#a0fd78071836aee6923d0c859230e830b", null ],
     [ "wrapped_degrees_180", "classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272", null ],
     [ "wrapped_degrees_360", "classRotation2d.html#a8e98172af544ccce1e188cac62d19bb4", null ],
     [ "wrapped_radians_180", "classRotation2d.html#a8a59d322857035dfe0cd130eadfcde7f", null ],

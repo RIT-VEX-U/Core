@@ -17,8 +17,6 @@ var classPose2d =
     [ "rotation", "classPose2d.html#a71ae6e0e89de5263dad6e7973b0f280f", null ],
     [ "setRotationDeg", "classPose2d.html#aaa7905404d6e20b43b5cc4ceac8e5c39", null ],
     [ "setRotationRad", "classPose2d.html#a89bfdd5a85d3fb669d021efb01b7ecbc", null ],
-    [ "setX", "classPose2d.html#aa84e9dc58a00fe42893c46b4f69f160b", null ],
-    [ "setY", "classPose2d.html#a37bfaed16f7d1ab351fbf94105e87b9f", null ],
     [ "transform_by", "classPose2d.html#ac15e8a248e3fba2ba25352466ca689fb", null ],
     [ "translation", "classPose2d.html#a00c85d1780e429dfe55dc4e94999fdde", null ],
     [ "x", "classPose2d.html#a436afceb427555313642912bf3933fe9", null ],

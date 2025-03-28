@@ -36,7 +36,6 @@ var hierarchy =
     [ "GenericAuto", "classGenericAuto.html", null ],
     [ "PurePursuit::hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
     [ "InOrder", "classInOrder.html", null ],
-    [ "InterpolatingMap< KEY, VALUE >", "classInterpolatingMap.html", null ],
     [ "Lift< T >", "classLift.html", null ],
     [ "Lift< T >::lift_cfg_t", "structLift_1_1lift__cfg__t.html", null ],
     [ "Logger", "classLogger.html", null ],
@@ -48,6 +47,7 @@ var hierarchy =
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
+      [ "OdometrySerial", "classOdometrySerial.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "OdomSetPosition", "classOdomSetPosition.html", null ],
