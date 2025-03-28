@@ -1,4 +1,3 @@
-#include <Eigen/Dense>
 
 #include <cmath>
 #include <iostream>
@@ -57,8 +56,8 @@ double Twist2d::dtheta() const { return m_dtheta; }
  * @return true if each of the components are within 1e-9 of each other.
  */
 bool Twist2d::operator==(const Twist2d &other) const {
-  return std::abs(dx() - other.dx()) < 1e-9 && std::abs(dy() - other.dy()) < 1e-9 &&
-         std::abs(dtheta() - other.dtheta()) < 1e-9;
+    return std::abs(dx() - other.dx()) < 1e-9 && std::abs(dy() - other.dy()) < 1e-9 &&
+           std::abs(dtheta() - other.dtheta()) < 1e-9;
 }
 
 /**
@@ -67,7 +66,7 @@ bool Twist2d::operator==(const Twist2d &other) const {
  * @param scalar the scalar value to multiply by.
  */
 Twist2d Twist2d::operator*(const double &scalar) const {
-  return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
+    return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
 }
 
 /**
@@ -85,6 +84,6 @@ Twist2d Twist2d::operator/(const double &scalar) const { return *this * (1. / sc
  * prints "Twist2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
 std::ostream &operator<<(std::ostream &os, const Twist2d &twist) {
-  os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
-  return os;
+    os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
+    return os;
 }
