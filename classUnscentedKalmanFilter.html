@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RIT VEXU Core API: SquareRootUnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt; Class Template Reference</title>
+<title>RIT VEXU Core API: UnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -76,7 +76,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('classSquareRootUnscentedKalmanFilter.html',''); initResizable(true); });
+$(function(){initNavTree('classUnscentedKalmanFilter.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -104,55 +104,55 @@ $(function(){initNavTree('classSquareRootUnscentedKalmanFilter.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classSquareRootUnscentedKalmanFilter-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SquareRootUnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt; Class Template Reference</div></div>
+<a href="classUnscentedKalmanFilter-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">UnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="srukf_8h_source.html">srukf.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="unscented__kalman__filter_8h_source.html">unscented_kalman_filter.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afd3e14d1509b13ad2cfd30563f16184e" id="r_afd3e14d1509b13ad2cfd30563f16184e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd3e14d1509b13ad2cfd30563f16184e">SquareRootUnscentedKalmanFilter</a> (const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;f, const std::function&lt; OutputVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const WithInputIntegrator &amp;integrator, const StateVector &amp;state_stddevs, const OutputVector &amp;measurement_stddevs)</td></tr>
-<tr class="separator:afd3e14d1509b13ad2cfd30563f16184e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6933a83c834261a3f8e9ce0b47aa492" id="r_ae6933a83c834261a3f8e9ce0b47aa492"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6933a83c834261a3f8e9ce0b47aa492">SquareRootUnscentedKalmanFilter</a> (const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;f, const std::function&lt; OutputVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const WithInputIntegrator &amp;integrator, const StateVector &amp;state_stddevs, const OutputVector &amp;measurement_stddevs, const std::function&lt; StateVector(const EMat&lt; STATES, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_X, const std::function&lt; OutputVector(const EMat&lt; OUTPUTS, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;residual_func_X, const std::function&lt; OutputVector(const OutputVector &amp;, const OutputVector &amp;)&gt; &amp;residual_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;add_func_X)</td></tr>
-<tr class="separator:ae6933a83c834261a3f8e9ce0b47aa492"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96816ae886b6bffc4e980b6714a6ee9c" id="r_a96816ae886b6bffc4e980b6714a6ee9c"><td class="memItemLeft" align="right" valign="top">StateMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96816ae886b6bffc4e980b6714a6ee9c">S</a> () const</td></tr>
-<tr class="separator:a96816ae886b6bffc4e980b6714a6ee9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f57cca25fa4c557060191f0f0e9876d" id="r_a7f57cca25fa4c557060191f0f0e9876d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f57cca25fa4c557060191f0f0e9876d">S</a> (int i, int j) const</td></tr>
-<tr class="separator:a7f57cca25fa4c557060191f0f0e9876d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cf88e34b8952417af9fb9cfaef5af7d" id="r_a8cf88e34b8952417af9fb9cfaef5af7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8cf88e34b8952417af9fb9cfaef5af7d">set_S</a> (const StateMatrix &amp;<a class="el" href="#a96816ae886b6bffc4e980b6714a6ee9c">S</a>)</td></tr>
-<tr class="separator:a8cf88e34b8952417af9fb9cfaef5af7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0af67c0ae39459fce88f82b9fc22dc27" id="r_a0af67c0ae39459fce88f82b9fc22dc27"><td class="memItemLeft" align="right" valign="top">StateMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0af67c0ae39459fce88f82b9fc22dc27">P</a> () const</td></tr>
-<tr class="separator:a0af67c0ae39459fce88f82b9fc22dc27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a827dab2db283d809d6f04b0275823c84" id="r_a827dab2db283d809d6f04b0275823c84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a827dab2db283d809d6f04b0275823c84">set_P</a> (const StateMatrix &amp;<a class="el" href="#a0af67c0ae39459fce88f82b9fc22dc27">P</a>)</td></tr>
-<tr class="separator:a827dab2db283d809d6f04b0275823c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a492a3439f577ae81ca698bded59d7a20" id="r_a492a3439f577ae81ca698bded59d7a20"><td class="memItemLeft" align="right" valign="top">StateVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a492a3439f577ae81ca698bded59d7a20">xhat</a> () const</td></tr>
-<tr class="separator:a492a3439f577ae81ca698bded59d7a20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88c50fdf0b5a9df98262031f9ccaccf3" id="r_a88c50fdf0b5a9df98262031f9ccaccf3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88c50fdf0b5a9df98262031f9ccaccf3">xhat</a> (int i) const</td></tr>
-<tr class="separator:a88c50fdf0b5a9df98262031f9ccaccf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad847789908004444b3981dc7dfa03df6" id="r_ad847789908004444b3981dc7dfa03df6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad847789908004444b3981dc7dfa03df6">set_xhat</a> (const StateVector &amp;<a class="el" href="#a492a3439f577ae81ca698bded59d7a20">xhat</a>)</td></tr>
-<tr class="separator:ad847789908004444b3981dc7dfa03df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada4c26437626896b05e61a32a81e1970" id="r_ada4c26437626896b05e61a32a81e1970"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada4c26437626896b05e61a32a81e1970">set_xhat</a> (int i, double value)</td></tr>
-<tr class="separator:ada4c26437626896b05e61a32a81e1970"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b571053ad7a8ab83df6e89de5a8ac44" id="r_a2b571053ad7a8ab83df6e89de5a8ac44"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b571053ad7a8ab83df6e89de5a8ac44">reset</a> ()</td></tr>
-<tr class="separator:a2b571053ad7a8ab83df6e89de5a8ac44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85e48f109dd420b53d33340b07c0b668" id="r_a85e48f109dd420b53d33340b07c0b668"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85e48f109dd420b53d33340b07c0b668">predict</a> (const InputVector &amp;u, double dt)</td></tr>
-<tr class="separator:a85e48f109dd420b53d33340b07c0b668"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07b10dbd2972135db30a0829674f8808" id="r_a07b10dbd2972135db30a0829674f8808"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07b10dbd2972135db30a0829674f8808">correct</a> (const InputVector &amp;u, const OutputVector &amp;y)</td></tr>
-<tr class="separator:a07b10dbd2972135db30a0829674f8808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad83a3be12421f5b1f8b5570a74d1aa34" id="r_ad83a3be12421f5b1f8b5570a74d1aa34"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad83a3be12421f5b1f8b5570a74d1aa34">correct</a> (const InputVector &amp;u, const OutputVector &amp;y, const EVec&lt; OUTPUTS &gt; &amp;measurement_stddevs)</td></tr>
-<tr class="separator:ad83a3be12421f5b1f8b5570a74d1aa34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a084621a6545f23a9b8e535d448a4c21e" id="r_a084621a6545f23a9b8e535d448a4c21e"><td class="memTemplParams" colspan="2">template&lt;int ROWS&gt; </td></tr>
-<tr class="memitem:a084621a6545f23a9b8e535d448a4c21e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a084621a6545f23a9b8e535d448a4c21e">correct</a> (const InputVector &amp;u, const EVec&lt; ROWS &gt; &amp;y, const std::function&lt; EVec&lt; ROWS &gt;(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const EVec&lt; ROWS &gt; &amp;measurement_stddevs)</td></tr>
-<tr class="separator:a084621a6545f23a9b8e535d448a4c21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc74a78d8bac27d353063855272cb374" id="r_abc74a78d8bac27d353063855272cb374"><td class="memTemplParams" colspan="2">template&lt;int ROWS&gt; </td></tr>
-<tr class="memitem:abc74a78d8bac27d353063855272cb374"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#abc74a78d8bac27d353063855272cb374">correct</a> (const InputVector &amp;u, const EVec&lt; ROWS &gt; &amp;y, const std::function&lt; EVec&lt; ROWS &gt;(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const EVec&lt; ROWS &gt; measurement_stddevs, const std::function&lt; EVec&lt; ROWS &gt;(const EMat&lt; ROWS, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_Y, const std::function&lt; EVec&lt; ROWS &gt;(const EVec&lt; ROWS &gt; &amp;, const EVec&lt; ROWS &gt; &amp;)&gt; &amp;residual_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;residual_func_X, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;add_func_X)</td></tr>
-<tr class="separator:abc74a78d8bac27d353063855272cb374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54254f4e1da492783a411d8d0fac246e" id="r_a54254f4e1da492783a411d8d0fac246e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a54254f4e1da492783a411d8d0fac246e">UnscentedKalmanFilter</a> (const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;f, const std::function&lt; OutputVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const WithInputIntegrator &amp;integrator, const StateVector &amp;state_stddevs, const OutputVector &amp;measurement_stddevs)</td></tr>
+<tr class="separator:a54254f4e1da492783a411d8d0fac246e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af4f3edf1f585ef09d7c75cf926ece4" id="r_a0af4f3edf1f585ef09d7c75cf926ece4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0af4f3edf1f585ef09d7c75cf926ece4">UnscentedKalmanFilter</a> (const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;f, const std::function&lt; OutputVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const WithInputIntegrator &amp;integrator, const StateVector &amp;state_stddevs, const OutputVector &amp;measurement_stddevs, const std::function&lt; StateVector(const EMat&lt; STATES, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_X, const std::function&lt; OutputVector(const EMat&lt; OUTPUTS, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;residual_func_X, const std::function&lt; OutputVector(const OutputVector &amp;, const OutputVector &amp;)&gt; &amp;residual_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;add_func_X)</td></tr>
+<tr class="separator:a0af4f3edf1f585ef09d7c75cf926ece4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d4b288d0805b9c3775693d20a91319c" id="r_a5d4b288d0805b9c3775693d20a91319c"><td class="memItemLeft" align="right" valign="top">StateMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d4b288d0805b9c3775693d20a91319c">S</a> () const</td></tr>
+<tr class="separator:a5d4b288d0805b9c3775693d20a91319c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa055d7235293ebdeb5fefdd2e066d2e" id="r_afa055d7235293ebdeb5fefdd2e066d2e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa055d7235293ebdeb5fefdd2e066d2e">S</a> (int i, int j) const</td></tr>
+<tr class="separator:afa055d7235293ebdeb5fefdd2e066d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d8fa14d63b716c7038543f2a71e3c26" id="r_a1d8fa14d63b716c7038543f2a71e3c26"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d8fa14d63b716c7038543f2a71e3c26">set_S</a> (const StateMatrix &amp;<a class="el" href="#a5d4b288d0805b9c3775693d20a91319c">S</a>)</td></tr>
+<tr class="separator:a1d8fa14d63b716c7038543f2a71e3c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a027218d5eadb074ed99cb8d016fd1f6f" id="r_a027218d5eadb074ed99cb8d016fd1f6f"><td class="memItemLeft" align="right" valign="top">StateMatrix&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a027218d5eadb074ed99cb8d016fd1f6f">P</a> () const</td></tr>
+<tr class="separator:a027218d5eadb074ed99cb8d016fd1f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a257de4ce504ece1467e4dcfd54c9f22c" id="r_a257de4ce504ece1467e4dcfd54c9f22c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a257de4ce504ece1467e4dcfd54c9f22c">set_P</a> (const StateMatrix &amp;<a class="el" href="#a027218d5eadb074ed99cb8d016fd1f6f">P</a>)</td></tr>
+<tr class="separator:a257de4ce504ece1467e4dcfd54c9f22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3026b4beba92635252d1cfe327bcea55" id="r_a3026b4beba92635252d1cfe327bcea55"><td class="memItemLeft" align="right" valign="top">StateVector&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3026b4beba92635252d1cfe327bcea55">xhat</a> () const</td></tr>
+<tr class="separator:a3026b4beba92635252d1cfe327bcea55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b277d4fad6c919ba7aabd9a4efa3349" id="r_a6b277d4fad6c919ba7aabd9a4efa3349"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b277d4fad6c919ba7aabd9a4efa3349">xhat</a> (int i) const</td></tr>
+<tr class="separator:a6b277d4fad6c919ba7aabd9a4efa3349"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8963eab55252983347ec360649a2a2fb" id="r_a8963eab55252983347ec360649a2a2fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8963eab55252983347ec360649a2a2fb">set_xhat</a> (const StateVector &amp;<a class="el" href="#a3026b4beba92635252d1cfe327bcea55">xhat</a>)</td></tr>
+<tr class="separator:a8963eab55252983347ec360649a2a2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21405d8aa4767f9042698927edfa2482" id="r_a21405d8aa4767f9042698927edfa2482"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a21405d8aa4767f9042698927edfa2482">set_xhat</a> (int i, double value)</td></tr>
+<tr class="separator:a21405d8aa4767f9042698927edfa2482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795eb695962a227159cb555b6e9f69c9" id="r_a795eb695962a227159cb555b6e9f69c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a795eb695962a227159cb555b6e9f69c9">reset</a> ()</td></tr>
+<tr class="separator:a795eb695962a227159cb555b6e9f69c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b96e330af54b5fb08accccf850b5d6f" id="r_a6b96e330af54b5fb08accccf850b5d6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6b96e330af54b5fb08accccf850b5d6f">predict</a> (const InputVector &amp;u, double dt)</td></tr>
+<tr class="separator:a6b96e330af54b5fb08accccf850b5d6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afec03a80fde19c58bd8a87a5d3939895" id="r_afec03a80fde19c58bd8a87a5d3939895"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afec03a80fde19c58bd8a87a5d3939895">correct</a> (const InputVector &amp;u, const OutputVector &amp;y)</td></tr>
+<tr class="separator:afec03a80fde19c58bd8a87a5d3939895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdcfcb9d65f9664591f97ebed460df88" id="r_afdcfcb9d65f9664591f97ebed460df88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afdcfcb9d65f9664591f97ebed460df88">correct</a> (const InputVector &amp;u, const OutputVector &amp;y, const EVec&lt; OUTPUTS &gt; &amp;measurement_stddevs)</td></tr>
+<tr class="separator:afdcfcb9d65f9664591f97ebed460df88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f68eb4b521ecafe700a8d38b7456ccb" id="r_a4f68eb4b521ecafe700a8d38b7456ccb"><td class="memTemplParams" colspan="2">template&lt;int ROWS&gt; </td></tr>
+<tr class="memitem:a4f68eb4b521ecafe700a8d38b7456ccb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a4f68eb4b521ecafe700a8d38b7456ccb">correct</a> (const InputVector &amp;u, const EVec&lt; ROWS &gt; &amp;y, const std::function&lt; EVec&lt; ROWS &gt;(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const EVec&lt; ROWS &gt; &amp;measurement_stddevs)</td></tr>
+<tr class="separator:a4f68eb4b521ecafe700a8d38b7456ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e6f4ca6752cf901c5f77ab8be0db1c" id="r_aa3e6f4ca6752cf901c5f77ab8be0db1c"><td class="memTemplParams" colspan="2">template&lt;int ROWS&gt; </td></tr>
+<tr class="memitem:aa3e6f4ca6752cf901c5f77ab8be0db1c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aa3e6f4ca6752cf901c5f77ab8be0db1c">correct</a> (const InputVector &amp;u, const EVec&lt; ROWS &gt; &amp;y, const std::function&lt; EVec&lt; ROWS &gt;(const StateVector &amp;, const InputVector &amp;)&gt; &amp;h, const EVec&lt; ROWS &gt; measurement_stddevs, const std::function&lt; EVec&lt; ROWS &gt;(const EMat&lt; ROWS, NUM_SIGMAS &gt; &amp;, const EVec&lt; NUM_SIGMAS &gt; &amp;)&gt; &amp;mean_func_Y, const std::function&lt; EVec&lt; ROWS &gt;(const EVec&lt; ROWS &gt; &amp;, const EVec&lt; ROWS &gt; &amp;)&gt; &amp;residual_func_Y, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;residual_func_X, const std::function&lt; StateVector(const StateVector &amp;, const StateVector &amp;)&gt; &amp;add_func_X)</td></tr>
+<tr class="separator:aa3e6f4ca6752cf901c5f77ab8be0db1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;int STATES, int INPUTS, int OUTPUTS&gt;<br />
-class SquareRootUnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt;</div><p>Kalman filters combine predictions from a model and measurements to estimate a system's true state.</p>
+class UnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt;</div><p>Kalman filters combine predictions from a model and measurements to estimate a system's true state.</p>
 <p>The Unscented Kalman <a class="el" href="classFilter.html">Filter</a> is a nonlinear estimator, meaning that the model used to predict how the state changes over time can be nonlinear. The model that determines the expected measurement given the current state can also be nonlinear.</p>
 <p>At each timestep, sigma points are generated close to the mean, they are all propagated forward in time according to the nonlinear model. The Unscented Transform uses the propagated sigma points to compute the prior state and covariance.</p>
 <p>When correcting the state and covariance with a measurement, sigma points are again generated, but are transformed into the measurement space using the measurement function. A Kalman gain matrix K is then computed, and used to update the state and covariance.</p>
@@ -170,8 +170,8 @@ class SquareRootUnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt;</div><p>K
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afd3e14d1509b13ad2cfd30563f16184e" name="afd3e14d1509b13ad2cfd30563f16184e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd3e14d1509b13ad2cfd30563f16184e">&#9670;&#160;</a></span>SquareRootUnscentedKalmanFilter() <span class="overload">[1/2]</span></h2>
+<a id="a54254f4e1da492783a411d8d0fac246e" name="a54254f4e1da492783a411d8d0fac246e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54254f4e1da492783a411d8d0fac246e">&#9670;&#160;</a></span>UnscentedKalmanFilter() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,7 +182,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;<a class="el" href="classSquareRootUnscentedKalmanFilter.html">::SquareRootUnscentedKalmanFilter</a> </td>
+          <td class="memname"><a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;<a class="el" href="classUnscentedKalmanFilter.html">::UnscentedKalmanFilter</a> </td>
           <td>(</td>
           <td class="paramtype">const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>f</em></span>, </td>
         </tr>
@@ -227,8 +227,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="ae6933a83c834261a3f8e9ce0b47aa492" name="ae6933a83c834261a3f8e9ce0b47aa492"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6933a83c834261a3f8e9ce0b47aa492">&#9670;&#160;</a></span>SquareRootUnscentedKalmanFilter() <span class="overload">[2/2]</span></h2>
+<a id="a0af4f3edf1f585ef09d7c75cf926ece4" name="a0af4f3edf1f585ef09d7c75cf926ece4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0af4f3edf1f585ef09d7c75cf926ece4">&#9670;&#160;</a></span>UnscentedKalmanFilter() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -239,7 +239,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;<a class="el" href="classSquareRootUnscentedKalmanFilter.html">::SquareRootUnscentedKalmanFilter</a> </td>
+          <td class="memname"><a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;<a class="el" href="classUnscentedKalmanFilter.html">::UnscentedKalmanFilter</a> </td>
           <td>(</td>
           <td class="paramtype">const std::function&lt; StateVector(const StateVector &amp;, const InputVector &amp;)&gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>f</em></span>, </td>
         </tr>
@@ -315,8 +315,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a084621a6545f23a9b8e535d448a4c21e" name="a084621a6545f23a9b8e535d448a4c21e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a084621a6545f23a9b8e535d448a4c21e">&#9670;&#160;</a></span>correct() <span class="overload">[1/4]</span></h2>
+<a id="a4f68eb4b521ecafe700a8d38b7456ccb" name="a4f68eb4b521ecafe700a8d38b7456ccb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f68eb4b521ecafe700a8d38b7456ccb">&#9670;&#160;</a></span>correct() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -329,7 +329,7 @@ template&lt;int ROWS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
           <td>(</td>
           <td class="paramtype">const InputVector &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span>, </td>
         </tr>
@@ -368,8 +368,8 @@ template&lt;int ROWS&gt; </div>
 
 </div>
 </div>
-<a id="abc74a78d8bac27d353063855272cb374" name="abc74a78d8bac27d353063855272cb374"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc74a78d8bac27d353063855272cb374">&#9670;&#160;</a></span>correct() <span class="overload">[2/4]</span></h2>
+<a id="aa3e6f4ca6752cf901c5f77ab8be0db1c" name="aa3e6f4ca6752cf901c5f77ab8be0db1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3e6f4ca6752cf901c5f77ab8be0db1c">&#9670;&#160;</a></span>correct() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -382,7 +382,7 @@ template&lt;int ROWS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
           <td>(</td>
           <td class="paramtype">const InputVector &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span>, </td>
         </tr>
@@ -445,8 +445,8 @@ template&lt;int ROWS&gt; </div>
 
 </div>
 </div>
-<a id="a07b10dbd2972135db30a0829674f8808" name="a07b10dbd2972135db30a0829674f8808"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07b10dbd2972135db30a0829674f8808">&#9670;&#160;</a></span>correct() <span class="overload">[3/4]</span></h2>
+<a id="afec03a80fde19c58bd8a87a5d3939895" name="afec03a80fde19c58bd8a87a5d3939895"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afec03a80fde19c58bd8a87a5d3939895">&#9670;&#160;</a></span>correct() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -457,7 +457,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
           <td>(</td>
           <td class="paramtype">const InputVector &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span>, </td>
         </tr>
@@ -484,8 +484,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="ad83a3be12421f5b1f8b5570a74d1aa34" name="ad83a3be12421f5b1f8b5570a74d1aa34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad83a3be12421f5b1f8b5570a74d1aa34">&#9670;&#160;</a></span>correct() <span class="overload">[4/4]</span></h2>
+<a id="afdcfcb9d65f9664591f97ebed460df88" name="afdcfcb9d65f9664591f97ebed460df88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdcfcb9d65f9664591f97ebed460df88">&#9670;&#160;</a></span>correct() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -496,7 +496,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::correct </td>
           <td>(</td>
           <td class="paramtype">const InputVector &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span>, </td>
         </tr>
@@ -529,8 +529,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a0af67c0ae39459fce88f82b9fc22dc27" name="a0af67c0ae39459fce88f82b9fc22dc27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0af67c0ae39459fce88f82b9fc22dc27">&#9670;&#160;</a></span>P()</h2>
+<a id="a027218d5eadb074ed99cb8d016fd1f6f" name="a027218d5eadb074ed99cb8d016fd1f6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a027218d5eadb074ed99cb8d016fd1f6f">&#9670;&#160;</a></span>P()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -541,7 +541,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">StateMatrix <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::P </td>
+          <td class="memname">StateMatrix <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::P </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -557,8 +557,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a85e48f109dd420b53d33340b07c0b668" name="a85e48f109dd420b53d33340b07c0b668"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85e48f109dd420b53d33340b07c0b668">&#9670;&#160;</a></span>predict()</h2>
+<a id="a6b96e330af54b5fb08accccf850b5d6f" name="a6b96e330af54b5fb08accccf850b5d6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b96e330af54b5fb08accccf850b5d6f">&#9670;&#160;</a></span>predict()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -569,7 +569,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::predict </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::predict </td>
           <td>(</td>
           <td class="paramtype">const InputVector &amp;</td>          <td class="paramname"><span class="paramname"><em>u</em></span>, </td>
         </tr>
@@ -596,8 +596,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a2b571053ad7a8ab83df6e89de5a8ac44" name="a2b571053ad7a8ab83df6e89de5a8ac44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b571053ad7a8ab83df6e89de5a8ac44">&#9670;&#160;</a></span>reset()</h2>
+<a id="a795eb695962a227159cb555b6e9f69c9" name="a795eb695962a227159cb555b6e9f69c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a795eb695962a227159cb555b6e9f69c9">&#9670;&#160;</a></span>reset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -608,7 +608,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::reset </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::reset </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -620,12 +620,12 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Resets the filter. Make sure to explicitly set S after calling this. </p>
+<p>Resets the filter. </p>
 
 </div>
 </div>
-<a id="a96816ae886b6bffc4e980b6714a6ee9c" name="a96816ae886b6bffc4e980b6714a6ee9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96816ae886b6bffc4e980b6714a6ee9c">&#9670;&#160;</a></span>S() <span class="overload">[1/2]</span></h2>
+<a id="a5d4b288d0805b9c3775693d20a91319c" name="a5d4b288d0805b9c3775693d20a91319c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d4b288d0805b9c3775693d20a91319c">&#9670;&#160;</a></span>S() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -636,7 +636,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">StateMatrix <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::S </td>
+          <td class="memname">StateMatrix <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::S </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -652,8 +652,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a7f57cca25fa4c557060191f0f0e9876d" name="a7f57cca25fa4c557060191f0f0e9876d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f57cca25fa4c557060191f0f0e9876d">&#9670;&#160;</a></span>S() <span class="overload">[2/2]</span></h2>
+<a id="afa055d7235293ebdeb5fefdd2e066d2e" name="afa055d7235293ebdeb5fefdd2e066d2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa055d7235293ebdeb5fefdd2e066d2e">&#9670;&#160;</a></span>S() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -664,7 +664,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::S </td>
+          <td class="memname">double <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::S </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
         </tr>
@@ -691,8 +691,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a827dab2db283d809d6f04b0275823c84" name="a827dab2db283d809d6f04b0275823c84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a827dab2db283d809d6f04b0275823c84">&#9670;&#160;</a></span>set_P()</h2>
+<a id="a257de4ce504ece1467e4dcfd54c9f22c" name="a257de4ce504ece1467e4dcfd54c9f22c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a257de4ce504ece1467e4dcfd54c9f22c">&#9670;&#160;</a></span>set_P()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -703,7 +703,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_P </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_P </td>
           <td>(</td>
           <td class="paramtype">const StateMatrix &amp;</td>          <td class="paramname"><span class="paramname"><em>P</em></span></td><td>)</td>
           <td></td>
@@ -725,8 +725,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a8cf88e34b8952417af9fb9cfaef5af7d" name="a8cf88e34b8952417af9fb9cfaef5af7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cf88e34b8952417af9fb9cfaef5af7d">&#9670;&#160;</a></span>set_S()</h2>
+<a id="a1d8fa14d63b716c7038543f2a71e3c26" name="a1d8fa14d63b716c7038543f2a71e3c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d8fa14d63b716c7038543f2a71e3c26">&#9670;&#160;</a></span>set_S()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -737,7 +737,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_S </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_S </td>
           <td>(</td>
           <td class="paramtype">const StateMatrix &amp;</td>          <td class="paramname"><span class="paramname"><em>S</em></span></td><td>)</td>
           <td></td>
@@ -759,8 +759,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="ad847789908004444b3981dc7dfa03df6" name="ad847789908004444b3981dc7dfa03df6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad847789908004444b3981dc7dfa03df6">&#9670;&#160;</a></span>set_xhat() <span class="overload">[1/2]</span></h2>
+<a id="a8963eab55252983347ec360649a2a2fb" name="a8963eab55252983347ec360649a2a2fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8963eab55252983347ec360649a2a2fb">&#9670;&#160;</a></span>set_xhat() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -771,7 +771,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_xhat </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_xhat </td>
           <td>(</td>
           <td class="paramtype">const StateVector &amp;</td>          <td class="paramname"><span class="paramname"><em>xhat</em></span></td><td>)</td>
           <td></td>
@@ -787,8 +787,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="ada4c26437626896b05e61a32a81e1970" name="ada4c26437626896b05e61a32a81e1970"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada4c26437626896b05e61a32a81e1970">&#9670;&#160;</a></span>set_xhat() <span class="overload">[2/2]</span></h2>
+<a id="a21405d8aa4767f9042698927edfa2482" name="a21405d8aa4767f9042698927edfa2482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21405d8aa4767f9042698927edfa2482">&#9670;&#160;</a></span>set_xhat() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -799,7 +799,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_xhat </td>
+          <td class="memname">void <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::set_xhat </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>i</em></span>, </td>
         </tr>
@@ -825,8 +825,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a492a3439f577ae81ca698bded59d7a20" name="a492a3439f577ae81ca698bded59d7a20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a492a3439f577ae81ca698bded59d7a20">&#9670;&#160;</a></span>xhat() <span class="overload">[1/2]</span></h2>
+<a id="a3026b4beba92635252d1cfe327bcea55" name="a3026b4beba92635252d1cfe327bcea55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3026b4beba92635252d1cfe327bcea55">&#9670;&#160;</a></span>xhat() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -837,7 +837,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">StateVector <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::xhat </td>
+          <td class="memname">StateVector <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::xhat </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -853,8 +853,8 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 
 </div>
 </div>
-<a id="a88c50fdf0b5a9df98262031f9ccaccf3" name="a88c50fdf0b5a9df98262031f9ccaccf3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88c50fdf0b5a9df98262031f9ccaccf3">&#9670;&#160;</a></span>xhat() <span class="overload">[2/2]</span></h2>
+<a id="a6b277d4fad6c919ba7aabd9a4efa3349" name="a6b277d4fad6c919ba7aabd9a4efa3349"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b277d4fad6c919ba7aabd9a4efa3349">&#9670;&#160;</a></span>xhat() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -865,7 +865,7 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double <a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::xhat </td>
+          <td class="memname">double <a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a>&lt; STATES, INPUTS, OUTPUTS &gt;::xhat </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>i</em></span></td><td>)</td>
           <td> const</td>
@@ -888,14 +888,14 @@ template&lt;int STATES, int INPUTS, int OUTPUTS&gt; </div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="srukf_8h_source.html">srukf.h</a></li>
+<li><a class="el" href="unscented__kalman__filter_8h_source.html">unscented_kalman_filter.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classSquareRootUnscentedKalmanFilter.html">SquareRootUnscentedKalmanFilter</a></li>
+    <li class="navelem"><a class="el" href="classUnscentedKalmanFilter.html">UnscentedKalmanFilter</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

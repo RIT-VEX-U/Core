@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['m_5fprofile_5fcfg_5ft_0',['m_profile_cfg_t',['../structMotionController_1_1m__profile__cfg__t.html',1,'MotionController']]],
-  ['maybemessage_1',['MaybeMessage',['../classStateMachine_1_1MaybeMessage.html',1,'StateMachine']]],
-  ['mecanumdrive_2',['MecanumDrive',['../classMecanumDrive.html',1,'']]],
-  ['mecanumdrive_5fconfig_5ft_3',['mecanumdrive_config_t',['../structMecanumDrive_1_1mecanumdrive__config__t.html',1,'MecanumDrive']]],
-  ['motion_5ft_4',['motion_t',['../structmotion__t.html',1,'']]],
-  ['motioncontroller_5',['MotionController',['../classMotionController.html',1,'']]],
-  ['movingaverage_6',['MovingAverage',['../classMovingAverage.html',1,'']]]
+  ['lift_0',['Lift',['../classLift.html',1,'']]],
+  ['lift_5fcfg_5ft_1',['lift_cfg_t',['../structLift_1_1lift__cfg__t.html',1,'Lift']]],
+  ['linearplantinversionfeedforward_2',['LinearPlantInversionFeedforward',['../classLinearPlantInversionFeedforward.html',1,'']]],
+  ['linearquadraticregulator_3',['LinearQuadraticRegulator',['../classLinearQuadraticRegulator.html',1,'']]],
+  ['linearsystem_4',['LinearSystem',['../classLinearSystem.html',1,'']]],
+  ['logger_5',['Logger',['../classLogger.html',1,'']]]
 ];
