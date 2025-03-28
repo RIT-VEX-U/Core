@@ -47,8 +47,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classPurePursuitCommand.html#a4d6058d0b178c41a26bb1f772e10c7ae",
-"functions_l.html"
+"classScaledSphericalSimplexSigmaPoints.html",
+"structOdometry3Wheel_1_1odometry3wheel__cfg__t.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
