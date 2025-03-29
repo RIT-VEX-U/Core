@@ -45,7 +45,7 @@ TrapezoidProfile::TrapezoidProfile(const double &x_initial, const double &x_targ
  *
  * @return the state.
  */
-motion_t TrapezoidProfile::calculate(const double &t) {
+motion_t TrapezoidProfile::calculate(double t) {
   // clamp the input time to within the timeframe of the motion profile
   if (t < 0) {
     t = 0;

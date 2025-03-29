@@ -42,7 +42,7 @@ public:
    * 
    * @return the state.
    */
-  motion_t calculate(const double &t);
+  motion_t calculate(double t);
 
   /**
    * Returns the total time that the motion profile takes to complete.
