@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['wheel_5fdiam_0',['wheel_diam',['../structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#a283cd9db8de27d9b3967d0c3203f1f7f',1,'Odometry3Wheel::odometry3wheel_cfg_t']]],
-  ['wheelbase_5fdist_1',['wheelbase_dist',['../structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#a4de8559ac486dcfbf5baff9d9d6cb5b1',1,'Odometry3Wheel::odometry3wheel_cfg_t']]]
+  ['x_0',['x',['../structtracking__wheel__cfg__t.html#a56c2fb4edd05a7be2ec44525e8f4e6b8',1,'tracking_wheel_cfg_t']]]
 ];

@@ -45,7 +45,6 @@ var annotated_dup =
     [ "Lift", "classLift.html", "classLift" ],
     [ "Logger", "classLogger.html", "classLogger" ],
     [ "MecanumDrive", "classMecanumDrive.html", "classMecanumDrive" ],
-    [ "motion_t", "structmotion__t.html", "structmotion__t" ],
     [ "MotionController", "classMotionController.html", "classMotionController" ],
     [ "MovingAverage", "classMovingAverage.html", "classMovingAverage" ],
     [ "Odometry3Wheel", "classOdometry3Wheel.html", "classOdometry3Wheel" ],
