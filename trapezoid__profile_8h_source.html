@@ -106,52 +106,48 @@ $(function(){initNavTree('trapezoid__profile_8h_source.html',''); initResizable(
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">// Struct representing a state along the motion profile containing position, velocity and acceleration.</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keywordtype">double</span> pos; <span class="comment">// 1D position</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keywordtype">double</span> vel; <span class="comment">// 1D velocity</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keywordtype">double</span> acc; <span class="comment">// 1D acceleration</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>} motion_t;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span></div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classTrapezoidProfile.html">   25</a></span><span class="keyword">class </span><a class="code hl_function" href="classTrapezoidProfile.html#a302474d8558099ae6cf68fd31272de55">TrapezoidProfile</a> {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <a class="code hl_function" href="classTrapezoidProfile.html#a302474d8558099ae6cf68fd31272de55">TrapezoidProfile</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x_initial, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x_target, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;v_max, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;accel, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;decel);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  motion_t <a class="code hl_function" href="classTrapezoidProfile.html#aa451d152d5ce7e5f561d5846871a2914">calculate</a>(<span class="keywordtype">double</span> t);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classTrapezoidProfile.html#a62095b3e0dadf8586ac5b81092dd9822">total_time</a>();</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">double</span> x_initial_;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keywordtype">double</span> x_target_;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">double</span> v_max_;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">double</span> v_peak_;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordtype">double</span> accel_;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">double</span> decel_;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">double</span> distance_;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">double</span> dist_accel_;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">double</span> dist_decel_;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">double</span> dist_cruise_;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">double</span> dist_full_;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordtype">double</span> time_accel_;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">double</span> time_decel_;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordtype">double</span> time_cruise_;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">double</span> time_total_;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">bool</span> triangular_;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="comment">// 1 if positive, -1 if negative</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keywordtype">int</span> direction_;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span></div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="structmotion__t.html">    6</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4">    7</a></span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4">pos</a>;   </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="structmotion__t.html#a038b39985525b904bb8257ea86adbcee">    8</a></span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="structmotion__t.html#a038b39985525b904bb8257ea86adbcee">vel</a>;   </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structmotion__t.html#a0bfa8ec05af92df3b8c0e7d0945824f2">    9</a></span>  <span class="keywordtype">double</span> <a class="code hl_variable" href="structmotion__t.html#a0bfa8ec05af92df3b8c0e7d0945824f2">accel</a>; </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>} <a class="code hl_struct" href="structmotion__t.html">motion_t</a>;</div>
 </div>
-<div class="ttc" id="aclassTrapezoidProfile_html_a302474d8558099ae6cf68fd31272de55"><div class="ttname"><a href="classTrapezoidProfile.html#a302474d8558099ae6cf68fd31272de55">TrapezoidProfile::TrapezoidProfile</a></div><div class="ttdeci">TrapezoidProfile(const double &amp;x_initial, const double &amp;x_target, const double &amp;v_max, const double &amp;accel, const double &amp;decel)</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:14</div></div>
-<div class="ttc" id="aclassTrapezoidProfile_html_a62095b3e0dadf8586ac5b81092dd9822"><div class="ttname"><a href="classTrapezoidProfile.html#a62095b3e0dadf8586ac5b81092dd9822">TrapezoidProfile::total_time</a></div><div class="ttdeci">double total_time()</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:99</div></div>
-<div class="ttc" id="aclassTrapezoidProfile_html_aa451d152d5ce7e5f561d5846871a2914"><div class="ttname"><a href="classTrapezoidProfile.html#aa451d152d5ce7e5f561d5846871a2914">TrapezoidProfile::calculate</a></div><div class="ttdeci">motion_t calculate(double t)</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:48</div></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span></div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classTrapezoidProfile.html">   34</a></span><span class="keyword">class </span><a class="code hl_function" href="classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d">TrapezoidProfile</a> {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_function" href="classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d">TrapezoidProfile</a>(<span class="keywordtype">double</span> max_v, <span class="keywordtype">double</span> accel);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <a class="code hl_struct" href="structmotion__t.html">motion_t</a> <a class="code hl_function" href="classTrapezoidProfile.html#a0b65a924664e6e052a16db19f73af17c">calculate</a>(<span class="keywordtype">double</span> time_s);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5">set_endpts</a>(<span class="keywordtype">double</span> start, <span class="keywordtype">double</span> end);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classTrapezoidProfile.html#a1dcdfa1c290347cf0af48aca5afd167c">set_accel</a>(<span class="keywordtype">double</span> accel);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classTrapezoidProfile.html#a6c08d08d8eadaa719f4dc9e607f9fe97">set_max_v</a>(<span class="keywordtype">double</span> max_v);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classTrapezoidProfile.html#abd551042dfffe0923200c4546d109c55">get_movement_time</a>();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">double</span> start, end; </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">double</span> max_v;      </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordtype">double</span> accel;      </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keywordtype">double</span> time;       </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>};</div>
+</div>
+<div class="ttc" id="aclassTrapezoidProfile_html_a0b65a924664e6e052a16db19f73af17c"><div class="ttname"><a href="classTrapezoidProfile.html#a0b65a924664e6e052a16db19f73af17c">TrapezoidProfile::calculate</a></div><div class="ttdeci">motion_t calculate(double time_s)</div><div class="ttdoc">Run the trapezoidal profile based on the time that&#39;s ellapsed.</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:26</div></div>
+<div class="ttc" id="aclassTrapezoidProfile_html_a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5"><div class="ttname"><a href="classTrapezoidProfile.html#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5">TrapezoidProfile::set_endpts</a></div><div class="ttdeci">void set_endpts(double start, double end)</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:11</div></div>
+<div class="ttc" id="aclassTrapezoidProfile_html_a1dcdfa1c290347cf0af48aca5afd167c"><div class="ttname"><a href="classTrapezoidProfile.html#a1dcdfa1c290347cf0af48aca5afd167c">TrapezoidProfile::set_accel</a></div><div class="ttdeci">void set_accel(double accel)</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:9</div></div>
+<div class="ttc" id="aclassTrapezoidProfile_html_a6c08d08d8eadaa719f4dc9e607f9fe97"><div class="ttname"><a href="classTrapezoidProfile.html#a6c08d08d8eadaa719f4dc9e607f9fe97">TrapezoidProfile::set_max_v</a></div><div class="ttdeci">void set_max_v(double max_v)</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:7</div></div>
+<div class="ttc" id="aclassTrapezoidProfile_html_abd551042dfffe0923200c4546d109c55"><div class="ttname"><a href="classTrapezoidProfile.html#abd551042dfffe0923200c4546d109c55">TrapezoidProfile::get_movement_time</a></div><div class="ttdeci">double get_movement_time()</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:96</div></div>
+<div class="ttc" id="aclassTrapezoidProfile_html_af693ca740c0112cfbf4a9ee13bbb6c5d"><div class="ttname"><a href="classTrapezoidProfile.html#af693ca740c0112cfbf4a9ee13bbb6c5d">TrapezoidProfile::TrapezoidProfile</a></div><div class="ttdeci">TrapezoidProfile(double max_v, double accel)</div><div class="ttdoc">Construct a new Trapezoid Profile object.</div><div class="ttdef"><b>Definition</b> trapezoid_profile.cpp:5</div></div>
+<div class="ttc" id="astructmotion__t_html"><div class="ttname"><a href="structmotion__t.html">motion_t</a></div><div class="ttdef"><b>Definition</b> trapezoid_profile.h:6</div></div>
+<div class="ttc" id="astructmotion__t_html_a038b39985525b904bb8257ea86adbcee"><div class="ttname"><a href="structmotion__t.html#a038b39985525b904bb8257ea86adbcee">motion_t::vel</a></div><div class="ttdeci">double vel</div><div class="ttdoc">1d velocity at this point in time</div><div class="ttdef"><b>Definition</b> trapezoid_profile.h:8</div></div>
+<div class="ttc" id="astructmotion__t_html_a0bfa8ec05af92df3b8c0e7d0945824f2"><div class="ttname"><a href="structmotion__t.html#a0bfa8ec05af92df3b8c0e7d0945824f2">motion_t::accel</a></div><div class="ttdeci">double accel</div><div class="ttdoc">1d acceleration at this point in time</div><div class="ttdef"><b>Definition</b> trapezoid_profile.h:9</div></div>
+<div class="ttc" id="astructmotion__t_html_a7f67afcb6e0a49061509a11c47de46e4"><div class="ttname"><a href="structmotion__t.html#a7f67afcb6e0a49061509a11c47de46e4">motion_t::pos</a></div><div class="ttdeci">double pos</div><div class="ttdoc">1d position at this point in time</div><div class="ttdef"><b>Definition</b> trapezoid_profile.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

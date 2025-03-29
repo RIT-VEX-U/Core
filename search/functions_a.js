@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['maybemessage_0',['MaybeMessage',['../classStateMachine_1_1MaybeMessage.html#ad06aec82e6b5c7e2e7a2542fd73d76b8',1,'StateMachine::MaybeMessage::MaybeMessage()'],['../classStateMachine_1_1MaybeMessage.html#a45b875cb6506d1cf1c58ae2eb12f1ec9',1,'StateMachine::MaybeMessage::MaybeMessage(Message msg)']]],
-  ['mecanumdrive_1',['MecanumDrive',['../classMecanumDrive.html#a780908c5b55ea8b9f228c84540a6c5f7',1,'MecanumDrive']]],
-  ['message_2',['message',['../classStateMachine_1_1MaybeMessage.html#a913193e7c341dd8031c644d788adee56',1,'StateMachine::MaybeMessage']]],
-  ['modify_5finputs_3',['modify_inputs',['../classTankDrive.html#abb511cf1be40ef7be89c2ccff6a09cab',1,'TankDrive']]],
-  ['motioncontroller_4',['MotionController',['../classMotionController.html#a076c5aa4ea383dccaeec76f7554a7467',1,'MotionController']]],
-  ['movingaverage_5',['MovingAverage',['../classMovingAverage.html#a2455b651d3c6ad1f14d1a0d65b2394b2',1,'MovingAverage::MovingAverage(int buffer_size)'],['../classMovingAverage.html#afd1c880fdd617fcbf02f54ac87f45d6f',1,'MovingAverage::MovingAverage(int buffer_size, double starting_value)']]]
+  ['last_5fcommand_5ftimed_5fout_0',['last_command_timed_out',['../classCommandController.html#a23306007060f97ab7f57715c5d8d0c57',1,'CommandController']]],
+  ['latency_5fcompensate_1',['latency_compensate',['../classLinearQuadraticRegulator.html#a55b47c39e090ff4a2b04dce8ed9e37d3',1,'LinearQuadraticRegulator']]],
+  ['lift_2',['Lift',['../classLift.html#aa5723874330725dec5176ec4174e9ea8',1,'Lift']]],
+  ['linearplantinversionfeedforward_3',['LinearPlantInversionFeedforward',['../classLinearPlantInversionFeedforward.html#a100db1461ecc6f1e0674ef107ecce277',1,'LinearPlantInversionFeedforward::LinearPlantInversionFeedforward(LinearSystem&lt; STATES, INPUTS, OUTPUTS &gt; &amp;plant, const double &amp;dt)'],['../classLinearPlantInversionFeedforward.html#ad5dd29e36f48854dd334a0989fdb6d09',1,'LinearPlantInversionFeedforward::LinearPlantInversionFeedforward(const EMat&lt; STATES, STATES &gt; &amp;A, const EMat&lt; STATES, INPUTS &gt; &amp;B, const double &amp;dt)']]],
+  ['linearquadraticregulator_4',['LinearQuadraticRegulator',['../classLinearQuadraticRegulator.html#a7fd93d721198955efd91847de5b79f95',1,'LinearQuadraticRegulator::LinearQuadraticRegulator(LinearSystem&lt; STATES, INPUTS, OUTPUTS &gt; &amp;plant, const VectorX &amp;Qtolerances, const VectorU &amp;Rtolerances, const double &amp;dt)'],['../classLinearQuadraticRegulator.html#ad3c69865dc8162071c8818683fe19611',1,'LinearQuadraticRegulator::LinearQuadraticRegulator(const MatrixA &amp;A, const MatrixB &amp;B, const VectorX &amp;Qtolerances, const VectorU &amp;Rtolerances, const double &amp;dt)'],['../classLinearQuadraticRegulator.html#ad00c4957145704d3f453199dd8c0eab5',1,'LinearQuadraticRegulator::LinearQuadraticRegulator(const MatrixA &amp;A, const MatrixB &amp;B, const EMat&lt; STATES, STATES &gt; &amp;Q, const EMat&lt; INPUTS, INPUTS &gt; &amp;R, const double &amp;dt)']]],
+  ['linearsystem_5',['LinearSystem',['../classLinearSystem.html#a5f920c655a6e695935902a575f00dd56',1,'LinearSystem']]],
+  ['log_6',['Log',['../classLogger.html#a43c07c009dd64e8ceae73ad645be0ae4',1,'Logger::Log(const std::string &amp;s)'],['../classLogger.html#a2ec3a458b8aaf5afc2c86d12997b85f2',1,'Logger::Log(LogLevel level, const std::string &amp;s)']]],
+  ['log_7',['log',['../classPose2d.html#a02b8f651fa1a84b4ca2a5bce2ee96d79',1,'Pose2d']]],
+  ['logf_8',['Logf',['../classLogger.html#a345e74c7ad20fc6215c0fe0eaf61827d',1,'Logger::Logf(const char *fmt,...)'],['../classLogger.html#a06427b99c9b204e1f7ad70623631543e',1,'Logger::Logf(LogLevel level, const char *fmt,...)']]],
+  ['logger_9',['Logger',['../classLogger.html#a4f2ee02db1d03a83b6b9b43808e09f15',1,'Logger::Logger(const std::string &amp;filename)'],['../classLogger.html#afeb6b622fc1a87cf8740cac0ea224bad',1,'Logger::Logger(const Logger &amp;l)=delete']]],
+  ['logln_10',['Logln',['../classLogger.html#abde45323cf03f153d0e6b7845c54bce8',1,'Logger::Logln(const std::string &amp;s)'],['../classLogger.html#a6f8ed714cfe7bdd74f62ceb020907ae3',1,'Logger::Logln(LogLevel level, const std::string &amp;s)']]]
 ];

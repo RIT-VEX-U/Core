@@ -4,7 +4,7 @@ var searchData=
   ['radius_1',['radius',['../structtracking__wheel__cfg__t.html#a6f1e96cbc35f9dbc8c703579e2ec1342',1,'tracking_wheel_cfg_t']]],
   ['rect_2',['Rect',['../structRect.html',1,'']]],
   ['relative_5fto_3',['relative_to',['../classPose2d.html#a001801fc38b4bb4fa95a5d45450a5d47',1,'Pose2d']]],
-  ['reset_4',['reset',['../classPID.html#af9677e76cb1beffbcf3f54cbc627c530',1,'PID::reset()'],['../classSquareRootUnscentedKalmanFilter.html#a2b571053ad7a8ab83df6e89de5a8ac44',1,'SquareRootUnscentedKalmanFilter::reset()']]],
+  ['reset_4',['reset',['../classPID.html#af9677e76cb1beffbcf3f54cbc627c530',1,'PID::reset()'],['../classLinearPlantInversionFeedforward.html#afcbc9f91c232062f8c602639d57d84e0',1,'LinearPlantInversionFeedforward::reset(const EVec&lt; STATES &gt; &amp;initial_state)'],['../classLinearPlantInversionFeedforward.html#accbfbc1865cb8389425d4395318a027e',1,'LinearPlantInversionFeedforward::reset()'],['../classKalmanFilter.html#a7a81779a554d91bffaf8af3e3b1613aa',1,'KalmanFilter::reset()'],['../classUnscentedKalmanFilter.html#a795eb695962a227159cb555b6e9f69c9',1,'UnscentedKalmanFilter::reset()']]],
   ['reset_5fauto_5',['reset_auto',['../classTankDrive.html#aaa68eae1521e5b87ecfed2a60b15bf34',1,'TankDrive']]],
   ['revolutions_6',['revolutions',['../classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b',1,'Rotation2d']]],
   ['robot_5fradius_7',['robot_radius',['../structrobot__specs__t.html#a37a65da54459d805cf1370cc6330bce0',1,'robot_specs_t']]],
