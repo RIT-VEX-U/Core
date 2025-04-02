@@ -89,13 +89,13 @@ Pose2d OdometryTank::update() {
         // Get the arclength of the turning circle of the robot
         double distance_diff = (rside_revs - lside_revs) * PI * config.odom_wheel_diam;
 
-        // Use the arclength formula to calculate the angle. Add 90 to make "0 degrees" to starboard
-        angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels)) + 90;
+        // Use the arclength formula to calculate the angle.
+        angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels));
 
         // printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
     } else {
-        // Translate "0 forward and clockwise positive" to "90 forward and CCW negative"
-        angle = -imu->rotation(vex::rotationUnits::deg) + 90;
+        // Translate "clockwise positive" to "CCW negative"
+        angle = -imu->rotation(vex::rotationUnits::deg);
     }
 
     // Offset the angle, if we've done a set_position
