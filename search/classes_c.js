@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['odometry3wheel_0',['Odometry3Wheel',['../classOdometry3Wheel.html',1,'']]],
-  ['odometry3wheel_5fcfg_5ft_1',['odometry3wheel_cfg_t',['../structOdometry3Wheel_1_1odometry3wheel__cfg__t.html',1,'Odometry3Wheel']]],
-  ['odometrybase_2',['OdometryBase',['../classOdometryBase.html',1,'']]],
-  ['odometrypage_3',['OdometryPage',['../classscreen_1_1OdometryPage.html',1,'screen']]],
-  ['odometrytank_4',['OdometryTank',['../classOdometryTank.html',1,'']]],
-  ['odomsetposition_5',['OdomSetPosition',['../classOdomSetPosition.html',1,'']]]
+  ['page_0',['Page',['../classscreen_1_1Page.html',1,'screen']]],
+  ['parallel_1',['Parallel',['../classParallel.html',1,'']]],
+  ['path_2',['Path',['../classPurePursuit_1_1Path.html',1,'PurePursuit']]],
+  ['pid_3',['PID',['../classPID.html',1,'']]],
+  ['pid_5fconfig_5ft_4',['pid_config_t',['../structPID_1_1pid__config__t.html',1,'PID']]],
+  ['pidpage_5',['PIDPage',['../classscreen_1_1PIDPage.html',1,'screen']]],
+  ['pose2d_6',['Pose2d',['../classPose2d.html',1,'']]],
+  ['purepursuitcommand_7',['PurePursuitCommand',['../classPurePursuitCommand.html',1,'']]]
 ];
