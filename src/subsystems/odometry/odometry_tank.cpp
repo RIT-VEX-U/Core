@@ -92,7 +92,6 @@ Pose2d OdometryTank::update() {
         // Use the arclength formula to calculate the angle.
         angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels));
 
-        // printf("angle: %f, ", (180.0 / PI) * (distance_diff / config.dist_between_wheels));
     } else {
         // Translate "clockwise positive" to "CCW negative"
         angle = -imu->rotation(vex::rotationUnits::deg);
