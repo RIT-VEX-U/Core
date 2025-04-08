@@ -36,16 +36,12 @@ Translation2d::Translation2d(const double &r, const Rotation2d &theta)
  */
 double Translation2d::x() const { return m_x; }
 
-void Translation2d::setX(double x) { this->m_x = x; }
-
 /**
  * Returns the y value of the translation.
  *
  * @return the y value of the translation.
  */
 double Translation2d::y() const { return m_y; }
-
-void Translation2d::setY(double y) { this->m_x = y; }
 
 /**
  * Returns the angle of the translation.
@@ -67,6 +63,13 @@ Eigen::Vector2d Translation2d::as_vector() const { return Eigen::Vector2d(m_x, m
  * @return the norm of the translation.
  */
 double Translation2d::norm() const { return std::hypot(m_x, m_y); }
+
+/**
+ * Returns a translation so that it has a vector magnitude of 1
+ *
+ * @return the norm of the translation.
+ */
+Translation2d Translation2d::normalize() const { return Translation2d(1, theta()); };
 
 /**
  * Returns the distance between two translations.

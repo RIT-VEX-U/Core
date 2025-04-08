@@ -3,7 +3,6 @@
 #include "../core/include/utils/geometry.h"
 #include "../core/include/utils/math/geometry/pose2d.h"
 #include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/vector2d.h"
 #include "vex.h"
 #include <vector>
 
@@ -63,7 +62,7 @@ struct hermite_point {
 
     Translation2d getPoint() const { return Translation2d(x, y); }
 
-    Vector2D getTangent() const { return Vector2D(dir, mag); }
+    Translation2d getTangent() const { return Translation2d(mag, Rotation2d(dir)); }
 };
 
 /**

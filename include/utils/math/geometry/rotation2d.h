@@ -3,10 +3,14 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
-
+#include "../core/include/utils/math/geometry/translation2d.h"
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#ifndef PI
+#define PI 3.141592654
+#endif
 
 class Translation2d;
 
@@ -63,21 +67,11 @@ class Rotation2d {
     double radians() const;
 
     /**
-     * sets the angle value in radians
-     */
-    void setRad(double radRot);
-
-    /**
      * Returns the degree angle value.
      *
      * @return the degree angle value.
      */
     double degrees() const;
-
-    /**
-     * sets the angle value in degrees
-     */
-    void setDeg(double degRot);
 
     /**
      * Returns the revolution angle value.
@@ -307,6 +301,21 @@ double wrap_degrees_360(const double &angle);
  * @return the wrapped revolution angle value from [0, 1).
  */
 double wrap_revolutions_360(const double &angle);
+
+/**
+ * General function for converting degrees to radians
+ * @param deg the angle in degrees
+ * @return the angle in radians
+ */
+double deg2rad(double deg);
+
+/**
+ * General function for converting radians to degrees
+ * @param r the angle in radians
+ * @return the angle in degrees
+
+ */
+double rad2deg(double r);
 
 /**
  * Calculates the mean of a list of angle values directly.
