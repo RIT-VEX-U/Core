@@ -57,49 +57,100 @@
  * This class handles the code for an odometry setup where calculations are done on an external coprocessor.
  * Data is sent to the brain via smart port, using a generic serial (UART) connection.
  *
- *
- *
  * This is a "set and forget" class, meaning once the object is created, the robot will immediately begin
  * tracking it's movement in the background.
  *
- * https://rit.enterprise.slack.com/files/U04112Y5RB6/F080M01KPA5/predictperpindiculars2.pdf
- * 2024-2025 Notebook: Entries/Software Entries/Localization/N-Pod Odometry
- *
  * @author Jack Cammarata
- * @date Jan 16 2025
+ * @date Apr 8 2025
  */
 class OdometrySerial : public OdometryBase {
   public:
     /**
-     * Construct a new Odometry Serial Object
+     * Construct a new Odometry Serial object.
      */
     OdometrySerial(bool is_async, int32_t port, int32_t baudrate);
 
     /**
-     * Update the current position of the robot once by reading a single packet from the serial port
+     * Update the current position of the robot once by reading a single packet from the serial port, then using it to
+     * update pos, vel, acc, speed, accel, angular speed, angular accel.
      *
-     * @return the robot's updated position
+     * @return the robot's updated position.
      */
     Pose2d update() override;
 
+    /**
+     * Attempts to receive a packet given a length, this automatically decodes it.
+     *
+     * @param port the port number the serial is plugged into.
+     * @param buffer pointer to a uint8_t[] where we put the data.
+     * @param buffer_size length in bytes of the buffer, after being decoded.
+     */
     int receive_packet(uint32_t port, uint8_t *buffer, size_t buffer_size);
 
+    /**
+     * Attempts to recieve an entire packet encoded with COBS, stops at delimiter or there's a buffer overflow.
+     *
+     * @param port the port number the serial is plugged into.
+     * @param buffer pointer to a uint8_t[] where we put the data.
+     * @param buffer_size length in bytes of the encoded buffer.
+     * @return 0 success.
+     */
     int receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size);
 
+    /**
+     * COBS decode data from buffer.
+     * 
+     * @param buffer Pointer to encoded input bytes.
+     * @param length Number of bytes to decode.
+     * @param data Pointer to decoded output data.
+     *
+     * @return Number of bytes successfully decoded.
+     * @note Stops decoding if delimiter byte is found.
+     */
     size_t cobs_decode(const uint8_t *buffer, size_t length, void *data);
 
+    /**
+     * COBS encode data to buffer
+     *
+     * @param data Pointer to input data to encode
+     * @param length Number of bytes to encode
+     * @param buffer Pointer to encoded output buffer
+     *
+     * @return Encoded buffer length in bytes
+     * @note Does not output delimiter byte
+     */
     size_t cobs_encode(const void *data, size_t length, uint8_t *buffer);
 
+    /**
+     * Converts raw data sent over serial to a pose.
+     * 
+     * @param raw Pointer to the data.
+     * @param raw_to_xy Linear conversion factor.
+     * @param raw_to_h Angular conversion factor.
+     * 
+     * @return The decoded pose.
+     */
     Pose2d regs_to_pose(uint8_t *raw, float raw_to_xy, float raw_to_h);
 
+    /**
+     * Converts a pose to raw data to be sent over serial.
+     * 
+     * @param raw Pointer where the data will be inserted.
+     * @param pose The pose to encode.
+     * @param raw_to_xy Linear conversion factor.
+     * @param raw_to_h Angular conversion factor.
+     */
     void pose_to_regs(uint8_t *raw, Pose2d &pose, float raw_to_xy, float raw_to_h);
 
   private:
     int32_t _port;
 
+    uint8_t raw[18];
+
     Pose2d pos{0, 0, 0};
     Pose2d vel{0, 0, 0};
     Pose2d acc{0, 0, 0};
+    Pose2d prev{0, 0, 0};
 
     double speed;
     double accel;
