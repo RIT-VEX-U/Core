@@ -1,6 +1,5 @@
 #pragma once
-#undef __ARM_NEON__
-#undef __ARM_NEON
+
 #include <Eigen/Dense>
 
 #include <cmath>
@@ -82,6 +81,10 @@ class Pose2d {
      * @return the x value of the translational component.
      */
     double x() const;
+    /**
+     * sets the x value of the translational component.
+     */
+    void setX(double x);
 
     /**
      * Returns the y value of the translational component.
@@ -89,6 +92,11 @@ class Pose2d {
      * @return the y value of the translational component.
      */
     double y() const;
+
+    /**
+     * sets the y value of the translational component.
+     */
+    void setY(double y);
 
     /**
      * Returns the rotational component.
