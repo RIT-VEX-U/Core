@@ -48,6 +48,7 @@ var hierarchy =
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
+      [ "OdometrySerial", "classOdometrySerial.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "OdomSetPosition", "classOdomSetPosition.html", null ],

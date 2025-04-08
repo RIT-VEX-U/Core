@@ -50,6 +50,7 @@ var annotated_dup =
     [ "MovingAverage", "classMovingAverage.html", "classMovingAverage" ],
     [ "Odometry3Wheel", "classOdometry3Wheel.html", "classOdometry3Wheel" ],
     [ "OdometryBase", "classOdometryBase.html", "classOdometryBase" ],
+    [ "OdometrySerial", "classOdometrySerial.html", "classOdometrySerial" ],
     [ "OdometryTank", "classOdometryTank.html", "classOdometryTank" ],
     [ "OdomSetPosition", "classOdomSetPosition.html", "classOdomSetPosition" ],
     [ "Parallel", "classParallel.html", null ],
