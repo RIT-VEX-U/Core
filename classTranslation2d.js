@@ -7,7 +7,6 @@ var classTranslation2d =
     [ "as_vector", "classTranslation2d.html#a8d6d449b8eba8e4a6280eef066a1ca49", null ],
     [ "distance", "classTranslation2d.html#a4642fe8ca119c2c56fa464fab717311d", null ],
     [ "norm", "classTranslation2d.html#ac311ce36aed958758a327a78337c568f", null ],
-    [ "normalize", "classTranslation2d.html#a45c1c74c74bc0eefcd3060908e3c13e0", null ],
     [ "operator*", "classTranslation2d.html#afe2288caf222349f84d5f561ef3d75a2", null ],
     [ "operator*", "classTranslation2d.html#ad8024ffddc558ff04821f0d628e67093", null ],
     [ "operator+", "classTranslation2d.html#ac6cdba1987aa363d7398362e59454e7d", null ],
