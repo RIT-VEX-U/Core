@@ -4,7 +4,6 @@
 #include "../core/include/subsystems/odometry/odometry_base.h"
 #include "../core/include/utils/geometry.h"
 #include "../core/include/utils/moving_average.h"
-#include "../core/include/utils/vector2d.h"
 
 #include "../core/include/robot_specs.h"
 
