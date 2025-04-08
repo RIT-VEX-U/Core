@@ -47,8 +47,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classRotation2d.html#abf0946e40a886d77c3ddc74613ce6ab1",
-"structLift_1_1lift__cfg__t.html"
+"classScaledSphericalSimplexSigmaPoints.html#a9560aeeae5efe4b3a2019962c23bc6f4",
+"structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#afd79024054d352789991bd816d955d9e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
