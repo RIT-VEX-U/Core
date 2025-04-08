@@ -1,22 +1,50 @@
-# Robot Template
+# Core
+This is the host repository for the custom VEX libraries used by the RIT VEXU team
 
-A template for starting a new project using RIT-VEX-U's core library.
+Automatically updated documentation is available at [here](https://rit-vex-u.github.io/Core/).
+There is also a downloadable [reference manual](https://rit-vex-u.github.io/Core/refman.pdf).
 
-Includes:
-- Core library (as a subtree)
-- Eigen linear algebra library (as a submodule)
-- A github action to test compilation
+![core_logo](https://github.com/RIT-VEX-U/Core/assets/12285261/e91c680b-5bf4-431c-b164-6631bef2a853)
 
-## Setup
-1. Fork the repository
 
-![image](https://github.com/user-attachments/assets/bbfe6035-c14f-4e0a-9378-e42846c40522)
+## Getting Started
 
-2. Clone the repository - `git clone --recurse-submodules git@github.com:RIT-VEX-U/ForkTemplate.git` 
-    - Alternatively, one can `git clone git@github.com:RIT-VEX-U/ForkTemplate.git` then execute `git submodule init` followed by `git submodule update`
-3. Open the repository in VSCode (or any other editor if you don't need the VSCode extension)
+If you just want to start a project with Core, make a fork of the [Fork Template](https://github.com/RIT-VEX-U/ForkTemplate) and follow it's instructions.
 
-If you do not wish to contribute to core, you can also just download the zip. However, if you intend to commit upstream, inititializing with the above steps make it much easier.
+To setup core for an existing project:
+1. Create a new vex project (using the VSCode extension or other methods)
+2. Initialize a git repository for the project
+3. Execute `git subtree add --prefix=core https://github.com/RIT-VEX-U/Core.git main`
+4. Update the vex Makefile (or any other build system) to know about the core files (`core/src` for source files, `core/include` for headers) (See [here](https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L15) for an example) 
+5. Enable [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) (Latest supported version is 3.4.0):
+    - `mkdir vendor`
+    - `git submodule add https://gitlab.com/libeigen/eigen.git vendor/eigen`
+    - `cd vendor/eigen`
+    - `git checkout 3.4.0`
+    - Add the following to the `makefile` to give Core access to the library: `INC += -Ivendor/eigen` (See [here](https://github.com/RIT-VEX-U/ForkTemplate/blob/a3f64236c0c98512b95327c833e8a8c05724bb7c/makefile#L34) for an example)
 
-### Troubleshooting
-If simply opening the folder in VSCode does not work, try navigating to the VEX extension panel and importing this folder
+
+If you only wish to use a single version of Core, you can simply clone core/ into your project and add the core source and header files to your makefile.
+
+
+## Features
+Here is the current feature list this repo provides:
+
+Subsystems (See [Wiki/Subsystems](https://github.com/RIT-VEX-U/Core/wiki/2-%7C-Subsystems)):  
+- Tank drivetrain (user control / autonomous)
+- Mecanum drivetrain (user control / autonomous)
+- Odometry
+  - Tank (Differential)
+  - [N-Pod](https://github.com/RIT-VEX-U/Core/commit/37daf076ac1b6dea6723724ad3061d502fea1b08)
+- Flywheel
+- Lift
+- Custom encoders
+
+Utilities (See [Wiki/Utilites](https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites)):  
+- PID controller
+- FeedForward controller
+- Trapezoidal motion profile controller
+- Pure Pursuit
+- Generic auto program builder
+- Auto program UI selector
+- Mathematical classes (Vector2D, Moving Average)
