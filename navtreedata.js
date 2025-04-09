@@ -48,7 +48,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classScaledSphericalSimplexSigmaPoints.html#a9560aeeae5efe4b3a2019962c23bc6f4",
-"structOdometry3Wheel_1_1odometry3wheel__cfg__t.html#afd79024054d352789991bd816d955d9e"
+"structPID_1_1pid__config__t.html#a1bb8ecda3f982ea983cd9f49b3d6706a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['calculate_0',['calculate',['../classFeedForward.html#a2e2f7c12076225fa1dfd5f18aa210290',1,'FeedForward::calculate()'],['../classTrapezoidProfile.html#a0b65a924664e6e052a16db19f73af17c',1,'TrapezoidProfile::calculate()']]],
+  ['calculate_0',['calculate',['../classFeedForward.html#a2e2f7c12076225fa1dfd5f18aa210290',1,'FeedForward::calculate()'],['../classTrapezoidProfile.html#aa451d152d5ce7e5f561d5846871a2914',1,'TrapezoidProfile::calculate()']]],
   ['clear_1',['clear',['../classInterpolatingMap.html#a87dbbd8789df909ed960186fff174949',1,'InterpolatingMap']]],
   ['commandcontroller_2',['CommandController',['../classCommandController.html#afe87cef2dd63449334a46aae33b7edf4',1,'CommandController::CommandController()'],['../classCommandController.html#a9de2dfdf95ff4d80e2ad4906138c1316',1,'CommandController::CommandController(std::initializer_list&lt; AutoCommand * &gt; cmds)']]],
   ['control_5fcontinuous_3',['control_continuous',['../classLift.html#ae585cb81d733c975a65bfa7914a6bfeb',1,'Lift']]],

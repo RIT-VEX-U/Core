@@ -113,32 +113,22 @@ $(function(){initNavTree('classTrapezoidProfile.html',''); initResizable(true); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af693ca740c0112cfbf4a9ee13bbb6c5d" id="r_af693ca740c0112cfbf4a9ee13bbb6c5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af693ca740c0112cfbf4a9ee13bbb6c5d">TrapezoidProfile</a> (double max_v, double accel)</td></tr>
-<tr class="memdesc:af693ca740c0112cfbf4a9ee13bbb6c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Trapezoid Profile object.  <br /></td></tr>
-<tr class="separator:af693ca740c0112cfbf4a9ee13bbb6c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b65a924664e6e052a16db19f73af17c" id="r_a0b65a924664e6e052a16db19f73af17c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structmotion__t.html">motion_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b65a924664e6e052a16db19f73af17c">calculate</a> (double time_s)</td></tr>
-<tr class="memdesc:a0b65a924664e6e052a16db19f73af17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the trapezoidal profile based on the time that's ellapsed.  <br /></td></tr>
-<tr class="separator:a0b65a924664e6e052a16db19f73af17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5" id="r_a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5">set_endpts</a> (double start, double end)</td></tr>
-<tr class="separator:a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dcdfa1c290347cf0af48aca5afd167c" id="r_a1dcdfa1c290347cf0af48aca5afd167c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1dcdfa1c290347cf0af48aca5afd167c">set_accel</a> (double accel)</td></tr>
-<tr class="separator:a1dcdfa1c290347cf0af48aca5afd167c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c08d08d8eadaa719f4dc9e607f9fe97" id="r_a6c08d08d8eadaa719f4dc9e607f9fe97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c08d08d8eadaa719f4dc9e607f9fe97">set_max_v</a> (double max_v)</td></tr>
-<tr class="separator:a6c08d08d8eadaa719f4dc9e607f9fe97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd551042dfffe0923200c4546d109c55" id="r_abd551042dfffe0923200c4546d109c55"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd551042dfffe0923200c4546d109c55">get_movement_time</a> ()</td></tr>
-<tr class="separator:abd551042dfffe0923200c4546d109c55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a302474d8558099ae6cf68fd31272de55" id="r_a302474d8558099ae6cf68fd31272de55"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a302474d8558099ae6cf68fd31272de55">TrapezoidProfile</a> (const double &amp;x_initial, const double &amp;x_target, const double &amp;v_max, const double &amp;accel, const double &amp;decel)</td></tr>
+<tr class="separator:a302474d8558099ae6cf68fd31272de55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa451d152d5ce7e5f561d5846871a2914" id="r_aa451d152d5ce7e5f561d5846871a2914"><td class="memItemLeft" align="right" valign="top">motion_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa451d152d5ce7e5f561d5846871a2914">calculate</a> (double t)</td></tr>
+<tr class="separator:aa451d152d5ce7e5f561d5846871a2914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62095b3e0dadf8586ac5b81092dd9822" id="r_a62095b3e0dadf8586ac5b81092dd9822"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a62095b3e0dadf8586ac5b81092dd9822">total_time</a> ()</td></tr>
+<tr class="separator:a62095b3e0dadf8586ac5b81092dd9822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Trapezoid Profile</p>
-<p>This is a motion profile defined by an acceleration, maximum velocity, start point and end point. Using this information, a parametric function is generated, with a period of acceleration, constant velocity, and deceleration. The velocity graph looks like a trapezoid, giving it it's name.</p>
-<p>If the maximum velocity is set high enough, this will become a S-curve profile, with only acceleration and deceleration.</p>
-<p>This class is designed for use in properly modelling the motion of the robots to create a feedfoward and target for <a class="el" href="classPID.html">PID</a>. Acceleration and Maximum velocity should be measured on the robot and tuned down slightly to account for battery drop.</p>
-<p>Here are the equations graphed for ease of understanding: <a href="https://www.desmos.com/calculator/rkm3ivu1yk">https://www.desmos.com/calculator/rkm3ivu1yk</a></p>
-<dl class="section author"><dt>Author</dt><dd>Ryan McGee </dd></dl>
-<dl class="section date"><dt>Date</dt><dd>7/12/2022 </dd></dl>
+<div class="textblock"><p>Class representing a trapezoidal motion profile. This consists of either two or three stages. First, an acceleration stage where the velocity increases to a maximum. Then a cruise stage where the velocity is constant, then a deceleration stage where the velocity decreases to zero.</p>
+<p>This implementation allows for different acceleration and deceleration rates.</p>
+<p>This is best used with LQR, as it tracks both velocity and position at the same time, however it can also be used with <a class="el" href="classPID.html">PID</a> and feedforward.</p>
+<dl class="section author"><dt>Author</dt><dd>Jack Cammarata </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>3/28/2025 </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af693ca740c0112cfbf4a9ee13bbb6c5d" name="af693ca740c0112cfbf4a9ee13bbb6c5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af693ca740c0112cfbf4a9ee13bbb6c5d">&#9670;&#160;</a></span>TrapezoidProfile()</h2>
+<a id="a302474d8558099ae6cf68fd31272de55" name="a302474d8558099ae6cf68fd31272de55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a302474d8558099ae6cf68fd31272de55">&#9670;&#160;</a></span>TrapezoidProfile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,21 +136,38 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">TrapezoidProfile::TrapezoidProfile </td>
           <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>max_v</em></span>, </td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>x_initial</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>accel</em></span>&#160;)</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>x_target</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>v_max</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>accel</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>decel</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Construct a new Trapezoid Profile object. </p>
+<p>Constructs a <a class="el" href="classTrapezoidProfile.html">TrapezoidProfile</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max_v</td><td>Maximum velocity the robot can run at </td></tr>
-    <tr><td class="paramname">accel</td><td>Maximum acceleration of the robot </td></tr>
+    <tr><td class="paramname">x_initial</td><td>The initial position. </td></tr>
+    <tr><td class="paramname">x_target</td><td>The target position. </td></tr>
+    <tr><td class="paramname">v_max</td><td>The maximum velocity. </td></tr>
+    <tr><td class="paramname">accel</td><td>The acceleration. </td></tr>
+    <tr><td class="paramname">decel</td><td>The deceleration. </td></tr>
   </table>
   </dd>
 </dl>
@@ -168,121 +175,55 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0b65a924664e6e052a16db19f73af17c" name="a0b65a924664e6e052a16db19f73af17c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b65a924664e6e052a16db19f73af17c">&#9670;&#160;</a></span>calculate()</h2>
+<a id="aa451d152d5ce7e5f561d5846871a2914" name="aa451d152d5ce7e5f561d5846871a2914"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa451d152d5ce7e5f561d5846871a2914">&#9670;&#160;</a></span>calculate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structmotion__t.html">motion_t</a> TrapezoidProfile::calculate </td>
+          <td class="memname">motion_t TrapezoidProfile::calculate </td>
           <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>time_s</em></span></td><td>)</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>t</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Run the trapezoidal profile based on the time that's ellapsed. </p>
+<p>Calculate the state along the motion profile at some given time.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time_s</td><td>Time since start of movement </td></tr>
+    <tr><td class="paramname">t</td><td>The time in seconds.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="structmotion__t.html">motion_t</a> Position, velocity and acceleration </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the state.</dd></dl>
+<p>Calculate the state along the motion profile after some given time.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">t</td><td>The time in seconds.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the state. </dd></dl>
 
 </div>
 </div>
-<a id="abd551042dfffe0923200c4546d109c55" name="abd551042dfffe0923200c4546d109c55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd551042dfffe0923200c4546d109c55">&#9670;&#160;</a></span>get_movement_time()</h2>
+<a id="a62095b3e0dadf8586ac5b81092dd9822" name="a62095b3e0dadf8586ac5b81092dd9822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62095b3e0dadf8586ac5b81092dd9822">&#9670;&#160;</a></span>total_time()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double TrapezoidProfile::get_movement_time </td>
+          <td class="memname">double TrapezoidProfile::total_time </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>uses the kinematic equations to and specified accel and max_v to figure out how long moving along the profile would take </p><dl class="section return"><dt>Returns</dt><dd>the time the path will take to travel </dd></dl>
-
-</div>
-</div>
-<a id="a1dcdfa1c290347cf0af48aca5afd167c" name="a1dcdfa1c290347cf0af48aca5afd167c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1dcdfa1c290347cf0af48aca5afd167c">&#9670;&#160;</a></span>set_accel()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TrapezoidProfile::set_accel </td>
-          <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>accel</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>set_accel sets the acceleration this profile will use (the left and right legs of the trapezoid) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">accel</td><td>the acceleration amount to use </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5" name="a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d28f3fa6bf1dfa7f5c1a34d0d3b17b5">&#9670;&#160;</a></span>set_endpts()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TrapezoidProfile::set_endpts </td>
-          <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>start</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>end</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>set_endpts defines a start and end position </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">start</td><td>the starting position of the path </td></tr>
-    <tr><td class="paramname">end</td><td>the ending position of the path </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a6c08d08d8eadaa719f4dc9e607f9fe97" name="a6c08d08d8eadaa719f4dc9e607f9fe97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c08d08d8eadaa719f4dc9e607f9fe97">&#9670;&#160;</a></span>set_max_v()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TrapezoidProfile::set_max_v </td>
-          <td>(</td>
-          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>max_v</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>sets the maximum velocity for the profile (the height of the top of the trapezoid) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">max_v</td><td>the maximum velocity the robot can travel at </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Returns the total time that the motion profile takes to complete.</p>
+<dl class="section return"><dt>Returns</dt><dd>the total time that the motion profile takes to complete. </dd></dl>
 
 </div>
 </div>

@@ -44,7 +44,6 @@ var hierarchy =
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::MaybeMessage", "classStateMachine_1_1MaybeMessage.html", null ],
     [ "MecanumDrive", "classMecanumDrive.html", null ],
     [ "MecanumDrive::mecanumdrive_config_t", "structMecanumDrive_1_1mecanumdrive__config__t.html", null ],
-    [ "motion_t", "structmotion__t.html", null ],
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
