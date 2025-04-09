@@ -72,20 +72,20 @@ motion_t TrapezoidProfile::calculate(double t) {
     double time_deceled;
     if (triangular_) {
       time_deceled = t - time_accel_;
-      pos_local = 0.5 * accel_ * (time_accel_ * time_accel_) + v_peak_ * time_deceled -
-                  0.5 * decel_ * (time_deceled * time_deceled);
-      vel_local = v_peak_ - decel_ * time_deceled;
+      pos_local = (0.5 * accel_ * (time_accel_ * time_accel_)) + (v_peak_ * time_deceled) -
+                  (0.5 * decel_ * (time_deceled * time_deceled));
+      vel_local = v_peak_ - (decel_ * time_deceled);
       acc_local = -decel_;
     } else {
       time_deceled = t - (time_accel_ + time_cruise_);
       pos_local =
-        dist_accel_ + v_max_ * time_cruise_ + v_max_ * time_deceled - 0.5 * decel_ * (time_deceled * time_deceled);
-      vel_local = v_max_ - decel_ * time_deceled;
+        dist_accel_ + (v_max_ * (time_cruise_ + time_deceled)) - (0.5 * decel_ * (time_deceled * time_deceled));
+      vel_local = v_max_ - (decel_ * time_deceled);
       acc_local = -decel_;
     }
   }
 
-  double pos = x_initial_ + direction_ * pos_local;
+  double pos = x_initial_ + (direction_ * pos_local);
   double vel = direction_ * vel_local;
   double acc = direction_ * acc_local;
   return motion_t{pos, vel, acc};
