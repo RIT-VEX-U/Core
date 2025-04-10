@@ -1,4 +1,4 @@
-#include "../core/include/subsystems/odometry/odometry_tank.h"
+#include "core/subsystems/odometry/odometry_tank.h"
 
 /**
  * Initialize the Odometry module, calculating position from the drive motors.

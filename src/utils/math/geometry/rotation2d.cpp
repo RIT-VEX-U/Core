@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
 
 /**
  * Constructs a rotation with the given value in radians.

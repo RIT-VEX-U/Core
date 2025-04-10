@@ -1,4 +1,4 @@
-#include "../core/include/device/cobs_device.h"
+#include "core/device/cobs_device.h"
 
 COBSSerialDevice::COBSSerialDevice(int32_t port, int32_t baud) : port(port), baud(baud) {
     vexGenericSerialEnable(port, 0);

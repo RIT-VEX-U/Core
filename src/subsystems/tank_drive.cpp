@@ -1,8 +1,8 @@
-#include "../core/include/subsystems/tank_drive.h"
-#include "../core/include/utils/command_structure/drive_commands.h"
-#include "../core/include/utils/controls/pidff.h"
-#include "../core/include/utils/geometry.h"
-#include "../core/include/utils/math_util.h"
+#include "core/subsystems/tank_drive.h"
+#include "core/utils/command_structure/drive_commands.h"
+#include "core/utils/controls/pidff.h"
+#include "core/utils/geometry.h"
+#include "core/utils/math_util.h"
 
 TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
     : left_motors(left_motors), right_motors(right_motors), correction_pid(config.correction_pid), odometry(odom),
