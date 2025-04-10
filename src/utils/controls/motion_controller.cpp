@@ -12,7 +12,7 @@
  *    ff_cfg Definitions of kS, kV, and kA
  */
 MotionController::MotionController(m_profile_cfg_t &config)
-    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(config.max_v, config.accel) {}
+    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
 
 /**
  * @brief Initialize the motion profile for a new movement
@@ -21,7 +21,7 @@ MotionController::MotionController(m_profile_cfg_t &config)
  * @param end_pt Movement ending posiiton
  */
 void MotionController::init(double start_pt, double end_pt) {
-  profile.set_endpts(start_pt, end_pt);
+  profile = TrapezoidProfile(start_pt, end_pt, config.max_v, config.accel, config.accel);
   pid.reset();
   tmr.reset();
 }
@@ -37,7 +37,7 @@ double MotionController::update(double sensor_val) {
   pid.set_target(cur_motion.pos);
   pid.update(sensor_val, cur_motion.vel);
 
-  out = pid.get() + ff.calculate(cur_motion.vel, cur_motion.accel, pid.get());
+  out = pid.get() + ff.calculate(cur_motion.vel, cur_motion.acc, pid.get());
 
   if (lower_limit != upper_limit)
     out = clamp(out, lower_limit, upper_limit);
@@ -66,7 +66,7 @@ void MotionController::set_limits(double lower, double upper) {
  * confirms it is on target
  */
 bool MotionController::is_on_target() {
-  return (tmr.time(timeUnits::sec) > profile.get_movement_time()) && pid.is_on_target();
+  return (tmr.time(timeUnits::sec) > profile.total_time()) && pid.is_on_target();
 }
 
 /**
