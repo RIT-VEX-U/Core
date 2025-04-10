@@ -106,24 +106,24 @@ $(function(){initNavTree('geometry_8h_source.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../core/include/utils/math/geometry/transform2d.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;core/utils/math/geometry/transform2d.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structRect.html">    9</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structRect.html">Rect</a> {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> min;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> max;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keyword">static</span> <a class="code hl_struct" href="structRect.html">Rect</a> from_min_and_size(<a class="code hl_class" href="classTranslation2d.html">Translation2d</a> min, <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> size) { <span class="keywordflow">return</span> {min, min + size}; }</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> dimensions()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max - min; }</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> center()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (min + max) / 2; }</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">double</span> width()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() - min.x(); }</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">double</span> height()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max.y() - min.y(); }</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">bool</span> contains(<a class="code hl_class" href="classTranslation2d.html">Translation2d</a> p)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordtype">bool</span> xin = p.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() &gt; min.x() &amp;&amp; p.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() &lt; max.x();</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">bool</span> yin = p.<a class="code hl_function" href="classTranslation2d.html#aae8b6ca05574b9095c8facfd0465f422">y</a>() &gt; min.y() &amp;&amp; p.<a class="code hl_function" href="classTranslation2d.html#aae8b6ca05574b9095c8facfd0465f422">y</a>() &lt; max.y();</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordflow">return</span> xin &amp;&amp; yin;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  }</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> min;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> max;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">static</span> <a class="code hl_struct" href="structRect.html">Rect</a> from_min_and_size(<a class="code hl_class" href="classTranslation2d.html">Translation2d</a> min, <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> size) { <span class="keywordflow">return</span> {min, min + size}; }</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> dimensions()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max - min; }</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> center()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (min + max) / 2; }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">double</span> width()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() - min.x(); }</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">double</span> height()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> max.y() - min.y(); }</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordtype">bool</span> contains(<a class="code hl_class" href="classTranslation2d.html">Translation2d</a> p)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordtype">bool</span> xin = p.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() &gt; min.x() &amp;&amp; p.<a class="code hl_function" href="classTranslation2d.html#a6da88127a3739d3936e3d8ab003e052f">x</a>() &lt; max.x();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        <span class="keywordtype">bool</span> yin = p.<a class="code hl_function" href="classTranslation2d.html#aae8b6ca05574b9095c8facfd0465f422">y</a>() &gt; min.y() &amp;&amp; p.<a class="code hl_function" href="classTranslation2d.html#aae8b6ca05574b9095c8facfd0465f422">y</a>() &lt; max.y();</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        <span class="keywordflow">return</span> xin &amp;&amp; yin;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
 </div>
 <div class="ttc" id="aclassTranslation2d_html"><div class="ttname"><a href="classTranslation2d.html">Translation2d</a></div><div class="ttdef"><b>Definition</b> translation2d.h:21</div></div>
@@ -135,7 +135,7 @@ $(function(){initNavTree('geometry_8h_source.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><b>geometry.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="dir_9e3c081da26bdde9c5aec25c2fcc2ede.html">utils</a></li><li class="navelem"><b>geometry.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

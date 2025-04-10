@@ -109,28 +109,26 @@ $(function(){initNavTree('delay__command_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;../core/include/utils/command_structure/auto_command.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;core/utils/command_structure/auto_command.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classDelayCommand.html">   12</a></span><span class="keyword">class </span><a class="code hl_function" href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">DelayCommand</a> : <span class="keyword">public</span> AutoCommand {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">   18</a></span>  <a class="code hl_function" href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">DelayCommand</a>(<span class="keywordtype">int</span> ms) : ms(ms) {}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">   18</a></span>    <a class="code hl_function" href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">DelayCommand</a>(<span class="keywordtype">int</span> ms) : ms(ms) {}</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span></div>
 <div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">   25</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">run</a>()<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    vexDelay(ms);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  }</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">   25</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">run</a>()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        vexDelay(ms);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  std::string toString()<span class="keyword"> override</span>{</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;Delaying for &quot;</span> + double_to_string(ms) + <span class="stringliteral">&quot;ms&quot;</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="comment">// amount of milliseconds to wait</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">int</span> ms;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    std::string toString()<span class="keyword"> override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;Delaying for &quot;</span> + double_to_string(ms) + <span class="stringliteral">&quot;ms&quot;</span>; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// amount of milliseconds to wait</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordtype">int</span> ms;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
 </div>
 <div class="ttc" id="aclassDelayCommand_html_a6cff8fe05b3ca36ec2ab20e411cfd9ab"><div class="ttname"><a href="classDelayCommand.html#a6cff8fe05b3ca36ec2ab20e411cfd9ab">DelayCommand::run</a></div><div class="ttdeci">bool run() override</div><div class="ttdef"><b>Definition</b> delay_command.h:25</div></div>
 <div class="ttc" id="aclassDelayCommand_html_a7dc6d1e547ec24b51d91aada84d1febb"><div class="ttname"><a href="classDelayCommand.html#a7dc6d1e547ec24b51d91aada84d1febb">DelayCommand::DelayCommand</a></div><div class="ttdeci">DelayCommand(int ms)</div><div class="ttdef"><b>Definition</b> delay_command.h:18</div></div>
@@ -139,7 +137,7 @@ $(function(){initNavTree('delay__command_8h_source.html',''); initResizable(true
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_821002d4f10779a80d4fb17bc32f21f1.html">utils</a></li><li class="navelem"><a class="el" href="dir_e0729c835bcfebced7012c88d9b3a1d3.html">command_structure</a></li><li class="navelem"><b>delay_command.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="dir_9e3c081da26bdde9c5aec25c2fcc2ede.html">utils</a></li><li class="navelem"><a class="el" href="dir_c9cf28a09aedabe1d680a749f78e7e75.html">command_structure</a></li><li class="navelem"><b>delay_command.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

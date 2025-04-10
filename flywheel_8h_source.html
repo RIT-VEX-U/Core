@@ -107,72 +107,72 @@ $(function(){initNavTree('flywheel_8h_source.html',''); initResizable(true); });
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;../core/include/robot_specs.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../core/include/subsystems/screen.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;../core/include/utils/command_structure/auto_command.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;../core/include/utils/controls/feedforward.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;../core/include/utils/controls/pid.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;core/robot_specs.h&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;core/subsystems/screen.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;core/utils/command_structure/auto_command.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;core/utils/controls/feedforward.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;core/utils/controls/pid.h&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span></div>
 <div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classFlywheel.html">   18</a></span><span class="keyword">class </span><a class="code hl_function" href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel</a> {</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="comment">// CONSTRUCTORS, GETTERS, AND SETTERS</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <a class="code hl_function" href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel</a>(vex::motor_group &amp;motors, <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;helper, <span class="keyword">const</span> <span class="keywordtype">double</span> ratio, <a class="code hl_class" href="classFilter.html">Filter</a> &amp;filt);</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// CONSTRUCTORS, GETTERS, AND SETTERS</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_function" href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel</a>(vex::motor_group &amp;motors, <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;feedback, <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;helper, <span class="keyword">const</span> <span class="keywordtype">double</span> ratio, <a class="code hl_class" href="classFilter.html">Filter</a> &amp;filt);</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">get_target</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0">get_target</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">getRPM</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classFlywheel.html#abbbe49f13e580a85670734f472170b45">getRPM</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  vex::motor_group &amp;<a class="code hl_function" href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">get_motors</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    vex::motor_group &amp;<a class="code hl_function" href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">get_motors</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">spin_manual</a>(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">spin_manual</a>(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(<span class="keywordtype">double</span> rpm);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(<span class="keywordtype">double</span> rpm);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">stop</a>();</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">stop</a>();</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">   72</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>() { <span class="keywordflow">return</span> fb.is_on_target(); }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">   72</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>() { <span class="keywordflow">return</span> fb.is_on_target(); }</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <a class="code hl_class" href="classscreen_1_1Page.html">screen::Page</a> *<a class="code hl_function" href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Page</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_class" href="classscreen_1_1Page.html">screen::Page</a> *<a class="code hl_function" href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Page</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span></div>
 <div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">   85</a></span>  AutoCommand *<a class="code hl_function" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">SpinRpmCmd</a>(<span class="keywordtype">int</span> rpm) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">   85</a></span>    AutoCommand *<a class="code hl_function" href="classFlywheel.html#afe2fb986a59f0581e4608e7cbbdf7b89">SpinRpmCmd</a>(<span class="keywordtype">int</span> rpm) {</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classFunctionCommand.html">FunctionCommand</a>([<span class="keyword">this</span>, rpm]() {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>      <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(rpm);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>      <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    });</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classFunctionCommand.html">FunctionCommand</a>([<span class="keyword">this</span>, rpm]() {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            <a class="code hl_function" href="classFlywheel.html#aa18519258b1ab8753e93392c42b6dba8">spin_rpm</a>(rpm);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        });</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
 </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span></div>
 <div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">   98</a></span>  AutoCommand *<a class="code hl_function" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">WaitUntilUpToSpeedCmd</a>() {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classWaitUntilCondition.html">WaitUntilCondition</a>(<span class="keyword">new</span> <a class="code hl_class" href="classFunctionCondition.html">FunctionCondition</a>([<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>(); }));</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">   98</a></span>    AutoCommand *<a class="code hl_function" href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">WaitUntilUpToSpeedCmd</a>() {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code hl_class" href="classWaitUntilCondition.html">WaitUntilCondition</a>(<span class="keyword">new</span> <a class="code hl_class" href="classFunctionCondition.html">FunctionCondition</a>([<span class="keyword">this</span>]() { <span class="keywordflow">return</span> <a class="code hl_function" href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">is_on_target</a>(); }));</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    }</div>
 </div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keyword">friend</span> <span class="keyword">class </span>FlywheelPage;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">friend</span> <span class="keywordtype">int</span> <a class="code hl_friend" href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">spinRPMTask</a>(<span class="keywordtype">void</span> *wheelPointer);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="keyword">friend</span> <span class="keyword">class </span>FlywheelPage;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">friend</span> <span class="keywordtype">int</span> <a class="code hl_friend" href="classFlywheel.html#afa2cdd8707f7fe1267279f61218fe2aa">spinRPMTask</a>(<span class="keywordtype">void</span> *wheelPointer);</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  vex::motor_group &amp;motors;       </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordtype">bool</span> task_running = <span class="keyword">false</span>;      </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;fb;                   </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;ff;                </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  vex::mutex fb_mut;              </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keywordtype">double</span> ratio;                   </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  std::atomic&lt;double&gt; target_rpm; </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  task rpm_task;                  </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <a class="code hl_class" href="classFilter.html">Filter</a> &amp;avger;                  </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    vex::motor_group &amp;motors;       </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">bool</span> task_running = <span class="keyword">false</span>;      </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_class" href="classFeedback.html">Feedback</a> &amp;fb;                   </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_class" href="classFeedForward.html">FeedForward</a> &amp;ff;                </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    vex::mutex fb_mut;              </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keywordtype">double</span> ratio;                   </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    std::atomic&lt;double&gt; target_rpm; </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    task rpm_task;                  </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_class" href="classFilter.html">Filter</a> &amp;avger;                  </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="comment">// Functions for internal use only</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keywordtype">void</span> set_target(<span class="keywordtype">double</span> value);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keywordtype">double</span> measure_RPM();</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="comment">// Functions for internal use only</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">void</span> set_target(<span class="keywordtype">double</span> value);</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">double</span> measure_RPM();</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>  <span class="keywordtype">void</span> spin_raw(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">void</span> spin_raw(<span class="keywordtype">double</span> speed, directionType dir = fwd);</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>};</div>
 </div>
 <div class="ttc" id="aclassFeedForward_html"><div class="ttname"><a href="classFeedForward.html">FeedForward</a></div><div class="ttdef"><b>Definition</b> feedforward.h:29</div></div>
@@ -181,7 +181,7 @@ $(function(){initNavTree('flywheel_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="aclassFlywheel_html_a0340e5807718d4a602aed219783acdd8"><div class="ttname"><a href="classFlywheel.html#a0340e5807718d4a602aed219783acdd8">Flywheel::WaitUntilUpToSpeedCmd</a></div><div class="ttdeci">AutoCommand * WaitUntilUpToSpeedCmd()</div><div class="ttdoc">Creates a new auto command that will hold until the flywheel has its target as defined by its feedbac...</div><div class="ttdef"><b>Definition</b> flywheel.h:98</div></div>
 <div class="ttc" id="aclassFlywheel_html_a237f97e26bca2afd8c7e97558443055f"><div class="ttname"><a href="classFlywheel.html#a237f97e26bca2afd8c7e97558443055f">Flywheel::get_motors</a></div><div class="ttdeci">vex::motor_group &amp; get_motors() const</div><div class="ttdef"><b>Definition</b> flywheel.cpp:26</div></div>
 <div class="ttc" id="aclassFlywheel_html_a291e067bcc495a9d3da16a5832d78484"><div class="ttname"><a href="classFlywheel.html#a291e067bcc495a9d3da16a5832d78484">Flywheel::spin_manual</a></div><div class="ttdeci">void spin_manual(double speed, directionType dir=fwd)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:85</div></div>
-<div class="ttc" id="aclassFlywheel_html_a2da213a6aaf2ec9c74c7beaa1fdf53ac"><div class="ttname"><a href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Flywheel::Page</a></div><div class="ttdeci">screen::Page * Page() const</div><div class="ttdoc">Creates a page displaying info about the flywheel.</div><div class="ttdef"><b>Definition</b> flywheel.cpp:165</div></div>
+<div class="ttc" id="aclassFlywheel_html_a2da213a6aaf2ec9c74c7beaa1fdf53ac"><div class="ttname"><a href="classFlywheel.html#a2da213a6aaf2ec9c74c7beaa1fdf53ac">Flywheel::Page</a></div><div class="ttdeci">screen::Page * Page() const</div><div class="ttdoc">Creates a page displaying info about the flywheel.</div><div class="ttdef"><b>Definition</b> flywheel.cpp:167</div></div>
 <div class="ttc" id="aclassFlywheel_html_a39422b9ac580d764694037e3cd8f53e8"><div class="ttname"><a href="classFlywheel.html#a39422b9ac580d764694037e3cd8f53e8">Flywheel::Flywheel</a></div><div class="ttdeci">Flywheel(vex::motor_group &amp;motors, Feedback &amp;feedback, FeedForward &amp;helper, const double ratio, Filter &amp;filt)</div><div class="ttdef"><b>Definition</b> flywheel.cpp:15</div></div>
 <div class="ttc" id="aclassFlywheel_html_a4bc1b25122c9f8536c43c06c74f4f92c"><div class="ttname"><a href="classFlywheel.html#a4bc1b25122c9f8536c43c06c74f4f92c">Flywheel::is_on_target</a></div><div class="ttdeci">bool is_on_target()</div><div class="ttdoc">check if the feedback controller thinks the flywheel is on target</div><div class="ttdef"><b>Definition</b> flywheel.h:72</div></div>
 <div class="ttc" id="aclassFlywheel_html_a6634f5126f0404e0edeeff1e0e14d05e"><div class="ttname"><a href="classFlywheel.html#a6634f5126f0404e0edeeff1e0e14d05e">Flywheel::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition</b> flywheel.cpp:119</div></div>
@@ -199,7 +199,7 @@ $(function(){initNavTree('flywheel_8h_source.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_8e84b5daa2b3f33b7b3fb9ecedbe5637.html">subsystems</a></li><li class="navelem"><b>flywheel.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="dir_6469d4dca4e66e2e50ff95d548dab5ae.html">subsystems</a></li><li class="navelem"><b>flywheel.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
