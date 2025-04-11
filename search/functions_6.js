@@ -10,14 +10,13 @@ var searchData=
   ['get_5fmotion_7',['get_motion',['../classMotionController.html#a389dec759b61dbae75131dd6a720dddd',1,'MotionController']]],
   ['get_5fmotors_8',['get_motors',['../classFlywheel.html#a237f97e26bca2afd8c7e97558443055f',1,'Flywheel']]],
   ['get_5fpoints_9',['get_points',['../classPurePursuit_1_1Path.html#a11a7ee4e251ddab64ad203498019b158',1,'PurePursuit::Path']]],
-  ['get_5fpose2d_10',['get_pose2d',['../classOdometrySerial.html#a5139f3417be1376e05d274f6fb7349f1',1,'OdometrySerial']]],
-  ['get_5fposition_11',['get_position',['../classOdometryBase.html#ae45d1b8f686fcd2597b77d1239a09b12',1,'OdometryBase::get_position()'],['../classOdometrySerial.html#ad57628919acc36230f521bf0838f1f34',1,'OdometrySerial::get_position()'],['../classTankDrive.html#ad1d1acecd19e61b3d0507b87f27b8b9f',1,'TankDrive::get_position()']]],
-  ['get_5fradius_12',['get_radius',['../classPurePursuit_1_1Path.html#a86e3a01fcc91f32ae54499bec62859f1',1,'PurePursuit::Path']]],
-  ['get_5fsensor_5fval_13',['get_sensor_val',['../classPID.html#a8db32b3729426d45d1358f5db47cf114',1,'PID']]],
-  ['get_5fsetpoint_14',['get_setpoint',['../classLift.html#adaa6cb65351d0c8a2c199a87a318b133',1,'Lift']]],
-  ['get_5fsize_15',['get_size',['../classMovingAverage.html#a02f6c11fdbeaffd7bdd88c148705c383',1,'MovingAverage::get_size()'],['../classExponentialMovingAverage.html#a2eca6a149d079e621dc2241fe9ef6fd8',1,'ExponentialMovingAverage::get_size()']]],
-  ['get_5fspeed_16',['get_speed',['../classOdometryBase.html#a96c7be68db7424ddbe3704770dd1889f',1,'OdometryBase']]],
-  ['get_5ftarget_17',['get_target',['../classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0',1,'Flywheel::get_target()'],['../classPID.html#ad3d37c5ab4ad6709f69337c622186bf3',1,'PID::get_target()']]],
-  ['get_5fvalue_18',['get_value',['../classMovingAverage.html#abfc09872a3d1b2573ec5750bbdc844d5',1,'MovingAverage::get_value()'],['../classExponentialMovingAverage.html#a69e8041896718ae83730ca8f5a3ed97e',1,'ExponentialMovingAverage::get_value()']]],
-  ['getrpm_19',['getRPM',['../classFlywheel.html#abbbe49f13e580a85670734f472170b45',1,'Flywheel']]]
+  ['get_5fposition_10',['get_position',['../classOdometryBase.html#ae45d1b8f686fcd2597b77d1239a09b12',1,'OdometryBase::get_position()'],['../classTankDrive.html#ad1d1acecd19e61b3d0507b87f27b8b9f',1,'TankDrive::get_position()']]],
+  ['get_5fradius_11',['get_radius',['../classPurePursuit_1_1Path.html#a86e3a01fcc91f32ae54499bec62859f1',1,'PurePursuit::Path']]],
+  ['get_5fsensor_5fval_12',['get_sensor_val',['../classPID.html#a8db32b3729426d45d1358f5db47cf114',1,'PID']]],
+  ['get_5fsetpoint_13',['get_setpoint',['../classLift.html#adaa6cb65351d0c8a2c199a87a318b133',1,'Lift']]],
+  ['get_5fsize_14',['get_size',['../classMovingAverage.html#a02f6c11fdbeaffd7bdd88c148705c383',1,'MovingAverage::get_size()'],['../classExponentialMovingAverage.html#a2eca6a149d079e621dc2241fe9ef6fd8',1,'ExponentialMovingAverage::get_size()']]],
+  ['get_5fspeed_15',['get_speed',['../classOdometryBase.html#a96c7be68db7424ddbe3704770dd1889f',1,'OdometryBase']]],
+  ['get_5ftarget_16',['get_target',['../classFlywheel.html#af1a934bb8f51cc5a4ce88e09c6d9f0a0',1,'Flywheel::get_target()'],['../classPID.html#ad3d37c5ab4ad6709f69337c622186bf3',1,'PID::get_target()']]],
+  ['get_5fvalue_17',['get_value',['../classMovingAverage.html#abfc09872a3d1b2573ec5750bbdc844d5',1,'MovingAverage::get_value()'],['../classExponentialMovingAverage.html#a69e8041896718ae83730ca8f5a3ed97e',1,'ExponentialMovingAverage::get_value()']]],
+  ['getrpm_18',['getRPM',['../classFlywheel.html#abbbe49f13e580a85670734f472170b45',1,'Flywheel']]]
 ];
