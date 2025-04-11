@@ -1,4 +1,4 @@
-#include "../core/include/subsystems/custom_encoder.h"
+#include "core/subsystems/custom_encoder.h"
 
 CustomEncoder::CustomEncoder(vex::triport::port &port, double ticks_per_rev) : super(port) {
   // bc it's a quadrature encoder, ticks per rev has to be multiplied by 4

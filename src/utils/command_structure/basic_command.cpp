@@ -11,7 +11,7 @@
  * @version 0.1
  *
  */
-#include "../core/include/utils/command_structure/basic_command.h"
+#include "core/utils/command_structure/basic_command.h"
 
 
 // Basic Motor Commands--------------------------------------

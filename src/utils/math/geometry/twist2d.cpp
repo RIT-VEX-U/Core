@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/twist2d.h"
+#include "core/utils/math/geometry/twist2d.h"
 
 /**
  * Default Constructor for Twist2d

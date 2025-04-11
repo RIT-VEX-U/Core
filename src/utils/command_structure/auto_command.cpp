@@ -1,4 +1,4 @@
-#include "../core/include/utils/command_structure/auto_command.h"
+#include "core/utils/command_structure/auto_command.h"
 
 class OrCondition : public Condition {
 public:
