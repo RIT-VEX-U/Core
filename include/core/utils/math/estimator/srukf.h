@@ -53,7 +53,7 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * N + 2 sigma points instead of the standard 2N + 1 sigma points. This reduces
  * computation up to 50%. To learn more about this method, read:
  * https://www.sciencedirect.com/science/article/pii/S0888327020308190
- *
+ * 
  * This filter uses a method of "recalibrating" by essentially applying a measurement
  * twice instead of once, and only using it if it is more accurate than before the
  * measurement was applied. To learn more about this framework for nonlinear filters,
@@ -345,118 +345,126 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
       const std::function<StateVector(const StateVector &, const StateVector &)> &add_func_X
     ) {
 
-        EMat<ROWS, ROWS> sqrt_R = measurement_stddevs.asDiagonal();
+      EMat<ROWS, ROWS> sqrt_R = measurement_stddevs.asDiagonal();
 
-        // Generate new sigma points from the prior mean and covariance
-        // and transform them into measurement space using h(x, u)
-        //
-        //   sigmas  = 𝒳
-        //   sigmasH = 𝒴
-        //
-        // This differs from equation (22) which uses
-        // the prior sigma points, regenerating them allows
-        // multiple measurement updates per time update
-        EMat<ROWS, NUM_SIGMAS> sigmas_H;
-        EMat<STATES, NUM_SIGMAS> sigmas = m_pts.square_root_sigma_points(m_xhat, m_S);
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
-        }
-
-        // Pass the predicted measurement sigmas through the Unscented Transform
-        // to compute the mean predicted measurement and square-root innovation
-        // covariance.
-        //
-        // equations (23) (24) and (25)
-        auto [yhat, Sy] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
-        );
-
-        // Compute cross covariance of the predicted state and measurement sigma
-        // points given as:
-        //
-        //           L+1
-        //   P_{xy} = Σ Wᵢ⁽ᶜ⁾[𝒳ᵢ - x̂][𝒴ᵢ - ŷ⁻]ᵀ
-        //           i=0
-        //
-        // equation (26)
-        EMat<STATES, ROWS> Pxy;
-        Pxy.setZero();
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            Pxy += m_pts.Wc(i) * (residual_func_X(m_sigmas_F.template block<STATES, 1>(0, i), m_xhat)) *
-                   (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat)).transpose();
-        }
-
-        // Compute the Kalman gain. We use Eigen's forward and backward substitution
-        // to solve. The equation in the paper uses MATLAB's / operator, but Eigen's
-        // solvers act like the \ operator, so we need to rearrange the equation to
-        // use those.
-        //
-        //   K = (P_{xy} / S_{y}ᵀ) / S_{y}
-        //   K = (S_{y} \ P_{xy})ᵀ / S_{y}
-        //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
-        //
-        // equation (27)
+      // Generate new sigma points from the prior mean and covariance
+      // and transform them into measurement space using h(x, u)
+      //
+      //   sigmas  = 𝒳
+      //   sigmasH = 𝒴
+      //
+      // This differs from equation (22) which uses
+      // the prior sigma points, regenerating them allows
+      // multiple measurement updates per time update
+      EMat<ROWS, NUM_SIGMAS> sigmas_H;
+      EMat<STATES, NUM_SIGMAS> sigmas = m_pts.square_root_sigma_points(m_xhat, m_S);
+      for (int i = 0; i < NUM_SIGMAS; ++i) {
+        sigmas_H.template block<ROWS, 1>(0, i) =
+            h(sigmas.template block<STATES, 1>(0, i), u);
+      }
+  
+      // Pass the predicted measurement sigmas through the Unscented Transform
+      // to compute the mean predicted measurement and square-root innovation
+      // covariance.
+      //
+      // equations (23) (24) and (25)
+      auto [yhat, Sy] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
+          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y,
+          sqrt_R.template triangularView<Eigen::Lower>());
+  
+      // Compute cross covariance of the predicted state and measurement sigma
+      // points given as:
+      //
+      //           L+1
+      //   P_{xy} = Σ Wᵢ⁽ᶜ⁾[𝒳ᵢ - x̂][𝒴ᵢ - ŷ⁻]ᵀ
+      //           i=0
+      //
+      // equation (26)
+      EMat<STATES, ROWS> Pxy;
+      Pxy.setZero();
+      for (int i = 0; i < NUM_SIGMAS; ++i) {
+        Pxy += m_pts.Wc(i) *
+               (residual_func_X(m_sigmas_F.template block<STATES, 1>(0, i),
+                                m_xhat)) *
+               (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat))
+                   .transpose();
+      }
+  
+      // Compute the Kalman gain. We use Eigen's forward and backward substitution
+      // to solve. The equation in the paper uses MATLAB's / operator, but Eigen's
+      // solvers act like the \ operator, so we need to rearrange the equation to
+      // use those.
+      //
+      //   K = (P_{xy} / S_{y}ᵀ) / S_{y}
+      //   K = (S_{y} \ P_{xy})ᵀ / S_{y}
+      //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
+      //
+      // equation (27)
         EMat<STATES, ROWS> K = (Sy.transpose().template triangularView<Eigen::Upper>().solve(
                                   Sy.template triangularView<Eigen::Lower>().solve(Pxy.transpose())
                                 ))
-                                 .transpose();
-
-        // Compute the posterior state mean
-        //
-        //   x̂ = x̂⁻ + K(y − ŷ⁻)
-        //
-        // second part of equation (27)
-        EVec<STATES> xhat_dot = K * residual_func_Y(y, yhat);
-        EVec<STATES> xhat = add_func_X(m_xhat, xhat_dot);
-        EMat<STATES, STATES> S = m_S;
-
-        // RECALIBRATE
-
-        // Add the change of xhat to each of the sigma points in 𝒳.
-        for (int i = 0; i < NUM_SIGMAS; i++) {
-            sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
-        }
-
-        // Pass those sigma points through the measurement function to transform
-        // them into measurement space.
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
-        }
-
-        // Perform a second unscented transform, this time on the recalibrated
-        // measurement sigma points.
-        auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
-        );
-
-        // Compute the cross covariance of the recalibrated sigma points.
-        Pxy.setZero();
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            Pxy += m_pts.Wc(i) * (residual_func_X(sigmas.template block<STATES, 1>(0, i), xhat)) *
-                   (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat_k)).transpose();
-        }
-
-        // Compute the intermediate matrix U for downdating
-        // the square-root covariance
-        //
-        // equation (28)
-        const EMat<STATES, ROWS> U = K * Sy;
-
-        // Downdate the posterior square-root state covariance
-        //
-        // equation (29)
-        for (int i = 0; i < ROWS; i++) {
-            Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(S, U.template block<STATES, 1>(0, i), -1);
-        }
-
-        // BACK OUT
-
-        // We only use the posterior state and covariance if it is more certain
-        // than the prior.
-        if (m_S.trace() > S.trace()) {
-            m_xhat = xhat;
-            m_S = S;
-        }
+              .transpose();
+  
+      // Compute the posterior state mean
+      //
+      //   x̂ = x̂⁻ + K(y − ŷ⁻)
+      //
+      // second part of equation (27)
+      EVec<STATES> xhat_dot = K * residual_func_Y(y, yhat);
+      EVec<STATES> xhat = add_func_X(m_xhat, xhat_dot);
+      EMat<STATES, STATES> S = m_S;
+  
+      // RECALIBRATE
+  
+      // Add the change of xhat to each of the sigma points in 𝒳.
+      for (int i = 0; i < NUM_SIGMAS; i++) {
+          sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
+      }
+  
+      // Pass those sigma points through the measurement function to transform
+      // them into measurement space.
+      for (int i = 0; i < NUM_SIGMAS; ++i) {
+          sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
+      }
+  
+      // Perform a second unscented transform, this time on the recalibrated
+      // measurement sigma points.
+      auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
+          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y,
+          sqrt_R.template triangularView<Eigen::Lower>());
+  
+      // Compute the cross covariance of the recalibrated sigma points.
+      Pxy.setZero();
+      for (int i = 0; i < NUM_SIGMAS; ++i) {
+          Pxy += m_pts.Wc(i) *
+                  (residual_func_X(sigmas.template block<STATES, 1>(0, i),
+                                  xhat)) *
+                  (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat_k))
+                      .transpose();
+      }
+  
+      // Compute the intermediate matrix U for downdating
+      // the square-root covariance
+      //
+      // equation (28)
+      const EMat<STATES, ROWS> U = K * Sy;
+  
+      // Downdate the posterior square-root state covariance
+      //
+      // equation (29)
+      for (int i = 0; i < ROWS; i++) {
+        Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(
+            S, U.template block<STATES, 1>(0, i), -1);
+      }
+  
+      // BACK OUT
+  
+      // We only use the posterior state and covariance if it is more certain
+      // than the prior.
+      if (m_S.trace() > S.trace()) {
+          m_xhat = xhat;
+          m_S = S;
+      }
     }
 
   private:

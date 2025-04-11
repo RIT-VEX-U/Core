@@ -6,10 +6,10 @@
 
 /**
  * This class implements a map of key-value pairs.
- *
+ * 
  * If there is not a pair with the given key in the map, the value will be a
  * linear interpolation of the preceding and following values.
- *
+ * 
  * @tparam KEY The type of the key.
  * @tparam VALUE The type of the value.
  */
@@ -19,7 +19,7 @@ template <typename KEY, typename VALUE> class InterpolatingMap {
 
     /**
      * Inserts a key value pair.
-     *
+     * 
      * @param key The key.
      * @param vlue The value.
      */
@@ -27,12 +27,12 @@ template <typename KEY, typename VALUE> class InterpolatingMap {
 
     /**
      * Obtains the value at the given key.
-     *
+     * 
      * If the key does not exactly match a pair in the map, it will interpolate
      * between the preceding and following pairs.
-     *
+     * 
      * @param key The key.
-     *
+     * 
      * @return The value.
      */
     VALUE operator[](const KEY &key) {
@@ -42,7 +42,7 @@ template <typename KEY, typename VALUE> class InterpolatingMap {
         // If our key greater than the largest key return its value.
         if (upper == map_.end()) {
             return (--upper)->second;
-        }
+        }   
 
         // If our key less than or equal to the smallest key return its value.
         if (upper == map_.begin()) {
