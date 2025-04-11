@@ -1,6 +1,6 @@
 #pragma once
 #include "Eigen/Dense"
-#include ".core/utils/geometry.h"
+#include "core/utils/geometry.h"
 #include "math.h"
 #include "vex.h"
 #include <vector>
