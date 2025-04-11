@@ -1,5 +1,5 @@
-#include "../core/include/subsystems/mecanum_drive.h"
-#include "../core/include/utils/math_util.h"
+#include "core/subsystems/mecanum_drive.h"
+#include "core/utils/math_util.h"
 
 /**
  * Create the Mecanum drivetrain object

@@ -1,4 +1,4 @@
-#include "../core/include/utils/graph_drawer.h"
+#include "core/utils/graph_drawer.h"
 
 /// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
 /// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)

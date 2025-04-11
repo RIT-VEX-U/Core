@@ -3,11 +3,11 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/pose2d.h"
-#include "../core/include/utils/math/geometry/rotation2d.h"
-#include "../core/include/utils/math/geometry/transform2d.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/math/geometry/twist2d.h"
+#include "core/utils/math/geometry/pose2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/transform2d.h"
+#include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/twist2d.h"
 
 /**
  * Constructs a pose with given translation and rotation components.

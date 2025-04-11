@@ -1,4 +1,4 @@
-#include "../core/include/utils/auto_chooser.h"
+#include "core/utils/auto_chooser.h"
 
 /**
  * Initialize the auto-chooser. This class places a choice menu on the brain screen,

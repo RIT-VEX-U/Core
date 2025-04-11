@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Constructs a Translation2d with the given x and y values.

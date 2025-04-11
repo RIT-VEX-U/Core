@@ -1,4 +1,4 @@
-#include "../core/include/subsystems/odometry/odometry_base.h"
+#include "core/subsystems/odometry/odometry_base.h"
 
 /**
  * Construct a new Odometry Base object
@@ -122,4 +122,3 @@ double OdometryBase::get_angular_accel_deg() {
 
     return retval;
 }
-

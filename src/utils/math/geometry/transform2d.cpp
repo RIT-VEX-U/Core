@@ -3,10 +3,10 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/pose2d.h"
-#include "../core/include/utils/math/geometry/rotation2d.h"
-#include "../core/include/utils/math/geometry/transform2d.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/pose2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/transform2d.h"
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Default Constructor for Transform2d
@@ -110,7 +110,7 @@ Transform2d Transform2d::inverse() const { return Transform2d((-translation()).r
  * @param scalar the scalar to multiply this transform by.
  */
 Transform2d Transform2d::operator*(const double &scalar) const {
-  return Transform2d(translation() * scalar, rotation() * scalar);
+    return Transform2d(translation() * scalar, rotation() * scalar);
 }
 
 /**
@@ -135,7 +135,7 @@ Transform2d Transform2d::operator-() const { return inverse(); }
  * @return true if the components are within 1e-9 of each other.
  */
 bool Transform2d::operator==(const Transform2d &other) const {
-  return (translation() == other.translation()) && (rotation() == other.rotation());
+    return (translation() == other.translation()) && (rotation() == other.rotation());
 }
 
 /**
@@ -146,7 +146,7 @@ bool Transform2d::operator==(const Transform2d &other) const {
  * prints "Transform2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
 std::ostream &operator<<(std::ostream &os, const Transform2d &transform) {
-  os << "Transform2d[x: " << transform.x() << ", y: " << transform.y() << ", rad: " << transform.rotation().radians()
-     << ", deg: " << transform.rotation().degrees() << "]";
-  return os;
+    os << "Transform2d[x: " << transform.x() << ", y: " << transform.y() << ", rad: " << transform.rotation().radians()
+       << ", deg: " << transform.rotation().degrees() << "]";
+    return os;
 }

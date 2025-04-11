@@ -1,8 +1,8 @@
-#include "../core/include/subsystems/fun/video.h"
+#include "core/subsystems/fun/video.h"
 #include <cstdint>
 
 #define PL_MPEG_IMPLEMENTATION
-#include "../core/include/subsystems/fun/pl_mpeg.h"
+#include "core/subsystems/fun/pl_mpeg.h"
 
 static uint8_t buf[358400];
 
@@ -18,7 +18,7 @@ static int x;
 static int y;
 static bool frame_ready = false;
 static plm_t *plm;
-const int32_t video_player_priority = 2;
+const int32_t video_player_priority = vex::thread::threadPrioritylow;
 static int32_t file_size = 0;
 static bool should_restart = false;
 

@@ -4,7 +4,7 @@
  *    [insert meaningful desc]
  */
 
-#include "../core/include/utils/command_structure/flywheel_commands.h"
+#include "core/utils/command_structure/flywheel_commands.h"
 
 SpinRPMCommand::SpinRPMCommand(Flywheel &flywheel, int rpm) : flywheel(flywheel), rpm(rpm) {}
 

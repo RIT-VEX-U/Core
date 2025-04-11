@@ -1,4 +1,4 @@
-#include "../core/include/utils/pure_pursuit.h"
+#include "core/utils/pure_pursuit.h"
 
 /**
  * Create a Path

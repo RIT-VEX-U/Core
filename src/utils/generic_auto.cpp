@@ -1,4 +1,4 @@
-#include "../core/include/utils/generic_auto.h"
+#include "core/utils/generic_auto.h"
 
 /**
  * The method that runs the autonomous. If 'blocking' is true, then

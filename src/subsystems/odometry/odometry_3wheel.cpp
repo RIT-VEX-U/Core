@@ -1,5 +1,5 @@
-#include "../core/include/subsystems/odometry/odometry_3wheel.h"
-#include "../core/include/utils/math_util.h"
+#include "core/subsystems/odometry/odometry_3wheel.h"
+#include "core/utils/math_util.h"
 
 Odometry3Wheel::Odometry3Wheel(
   CustomEncoder &lside_fwd, CustomEncoder &rside_fwd, CustomEncoder &off_axis, odometry3wheel_cfg_t &cfg, bool is_async

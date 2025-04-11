@@ -1,5 +1,5 @@
-#include "../core/include/subsystems/screen.h"
-#include "../core/include/utils/math_util.h"
+#include "core/subsystems/screen.h"
+#include "core/utils/math_util.h"
 namespace screen {
 void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
   uint32_t height = scr.getStringHeight(lbl.c_str());
