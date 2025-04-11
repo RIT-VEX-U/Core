@@ -114,46 +114,46 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span></div>
 <div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classBasicSpinCommand.html">   24</a></span><span class="keyword">class </span><a class="code hl_function" href="classBasicSpinCommand.html#ad949ea1a46346ebc05cb19553ef7e30c">BasicSpinCommand</a> : <span class="keyword">public</span> AutoCommand {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="comment">// Enumurator for the type of power setting in the motor</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">enum</span> type { percent, voltage, velocity };</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="comment">// Enumurator for the type of power setting in the motor</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">enum</span> type { percent, voltage, velocity };</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="classBasicSpinCommand.html#ad949ea1a46346ebc05cb19553ef7e30c">BasicSpinCommand</a>(vex::motor &amp;motor, vex::directionType dir, BasicSpinCommand::type setting, <span class="keywordtype">double</span> power);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_function" href="classBasicSpinCommand.html#ad949ea1a46346ebc05cb19553ef7e30c">BasicSpinCommand</a>(vex::motor &amp;motor, vex::directionType dir, BasicSpinCommand::type setting, <span class="keywordtype">double</span> power);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicSpinCommand.html#a20a04b08d0cc6cd3dc792315e618d014">run</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicSpinCommand.html#a20a04b08d0cc6cd3dc792315e618d014">run</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">     * Returns a string describing the commands functionality</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::string toString() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="comment">/*</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">  * Returns a string describing the commands functionality</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">  */</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  std::string toString() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    vex::motor &amp;motor;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  vex::motor &amp;motor;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    type setting;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  type setting;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    vex::directionType dir;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  vex::directionType dir;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordtype">double</span> power;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keywordtype">double</span> power;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
 </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span></div>
 <div class="foldopen" id="foldopen00065" data-start="{" data-end="};">
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classBasicStopCommand.html">   65</a></span><span class="keyword">class </span><a class="code hl_function" href="classBasicStopCommand.html#a8f7fa97627810883921d2a6566bd55e3">BasicStopCommand</a> : <span class="keyword">public</span> AutoCommand {</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_function" href="classBasicStopCommand.html#a8f7fa97627810883921d2a6566bd55e3">BasicStopCommand</a>(vex::motor &amp;motor, vex::brakeType setting);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_function" href="classBasicStopCommand.html#a8f7fa97627810883921d2a6566bd55e3">BasicStopCommand</a>(vex::motor &amp;motor, vex::brakeType setting);</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicStopCommand.html#aa5513d0a9fd0d9e1e5d068fe5d48f24e">run</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicStopCommand.html#aa5513d0a9fd0d9e1e5d068fe5d48f24e">run</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">     * Returns a string describing the commands functionality</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    std::string toString() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="comment">/*</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">  * Returns a string describing the commands functionality</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">  */</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  std::string toString() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    vex::motor &amp;motor;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  vex::motor &amp;motor;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    vex::brakeType setting;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  vex::brakeType setting;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
 </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
@@ -161,19 +161,19 @@ $(function(){initNavTree('basic__command_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span></div>
 <div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classBasicSolenoidSet.html">  100</a></span><span class="keyword">class </span><a class="code hl_function" href="classBasicSolenoidSet.html#a2aab468c0c963f6ab9412c51b7bf42c2">BasicSolenoidSet</a> : <span class="keyword">public</span> AutoCommand {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <a class="code hl_function" href="classBasicSolenoidSet.html#a2aab468c0c963f6ab9412c51b7bf42c2">BasicSolenoidSet</a>(vex::pneumatics &amp;solenoid, <span class="keywordtype">bool</span> setting);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <a class="code hl_function" href="classBasicSolenoidSet.html#a2aab468c0c963f6ab9412c51b7bf42c2">BasicSolenoidSet</a>(vex::pneumatics &amp;solenoid, <span class="keywordtype">bool</span> setting);</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicSolenoidSet.html#a044d9814ab675758aa66a4a86b46489c">run</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">     * Returns a string describing the commands functionality</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    std::string toString() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classBasicSolenoidSet.html#a044d9814ab675758aa66a4a86b46489c">run</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="comment">/*</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment">  * Returns a string describing the commands functionality</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">  */</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  std::string toString() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    vex::pneumatics &amp;solenoid;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  vex::pneumatics &amp;solenoid;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">bool</span> setting;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keywordtype">bool</span> setting;</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>};</div>
 </div>
 <div class="ttc" id="aclassBasicSolenoidSet_html_a044d9814ab675758aa66a4a86b46489c"><div class="ttname"><a href="classBasicSolenoidSet.html#a044d9814ab675758aa66a4a86b46489c">BasicSolenoidSet::run</a></div><div class="ttdeci">bool run() override</div><div class="ttdoc">Runs the BasicSolenoidSet Overrides run command from AutoCommand.</div><div class="ttdef"><b>Definition</b> basic_command.cpp:121</div></div>
