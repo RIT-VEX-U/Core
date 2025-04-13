@@ -1,4 +1,4 @@
-#include "../core/include/device/vdb/types.hpp"
+#include "core/device/vdb/types.hpp"
 namespace VDP {
 /**
  * Creates a Record with just a name
@@ -51,6 +51,11 @@ void Record::setFields(std::vector<PartPtr> fs) { fields = std::move(fs); }
 void Record::fetch() {
     for (auto &field : fields) {
         field->fetch();
+    }
+}
+void Record::receive(Packet &pac) {
+    for (auto &field : fields) {
+        field->receive(pac);
     }
 }
 void Record::read_data_from_message(PacketReader &reader) {

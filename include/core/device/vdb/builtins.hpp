@@ -1,16 +1,15 @@
 #pragma once
 
-#include "../core/include/device/vdb/types.hpp"
-#include "../core/include/subsystems/odometry/odometry_base.h"
+#include "core/device/vdb/types.hpp"
+#include "core/subsystems/odometry/odometry_base.h"
 #include <memory>
-
 
 #include "vex.h"
 namespace VDP {
 /**
  * Defines a record that holds a timestamp and data
  */
-class Timestamped : public Record {
+class TimestampedRecord : public Record {
   public:
     /**
      * Creates a record that contains a
@@ -19,7 +18,7 @@ class Timestamped : public Record {
      * @param name the name of the record to create
      * @param data the data to put into the record
      */
-    Timestamped(std::string name, Part *data);
+    TimestampedRecord(std::string name, Part *data);
     /**
      * sets the data that the Timestamp Parts hold
      */
@@ -32,7 +31,7 @@ class Timestamped : public Record {
 /**
  * Defines a record that holds motor values
  */
-class Motor : public Record {
+class MotorDataRecord : public Record {
   public:
     /**
      * Creates a record that contains a
@@ -44,7 +43,7 @@ class Motor : public Record {
      * @param name the name of the record to create
      * @param mot the motor to get data from
      */
-    Motor(std::string name, vex::motor &mot);
+    MotorDataRecord(std::string name, vex::motor &mot);
     /**
      * sets the data that the Motor Parts hold
      */
@@ -60,9 +59,9 @@ class Motor : public Record {
     std::shared_ptr<Float> current;
 };
 /**
- * Defines a record that holds odometry values
+ * Defines a record that holds odometry values to be sent to the board
  */
-class Odometry : public Record {
+class OdometryDataRecord : public Record {
   public:
     /**
      * Creates a record that contains a
@@ -72,7 +71,7 @@ class Odometry : public Record {
      * @param name the name of the record to create
      * @param odom the odometry to get data from
      */
-    Odometry(std::string name, OdometryBase &odom);
+    OdometryDataRecord(std::string name, OdometryBase &odom);
     /**
      * sets the data that the Odometry Parts hold
      */
@@ -85,10 +84,35 @@ class Odometry : public Record {
     std::shared_ptr<Float> Y;
     std::shared_ptr<Float> ROT;
 };
+
 /**
- * Defines a record that holds pid values
+ * Defines a record sets odometry values from the board
  */
-class PIDRecord : public Record {
+class OdometryControlRecord : public Record {
+  public:
+    /**
+     * Creates a record for taking odometry data from the debug board
+     * @param name the name of the record to create
+     * @param odom the odometry to get data from
+     */
+    OdometryControlRecord(std::string name, OdometryBase &odom);
+    /**
+     * sets the odom position to the values from the board
+     */
+    void receive(VDP::Packet &pac) override;
+
+  private:
+    OdometryBase &odom;
+
+    std::shared_ptr<Float> X;
+    std::shared_ptr<Float> Y;
+    std::shared_ptr<Float> ROT;
+};
+
+/**
+ * Defines a record that holds pid values to be sent to the board
+ */
+class PIDDataRecord : public Record {
   public:
     /**
      * Creates a record that contains a
@@ -101,7 +125,7 @@ class PIDRecord : public Record {
      * @param name the name of the record to create
      * @param pid the pid to get data from
      */
-    PIDRecord(std::string name, PID &pid);
+    PIDDataRecord(std::string name, PID &pid);
     /**
      * sets the data that the PID Parts hold
      */
@@ -116,5 +140,28 @@ class PIDRecord : public Record {
     std::shared_ptr<Float> ERROR;
     std::shared_ptr<Float> OUTPUT;
     std::shared_ptr<String> TYPE;
+};
+/**
+ * Defines a record for setting pid values from the board
+ */
+class PIDControlRecord : public Record {
+  public:
+    /**
+     * Creates a record for setting pid values from the board
+     * @param name the name of the record to create
+     * @param pid the pid to get data from
+     */
+    PIDControlRecord(std::string name, PID &pid);
+    /**
+     * sets the PID values to the values from the board
+     */
+    void receive(VDP::Packet &pac) override;
+
+  private:
+    PID &pid;
+
+    std::shared_ptr<Float> P;
+    std::shared_ptr<Float> I;
+    std::shared_ptr<Float> D;
 };
 } // namespace VDP

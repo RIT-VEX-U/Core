@@ -1,5 +1,5 @@
 #pragma once
-#include "../core/include/device/vdb/protocol.hpp"
+#include "core/device/vdb/protocol.hpp"
 
 namespace VDP {
 /**
@@ -49,6 +49,8 @@ class Record : public Part {
      * sets the values of each Part the Record contains
      */
     void fetch() override;
+
+    void receive(Packet &pac) override;
     /**
      * writes a message to the packet containing part record
      * @param sofar the PacketWriter to write with
@@ -87,6 +89,7 @@ class String : public Part {
      * function to run when fetching this part, runs the fetch function
      */
     void fetch() override;
+
     /**
      * sets the string part's value to the string given
      * @param new_value the string to set the value to
@@ -143,12 +146,11 @@ template <typename NumT, Type schemaType> class Number : public Part {
     /**
      * Function to run when fetching this number
      */
-    using FetchFunc = std::function<NumberType()>;
-    /**
-     * creates a number with a name and fetcher
-     * @param field name for the number part
-     * @param fetcher the function to run when fetching this number
-     */
+    using FetchFunc = std::function<NumberType()>; /**
+                                                    * creates a number with a name and fetcher
+                                                    * @param field name for the number part
+                                                    * @param fetcher the function to run when fetching this number
+                                                    */
     explicit Number(
       std::string field_name, FetchFunc fetcher = []() { return (NumberType)0; }
     )
@@ -162,6 +164,10 @@ template <typename NumT, Type schemaType> class Number : public Part {
      * @param val the value to store
      */
     void setValue(NumberType val) { this->value = val; }
+    /**
+     * @return the currently stored number value
+     */
+    NumberType getValue() { return value; }
     /**
      * prints the Number with the format "[indent]name: schema_string"
      * @param ss the stream of strings to print to

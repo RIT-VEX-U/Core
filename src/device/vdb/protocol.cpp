@@ -1,4 +1,4 @@
-#include "../core/include/device/vdb/protocol.hpp"
+#include "core/device/vdb/protocol.hpp"
 
 #include <cstdint>
 #include <cstring>
@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "../core/include/device/vdb/types.hpp"
+#include "core/device/vdb/types.hpp"
 
 namespace VDP {
 /**
@@ -88,6 +88,8 @@ Part::Part(std::string name) : name(std::move(name)) {}
  * i.e after it has been sent to the debug board
  */
 Part::~Part() {}
+
+void Part::receive(Packet &pac) {}
 /**
  *  @return a stringstream of the Part with the format "name: string"
  */

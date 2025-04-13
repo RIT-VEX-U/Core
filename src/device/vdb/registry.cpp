@@ -1,4 +1,4 @@
-#include "../core/include/device/vdb/registry.hpp"
+#include "core/device/vdb/registry.hpp"
 
 namespace VDP {
 /**

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/translation2d.h"
 
 class Pose2d;
 

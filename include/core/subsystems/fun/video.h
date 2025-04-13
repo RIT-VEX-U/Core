@@ -1,5 +1,5 @@
 #pragma once
-#include "../core/include/subsystems/screen.h"
+#include "core/subsystems/screen.h"
 #include "pl_mpeg.h"
 #include <string>
 

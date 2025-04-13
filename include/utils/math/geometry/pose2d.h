@@ -7,10 +7,10 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
-#include "../core/include/utils/math/geometry/transform2d.h"
-#include "../core/include/utils/math/geometry/translation2d.h"
-#include "../core/include/utils/math/geometry/twist2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/transform2d.h"
+#include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/twist2d.h"
 
 /**
  * Class representing a pose in 2d space with x, y, and rotational components

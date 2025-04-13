@@ -3,19 +3,15 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <deque>
 #include <vector>
-/**
- * defines a Consistent Overhead Byte Stuffing device
- */
+
 class COBSSerialDevice {
   public:
-    using WirePacket = std::vector<uint8_t>; // 0x00 delimeted, cobs encoded
+    // Decoded packet containing the data one wishes to send
     using Packet = std::vector<uint8_t>;
+    // Cobs Encoded packet containing 0 delimeters ready to be sent over the wire
+    using WirePacket = std::vector<uint8_t>;
 
-    static constexpr int32_t NO_ACTIVITY_DELAY = 2; // ms
-    static constexpr std::size_t MAX_OUT_QUEUE_SIZE = 50;
-    static constexpr std::size_t MAX_IN_QUEUE_SIZE = 50;
     /**
      * Create a serial device that communicates with 0-delimeted COBS encoded packets
      * @param port the vex::PORTXX that the device was created on
@@ -32,7 +28,7 @@ class COBSSerialDevice {
      * uncorrupted if the previous packet failed to send completely
      * @return the number of bytes written (this will generally be > the size passed in due to encoding overhead)
      */
-    virtual int send_cobs_packet_blocking(const uint8_t *data, size_t size, bool leading_delimeter = false);
+    int send_cobs_packet_blocking(const uint8_t *data, size_t size, bool leading_delimeter = false);
     /**
      * Recieve a packet from the wire
      * this function polls the port for incoming data and returns when a valid COBS packet has been delivered
@@ -57,14 +53,13 @@ class COBSSerialDevice {
      * @param[out] out the buffer to write the data into
      */
     static void cobs_decode(const WirePacket &in, Packet &out);
-    bool write_packet_if_avail();
     /**
      * print hex data to the console
      * prints as 16 columns
-     * @param data the byte to hexdump
-     * @param len the size of how much you from the data to hexdump
      */
     static void hexdump(const uint8_t *data, size_t len);
+
+    Packet get_last_decoded_packet();
 
   protected:
     /**
@@ -72,48 +67,16 @@ class COBSSerialDevice {
      * @return true if a packet was decoded in the most recent poll, false if no new packet is available
      */
     bool poll_incoming_data_once();
-    bool send_cobs_packet(const Packet &pac);
-    virtual void cobs_packet_callback(const Packet &pac) = 0;
 
-  private:
-    /**
-     * @brief  process one byte at a time
-     * @param byte the incoming byte
-     * @return true if a packet was decoded
-     */
+    /// @brief  process one byte at a time
+    /// @param byte the incoming byte
+    /// @return true if a packet was decoded
     bool handle_incoming_byte(uint8_t byte);
 
-    void handle_inbound_vdb_byte(uint8_t b);
-
-    // Task that deals with the low level writing and reading bytes from the wire
-    vex::task serial_task;
-    /**
-     * the thread for sending data to the wire
-     */
-    static int serial_thread(void *self);
-
-    // Once the serial_task has read in an entire packet, it must be decoded
-    // this thread decodes it back into its original binary form and calls the
-    // user callback
-    vex::task decode_task;
-    /**
-     * the thread for decoding data from the wire
-     */
-    static int decode_thread(void *self);
-
+  private:
     vex::mutex serial_access_mut;
     int32_t port;
     int32_t baud;
-
-    /// @brief Packets that have been encoded and are waiting for their turn
-    /// to be sent out on the wire
-    std::deque<WirePacket> outbound_packets{};
-    vex::mutex outbound_mutex;
-
-    /// @brief Packets that have been read from the wire and split up but that are
-    /// still COBS encoded
-    std::deque<WirePacket> inbound_packets;
-    vex::mutex inbound_mutex;
 
     // Buffer to hold data about to be written
     Packet writing_buffer;

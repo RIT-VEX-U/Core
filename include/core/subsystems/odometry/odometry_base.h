@@ -6,10 +6,10 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
-#include "../core/include/robot_specs.h"
-#include "../core/include/utils/command_structure/auto_command.h"
-#include "../core/include/utils/geometry.h"
-#include "../core/include/utils/math/geometry/pose2d.h"
+#include "core/robot_specs.h"
+#include "core/utils/command_structure/auto_command.h"
+#include "core/utils/geometry.h"
+#include "core/utils/math/geometry/pose2d.h"
 #include "vex.h"
 
 #ifndef PI

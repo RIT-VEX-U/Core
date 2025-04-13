@@ -1,8 +1,8 @@
-#include "../core/include/subsystems/fun/video.h"
+#include "core/subsystems/fun/video.h"
 #include <cstdint>
 
 #define PL_MPEG_IMPLEMENTATION
-#include "../core/include/subsystems/fun/pl_mpeg.h"
+#include "core/subsystems/fun/pl_mpeg.h"
 
 static uint8_t buf[358400];
 

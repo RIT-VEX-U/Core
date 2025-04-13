@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../core/include/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/rotation2d.h"
 
 class Rotation2d;
 

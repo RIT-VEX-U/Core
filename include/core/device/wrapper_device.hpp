@@ -1,8 +1,8 @@
 #pragma once
-#include "../core/include/device/cobs_device.h"
-#include "../core/include/device/vdb/protocol.hpp"
+#include "core/device/cobs_device.h"
+#include "core/device/vdb/protocol.hpp"
 #include "vex.h"
-
+#include <deque>
 
 /**
  * Defines a COBS Serial Device to transmit VDB data through
@@ -10,6 +10,9 @@
 namespace VDB {
 class Device : public VDP::AbstractDevice, COBSSerialDevice {
   public:
+    static constexpr int32_t NO_ACTIVITY_DELAY = 2; // ms
+    static constexpr std::size_t MAX_OUT_QUEUE_SIZE = 50;
+    static constexpr std::size_t MAX_IN_QUEUE_SIZE = 50;
     /**
      * creates a COBS Serial device for VDB data at a specified port with a specified baud rate
      * @param port the port the debug board is connected to
@@ -17,22 +20,37 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
      */
     explicit Device(int32_t port, int32_t baud_rate);
     /**
-     * sends a packet of data to the debug board
-     */
-    bool send_packet(const VDP::Packet &packet) override; // From VDP::AbstractDevice
-    /**
      * defines a callback to a functions that calls when the register recieves data from the debug board
      * @param callback the callback function to call
      */
     void register_receive_callback(std::function<void(const VDP::Packet &packet)> callback
     ) override; // From VDP::AbstractDevice
-    /**
-     * defines a callback to a packet that is called when the cobs device decodes a packet
-     * @param pac the packet to get the callback from
-     */
-    void cobs_packet_callback(const Packet &pac);
 
   private:
+    /// @brief Packets that have been encoded and are waiting for their turn
+    /// to be sent out on the wire
+    std::deque<WirePacket> outbound_packets{};
+    vex::mutex outbound_mutex;
+
+    /// @brief Packets that have been read from the wire and split up but that are
+    /// still COBS encoded
+    std::deque<WirePacket> inbound_packets;
+
+    vex::mutex inbound_mutex;
+    /// @brief Working buffer that the reading thread uses to assemble packets
+    /// until it finds a full COBS packet
+    WirePacket inbound_buffer;
+    /**
+     * the thread for decoding data from the wire
+     */
+    static int decode_thread(void *self);
+
+    /**
+     * the thread for sending data to the wire
+     */
+    static int serial_thread(void *self);
+
+    bool write_packet_if_avail();
     std::function<void(const VDP::Packet &packet)> callback;
 };
 

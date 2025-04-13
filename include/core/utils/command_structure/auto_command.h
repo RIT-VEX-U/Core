@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "../core/include/utils/formatting.h"
+#include "core/utils/formatting.h"
 #include "vex.h"
 #include <atomic>
 #include <functional>

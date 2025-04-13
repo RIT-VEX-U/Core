@@ -1,4 +1,4 @@
-#include "../core/include/device/vdb/crc32.hpp"
+#include "core/device/vdb/crc32.hpp"
 
 #define FLASH_READ_DWORD(x) (*(const uint32_t *)(x))
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../core/include/device/vdb/crc32.hpp"
+#include "core/device/vdb/crc32.hpp"
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -166,6 +166,8 @@ class Part {
      * sets the data the part contains, meant to be overrided
      */
     virtual void fetch() = 0;
+
+    virtual void receive(Packet &pac);
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
      * @param reader the PacketReader to read data from
