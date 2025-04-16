@@ -1,5 +1,6 @@
 #pragma once
 #include "core/device/vdb/protocol.hpp"
+#include "vex.h"
 
 namespace VDP {
 /**
@@ -147,6 +148,7 @@ class RegistryController {
      * @return whether or not all channel's were acknowledgements
      */
     bool negotiate();
+    int rec_switch_time = 100;
 
   private:
     ChannelID new_channel_id() {
@@ -156,6 +158,8 @@ class RegistryController {
     }
 
     bool needs_ack = false;
+    vex::timer timer;
+    bool rec_mode = false;
     static constexpr size_t ack_ms = 500;
 
     AbstractDevice *device;

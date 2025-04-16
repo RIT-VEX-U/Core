@@ -20,9 +20,7 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
      */
     explicit Device(int32_t port, int32_t baud_rate);
 
-    bool send_packet(const VDP::Packet &packet) override {
-        return send_cobs_packet_blocking(packet.data(), packet.size());
-    };
+    bool send_packet(const VDP::Packet &packet);
     /**
      * defines a callback to a functions that calls when the register recieves data from the debug board
      * @param callback the callback function to call
@@ -57,8 +55,6 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
     static int serial_thread(void *self);
 
     bool write_packet_if_avail();
-
-    bool receive_mode = false;
 
     bool write_request();
     std::function<void(const VDP::Packet &packet)> callback;

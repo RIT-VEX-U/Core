@@ -145,6 +145,7 @@ void RegistryController::take_packet(const Packet &pac) {
         }
         my_channels[id].acked = true;
     } else if (header.func == VDP::PacketFunction::Receive) {
+        timer.reset();
         // if the packet is a data, get the data from the packet
         VDPTracef("Controller: PacketType Data");
         // get the channel id from the second byte of the packet
@@ -249,6 +250,17 @@ bool RegistryListener::send_data(ChannelID id, PartPtr data) {
  * @param data the Part Pointer for the channel to hold and send to the device
  */
 bool RegistryController::send_data(ChannelID id, PartPtr data) {
+    if (timer > rec_switch_time) {
+        rec_mode = !rec_mode;
+    }
+    if (rec_mode) {
+        printf("in receive mode, requesting packets from device\n");
+        VDP::Packet scratch;
+        PacketWriter writ{scratch};
+
+        writ.write_request();
+        return device->send_packet(writ.get_packet());
+    }
     // checks if the channel is actually stored in the Registry
     if (id > my_channels.size()) {
         printf("VDB-Controller: Channel with ID %d doesn't exist yet\n", (int)id);

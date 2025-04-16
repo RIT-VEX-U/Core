@@ -38,10 +38,6 @@ int Device::serial_thread(void *vself) {
         if (self.write_packet_if_avail()) {
             did_something = true;
         }
-        if (timer >= self.rec_switch_time) {
-            self.receive_mode = !self.receive_mode;
-            timer.reset();
-        }
         // Reading
         if (self.poll_incoming_data_once()) {
             Packet decoded = {};
@@ -62,6 +58,15 @@ int Device::serial_thread(void *vself) {
  * @param baud_rate the baud rate for the debug board to use
  */
 Device::Device(int32_t port, int32_t baud_rate) : COBSSerialDevice(port, baud_rate) {}
+
+bool Device::send_packet(const VDP::Packet &packet) {
+    if (packet.size() >= MAX_OUT_QUEUE_SIZE) {
+        printf("Too many packets in out queue. dropping\n");
+        return false;
+    }
+    outbound_packets.push_front(packet);
+    return true;
+}
 
 /**
  * writes a packet to the device as soon as it is available

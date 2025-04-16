@@ -1,8 +1,9 @@
 #pragma once
-
 #include "core/device/vdb/types.hpp"
 #include "core/subsystems/odometry/odometry_base.h"
+#include <Eigen/Dense>
 #include <memory>
+
 
 #include "vex.h"
 namespace VDP {
