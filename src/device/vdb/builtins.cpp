@@ -85,7 +85,7 @@ OdometryControlRecord::OdometryControlRecord(std::string name, OdometryBase &odo
 /**
  * sets the odometry position to the values from the debug board
  */
-void OdometryControlRecord::receive() { odom.set_position({X->getValue(), Y->getValue(), ROT->getValue()}); }
+void OdometryControlRecord::response() { odom.set_position({X->getValue(), Y->getValue(), ROT->getValue()}); }
 
 /**
  * Creates a record that contains a
@@ -124,7 +124,7 @@ PIDControlRecord::PIDControlRecord(std::string name, PID &pid)
     Record::setFields({P, I, D});
 }
 
-void PIDControlRecord::receive() {
+void PIDControlRecord::response() {
     pid.config.p = P->getValue();
     pid.config.i = I->getValue();
     pid.config.d = D->getValue();

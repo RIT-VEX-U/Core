@@ -22,7 +22,7 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
     writing_buffer.resize(size);
     std::copy(data, data + size, writing_buffer.begin());
     COBSSerialDevice::cobs_encode(writing_buffer, encoded_write, leading_delimeter);
-    hexdump(encoded_write.data(), encoded_write.size());
+    // hexdump(encoded_write.data(), encoded_write.size());
 
     size_t write_head = 0;
     int32_t num_free = vexGenericSerialWriteFree(port);
@@ -72,7 +72,7 @@ bool COBSSerialDevice::poll_incoming_data_once() {
             return true;
         }
     }
-
+    printf("didnt finish reading\n");
     return false;
 }
 

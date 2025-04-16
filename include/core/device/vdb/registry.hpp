@@ -52,8 +52,6 @@ class RegistryListener {
      * sends channel schematics to the Registry device and checks for ackowledgements
      * @return whether or not all channel's were acknowledgements
      */
-    bool negotiate();
-
   private:
     ChannelID new_channel_id() {
         ChannelID id = next_channel_id;
@@ -87,7 +85,7 @@ class RegistryListener {
     };
     CallbackFn on_data = [](VDP::Channel chan) {
         printf(
-          "VDB: No Data Callback installed: Received data for channel "
+          "VDB Listener: No Data Callback installed: Received data for channel "
           "%d:\n%s\n",
           int(chan.id), chan.data->pretty_print_data().c_str()
         );
@@ -177,14 +175,14 @@ class RegistryController {
           "VDB-Controller: No Broadcast Callback installed: Received broadcast "
           "for channel id "
           "%d:\n%s\n",
-          int(chan.id), schema_str.c_str()
+          int(chan.getID()), schema_str.c_str()
         );
     };
     CallbackFn on_data = [](VDP::Channel chan) {
         printf(
-          "VDB: No Data Callback installed: Received data for channel "
+          "VDB Controller: No Data Callback installed: Received data for channel "
           "%d:\n%s\n",
-          int(chan.id), chan.data->pretty_print_data().c_str()
+          int(chan.getID()), chan.data->pretty_print_data().c_str()
         );
     };
 };

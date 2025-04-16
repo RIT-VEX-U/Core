@@ -90,7 +90,7 @@ enum class PacketType : uint8_t {
     Broadcast = 0,
     Data = 1,
 };
-enum class PacketFunction : uint8_t { Send = 0b00, Acknowledge = 0b01, Receive = 0b10, Request = 0b11 };
+enum class PacketFunction : uint8_t { Send = 0b00, Acknowledge = 0b01, Response = 0b10, Request = 0b11 };
 /**
  * struct to define the header of a packet,
  * defines wheether a packet is Broadcoast or data
@@ -168,7 +168,7 @@ class Part {
      */
     virtual void fetch() = 0;
 
-    virtual void receive();
+    virtual void response();
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
      * @param reader the PacketReader to read data from
@@ -312,10 +312,10 @@ class PacketWriter {
      */
     void write_request();
     /**
-     * writes a receive packet to the packets
+     * writes a response packet to the packets
      * @param chan the Channel to write the data from
      */
-    void write_receive(const std::vector<Channel> &channels);
+    void write_response(const std::vector<Channel> &channels);
     /**
      * writes a broadcast of a channel schematic to the packet
      * @param chan the channel to request

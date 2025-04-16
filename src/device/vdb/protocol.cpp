@@ -89,7 +89,7 @@ Part::Part(std::string name) : name(std::move(name)) {}
  */
 Part::~Part() {}
 
-void Part::receive() {}
+void Part::response() {}
 /**
  *  @return a stringstream of the Part with the format "name: string"
  */
@@ -236,10 +236,10 @@ void PacketWriter::write_request() {
  * writes a receive packet to the packets
  * @param chan the channel to request
  */
-void PacketWriter::write_receive(const std::vector<Channel> &channels) {
+void PacketWriter::write_response(const std::vector<Channel> &channels) {
     clear();
     // makes a header byte with the type broadcast and the function Receive
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Receive});
+    const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
 
     // writes the header byte and number of channels to send to the packet
     write_number<uint8_t>(header);
@@ -247,7 +247,7 @@ void PacketWriter::write_receive(const std::vector<Channel> &channels) {
     write_number<size_t>(channels.size());
     // writes each channel to the packet
     for (Channel chan : channels) {
-        const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Receive});
+        const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
 
         // writes the header byte and channel id to the packet
         write_number<uint8_t>(header);

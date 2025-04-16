@@ -56,6 +56,9 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
 
     bool write_packet_if_avail();
 
+    // Task that deals with the low level writing and reading bytes from the wire
+    vex::task serial_task;
+
     bool write_request();
     std::function<void(const VDP::Packet &packet)> callback;
 };

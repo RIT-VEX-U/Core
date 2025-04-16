@@ -4,7 +4,6 @@
 #include <Eigen/Dense>
 #include <memory>
 
-
 #include "vex.h"
 namespace VDP {
 /**
@@ -100,7 +99,7 @@ class OdometryControlRecord : public Record {
     /**
      * sets the odom position to the values from the board
      */
-    void receive() override;
+    void response() override;
 
   private:
     OdometryBase &odom;
@@ -156,7 +155,7 @@ class PIDControlRecord : public Record {
     /**
      * sets the PID values to the values from the board
      */
-    void receive() override;
+    void response() override;
 
   private:
     PID &pid;

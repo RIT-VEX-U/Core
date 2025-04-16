@@ -53,9 +53,9 @@ void Record::fetch() {
         field->fetch();
     }
 }
-void Record::receive() {
+void Record::response() {
     for (auto &field : fields) {
-        field->receive();
+        field->response();
     }
 }
 void Record::read_data_from_message(PacketReader &reader) {
@@ -135,7 +135,7 @@ void String::fetch() { value = fetcher(); }
 /**
  * function to run when receiving to this part
  */
-void String::receive() {}
+void String::response() {}
 /**
  * sets the string part's value to the string given
  * @param new_value the string to set the value to

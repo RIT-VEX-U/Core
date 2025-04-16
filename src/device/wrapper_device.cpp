@@ -57,11 +57,12 @@ int Device::serial_thread(void *vself) {
  * @param port the port the debug board is connected to
  * @param baud_rate the baud rate for the debug board to use
  */
-Device::Device(int32_t port, int32_t baud_rate) : COBSSerialDevice(port, baud_rate) {}
+Device::Device(int32_t port, int32_t baud_rate) : COBSSerialDevice(port, baud_rate) {
+    serial_task = vex::task(Device::serial_thread, (void *)this, vex::thread::threadPriorityHigh);
+}
 
 bool Device::send_packet(const VDP::Packet &packet) {
-    if (packet.size() >= MAX_OUT_QUEUE_SIZE) {
-        printf("Too many packets in out queue. dropping\n");
+    if (outbound_packets.size() >= MAX_OUT_QUEUE_SIZE) {
         return false;
     }
     outbound_packets.push_front(packet);

@@ -9,8 +9,8 @@ namespace VDP {
 static VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
     VDPTracef("Validating packet of size %d", (int)packet.size());
 
-    // packet header byte + channel byte + checksum = 6 bytes
-    static constexpr size_t min_packet_size = 6;
+    // packet header byte + checksum = 5 bytes,
+    static constexpr size_t min_packet_size = 5;
 
     // checks that the minimum packet size is met
     if (packet.size() < min_packet_size) {
@@ -38,7 +38,7 @@ static VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
  */
 RegistryListener::RegistryListener(AbstractDevice *device) : device(device) {
     device->register_receive_callback([&](const Packet &p) {
-        printf("GOT PACKET\n");
+        printf("Listener: GOT PACKET\n");
         take_packet(p);
     });
 }
@@ -49,7 +49,7 @@ RegistryListener::RegistryListener(AbstractDevice *device) : device(device) {
  */
 RegistryController::RegistryController(AbstractDevice *device) : device(device) {
     device->register_receive_callback([&](const Packet &p) {
-        printf("SENT PACKET\n");
+        printf("Controller: GOT PACKET\n");
         take_packet(p);
     });
 }
@@ -97,6 +97,30 @@ void RegistryListener::take_packet(const Packet &pac) {
             part->read_data_from_message(reader);
             // runs the channel's on data callback
             on_data(Channel{part, id});
+        } else if (header.type == VDP::PacketType::Broadcast) {
+            // if the packet is a broadcast, decode the packet
+            VDPTracef("Listener: PacketType Broadcast", "");
+            auto decoded = VDP::decode_broadcast(pac);
+            // create a channel and give it the decoded packet
+            VDP::Channel chan{decoded.second, decoded.first};
+            // checks if the new channel is outside of the vector of remote channels
+            if (remote_channels.size() < chan.id) {
+                VDPWarnf("Listener: Out of order broadcast. dropping", "");
+                return;
+            }
+            // adds the channel to the vector of remote channels
+            remote_channels.push_back(chan);
+            VDPTracef("Listener: Got broadcast of channel %d", identifier(), int(chan.id));
+            // runs the channel's on broadcast callback
+            on_broadcast(chan);
+
+            // creates a packet and writes the channel acknowledgement to it,
+            // then sends it to the device
+            Packet scratch;
+            PacketWriter writer{scratch};
+            writer.write_channel_acknowledge(chan);
+            device->send_packet(writer.get_packet());
+            printf("Listener: sent channel ack\n");
         }
     } else if (header.func == VDP::PacketFunction::Request) {
         // if the packet is a data, get the data from the packet
@@ -104,8 +128,9 @@ void RegistryListener::take_packet(const Packet &pac) {
         // creates a PacketReader starting after the channel id location
         Packet scratch;
         PacketWriter writer{scratch};
-        writer.write_receive(channel_receive_queue);
+        writer.write_response(channel_receive_queue);
         device->send_packet(writer.get_packet());
+        printf("Listener: sent available data ack\n");
     }
 }
 
@@ -144,10 +169,10 @@ void RegistryController::take_packet(const Packet &pac) {
             printf("VDB-Controller: Recieved ack for unknown channel %d", id);
         }
         my_channels[id].acked = true;
-    } else if (header.func == VDP::PacketFunction::Receive) {
+    } else if (header.func == VDP::PacketFunction::Response) {
         timer.reset();
         // if the packet is a data, get the data from the packet
-        VDPTracef("Controller: PacketType Data");
+        VDPTracef("Controller: PacketType Response");
         // get the channel id from the second byte of the packet
         const ChannelID id = pac[1];
         // stores the channel id's schema in a Part Pointer
@@ -252,6 +277,7 @@ bool RegistryListener::send_data(ChannelID id, PartPtr data) {
 bool RegistryController::send_data(ChannelID id, PartPtr data) {
     if (timer > rec_switch_time) {
         rec_mode = !rec_mode;
+        timer.reset();
     }
     if (rec_mode) {
         printf("in receive mode, requesting packets from device\n");
