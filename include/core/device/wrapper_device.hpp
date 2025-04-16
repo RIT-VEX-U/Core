@@ -19,12 +19,18 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
      * @param baud_rate the baud rate for the debug board to use
      */
     explicit Device(int32_t port, int32_t baud_rate);
+
+    bool send_packet(const VDP::Packet &packet) override {
+        return send_cobs_packet_blocking(packet.data(), packet.size());
+    };
     /**
      * defines a callback to a functions that calls when the register recieves data from the debug board
      * @param callback the callback function to call
      */
     void register_receive_callback(std::function<void(const VDP::Packet &packet)> callback
     ) override; // From VDP::AbstractDevice
+
+    int rec_switch_time = 1000;
 
   private:
     /// @brief Packets that have been encoded and are waiting for their turn
@@ -51,6 +57,10 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
     static int serial_thread(void *self);
 
     bool write_packet_if_avail();
+
+    bool receive_mode = false;
+
+    bool write_request();
     std::function<void(const VDP::Packet &packet)> callback;
 };
 

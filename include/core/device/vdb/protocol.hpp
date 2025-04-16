@@ -50,7 +50,8 @@ using Packet = std::vector<uint8_t>;
 using ChannelID = uint8_t;
 class Channel {
   public:
-    friend class Registry;
+    friend class RegistryListener;
+    friend class RegistryController;
     /**
      * Creates a channel used for sending data to the brain
      * @param schema_data Part Pointer schematic of data to be sent to the brain
@@ -89,7 +90,7 @@ enum class PacketType : uint8_t {
     Broadcast = 0,
     Data = 1,
 };
-enum class PacketFunction : uint8_t { Send = 0, Acknowledge = 1 };
+enum class PacketFunction : uint8_t { Send = 0b00, Acknowledge = 0b01, Receive = 0b10, Request = 0b11 };
 /**
  * struct to define the header of a packet,
  * defines wheether a packet is Broadcoast or data
@@ -167,7 +168,7 @@ class Part {
      */
     virtual void fetch() = 0;
 
-    virtual void receive(Packet &pac);
+    virtual void receive();
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
      * @param reader the PacketReader to read data from
@@ -306,8 +307,18 @@ class PacketWriter {
      */
     void write_channel_broadcast(const Channel &chan);
     /**
-     * writes the data from a channel to the packet
+     * writes a request for a channel schematic to the packets
      * @param chan the Channel to write the data from
+     */
+    void write_request();
+    /**
+     * writes a receive packet to the packets
+     * @param chan the Channel to write the data from
+     */
+    void write_receive(const std::vector<Channel> &channels);
+    /**
+     * writes a broadcast of a channel schematic to the packet
+     * @param chan the channel to request
      */
     void write_data_message(const Channel &part);
     /**
@@ -373,5 +384,7 @@ PacketHeader decode_header_byte(uint8_t hb);
  * @return the pair of the Channel ID and the Part Pointer of the packet schematic
  */
 std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet);
+
+std::pair<ChannelID, PartPtr> decode_data(const Packet &packet);
 
 } // namespace VDP

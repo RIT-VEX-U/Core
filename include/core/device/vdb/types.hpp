@@ -50,7 +50,7 @@ class Record : public Part {
      */
     void fetch() override;
 
-    void receive(Packet &pac) override;
+    void receive() override;
     /**
      * writes a message to the packet containing part record
      * @param sofar the PacketWriter to write with
@@ -89,6 +89,11 @@ class String : public Part {
      * function to run when fetching this part, runs the fetch function
      */
     void fetch() override;
+
+    /**
+     * function to run when receiving to this part
+     */
+    void receive() override;
 
     /**
      * sets the string part's value to the string given

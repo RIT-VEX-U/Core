@@ -85,13 +85,7 @@ OdometryControlRecord::OdometryControlRecord(std::string name, OdometryBase &odo
 /**
  * sets the odometry position to the values from the debug board
  */
-void OdometryControlRecord::receive(VDP::Packet &pac) {
-    PacketReader reader(pac);
-    X.get()->read_data_from_message(reader);
-    Y.get()->read_data_from_message(reader);
-    ROT.get()->read_data_from_message(reader);
-    odom.set_position({X->getValue(), Y->getValue(), ROT->getValue()});
-}
+void OdometryControlRecord::receive() { odom.set_position({X->getValue(), Y->getValue(), ROT->getValue()}); }
 
 /**
  * Creates a record that contains a
@@ -130,11 +124,7 @@ PIDControlRecord::PIDControlRecord(std::string name, PID &pid)
     Record::setFields({P, I, D});
 }
 
-void PIDControlRecord::receive(VDP::Packet &pac) {
-    PacketReader reader(pac);
-    P->read_data_from_message(reader);
-    I->read_data_from_message(reader);
-    D->read_data_from_message(reader);
+void PIDControlRecord::receive() {
     pid.config.p = P->getValue();
     pid.config.i = I->getValue();
     pid.config.d = D->getValue();

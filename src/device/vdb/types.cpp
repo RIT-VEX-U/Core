@@ -53,9 +53,9 @@ void Record::fetch() {
         field->fetch();
     }
 }
-void Record::receive(Packet &pac) {
+void Record::receive() {
     for (auto &field : fields) {
-        field->receive(pac);
+        field->receive();
     }
 }
 void Record::read_data_from_message(PacketReader &reader) {
@@ -132,6 +132,10 @@ String::String(std::string field_name, std::function<std::string()> fetcher)
  * used to assign the string new data, runs the fetch function
  */
 void String::fetch() { value = fetcher(); }
+/**
+ * function to run when receiving to this part
+ */
+void String::receive() {}
 /**
  * sets the string part's value to the string given
  * @param new_value the string to set the value to

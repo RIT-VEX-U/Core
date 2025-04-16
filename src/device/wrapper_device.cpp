@@ -25,6 +25,7 @@ int Device::serial_thread(void *vself) {
     // sets up a buffer
     static constexpr size_t buflen = 4096;
     static uint8_t buf[buflen] = {0};
+    vex::timer timer;
     // loop for the thread
     while (true) {
         bool did_something = false;
@@ -37,7 +38,10 @@ int Device::serial_thread(void *vself) {
         if (self.write_packet_if_avail()) {
             did_something = true;
         }
-
+        if (timer >= self.rec_switch_time) {
+            self.receive_mode = !self.receive_mode;
+            timer.reset();
+        }
         // Reading
         if (self.poll_incoming_data_once()) {
             Packet decoded = {};
@@ -58,6 +62,7 @@ int Device::serial_thread(void *vself) {
  * @param baud_rate the baud rate for the debug board to use
  */
 Device::Device(int32_t port, int32_t baud_rate) : COBSSerialDevice(port, baud_rate) {}
+
 /**
  * writes a packet to the device as soon as it is available
  */

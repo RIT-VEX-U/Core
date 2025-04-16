@@ -89,7 +89,7 @@ Part::Part(std::string name) : name(std::move(name)) {}
  */
 Part::~Part() {}
 
-void Part::receive(Packet &pac) {}
+void Part::receive() {}
 /**
  *  @return a stringstream of the Part with the format "name: string"
  */
@@ -148,6 +148,7 @@ std::string PacketReader::get_string() {
     }
     return s;
 }
+
 /**
  * creates a packet writer
  * @param scratch_space the packet for the writer to write to
@@ -212,6 +213,49 @@ void PacketWriter::write_channel_broadcast(const Channel &chan) {
 
     // writes the packet schematic from the channel to the packet
     chan.data->write_schema(*this);
+
+    // creates and writes the Checksum to the packet
+    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+    write_number<uint32_t>(crc);
+}
+/**
+ * writes a request for a channel schematic to the packet
+ * @param chan the channel to request
+ */
+void PacketWriter::write_request() {
+    clear();
+    // makes a header byte with the type broadcast and the function acknowledgement
+    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Request});
+    // writes the header byte and channel id to the packet
+    write_number<uint8_t>(header);
+    // creates and writes the Checksum to the packet
+    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+    write_number<uint32_t>(crc);
+}
+/**
+ * writes a receive packet to the packets
+ * @param chan the channel to request
+ */
+void PacketWriter::write_receive(const std::vector<Channel> &channels) {
+    clear();
+    // makes a header byte with the type broadcast and the function Receive
+    const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Receive});
+
+    // writes the header byte and number of channels to send to the packet
+    write_number<uint8_t>(header);
+
+    write_number<size_t>(channels.size());
+    // writes each channel to the packet
+    for (Channel chan : channels) {
+        const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Receive});
+
+        // writes the header byte and channel id to the packet
+        write_number<uint8_t>(header);
+        write_number<ChannelID>(chan.getID());
+
+        // writes the data from the channel to the packet
+        chan.data->write_message(*this);
+    }
 
     // creates and writes the Checksum to the packet
     uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
@@ -289,7 +333,7 @@ PartPtr make_decoder(PacketReader &pac) {
     return nullptr;
 }
 static constexpr auto PACKET_TYPE_BIT_LOCATION = 7;
-static constexpr auto PACKET_FUNCTION_BIT_LOCATION = 6;
+static constexpr auto PACKET_FUNCTION_BIT_LOCATION = 5;
 /**
  * creates a byte from a given packet header
  * @return the header byte created

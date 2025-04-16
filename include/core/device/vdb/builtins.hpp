@@ -99,7 +99,7 @@ class OdometryControlRecord : public Record {
     /**
      * sets the odom position to the values from the board
      */
-    void receive(VDP::Packet &pac) override;
+    void receive() override;
 
   private:
     OdometryBase &odom;
@@ -155,7 +155,7 @@ class PIDControlRecord : public Record {
     /**
      * sets the PID values to the values from the board
      */
-    void receive(VDP::Packet &pac) override;
+    void receive() override;
 
   private:
     PID &pid;

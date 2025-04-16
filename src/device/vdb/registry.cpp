@@ -32,80 +32,63 @@ static VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
     return VDP::PacketValidity::Ok;
 }
 /**
- * creates a device registry for sending data or listening to data over the device
+ * creates a device registry for listening to data over the device
  * @param device the device to send data to
  * @param reg_type the type of registry it is (Listener or Controller)
  */
-Registry::Registry(AbstractDevice *device, Side reg_type) : reg_type(reg_type), device(device) {
+RegistryListener::RegistryListener(AbstractDevice *device) : device(device) {
     device->register_receive_callback([&](const Packet &p) {
         printf("GOT PACKET\n");
         take_packet(p);
     });
 }
 /**
- * @return returns a char* of the registry type (Listener or Controller)
+ * creates a device registry for sending data over the device
+ * @param device the device to send data to
+ * @param reg_type the type of registry it is (Listener or Controller)
  */
-const char *Registry::identifier() { return (reg_type == Side::Controller ? "VDB:Controller" : "VDB:Listener"); }
+RegistryController::RegistryController(AbstractDevice *device) : device(device) {
+    device->register_receive_callback([&](const Packet &p) {
+        printf("SENT PACKET\n");
+        take_packet(p);
+    });
+}
 /**
  * Handles various types of packets, validating them and passing them through the system
  * according to its type and function
  */
-void Registry::take_packet(const Packet &pac) {
+void RegistryListener::take_packet(const Packet &pac) {
     VDPTracef("Received packet of size %d", (int)pac.size());
     // checks the validity of the packet
     const VDP::PacketValidity status = validate_packet(pac);
 
     if (status == VDP::PacketValidity::BadChecksum) {
-        VDPWarnf("%s: Bad packet checksum. Skipping", identifier());
+        VDPWarnf("Listener: Bad packet checksum. Skipping", "");
         num_bad++;
         return;
     } else if (status == VDP::PacketValidity::TooSmall) {
         num_small++;
-        VDPWarnf("%s: Packet too small to be valid (%d bytes). Skipping", identifier(), (int)pac.size());
+        VDPWarnf("Listener: Packet too small to be valid (%d bytes). Skipping", (int)pac.size());
         dump_packet(pac);
         return;
     } else if (status != VDP::PacketValidity::Ok) {
-        VDPWarnf("%s: Unknown validity of packet (BAD). Skipping", identifier());
+        VDPWarnf("Listener: Unknown validity of packet (BAD). Skipping", "");
         return;
     }
     // checks the packet function from the header
     const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
     if (header.func == VDP::PacketFunction::Send) {
-        VDPTracef("%s: PacketFunction Send", identifier());
+        VDPTracef("Listener: PacketFunction Send");
 
-        if (header.type == VDP::PacketType::Broadcast) {
-            // if the packet is a broadcast, decode the packet
-            VDPTracef("%s: PacketType Broadcast", identifier());
-            auto decoded = VDP::decode_broadcast(pac);
-            // create a channel and give it the decoded packet
-            VDP::Channel chan{decoded.second, decoded.first};
-            // checks if the new channel is outside of the vector of remote channels
-            if (remote_channels.size() < chan.id) {
-                VDPWarnf("%s: Out of order broadcast. dropping", identifier());
-                return;
-            }
-            // adds the channel to the vector of remote channels
-            remote_channels.push_back(chan);
-            VDPTracef("%s: Got broadcast of channel %d", identifier(), int(chan.id));
-            // runs the channel's on broadcast callback
-            on_broadcast(chan);
-
-            // creates a packet and writes the channel acknowledgement to it,
-            // then sends it to the device
-            Packet scratch;
-            PacketWriter writer{scratch};
-            writer.write_channel_acknowledge(chan);
-            device->send_packet(writer.get_packet());
-
-        } else if (header.type == VDP::PacketType::Data) {
+        if (header.type == VDP::PacketType::Data) {
             // if the packet is a data, get the data from the packet
-            VDPTracef("%s: PacketType Data", identifier());
+            VDPTracef("Listener: PacketType Data");
             // get the channel id from the second byte of the packet
             const ChannelID id = pac[1];
             // stores the channel id's schema in a Part Pointer
             const PartPtr part = get_remote_schema(id);
             if (part == nullptr) {
-                VDPDebugf("VDB-%s: No channel information for id: %d", identifier(), id);
+                VDPDebugf("VDB-Listener: No channel information for id: %d", id);
                 return;
             }
             // creates a PacketReader starting after the channel id location
@@ -115,7 +98,42 @@ void Registry::take_packet(const Packet &pac) {
             // runs the channel's on data callback
             on_data(Channel{part, id});
         }
-    } else if (header.func == VDP::PacketFunction::Acknowledge) {
+    } else if (header.func == VDP::PacketFunction::Request) {
+        // if the packet is a data, get the data from the packet
+        VDPTracef("Listener: PacketType Request");
+        // creates a PacketReader starting after the channel id location
+        Packet scratch;
+        PacketWriter writer{scratch};
+        writer.write_receive(channel_receive_queue);
+        device->send_packet(writer.get_packet());
+    }
+}
+
+/**
+ * Handles a packet obtained from the Listener
+ * according to its type and function
+ */
+void RegistryController::take_packet(const Packet &pac) {
+    VDPTracef("Received packet of size %d", (int)pac.size());
+    // checks the validity of the packet
+    const VDP::PacketValidity status = validate_packet(pac);
+
+    if (status == VDP::PacketValidity::BadChecksum) {
+        VDPWarnf("Controller: Bad packet checksum. Skipping", "");
+        num_bad++;
+        return;
+    } else if (status == VDP::PacketValidity::TooSmall) {
+        num_small++;
+        VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)pac.size());
+        dump_packet(pac);
+        return;
+    } else if (status != VDP::PacketValidity::Ok) {
+        VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping", "");
+        return;
+    }
+    // checks the packet function from the header
+    const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
+    if (header.func == VDP::PacketFunction::Acknowledge) {
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
         /**
@@ -123,19 +141,44 @@ void Registry::take_packet(const Packet &pac) {
          */
         const ChannelID id = reader.get_number<ChannelID>();
         if (id >= my_channels.size()) {
-            printf(
-              "VDB-%s: Recieved ack for unknown channel %d", (reg_type == Side::Controller ? "Controller" : "Listener"),
-              id
-            );
+            printf("VDB-Controller: Recieved ack for unknown channel %d", id);
         }
         my_channels[id].acked = true;
+    } else if (header.func == VDP::PacketFunction::Receive) {
+        // if the packet is a data, get the data from the packet
+        VDPTracef("Controller: PacketType Data");
+        // get the channel id from the second byte of the packet
+        const ChannelID id = pac[1];
+        // stores the channel id's schema in a Part Pointer
+        const PartPtr part = my_channels[id + 1].data;
+        if (part == nullptr) {
+            VDPDebugf("VDB-Listener: No channel information for id: %d", id);
+            return;
+        }
+        // creates a PacketReader starting after the channel id location
+        PacketReader reader{pac, 2};
+        // stores the data read from the packet to the Registry Part
+        part->read_data_from_message(reader);
+        // runs the channel's on data callback
+        on_data(Channel{part, id});
     }
+}
+
+/**
+ * @param id the remote channel id to get data from
+ * @param return the Part Pointer of schema data in the channel
+ */
+PartPtr RegistryListener::get_remote_schema(ChannelID id) {
+    if (id >= remote_channels.size()) {
+        return nullptr;
+    }
+    return remote_channels[id].data;
 }
 /**
  * @param id the remote channel id to get data from
  * @param return the Part Pointer of schema data in the channel
  */
-PartPtr Registry::get_remote_schema(ChannelID id) {
+PartPtr RegistryController::get_remote_schema(ChannelID id) {
     if (id >= remote_channels.size()) {
         return nullptr;
     }
@@ -145,16 +188,16 @@ PartPtr Registry::get_remote_schema(ChannelID id) {
  * installs a callback to a function that is called when the registry broadcasts the data schematic
  * @param on_broadcastf the callback to run when the registry broadcasts the schematic
  */
-void Registry::install_broadcast_callback(CallbackFn on_broadcastf) {
-    VDPTracef("%s: Installed broadcast callback for ", identifier());
+void RegistryListener::install_broadcast_callback(CallbackFn on_broadcastf) {
+    VDPTracef("Listener: Installed broadcast callback for ");
     this->on_broadcast = std::move(on_broadcastf);
 }
 /**
  * installs a callback to a function that is called when the registry broadbasts data
  * @param on_dataf the callback to run when the registry broadcasts data
  */
-void Registry::install_data_callback(CallbackFn on_dataf) {
-    VDPTracef("%s: Installed data callback for ", identifier());
+void RegistryListener::install_data_callback(CallbackFn on_dataf) {
+    VDPTracef("Listener: Installed data callback for ");
     this->on_data = std::move(on_dataf);
 }
 /**
@@ -166,7 +209,7 @@ void Registry::install_data_callback(CallbackFn on_dataf) {
  * @param for_data the Part Pointer to the data the channel should hold
  * @return the channel id for the new channel created
  */
-ChannelID Registry::open_channel(PartPtr for_data) {
+ChannelID RegistryController::open_channel(PartPtr for_data) {
     ChannelID id = new_channel_id();
     Channel chan = Channel{for_data, id};
     my_channels.push_back(chan);
@@ -177,13 +220,10 @@ ChannelID Registry::open_channel(PartPtr for_data) {
  * @param id The id of the channel to hold the data
  * @param data the Part Pointer for the channel to hold and send to the device
  */
-bool Registry::send_data(ChannelID id, PartPtr data) {
+bool RegistryListener::send_data(ChannelID id, PartPtr data) {
     // checks if the channel is actually stored in the Registry
     if (id > my_channels.size()) {
-        printf(
-          "VDB-%s: Channel with ID %d doesn't exist yet\n", (reg_type == Side::Controller ? "Controller" : "Listener"),
-          (int)id
-        );
+        printf("VDB-Listener: Channel with ID %d doesn't exist yet\n", (int)id);
         return false;
     }
     // sets the channel's data to the Part Pointer given
@@ -191,10 +231,7 @@ bool Registry::send_data(ChannelID id, PartPtr data) {
     chan.data = data;
     // checks if the channel has been acknowledged yet
     if (!chan.acked) {
-        printf(
-          "VDB-%s: Channel %d has not yet been negotiated. Dropping packet\n",
-          (reg_type == Side::Controller ? "Controller" : "Listener"), (int)id
-        );
+        printf("VDB-Listener: Channel %d has not yet been negotiated. Dropping packet\n", (int)id);
         return false;
     }
     // if it has been acknowledged write the channel's data to a packet and send it to the device
@@ -207,14 +244,39 @@ bool Registry::send_data(ChannelID id, PartPtr data) {
     return device->send_packet(pac);
 }
 /**
+ * sets the data at the channel id to a Part Pointer and sends it to the device
+ * @param id The id of the channel to hold the data
+ * @param data the Part Pointer for the channel to hold and send to the device
+ */
+bool RegistryController::send_data(ChannelID id, PartPtr data) {
+    // checks if the channel is actually stored in the Registry
+    if (id > my_channels.size()) {
+        printf("VDB-Controller: Channel with ID %d doesn't exist yet\n", (int)id);
+        return false;
+    }
+    // sets the channel's data to the Part Pointer given
+    Channel &chan = my_channels[id];
+    chan.data = data;
+    // checks if the channel has been acknowledged yet
+    if (!chan.acked) {
+        printf("VDB-Controller: Channel %d has not yet been negotiated. Dropping packet\n", (int)id);
+        return false;
+    }
+    // if it has been acknowledged write the channel's data to a packet and send it to the device
+    VDP::Packet scratch;
+    PacketWriter writ{scratch};
+
+    writ.write_data_message(chan);
+    VDP::Packet pac = writ.get_packet();
+
+    return device->send_packet(pac);
+}
+
+/**
  * sends channel schematics to the Registry device and checks for ackowledgements
  * @return whether or not all channel's were acknowledgements
  */
-bool Registry::negotiate() {
-    // checks that the registry is on the controller type
-    if (reg_type != Side::Controller) {
-        return false;
-    }
+bool RegistryController::negotiate() {
     printf("Negotiating\n");
     bool acked_all = true;
     int failed_acks = 0;
@@ -223,7 +285,7 @@ bool Registry::negotiate() {
     // negotiates with each channel however many times broadcast_tries_per is set to
     for (size_t i = 0; i < my_channels.size(); i++) {
         for (size_t j = 0; j < BROADCAST_TRIES_PER; j++) {
-            VDPDebugf("%s: Negotiating chan id %d", identifier(), i);
+            VDPDebugf("Controller: Negotiating chan id %d", i);
             // writes the channel's data schematic to a packet
             const Channel &chan = my_channels[i];
             Packet scratch;
@@ -248,14 +310,14 @@ bool Registry::negotiate() {
             if (chan.acked == true) {
                 // if the channel was acknowledged, move on to the next channel
                 VDPTracef(
-                  "%s: Acked channel %d after %d ms on attempt %d", identifier(), chan.id, (int)(VDB::time_ms() - time),
+                  "Controller: Acked channel %d after %d ms on attempt %d", chan.id, (int)(VDB::time_ms() - time),
                   (int)j + 1
                 );
                 break;
             } else {
                 // if the channel was not acknowledged add one to the failed acknowledgements counter and set acked_all
                 // to false then move on to the next channel
-                VDPWarnf("%s: ack for chan id:%02x expired after %d msec", identifier(), chan.id, (int)ack_ms);
+                VDPWarnf("Controller: ack for chan id:%02x expired after %d msec", chan.id, (int)ack_ms);
                 failed_acks++;
                 if (j == BROADCAST_TRIES_PER - 1) {
                     acked_all = false;
@@ -265,7 +327,7 @@ bool Registry::negotiate() {
     }
     // print out how many times a channel failed to be acknowledged
     if (failed_acks > 0) {
-        VDPWarnf("%s: Failed to ack %d times", identifier(), failed_acks);
+        VDPWarnf("Controller: Failed to ack %d times", failed_acks);
     }
     return acked_all;
 
