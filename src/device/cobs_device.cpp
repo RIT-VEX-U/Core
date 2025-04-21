@@ -12,6 +12,7 @@ void COBSSerialDevice::hexdump(const uint8_t *data, size_t len) {
             printf("\n");
         }
     }
+    fflush(stdout);
 }
 
 COBSSerialDevice::Packet COBSSerialDevice::get_last_decoded_packet() { return last_decoded_packet; }
@@ -22,6 +23,7 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
     writing_buffer.resize(size);
     std::copy(data, data + size, writing_buffer.begin());
     COBSSerialDevice::cobs_encode(writing_buffer, encoded_write, leading_delimeter);
+    // printf("send: ");
     // hexdump(encoded_write.data(), encoded_write.size());
 
     size_t write_head = 0;
@@ -55,24 +57,20 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
 }
 bool COBSSerialDevice::poll_incoming_data_once() {
 
-    int32_t num_to_read = vexGenericSerialReceiveAvail(port);
-    if (num_to_read < 0) {
-        return false;
-    } else if (num_to_read == 0) {
-        return false;
-    }
-
-    incoming_buffer.resize(num_to_read);
-    int32_t actually_received = vexGenericSerialReceive(port, incoming_buffer.data(), num_to_read);
-    incoming_buffer.resize(actually_received);
-
-    for (uint8_t b : incoming_buffer) {
-        bool finished_packet = handle_incoming_byte(b);
-        if (finished_packet) {
-            return true;
+    while (true) {
+        int toRead = vexGenericSerialReceiveAvail(port);
+        if (toRead <= 0) {
+            return false;
+        }
+        int i = vexGenericSerialReadChar(port);
+        if (i < 0) {
+            return false;
+        }
+        bool finished = handle_incoming_byte((uint8_t)i);
+        if (finished) {
+            return finished;
         }
     }
-    printf("didnt finish reading\n");
     return false;
 }
 

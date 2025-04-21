@@ -3,6 +3,7 @@
 #include <array>
 #include <cstdio>
 #include <cstring>
+#include <deque>
 #include <functional>
 #include <memory>
 #include <sstream>
@@ -50,7 +51,7 @@ using Packet = std::vector<uint8_t>;
 using ChannelID = uint8_t;
 class Channel {
   public:
-    friend class RegistryListener;
+    template <typename MutexType> friend class RegistryListener;
     friend class RegistryController;
     /**
      * Creates a channel used for sending data to the brain
@@ -100,6 +101,12 @@ struct PacketHeader {
     PacketType type;
     PacketFunction func;
 };
+enum PacketValidity : uint8_t {
+    Ok,
+    BadChecksum,
+    TooSmall,
+};
+PacketValidity validate_packet(const VDP::Packet &packet);
 /**
  * defines what byte value is what type in a packet
  */
@@ -315,7 +322,7 @@ class PacketWriter {
      * writes a response packet to the packets
      * @param chan the Channel to write the data from
      */
-    void write_response(const std::vector<Channel> &channels);
+    void write_response(std::deque<Channel> &channels);
     /**
      * writes a broadcast of a channel schematic to the packet
      * @param chan the channel to request

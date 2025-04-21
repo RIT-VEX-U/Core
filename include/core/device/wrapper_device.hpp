@@ -8,7 +8,7 @@
  * Defines a COBS Serial Device to transmit VDB data through
  */
 namespace VDB {
-class Device : public VDP::AbstractDevice, COBSSerialDevice {
+class Device : public VDP::AbstractDevice, public COBSSerialDevice {
   public:
     static constexpr int32_t NO_ACTIVITY_DELAY = 2; // ms
     static constexpr std::size_t MAX_OUT_QUEUE_SIZE = 50;
@@ -27,8 +27,6 @@ class Device : public VDP::AbstractDevice, COBSSerialDevice {
      */
     void register_receive_callback(std::function<void(const VDP::Packet &packet)> callback
     ) override; // From VDP::AbstractDevice
-
-    int rec_switch_time = 1000;
 
   private:
     /// @brief Packets that have been encoded and are waiting for their turn

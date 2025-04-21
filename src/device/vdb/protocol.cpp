@@ -119,6 +119,36 @@ PacketReader::PacketReader(Packet pac) : pac(std::move(pac)), read_head(0) {}
  */
 PacketReader::PacketReader(Packet pac, size_t start) : pac(std::move(pac)), read_head(start) {}
 /**
+ * checks a packets validility
+ * @param packet the packet to check the validity of
+ * @return the PacketValidility (TooSmall, BadChecksum, or Ok)
+ */
+VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
+    VDPTracef("Validating packet of size %d", (int)packet.size());
+
+    // packet header byte + checksum = 5 bytes,
+    static constexpr size_t min_packet_size = 5;
+
+    // checks that the minimum packet size is met
+    if (packet.size() < min_packet_size) {
+        return VDP::PacketValidity::TooSmall;
+    }
+    // calculates the checksum for the packet
+    uint32_t checksum = CRC32::calculate(packet.data(), packet.size() - 4);
+
+    // recreates the checksum manually
+    auto size = packet.size();
+    const uint32_t written_checksum = (uint32_t(packet[size - 1]) << 24) | (uint32_t(packet[size - 2]) << 16) |
+                                      (uint32_t(packet[size - 3]) << 8) | uint32_t(packet[size - 4]);
+    // checks if both checksums match
+    if (checksum != written_checksum) {
+        VDPWarnf("Checksums do not match: expected: %08lx, got: %08lx", checksum, written_checksum);
+        return VDP::PacketValidity::BadChecksum;
+    }
+    // if no problems with the packet are found, packet is Ok
+    return VDP::PacketValidity::Ok;
+}
+/**
  * @return the current byte the reader is on
  */
 uint8_t PacketReader::get_byte() {
@@ -236,7 +266,7 @@ void PacketWriter::write_request() {
  * writes a receive packet to the packets
  * @param chan the channel to request
  */
-void PacketWriter::write_response(const std::vector<Channel> &channels) {
+void PacketWriter::write_response(std::deque<Channel> &channels) {
     clear();
     // makes a header byte with the type broadcast and the function Receive
     const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
@@ -245,17 +275,10 @@ void PacketWriter::write_response(const std::vector<Channel> &channels) {
     write_number<uint8_t>(header);
 
     write_number<size_t>(channels.size());
-    // writes each channel to the packet
-    for (Channel chan : channels) {
-        const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
-
-        // writes the header byte and channel id to the packet
-        write_number<uint8_t>(header);
-        write_number<ChannelID>(chan.getID());
-
-        // writes the data from the channel to the packet
-        chan.data->write_message(*this);
-    }
+    write_number<uint8_t>(header);
+    write_number<ChannelID>(channels[0].getID());
+    channels[0].data->write_message(*this);
+    channels.pop_front();
 
     // creates and writes the Checksum to the packet
     uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
@@ -279,6 +302,7 @@ void PacketWriter::write_data_message(const Channel &chan) {
 
     // creates and writes the Checksum to the packet
     uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+    printf("data checksum: %08lx\n", crc);
     write_number<uint32_t>(crc);
 }
 /**
