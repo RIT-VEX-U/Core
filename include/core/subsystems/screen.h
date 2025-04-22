@@ -11,7 +11,6 @@
 #include <map>
 #include <vector>
 
-
 namespace screen {
 /// @brief Widget that does something when you tap it. The function is only called once when you first tap it
 class ButtonWidget {

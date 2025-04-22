@@ -5,8 +5,6 @@
 #include "math.h"
 #include "vex.h"
 #include <vector>
-
-
 /**
  * Constrain the input between a minimum and a maximum value
  *
