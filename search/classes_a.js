@@ -5,5 +5,6 @@ var searchData=
   ['mecanumdrive_2',['MecanumDrive',['../classMecanumDrive.html',1,'']]],
   ['mecanumdrive_5fconfig_5ft_3',['mecanumdrive_config_t',['../structMecanumDrive_1_1mecanumdrive__config__t.html',1,'MecanumDrive']]],
   ['motioncontroller_4',['MotionController',['../classMotionController.html',1,'']]],
-  ['movingaverage_5',['MovingAverage',['../classMovingAverage.html',1,'']]]
+  ['motordatarecord_5',['MotorDataRecord',['../classVDP_1_1MotorDataRecord.html',1,'VDP']]],
+  ['movingaverage_6',['MovingAverage',['../classMovingAverage.html',1,'']]]
 ];
