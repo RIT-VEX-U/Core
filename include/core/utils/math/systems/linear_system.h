@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../core/include/utils/math/eigen_interface.h"
-#include "../core/include/utils/math/systems/discretization.h"
+#include "core/utils/math/eigen_interface.h"
+#include "core/utils/math/systems/discretization.h"
 
 /**
  * This class represents a state-space model of a linear system.

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../core/include/utils/math/eigen_interface.h"
+#include "core/utils/math/eigen_interface.h"
 
-#include "../core/include/utils/math/systems/linear_system.h"
-#include "../core/include/utils/math/systems/discretization.h"
+#include "core/utils/math/systems/linear_system.h"
+#include "core/utils/math/systems/discretization.h"
 
 #include <iostream>
 

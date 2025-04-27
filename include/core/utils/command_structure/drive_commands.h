@@ -170,7 +170,7 @@ class TurnToPointCommand: public AutoCommand{
     vex::directionType dir;
     double max_speed;
     double end_speed;
-    bool func_initialized;
+    bool func_initialized = false;
     double heading;
 };
 
