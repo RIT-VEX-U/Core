@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/include/utils/math/eigen_interface.h"
+#include "core/utils/math/eigen_interface.h"
 #include "../vendor/eigen/unsupported/Eigen/MatrixFunctions"
 
 #include <cmath>

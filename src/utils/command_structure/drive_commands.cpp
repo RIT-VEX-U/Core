@@ -185,6 +185,7 @@ bool TurnToPointCommand::run() {
         }
         func_initialized = true;
     }
+    printf("heading: %f\n", heading);
     return drive_sys.turn_to_heading(heading, max_speed, end_speed);
 }
 

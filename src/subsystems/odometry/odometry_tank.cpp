@@ -80,7 +80,9 @@ Pose2d OdometryTank::update() {
     }
 
     double angle = 0;
-
+    if (!imu->installed()) {
+        printf("NO IMU DETECTED\n");
+    }
     // If the IMU data was passed in, use it for rotational data
     if (imu == NULL || imu->installed() == false) {
         // Get the difference in distance driven between the two sides
