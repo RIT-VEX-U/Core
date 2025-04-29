@@ -68,7 +68,7 @@ double PID::update(double sensor_val, double v_setpt) {
     if (limits_exist) {
         out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
     }
-    printf("Out: %f\n", out);
+    // printf("Out: %f\n", out);
     return out;
 }
 
