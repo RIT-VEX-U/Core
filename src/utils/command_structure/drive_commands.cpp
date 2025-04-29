@@ -144,7 +144,7 @@ bool DriveToPointCommand::run() { return drive_sys.drive_to_point(x, y, dir, fee
  */
 std::string DriveToPointCommand::toString() {
     std::string returnStr = "Driving ";
-    returnStr.append((dir == vex::directionType::fwd) ? "forwards at " : "reverse at ");
+    returnStr.append((dir == vex::directionType::fwd) ? "forwards " : "reverse ");
     returnStr.append(
       " to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed * 100) +
       "% speed"
