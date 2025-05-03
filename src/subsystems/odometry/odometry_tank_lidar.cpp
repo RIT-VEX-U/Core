@@ -63,8 +63,8 @@ EVec<3> OdometryTankLidar::h_odom(const EVec<3> &xhat, const EVec<2> &u) {
 
 // the walls are 0.25in from the edge of the field, we're measuring inside the walls, not the field
 EVec<2> OdometryTankLidar::h_lidar(const EVec<3> &xhat, const EVec<2> &u) {
-    const double field_width = 141;
-    const double wall_to_tile = 0.75;
+    const double top_right = 142;
+    const double bot_left = 0.75;
 
     Pose2d robot_pose = Pose2d{xhat(0), xhat(1), from_radians(xhat(2))};
     EVec<3> lidar_xhat = (robot_pose + lidar.lidar_offset_).vector();
@@ -73,10 +73,10 @@ EVec<2> OdometryTankLidar::h_lidar(const EVec<3> &xhat, const EVec<2> &u) {
     double c = std::cos(beam_theta);
     double s = std::sin(beam_theta);
 
-    double d_left = (c < 0) ? ((lidar_xhat(0) - wall_to_tile) / -c) : std::numeric_limits<double>::infinity();
-    double d_right = (c > 0) ? ((field_width - (lidar_xhat(0))) / c) : std::numeric_limits<double>::infinity();
-    double d_bottom = (s < 0) ? ((lidar_xhat(1) - wall_to_tile)  / -s) : std::numeric_limits<double>::infinity();
-    double d_top = (s > 0) ? ((field_width - (lidar_xhat(1))) / s) : std::numeric_limits<double>::infinity();
+    double d_left = (c < 0) ? ((lidar_xhat(0) - bot_left) / -c) : std::numeric_limits<double>::infinity();
+    double d_right = (c > 0) ? ((top_right - (lidar_xhat(0))) / c) : std::numeric_limits<double>::infinity();
+    double d_bottom = (s < 0) ? ((lidar_xhat(1) - bot_left)  / -s) : std::numeric_limits<double>::infinity();
+    double d_top = (s > 0) ? ((top_right - (lidar_xhat(1))) / s) : std::numeric_limits<double>::infinity();
 
     double min_distance = std::min({d_left, d_right, d_bottom, d_top});
 
