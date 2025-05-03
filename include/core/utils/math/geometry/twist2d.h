@@ -20,7 +20,7 @@ class Twist2d {
     /**
      * Default Constructor for Twist2d
      */
-    constexpr Twist2d();
+    constexpr Twist2d() : m_dx(0), m_dy(0), m_dtheta(0) {}
 
     /**
      * Constructs a twist with given translation and angle deltas.

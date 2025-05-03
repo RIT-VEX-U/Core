@@ -6,11 +6,6 @@
 #include "core/utils/math/geometry/twist2d.h"
 
 /**
- * Default Constructor for Twist2d
- */
-constexpr Twist2d::Twist2d() : m_dx(0), m_dy(0), m_dtheta(0) {}
-
-/**
  * Constructs a twist with given translation and angle deltas.
  *
  * @param dx the linear dx component.

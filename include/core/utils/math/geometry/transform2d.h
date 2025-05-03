@@ -24,7 +24,7 @@ class Transform2d {
     /**
      * Default Constructor for Transform2d
      */
-    constexpr Transform2d();
+    constexpr Transform2d() : m_translation(Translation2d()), m_rotation(Rotation2d()) {}
 
     /**
      * Constructs a transform given translation and rotation components.
