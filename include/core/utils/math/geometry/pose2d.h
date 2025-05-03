@@ -69,6 +69,10 @@ class Pose2d {
      */
     Pose2d(const Eigen::Vector3d &pose_vector);
 
+    Eigen::Vector3d vector() const {
+      return Eigen::Vector3d(m_translation.x(), m_translation.y(), m_rotation.radians());
+    }
+
     /**
      * Returns the translational component.
      *
