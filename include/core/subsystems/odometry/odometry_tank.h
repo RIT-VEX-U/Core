@@ -91,5 +91,7 @@ class OdometryTank : public OdometryBase {
     robot_specs_t &config;
 
     double rotation_offset = 0;
+    double prev_imu_rotation = 0;      // Tracks previous IMU reading
+    double accumulated_rotation = 0;   // Tracks accumulated rotation from IMU differences
     ExponentialMovingAverage ema = ExponentialMovingAverage(3);
 };

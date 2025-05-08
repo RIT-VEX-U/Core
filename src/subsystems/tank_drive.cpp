@@ -444,6 +444,12 @@ bool TankDrive::drive_to_point(
         drive_pid_rval = feedback.get();
     }
 
+    if (sign == 1) {
+        drive_pid_rval += 0.05;
+    } else if (sign == -1) {
+        drive_pid_rval -= 0.05;
+    }
+
     // Combine the two pid outputs
     double lside = drive_pid_rval + correction;
     double rside = drive_pid_rval - correction;
@@ -528,7 +534,15 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
 
     fflush(stdout);
 
-    drive_tank(-feedback.get(), feedback.get());
+    double out = 0;
+
+    if (feedback.get() > 0) {
+        out = feedback.get() + 0.016;
+    } else {
+        out = feedback.get() - 0.016;
+    }
+
+    drive_tank(-out, out);
 
     // When the robot has reached it's angle, return true.
     if (feedback.is_on_target()) {

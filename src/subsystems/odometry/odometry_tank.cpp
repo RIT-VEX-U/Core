@@ -51,11 +51,10 @@ OdometryTank::OdometryTank(
 
 /**
  * Resets the position and rotational data to the input.
- *
  */
 void OdometryTank::set_position(const Pose2d &newpos) {
     mut.lock();
-    rotation_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - rotation_offset);
+    rotation_offset = newpos.rotation().degrees() - accumulated_rotation;
     mut.unlock();
 
     OdometryBase::set_position(newpos);
@@ -95,8 +94,27 @@ Pose2d OdometryTank::update() {
         angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels));
 
     } else {
-        // Translate "clockwise positive" to "CCW negative"
-        angle = -imu->rotation(vex::rotationUnits::deg);
+        // Get current IMU rotation (clockwise positive to CCW negative)
+        double current_imu_rotation = -imu->rotation(vex::rotationUnits::deg);
+        
+        // Calculate the difference between current and previous readings
+        double imu_diff = current_imu_rotation - prev_imu_rotation;
+        
+        // Handle wraparound (e.g., going from 359° to 0° or vice versa)
+        if (imu_diff > 180) {
+            imu_diff -= 360;
+        } else if (imu_diff < -180) {
+            imu_diff += 360;
+        }
+        
+        // Add the difference to accumulated rotation
+        accumulated_rotation += imu_diff;
+        
+        // Set angle to accumulated rotation
+        angle = accumulated_rotation;
+        
+        // Store current IMU reading for next update
+        prev_imu_rotation = current_imu_rotation;
     }
 
     // Offset the angle, if we've done a set_position
