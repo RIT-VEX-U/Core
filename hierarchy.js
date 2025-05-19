@@ -16,6 +16,7 @@ var hierarchy =
     [ "DriveForwardCommand", "classDriveForwardCommand.html", null ],
     [ "DriveStopCommand", "classDriveStopCommand.html", null ],
     [ "DriveToPointCommand", "classDriveToPointCommand.html", null ],
+    [ "Dual", "classDual.html", null ],
     [ "AutoChooser::entry_t", "structAutoChooser_1_1entry__t.html", null ],
     [ "Feedback", "classFeedback.html", [
       [ "MotionController", "classMotionController.html", null ],

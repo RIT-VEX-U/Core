@@ -115,6 +115,13 @@ $(function(){initNavTree('eigen__interface_8h_source.html',''); initResizable(tr
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> ROWS, <span class="keywordtype">int</span> COLS&gt;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">using </span>EMat = Eigen::Matrix&lt;double, ROWS, COLS&gt;;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">int</span> ROWS&gt;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using </span>EVecX = Eigen::Vector&lt;T, ROWS&gt;;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">int</span> ROWS, <span class="keywordtype">int</span> COLS&gt;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">using </span>EMatX = Eigen::Matrix&lt;T, ROWS, COLS&gt;;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

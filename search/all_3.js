@@ -23,6 +23,7 @@ var searchData=
   ['drivestopcommand_20',['DriveStopCommand',['../classDriveStopCommand.html',1,'DriveStopCommand'],['../classDriveStopCommand.html#a64cc2eeb3a4d67482549a029f93ddde1',1,'DriveStopCommand::DriveStopCommand()']]],
   ['drivetopointcommand_21',['DriveToPointCommand',['../classDriveToPointCommand.html',1,'DriveToPointCommand'],['../classDriveToPointCommand.html#a9ce50ba932039e7f66be48ac22f3b92e',1,'DriveToPointCommand::DriveToPointCommand(TankDrive &amp;drive_sys, Feedback &amp;feedback, double x, double y, directionType dir, double max_speed=1, double end_speed=0)'],['../classDriveToPointCommand.html#a1a97b20f58d2439551c4410c54346a01',1,'DriveToPointCommand::DriveToPointCommand(TankDrive &amp;drive_sys, Feedback &amp;feedback, Translation2d translation, directionType dir, double max_speed=1, double end_speed=0)']]],
   ['dtheta_22',['dtheta',['../classTwist2d.html#a514aaefaf528438ef785b4b1427f658c',1,'Twist2d']]],
-  ['dx_23',['dx',['../classTwist2d.html#ae16fc9b73241251124f5d385cc51d7d4',1,'Twist2d']]],
-  ['dy_24',['dy',['../classTwist2d.html#aac34c6630eed9f5c6ce30d84c30d94e1',1,'Twist2d']]]
+  ['dual_23',['Dual',['../classDual.html',1,'']]],
+  ['dx_24',['dx',['../classTwist2d.html#ae16fc9b73241251124f5d385cc51d7d4',1,'Twist2d']]],
+  ['dy_25',['dy',['../classTwist2d.html#aac34c6630eed9f5c6ce30d84c30d94e1',1,'Twist2d']]]
 ];

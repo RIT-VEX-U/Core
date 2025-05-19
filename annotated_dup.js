@@ -28,6 +28,7 @@ var annotated_dup =
     [ "DriveForwardCommand", "classDriveForwardCommand.html", "classDriveForwardCommand" ],
     [ "DriveStopCommand", "classDriveStopCommand.html", "classDriveStopCommand" ],
     [ "DriveToPointCommand", "classDriveToPointCommand.html", "classDriveToPointCommand" ],
+    [ "Dual", "classDual.html", null ],
     [ "ExponentialMovingAverage", "classExponentialMovingAverage.html", "classExponentialMovingAverage" ],
     [ "Feedback", "classFeedback.html", "classFeedback" ],
     [ "FeedForward", "classFeedForward.html", "classFeedForward" ],
