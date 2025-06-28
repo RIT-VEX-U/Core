@@ -1,6 +1,7 @@
 var hierarchy =
 [
     [ "Async", "classAsync.html", null ],
+    [ "core::BangBang", "classcore_1_1BangBang.html", null ],
     [ "BasicSolenoidSet", "classBasicSolenoidSet.html", null ],
     [ "BasicSpinCommand", "classBasicSpinCommand.html", null ],
     [ "BasicStopCommand", "classBasicStopCommand.html", null ],
@@ -16,7 +17,6 @@ var hierarchy =
     [ "DriveForwardCommand", "classDriveForwardCommand.html", null ],
     [ "DriveStopCommand", "classDriveStopCommand.html", null ],
     [ "DriveToPointCommand", "classDriveToPointCommand.html", null ],
-    [ "Dual", "classDual.html", null ],
     [ "AutoChooser::entry_t", "structAutoChooser_1_1entry__t.html", null ],
     [ "Feedback", "classFeedback.html", [
       [ "MotionController", "classMotionController.html", null ],
@@ -24,6 +24,9 @@ var hierarchy =
       [ "TakeBackHalf", "classTakeBackHalf.html", null ]
     ] ],
     [ "FeedForward", "classFeedForward.html", null ],
+    [ "core::Feedforward", "classcore_1_1Feedforward.html", [
+      [ "core::ArmFeedforward", "classcore_1_1ArmFeedforward.html", null ]
+    ] ],
     [ "FeedForward::ff_config_t", "structFeedForward_1_1ff__config__t.html", null ],
     [ "Filter", "classFilter.html", [
       [ "ExponentialMovingAverage", "classExponentialMovingAverage.html", null ],
@@ -49,6 +52,8 @@ var hierarchy =
     [ "StateMachine< System, IDType, Message, delay_ms, do_log >::MaybeMessage", "classStateMachine_1_1MaybeMessage.html", null ],
     [ "MecanumDrive", "classMecanumDrive.html", null ],
     [ "MecanumDrive::mecanumdrive_config_t", "structMecanumDrive_1_1mecanumdrive__config__t.html", null ],
+    [ "core::MotionController::motion_controller_config_t", "structcore_1_1MotionController_1_1motion__controller__config__t.html", null ],
+    [ "core::MotionController", "classcore_1_1MotionController.html", null ],
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
@@ -64,7 +69,9 @@ var hierarchy =
     ] ],
     [ "Parallel", "classParallel.html", null ],
     [ "PurePursuit::Path", "classPurePursuit_1_1Path.html", null ],
+    [ "core::PID", "classcore_1_1PID.html", null ],
     [ "PID::pid_config_t", "structPID_1_1pid__config__t.html", null ],
+    [ "core::PIDFF", "classcore_1_1PIDFF.html", null ],
     [ "Pose2d", "classPose2d.html", null ],
     [ "PurePursuitCommand", "classPurePursuitCommand.html", null ],
     [ "Rect", "structRect.html", null ],
@@ -82,6 +89,7 @@ var hierarchy =
     [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", null ],
     [ "Transform2d", "classTransform2d.html", null ],
     [ "Translation2d", "classTranslation2d.html", null ],
+    [ "trapezoid_profile_config_t", "structtrapezoid__profile__config__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", null ],
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", null ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],

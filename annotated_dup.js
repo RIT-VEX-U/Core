@@ -1,5 +1,13 @@
 var annotated_dup =
 [
+    [ "core", null, [
+      [ "ArmFeedforward", "classcore_1_1ArmFeedforward.html", "classcore_1_1ArmFeedforward" ],
+      [ "BangBang", "classcore_1_1BangBang.html", "classcore_1_1BangBang" ],
+      [ "Feedforward", "classcore_1_1Feedforward.html", "classcore_1_1Feedforward" ],
+      [ "MotionController", "classcore_1_1MotionController.html", "classcore_1_1MotionController" ],
+      [ "PID", "classcore_1_1PID.html", "classcore_1_1PID" ],
+      [ "PIDFF", "classcore_1_1PIDFF.html", "classcore_1_1PIDFF" ]
+    ] ],
     [ "PurePursuit", null, [
       [ "hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
       [ "Path", "classPurePursuit_1_1Path.html", "classPurePursuit_1_1Path" ],
@@ -28,7 +36,6 @@ var annotated_dup =
     [ "DriveForwardCommand", "classDriveForwardCommand.html", "classDriveForwardCommand" ],
     [ "DriveStopCommand", "classDriveStopCommand.html", "classDriveStopCommand" ],
     [ "DriveToPointCommand", "classDriveToPointCommand.html", "classDriveToPointCommand" ],
-    [ "Dual", "classDual.html", null ],
     [ "ExponentialMovingAverage", "classExponentialMovingAverage.html", "classExponentialMovingAverage" ],
     [ "Feedback", "classFeedback.html", "classFeedback" ],
     [ "FeedForward", "classFeedForward.html", "classFeedForward" ],
@@ -72,6 +79,7 @@ var annotated_dup =
     [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", "structtracking__wheel__cfg__t" ],
     [ "Transform2d", "classTransform2d.html", "classTransform2d" ],
     [ "Translation2d", "classTranslation2d.html", "classTranslation2d" ],
+    [ "trapezoid_profile_config_t", "structtrapezoid__profile__config__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", "classTrapezoidProfile" ],
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", "classTurnDegreesCommand" ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", "classTurnToHeadingCommand" ],

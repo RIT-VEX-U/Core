@@ -107,12 +107,12 @@ $(function(){initNavTree('linear__quadratic__regulator_8h_source.html',''); init
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;core/utils/math/eigen_interface.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;math/eigen_interface.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;../vendor/eigen/unsupported/Eigen/MatrixFunctions&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;core/utils/math/systems/dare_solver.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;core/utils/math/systems/discretization.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;core/utils/math/systems/linear_system.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;math/systems/dare_solver.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;math/systems/discretization.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;math/systems/linear_system.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">template</span> &lt;<span class="keywordtype">int</span> DIM&gt; EMat&lt;DIM, DIM&gt; cost_matrix(<span class="keyword">const</span> EVec&lt;DIM&gt; &amp;tolerances) {</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    EMat&lt;DIM, DIM&gt; Q = EMat&lt;DIM, DIM&gt;::Zero();</div>
@@ -181,15 +181,15 @@ $(function(){initNavTree('linear__quadratic__regulator_8h_source.html',''); init
 <div class="ttc" id="aclassLinearQuadraticRegulator_html_a7fd93d721198955efd91847de5b79f95"><div class="ttname"><a href="classLinearQuadraticRegulator.html#a7fd93d721198955efd91847de5b79f95">LinearQuadraticRegulator::LinearQuadraticRegulator</a></div><div class="ttdeci">LinearQuadraticRegulator(LinearSystem&lt; STATES, INPUTS, OUTPUTS &gt; &amp;plant, const VectorX &amp;Qtolerances, const VectorU &amp;Rtolerances, const double &amp;dt)</div><div class="ttdef"><b>Definition</b> linear_quadratic_regulator.h:63</div></div>
 <div class="ttc" id="aclassLinearQuadraticRegulator_html_ad00c4957145704d3f453199dd8c0eab5"><div class="ttname"><a href="classLinearQuadraticRegulator.html#ad00c4957145704d3f453199dd8c0eab5">LinearQuadraticRegulator::LinearQuadraticRegulator</a></div><div class="ttdeci">LinearQuadraticRegulator(const MatrixA &amp;A, const MatrixB &amp;B, const EMat&lt; STATES, STATES &gt; &amp;Q, const EMat&lt; INPUTS, INPUTS &gt; &amp;R, const double &amp;dt)</div><div class="ttdef"><b>Definition</b> linear_quadratic_regulator.h:92</div></div>
 <div class="ttc" id="aclassLinearQuadraticRegulator_html_ad3c69865dc8162071c8818683fe19611"><div class="ttname"><a href="classLinearQuadraticRegulator.html#ad3c69865dc8162071c8818683fe19611">LinearQuadraticRegulator::LinearQuadraticRegulator</a></div><div class="ttdeci">LinearQuadraticRegulator(const MatrixA &amp;A, const MatrixB &amp;B, const VectorX &amp;Qtolerances, const VectorU &amp;Rtolerances, const double &amp;dt)</div><div class="ttdef"><b>Definition</b> linear_quadratic_regulator.h:78</div></div>
-<div class="ttc" id="aclassLinearSystem_html"><div class="ttname"><a href="classLinearSystem.html">LinearSystem</a></div><div class="ttdef"><b>Definition</b> linear_system.h:16</div></div>
-<div class="ttc" id="aclassLinearSystem_html_a3f2b22d8a315bae29185f3c01304ee11"><div class="ttname"><a href="classLinearSystem.html#a3f2b22d8a315bae29185f3c01304ee11">LinearSystem::B</a></div><div class="ttdeci">MatrixB B()</div><div class="ttdef"><b>Definition</b> linear_system.h:45</div></div>
-<div class="ttc" id="aclassLinearSystem_html_ac053302a9b2a7d22f974e25dccf9dd2e"><div class="ttname"><a href="classLinearSystem.html#ac053302a9b2a7d22f974e25dccf9dd2e">LinearSystem::A</a></div><div class="ttdeci">MatrixA A()</div><div class="ttdef"><b>Definition</b> linear_system.h:40</div></div>
+<div class="ttc" id="aclassLinearSystem_html"><div class="ttname"><a href="classLinearSystem.html">LinearSystem</a></div><div class="ttdef"><b>Definition</b> linear_system.h:17</div></div>
+<div class="ttc" id="aclassLinearSystem_html_a3f2b22d8a315bae29185f3c01304ee11"><div class="ttname"><a href="classLinearSystem.html#a3f2b22d8a315bae29185f3c01304ee11">LinearSystem::B</a></div><div class="ttdeci">MatrixB B()</div><div class="ttdef"><b>Definition</b> linear_system.h:46</div></div>
+<div class="ttc" id="aclassLinearSystem_html_ac053302a9b2a7d22f974e25dccf9dd2e"><div class="ttname"><a href="classLinearSystem.html#ac053302a9b2a7d22f974e25dccf9dd2e">LinearSystem::A</a></div><div class="ttdeci">MatrixA A()</div><div class="ttdef"><b>Definition</b> linear_system.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="dir_9e3c081da26bdde9c5aec25c2fcc2ede.html">utils</a></li><li class="navelem"><a class="el" href="dir_d0b7450c5ec52d84628f424b8487930b.html">controls</a></li><li class="navelem"><a class="el" href="dir_c7ad1355250ce70bd9ea4dcb1a6627d8.html">state_space</a></li><li class="navelem"><b>linear_quadratic_regulator.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fba38f648377aa56ae5d69782adf9e53.html">math</a></li><li class="navelem"><a class="el" href="dir_7349f97e035d6c21211807d5835511c0.html">controls</a></li><li class="navelem"><a class="el" href="dir_85413c5ab43f51cc1a618cf9e9e49230.html">state_space_controllers</a></li><li class="navelem"><b>linear_quadratic_regulator.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
