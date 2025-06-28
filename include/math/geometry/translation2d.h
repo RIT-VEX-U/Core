@@ -1,11 +1,12 @@
 #pragma once
 
-#include <Eigen/Dense>
+#include "math/eigen_interface.h"
+
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "core/utils/math/geometry/rotation2d.h"
+#include "math/geometry/rotation2d.h"
 
 class Rotation2d;
 

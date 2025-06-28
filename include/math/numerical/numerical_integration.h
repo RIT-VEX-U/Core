@@ -1,6 +1,6 @@
 #pragma once
 
-#include <../vendor/eigen/Eigen/Dense>
+#include "math/eigen_interface.h"
 
 #include <functional>
 
