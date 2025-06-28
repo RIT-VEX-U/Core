@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/utils/math/eigen_interface.h"
+#include "math/eigen_interface.h"
 #include "../vendor/eigen/unsupported/Eigen/MatrixFunctions"
 
-#include "core/utils/math/systems/dare_solver.h"
-#include "core/utils/math/systems/discretization.h"
-#include "core/utils/math/systems/linear_system.h"
+#include "math/systems/dare_solver.h"
+#include "math/systems/discretization.h"
+#include "math/systems/linear_system.h"
 
 /**
  * Forms a cost matrix from a set of tolerances for each variable using Bryson's

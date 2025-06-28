@@ -1,16 +1,15 @@
 #pragma once
-#undef __ARM_NEON__
-#undef __ARM_NEON
-#include <Eigen/Dense>
+
+#include "math/eigen_interface.h"
 
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "core/utils/math/geometry/rotation2d.h"
-#include "core/utils/math/geometry/transform2d.h"
-#include "core/utils/math/geometry/translation2d.h"
-#include "core/utils/math/geometry/twist2d.h"
+#include "math/geometry/rotation2d.h"
+#include "math/geometry/transform2d.h"
+#include "math/geometry/translation2d.h"
+#include "math/geometry/twist2d.h"
 
 /**
  * Class representing a pose in 2d space with x, y, and rotational components

@@ -1,9 +1,8 @@
 #pragma once
-#undef __ARM_NEON__
-#undef __ARM_NEON
-#include <Eigen/Dense>
 
-#include "core/utils/math/geometry/translation2d.h"
+#include "math/eigen_interface.h"
+
+#include "math/geometry/translation2d.h"
 #include <cmath>
 #include <iostream>
 #include <vector>

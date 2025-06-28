@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/utils/math/eigen_interface.h"
-#include "../vendor/eigen/unsupported/Eigen/MatrixFunctions"
+#include "math/eigen_interface.h"
+#include <Eigen/unsupported/Eigen/MatrixFunctions>
 
 #include <cmath>
 #include <tuple>

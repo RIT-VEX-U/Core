@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/utils/math/eigen_interface.h"
+#include "math/eigen_interface.h"
 
-#include "core/utils/math/systems/linear_system.h"
+#include "math/systems/linear_system.h"
 
 /**
  * Kalman filters combine predictions from a model and measurements to estimate

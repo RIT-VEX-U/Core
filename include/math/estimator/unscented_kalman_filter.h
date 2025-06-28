@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "core/utils/math/eigen_interface.h"
+#include "math/eigen_interface.h"
 
-#include "core/utils/math/numerical/numerical_integration.h"
+#include "math/numerical/numerical_integration.h"
 
 // Forward declare the sigma points class, it is at the bottom of this file.
 template <int STATES> class ScaledSphericalSimplexSigmaPoints;

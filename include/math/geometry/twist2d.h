@@ -1,5 +1,6 @@
 #pragma once
-#include <Eigen/Dense>
+
+#include "math/eigen_interface.h"
 
 #include <cmath>
 #include <iostream>
