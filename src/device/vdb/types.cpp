@@ -142,6 +142,10 @@ void String::response() {}
  */
 void String::setValue(std::string new_value) { value = std::move(new_value); }
 /**
+ * @return the currently stored string
+ */
+std::string String::getValue() { return value; }
+/**
  * sets the string part's value to the string read by a packet reader
  * @param reader the part reader to get
  */

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "vex.h"
+#include <string>
 namespace VDP {
 /**
  * Defines a record that holds a timestamp and data
@@ -163,5 +164,28 @@ class PIDControlRecord : public Record {
     std::shared_ptr<Float> P;
     std::shared_ptr<Float> I;
     std::shared_ptr<Float> D;
+};
+
+/**
+ * Defines a record for setting pid values from the board
+ */
+class TestRecord : public Record {
+  public:
+    /**
+     * Creates a record for setting pid values from the board
+     * @param name the name of the record to create
+     * @param pid the pid to get data from
+     */
+    TestRecord(std::string name, double test_float);
+    /**
+     * sets the PID values to the values from the board
+     */
+    void response() override;
+    void fetch() override;
+
+  private:
+    double test_float;
+
+    std::shared_ptr<Float> test_float_ptr;
 };
 } // namespace VDP

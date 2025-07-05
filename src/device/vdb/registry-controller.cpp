@@ -12,6 +12,7 @@ namespace VDP {
 RegistryController::RegistryController(AbstractDevice *device) : device(device) {
     device->register_receive_callback([&](const Packet &p) {
         printf("Controller: GOT PACKET\n");
+        dump_packet(p);
         take_packet(p);
     });
 }
@@ -20,7 +21,9 @@ RegistryController::RegistryController(AbstractDevice *device) : device(device) 
  * according to its type and function
  */
 void RegistryController::take_packet(const Packet &pac) {
+    printf("taking packet...\n");
     VDPTracef("Received packet of size %d", (int)pac.size());
+    dump_packet(pac);
     // checks the validity of the packet
     const VDP::PacketValidity status = validate_packet(pac);
 
@@ -40,6 +43,7 @@ void RegistryController::take_packet(const Packet &pac) {
     // checks the packet function from the header
     const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
     if (header.func == VDP::PacketFunction::Acknowledge) {
+        printf("received ack packet...\n");
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
         /**
@@ -51,6 +55,7 @@ void RegistryController::take_packet(const Packet &pac) {
         }
         channels[id].acked = true;
     } else if (header.func == VDP::PacketFunction::Response) {
+        printf("received response packet...\n");
         timer.reset();
         // if the packet is a data, get the data from the packet
         VDPTracef("Controller: PacketType Response");

@@ -100,6 +100,11 @@ class String : public Part {
      * @param new_value the string to set the value to
      */
     void setValue(std::string new_value);
+
+    /**
+     * @return the currently stored string
+     */
+    std::string getValue();
     /**
      * sets the string part's value to the string read by a packet reader
      * @param reader the packet reader to get the string from

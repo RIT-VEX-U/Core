@@ -302,7 +302,7 @@ void PacketWriter::write_data_message(const Channel &chan) {
 
     // creates and writes the Checksum to the packet
     uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
-    printf("data checksum: %08lx\n", crc);
+    // printf("data checksum: %08lx\n", crc);
     write_number<uint32_t>(crc);
 }
 /**
@@ -356,31 +356,21 @@ PartPtr make_decoder(PacketReader &pac) {
     }
     return nullptr;
 }
-static constexpr auto PACKET_TYPE_BIT_LOCATION = 7;
-static constexpr auto PACKET_FUNCTION_BIT_LOCATION = 5;
-/**
- * creates a byte from a given packet header
- * @return the header byte created
- */
-uint8_t make_header_byte(PacketHeader head) {
+static constexpr auto PACKET_TYPE_BIT_MASK = 0b10000000;
+static constexpr auto PACKET_FUNCTION_BIT_MASK = 0b01100000;
 
-    uint8_t b = 0;
-    // ORs the byte with the header type bit shifted over to the packet type but location
-    b |= ((uint8_t)head.type) << PACKET_TYPE_BIT_LOCATION;
-    // ORs the byte with the header function bit shifted over to the packet function bit location
-    b |= ((uint8_t)head.func) << PACKET_FUNCTION_BIT_LOCATION;
-    return b;
+uint8_t make_header_byte(PacketHeader head) {
+  return (uint8_t)head.type | (uint8_t)head.func;
 }
-/**
- * @param hb the header byte to decode
- * @return a PacketHeader with the Function and Type from the byte decoded
- */
+
 PacketHeader decode_header_byte(uint8_t hb) {
-    // sets the packet type to the header byte shifted by the type bit location ANDed with 1
-    const PacketType pt = (PacketType)((hb >> PACKET_TYPE_BIT_LOCATION) & 1);
-    // sets the packet function to the header byte shifted by the function location bit ANDed with 1
-    const PacketFunction func = (PacketFunction)((hb >> PACKET_FUNCTION_BIT_LOCATION) & 1);
-    return {pt, func};
+  const PacketType pt = (PacketType)(hb & PACKET_TYPE_BIT_MASK);
+  printf("header type found: %0x\n", (uint8_t)(pt));
+  const PacketFunction func =
+      (PacketFunction)(hb & PACKET_FUNCTION_BIT_MASK);
+  printf("header function found: %0x\n", (uint8_t)(func));
+
+  return {pt, func};
 }
 /**
  * Decodes the broadcast in a packet

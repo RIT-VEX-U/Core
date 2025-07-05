@@ -18,7 +18,7 @@ namespace VDP {
  * @param data the data to put into the record
  */
 TimestampedRecord::TimestampedRecord(std::string name, Part *data)
-    : Record(name), timestamp(new Float("timestamp", []() { return (float)vexSystemTimeGet() / 1000; })), data(data) {
+    : Record(name), timestamp(new Float("timestamp(sec)", []() { return (float)vexSystemTimeGet() / 1000; })), data(data) {
     Record::setFields({timestamp, (PartPtr)data});
 }
 /**
@@ -128,6 +128,19 @@ void PIDControlRecord::response() {
     pid.config.p = P->getValue();
     pid.config.i = I->getValue();
     pid.config.d = D->getValue();
+}
+
+TestRecord::TestRecord(std::string name, double test_float)
+    : Record(std::move(name)), test_float_ptr(new Float("test_float")), test_float(test_float) {
+    Record::setFields({test_float_ptr});
+}
+
+void TestRecord::fetch(){
+    test_float_ptr->setValue((float)test_float);
+}
+
+void TestRecord::response() {
+    test_float = test_float_ptr->getValue();
 }
 
 } // namespace VDP
