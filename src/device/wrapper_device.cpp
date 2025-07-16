@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "core/device/wrapper_device.hpp"
-
 namespace VDB {
 /**
  * delay for ms time
@@ -42,10 +41,10 @@ int Device::serial_thread(void *vself) {
         if (self.poll_incoming_data_once()) {
             Packet decoded = {};
             decoded = self.get_last_decoded_packet();
+            VDP::dump_packet(decoded);
             self.callback(decoded);
             did_something = true;
         }
-
         if (!did_something) {
             vexDelay(NO_ACTIVITY_DELAY);
         }

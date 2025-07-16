@@ -206,6 +206,7 @@ template <typename MutexType> class RegistryListener {
         );
     };
     CallbackFn on_data = [](VDP::Channel chan) {
+        
         printf(
           "VDB Listener: No Data Callback installed: Received data for channel "
           "%d:\n%s\n",

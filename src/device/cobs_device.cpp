@@ -56,18 +56,22 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
     return write_head;
 }
 bool COBSSerialDevice::poll_incoming_data_once() {
-
     while (true) {
         int toRead = vexGenericSerialReceiveAvail(port);
         if (toRead <= 0) {
+            // printf("no incoming bytes to read\n");
             return false;
         }
         int i = vexGenericSerialReadChar(port);
         if (i < 0) {
+            printf("incoming byte less than 0\n");
             return false;
         }
+        printf("running handle incoming byte on %d\n", i);
         bool finished = handle_incoming_byte((uint8_t)i);
+        printf("incoming byte handled\n");
         if (finished) {
+            printf("finished handling byte\n");
             return finished;
         }
     }
@@ -75,9 +79,11 @@ bool COBSSerialDevice::poll_incoming_data_once() {
 }
 
 bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
+    printf("handling incoming byte: %d\n", b);
     if (b == 0) {
         if (incoming_wire_packet.size() == 0) {
             // got delimeter but had no packet, just reading delimeters
+            printf("read delimeter without packet scrapping packet\n");
             return false;
         } else {
             cobs_decode(incoming_wire_packet, last_decoded_packet);
@@ -90,10 +96,10 @@ bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
     }
 }
 int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_size, uint32_t timeout_us) {
-
     serial_access_mut.lock();
     size_t start_time = vexSystemHighResTimeGet();
     while (true) {
+        printf("receiving a packet...\n");
         // Timed out
         size_t elapsed = vexSystemHighResTimeGet() - start_time;
         if (elapsed > timeout_us && timeout_us != 0) {

@@ -42,7 +42,28 @@ void RegistryController::take_packet(const Packet &pac) {
     }
     // checks the packet function from the header
     const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
-    if (header.func == VDP::PacketFunction::Acknowledge) {
+    if (header.func == VDP::PacketFunction::Response) {
+        printf("received response packet...\n");
+        timer.reset();
+        // if the packet is a data, get the data from the packet
+        VDPTracef("Controller: PacketType Response");
+        // get the channel id from the second byte of the packet
+        const ChannelID id = pac[2];
+        printf("got channel id %d from response\n", id);
+        // stores the channel id's schema in a Part Pointer
+        const PartPtr part = channels[id].data;
+        printf("data at channel id: %s", part->pretty_print_data().c_str());
+        if (part == nullptr) {
+            VDPDebugf("VDB-Listener: No channel information for id: %d", id);
+            return;
+        }
+        // creates a PacketReader starting after the channel id location
+        PacketReader reader{pac, 3};
+        // stores the data read from the packet to the Registry Part
+        part->read_data_from_message(reader);
+        // runs the channel's on data callback
+        on_data(Channel{part, id});
+    } else if (header.func == VDP::PacketFunction::Acknowledge) {
         printf("received ack packet...\n");
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
@@ -51,28 +72,9 @@ void RegistryController::take_packet(const Packet &pac) {
          */
         const ChannelID id = reader.get_number<ChannelID>();
         if (id >= channels.size()) {
-            printf("VDB-Controller: Recieved ack for unknown channel %d", id);
+            printf("VDB-Controller: Recieved ack for unknown channel %d\n", id);
         }
         channels[id].acked = true;
-    } else if (header.func == VDP::PacketFunction::Response) {
-        printf("received response packet...\n");
-        timer.reset();
-        // if the packet is a data, get the data from the packet
-        VDPTracef("Controller: PacketType Response");
-        // get the channel id from the second byte of the packet
-        const ChannelID id = pac[1];
-        // stores the channel id's schema in a Part Pointer
-        const PartPtr part = channels[id + 1].data;
-        if (part == nullptr) {
-            VDPDebugf("VDB-Listener: No channel information for id: %d", id);
-            return;
-        }
-        // creates a PacketReader starting after the channel id location
-        PacketReader reader{pac, 2};
-        // stores the data read from the packet to the Registry Part
-        part->read_data_from_message(reader);
-        // runs the channel's on data callback
-        on_data(Channel{part, id});
     }
 }
 /**
@@ -111,7 +113,7 @@ bool RegistryController::send_data(ChannelID id, PartPtr data) {
         timer.reset();
     }
     if (rec_mode) {
-        printf("in receive mode, requesting packets from device\n");
+        // printf("in receive mode, requesting packets from device\n");
         VDP::Packet scratch;
         PacketWriter writ{scratch};
 
