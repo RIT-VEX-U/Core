@@ -41,7 +41,6 @@ int Device::serial_thread(void *vself) {
         if (self.poll_incoming_data_once()) {
             Packet decoded = {};
             decoded = self.get_last_decoded_packet();
-            VDP::dump_packet_8bit(decoded);
             self.callback(decoded);
             did_something = true;
         }

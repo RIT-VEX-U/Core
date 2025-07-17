@@ -306,7 +306,6 @@ void PacketWriter::write_request() {
  * @param response_queue the queue of channels to respond with
  */
 void PacketWriter::write_response(std::deque<Channel> &response_queue) {
-  printf("writing channel response for %s\n", response_queue.front().data->pretty_print_data().c_str());
   clear();
   // makes a header byte with the type broadcast and the function Receive
   const uint8_t header = make_header_byte(
@@ -314,33 +313,16 @@ void PacketWriter::write_response(std::deque<Channel> &response_queue) {
 
   // writes the header byte and number of responses in the queue
   write_number<uint8_t>(header);
-  printf("packet with header: \n");
-  dump_packet_8bit(sofar);
   write_number<uint8_t>(response_queue.size());
-  printf("packet with queue size (should be %d): \n", response_queue.size());
-  dump_packet_8bit(sofar);
   //writes the channel id for the channel we are responding to
   write_number<ChannelID>(response_queue.front().getID());
-  printf("packet with channel id: \n");
-  dump_packet_8bit(sofar);
-  int message_loc = sofar.size();
-  //writes the data for the response
   response_queue.front().data->write_message(*this);
-  printf("packet with message: \n");
-  
-  dump_packet_8bit(sofar);
-  double out;
-  memcpy(&out, sofar.data() + message_loc, sizeof(out));
-  printf("message loc: %d, float in message: %f\n", message_loc, out);
   //removes the response from the queue
   response_queue.pop_front();
-  
 
   // creates and writes the Checksum to the packet
   uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
   write_number<uint32_t>(crc);
-  printf("packet with checksum: \n");
-  dump_packet_8bit(sofar);
 }
 
 /**
@@ -399,10 +381,8 @@ uint8_t make_header_byte(PacketHeader head) {
 
 PacketHeader decode_header_byte(uint8_t hb) {
   const PacketType pt = (PacketType)(hb & PACKET_TYPE_BIT_MASK);
-  printf("header type found: %0x\n", (uint8_t)(pt));
   const PacketFunction func =
       (PacketFunction)(hb & PACKET_FUNCTION_BIT_MASK);
-  printf("header function found: %0x\n", (uint8_t)(func));
 
   return {pt, func};
 }
@@ -423,4 +403,7 @@ std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet) {
     // returns the pair of the channel id and the packet shematic
     return {id, schema};
 }
+
+
+
 } // namespace VDP

@@ -20,9 +20,7 @@ RegistryController::RegistryController(AbstractDevice *device) : device(device) 
  * according to its type and function
  */
 void RegistryController::take_packet(const Packet &pac) {
-    printf("taking packet...\n");
     VDPTracef("Received packet of size %d", (int)pac.size());
-    dump_packet_8bit(pac);
     // checks the validity of the packet
     const VDP::PacketValidity status = validate_packet(pac);
 
@@ -33,7 +31,6 @@ void RegistryController::take_packet(const Packet &pac) {
     } else if (status == VDP::PacketValidity::TooSmall) {
         num_small++;
         VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)pac.size());
-        dump_packet_8bit(pac);
         return;
     } else if (status != VDP::PacketValidity::Ok) {
         VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping", "");
@@ -42,7 +39,6 @@ void RegistryController::take_packet(const Packet &pac) {
     // checks the packet function from the header
     const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
     if (header.func == VDP::PacketFunction::Response) {
-        printf("received response packet...\n");
         timer.reset();
         // if the packet is a data, get the data from the packet
         VDPTracef("Controller: PacketType Response");
@@ -52,7 +48,6 @@ void RegistryController::take_packet(const Packet &pac) {
         printf("we see %d responses in the queue\n", responses_in_queue);
         // get the channel id from the third byte of the packet
         const ChannelID id = pac[2];
-        printf("got channel id %d from response\n", id);
         // stores the channel id's schema in a Part Pointer
         const PartPtr part = channels[id].data;
         if (part == nullptr) {
@@ -66,7 +61,6 @@ void RegistryController::take_packet(const Packet &pac) {
         // runs the channel's on data callback
         on_data(Channel{part, id});
     } else if (header.func == VDP::PacketFunction::Acknowledge) {
-        printf("received ack packet...\n");
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
         /**
@@ -149,7 +143,7 @@ bool RegistryController::send_data(ChannelID id, PartPtr data) {
  * @return whether or not all channel's were acknowledgements
  */
 bool RegistryController::negotiate() {
-    printf("Negotiating\n");
+    printf("Negotiating...\n");
     bool acked_all = true;
     int failed_acks = 0;
 
