@@ -19,7 +19,7 @@ namespace VDP {
  */
 TimestampedRecord::TimestampedRecord(std::string name, Part *data)
     : Record(name), timestamp(new Float("timestamp(sec)", []() { return (float)vexSystemTimeGet() / 1000; })), data(data) {
-    Record::setFields({timestamp, (PartPtr)data});
+    Record::set_fields({timestamp, (PartPtr)data});
 }
 /**
  * sets the data that the Timestamp Parts hold
@@ -41,17 +41,17 @@ void TimestampedRecord::fetch() {
 MotorDataRecord::MotorDataRecord(std::string name, vex::motor &motor)
     : Record(std::move(name)), mot(motor), pos(new Float("Position(deg)")), vel(new Float("velocity(dps)")),
       temp(new Float("Temperature(C)")), voltage(new Float("Voltage(V)")), current(new Float("Current(%)")) {
-    Record::setFields({pos, vel, temp, voltage, current});
+    Record::set_fields({pos, vel, temp, voltage, current});
 }
 /**
  * sets the data that the Motor Parts hold
  */
 void MotorDataRecord::fetch() {
-    pos->setValue((float)mot.position(vex::rotationUnits::deg));
-    vel->setValue((float)mot.velocity(vex::velocityUnits::dps));
-    temp->setValue((float)mot.temperature(vex::temperatureUnits::celsius));
-    voltage->setValue((float)mot.voltage(vex::voltageUnits::volt));
-    current->setValue((float)mot.current(vex::percentUnits::pct));
+    pos->set_value((float)mot.position(vex::rotationUnits::deg));
+    vel->set_value((float)mot.velocity(vex::velocityUnits::dps));
+    temp->set_value((float)mot.temperature(vex::temperatureUnits::celsius));
+    voltage->set_value((float)mot.voltage(vex::voltageUnits::volt));
+    current->set_value((float)mot.current(vex::percentUnits::pct));
 }
 /**
  * Creates a record that contains a
@@ -63,15 +63,15 @@ void MotorDataRecord::fetch() {
  */
 OdometryDataRecord::OdometryDataRecord(std::string name, OdometryBase &odom)
     : Record(std::move(name)), odom(odom), X(new Float("X")), Y(new Float("Y")), ROT(new Float("Rotation")) {
-    Record::setFields({X, Y, ROT});
+    Record::set_fields({X, Y, ROT});
 }
 /**
  * sets the data that the Odometry Parts hold
  */
 void OdometryDataRecord::fetch() {
-    X->setValue((float)odom.get_position().x());
-    Y->setValue((float)odom.get_position().y());
-    ROT->setValue((float)odom.get_position().rotation().degrees());
+    X->set_value((float)odom.get_position().x());
+    Y->set_value((float)odom.get_position().y());
+    ROT->set_value((float)odom.get_position().rotation().degrees());
 }
 /**
  * Creates a record for taking odometry data from the debug board
@@ -80,12 +80,12 @@ void OdometryDataRecord::fetch() {
  */
 OdometryControlRecord::OdometryControlRecord(std::string name, OdometryBase &odom)
     : Record(std::move(name)), odom(odom), X(new Float("X")), Y(new Float("Y")), ROT(new Float("Rotation")) {
-    Record::setFields({X, Y, ROT});
+    Record::set_fields({X, Y, ROT});
 }
 /**
  * sets the odometry position to the values from the debug board
  */
-void OdometryControlRecord::response() { odom.set_position({X->getValue(), Y->getValue(), ROT->getValue()}); }
+void OdometryControlRecord::response() { odom.set_position({X->get_value(), Y->get_value(), ROT->get_value()}); }
 
 /**
  * Creates a record that contains a
@@ -101,46 +101,46 @@ void OdometryControlRecord::response() { odom.set_position({X->getValue(), Y->ge
 PIDDataRecord::PIDDataRecord(std::string name, PID &pid)
     : Record(std::move(name)), pid(pid), P(new Float("P")), I(new Float("I")), D(new Float("D")),
       ERROR(new Float("Error")), OUTPUT(new Float("Output")), TYPE(new String("Type")) {
-    Record::setFields({TYPE, P, I, D, ERROR, OUTPUT});
+    Record::set_fields({TYPE, P, I, D, ERROR, OUTPUT});
 }
 /**
  * sets the data that the PID Parts hold to be sent to the board
  */
 void PIDDataRecord::fetch() {
-    P->setValue((float)pid.config.p);
-    I->setValue((float)pid.config.i);
-    D->setValue((float)pid.config.d);
-    ERROR->setValue((float)pid.get_error());
-    OUTPUT->setValue((float)pid.get_output());
+    P->set_value((float)pid.config.p);
+    I->set_value((float)pid.config.i);
+    D->set_value((float)pid.config.d);
+    ERROR->set_value((float)pid.get_error());
+    OUTPUT->set_value((float)pid.get_output());
     if (pid.config.error_method == PID::ANGULAR) {
-        TYPE->setValue("Angular");
+        TYPE->set_value("Angular");
     } else {
-        TYPE->setValue("Linear");
+        TYPE->set_value("Linear");
     }
 }
 
 PIDControlRecord::PIDControlRecord(std::string name, PID &pid)
     : Record(std::move(name)), pid(pid), P(new Float("P")), I(new Float("I")), D(new Float("D")) {
-    Record::setFields({P, I, D});
+    Record::set_fields({P, I, D});
 }
 
 void PIDControlRecord::response() {
-    pid.config.p = P->getValue();
-    pid.config.i = I->getValue();
-    pid.config.d = D->getValue();
+    pid.config.p = P->get_value();
+    pid.config.i = I->get_value();
+    pid.config.d = D->get_value();
 }
 
 TestRecord::TestRecord(std::string name, double test_float)
     : Record(std::move(name)), test_float_ptr(new Float("test_float")), test_float(test_float) {
-    Record::setFields({test_float_ptr});
+    Record::set_fields({test_float_ptr});
 }
 
 void TestRecord::fetch(){
-    test_float_ptr->setValue((float)test_float);
+    test_float_ptr->set_value((float)test_float);
 }
 
 void TestRecord::response() {
-    test_float = test_float_ptr->getValue();
+    test_float = test_float_ptr->get_value();
 }
 
 } // namespace VDP

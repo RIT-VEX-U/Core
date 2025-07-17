@@ -44,7 +44,9 @@ Record::Record(std::string name, PacketReader &reader) : Part(std::move(name)), 
  * sets the Record to contain Parts from a part Pointer
  * @param fs the vector of Part Pointers for the record to hold
  */
-void Record::setFields(std::vector<PartPtr> fs) { fields = std::move(fs); }
+void Record::set_fields(std::vector<PartPtr> fs) { fields = std::move(fs); }
+
+std::vector<PartPtr> Record::get_fields() const { return fields; }
 /**
  * sets the values of each Part the Record contains
  */
@@ -140,11 +142,11 @@ void String::response() {}
  * sets the string part's value to the string given
  * @param new_value the string to set the value to
  */
-void String::setValue(std::string new_value) { value = std::move(new_value); }
+void String::set_value(std::string new_value) { value = std::move(new_value); }
 /**
  * @return the currently stored string
  */
-std::string String::getValue() { return value; }
+std::string String::get_value() { return value; }
 /**
  * sets the string part's value to the string read by a packet reader
  * @param reader the part reader to get
@@ -183,5 +185,64 @@ void String::write_schema(PacketWriter &sofar) const {
  * @param sofar the packet writer to write with
  */
 void String::write_message(PacketWriter &sofar) const { sofar.write_string(value); }
+
+Float::Float(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Double::Double(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Uint8::Uint8(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Uint16::Uint16(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Uint32::Uint32(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Uint64::Uint64(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Int8::Int8(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Int16::Int16(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Int32::Int32(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+Int64::Int64(std::string name, NumT::FetchFunc func) : NumT(name, func) {}
+
+void Record::Visit(Visitor *v) { v->VisitRecord(this); }
+void String::Visit(Visitor *v) { v->VisitString(this); }
+
+void Float::Visit(Visitor *v) { v->VisitFloat(this); }
+void Double::Visit(Visitor *v) { v->VisitDouble(this); }
+
+void Uint8::Visit(Visitor *v) { v->VisitUint8(this); }
+void Uint16::Visit(Visitor *v) { v->VisitUint16(this); }
+void Uint32::Visit(Visitor *v) { v->VisitUint32(this); }
+void Uint64::Visit(Visitor *v) { v->VisitUint64(this); }
+
+void Int8::Visit(Visitor *v) { v->VisitInt8(this); }
+void Int16::Visit(Visitor *v) { v->VisitInt16(this); }
+void Int32::Visit(Visitor *v) { v->VisitInt32(this); }
+void Int64::Visit(Visitor *v) { v->VisitInt64(this); }
+
+void UpcastNumbersVisitor::VisitFloat(Float *f) {
+  VisitAnyFloat(f->get_name(), f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitDouble(Double *f) {
+  VisitAnyFloat(f->get_name(), f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitUint8(Uint8 *f) {
+  VisitAnyUint(f->get_name(), (uint64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitUint16(Uint16 *f) {
+  VisitAnyUint(f->get_name(), (uint64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitUint32(Uint32 *f) {
+  VisitAnyUint(f->get_name(), (uint64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitUint64(Uint64 *f) {
+  VisitAnyUint(f->get_name(), (uint64_t)f->get_value(), f);
+}
+
+void UpcastNumbersVisitor::VisitInt8(Int8 *f) {
+  VisitAnyUint(f->get_name(), (int64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitInt16(Int16 *f) {
+  VisitAnyUint(f->get_name(), (int64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitInt32(Int32 *f) {
+  VisitAnyUint(f->get_name(), (int64_t)f->get_value(), f);
+}
+void UpcastNumbersVisitor::VisitInt64(Int64 *f) {
+  VisitAnyUint(f->get_name(), (int64_t)f->get_value(), f);
+}
 
 } // namespace VDP

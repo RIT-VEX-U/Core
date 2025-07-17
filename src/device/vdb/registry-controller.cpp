@@ -12,7 +12,6 @@ namespace VDP {
 RegistryController::RegistryController(AbstractDevice *device) : device(device) {
     device->register_receive_callback([&](const Packet &p) {
         printf("Controller: GOT PACKET\n");
-        dump_packet(p);
         take_packet(p);
     });
 }
@@ -23,7 +22,7 @@ RegistryController::RegistryController(AbstractDevice *device) : device(device) 
 void RegistryController::take_packet(const Packet &pac) {
     printf("taking packet...\n");
     VDPTracef("Received packet of size %d", (int)pac.size());
-    dump_packet(pac);
+    dump_packet_8bit(pac);
     // checks the validity of the packet
     const VDP::PacketValidity status = validate_packet(pac);
 
@@ -34,7 +33,7 @@ void RegistryController::take_packet(const Packet &pac) {
     } else if (status == VDP::PacketValidity::TooSmall) {
         num_small++;
         VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)pac.size());
-        dump_packet(pac);
+        dump_packet_8bit(pac);
         return;
     } else if (status != VDP::PacketValidity::Ok) {
         VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping", "");
@@ -47,12 +46,15 @@ void RegistryController::take_packet(const Packet &pac) {
         timer.reset();
         // if the packet is a data, get the data from the packet
         VDPTracef("Controller: PacketType Response");
-        // get the channel id from the second byte of the packet
+        //get the number of responses in the queue from the packet
+        //subtracted by 1 since we are reading this one
+        responses_in_queue = pac[1] - 1;
+        printf("we see %d responses in the queue\n", responses_in_queue);
+        // get the channel id from the third byte of the packet
         const ChannelID id = pac[2];
         printf("got channel id %d from response\n", id);
         // stores the channel id's schema in a Part Pointer
         const PartPtr part = channels[id].data;
-        printf("data at channel id: %s", part->pretty_print_data().c_str());
         if (part == nullptr) {
             VDPDebugf("VDB-Listener: No channel information for id: %d", id);
             return;

@@ -53,6 +53,7 @@ class RegistryController {
         return id;
     }
 
+    int responses_in_queue;
     bool needs_ack = false;
     vex::timer timer;
     bool rec_mode = false;

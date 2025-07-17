@@ -20,19 +20,19 @@ void delay_ms(uint32_t ms);
 #define VDPWARN
 
 #ifdef VDPWARN
-#define VDPWarnf(fmt, ...) printf("WARN: " fmt "\n", __VA_ARGS__)
+#define VDPWarnf(fmt, ...) printf("WARN: " fmt "\n", ##__VA_ARGS__)
 #else
 #define VDPWarnf(...)
 #endif
 
 #ifdef VDPDEBUG
-#define VDPDebugf(fmt, ...) printf("DEBUG: " fmt "\n", __VA_ARGS__)
+#define VDPDebugf(fmt, ...) printf("DEBUG: " fmt "\n", ##__VA_ARGS__)
 #else
 #define VDPDebugf(...)
 #endif
 
 #ifdef VDPTRACE
-#define VDPTracef(fmt, ...) printf("TRACE: " fmt "\n", __VA_ARGS__)
+#define VDPTracef(fmt, ...) printf("TRACE: " fmt "\n", ##__VA_ARGS__)
 #else
 #define VDPTracef(...)
 #endif
@@ -80,9 +80,9 @@ class Channel {
 
 /**
  * Prints out a packet of data
- * @param pac the packet to print
  */
-void dump_packet(const Packet &pac);
+void dump_packet_hex(const Packet &pac);
+void dump_packet_8bit(const Packet &pac);
 
 /**
  * defines what byte value correspondes to what packet type or packet function
@@ -139,6 +139,7 @@ std::string to_string(Type t);
 
 class PacketReader;
 class PacketWriter;
+class Visitor;
 /**
  * adds indents to a stringstream
  * @param ss the stringstream to add indents to
@@ -186,6 +187,10 @@ class Part {
      * @param reader the PacketReader to read data from
      */
     virtual void read_data_from_message(PacketReader &reader) = 0;
+
+    std::string get_name() const;
+
+    virtual void Visit(Visitor *) = 0;
 
   protected:
     // These are needed to decode correctly but you shouldn't call them directly
@@ -319,11 +324,6 @@ class PacketWriter {
      */
     void write_channel_broadcast(const Channel &chan);
     /**
-     * writes a request for a channel schematic to the packets
-     * @param chan the Channel to write the data from
-     */
-    void write_request();
-    /**
      * writes a response packet to the packets
      * @param chan the Channel to write the data from
      */
@@ -333,6 +333,11 @@ class PacketWriter {
      * @param chan the channel to request
      */
     void write_data_message(const Channel &part);
+    /**
+     * writes a request for a channel schematic to the packets
+     * @param chan the Channel to write the data from
+     */
+    void write_request();
     /**
      * @return the packet the writer is writing to
      */

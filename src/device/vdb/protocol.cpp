@@ -1,4 +1,5 @@
 #include "core/device/vdb/protocol.hpp"
+#include "core/device/vdb/types.hpp"
 
 #include <cstdint>
 #include <cstring>
@@ -9,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "core/device/vdb/types.hpp"
 
 namespace VDP {
 /**
@@ -19,16 +19,23 @@ ChannelID Channel::getID() const { return id; }
 /*
  * prints out the packet in individual bytes
  */
-void dump_packet(const Packet &pac) {
-    int i = 0;
-    for (const uint8_t d : pac) {
-        if (i % 16 == 0 && i != 0) {
-            printf("\n");
-        }
-        printf("%02x ", (int)d);
-        i++;
+void dump_packet_hex(const Packet &pac) {
+  int i = 0;
+  for (const uint8_t d : pac) {
+    if (i % 16 == 0 && i != 0) {
+      printf("\n");
     }
-    printf("\n");
+    printf("%02x ", (int)d);
+    i++;
+  }
+  printf("\n");
+}
+
+void dump_packet_8bit(const Packet &pac) {
+  for (uint8_t val : pac) {
+        printf("%d ", (int)val);
+    }
+  printf("\n");
 }
 /**
  * @param t the VDP type to return a string of
@@ -83,11 +90,14 @@ void add_indents(std::stringstream &ss, size_t indent) {
  * @param name name for the Part
  */
 Part::Part(std::string name) : name(std::move(name)) {}
+
 /*
  * Deleter for the Part, used to delete the data once it is no longer needed
  * i.e after it has been sent to the debug board
  */
 Part::~Part() {}
+
+std::string Part::get_name() const { return name; }
 
 void Part::response() {}
 /**
@@ -212,6 +222,12 @@ void PacketWriter::write_string(const std::string &str) {
     // adds a 0 byte after the string to signal the end of the string
     sofar.push_back(0);
 }
+
+/**
+ * @return the packet the writer is writing to
+ */
+const Packet &PacketWriter::get_packet() const { return sofar; }
+
 /**
  * writes a broadcast acknowledgement of a channel to the packet
  * @param chan the channel to write the acknowledgement for
@@ -248,42 +264,7 @@ void PacketWriter::write_channel_broadcast(const Channel &chan) {
     uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
     write_number<uint32_t>(crc);
 }
-/**
- * writes a request for a channel schematic to the packet
- * @param chan the channel to request
- */
-void PacketWriter::write_request() {
-    clear();
-    // makes a header byte with the type broadcast and the function acknowledgement
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Request});
-    // writes the header byte and channel id to the packet
-    write_number<uint8_t>(header);
-    // creates and writes the Checksum to the packet
-    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
-    write_number<uint32_t>(crc);
-}
-/**
- * writes a receive packet to the packets
- * @param chan the channel to request
- */
-void PacketWriter::write_response(std::deque<Channel> &channels) {
-    clear();
-    // makes a header byte with the type broadcast and the function Receive
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
 
-    // writes the header byte and number of channels to send to the packet
-    write_number<uint8_t>(header);
-
-    write_number<size_t>(channels.size());
-    write_number<uint8_t>(header);
-    write_number<ChannelID>(channels[0].getID());
-    channels[0].data->write_message(*this);
-    channels.pop_front();
-
-    // creates and writes the Checksum to the packet
-    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
-    write_number<uint32_t>(crc);
-}
 /**
  * writes the data from a channel to the packet
  * @param chan the Channel to write the data from
@@ -305,10 +286,63 @@ void PacketWriter::write_data_message(const Channel &chan) {
     // printf("data checksum: %08lx\n", crc);
     write_number<uint32_t>(crc);
 }
+
 /**
- * @return the packet the writer is writing to
+ * writes a request for a channel schematic to the packet
+ * @param chan the channel to request
  */
-const Packet &PacketWriter::get_packet() const { return sofar; }
+void PacketWriter::write_request() {
+    clear();
+    // makes a header byte with the type broadcast and the function acknowledgement
+    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Request});
+    // writes the header byte and channel id to the packet
+    write_number<uint8_t>(header);
+    // creates and writes the Checksum to the packet
+    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+    write_number<uint32_t>(crc);
+}
+/**
+ * writes a response packet to the brain
+ * @param response_queue the queue of channels to respond with
+ */
+void PacketWriter::write_response(std::deque<Channel> &response_queue) {
+  printf("writing channel response for %s\n", response_queue.front().data->pretty_print_data().c_str());
+  clear();
+  // makes a header byte with the type broadcast and the function Receive
+  const uint8_t header = make_header_byte(
+      PacketHeader{PacketType::Data, PacketFunction::Response});
+
+  // writes the header byte and number of responses in the queue
+  write_number<uint8_t>(header);
+  printf("packet with header: \n");
+  dump_packet_8bit(sofar);
+  write_number<uint8_t>(response_queue.size());
+  printf("packet with queue size (should be %d): \n", response_queue.size());
+  dump_packet_8bit(sofar);
+  //writes the channel id for the channel we are responding to
+  write_number<ChannelID>(response_queue.front().getID());
+  printf("packet with channel id: \n");
+  dump_packet_8bit(sofar);
+  int message_loc = sofar.size();
+  //writes the data for the response
+  response_queue.front().data->write_message(*this);
+  printf("packet with message: \n");
+  
+  dump_packet_8bit(sofar);
+  double out;
+  memcpy(&out, sofar.data() + message_loc, sizeof(out));
+  printf("message loc: %d, float in message: %f\n", message_loc, out);
+  //removes the response from the queue
+  response_queue.pop_front();
+  
+
+  // creates and writes the Checksum to the packet
+  uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+  write_number<uint32_t>(crc);
+  printf("packet with checksum: \n");
+  dump_packet_8bit(sofar);
+}
+
 /**
  *  deleter for the device, used to delete it when it is no longer needed
  */
