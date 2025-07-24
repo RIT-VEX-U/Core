@@ -404,6 +404,4 @@ std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet) {
     return {id, schema};
 }
 
-
-
 } // namespace VDP

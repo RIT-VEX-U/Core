@@ -57,7 +57,7 @@ class Channel {
      * Creates a channel used for sending data to the brain
      * @param schema_data Part Pointer schematic of data to be sent to the brain
      */
-    explicit Channel(PartPtr schema_data) : data(schema_data) {}
+    explicit Channel(PartPtr &schema_data) : data(schema_data) {}
     PartPtr data;
     /*
      * @return The Channel ID from 0 - 256
@@ -70,7 +70,7 @@ class Channel {
      * @param schema_data Part Pointer schematic of data to be sent to the brain
      * @param channel_id The Channel ID to assign the channel from 0 - 256
      */
-    Channel(PartPtr schema_data, ChannelID channel_id) : data(schema_data), id(channel_id) {}
+    Channel(PartPtr &schema_data, ChannelID channel_id) : data(schema_data), id(channel_id) {}
 
     ChannelID id = 0;
     Packet packet_scratch_space;
@@ -182,6 +182,8 @@ class Part {
     virtual void fetch() = 0;
 
     virtual void response();
+
+    virtual VDP::PartPtr clone() = 0;
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
      * @param reader the PacketReader to read data from

@@ -59,7 +59,7 @@ public:
         // get the channel id from the second byte of the packet
         const ChannelID id = pac[1];
         // stores the channel id's schema in a Part Pointer
-        const PartPtr part = get_remote_schema(id);
+        PartPtr &part = get_remote_schema(id);
         if (part == nullptr) {
           VDPDebugf("VDB-Listener: No channel information for id: %d", id);
           return;

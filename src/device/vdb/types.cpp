@@ -47,6 +47,16 @@ Record::Record(std::string name, PacketReader &reader) : Part(std::move(name)), 
 void Record::set_fields(std::vector<PartPtr> fs) { fields = std::move(fs); }
 
 std::vector<PartPtr> Record::get_fields() const { return fields; }
+
+PartPtr Record::clone(){
+    std::shared_ptr<Record> cloned_record = std::make_shared<Record>(this->name);
+    std::vector<PartPtr> cloned_fields;
+    for(auto field : this->fields){
+        cloned_fields.push_back(field->clone());
+    }
+    cloned_record->set_fields(cloned_fields);
+    return cloned_record;
+}
 /**
  * sets the values of each Part the Record contains
  */
@@ -147,6 +157,12 @@ void String::set_value(std::string new_value) { value = std::move(new_value); }
  * @return the currently stored string
  */
 std::string String::get_value() { return value; }
+
+PartPtr String::clone() {
+    std::shared_ptr<String> cloned_string = std::make_shared<String>(this->name);
+    cloned_string->set_value(this->value);
+    return cloned_string;
+};
 /**
  * sets the string part's value to the string read by a packet reader
  * @param reader the part reader to get
@@ -243,6 +259,66 @@ void UpcastNumbersVisitor::VisitInt32(Int32 *f) {
 }
 void UpcastNumbersVisitor::VisitInt64(Int64 *f) {
   VisitAnyUint(f->get_name(), (int64_t)f->get_value(), f);
+}
+
+PartPtr Float::clone(){
+    std::shared_ptr<Float> clone = std::make_shared<Float>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Double::clone(){
+    std::shared_ptr<Double> clone = std::make_shared<Double>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Uint8::clone(){
+    std::shared_ptr<Uint8> clone = std::make_shared<Uint8>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Uint16::clone(){
+    std::shared_ptr<Uint16> clone = std::make_shared<Uint16>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Uint32::clone(){
+    std::shared_ptr<Uint32> clone = std::make_shared<Uint32>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Uint64::clone(){
+    std::shared_ptr<Uint64> clone = std::make_shared<Uint64>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Int8::clone(){
+    std::shared_ptr<Int8> clone = std::make_shared<Int8>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Int16::clone(){
+    std::shared_ptr<Int16> clone = std::make_shared<Int16>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Int32::clone(){
+    std::shared_ptr<Int32> clone = std::make_shared<Int32>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
+}
+
+PartPtr Int64::clone(){
+    std::shared_ptr<Int64> clone = std::make_shared<Int64>(this->name, this->fetcher);
+    clone->set_value(this->value);
+    return clone;
 }
 
 } // namespace VDP

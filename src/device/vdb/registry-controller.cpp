@@ -47,19 +47,19 @@ void RegistryController::take_packet(const Packet &pac) {
         responses_in_queue = pac[1] - 1;
         printf("we see %d responses in the queue\n", responses_in_queue);
         // get the channel id from the third byte of the packet
-        const ChannelID id = pac[2];
-        // stores the channel id's schema in a Part Pointer
-        const PartPtr part = channels[id].data;
-        if (part == nullptr) {
+        ChannelID id = pac[2];
+        PartPtr data_copy = channels[id].data->clone();
+        if (channels[id].data == nullptr) {
             VDPDebugf("VDB-Listener: No channel information for id: %d", id);
             return;
         }
         // creates a PacketReader starting after the channel id location
         PacketReader reader{pac, 3};
         // stores the data read from the packet to the Registry Part
-        part->read_data_from_message(reader);
+        data_copy->read_data_from_message(reader);
+        printf("data copy after reading message: %s", data_copy->pretty_print_data().c_str());
         // runs the channel's on data callback
-        on_data(Channel{part, id});
+        on_data(Channel{data_copy, id});
     } else if (header.func == VDP::PacketFunction::Acknowledge) {
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
@@ -92,7 +92,7 @@ PartPtr RegistryController::get_remote_schema(ChannelID id) {
  * @param for_data the Part Pointer to the data the channel should hold
  * @return the channel id for the new channel created
  */
-ChannelID RegistryController::open_channel(PartPtr for_data) {
+ChannelID RegistryController::open_channel(PartPtr &for_data) {
     ChannelID id = new_channel_id();
     Channel chan = Channel{for_data, id};
     channels.push_back(chan);
@@ -103,7 +103,7 @@ ChannelID RegistryController::open_channel(PartPtr for_data) {
  * @param id The id of the channel to hold the data
  * @param data the Part Pointer for the channel to hold and send to the device
  */
-bool RegistryController::send_data(ChannelID id, PartPtr data) {
+bool RegistryController::send_data(ChannelID id, PartPtr &data) {
     if (timer.time() > rec_switch_time) {
         rec_mode = !rec_mode;
         timer.reset();
@@ -137,6 +137,10 @@ bool RegistryController::send_data(ChannelID id, PartPtr data) {
     VDP::Packet pac = writ.get_packet();
 
     return device->send_packet(pac);
+}
+
+PartPtr RegistryController::part_to_update(){
+    return this->record_to_update;
 }
 /**
  * sends channel schematics to the Registry device and checks for ackowledgements

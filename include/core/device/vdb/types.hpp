@@ -1,6 +1,6 @@
 #pragma once
 #include "core/device/vdb/protocol.hpp"
-
+#include <string>
 namespace VDP {
 /**
  * Defines a Part that contains another Part
@@ -60,6 +60,8 @@ class Record : public Part {
      */
     void read_data_from_message(PacketReader &reader) override;
 
+    PartPtr clone() override;
+
     void Visit(Visitor *);
 
   protected:
@@ -110,6 +112,8 @@ class String : public Part {
      * @return the currently stored string
      */
     std::string get_value();
+
+    PartPtr clone() override;
     /**
      * sets the string part's value to the string read by a packet reader
      * @param reader the packet reader to get the string from
@@ -229,10 +233,8 @@ template <typename NumT, Type schemaType> class Number : public Part {
      * @param sofar the packet writer to write with
      */
     void write_message(PacketWriter &sofar) const override { sofar.write_number<NumberType>(value); }
-
-  private:
     FetchFunc fetcher;
-    NumberType value = (NumberType)0;
+    NumberType value = (NumberType)0;    
 };
 
 class Float : public Number<float, Type::Float> {
@@ -242,6 +244,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Double : public Number<double, Type::Double> {
 public:
@@ -250,6 +253,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 
 class Uint8 : public Number<uint8_t, Type::Uint8> {
@@ -259,6 +263,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Uint16 : public Number<uint16_t, Type::Uint16> {
 public:
@@ -267,6 +272,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Uint32 : public Number<uint32_t, Type::Uint32> {
 public:
@@ -275,6 +281,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Uint64 : public Number<uint64_t, Type::Uint64> {
 public:
@@ -283,6 +290,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 
 class Int8 : public Number<int8_t, Type::Int8> {
@@ -292,6 +300,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Int16 : public Number<int16_t, Type::Int16> {
 public:
@@ -300,6 +309,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 class Int32 : public Number<int32_t, Type::Int32> {
 public:
@@ -308,6 +318,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 
 class Int64 : public Number<int64_t, Type::Int64> {
@@ -317,6 +328,7 @@ public:
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
   void Visit(Visitor *);
+  PartPtr clone() override;
 };
 
 class Visitor {

@@ -2,6 +2,7 @@
 #include "core/device/vdb/protocol.hpp"
 #include "vex.h"
 #include <functional>
+#include "core/device/vdb/visitor.hpp"
 
 namespace VDP {
 class RegistryController {
@@ -32,13 +33,15 @@ class RegistryController {
      * @param for_data the Part Pointer to the data the channel should hold
      * @return the channel id for the new channel created
      */
-    ChannelID open_channel(PartPtr for_data);
+    ChannelID open_channel(PartPtr &for_data);
     /**
      * sets the data at the channel id to a Part Pointer and sends it to the device
      * @param id The id of the channel to hold the data
      * @param data the Part Pointer for the channel to hold and send to the device
      */
-    bool send_data(ChannelID id, PartPtr data);
+    bool send_data(ChannelID id, PartPtr &data);
+
+    PartPtr part_to_update();
     /**
      * sends channel schematics to the Registry device and checks for ackowledgements
      * @return whether or not all channel's were acknowledgements
@@ -63,6 +66,7 @@ class RegistryController {
     // Our channels (us -> them)
     std::vector<Channel> channels;
     ChannelID next_channel_id = 0;
+    PartPtr record_to_update;
 
     CallbackFn on_broadcast = [&](VDP::Channel chan) {
         std::string schema_str = chan.data->pretty_print();
@@ -73,12 +77,21 @@ class RegistryController {
           int(chan.getID()), schema_str.c_str()
         );
     };
-    CallbackFn on_data = [](VDP::Channel chan) {
-        printf(
-          "VDB Controller: No Data Callback installed: Received data for channel "
-          "%d:\n%s\n",
-          int(chan.getID()), chan.data->pretty_print_data().c_str()
-        );
+    CallbackFn on_data = [&](VDP::Channel new_data) {
+        ResponsePacketVisitor RV(new_data.data);
+        Channel to_update = channels[new_data.getID()];
+        printf("data currently at channel: %s\n", to_update.data->pretty_print_data().c_str());
+        printf("data we have to put into channel: %s", new_data.data->pretty_print_data().c_str());
+        to_update.data->Visit(&RV);
+        Channel &pingas = channels[new_data.getID()];
+        pingas.data = to_update.data;
+        record_to_update = to_update.data;
+        printf("final data at channel: %s\n", channels[new_data.getID()].data->pretty_print_data().c_str());
+        // printf(
+        //   "VDB Controller: No Data Callback installed: Received data for channel "
+        //   "%d:\n%s\n",
+        //   int(new_data.getID()), new_data.data->pretty_print_data().c_str()
+        // );
     };
 };
 } // namespace VDP
