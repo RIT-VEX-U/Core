@@ -130,17 +130,19 @@ void PIDControlRecord::response() {
     pid.config.d = D->get_value();
 }
 
-TestRecord::TestRecord(std::string name, double test_float)
-    : Record(std::move(name)), test_float_ptr(new Float("test_float")), test_float(test_float) {
-    Record::set_fields({test_float_ptr});
+TestRecord::TestRecord(std::string name, double test_float, int64_t test_int64)
+    : Record(std::move(name)), test_float(test_float), test_int64(test_int64), test_float_ptr(new Float("test_float")), test_int64_ptr(new Int64("test_int64")) {
+    Record::set_fields({test_float_ptr, test_int64_ptr});
 }
 
 void TestRecord::fetch(){
     test_float_ptr->set_value((float)test_float);
+    test_int64_ptr->set_value((int64_t)test_int64);
 }
 
 void TestRecord::response() {
     test_float = test_float_ptr->get_value();
+    test_int64 = test_int64_ptr->get_value();
 }
 
 } // namespace VDP
