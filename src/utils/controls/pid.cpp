@@ -10,7 +10,6 @@ void PID::init(double start_pt, double set_pt) {
     set_target(set_pt);
     target_vel = 0; // TODO change back when trapezoid profiles are fixed
     sensor_val = start_pt;
-    start_pt = start_pt;
     reset();
 }
 
@@ -68,7 +67,6 @@ double PID::update(double sensor_val, double v_setpt) {
     if (limits_exist) {
         out = (out < lower_limit) ? lower_limit : (out > upper_limit) ? upper_limit : out;
     }
-    printf("Out: %f\n", out);
     return out;
 }
 
