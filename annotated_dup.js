@@ -1,13 +1,5 @@
 var annotated_dup =
 [
-    [ "core", null, [
-      [ "ArmFeedforward", "classcore_1_1ArmFeedforward.html", "classcore_1_1ArmFeedforward" ],
-      [ "BangBang", "classcore_1_1BangBang.html", "classcore_1_1BangBang" ],
-      [ "Feedforward", "classcore_1_1Feedforward.html", "classcore_1_1Feedforward" ],
-      [ "MotionController", "classcore_1_1MotionController.html", "classcore_1_1MotionController" ],
-      [ "PID", "classcore_1_1PID.html", "classcore_1_1PID" ],
-      [ "PIDFF", "classcore_1_1PIDFF.html", "classcore_1_1PIDFF" ]
-    ] ],
     [ "PurePursuit", null, [
       [ "hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
       [ "Path", "classPurePursuit_1_1Path.html", "classPurePursuit_1_1Path" ],
@@ -23,6 +15,23 @@ var annotated_dup =
       [ "SliderWidget", "classscreen_1_1SliderWidget.html", "classscreen_1_1SliderWidget" ],
       [ "StatsPage", "classscreen_1_1StatsPage.html", "classscreen_1_1StatsPage" ]
     ] ],
+    [ "VDP", null, [
+      [ "AbstractDevice", "classVDP_1_1AbstractDevice.html", "classVDP_1_1AbstractDevice" ],
+      [ "MotorDataRecord", "classVDP_1_1MotorDataRecord.html", "classVDP_1_1MotorDataRecord" ],
+      [ "Number", "classVDP_1_1Number.html", "classVDP_1_1Number" ],
+      [ "OdometryControlRecord", "classVDP_1_1OdometryControlRecord.html", "classVDP_1_1OdometryControlRecord" ],
+      [ "OdometryDataRecord", "classVDP_1_1OdometryDataRecord.html", "classVDP_1_1OdometryDataRecord" ],
+      [ "PacketHeader", "structVDP_1_1PacketHeader.html", null ],
+      [ "PacketWriter", "classVDP_1_1PacketWriter.html", "classVDP_1_1PacketWriter" ],
+      [ "Part", "classVDP_1_1Part.html", "classVDP_1_1Part" ],
+      [ "PIDControlRecord", "classVDP_1_1PIDControlRecord.html", "classVDP_1_1PIDControlRecord" ],
+      [ "PIDDataRecord", "classVDP_1_1PIDDataRecord.html", "classVDP_1_1PIDDataRecord" ],
+      [ "Record", "classVDP_1_1Record.html", "classVDP_1_1Record" ],
+      [ "RegistryListener", "classVDP_1_1RegistryListener.html", "classVDP_1_1RegistryListener" ],
+      [ "String", "classVDP_1_1String.html", "classVDP_1_1String" ],
+      [ "TestRecord", "classVDP_1_1TestRecord.html", "classVDP_1_1TestRecord" ],
+      [ "TimestampedRecord", "classVDP_1_1TimestampedRecord.html", "classVDP_1_1TimestampedRecord" ]
+    ] ],
     [ "Async", "classAsync.html", null ],
     [ "AutoChooser", "classAutoChooser.html", "classAutoChooser" ],
     [ "BasicSolenoidSet", "classBasicSolenoidSet.html", "classBasicSolenoidSet" ],
@@ -31,6 +40,7 @@ var annotated_dup =
     [ "Branch", "classBranch.html", null ],
     [ "CommandController", "classCommandController.html", "classCommandController" ],
     [ "Condition", "classCondition.html", null ],
+    [ "CRC32", "classCRC32.html", "classCRC32" ],
     [ "CustomEncoder", "classCustomEncoder.html", "classCustomEncoder" ],
     [ "DelayCommand", "classDelayCommand.html", "classDelayCommand" ],
     [ "DriveForwardCommand", "classDriveForwardCommand.html", "classDriveForwardCommand" ],
@@ -61,6 +71,7 @@ var annotated_dup =
     [ "MovingAverage", "classMovingAverage.html", "classMovingAverage" ],
     [ "Odometry3Wheel", "classOdometry3Wheel.html", "classOdometry3Wheel" ],
     [ "OdometryBase", "classOdometryBase.html", "classOdometryBase" ],
+    [ "OdometrySerial", "classOdometrySerial.html", "classOdometrySerial" ],
     [ "OdometryTank", "classOdometryTank.html", "classOdometryTank" ],
     [ "OdomSetPosition", "classOdomSetPosition.html", "classOdomSetPosition" ],
     [ "Parallel", "classParallel.html", null ],
@@ -79,7 +90,6 @@ var annotated_dup =
     [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", "structtracking__wheel__cfg__t" ],
     [ "Transform2d", "classTransform2d.html", "classTransform2d" ],
     [ "Translation2d", "classTranslation2d.html", "classTranslation2d" ],
-    [ "trapezoid_profile_config_t", "structtrapezoid__profile__config__t.html", null ],
     [ "TrapezoidProfile", "classTrapezoidProfile.html", "classTrapezoidProfile" ],
     [ "TurnDegreesCommand", "classTurnDegreesCommand.html", "classTurnDegreesCommand" ],
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", "classTurnToHeadingCommand" ],

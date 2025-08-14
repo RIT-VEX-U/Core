@@ -106,105 +106,106 @@ $(function(){initNavTree('rotation2d_8h_source.html',''); initResizable(true); }
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;math/eigen_interface.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;math/geometry/translation2d.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifndef PI</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define PI 3.141592654</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">class </span><a class="code hl_class" href="classTranslation2d.html">Translation2d</a>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span></div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classRotation2d.html">   25</a></span><span class="keyword">class </span><a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a> {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">   30</a></span>    <span class="keyword">constexpr</span> <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>() : m_radians(0), m_cos(1), m_sin(0) {};</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;<a class="code hl_function" href="classRotation2d.html#ab556389e936ea8d53da111de7c01b444">radians</a>);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;y);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> &amp;translation);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#ab556389e936ea8d53da111de7c01b444">radians</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#abc210a4c4d86af4fd8bb1a9337bafd65">degrees</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b">revolutions</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a7b380f6e439754fac923716f77a3f727">f_cos</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a90143fc89361258f86f89227b3b79a5f">f_sin</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a74b027693d1ae7c27042a34f8d0e23d0">f_tan</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    Eigen::Matrix2d <a class="code hl_function" href="classRotation2d.html#a2a50e9824a10ab3c23b112f40e7a967a">rotation_matrix</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a8a59d322857035dfe0cd130eadfcde7f">wrapped_radians_180</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272">wrapped_degrees_180</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a52229d95435f375301baaa3750de7e09">wrapped_revolutions_180</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a6b26ca4acdf129aaff2bcbc469c76463">wrapped_radians_360</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a8e98172af544ccce1e188cac62d19bb4">wrapped_degrees_360</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a60874f3ede96ffef74148a4ea51a9acc">wrapped_revolutions_360</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#abd0a7ed73da02876fa56b013f48b32bf">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555">operator-</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span></div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#aeb95183483206912d4f8c53e34ac6fb0">operator*</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;scalar) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#accd8639132fcee6d47c31001c263edf4">operator/</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;scalar) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classRotation2d.html#a434312aa817e50a84793f2c50d720c09">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span></div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">friend</span> std::ostream &amp;<a class="code hl_friend" href="classRotation2d.html#a6cea64820309aa60319f11f0edce3c78">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;rotation);</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordtype">double</span> m_radians;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordtype">double</span> m_cos;</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">double</span> m_sin;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>};</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#undef __ARM_NEON__</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#undef __ARM_NEON</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;Eigen/Dense&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;core/utils/math/geometry/translation2d.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifndef PI</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define PI 3.141592654</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">class </span><a class="code hl_class" href="classTranslation2d.html">Translation2d</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span></div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classRotation2d.html">   26</a></span><span class="keyword">class </span><a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">   31</a></span>    <span class="keyword">constexpr</span> <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>() : m_radians(0), m_cos(1), m_sin(0) {};</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;<a class="code hl_function" href="classRotation2d.html#ab556389e936ea8d53da111de7c01b444">radians</a>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;x, <span class="keyword">const</span> <span class="keywordtype">double</span> &amp;y);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_function" href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d</a>(<span class="keyword">const</span> <a class="code hl_class" href="classTranslation2d.html">Translation2d</a> &amp;translation);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#ab556389e936ea8d53da111de7c01b444">radians</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#abc210a4c4d86af4fd8bb1a9337bafd65">degrees</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b">revolutions</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a7b380f6e439754fac923716f77a3f727">f_cos</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a90143fc89361258f86f89227b3b79a5f">f_sin</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a74b027693d1ae7c27042a34f8d0e23d0">f_tan</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    Eigen::Matrix2d <a class="code hl_function" href="classRotation2d.html#a2a50e9824a10ab3c23b112f40e7a967a">rotation_matrix</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a8a59d322857035dfe0cd130eadfcde7f">wrapped_radians_180</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272">wrapped_degrees_180</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a52229d95435f375301baaa3750de7e09">wrapped_revolutions_180</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a6b26ca4acdf129aaff2bcbc469c76463">wrapped_radians_360</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a8e98172af544ccce1e188cac62d19bb4">wrapped_degrees_360</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classRotation2d.html#a60874f3ede96ffef74148a4ea51a9acc">wrapped_revolutions_360</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#abd0a7ed73da02876fa56b013f48b32bf">operator+</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span></div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555">operator-</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#adf52db834ca7e795e78daf8cd42e8555">operator-</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#aeb95183483206912d4f8c53e34ac6fb0">operator*</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;scalar) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> <a class="code hl_function" href="classRotation2d.html#accd8639132fcee6d47c31001c263edf4">operator/</a>(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;scalar) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classRotation2d.html#a434312aa817e50a84793f2c50d720c09">operator==</a>(<span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;other) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">friend</span> std::ostream &amp;<a class="code hl_friend" href="classRotation2d.html#a6cea64820309aa60319f11f0edce3c78">operator&lt;&lt;</a>(std::ostream &amp;os, <span class="keyword">const</span> <a class="code hl_class" href="classRotation2d.html">Rotation2d</a> &amp;rotation);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordtype">double</span> m_radians;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordtype">double</span> m_cos;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordtype">double</span> m_sin;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>};</div>
 </div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">// functions that don&#39;t belong in the class because they&#39;re useful elsewhere</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_radians(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;radians);</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_degrees(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;degrees);</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_revolutions(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;revolutions);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="keywordtype">double</span> wrap_radians_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span></div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keywordtype">double</span> wrap_degrees_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keywordtype">double</span> wrap_revolutions_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span><span class="keywordtype">double</span> wrap_radians_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span></div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="keywordtype">double</span> wrap_degrees_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span></div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="keywordtype">double</span> wrap_revolutions_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="keywordtype">double</span> deg2rad(<span class="keywordtype">double</span> deg);</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="keywordtype">double</span> rad2deg(<span class="keywordtype">double</span> r);</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span></div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> unwrapped_mean(<span class="keyword">const</span> std::vector&lt;Rotation2d&gt; &amp;list);</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> wrapped_mean(<span class="keyword">const</span> std::vector&lt;Rotation2d&gt; &amp;list);</div>
-<div class="ttc" id="aclassRotation2d_html"><div class="ttname"><a href="classRotation2d.html">Rotation2d</a></div><div class="ttdef"><b>Definition</b> rotation2d.h:25</div></div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">// functions that don&#39;t belong in the class because they&#39;re useful elsewhere</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_radians(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;radians);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_degrees(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;degrees);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> from_revolutions(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;revolutions);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="keywordtype">double</span> wrap_radians_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keywordtype">double</span> wrap_degrees_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span></div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keywordtype">double</span> wrap_revolutions_180(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="keywordtype">double</span> wrap_radians_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="keywordtype">double</span> wrap_degrees_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span></div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="keywordtype">double</span> wrap_revolutions_360(<span class="keyword">const</span> <span class="keywordtype">double</span> &amp;angle);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="keywordtype">double</span> deg2rad(<span class="keywordtype">double</span> deg);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span></div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="keywordtype">double</span> rad2deg(<span class="keywordtype">double</span> r);</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> unwrapped_mean(<span class="keyword">const</span> std::vector&lt;Rotation2d&gt; &amp;list);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><a class="code hl_class" href="classRotation2d.html">Rotation2d</a> wrapped_mean(<span class="keyword">const</span> std::vector&lt;Rotation2d&gt; &amp;list);</div>
+<div class="ttc" id="aclassRotation2d_html"><div class="ttname"><a href="classRotation2d.html">Rotation2d</a></div><div class="ttdef"><b>Definition</b> rotation2d.h:26</div></div>
 <div class="ttc" id="aclassRotation2d_html_a2a50e9824a10ab3c23b112f40e7a967a"><div class="ttname"><a href="classRotation2d.html#a2a50e9824a10ab3c23b112f40e7a967a">Rotation2d::rotation_matrix</a></div><div class="ttdeci">Eigen::Matrix2d rotation_matrix() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:110</div></div>
 <div class="ttc" id="aclassRotation2d_html_a434312aa817e50a84793f2c50d720c09"><div class="ttname"><a href="classRotation2d.html#a434312aa817e50a84793f2c50d720c09">Rotation2d::operator==</a></div><div class="ttdeci">bool operator==(const Rotation2d &amp;other) const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:221</div></div>
 <div class="ttc" id="aclassRotation2d_html_a52229d95435f375301baaa3750de7e09"><div class="ttname"><a href="classRotation2d.html#a52229d95435f375301baaa3750de7e09">Rotation2d::wrapped_revolutions_180</a></div><div class="ttdeci">double wrapped_revolutions_180() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:131</div></div>
@@ -214,7 +215,7 @@ $(function(){initNavTree('rotation2d_8h_source.html',''); initResizable(true); }
 <div class="ttc" id="aclassRotation2d_html_a74b027693d1ae7c27042a34f8d0e23d0"><div class="ttname"><a href="classRotation2d.html#a74b027693d1ae7c27042a34f8d0e23d0">Rotation2d::f_tan</a></div><div class="ttdeci">double f_tan() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:101</div></div>
 <div class="ttc" id="aclassRotation2d_html_a7b380f6e439754fac923716f77a3f727"><div class="ttname"><a href="classRotation2d.html#a7b380f6e439754fac923716f77a3f727">Rotation2d::f_cos</a></div><div class="ttdeci">double f_cos() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:87</div></div>
 <div class="ttc" id="aclassRotation2d_html_a8a59d322857035dfe0cd130eadfcde7f"><div class="ttname"><a href="classRotation2d.html#a8a59d322857035dfe0cd130eadfcde7f">Rotation2d::wrapped_radians_180</a></div><div class="ttdeci">double wrapped_radians_180() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:117</div></div>
-<div class="ttc" id="aclassRotation2d_html_a8ce4db09bffbdde271417b20272e6c61"><div class="ttname"><a href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d::Rotation2d</a></div><div class="ttdeci">constexpr Rotation2d()</div><div class="ttdef"><b>Definition</b> rotation2d.h:30</div></div>
+<div class="ttc" id="aclassRotation2d_html_a8ce4db09bffbdde271417b20272e6c61"><div class="ttname"><a href="classRotation2d.html#a8ce4db09bffbdde271417b20272e6c61">Rotation2d::Rotation2d</a></div><div class="ttdeci">constexpr Rotation2d()</div><div class="ttdef"><b>Definition</b> rotation2d.h:31</div></div>
 <div class="ttc" id="aclassRotation2d_html_a8e98172af544ccce1e188cac62d19bb4"><div class="ttname"><a href="classRotation2d.html#a8e98172af544ccce1e188cac62d19bb4">Rotation2d::wrapped_degrees_360</a></div><div class="ttdeci">double wrapped_degrees_360() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:145</div></div>
 <div class="ttc" id="aclassRotation2d_html_a90143fc89361258f86f89227b3b79a5f"><div class="ttname"><a href="classRotation2d.html#a90143fc89361258f86f89227b3b79a5f">Rotation2d::f_sin</a></div><div class="ttdeci">double f_sin() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:94</div></div>
 <div class="ttc" id="aclassRotation2d_html_ab556389e936ea8d53da111de7c01b444"><div class="ttname"><a href="classRotation2d.html#ab556389e936ea8d53da111de7c01b444">Rotation2d::radians</a></div><div class="ttdeci">double radians() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:66</div></div>
@@ -225,13 +226,13 @@ $(function(){initNavTree('rotation2d_8h_source.html',''); initResizable(true); }
 <div class="ttc" id="aclassRotation2d_html_aeb95183483206912d4f8c53e34ac6fb0"><div class="ttname"><a href="classRotation2d.html#aeb95183483206912d4f8c53e34ac6fb0">Rotation2d::operator*</a></div><div class="ttdeci">Rotation2d operator*(const double &amp;scalar) const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:202</div></div>
 <div class="ttc" id="aclassRotation2d_html_af42763ae6417192c59fbc0b1fb8dd272"><div class="ttname"><a href="classRotation2d.html#af42763ae6417192c59fbc0b1fb8dd272">Rotation2d::wrapped_degrees_180</a></div><div class="ttdeci">double wrapped_degrees_180() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:124</div></div>
 <div class="ttc" id="aclassRotation2d_html_afa1ba21a97a8b9437456e86e13c73e2b"><div class="ttname"><a href="classRotation2d.html#afa1ba21a97a8b9437456e86e13c73e2b">Rotation2d::revolutions</a></div><div class="ttdeci">double revolutions() const</div><div class="ttdef"><b>Definition</b> rotation2d.cpp:80</div></div>
-<div class="ttc" id="aclassTranslation2d_html"><div class="ttname"><a href="classTranslation2d.html">Translation2d</a></div><div class="ttdef"><b>Definition</b> translation2d.h:22</div></div>
+<div class="ttc" id="aclassTranslation2d_html"><div class="ttname"><a href="classTranslation2d.html">Translation2d</a></div><div class="ttdef"><b>Definition</b> translation2d.h:21</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fba38f648377aa56ae5d69782adf9e53.html">math</a></li><li class="navelem"><a class="el" href="dir_0b49e602c25f7204356147324eeff62a.html">geometry</a></li><li class="navelem"><b>rotation2d.h</b></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="dir_9e3c081da26bdde9c5aec25c2fcc2ede.html">utils</a></li><li class="navelem"><a class="el" href="dir_c0ce243f6e697d8f508f90da7fd89e56.html">math</a></li><li class="navelem"><a class="el" href="dir_d170325a114ef117230532bd79306830.html">geometry</a></li><li class="navelem"><b>rotation2d.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>

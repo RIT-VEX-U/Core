@@ -1,17 +1,15 @@
 var searchData=
 [
   ['m_5fprofile_5fcfg_5ft_0',['m_profile_cfg_t',['../structMotionController_1_1m__profile__cfg__t.html',1,'MotionController']]],
-  ['max_5facc_1',['max_acc',['../classcore_1_1Feedforward.html#ae6724fe808566af1477368e89b78ef0d',1,'core::Feedforward']]],
-  ['max_5fformat_5flen_2',['MAX_FORMAT_LEN',['../classLogger.html#ac8207d866fe7f6997fb8432db0069a56',1,'Logger']]],
-  ['max_5fv_3',['max_v',['../structMotionController_1_1m__profile__cfg__t.html#a949b084fe78795509ad8e65c74e9bc3f',1,'MotionController::m_profile_cfg_t']]],
-  ['max_5fvel_4',['max_vel',['../classcore_1_1Feedforward.html#acd847dc3b61fe50bd87e7e93267b53b0',1,'core::Feedforward']]],
-  ['maybemessage_5',['MaybeMessage',['../classStateMachine_1_1MaybeMessage.html',1,'StateMachine&lt; System, IDType, Message, delay_ms, do_log &gt;::MaybeMessage'],['../classStateMachine_1_1MaybeMessage.html#ad06aec82e6b5c7e2e7a2542fd73d76b8',1,'StateMachine::MaybeMessage::MaybeMessage()'],['../classStateMachine_1_1MaybeMessage.html#a45b875cb6506d1cf1c58ae2eb12f1ec9',1,'StateMachine::MaybeMessage::MaybeMessage(Message msg)']]],
-  ['mecanumdrive_6',['MecanumDrive',['../classMecanumDrive.html',1,'MecanumDrive'],['../classMecanumDrive.html#a780908c5b55ea8b9f228c84540a6c5f7',1,'MecanumDrive::MecanumDrive(vex::motor &amp;left_front, vex::motor &amp;right_front, vex::motor &amp;left_rear, vex::motor &amp;right_rear, vex::rotation *lateral_wheel=NULL, vex::inertial *imu=NULL, mecanumdrive_config_t *config=NULL)']]],
-  ['mecanumdrive_5fconfig_5ft_7',['mecanumdrive_config_t',['../structMecanumDrive_1_1mecanumdrive__config__t.html',1,'MecanumDrive']]],
-  ['message_8',['message',['../classStateMachine_1_1MaybeMessage.html#a913193e7c341dd8031c644d788adee56',1,'StateMachine::MaybeMessage']]],
-  ['modify_5finputs_9',['modify_inputs',['../classTankDrive.html#abb511cf1be40ef7be89c2ccff6a09cab',1,'TankDrive']]],
-  ['motion_5fcontroller_5fconfig_5ft_10',['motion_controller_config_t',['../structcore_1_1MotionController_1_1motion__controller__config__t.html',1,'core::MotionController']]],
-  ['motioncontroller_11',['MotionController',['../classcore_1_1MotionController.html',1,'core::MotionController'],['../classMotionController.html',1,'MotionController'],['../classMotionController.html#a076c5aa4ea383dccaeec76f7554a7467',1,'MotionController::MotionController()'],['../classcore_1_1MotionController.html#a3313d26d5fb91129c33eb21c4935f736',1,'core::MotionController::MotionController()']]],
-  ['movingaverage_12',['MovingAverage',['../classMovingAverage.html',1,'MovingAverage'],['../classMovingAverage.html#a2455b651d3c6ad1f14d1a0d65b2394b2',1,'MovingAverage::MovingAverage(int buffer_size)'],['../classMovingAverage.html#afd1c880fdd617fcbf02f54ac87f45d6f',1,'MovingAverage::MovingAverage(int buffer_size, double starting_value)']]],
-  ['mut_13',['mut',['../classOdometryBase.html#a88bb48858ca6ff8300a41e23482ec6f6',1,'OdometryBase']]]
+  ['max_5fformat_5flen_1',['MAX_FORMAT_LEN',['../classLogger.html#ac8207d866fe7f6997fb8432db0069a56',1,'Logger']]],
+  ['max_5fv_2',['max_v',['../structMotionController_1_1m__profile__cfg__t.html#a949b084fe78795509ad8e65c74e9bc3f',1,'MotionController::m_profile_cfg_t']]],
+  ['maybemessage_3',['MaybeMessage',['../classStateMachine_1_1MaybeMessage.html',1,'StateMachine&lt; System, IDType, Message, delay_ms, do_log &gt;::MaybeMessage'],['../classStateMachine_1_1MaybeMessage.html#ad06aec82e6b5c7e2e7a2542fd73d76b8',1,'StateMachine::MaybeMessage::MaybeMessage()'],['../classStateMachine_1_1MaybeMessage.html#a45b875cb6506d1cf1c58ae2eb12f1ec9',1,'StateMachine::MaybeMessage::MaybeMessage(Message msg)']]],
+  ['mecanumdrive_4',['MecanumDrive',['../classMecanumDrive.html',1,'MecanumDrive'],['../classMecanumDrive.html#a780908c5b55ea8b9f228c84540a6c5f7',1,'MecanumDrive::MecanumDrive(vex::motor &amp;left_front, vex::motor &amp;right_front, vex::motor &amp;left_rear, vex::motor &amp;right_rear, vex::rotation *lateral_wheel=NULL, vex::inertial *imu=NULL, mecanumdrive_config_t *config=NULL)']]],
+  ['mecanumdrive_5fconfig_5ft_5',['mecanumdrive_config_t',['../structMecanumDrive_1_1mecanumdrive__config__t.html',1,'MecanumDrive']]],
+  ['message_6',['message',['../classStateMachine_1_1MaybeMessage.html#a913193e7c341dd8031c644d788adee56',1,'StateMachine::MaybeMessage']]],
+  ['modify_5finputs_7',['modify_inputs',['../classTankDrive.html#abb511cf1be40ef7be89c2ccff6a09cab',1,'TankDrive']]],
+  ['motioncontroller_8',['MotionController',['../classMotionController.html',1,'MotionController'],['../classMotionController.html#a076c5aa4ea383dccaeec76f7554a7467',1,'MotionController::MotionController()']]],
+  ['motordatarecord_9',['MotorDataRecord',['../classVDP_1_1MotorDataRecord.html',1,'VDP::MotorDataRecord'],['../classVDP_1_1MotorDataRecord.html#adfbd19ea3820d66de0e31ae6db43f8e6',1,'VDP::MotorDataRecord::MotorDataRecord()']]],
+  ['movingaverage_10',['MovingAverage',['../classMovingAverage.html',1,'MovingAverage'],['../classMovingAverage.html#a2455b651d3c6ad1f14d1a0d65b2394b2',1,'MovingAverage::MovingAverage(int buffer_size)'],['../classMovingAverage.html#afd1c880fdd617fcbf02f54ac87f45d6f',1,'MovingAverage::MovingAverage(int buffer_size, double starting_value)']]],
+  ['mut_11',['mut',['../classOdometryBase.html#a88bb48858ca6ff8300a41e23482ec6f6',1,'OdometryBase']]]
 ];

@@ -6,11 +6,8 @@ var searchData=
   ['add_5fcancel_5ffunc_3',['add_cancel_func',['../classCommandController.html#addb3119447177b940f071d52afda8234',1,'CommandController']]],
   ['add_5fdelay_4',['add_delay',['../classCommandController.html#ae06b054f4aeea86e8c6bee56458dc6d1',1,'CommandController::add_delay()'],['../classGenericAuto.html#aaadc99efe49a375f0dc80db7e886d96c',1,'GenericAuto::add_delay()']]],
   ['add_5fentry_5',['add_entry',['../classMovingAverage.html#afc008077a473e8c8205e2c7832e28ccb',1,'MovingAverage::add_entry()'],['../classExponentialMovingAverage.html#ae6cef331bca0529f93d2d4dfa082fad4',1,'ExponentialMovingAverage::add_entry()']]],
-  ['armfeedforward_6',['ArmFeedforward',['../classcore_1_1ArmFeedforward.html#a56596de9966b309dc9ed913d5c693589',1,'core::ArmFeedforward']]],
-  ['as_5fvector_7',['as_vector',['../classTranslation2d.html#a8d6d449b8eba8e4a6280eef066a1ca49',1,'Translation2d']]],
-  ['at_5fsetpoint_8',['at_setpoint',['../classcore_1_1BangBang.html#a124878c232b95f154fee2d6ab0301c38',1,'core::BangBang::at_setpoint()'],['../classcore_1_1PID.html#a3a68091b347826e1222a9b7c4055a7a0',1,'core::PID::at_setpoint()']]],
-  ['at_5ftarget_9',['at_target',['../classcore_1_1MotionController.html#ae12761763b506f915dad54707f9099d1',1,'core::MotionController']]],
-  ['auto_5fdrive_10',['auto_drive',['../classMecanumDrive.html#aa0cfb8683fee99e0a534c3a725d338fd',1,'MecanumDrive']]],
-  ['auto_5fturn_11',['auto_turn',['../classMecanumDrive.html#ac8813aafec14f2d25c3abafefdb81498',1,'MecanumDrive']]],
-  ['autochooser_12',['AutoChooser',['../classAutoChooser.html#aa80fcacf1535d1ae098939f84c0967ab',1,'AutoChooser']]]
+  ['as_5fvector_6',['as_vector',['../classTranslation2d.html#a8d6d449b8eba8e4a6280eef066a1ca49',1,'Translation2d']]],
+  ['auto_5fdrive_7',['auto_drive',['../classMecanumDrive.html#aa0cfb8683fee99e0a534c3a725d338fd',1,'MecanumDrive']]],
+  ['auto_5fturn_8',['auto_turn',['../classMecanumDrive.html#ac8813aafec14f2d25c3abafefdb81498',1,'MecanumDrive']]],
+  ['autochooser_9',['AutoChooser',['../classAutoChooser.html#aa80fcacf1535d1ae098939f84c0967ab',1,'AutoChooser']]]
 ];
