@@ -52,9 +52,9 @@ class RegistryController {
      */
     bool negotiate();
     int rec_switch_time = 1000;
-    std::vector<Channel> channels;
 
   private:
+  std::vector<Channel> channels;
     ChannelID new_channel_id() {
         ChannelID id = next_channel_id;
         next_channel_id++;
@@ -82,7 +82,6 @@ class RegistryController {
         );
     };
     CallbackFn on_data = [&](VDP::Channel new_data) {
-      printf("new data channel id: %d\n", new_data.id);
         ResponsePacketVisitor RV(new_data.data);
         PartPtr original_data = channels[new_data.id].data;
         original_data->Visit(&RV);

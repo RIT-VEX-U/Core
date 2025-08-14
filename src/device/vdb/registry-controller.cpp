@@ -57,7 +57,6 @@ void RegistryController::take_packet(const Packet &pac) {
         PacketReader reader{pac, 3};
         // stores the data read from the packet to the Registry Part
         data_copy->read_data_from_message(reader);
-        printf("data copy after reading message: %s", data_copy->pretty_print_data().c_str());
         // runs the channel's on data callback
         on_data(Channel{data_copy, id});
     } else if (header.func == VDP::PacketFunction::Acknowledge) {
@@ -105,6 +104,7 @@ ChannelID RegistryController::open_channel(PartPtr &for_data) {
  * @param data the Part Pointer for the channel to hold and send to the device
  */
 bool RegistryController::send_data(ChannelID id) {
+    channels[id].data->fetch();
     if (timer.time() > rec_switch_time) {
         rec_mode = !rec_mode;
         timer.reset();

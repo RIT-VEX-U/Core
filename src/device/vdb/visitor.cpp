@@ -14,21 +14,18 @@ void ResponsePacketVisitor::VisitRecord(VDP::Record *record) {
 void ResponsePacketVisitor::VisitString(VDP::String *str) {
   VDP::String *from_str = reinterpret_cast<VDP::String*>(from_part.get());
   if(from_str->get_value() != (std::string)NULL){
-    printf("found string\n");
     str->set_value(from_str->get_value());
   }
 }
 void ResponsePacketVisitor::VisitFloat(VDP::Float *float_part) {
   VDP::Float *from_float = reinterpret_cast<VDP::Float*>(from_part.get());
   if(from_float->get_value() != (float)NULL){
-    printf("found float %s, changing %f to %f\n", float_part->get_name().c_str(), float_part->get_value(), from_float->get_value());
     float_part->set_value(from_float->get_value());
   }
 }
 void ResponsePacketVisitor::VisitDouble(VDP::Double *double_part) {
   VDP::Double *from_double = reinterpret_cast<VDP::Double*>(from_part.get());
   if(from_double->get_value() != (double)NULL){
-    printf("found double\n");
     double_part->set_value(from_double->get_value());
   }
 }
