@@ -406,58 +406,21 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         //   x̂ = x̂⁻ + K(y − ŷ⁻)
         //
         // second part of equation (27)
-        EVec<STATES> xhat_dot = K * residual_func_Y(y, yhat);
-        EVec<STATES> xhat = add_func_X(xhat_, xhat_dot);
-        EMat<STATES, STATES> S = S_;
-
-        // RECALIBRATE
-
-        // Add the change of xhat to each of the sigma points in 𝒳.
-        for (int i = 0; i < NUM_SIGMAS; i++) {
-            sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
-        }
-
-        // Pass those sigma points through the measurement function to transform
-        // them into measurement space.
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
-        }
-
-        // Perform a second unscented transform, this time on the recalibrated
-        // measurement sigma points.
-        auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, pts_.Wm(), pts_.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
-        );
-
-        // Compute the cross covariance of the recalibrated sigma points.
-        Pxy.setZero();
-        for (int i = 0; i < NUM_SIGMAS; ++i) {
-            Pxy += pts_.Wc(i) * (residual_func_X(sigmas.template block<STATES, 1>(0, i), xhat)) *
-                   (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat_k)).transpose();
-        }
+        xhat_ = add_func_X(xhat_, K * residual_func_Y(y, yhat));
 
         // Compute the intermediate matrix U for downdating
         // the square-root covariance
         //
         // equation (28)
-        const EMat<STATES, ROWS> U = K * Sy;
+        EMat<STATES, ROWS> U = K * Sy;
 
-        // Downdate the posterior square-root state covariance
+        // Downdate the posterior square-root covariance
         //
         // equation (29)
         for (int i = 0; i < ROWS; i++) {
-            Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(S, U.template block<STATES, 1>(0, i), -1);
+          Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(S_, U.template block<STATES, 1>(0, i), -1);
         }
-
-        // BACK OUT
-
-        // We only use the posterior state and covariance if it is more certain
-        // than the prior.
-        if ((S_ * S_.transpose()).trace() > (S * S.transpose()).trace()) {
-            xhat_ = xhat;
-            S_ = S;
-        }
-    }
+      }
 
   private:
     std::function<StateVector(const StateVector &, const InputVector &)> f_;
