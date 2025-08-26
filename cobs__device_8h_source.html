@@ -105,52 +105,49 @@ $(function(){initNavTree('cobs__device_8h_source.html',''); initResizable(true);
   <div class="headertitle"><div class="title">cobs_device.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">class </span>COBSSerialDevice {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="comment">// Decoded packet containing the data one wishes to send</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">using </span>Packet = std::vector&lt;uint8_t&gt;;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="comment">// Cobs Encoded packet containing 0 delimeters ready to be sent over the wire</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">using </span>WirePacket = std::vector&lt;uint8_t&gt;;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    COBSSerialDevice(int32_t port, int32_t baud);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">int</span> send_cobs_packet_blocking(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> size, <span class="keywordtype">bool</span> leading_delimeter = <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">int</span> receive_cobs_packet_blocking(uint8_t *buffer, <span class="keywordtype">size_t</span> max_size, uint32_t timeout_us = 0);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> cobs_encode(<span class="keyword">const</span> Packet &amp;in, WirePacket &amp;out, <span class="keywordtype">bool</span> add_start_delimeter = <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> cobs_decode(<span class="keyword">const</span> WirePacket &amp;in, Packet &amp;out);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> hexdump(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    Packet get_last_decoded_packet();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordtype">bool</span> poll_incoming_data_once();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">bool</span> handle_incoming_byte(uint8_t <span class="keywordtype">byte</span>);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    vex::mutex serial_access_mut;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    int32_t port;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    int32_t baud;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="comment">// Buffer to hold data about to be written</span></div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    Packet writing_buffer;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">// Buffer to hold encoded cobs data about to be written</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    WirePacket encoded_write;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">// buffer used to get data from VEX OS land to userland. Scratch space</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    std::vector&lt;uint8_t&gt; incoming_buffer;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="comment">// buffer to read bytes in when building up a cobs packet</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    WirePacket incoming_wire_packet;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment">// contains the last packet that was received and decoded</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    Packet last_decoded_packet;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;vex.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">class </span>COBSSerialDevice {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="comment">// Decoded packet containing the data one wishes to send</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">using </span>Packet = std::vector&lt;uint8_t&gt;;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="comment">// Cobs Encoded packet containing 0 delimeters ready to be sent over the wire</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">using </span>WirePacket = std::vector&lt;uint8_t&gt;;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    COBSSerialDevice(int32_t port, int32_t baud);</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">int</span> send_cobs_packet_blocking(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> size, <span class="keywordtype">bool</span> leading_delimeter = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">int</span> receive_cobs_packet_blocking(uint8_t *buffer, <span class="keywordtype">size_t</span> max_size, uint32_t timeout_us = 0);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> cobs_encode(<span class="keyword">const</span> Packet &amp;in, WirePacket &amp;out, <span class="keywordtype">bool</span> add_start_delimeter = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> cobs_decode(<span class="keyword">const</span> WirePacket &amp;in, Packet &amp;out);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> hexdump(<span class="keyword">const</span> uint8_t *data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">bool</span> poll_incoming_data_once();</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordtype">bool</span> handle_incoming_byte(uint8_t <span class="keywordtype">byte</span>);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    vex::mutex serial_access_mut;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    int32_t port;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    int32_t baud;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="comment">// Buffer to hold data about to be written</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    Packet writing_buffer;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">// Buffer to hold encoded cobs data about to be written</span></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    WirePacket encoded_write;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">// buffer used to get data from VEX OS land to userland. Scratch space</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    std::vector&lt;uint8_t&gt; incoming_buffer;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">// buffer to read bytes in when building up a cobs packet</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    WirePacket incoming_wire_packet;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="comment">// contains the last packet that was received and decoded</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    Packet last_decoded_packet;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>};</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
