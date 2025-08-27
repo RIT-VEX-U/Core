@@ -183,6 +183,11 @@ class Part {
 
     virtual void response();
 
+    template<typename T>
+      PartPtr to_PartPtr(){
+        return std::make_shared<T>(this);
+      };
+
     virtual VDP::PartPtr clone() = 0;
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
