@@ -48,18 +48,16 @@ public:
     }
     // checks the packet function from the header
     const VDP::PacketHeader header = VDP::decode_header_byte(pac[0]);
-    printf("Packet Header Func: %x, Packet Header Type: %x\n", (int)header.func, (int)header.type);
     if (header.func == VDP::PacketFunction::Send) {
       VDPTracef("Listener: PacketFunction Send");
 
       if (header.type == VDP::PacketType::Data) {
-        printf("got data packet\n");
         // if the packet is a data, get the data from the packet
         VDPTracef("Listener: PacketType Data");
         // get the channel id from the second byte of the packet
         const ChannelID id = pac[1];
         // stores the channel id's schema in a Part Pointer
-        PartPtr &part = get_remote_schema(id);
+        const PartPtr part = get_remote_schema(id);
         if (part == nullptr) {
           VDPDebugf("VDB-Listener: No channel information for id: %d", id);
           return;

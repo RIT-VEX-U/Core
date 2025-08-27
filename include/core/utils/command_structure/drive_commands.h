@@ -1,329 +1,66 @@
-/**
- * File: drive_commands.h
- * Desc:
- *    Holds all the AutoCommand subclasses that wrap (currently) TankDrive functions
- *
- *    Currently includes:
- *      - drive_forward
- *      - turn_degrees
- *      - drive_to_point
- *      - turn_to_heading
- *      - stop
- *
- *    Also holds AutoCommand subclasses that wrap OdometryBase functions
- *
- *    Currently includes:
- *      - set_position
- */
-
 #pragma once
-
-#include "core/subsystems/tank_drive.h"
-#include "core/utils/command_structure/auto_command.h"
+#include "Eigen/Dense"
 #include "core/utils/geometry.h"
-#include "core/utils/math/geometry/pose2d.h"
+#include "math.h"
 #include "vex.h"
-
-using namespace vex;
-
-// ==== DRIVING ====
+#include <vector>
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
- * AutoCommand wrapper class for the drive_forward function in the
- * TankDrive class
+ * Constrain the input between a minimum and a maximum value
  *
- */
-class DriveForwardCommand : public AutoCommand {
-  public:
-    DriveForwardCommand(
-      TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed = 1,
-      double end_speed = 0
-    );
-
-    /**
-     * Run drive_forward
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-    /**
-     * Cleans up drive system if we time out before finishing
-     */
-    void on_timeout() override;
-
-  private:
-    // drive system to run the function on
-    TankDrive &drive_sys;
-
-    // feedback controller to use
-    Feedback &feedback;
-
-    // parameters for drive_forward
-    double inches;
-    directionType dir;
-    double max_speed;
-    double end_speed;
-};
+ * @param val  the value to be restrained
+ * @param low  the minimum value that will be returned
+ * @param high the maximum value that will be returned
+ **/
+double clamp(double value, double low, double high);
 
 /**
- * AutoCommand wrapper class for the turn_degrees function in the
- * TankDrive class
+ * @brief Linearly intERPolate between values
+ * @param a at t = 0, output = a
+ * @param b at t = 1, output = b
+ * @return a linear mixing of a and b according to t
  */
-class TurnDegreesCommand : public AutoCommand {
-  public:
-    TurnDegreesCommand(
-      TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed = 1, double end_speed = 0
-    );
-
-    /**
-     * Run turn_degrees
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-    /**
-     * Cleans up drive system if we time out before finishing
-     */
-
-    void on_timeout() override;
-
-  private:
-    // drive system to run the function on
-    TankDrive &drive_sys;
-
-    // feedback controller to use
-    Feedback &feedback;
-
-    // parameters for turn_degrees
-    double degrees;
-    double max_speed;
-    double end_speed;
-};
-
+double lerp(double a, double b, double t);
 /**
- * AutoCommand wrapper class for the drive_to_point function in the
- * TankDrive class
- */
-class DriveToPointCommand : public AutoCommand {
-  public:
-    DriveToPointCommand(
-      TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed = 1,
-      double end_speed = 0
-    );
-    DriveToPointCommand(
-      TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed = 1,
-      double end_speed = 0
-    );
-
-    /**
-     * Run drive_to_point
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-  private:
-    // drive system to run the function on
-    TankDrive &drive_sys;
-
-    /**
-     * Cleans up drive system if we time out before finishing
-     */
-    void on_timeout() override;
-
-    // feedback controller to use
-    Feedback &feedback;
-
-    // parameters for drive_to_point
-    double x;
-    double y;
-    directionType dir;
-    double max_speed;
-    double end_speed;
-};
-
-class TurnToPointCommand : public AutoCommand {
-  public:
-    TurnToPointCommand(
-      TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0
-    );
-    TurnToPointCommand(
-      TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed = 1,
-      double end_speed = 0
-    );
-
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-  private:
-    void on_timeout() override;
-    TankDrive &drive_sys;
-    double x, y;
-    vex::directionType dir;
-    double max_speed;
-    double end_speed;
-    bool func_initialized;
-    double heading;
-};
-
-/**
- * AutoCommand wrapper class for the turn_to_heading() function in the
- * TankDrive class
+ * Returns the sign of a number
+ * @param x
  *
- */
-class TurnToHeadingCommand : public AutoCommand {
-  public:
-    TurnToHeadingCommand(
-      TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed = 1, double end_speed = 0
-    );
+ * returns the sign +/-1 of x. 0 if x is 0
+ **/
+double sign(double x);
 
-    /**
-     * Run turn_to_heading
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
+double wrap_angle_deg(double input);
+double wrap_angle_rad(double input);
 
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
+/*
+Calculates the variance of  a set of numbers (needed for linear regression)
+https://en.wikipedia.org/wiki/Variance
+@param values   the values for which the variance is taken
+@param mean     the average of values
+*/
+double variance(std::vector<double> const &values, double mean);
 
-    /**
-     * Cleans up drive system if we time out before finishing
-     */
-    void on_timeout() override;
+/*
+Calculates the average of a vector of doubles
+@param values   the list of values for which the average is taken
+*/
+double mean(std::vector<double> const &values);
 
-  private:
-    // drive system to run the function on
-    TankDrive &drive_sys;
+/*
+Calculates the covariance of a set of points (needed for linear regression)
+https://en.wikipedia.org/wiki/Covariance
 
-    // feedback controller to use
-    Feedback &feedback;
+@param points   the points for which the covariance is taken
+@param meanx    the mean value of all x coordinates in points
+@param meany    the mean value of all y coordinates in points
+*/
+double covariance(std::vector<std::pair<double, double>> const &points, double meanx, double meany);
 
-    // parameters for turn_to_heading
-    double heading_deg;
-    double max_speed;
-    double end_speed;
-};
+/*
+Calculates the slope and y intercept of the line of best fit for the data
+@param points the points for the data
+*/
+std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const &points);
 
-/**
- * Autocommand wrapper class for pure pursuit function in the TankDrive class
- */
-class PurePursuitCommand : public AutoCommand {
-  public:
-    /**
-     * Construct a Pure Pursuit AutoCommand
-     *
-     * @param path The list of coordinates to follow, in order
-     * @param dir Run the bot forwards or backwards
-     * @param feedback The feedback controller determining speed
-     * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-     */
-    PurePursuitCommand(
-      TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed = 1,
-      double end_speed = 0
-    );
-
-    /**
-     * Direct call to TankDrive::pure_pursuit
-     */
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-    /**
-     * Reset the drive system when it times out
-     */
-    void on_timeout() override;
-
-  private:
-    TankDrive &drive_sys;
-    PurePursuit::Path path;
-    directionType dir;
-    Feedback &feedback;
-    double max_speed;
-    double end_speed;
-};
-
-/**
- * AutoCommand wrapper class for the stop() function in the
- * TankDrive class
- */
-class DriveStopCommand : public AutoCommand {
-  public:
-    DriveStopCommand(TankDrive &drive_sys);
-
-    /**
-     * Stop the drive system
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-    void on_timeout() override;
-
-  private:
-    // drive system to run the function on
-    TankDrive &drive_sys;
-};
-
-// ==== ODOMETRY ====
-
-/**
- * AutoCommand wrapper class for the set_position function in the
- * Odometry class
- */
-class OdomSetPosition : public AutoCommand {
-  public:
-    /**
-     * constructs a new OdomSetPosition command
-     * @param odom the odometry system we are setting
-     * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
-     */
-    OdomSetPosition(OdometryBase &odom, const Pose2d &newpos = OdometryBase::zero_pos);
-
-    /**
-     * Run set_position
-     * Overrides run from AutoCommand
-     * @returns true when execution is complete, false otherwise
-     */
-    bool run() override;
-    /*
-     * Returns a string describing the commands functionality
-     */
-    std::string toString() override;
-
-  private:
-    // drive system with an odometry config
-    OdometryBase &odom;
-    Pose2d newpos;
-};
+double estimate_path_length(const std::vector<Translation2d> &points);

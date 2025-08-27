@@ -2,7 +2,6 @@
 #include "core/utils/math/geometry/transform2d.h"
 #include <cmath>
 
-
 /**
  *  Describes a Rectangle with a minimum and maximum point
  */

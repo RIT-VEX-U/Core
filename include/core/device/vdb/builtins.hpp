@@ -176,7 +176,7 @@ class TestRecord : public Record {
      * @param name the name of the record to create
      * @param pid the pid to get data from
      */
-    TestRecord(std::string name, double test_float);
+    TestRecord(std::string name, double test_float, int64_t test_int64);
     /**
      * sets the PID values to the values from the board
      */
@@ -185,7 +185,9 @@ class TestRecord : public Record {
 
   private:
     double test_float;
+    int64_t test_int64;
 
     std::shared_ptr<Float> test_float_ptr;
+    std::shared_ptr<Int64> test_int64_ptr;
 };
 } // namespace VDP

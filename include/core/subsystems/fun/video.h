@@ -1,4 +1,3 @@
-#pragma once
 #include "core/subsystems/screen.h"
 #include "pl_mpeg.h"
 #include <string>
