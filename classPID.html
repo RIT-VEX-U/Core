@@ -156,6 +156,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af9677e76cb1beffbcf3f54cbc627c530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5cdb296dbcce80703a9a98b9605c500" id="r_ab5cdb296dbcce80703a9a98b9605c500"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5cdb296dbcce80703a9a98b9605c500">get_error</a> ()</td></tr>
 <tr class="separator:ab5cdb296dbcce80703a9a98b9605c500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e7c12db1fdc49eb434da433532b6352" id="r_a2e7c12db1fdc49eb434da433532b6352"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e7c12db1fdc49eb434da433532b6352">get_output</a> ()</td></tr>
+<tr class="separator:a2e7c12db1fdc49eb434da433532b6352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3d37c5ab4ad6709f69337c622186bf3" id="r_ad3d37c5ab4ad6709f69337c622186bf3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3d37c5ab4ad6709f69337c622186bf3">get_target</a> () const</td></tr>
 <tr class="separator:ad3d37c5ab4ad6709f69337c622186bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e301ab123c9e18e677b4873b03550dd" id="r_a2e301ab123c9e18e677b4873b03550dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e301ab123c9e18e677b4873b03550dd">set_target</a> (double target)</td></tr>
@@ -259,6 +261,25 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Get the delta between the current sensor data and the target </p><dl class="section return"><dt>Returns</dt><dd>the error calculated. how it is calculated depends on error_method specified in <a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a></dd></dl>
+<p>Get the delta between the current sensor data and the target </p>
+
+</div>
+</div>
+<a id="a2e7c12db1fdc49eb434da433532b6352" name="a2e7c12db1fdc49eb434da433532b6352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e7c12db1fdc49eb434da433532b6352">&#9670;&#160;</a></span>get_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double PID::get_output </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get the output calculated from the P, I, D and Error values </p><dl class="section return"><dt>Returns</dt><dd>the output calculated from the pid controller specified in <a class="el" href="structPID_1_1pid__config__t.html">pid_config_t</a></dd></dl>
 <p>Get the delta between the current sensor data and the target </p>
 
 </div>
