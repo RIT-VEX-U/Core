@@ -3,6 +3,7 @@
 #include <functional>
 
 #include "core/utils/math/eigen_interface.h"
+
 #include "core/utils/math/numerical/numerical_integration.h"
 
 // Forward declare the sigma points class, it is at the bottom of this file.
@@ -53,7 +54,7 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * N + 2 sigma points instead of the standard 2N + 1 sigma points. This reduces
  * computation up to 50%. To learn more about this method, read:
  * https://www.sciencedirect.com/science/article/pii/S0888327020308190
- * 
+ *
  * This filter uses a method of "recalibrating" by essentially applying a measurement
  * twice instead of once, and only using it if it is more accurate than before the
  * measurement was applied. To learn more about this framework for nonlinear filters,
@@ -64,7 +65,7 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * @tparam INPUTS Dimension of the control input vector.
  * @tparam OUTPUTS Dimension of the measurement vector.
  */
-template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFilter {
+template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
   public:
     static constexpr int NUM_SIGMAS = STATES + 2;
 
@@ -90,24 +91,24 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * @param state_stddevs Standard deviations of the states in the model.
      * @param measurement_stddevs Standard deviations of the measurements.
      */
-    SquareRootUnscentedKalmanFilter(
+    UnscentedKalmanFilter(
       const std::function<StateVector(const StateVector &, const InputVector &)> &f,
       const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
       const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs
     )
-        : m_f(f), m_h(h), m_integrator(integrator) {
-        m_sqrt_Q = state_stddevs.asDiagonal();
-        m_measurement_stddevs = measurement_stddevs;
-        m_mean_func_X = [](const EMat<STATES, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wm) -> StateVector {
+        : f_(f), h_(h), integrator_(integrator) {
+        sqrt_Q_ = state_stddevs.asDiagonal();
+        measurement_stddevs_ = measurement_stddevs;
+        mean_func_X_ = [](const EMat<STATES, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wm) -> StateVector {
             return sigmas * Wm;
         };
 
-        m_mean_func_Y = [](const EMat<OUTPUTS, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wc) -> OutputVector {
+        mean_func_Y_ = [](const EMat<OUTPUTS, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wc) -> OutputVector {
             return sigmas * Wc;
         };
-        m_residual_func_X = [](const StateVector &a, const StateVector &b) -> StateVector { return a - b; };
-        m_residual_func_Y = [](const OutputVector &a, const OutputVector &b) -> OutputVector { return a - b; };
-        m_add_func_X = [](const StateVector &a, const StateVector &b) -> StateVector { return a + b; };
+        residual_func_X_ = [](const StateVector &a, const StateVector &b) -> StateVector { return a - b; };
+        residual_func_Y_ = [](const OutputVector &a, const OutputVector &b) -> OutputVector { return a - b; };
+        add_func_X_ = [](const StateVector &a, const StateVector &b) -> StateVector { return a + b; };
 
         reset();
     }
@@ -135,7 +136,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * vectors, usually by simple subtraction.
      * @param add_funx_X A function that adds two state vectors.
      */
-    SquareRootUnscentedKalmanFilter(
+    UnscentedKalmanFilter(
       const std::function<StateVector(const StateVector &, const InputVector &)> &f,
       const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
       const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs,
@@ -145,10 +146,10 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
       const std::function<OutputVector(const OutputVector &, const OutputVector &)> &residual_func_Y,
       const std::function<StateVector(const StateVector &, const StateVector &)> &add_func_X
     )
-        : m_f(f), m_h(h), m_integrator(integrator), m_mean_func_X(mean_func_X), m_mean_func_Y(mean_func_Y),
-          m_residual_func_X(residual_func_X), m_residual_func_Y(residual_func_Y), m_add_func_X(add_func_X) {
-        m_sqrt_Q = state_stddevs.asDiagonal();
-        m_measurement_stddevs = measurement_stddevs;
+        : f_(f), h_(h), integrator_(integrator), mean_func_X_(mean_func_X), mean_func_Y_(mean_func_Y),
+          residual_func_X_(residual_func_X), residual_func_Y_(residual_func_Y), add_func_X_(add_func_X) {
+        sqrt_Q_ = state_stddevs.asDiagonal();
+        measurement_stddevs_ = measurement_stddevs;
 
         reset();
     }
@@ -156,7 +157,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
     /**
      * Returns the square-root covariance matrix S.
      */
-    StateMatrix S() const { return m_S; }
+    StateMatrix S() const { return S_; }
 
     /**
      * Returns one element of the square-root covariance matrix S.
@@ -164,59 +165,58 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      * @param i Row of S.
      * @param j Column of S.
      */
-    double S(int i, int j) const { return m_S(i, j); }
+    double S(int i, int j) const { return S_(i, j); }
 
     /**
      * Set the current square-root covariance matrix S.
      *
      * @param S The new square-root covariance matrix S.
      */
-    void set_S(const StateMatrix &S) { m_S = S; }
+    void set_S(const StateMatrix &S) { S_ = S; }
 
     /**
      * Returns the reconstructed covariance matrix P.
      */
-    StateMatrix P() const { return m_S * m_S.transpose(); }
+    StateMatrix P() const { return S_ * S_.transpose(); }
 
     /**
      * Set the current square-root covariance matrix S to the square-root of P.
      *
      * @param P The covariance matrix P.
      */
-    void set_P(const StateMatrix &P) { m_S = P.llt().matrixL(); }
+    void set_P(const StateMatrix &P) { S_ = P.llt().matrixL(); }
 
     /**
      * Returns the current state estimate x-hat.
      */
-    StateVector xhat() const { return m_xhat; }
+    StateVector xhat() const { return xhat_; }
 
     /**
      * Returns one element of the current state estimate x-hat.
      *
      * @param i Row of x-hat.
      */
-    double xhat(int i) const { return m_xhat(i); }
+    double xhat(int i) const { return xhat_(i); }
 
     /**
      * Set the current state estimate x-hat.
      */
-    void set_xhat(const StateVector &xhat) { m_xhat = xhat; }
+    void set_xhat(const StateVector &xhat) { xhat_ = xhat; }
 
     /**
      * Set one element of the current state estimate x-hat.
      *
      * @param i Row of x-hat.
      */
-    void set_xhat(int i, double value) { m_xhat(i) = value; }
+    void set_xhat(int i, double value) { xhat_(i) = value; }
 
     /**
      * Resets the filter.
-     * Make sure to explicitly set S after calling this.
      */
     void reset() {
-        m_xhat.setZero();
-        m_S.setZero();
-        m_sigmas_F.setZero();
+        xhat_.setZero();
+        S_.setZero();
+        sigmas_F_.setZero();
     }
 
     /**
@@ -227,12 +227,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      */
     void predict(const InputVector &u, double dt) {
         // Our noise is continuous, so we need to discretize
-        const EMat<STATES, STATES> Q = m_sqrt_Q * sqrt(dt);
+        const EMat<STATES, STATES> Q = sqrt_Q_ * sqrt(dt);
 
         // Generate sigma points around the state mean
         //
         // equation (17)
-        EMat<STATES, NUM_SIGMAS> sigmas = m_pts.square_root_sigma_points(m_xhat, m_S);
+        EMat<STATES, NUM_SIGMAS> sigmas = pts_.square_root_sigma_points(xhat_, S_);
 
         // Project each sigma point forward in time according to the
         // dynamics f(x, u)
@@ -243,7 +243,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
         // equation (18)
         for (int i = 0; i < NUM_SIGMAS; ++i) {
             StateVector x = sigmas.template block<STATES, 1>(0, i);
-            m_sigmas_F.template block<STATES, 1>(0, i) = m_integrator(m_f, x, u, dt);
+            sigmas_F_.template block<STATES, 1>(0, i) = integrator_(f_, x, u, dt);
         }
 
         // Pass the predicted sigmas (𝒳) through the Unscented Transform
@@ -251,12 +251,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
         //
         // equations (18) (19) and (20)
         auto [xhat, S] = square_root_ut<STATES, STATES>(
-          m_sigmas_F, m_pts.Wm(), m_pts.Wc(), m_mean_func_X, m_residual_func_X,
+          sigmas_F_, pts_.Wm(), pts_.Wc(), mean_func_X_, residual_func_X_,
           Q.template triangularView<Eigen::Lower>()
         );
 
-        m_xhat = xhat;
-        m_S = S;
+        xhat_ = xhat;
+        S_ = S;
     }
 
     /**
@@ -267,7 +267,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      */
     void correct(const InputVector &u, const OutputVector &y) {
         correct<OUTPUTS>(
-          u, y, m_h, m_measurement_stddevs, m_mean_func_Y, m_residual_func_Y, m_residual_func_X, m_add_func_X
+          u, y, h_, measurement_stddevs_, mean_func_Y_, residual_func_Y_, residual_func_X_, add_func_X_
         );
     }
 
@@ -282,7 +282,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
      */
     void correct(const InputVector &u, const OutputVector &y, const EVec<OUTPUTS> &measurement_stddevs) {
         correct<OUTPUTS>(
-          u, y, m_h, measurement_stddevs, m_mean_func_Y, m_residual_func_Y, m_residual_func_X, m_add_func_X
+          u, y, h_, measurement_stddevs, mean_func_Y_, residual_func_Y_, residual_func_X_, add_func_X_
         );
     }
 
@@ -345,145 +345,137 @@ template <int STATES, int INPUTS, int OUTPUTS> class SquareRootUnscentedKalmanFi
       const std::function<StateVector(const StateVector &, const StateVector &)> &add_func_X
     ) {
 
-      EMat<ROWS, ROWS> sqrt_R = measurement_stddevs.asDiagonal();
+        EMat<ROWS, ROWS> sqrt_R = measurement_stddevs.asDiagonal();
 
-      // Generate new sigma points from the prior mean and covariance
-      // and transform them into measurement space using h(x, u)
-      //
-      //   sigmas  = 𝒳
-      //   sigmasH = 𝒴
-      //
-      // This differs from equation (22) which uses
-      // the prior sigma points, regenerating them allows
-      // multiple measurement updates per time update
-      EMat<ROWS, NUM_SIGMAS> sigmas_H;
-      EMat<STATES, NUM_SIGMAS> sigmas = m_pts.square_root_sigma_points(m_xhat, m_S);
-      for (int i = 0; i < NUM_SIGMAS; ++i) {
-        sigmas_H.template block<ROWS, 1>(0, i) =
-            h(sigmas.template block<STATES, 1>(0, i), u);
-      }
-  
-      // Pass the predicted measurement sigmas through the Unscented Transform
-      // to compute the mean predicted measurement and square-root innovation
-      // covariance.
-      //
-      // equations (23) (24) and (25)
-      auto [yhat, Sy] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y,
-          sqrt_R.template triangularView<Eigen::Lower>());
-  
-      // Compute cross covariance of the predicted state and measurement sigma
-      // points given as:
-      //
-      //           L+1
-      //   P_{xy} = Σ Wᵢ⁽ᶜ⁾[𝒳ᵢ - x̂][𝒴ᵢ - ŷ⁻]ᵀ
-      //           i=0
-      //
-      // equation (26)
-      EMat<STATES, ROWS> Pxy;
-      Pxy.setZero();
-      for (int i = 0; i < NUM_SIGMAS; ++i) {
-        Pxy += m_pts.Wc(i) *
-               (residual_func_X(m_sigmas_F.template block<STATES, 1>(0, i),
-                                m_xhat)) *
-               (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat))
-                   .transpose();
-      }
-  
-      // Compute the Kalman gain. We use Eigen's forward and backward substitution
-      // to solve. The equation in the paper uses MATLAB's / operator, but Eigen's
-      // solvers act like the \ operator, so we need to rearrange the equation to
-      // use those.
-      //
-      //   K = (P_{xy} / S_{y}ᵀ) / S_{y}
-      //   K = (S_{y} \ P_{xy})ᵀ / S_{y}
-      //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
-      //
-      // equation (27)
+        // Generate new sigma points from the prior mean and covariance
+        // and transform them into measurement space using h(x, u)
+        //
+        //   sigmas  = 𝒳
+        //   sigmasH = 𝒴
+        //
+        // This differs from equation (22) which uses
+        // the prior sigma points, regenerating them allows
+        // multiple measurement updates per time update
+        EMat<ROWS, NUM_SIGMAS> sigmas_H;
+        EMat<STATES, NUM_SIGMAS> sigmas = pts_.square_root_sigma_points(xhat_, S_);
+        for (int i = 0; i < NUM_SIGMAS; ++i) {
+            sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
+        }
+
+        // Pass the predicted measurement sigmas through the Unscented Transform
+        // to compute the mean predicted measurement and square-root innovation
+        // covariance.
+        //
+        // equations (23) (24) and (25)
+        auto [yhat, Sy] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
+          sigmas_H, pts_.Wm(), pts_.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
+        );
+
+        // Compute cross covariance of the predicted state and measurement sigma
+        // points given as:
+        //
+        //           L+1
+        //   P_{xy} = Σ Wᵢ⁽ᶜ⁾[𝒳ᵢ - x̂][𝒴ᵢ - ŷ⁻]ᵀ
+        //           i=0
+        //
+        // equation (26)
+        EMat<STATES, ROWS> Pxy;
+        Pxy.setZero();
+        for (int i = 0; i < NUM_SIGMAS; ++i) {
+            Pxy += pts_.Wc(i) * (residual_func_X(sigmas_F_.template block<STATES, 1>(0, i), xhat_)) *
+                   (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat)).transpose();
+        }
+
+        // Compute the Kalman gain. We use Eigen's forward and backward substitution
+        // to solve. The equation in the paper uses MATLAB's / operator, but Eigen's
+        // solvers act like the \ operator, so we need to rearrange the equation to
+        // use those.
+        //
+        //   K = (P_{xy} / S_{y}ᵀ) / S_{y}
+        //   K = (S_{y} \ P_{xy})ᵀ / S_{y}
+        //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
+        //
+        // equation (27)
         EMat<STATES, ROWS> K = (Sy.transpose().template triangularView<Eigen::Upper>().solve(
                                   Sy.template triangularView<Eigen::Lower>().solve(Pxy.transpose())
                                 ))
-              .transpose();
-  
-      // Compute the posterior state mean
-      //
-      //   x̂ = x̂⁻ + K(y − ŷ⁻)
-      //
-      // second part of equation (27)
-      EVec<STATES> xhat_dot = K * residual_func_Y(y, yhat);
-      EVec<STATES> xhat = add_func_X(m_xhat, xhat_dot);
-      EMat<STATES, STATES> S = m_S;
-  
-      // RECALIBRATE
-  
-      // Add the change of xhat to each of the sigma points in 𝒳.
-      for (int i = 0; i < NUM_SIGMAS; i++) {
-          sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
-      }
-  
-      // Pass those sigma points through the measurement function to transform
-      // them into measurement space.
-      for (int i = 0; i < NUM_SIGMAS; ++i) {
-          sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
-      }
-  
-      // Perform a second unscented transform, this time on the recalibrated
-      // measurement sigma points.
-      auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, m_pts.Wm(), m_pts.Wc(), mean_func_Y, residual_func_Y,
-          sqrt_R.template triangularView<Eigen::Lower>());
-  
-      // Compute the cross covariance of the recalibrated sigma points.
-      Pxy.setZero();
-      for (int i = 0; i < NUM_SIGMAS; ++i) {
-          Pxy += m_pts.Wc(i) *
-                  (residual_func_X(sigmas.template block<STATES, 1>(0, i),
-                                  xhat)) *
-                  (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat_k))
-                      .transpose();
-      }
-  
-      // Compute the intermediate matrix U for downdating
-      // the square-root covariance
-      //
-      // equation (28)
-      const EMat<STATES, ROWS> U = K * Sy;
-  
-      // Downdate the posterior square-root state covariance
-      //
-      // equation (29)
-      for (int i = 0; i < ROWS; i++) {
-        Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(
-            S, U.template block<STATES, 1>(0, i), -1);
-      }
-  
-      // BACK OUT
-  
-      // We only use the posterior state and covariance if it is more certain
-      // than the prior.
-      if (m_S.trace() > S.trace()) {
-          m_xhat = xhat;
-          m_S = S;
-      }
+                                 .transpose();
+
+        // Compute the posterior state mean
+        //
+        //   x̂ = x̂⁻ + K(y − ŷ⁻)
+        //
+        // second part of equation (27)
+        EVec<STATES> xhat_dot = K * residual_func_Y(y, yhat);
+        EVec<STATES> xhat = add_func_X(xhat_, xhat_dot);
+        EMat<STATES, STATES> S = S_;
+
+        // RECALIBRATE
+
+        // Add the change of xhat to each of the sigma points in 𝒳.
+        for (int i = 0; i < NUM_SIGMAS; i++) {
+            sigmas.template block<STATES, 1>(0, i) += (xhat_dot);
+        }
+
+        // Pass those sigma points through the measurement function to transform
+        // them into measurement space.
+        for (int i = 0; i < NUM_SIGMAS; ++i) {
+            sigmas_H.template block<ROWS, 1>(0, i) = h(sigmas.template block<STATES, 1>(0, i), u);
+        }
+
+        // Perform a second unscented transform, this time on the recalibrated
+        // measurement sigma points.
+        auto [yhat_k, Sy_k] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
+          sigmas_H, pts_.Wm(), pts_.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
+        );
+
+        // Compute the cross covariance of the recalibrated sigma points.
+        Pxy.setZero();
+        for (int i = 0; i < NUM_SIGMAS; ++i) {
+            Pxy += pts_.Wc(i) * (residual_func_X(sigmas.template block<STATES, 1>(0, i), xhat)) *
+                   (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat_k)).transpose();
+        }
+
+        // Compute the intermediate matrix U for downdating
+        // the square-root covariance
+        //
+        // equation (28)
+        const EMat<STATES, ROWS> U = K * Sy;
+
+        // Downdate the posterior square-root state covariance
+        //
+        // equation (29)
+        for (int i = 0; i < ROWS; i++) {
+            Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(S, U.template block<STATES, 1>(0, i), -1);
+        }
+
+        // BACK OUT
+
+        // We only use the posterior state and covariance if it is more certain
+        // than the prior.
+        if ((S_ * S_.transpose()).trace() > (S * S.transpose()).trace()) {
+            xhat_ = xhat;
+            S_ = S;
+        }
     }
 
   private:
-    std::function<StateVector(const StateVector &, const InputVector &)> m_f;
-    std::function<OutputVector(const StateVector &, const InputVector &)> m_h;
-    std::function<StateVector(const EMat<STATES, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> m_mean_func_X;
-    std::function<OutputVector(const EMat<OUTPUTS, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> m_mean_func_Y;
-    std::function<StateVector(const StateVector &, const StateVector &)> m_residual_func_X;
-    std::function<OutputVector(const OutputVector &, const OutputVector &)> m_residual_func_Y;
-    std::function<StateVector(const StateVector &, const StateVector &)> m_add_func_X;
-    StateVector m_xhat;
-    StateMatrix m_S;
-    StateMatrix m_sqrt_Q;
-    EVec<OUTPUTS> m_measurement_stddevs;
-    EMat<STATES, NUM_SIGMAS> m_sigmas_F;
+    std::function<StateVector(const StateVector &, const InputVector &)> f_;
+    std::function<OutputVector(const StateVector &, const InputVector &)> h_;
+    std::function<StateVector(const EMat<STATES, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> mean_func_X_;
+    std::function<OutputVector(const EMat<OUTPUTS, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> mean_func_Y_;
+    std::function<StateVector(const StateVector &, const StateVector &)> residual_func_X_;
+    std::function<OutputVector(const OutputVector &, const OutputVector &)> residual_func_Y_;
+    std::function<StateVector(const StateVector &, const StateVector &)> add_func_X_;
+    StateVector xhat_;
+    StateMatrix S_;
+    StateMatrix sqrt_Q_;
+    EVec<OUTPUTS> measurement_stddevs_;
+    EMat<STATES, NUM_SIGMAS> sigmas_F_;
 
-    ScaledSphericalSimplexSigmaPoints<STATES> m_pts;
+    ScaledSphericalSimplexSigmaPoints<STATES> pts_;
 
-    WithInputIntegrator m_integrator;
+    WithInputIntegrator integrator_;
 };
 
 /**
@@ -611,15 +603,7 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
      * with the others arranged around the mean.
      */
     EMat<STATES, NUM_SIGMAS> square_root_sigma_points(const EVec<STATES> &x, const EMat<STATES, STATES> &S) {
-
-        EMat<STATES, NUM_SIGMAS> C = EMat<STATES, NUM_SIGMAS>::Zero();
-
-        for (int row = 0; row < STATES; row++) {
-            C.row(row).segment(1, row + 1).setConstant(-q(row) / (row + 1));
-        }
-        C.diagonal(2) = q;
-
-        EMat<STATES, NUM_SIGMAS> sigmas = S * C;
+        EMat<STATES, NUM_SIGMAS> sigmas = S * C_;
         sigmas.colwise() += x;
 
         return sigmas;
@@ -628,31 +612,33 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
     /**
      * Returns a vector containing the weights of each sigma point for the mean.
      */
-    const EVec<NUM_SIGMAS> &Wm() const { return m_Wm; }
+    const EVec<NUM_SIGMAS> &Wm() const { return Wm_; }
 
     /**
      * Returns a vector containing the weights of each sigma point for the covariance.
      */
-    const EVec<NUM_SIGMAS> &Wc() const { return m_Wc; }
+    const EVec<NUM_SIGMAS> &Wc() const { return Wc_; }
 
     /**
      * Returns the weight for the i-th sigma point for the mean.
      *
      * @param i Element of the weights vector to return.
      */
-    double Wm(int i) const { return m_Wm(i); }
+    double Wm(int i) const { return Wm_(i); }
 
     /**
      * Returns the weight for the i-th sigma point for the covariance.
      *
      * @param i Element of the weights vector to return.
      */
-    double Wc(int i) const { return m_Wc(i); }
+    double Wc(int i) const { return Wc_(i); }
 
   private:
-    EVec<NUM_SIGMAS> m_Wm;
-    EVec<NUM_SIGMAS> m_Wc;
-    EVec<STATES> q;
+    EVec<NUM_SIGMAS> Wm_;
+    EVec<NUM_SIGMAS> Wc_;
+    EVec<STATES> q_;
+
+    EMat<STATES, NUM_SIGMAS> C_;
 
     /**
      * Computes the weights for the sigma points.
@@ -664,20 +650,29 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
      */
     void compute_weights(double alpha, double beta) {
         double c = 1 / (alpha * alpha * (STATES + 1));
-        m_Wm = EVec<NUM_SIGMAS>::Constant(c);
-        m_Wc = EVec<NUM_SIGMAS>::Constant(c);
+        Wm_ = EVec<NUM_SIGMAS>::Constant(c);
+        Wc_ = EVec<NUM_SIGMAS>::Constant(c);
 
-        m_Wm(0) = 1 - (1 / (alpha * alpha));
-        m_Wc(0) = 1 - (1 / (alpha * alpha)) + (1 - alpha * alpha + beta);
+        Wm_(0) = 1 - (1 / (alpha * alpha));
+        Wc_(0) = 1 - (1 / (alpha * alpha)) + (1 - alpha * alpha + beta);
 
         EVec<STATES> t;
         for (int i = 0; i < STATES; i++) {
             t(i) = i + 1;
         }
 
-        q = alpha * ((t * (STATES + 1)).cwiseQuotient(t + EVec<STATES>::Ones())).cwiseSqrt();
+        EVec<STATES> q = alpha * ((t * (STATES + 1)).cwiseQuotient(t + EVec<STATES>::Ones())).cwiseSqrt();
+
+        C_ = EMat<STATES, NUM_SIGMAS>::Zero();
+        for (int row = 0; row < STATES; row++) {
+            C_.row(row).segment(1, row + 1).setConstant(-q(row) / (row + 1));
+        }
+        C_.diagonal(2) = q;
     }
 };
 
 // allow using both names
-template <int STATES, int INPUTS, int OUTPUTS> using SRUKF = SquareRootUnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS> using UKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS> using SRUKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS>
+using SquareRootUnscentedKalmanFilter = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
