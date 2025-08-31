@@ -55,12 +55,6 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * computation up to 50%. To learn more about this method, read:
  * https://www.sciencedirect.com/science/article/pii/S0888327020308190
  *
- * This filter uses a method of "recalibrating" by essentially applying a measurement
- * twice instead of once, and only using it if it is more accurate than before the
- * measurement was applied. To learn more about this framework for nonlinear filters,
- * read:
- * https://arxiv.org/pdf/2407.05717
- *
  * @tparam STATES Dimension of the state vector.
  * @tparam INPUTS Dimension of the control input vector.
  * @tparam OUTPUTS Dimension of the measurement vector.
