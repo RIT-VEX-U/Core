@@ -118,18 +118,24 @@ void PIDDataRecord::fetch() {
         TYPE->set_value("Linear");
     }
 }
-
+/**
+ * Defines a record for setting pid values from the board
+ */
 PIDControlRecord::PIDControlRecord(std::string name, PID &pid)
     : Record(std::move(name)), pid(pid), P(new Float("P")), I(new Float("I")), D(new Float("D")) {
     Record::set_fields({P, I, D});
 }
-
+/**
+     * sets the PID values to the values from the board
+     */
 void PIDControlRecord::response() {
     pid.config.p = P->get_value();
     pid.config.i = I->get_value();
     pid.config.d = D->get_value();
 }
-
+/**
+ * Defines a record for testing purposes, currently tests a float and int64
+ */
 TestRecord::TestRecord(std::string name, double test_float, int64_t test_int64)
     : Record(std::move(name)), test_float(test_float), test_int64(test_int64), test_float_ptr(new Float("test_float")), test_int64_ptr(new Int64("test_int64")) {
     Record::set_fields({test_float_ptr, test_int64_ptr});

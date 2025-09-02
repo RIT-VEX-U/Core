@@ -1,11 +1,18 @@
 #pragma once
 #include "core/device/vdb/protocol.hpp"
 #include "core/device/vdb/types.hpp"
-
+/**
+ * Class for visiting parts from a response packet and modifying the parts we have in response to the packet
+ * essentially takes the response data and moves it into our data
+ */
 class ResponsePacketVisitor : public VDP::Visitor {
 public:
+  /**
+   * Class for visiting parts from a response packet and modifying the parts we have in response to the packet
+   * essentially takes the response data and moves it into our data
+   * @param from_part the part with the data we want to merge with our data
+   */
   ResponsePacketVisitor(VDP::PartPtr from_part);
-
   void VisitRecord(VDP::Record *record) override;
 
   void VisitString(VDP::String *str) override;

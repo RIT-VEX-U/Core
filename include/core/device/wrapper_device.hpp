@@ -29,18 +29,23 @@ class Device : public VDP::AbstractDevice, public COBSSerialDevice {
     ) override; // From VDP::AbstractDevice
 
   private:
-    /// @brief Packets that have been encoded and are waiting for their turn
-    /// to be sent out on the wire
+    /**
+     * @brief Packets that have been encoded and are waiting for their turn
+     * to be sent out on the wire
+     */
     std::deque<WirePacket> outbound_packets{};
     vex::mutex outbound_mutex;
-
-    /// @brief Packets that have been read from the wire and split up but that are
-    /// still COBS encoded
+    /**
+     * @brief Packets that have been read from the wire and split up but that are
+     * still COBS encoded
+     */
     std::deque<WirePacket> inbound_packets;
 
     vex::mutex inbound_mutex;
-    /// @brief Working buffer that the reading thread uses to assemble packets
-    /// until it finds a full COBS packet
+    /**
+     * @brief Working buffer that the reading thread uses to assemble packets
+     * until it finds a full COBS packet
+     */
     WirePacket inbound_buffer;
     /**
      * the thread for decoding data from the wire
@@ -53,7 +58,7 @@ class Device : public VDP::AbstractDevice, public COBSSerialDevice {
     static int serial_thread(void *self);
 
     bool write_packet_if_avail();
-
+    
     // Task that deals with the low level writing and reading bytes from the wire
     vex::task serial_task;
 

@@ -330,11 +330,13 @@ public:
   void Visit(Visitor *);
   PartPtr clone() override;
 };
-
+/**
+ * A class for broadly visiting a part and doing some action based on the type of part
+ */
 class Visitor {
 public:
   virtual ~Visitor() {}
-
+  
   virtual void VisitRecord(Record *) = 0;
 
   virtual void VisitString(String *) = 0;
@@ -352,7 +354,9 @@ public:
   virtual void VisitInt32(Int32 *) = 0;
   virtual void VisitInt64(Int64 *) = 0;
 };
-
+/**
+ * A class for broadly visiting a part and doing some action based on the upcast type of the part
+ */
 class UpcastNumbersVisitor : public Visitor {
 public:
   virtual void VisitAnyFloat(const std::string &name, double value,

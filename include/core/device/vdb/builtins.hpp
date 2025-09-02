@@ -167,19 +167,14 @@ class PIDControlRecord : public Record {
 };
 
 /**
- * Defines a record for setting pid values from the board
+ * Defines a record for testing purposes, currently tests a float and int64
  */
 class TestRecord : public Record {
   public:
     /**
-     * Creates a record for setting pid values from the board
-     * @param name the name of the record to create
-     * @param pid the pid to get data from
-     */
+     * Defines a record for testing purposes, currently tests a float and int64
+=    */
     TestRecord(std::string name, double test_float, int64_t test_int64);
-    /**
-     * sets the PID values to the values from the board
-     */
     void response() override;
     void fetch() override;
 
