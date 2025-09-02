@@ -160,6 +160,7 @@ class UnscentedKalmanFilter&lt; STATES, INPUTS, OUTPUTS &gt;</div><p>Kalman filt
 <p>This implementation is somewhat non-standard. The square-root form of the UKF (SR-UKF) is used, and the way the sigma points are generated is different than most implementations. The square-root form is used to ensure that the covariance matrix remains positive definite.</p>
 <p>To learn more about the SR-UKF, and see the exact formulation that most of this implementation follows, read: <a href="https://www.researchgate.net/publication/3908304">https://www.researchgate.net/publication/3908304</a></p>
 <p>The sigma points are not generated symmetrically around the mean, instead they are generated as vertices of a simplex. Using N = # of states, this method uses N + 2 sigma points instead of the standard 2N + 1 sigma points. This reduces computation up to 50%. To learn more about this method, read: <a href="https://www.sciencedirect.com/science/article/pii/S0888327020308190">https://www.sciencedirect.com/science/article/pii/S0888327020308190</a></p>
+<p>This filter uses a method of "recalibrating" by essentially applying a measurement twice instead of once, and only using it if it is more accurate than before the measurement was applied. To learn more about this framework for nonlinear filters, read: <a href="https://arxiv.org/pdf/2407.05717">https://arxiv.org/pdf/2407.05717</a></p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">STATES</td><td>Dimension of the state vector. </td></tr>

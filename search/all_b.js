@@ -9,6 +9,7 @@ var searchData=
   ['message_6',['message',['../classStateMachine_1_1MaybeMessage.html#a913193e7c341dd8031c644d788adee56',1,'StateMachine::MaybeMessage']]],
   ['modify_5finputs_7',['modify_inputs',['../classTankDrive.html#abb511cf1be40ef7be89c2ccff6a09cab',1,'TankDrive']]],
   ['motioncontroller_8',['MotionController',['../classMotionController.html',1,'MotionController'],['../classMotionController.html#a076c5aa4ea383dccaeec76f7554a7467',1,'MotionController::MotionController()']]],
-  ['movingaverage_9',['MovingAverage',['../classMovingAverage.html',1,'MovingAverage'],['../classMovingAverage.html#a2455b651d3c6ad1f14d1a0d65b2394b2',1,'MovingAverage::MovingAverage(int buffer_size)'],['../classMovingAverage.html#afd1c880fdd617fcbf02f54ac87f45d6f',1,'MovingAverage::MovingAverage(int buffer_size, double starting_value)']]],
-  ['mut_10',['mut',['../classOdometryBase.html#a88bb48858ca6ff8300a41e23482ec6f6',1,'OdometryBase']]]
+  ['motordatarecord_9',['MotorDataRecord',['../classVDP_1_1MotorDataRecord.html',1,'VDP::MotorDataRecord'],['../classVDP_1_1MotorDataRecord.html#adfbd19ea3820d66de0e31ae6db43f8e6',1,'VDP::MotorDataRecord::MotorDataRecord()']]],
+  ['movingaverage_10',['MovingAverage',['../classMovingAverage.html',1,'MovingAverage'],['../classMovingAverage.html#a2455b651d3c6ad1f14d1a0d65b2394b2',1,'MovingAverage::MovingAverage(int buffer_size)'],['../classMovingAverage.html#afd1c880fdd617fcbf02f54ac87f45d6f',1,'MovingAverage::MovingAverage(int buffer_size, double starting_value)']]],
+  ['mut_11',['mut',['../classOdometryBase.html#a88bb48858ca6ff8300a41e23482ec6f6',1,'OdometryBase']]]
 ];

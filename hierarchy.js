@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "VDP::AbstractDevice", "classVDP_1_1AbstractDevice.html", null ],
     [ "Async", "classAsync.html", null ],
     [ "BasicSolenoidSet", "classBasicSolenoidSet.html", null ],
     [ "BasicSpinCommand", "classBasicSpinCommand.html", null ],
@@ -11,6 +12,7 @@ var hierarchy =
       [ "FunctionCondition", "classFunctionCondition.html", null ],
       [ "IfTimePassed", "classIfTimePassed.html", null ]
     ] ],
+    [ "CRC32", "classCRC32.html", null ],
     [ "CustomEncoder", "classCustomEncoder.html", null ],
     [ "DelayCommand", "classDelayCommand.html", null ],
     [ "DriveForwardCommand", "classDriveForwardCommand.html", null ],
@@ -51,9 +53,12 @@ var hierarchy =
     [ "Odometry3Wheel::odometry3wheel_cfg_t", "structOdometry3Wheel_1_1odometry3wheel__cfg__t.html", null ],
     [ "OdometryBase", "classOdometryBase.html", [
       [ "Odometry3Wheel", "classOdometry3Wheel.html", null ],
+      [ "OdometrySerial", "classOdometrySerial.html", null ],
       [ "OdometryTank", "classOdometryTank.html", null ]
     ] ],
     [ "OdomSetPosition", "classOdomSetPosition.html", null ],
+    [ "VDP::PacketHeader", "structVDP_1_1PacketHeader.html", null ],
+    [ "VDP::PacketWriter", "classVDP_1_1PacketWriter.html", null ],
     [ "screen::Page", "classscreen_1_1Page.html", [
       [ "AutoChooser", "classAutoChooser.html", null ],
       [ "screen::FunctionPage", "classscreen_1_1FunctionPage.html", null ],
@@ -62,11 +67,35 @@ var hierarchy =
       [ "screen::StatsPage", "classscreen_1_1StatsPage.html", null ]
     ] ],
     [ "Parallel", "classParallel.html", null ],
+    [ "VDP::Part", "classVDP_1_1Part.html", [
+      [ "VDP::Number< float, Type::Float >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< double, Type::Double >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< uint8_t, Type::Uint8 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< uint16_t, Type::Uint16 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< uint32_t, Type::Uint32 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< uint64_t, Type::Uint64 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< int8_t, Type::Int8 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< int16_t, Type::Int16 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< int32_t, Type::Int32 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< int64_t, Type::Int64 >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Number< NumT, schemaType >", "classVDP_1_1Number.html", null ],
+      [ "VDP::Record", "classVDP_1_1Record.html", [
+        [ "VDP::MotorDataRecord", "classVDP_1_1MotorDataRecord.html", null ],
+        [ "VDP::OdometryControlRecord", "classVDP_1_1OdometryControlRecord.html", null ],
+        [ "VDP::OdometryDataRecord", "classVDP_1_1OdometryDataRecord.html", null ],
+        [ "VDP::PIDControlRecord", "classVDP_1_1PIDControlRecord.html", null ],
+        [ "VDP::PIDDataRecord", "classVDP_1_1PIDDataRecord.html", null ],
+        [ "VDP::TestRecord", "classVDP_1_1TestRecord.html", null ],
+        [ "VDP::TimestampedRecord", "classVDP_1_1TimestampedRecord.html", null ]
+      ] ],
+      [ "VDP::String", "classVDP_1_1String.html", null ]
+    ] ],
     [ "PurePursuit::Path", "classPurePursuit_1_1Path.html", null ],
     [ "PID::pid_config_t", "structPID_1_1pid__config__t.html", null ],
     [ "Pose2d", "classPose2d.html", null ],
     [ "PurePursuitCommand", "classPurePursuitCommand.html", null ],
     [ "Rect", "structRect.html", null ],
+    [ "VDP::RegistryListener< MutexType >", "classVDP_1_1RegistryListener.html", null ],
     [ "robot_specs_t", "structrobot__specs__t.html", null ],
     [ "Rotation2d", "classRotation2d.html", null ],
     [ "ScaledSphericalSimplexSigmaPoints< STATES >", "classScaledSphericalSimplexSigmaPoints.html", null ],
@@ -86,6 +115,10 @@ var hierarchy =
     [ "TurnToHeadingCommand", "classTurnToHeadingCommand.html", null ],
     [ "Twist2d", "classTwist2d.html", null ],
     [ "UnscentedKalmanFilter< STATES, INPUTS, OUTPUTS >", "classUnscentedKalmanFilter.html", null ],
+    [ "VDP::Visitor", "classVDP_1_1Visitor.html", [
+      [ "ResponsePacketVisitor", "classResponsePacketVisitor.html", null ],
+      [ "VDP::UpcastNumbersVisitor", "classVDP_1_1UpcastNumbersVisitor.html", null ]
+    ] ],
     [ "WaitUntilCondition", "classWaitUntilCondition.html", null ],
     [ "WaitUntilUpToSpeedCommand", "classWaitUntilUpToSpeedCommand.html", null ]
 ];

@@ -5,6 +5,7 @@ var classPID =
     [ "PID", "classPID.html#a3b6b678b2d52a2be7fb572b766e43994", null ],
     [ "get", "classPID.html#a69c2e66b8ff06c86ca9701d11e21da75", null ],
     [ "get_error", "classPID.html#ab5cdb296dbcce80703a9a98b9605c500", null ],
+    [ "get_output", "classPID.html#a2e7c12db1fdc49eb434da433532b6352", null ],
     [ "get_sensor_val", "classPID.html#a8db32b3729426d45d1358f5db47cf114", null ],
     [ "get_target", "classPID.html#ad3d37c5ab4ad6709f69337c622186bf3", null ],
     [ "init", "classPID.html#aab0f3b4351cc4ee2b8bb366105e85e95", null ],

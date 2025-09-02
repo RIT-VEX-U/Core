@@ -1,12 +1,9 @@
 var searchData=
 [
-  ['scaledsphericalsimplexsigmapoints_0',['ScaledSphericalSimplexSigmaPoints',['../classScaledSphericalSimplexSigmaPoints.html',1,'']]],
-  ['screendata_1',['ScreenData',['../structscreen_1_1ScreenData.html',1,'screen']]],
-  ['serializer_2',['Serializer',['../classSerializer.html',1,'']]],
-  ['sliderwidget_3',['SliderWidget',['../classscreen_1_1SliderWidget.html',1,'screen']]],
-  ['spinrpmcommand_4',['SpinRPMCommand',['../classSpinRPMCommand.html',1,'']]],
-  ['spline_5',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]],
-  ['state_6',['State',['../structStateMachine_1_1State.html',1,'StateMachine']]],
-  ['statemachine_7',['StateMachine',['../classStateMachine.html',1,'']]],
-  ['statspage_8',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]]
+  ['record_0',['Record',['../classVDP_1_1Record.html',1,'VDP']]],
+  ['rect_1',['Rect',['../structRect.html',1,'']]],
+  ['registrylistener_2',['RegistryListener',['../classVDP_1_1RegistryListener.html',1,'VDP']]],
+  ['responsepacketvisitor_3',['ResponsePacketVisitor',['../classResponsePacketVisitor.html',1,'']]],
+  ['robot_5fspecs_5ft_4',['robot_specs_t',['../structrobot__specs__t.html',1,'']]],
+  ['rotation2d_5',['Rotation2d',['../classRotation2d.html',1,'']]]
 ];
