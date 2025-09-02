@@ -23,9 +23,9 @@
  * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
  */
 MovingAverage::MovingAverage(int buffer_size) {
-  buffer = std::vector<double>(buffer_size, 0.0);
-  buffer_index = 0;
-  current_avg = 0;
+    buffer = std::vector<double>(buffer_size, 0.0);
+    buffer_index = 0;
+    current_avg = 0;
 }
 
 /**
@@ -34,9 +34,9 @@ MovingAverage::MovingAverage(int buffer_size) {
  * @param starting_value The value that the average will be before any data is added
  */
 MovingAverage::MovingAverage(int buffer_size, double starting_value) {
-  buffer = std::vector<double>(buffer_size, starting_value);
-  buffer_index = 0;
-  current_avg = starting_value;
+    buffer = std::vector<double>(buffer_size, starting_value);
+    buffer_index = 0;
+    current_avg = starting_value;
 }
 
 /**
@@ -50,12 +50,12 @@ MovingAverage::MovingAverage(int buffer_size, double starting_value) {
  * @param n  the sample that will be added to the moving average.
  */
 void MovingAverage::add_entry(double n) {
-  current_avg -= buffer[buffer_index] / (double)get_size();
-  current_avg += n / get_size();
-  buffer[buffer_index] = n;
+    current_avg -= buffer[buffer_index] / (double)get_size();
+    current_avg += n / get_size();
+    buffer[buffer_index] = n;
 
-  buffer_index++;
-  buffer_index %= get_size();
+    buffer_index++;
+    buffer_index %= get_size();
 }
 
 /**
@@ -73,9 +73,9 @@ int MovingAverage::get_size() const { return buffer.size(); }
  * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
  */
 ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size) {
-  buffer = std::vector<double>(buffer_size, 0.0);
-  buffer_index = 0;
-  current_avg = 0;
+    buffer = std::vector<double>(buffer_size, 0.0);
+    buffer_index = 0;
+    current_avg = 0;
 }
 
 /**
@@ -84,9 +84,9 @@ ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size) {
  * @param starting_value The value that the average will be before any data is added
  */
 ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size, double starting_value) {
-  buffer = std::vector<double>(buffer_size, starting_value);
-  buffer_index = 0;
-  current_avg = starting_value;
+    buffer = std::vector<double>(buffer_size, starting_value);
+    buffer_index = 0;
+    current_avg = starting_value;
 }
 
 /**
@@ -100,21 +100,21 @@ ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size, double start
  * @param n  the sample that will be added to the moving average.
  */
 void ExponentialMovingAverage::add_entry(double n) {
-  int oldest_index = buffer_index;
-  double oldest_sample = buffer[oldest_index];
-  double oldest_weight = 1.0 / pow(2, (double)(buffer.size() - 1));
+    int oldest_index = buffer_index;
+    double oldest_sample = buffer[oldest_index];
+    double oldest_weight = 1.0 / pow(2, (double)(buffer.size() - 1));
 
-  double second_oldest_sample = buffer[(oldest_index + 1) % buffer.size()];
+    double second_oldest_sample = buffer[(oldest_index + 1) % buffer.size()];
 
-  current_avg -= oldest_sample * oldest_weight;
-  current_avg /= 2;
-  current_avg += second_oldest_sample / pow(2, (double)(buffer.size()));
-  current_avg += n / 2;
+    current_avg -= oldest_sample * oldest_weight;
+    current_avg /= 2;
+    current_avg += second_oldest_sample / pow(2, (double)(buffer.size()));
+    current_avg += n / 2;
 
-  buffer[buffer_index] = n;
+    buffer[buffer_index] = n;
 
-  buffer_index++;
-  buffer_index %= buffer.size();
+    buffer_index++;
+    buffer_index %= buffer.size();
 }
 
 /**
