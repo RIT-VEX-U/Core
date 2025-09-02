@@ -133,6 +133,13 @@ class PID : public Feedback {
     double get_error();
 
     /**
+     * Get the output calculated from the P, I, D and Error values
+     * @return the output calculated from the pid controller
+     * specified in pid_config_t
+     */
+    double get_output();
+
+    /**
      * Get the PID's target
      * @return the target the PID controller is trying to achieve
      */
@@ -157,9 +164,8 @@ class PID : public Feedback {
     double lower_limit = 0; ///< the PID controller will never set a target to go lower than this
     double upper_limit = 0; ///< the PID controller will never set a target to go higher than this
 
-    double target = 0; ///< the target position of the PID controller (lower_limit
-                       ///< <= target <= upper_limit)
-    double start_pt = 0;
+    double target = 0;     ///< the target position of the PID controller (lower_limit
+                           ///< <= target <= upper_limit)
     double target_vel = 0; ///< the target velocity of the PID controller (if !=
                            ///< 0, controller will not wait for stop)
     double sensor_val = 0; ///< the last recorded value of the sensor we use to
