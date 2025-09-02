@@ -1,3 +1,4 @@
+#pragma once
 #include "vex.h"
 
 #include <cstddef>
@@ -5,12 +6,12 @@
 #include <vector>
 
 class COBSSerialDevice {
+  public:
     // Decoded packet containing the data one wishes to send
     using Packet = std::vector<uint8_t>;
     // Cobs Encoded packet containing 0 delimeters ready to be sent over the wire
     using WirePacket = std::vector<uint8_t>;
 
-  public:
     /**
      * Create a serial device that communicates with 0-delimeted COBS encoded packets
      * @param port the vex::PORTXX that the device was created on
@@ -58,6 +59,8 @@ class COBSSerialDevice {
      */
     static void hexdump(const uint8_t *data, size_t len);
 
+    Packet get_last_decoded_packet();
+
   protected:
     /**
      * Poll port for incoming data
@@ -65,12 +68,12 @@ class COBSSerialDevice {
      */
     bool poll_incoming_data_once();
 
-  private:
     /// @brief  process one byte at a time
     /// @param byte the incoming byte
     /// @return true if a packet was decoded
     bool handle_incoming_byte(uint8_t byte);
 
+  private:
     vex::mutex serial_access_mut;
     int32_t port;
     int32_t baud;
