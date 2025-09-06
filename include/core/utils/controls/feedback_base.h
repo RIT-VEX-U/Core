@@ -8,7 +8,7 @@
  *
  */
 class Feedback {
-public:
+ public:
   /**
    * Initialize the feedback controller for a movement
    *

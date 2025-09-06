@@ -4,8 +4,7 @@
 /// @brief A velocity controller
 /// @warning If you try to use this as a position controller, it will fail.
 class TakeBackHalf : public Feedback {
-
-public:
+ public:
   TakeBackHalf(double TBH_gain, double first_cross_split, double on_target_threshold);
   /**
    * Initialize the feedback controller for a movement
@@ -42,11 +41,11 @@ public:
    */
   bool is_on_target() override;
 
-  double TBH_gain; ///< tuned parameter
+  double TBH_gain;  ///< tuned parameter
   double first_cross_split;
 
-private:
-  double on_target_threshhold; ///< tuned parameter
+ private:
+  double on_target_threshhold;  ///< tuned parameter
 
   double target = 0.0;
 
@@ -55,5 +54,5 @@ private:
   double prev_error = 0.0;
 
   double output = 0.0;
-  double lower = 0.0, upper = 0.0; ///< output limits
+  double lower = 0.0, upper = 0.0;  ///< output limits
 };

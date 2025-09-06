@@ -1,8 +1,7 @@
 #include "core/utils/controls/feedback_base.h"
 
 class BangBang : public Feedback {
-
-public:
+ public:
   BangBang(double thresshold, double low, double high);
   /**
    * Initialize the feedback controller for a movement
@@ -40,7 +39,7 @@ public:
    */
   bool is_on_target() override;
 
-private:
+ private:
   double setpt;
   double sensor_val;
   double lower_bound, upper_bound;

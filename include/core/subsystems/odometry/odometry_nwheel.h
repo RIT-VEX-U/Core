@@ -1,9 +1,8 @@
 #pragma once
 
-#include <Eigen/Dense>
-
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
+#include "core/utils/math/eigen_interface.h"
 #include "core/utils/math_util.h"
 
 /**
@@ -49,8 +48,9 @@ typedef struct {
   double radius;    /**< radius of the wheel */
 } tracking_wheel_cfg_t;
 
-template <int WHEELS> class OdometryNWheel : public OdometryBase {
-public:
+template <int WHEELS>
+class OdometryNWheel : public OdometryBase {
+ public:
   /**
    * Construct a new Odometry N Wheel object
    *
@@ -59,10 +59,8 @@ public:
    * @param imu when passed in, only uses imu for rotation measurement
    * @param is_async true to constantly run in the background
    */
-  OdometryNWheel(
-    const std::array<CustomEncoder, WHEELS> &encoders, const std::array<tracking_wheel_cfg_t, WHEELS> wheel_configs,
-    vex::inertial *imu, bool is_async
-  )
+  OdometryNWheel(const std::array<CustomEncoder, WHEELS>& encoders,
+                 const std::array<tracking_wheel_cfg_t, WHEELS> wheel_configs, vex::inertial* imu, bool is_async)
       : OdometryBase(is_async), imu(imu), encoders(encoders) {
     Eigen::Matrix<double, WHEELS, 3> transfer_matrix;
     for (int i = 0; i < WHEELS; i++) {
@@ -170,7 +168,7 @@ public:
   /**
    * Resets the position and rotational data to the input.
    */
-  void set_position(const Pose2d &newpos) override {
+  void set_position(const Pose2d& newpos) override {
     mut.lock();
     angle_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - angle_offset);
     mut.unlock();
@@ -183,12 +181,13 @@ public:
    * @return the position that the odometry believes the robot is at
    */
   Pose2d get_position(void) {
-    Pose2d without_wrapped_angle  = OdometryBase::get_position();
-    Pose2d with_wrapped_angle(without_wrapped_angle.translation(),  without_wrapped_angle.rotation().wrapped_radians_360());
+    Pose2d without_wrapped_angle = OdometryBase::get_position();
+    Pose2d with_wrapped_angle(without_wrapped_angle.translation(),
+                              without_wrapped_angle.rotation().wrapped_radians_360());
     return with_wrapped_angle;
   }
 
-private:
+ private:
   /**
    * Calculation method for the robot's new position using the change in encoders, and the old pose, the wheel
    * configurations are stored as class members.
@@ -224,7 +223,7 @@ private:
   double old_angle;
   double angle_offset;
 
-  vex::inertial *imu;
+  vex::inertial* imu;
 
   Eigen::Matrix<double, 3, WHEELS> transfer_matrix_pseudoinverse;
 

@@ -7,8 +7,10 @@
  *    in FIFO order.
  */
 #include "core/utils/command_structure/command_controller.h"
-#include "core/utils/command_structure/delay_command.h"
+
 #include <stdio.h>
+
+#include "core/utils/command_structure/delay_command.h"
 
 /**
  * Adds a command to the queue
@@ -16,7 +18,7 @@
  * @param timeout_seconds the number of seconds we will let the command run for.
  * If it exceeds this, we cancel it and run on_timeout
  */
-void CommandController::add(AutoCommand *cmd, double timeout_seconds) {
+void CommandController::add(AutoCommand* cmd, double timeout_seconds) {
   cmd->timeout_seconds = timeout_seconds;
   command_queue.push(cmd);
 }
@@ -25,8 +27,8 @@ void CommandController::add(AutoCommand *cmd, double timeout_seconds) {
  * Add multiple commands to the queue. No timeout here.
  * @param cmds the AutoCommands we want to add to our list
  */
-void CommandController::add(std::vector<AutoCommand *> cmds) {
-  for (AutoCommand *cmd : cmds) {
+void CommandController::add(std::vector<AutoCommand*> cmds) {
+  for (AutoCommand* cmd : cmds) {
     command_queue.push(cmd);
   }
 }
@@ -37,8 +39,8 @@ void CommandController::add(std::vector<AutoCommand *> cmds) {
  * @param timeout timeout in seconds to apply to all commands if they are still
  * the default
  */
-void CommandController::add(std::vector<AutoCommand *> cmds, double timeout_sec) {
-  for (AutoCommand *cmd : cmds) {
+void CommandController::add(std::vector<AutoCommand*> cmds, double timeout_sec) {
+  for (AutoCommand* cmd : cmds) {
     if (cmd->timeout_seconds == AutoCommand::default_timeout) {
       cmd->timeout_seconds = timeout_sec;
     }
@@ -53,7 +55,7 @@ void CommandController::add(std::vector<AutoCommand *> cmds, double timeout_sec)
  *    before continuing execution of autonomous
  */
 void CommandController::add_delay(int ms) {
-  AutoCommand *delay = new DelayCommand(ms);
+  AutoCommand* delay = new DelayCommand(ms);
   command_queue.push(delay);
 }
 
@@ -64,7 +66,7 @@ void CommandController::add_cancel_func(std::function<bool(void)> true_if_cancel
  * Execute and remove commands in FIFO order
  */
 void CommandController::run() {
-  AutoCommand *next_cmd;
+  AutoCommand* next_cmd;
   printf("Running Auto. Commands 1 to %d\n", command_queue.size());
   fflush(stdout);
   int command_count = 1;
@@ -73,9 +75,9 @@ void CommandController::run() {
 
   while (!command_queue.empty()) {
     // retrieve and remove command at the front of the queue
-    
+
     next_cmd = command_queue.front();
-    if(printPathLogs){
+    if (printPathLogs) {
       printf("%s\n", next_cmd->toString().c_str());
     }
     command_queue.pop();
@@ -121,7 +123,7 @@ void CommandController::run() {
   printf("Finished commands in %f seconds\n", tmr.time(vex::sec));
 }
 
-std::string CommandController::toString(){
+std::string CommandController::toString() {
   return "Command controller with " + double_to_string(command_queue.size()) + " commands";
 };
 

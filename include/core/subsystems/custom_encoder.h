@@ -8,13 +8,13 @@
 class CustomEncoder : public vex::encoder {
   typedef vex::encoder super;
 
-public:
+ public:
   /**
    * Construct an encoder with a custom number of ticks
    * @param port the triport port on the brain the encoder is plugged into
    * @param ticks_per_rev the number of ticks the encoder will report for one revolution
    */
-  CustomEncoder(vex::triport::port &port, double ticks_per_rev);
+  CustomEncoder(vex::triport::port& port, double ticks_per_rev);
 
   /**
    * sets the stored rotation of the encoder. Any further movements will be from this value
@@ -51,6 +51,6 @@ public:
    */
   double velocity(vex::velocityUnits units);
 
-private:
+ private:
   double tick_scalar;
 };

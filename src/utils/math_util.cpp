@@ -1,4 +1,5 @@
 #include "core/utils/math_util.h"
+
 #include <vector>
 
 #ifndef PI
@@ -57,7 +58,7 @@ double wrap_angle_rad(double input) {
 Calculates the average of a vector of doubles
 @param values   the list of values for which the average is taken
 */
-double mean(std::vector<double> const &values) {
+double mean(std::vector<double> const& values) {
   double total = 0;
   for (int i = 0; i < values.size(); i++) {
     total += values[i];
@@ -71,7 +72,7 @@ https://en.wikipedia.org/wiki/Variance
 @param values   the values for which the covariance is taken
 @param mean     the average of values
 */
-double variance(std::vector<double> const &values, double mean) {
+double variance(std::vector<double> const& values, double mean) {
   double total = 0.0;
   for (int i = 0; i < values.size(); i++) {
     total += (values[i] - mean) * (values[i] - mean);
@@ -88,7 +89,7 @@ https://en.wikipedia.org/wiki/Covariance
 @param meanx    the mean value of all x coordinates in points
 @param meany    the mean value of all y coordinates in points
 */
-double covariance(std::vector<std::pair<double, double>> const &points, double meanx, double meany) {
+double covariance(std::vector<std::pair<double, double>> const& points, double meanx, double meany) {
   double covar = 0.0;
   for (int i = 0; i < points.size(); i++) {
     covar += (points[i].first - meanx) * (points[i].second - meany);
@@ -101,7 +102,7 @@ double covariance(std::vector<std::pair<double, double>> const &points, double m
  * @param points the points for the data
  * @return slope, y intercept. y = m(x)+b. std::pair<m, b>
  */
-std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const &points) {
+std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const& points) {
   // Purely for convenience and the ability to reuse mean() and variance() - can be easily rewritten to avoid allocating
   // these if the code is repeatedly called
   std::vector<double> xs(points.size(), 0.0);
@@ -120,7 +121,7 @@ std::pair<double, double> calculate_linear_regression(std::vector<std::pair<doub
   return std::pair<double, double>(slope, y_intercept);
 }
 
-double estimate_path_length(const std::vector<Translation2d> &points) {
+double estimate_path_length(const std::vector<Translation2d>& points) {
   double dist = 0;
 
   for (Translation2d p : points) {

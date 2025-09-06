@@ -1,46 +1,46 @@
 #include "core/utils/command_structure/auto_command.h"
 
 class OrCondition : public Condition {
-public:
-  OrCondition(Condition *A, Condition *B) : A(A), B(B) {}
+ public:
+  OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
   bool test() override {
     bool a = A->test();
     bool b = B->test();
     return a | b;
   }
 
-private:
-  Condition *A;
-  Condition *B;
+ private:
+  Condition* A;
+  Condition* B;
 };
 
 class AndCondition : public Condition {
-public:
-  AndCondition(Condition *A, Condition *B) : A(A), B(B) {}
+ public:
+  AndCondition(Condition* A, Condition* B) : A(A), B(B) {}
   bool test() override {
     bool a = A->test();
     bool b = B->test();
     return a & b;
   }
 
-private:
-  Condition *A;
-  Condition *B;
+ private:
+  Condition* A;
+  Condition* B;
 };
-std::string Condition::toString() {return "Condition";}
+std::string Condition::toString() { return "Condition"; }
 
-Condition *Condition::Or(Condition *b) { return new OrCondition(this, b); }
+Condition* Condition::Or(Condition* b) { return new OrCondition(this, b); }
 
-Condition *Condition::And(Condition *b) { return new AndCondition(this, b); }
+Condition* Condition::And(Condition* b) { return new AndCondition(this, b); }
 
 bool FunctionCondition::test() { return cond(); }
 IfTimePassed::IfTimePassed(double time_s) : time_s(time_s), tmr() {}
 bool IfTimePassed::test() { return tmr.value() > time_s; }
 
-InOrder::InOrder(std::queue<AutoCommand *> cmds) : cmds(cmds) {
-  timeout_seconds = -1.0; // never timeout unless with_timeout is explicitly called
+InOrder::InOrder(std::queue<AutoCommand*> cmds) : cmds(cmds) {
+  timeout_seconds = -1.0;  // never timeout unless with_timeout is explicitly called
 }
-InOrder::InOrder(std::initializer_list<AutoCommand *> cmds) : cmds(cmds) { timeout_seconds = -1.0; }
+InOrder::InOrder(std::initializer_list<AutoCommand*> cmds) : cmds(cmds) { timeout_seconds = -1.0; }
 
 bool InOrder::run() {
   // outer loop finished
@@ -49,7 +49,7 @@ bool InOrder::run() {
   }
   // retrieve and remove command at the front of the queue
   if (current_command == nullptr) {
-    printf("TAKING INORDER: len =  %d\n", cmds.size());   
+    printf("TAKING INORDER: len =  %d\n", cmds.size());
     current_command = cmds.front();
     cmds.pop();
     tmr.reset();
@@ -60,7 +60,7 @@ bool InOrder::run() {
   if (cmd_finished) {
     printf("InOrder Cmd finished\n");
     current_command = nullptr;
-    return false; // continue onto next command
+    return false;  // continue onto next command
   }
 
   double seconds = tmr.value();
@@ -81,9 +81,7 @@ bool InOrder::run() {
   return false;
 }
 
-std::string InOrder::toString() {
-  return "Running Inorder with length: " + int_to_string(cmds.size());
-}
+std::string InOrder::toString() { return "Running Inorder with length: " + int_to_string(cmds.size()); }
 
 void InOrder::on_timeout() {
   if (current_command != nullptr) {
@@ -93,11 +91,11 @@ void InOrder::on_timeout() {
 
 struct parallel_runner_info {
   int index;
-  std::vector<vex::task *> *runners;
-  AutoCommand *cmd;
+  std::vector<vex::task*>* runners;
+  AutoCommand* cmd;
 };
-static int parallel_runner(void *arg) {
-  parallel_runner_info *ri = (parallel_runner_info *)arg;
+static int parallel_runner(void* arg) {
+  parallel_runner_info* ri = (parallel_runner_info*)arg;
   vex::timer tmr;
   while (1) {
     bool finished = ri->cmd->run();
@@ -124,13 +122,13 @@ static int parallel_runner(void *arg) {
 }
 
 // wait for all to finish
-Parallel::Parallel(std::initializer_list<AutoCommand *> cmds) : cmds(cmds), runners(0) {}
+Parallel::Parallel(std::initializer_list<AutoCommand*> cmds) : cmds(cmds), runners(0) {}
 
 bool Parallel::run() {
   if (runners.size() == 0) {
     // not initialized yet
     for (int i = 0; i < cmds.size(); i++) {
-      parallel_runner_info *ri = new parallel_runner_info{
+      parallel_runner_info* ri = new parallel_runner_info{
           .index = i,
           .runners = &runners,
           .cmd = cmds[i],
@@ -149,13 +147,10 @@ bool Parallel::run() {
   return all_finished;
 }
 
-std::string Parallel::toString() {
-  return double_to_string(runners.size()) + " commands running in parallel";
-}
+std::string Parallel::toString() { return double_to_string(runners.size()) + " commands running in parallel"; }
 
 void Parallel::on_timeout() {
   for (int i = 0; i < runners.size(); i++) {
-
     if (runners[i] != nullptr) {
       runners[i]->stop();
       if (cmds[i] != nullptr) {
@@ -171,7 +166,7 @@ void Parallel::on_timeout() {
   }
 }
 
-Branch::Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice)
+Branch::Branch(Condition* cond, AutoCommand* false_choice, AutoCommand* true_choice)
     : false_choice(false_choice), true_choice(true_choice), cond(cond), choice(false), chosen(false), tmr() {
   this->timeout_seconds = -1;
 }
@@ -214,8 +209,9 @@ bool Branch::run() {
   return false;
 }
 
-std::string Branch::toString(){
-  return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " + cond->toString();
+std::string Branch::toString() {
+  return "Branch of " + false_choice->toString() + " and " + true_choice->toString() + " depending on " +
+         cond->toString();
 }
 void Branch::on_timeout() {
   if (!chosen) {
@@ -231,8 +227,8 @@ void Branch::on_timeout() {
   chosen = false;
 }
 
-static int async_runner(void *arg) {
-  AutoCommand *cmd = (AutoCommand *)arg;
+static int async_runner(void* arg) {
+  AutoCommand* cmd = (AutoCommand*)arg;
   vex::timer tmr;
   while (1) {
     bool finished = cmd->run();
@@ -256,21 +252,19 @@ static int async_runner(void *arg) {
   return 0;
 }
 bool Async::run() {
-  vex::task *t = new vex::task(async_runner, (void *)cmd);
+  vex::task* t = new vex::task(async_runner, (void*)cmd);
   (void)t;
   // lmao get memory leaked
   return true;
 }
 
-std::string Async::toString() {
-  return "Async of " + cmd->toString();
-}
+std::string Async::toString() { return "Async of " + cmd->toString(); }
 
 RepeatUntil::RepeatUntil(InOrder cmds, size_t times) : RepeatUntil(cmds, new TimesTestedCondition(times)) {
   timeout_seconds = -1.0;
 }
 
-RepeatUntil::RepeatUntil(InOrder cmds, Condition *cond) : cmds(cmds), working_cmds(new InOrder(cmds)), cond(cond) {
+RepeatUntil::RepeatUntil(InOrder cmds, Condition* cond) : cmds(cmds), working_cmds(new InOrder(cmds)), cond(cond) {
   timeout_seconds = -1.0;
 }
 
@@ -292,7 +286,7 @@ bool RepeatUntil::run() {
   return false;
 }
 
-std::string RepeatUntil::toString(){
+std::string RepeatUntil::toString() {
   InOrder pHCmds = cmds;
   return "Repeating " + pHCmds.toString() + " until " + true_to_end->toString();
 }
