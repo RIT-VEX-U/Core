@@ -1,26 +1,27 @@
 #include "core/subsystems/screen.h"
+
 #include "core/utils/math_util.h"
 namespace screen {
-void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
+void draw_label(vex::brain::lcd& scr, std::string lbl, ScreenRect rect) {
   uint32_t height = scr.getStringHeight(lbl.c_str());
   scr.printAt(rect.x1 + 1, rect.y1 + height, true, "%s", lbl.c_str());
 }
-void draw_widget(vex::brain::lcd &scr, WidgetConfig &widget, ScreenRect rect) {
+void draw_widget(vex::brain::lcd& scr, WidgetConfig& widget, ScreenRect rect) {
   switch (widget.type) {
-  case WidgetConfig::Type::Col:
-  case WidgetConfig::Type::Row:
-  case WidgetConfig::Type::Slider:
-  case WidgetConfig::Type::Button:
-  case WidgetConfig::Type::Checkbox:
-  case WidgetConfig::Type::Graph:
-    printf("unimplemented\n");
-    break;
-  case WidgetConfig::Type::Text:
-    draw_label(scr, widget.config.text.text(), rect);
-    break;
-  case WidgetConfig::Type::Label:
-    draw_label(scr, widget.config.label.label, rect);
-    break;
+    case WidgetConfig::Type::Col:
+    case WidgetConfig::Type::Row:
+    case WidgetConfig::Type::Slider:
+    case WidgetConfig::Type::Button:
+    case WidgetConfig::Type::Checkbox:
+    case WidgetConfig::Type::Graph:
+      printf("unimplemented\n");
+      break;
+    case WidgetConfig::Type::Text:
+      draw_label(scr, widget.config.text.text(), rect);
+      break;
+    case WidgetConfig::Type::Label:
+      draw_label(scr, widget.config.label.label, rect);
+      break;
   }
 }
 
@@ -30,17 +31,17 @@ void draw_widget(vex::brain::lcd &scr, WidgetConfig &widget, ScreenRect rect) {
  * you probably shouldnt have to use it
  */
 struct ScreenData {
-  ScreenData(const std::vector<Page *> &m_pages, int m_page, vex::brain::lcd &m_screen)
+  ScreenData(const std::vector<Page*>& m_pages, int m_page, vex::brain::lcd& m_screen)
       : pages(m_pages), page(m_page), screen(m_screen) {}
-  std::vector<Page *> pages;
+  std::vector<Page*> pages;
   int page = 0;
   vex::brain::lcd screen;
 };
 
-static vex::thread *screen_thread = nullptr;
+static vex::thread* screen_thread = nullptr;
 static bool running = false;
-static int screen_thread_func(void *screen_data_v);
-static ScreenData *screen_data_ptr;
+static int screen_thread_func(void* screen_data_v);
+static ScreenData* screen_data_ptr;
 
 /// @brief start_screen begins a screen. only call this once per program (a
 /// good place is vexcodeInit)
@@ -49,7 +50,7 @@ static ScreenData *screen_data_ptr;
 /// @param screen the brain screen
 /// @param pages the list of pages in your UI slideshow
 /// @param first_page the page to start on (by default 0)
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page) {
+void start_screen(vex::brain::lcd& screen, std::vector<Page*> pages, int first_page) {
   if (pages.size() == 0) {
     printf("No pages, not starting screen");
     return;
@@ -61,9 +62,9 @@ void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_
     return;
   }
 
-  ScreenData *data = new ScreenData{pages, first_page, screen};
+  ScreenData* data = new ScreenData{pages, first_page, screen};
 
-  screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
+  screen_thread = new vex::thread(screen_thread_func, static_cast<void*>(data));
 }
 
 void stop_screen() { running = false; }
@@ -88,9 +89,9 @@ void goto_page(size_t page) {
  * This should only be called by start_screen
  * If you are calling this, maybe don't
  */
-int screen_thread_func(void *screen_data_v) {
-  ScreenData &screen_data = *static_cast<ScreenData *>(screen_data_v);
-  screen_data_ptr = static_cast<ScreenData *>(screen_data_v);
+int screen_thread_func(void* screen_data_v) {
+  ScreenData& screen_data = *static_cast<ScreenData*>(screen_data_v);
+  screen_data_ptr = static_cast<ScreenData*>(screen_data_v);
   running = true;
   unsigned int frame = 0;
 
@@ -99,7 +100,7 @@ int screen_thread_func(void *screen_data_v) {
   int y_press = 0;
 
   while (running) {
-    Page *front_page = screen_data.pages[screen_data.page];
+    Page* front_page = screen_data.pages[screen_data.page];
     bool pressing = screen_data.screen.pressing();
 
     if (pressing) {
@@ -168,18 +169,18 @@ FunctionPage::FunctionPage(update_func_t update_f, draw_func_t draw_f) : update_
 /// @brief update uses the supplied update function to update this page
 void FunctionPage::update(bool was_pressed, int x, int y) { update_f(was_pressed, x, y); }
 /// @brief draw uses the supplied draw function to draw to the screen
-void FunctionPage::draw(vex::brain::lcd &screen, bool first_draw, unsigned int frame_number) {
+void FunctionPage::draw(vex::brain::lcd& screen, bool first_draw, unsigned int frame_number) {
   draw_f(screen, first_draw, frame_number);
 }
 
-StatsPage::StatsPage(std::map<std::string, vex::motor &> motors) : motors(motors) {}
+StatsPage::StatsPage(std::map<std::string, vex::motor&> motors) : motors(motors) {}
 void StatsPage::update(bool was_pressed, int x, int y) {
   (void)x;
   (void)y;
   (void)was_pressed;
 }
-void StatsPage::draw_motor_stats(const std::string &name, vex::motor &mot, unsigned int frame, int x, int y,
-                                 vex::brain::lcd &scr) {
+void StatsPage::draw_motor_stats(const std::string& name, vex::motor& mot, unsigned int frame, int x, int y,
+                                 vex::brain::lcd& scr) {
   const vex::color hot_col = vex::color(120, 0, 0);
   const vex::color med_col = vex::color(140, 100, 0);
   const vex::color ok_col = vex::black;
@@ -204,7 +205,7 @@ void StatsPage::draw_motor_stats(const std::string &name, vex::motor &mot, unsig
   scr.drawRectangle(x, y, row_width, row_height, col);
   scr.printAt(x + 2, y + 16, false, " %2d   %2.0fC   %.7s", port, temp, name.c_str());
 }
-void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+void StatsPage::draw(vex::brain::lcd& scr, bool first_draw [[maybe_unused]],
                      unsigned int frame_number [[maybe_unused]]) {
   int num = 0;
   int x = 40;
@@ -213,7 +214,7 @@ void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
 
   scr.drawRectangle(x, y_start, row_width, row_height);
   scr.printAt(x, y_start + 16, false, " port temp  name");
-  for (auto &kv : motors) {
+  for (auto& kv : motors) {
     if (num > per_column) {
       scr.drawRectangle(x + row_width, y_start, row_width, row_height);
       scr.printAt(x + row_width, y_start + 16, false, " port temp  name");
@@ -231,13 +232,16 @@ void StatsPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.printAt(50, 220, "Battery: %2.1fv  %2.0fC %d%%", b.Battery.voltage(),
               b.Battery.temperature(vex::temperatureUnits::celsius), b.Battery.capacity());
 }
-OdometryPage::OdometryPage(OdometryBase &odom, double width, double height, bool do_trail)
-    : odom(odom), robot_width(width), robot_height(height), do_trail(do_trail),
+OdometryPage::OdometryPage(OdometryBase& odom, double width, double height, bool do_trail)
+    : odom(odom),
+      robot_width(width),
+      robot_height(height),
+      do_trail(do_trail),
       velocity_graph(30, 0.0, 0.0, {vex::green}, 1) {
   vex::brain b;
   if (b.SDcard.exists(field_filename)) {
     buf_size = b.SDcard.size(field_filename);
-    buf = (uint8_t *)malloc(buf_size);
+    buf = (uint8_t*)malloc(buf_size);
     b.SDcard.loadfile(field_filename, buf, buf_size);
   }
   Pose2d pos = odom.get_position();
@@ -251,7 +255,7 @@ int in_to_px(double in) {
   return (int)(p * 240);
 }
 
-void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+void OdometryPage::draw(vex::brain::lcd& scr, bool first_draw [[maybe_unused]],
                         unsigned int frame_number [[maybe_unused]]) {
   Pose2d pose = odom.get_position();
   path[path_index] = pose;
@@ -261,7 +265,9 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
     path_index %= path_len;
   }
 
-  auto to_px = [](const Translation2d p) -> Translation2d { return {(double)in_to_px(p.x()) + 200, (double)in_to_px(-p.y()) + 240}; };
+  auto to_px = [](const Translation2d p) -> Translation2d {
+    return {(double)in_to_px(p.x()) + 200, (double)in_to_px(-p.y()) + 240};
+  };
 
   auto draw_line = [to_px, &scr](const Translation2d from, const Translation2d to) {
     scr.drawLine((int)to_px(from).x(), (int)to_px(from).y(), (int)to_px(to).x(), (int)to_px(to).y());
@@ -302,16 +308,15 @@ void OdometryPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   const Translation2d to_left(-robot_width / 2.0, 0);
   const Translation2d to_front(0.0, robot_height / 2.0);
 
-  Translation2d front_left(-robot_width/2, robot_width/2);
-  Translation2d front_right(robot_width/2, robot_width/2);
-  Translation2d back_left(-robot_width/2, -robot_width/2);
-  Translation2d back_right(robot_width/2, -robot_width/2);
+  Translation2d front_left(-robot_width / 2, robot_width / 2);
+  Translation2d front_right(robot_width / 2, robot_width / 2);
+  Translation2d back_left(-robot_width / 2, -robot_width / 2);
+  Translation2d back_right(robot_width / 2, -robot_width / 2);
 
   front_left = pos + front_left.rotate_by(pose.rotation().degrees() - 90);
   front_right = pos + front_right.rotate_by(pose.rotation().degrees() - 90);
   back_left = pos + back_left.rotate_by(pose.rotation().degrees() - 90);
   back_right = pos + back_right.rotate_by(pose.rotation().degrees() - 90);
-
 
   const Translation2d front = to_front.rotate_by(pose.rotation().degrees() - 90);
 
@@ -343,7 +348,7 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
   }
   return false;
 }
-void SliderWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+void SliderWidget::draw(vex::brain::lcd& scr, bool first_draw [[maybe_unused]],
                         unsigned int frame_number [[maybe_unused]]) {
   if (rect.height() <= 0) {
     printf("Slider: %s has no height. Cant use it.", name.c_str());
@@ -385,7 +390,7 @@ bool ButtonWidget::update(bool was_pressed, int x, int y) {
   return false;
 }
 
-void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
+void ButtonWidget::draw(vex::brain::lcd& scr, bool first_draw [[maybe_unused]],
                         unsigned int frame_number [[maybe_unused]]) {
   scr.setPenColor(vex::white);
   scr.setPenWidth(1);
@@ -396,15 +401,19 @@ void ButtonWidget::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]],
   scr.printAt(rect.center().x() - w / 2, rect.center().y() + h / 2, name.c_str());
 }
 
-PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
-    : cfg(pid.config), pid(pid), name(name), onchange(onchange),
+PIDPage::PIDPage(PID& pid, std::string name, std::function<void(void)> onchange)
+    : cfg(pid.config),
+      pid(pid),
+      name(name),
+      onchange(onchange),
       p_slider(cfg.p, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
       i_slider(cfg.i, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
       d_slider(cfg.d, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
       zero_i([this]() { zero_i_f(); }, Rect{{180, 80}, {220, 120}}, "0"),
-      zero_d([this]() { zero_d_f(); }, Rect{{180, 140}, {220, 180}}, "0"), graph(40, 0, 0, {vex::red, vex::green}, 2) {}
+      zero_d([this]() { zero_d_f(); }, Rect{{180, 140}, {220, 180}}, "0"),
+      graph(40, 0, 0, {vex::red, vex::green}, 2) {}
 
-PIDPage::PIDPage(PIDFF &pidff, std::string name, std::function<void(void)> onchange)
+PIDPage::PIDPage(PIDFF& pidff, std::string name, std::function<void(void)> onchange)
     : PIDPage((pidff.pid), name, onchange) {}
 
 void PIDPage::update(bool was_pressed, int x, int y) {
@@ -419,14 +428,14 @@ void PIDPage::update(bool was_pressed, int x, int y) {
     onchange();
   }
 }
-void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
+void PIDPage::draw(vex::brain::lcd& scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
   p_slider.draw(scr, first_draw, frame_number);
   i_slider.draw(scr, first_draw, frame_number);
   d_slider.draw(scr, first_draw, frame_number);
   zero_i.draw(scr, first_draw, frame_number);
   zero_d.draw(scr, first_draw, frame_number);
 
-  graph.add_samples(std::vector<double> {pid.get_target(), pid.get_sensor_val()});
+  graph.add_samples(std::vector<double>{pid.get_target(), pid.get_sensor_val()});
 
   graph.draw(scr, 230, 20, 200, 200);
 
@@ -439,4 +448,4 @@ void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsig
   scr.printAt(300, 20, false, "%.2f", pid.get_sensor_val());
 }
 
-} // namespace screen
+}  // namespace screen

@@ -21,8 +21,8 @@
 #include "core/subsystems/tank_drive.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/geometry.h"
-#include "vex.h"
 #include "core/utils/math/geometry/pose2d.h"
+#include "vex.h"
 using namespace vex;
 
 // ==== DRIVING ====
@@ -33,8 +33,8 @@ using namespace vex;
  *
  */
 class DriveForwardCommand : public AutoCommand {
-public:
-  DriveForwardCommand(TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed = 1,
+ public:
+  DriveForwardCommand(TankDrive& drive_sys, Feedback& feedback, double inches, directionType dir, double max_speed = 1,
                       double end_speed = 0);
 
   /**
@@ -45,21 +45,21 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
-  
+
   /**
    * Cleans up drive system if we time out before finishing
    */
   void on_timeout() override;
 
-private:
+ private:
   // drive system to run the function on
-  TankDrive &drive_sys;
+  TankDrive& drive_sys;
 
   // feedback controller to use
-  Feedback &feedback;
+  Feedback& feedback;
 
   // parameters for drive_forward
   double inches;
@@ -73,8 +73,8 @@ private:
  * TankDrive class
  */
 class TurnDegreesCommand : public AutoCommand {
-public:
-  TurnDegreesCommand(TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed = 1,
+ public:
+  TurnDegreesCommand(TankDrive& drive_sys, Feedback& feedback, double degrees, double max_speed = 1,
                      double end_speed = 0);
 
   /**
@@ -85,8 +85,8 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
   /**
    * Cleans up drive system if we time out before finishing
@@ -94,12 +94,12 @@ public:
 
   void on_timeout() override;
 
-private:
+ private:
   // drive system to run the function on
-  TankDrive &drive_sys;
+  TankDrive& drive_sys;
 
   // feedback controller to use
-  Feedback &feedback;
+  Feedback& feedback;
 
   // parameters for turn_degrees
   double degrees;
@@ -112,11 +112,11 @@ private:
  * TankDrive class
  */
 class DriveToPointCommand : public AutoCommand {
-public:
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir,
+ public:
+  DriveToPointCommand(TankDrive& drive_sys, Feedback& feedback, double x, double y, directionType dir,
                       double max_speed = 1, double end_speed = 0);
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed = 1,
-                      double end_speed = 0);
+  DriveToPointCommand(TankDrive& drive_sys, Feedback& feedback, Translation2d translation, directionType dir,
+                      double max_speed = 1, double end_speed = 0);
 
   /**
    * Run drive_to_point
@@ -126,12 +126,13 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
-private:
+
+ private:
   // drive system to run the function on
-  TankDrive &drive_sys;
+  TankDrive& drive_sys;
 
   /**
    * Cleans up drive system if we time out before finishing
@@ -139,7 +140,7 @@ private:
   void on_timeout() override;
 
   // feedback controller to use
-  Feedback &feedback;
+  Feedback& feedback;
 
   // parameters for drive_to_point
   double x;
@@ -149,29 +150,29 @@ private:
   double end_speed;
 };
 
-class TurnToPointCommand: public AutoCommand{
-  public:
+class TurnToPointCommand : public AutoCommand {
+ public:
+  TurnToPointCommand(TankDrive& drive_sys, double x, double y, vex::directionType dir, double max_speed = 1,
+                     double end_speed = 0);
+  TurnToPointCommand(TankDrive& drive_sys, Translation2d translation, vex::directionType dir, double max_speed = 1,
+                     double end_speed = 0);
 
-    TurnToPointCommand(TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed = 1, double end_speed = 0);
-    TurnToPointCommand(TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+  bool run() override;
 
-    bool run() override;
+  /*
+   * Returns a string describing the commands functionality
+   */
+  std::string toString() override;
 
-    /*
-    * Returns a string describing the commands functionality
-    */
-    std::string toString() override;
-
-  private:
-
-    void on_timeout() override;
-    TankDrive &drive_sys;
-    double x, y;
-    vex::directionType dir;
-    double max_speed;
-    double end_speed;
-    bool func_initialized = false;
-    double heading;
+ private:
+  void on_timeout() override;
+  TankDrive& drive_sys;
+  double x, y;
+  vex::directionType dir;
+  double max_speed;
+  double end_speed;
+  bool func_initialized = false;
+  double heading;
 };
 
 /**
@@ -180,8 +181,8 @@ class TurnToPointCommand: public AutoCommand{
  *
  */
 class TurnToHeadingCommand : public AutoCommand {
-public:
-  TurnToHeadingCommand(TankDrive &drive_sys, Feedback &feedback, double heading_deg, double speed = 1,
+ public:
+  TurnToHeadingCommand(TankDrive& drive_sys, Feedback& feedback, double heading_deg, double speed = 1,
                        double end_speed = 0);
 
   /**
@@ -192,8 +193,8 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
 
   /**
@@ -201,12 +202,12 @@ public:
    */
   void on_timeout() override;
 
-private:
+ private:
   // drive system to run the function on
-  TankDrive &drive_sys;
+  TankDrive& drive_sys;
 
   // feedback controller to use
-  Feedback &feedback;
+  Feedback& feedback;
 
   // parameters for turn_to_heading
   double heading_deg;
@@ -218,7 +219,7 @@ private:
  * Autocommand wrapper class for pure pursuit function in the TankDrive class
  */
 class PurePursuitCommand : public AutoCommand {
-public:
+ public:
   /**
    * Construct a Pure Pursuit AutoCommand
    *
@@ -227,7 +228,7 @@ public:
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
    */
-  PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, directionType dir,
+  PurePursuitCommand(TankDrive& drive_sys, Feedback& feedback, PurePursuit::Path path, directionType dir,
                      double max_speed = 1, double end_speed = 0);
 
   /**
@@ -236,8 +237,8 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
 
   /**
@@ -245,11 +246,11 @@ public:
    */
   void on_timeout() override;
 
-private:
-  TankDrive &drive_sys;
+ private:
+  TankDrive& drive_sys;
   PurePursuit::Path path;
   directionType dir;
-  Feedback &feedback;
+  Feedback& feedback;
   double max_speed;
   double end_speed;
 };
@@ -259,8 +260,8 @@ private:
  * TankDrive class
  */
 class DriveStopCommand : public AutoCommand {
-public:
-  DriveStopCommand(TankDrive &drive_sys);
+ public:
+  DriveStopCommand(TankDrive& drive_sys);
 
   /**
    * Stop the drive system
@@ -270,15 +271,15 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
-  
+
   void on_timeout() override;
 
-private:
+ private:
   // drive system to run the function on
-  TankDrive &drive_sys;
+  TankDrive& drive_sys;
 };
 
 // ==== ODOMETRY ====
@@ -288,13 +289,13 @@ private:
  * Odometry class
  */
 class OdomSetPosition : public AutoCommand {
-public:
+ public:
   /**
    * constructs a new OdomSetPosition command
    * @param odom the odometry system we are setting
    * @param newpos the position we are telling the odometry to take. defaults to (0, 0), angle = 90
    */
-  OdomSetPosition(OdometryBase &odom, const Pose2d &newpos = OdometryBase::zero_pos);
+  OdomSetPosition(OdometryBase& odom, const Pose2d& newpos = OdometryBase::zero_pos);
 
   /**
    * Run set_position
@@ -303,11 +304,12 @@ public:
    */
   bool run() override;
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
-private:
+
+ private:
   // drive system with an odometry config
-  OdometryBase &odom;
+  OdometryBase& odom;
   Pose2d newpos;
 };

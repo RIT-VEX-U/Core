@@ -1,9 +1,10 @@
 #pragma once
 
-#include "vex.h"
 #include <functional>
 #include <map>
 #include <queue>
+
+#include "vex.h"
 
 typedef std::function<bool(void)> state_ptr;
 
@@ -12,7 +13,7 @@ typedef std::function<bool(void)> state_ptr;
  * steps of the path can be added with add() and when ready, calling run() will begin executing the path
  */
 class GenericAuto {
-public:
+ public:
   /**
    * The method that runs the autonomous. If 'blocking' is true, then
    * this method will run through every state until it finished.
@@ -46,6 +47,6 @@ public:
    */
   [[deprecated("Use CommandController instead.")]] void add_delay(int ms);
 
-private:
+ private:
   std::queue<state_ptr> state_list;
 };

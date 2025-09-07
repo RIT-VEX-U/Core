@@ -28,9 +28,8 @@
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-DriveForwardCommand::DriveForwardCommand(
-  TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed, double end_speed
-)
+DriveForwardCommand::DriveForwardCommand(TankDrive& drive_sys, Feedback& feedback, double inches, directionType dir,
+                                         double max_speed, double end_speed)
     : drive_sys(drive_sys), feedback(feedback), inches(inches), dir(dir), max_speed(max_speed), end_speed(end_speed) {}
 
 /**
@@ -44,26 +43,26 @@ bool DriveForwardCommand::run() { return drive_sys.drive_forward(inches, dir, fe
  * Returns a string describing the commands functionality
  */
 std::string DriveForwardCommand::toString() {
-    std::string returnStr = "Driving ";
-    switch (dir) {
+  std::string returnStr = "Driving ";
+  switch (dir) {
     case directionType::fwd:
-        returnStr.append("forwards ");
-        break;
+      returnStr.append("forwards ");
+      break;
     case directionType::rev:
-        returnStr.append("reverse ");
+      returnStr.append("reverse ");
     default:
-        break;
-    }
-    returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed * 100) + "% speed");
-    return returnStr;
+      break;
+  }
+  returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed * 100) + "% speed");
+  return returnStr;
 }
 
 /**
  * reset the drive system if we timeout
  */
 void DriveForwardCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
+  drive_sys.stop();
+  drive_sys.reset_auto();
 }
 
 /**
@@ -73,9 +72,8 @@ void DriveForwardCommand::on_timeout() {
  * @param degrees how many degrees to rotate
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-TurnDegreesCommand::TurnDegreesCommand(
-  TankDrive &drive_sys, Feedback &feedback, double degrees, double max_speed, double end_speed
-)
+TurnDegreesCommand::TurnDegreesCommand(TankDrive& drive_sys, Feedback& feedback, double degrees, double max_speed,
+                                       double end_speed)
     : drive_sys(drive_sys), feedback(feedback), degrees(degrees), max_speed(max_speed), end_speed(end_speed) {}
 /**
  * Run turn_degrees
@@ -88,15 +86,15 @@ bool TurnDegreesCommand::run() { return drive_sys.turn_degrees(degrees, max_spee
  * Returns a string describing the commands functionality
  */
 std::string TurnDegreesCommand::toString() {
-    return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed * 100) + "% speed";
+  return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed * 100) + "% speed";
 }
 
 /**
  * reset the drive system if we timeout
  */
 void TurnDegreesCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
+  drive_sys.stop();
+  drive_sys.reset_auto();
 }
 
 /**
@@ -108,9 +106,8 @@ void TurnDegreesCommand::on_timeout() {
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-DriveToPointCommand::DriveToPointCommand(
-  TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed, double end_speed
-)
+DriveToPointCommand::DriveToPointCommand(TankDrive& drive_sys, Feedback& feedback, double x, double y,
+                                         directionType dir, double max_speed, double end_speed)
     : drive_sys(drive_sys), feedback(feedback), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed) {}
 
 /**
@@ -121,14 +118,17 @@ DriveToPointCommand::DriveToPointCommand(
  * @param dir the direction to drive
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-DriveToPointCommand::DriveToPointCommand(
-  TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed,
-  double end_speed
-)
-    : drive_sys(drive_sys), feedback(feedback), x(translation.x()), y(translation.y()), dir(dir), max_speed(max_speed),
+DriveToPointCommand::DriveToPointCommand(TankDrive& drive_sys, Feedback& feedback, Translation2d translation,
+                                         directionType dir, double max_speed, double end_speed)
+    : drive_sys(drive_sys),
+      feedback(feedback),
+      x(translation.x()),
+      y(translation.y()),
+      dir(dir),
+      max_speed(max_speed),
       end_speed(end_speed) {
-    x = translation.x();
-    y = translation.y();
+  x = translation.x();
+  y = translation.y();
 }
 
 /**
@@ -143,64 +143,61 @@ bool DriveToPointCommand::run() { return drive_sys.drive_to_point(x, y, dir, fee
  * Returns a string describing the commands functionality
  */
 std::string DriveToPointCommand::toString() {
-    std::string returnStr = "Driving ";
-    returnStr.append((dir == vex::directionType::fwd) ? "forwards at " : "reverse at ");
-    returnStr.append(
-      " to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed * 100) +
-      "% speed"
-    );
-    return returnStr;
+  std::string returnStr = "Driving ";
+  returnStr.append((dir == vex::directionType::fwd) ? "forwards at " : "reverse at ");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " +
+                   double_to_string(max_speed * 100) + "% speed");
+  return returnStr;
 }
 
 /**
  * reset the drive system if we don't hit our target
  */
 void DriveToPointCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
+  drive_sys.stop();
+  drive_sys.reset_auto();
 }
 
-TurnToPointCommand::TurnToPointCommand(
-  TankDrive &drive_sys, double x, double y, vex::directionType dir, double max_speed, double end_speed
-)
+TurnToPointCommand::TurnToPointCommand(TankDrive& drive_sys, double x, double y, vex::directionType dir,
+                                       double max_speed, double end_speed)
     : drive_sys(drive_sys), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed) {}
 
-TurnToPointCommand::TurnToPointCommand(
-  TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed, double end_speed
-)
-    : drive_sys(drive_sys), x(translation.x()), y(translation.y()), dir(dir), max_speed(max_speed),
+TurnToPointCommand::TurnToPointCommand(TankDrive& drive_sys, Translation2d translation, vex::directionType dir,
+                                       double max_speed, double end_speed)
+    : drive_sys(drive_sys),
+      x(translation.x()),
+      y(translation.y()),
+      dir(dir),
+      max_speed(max_speed),
       end_speed(end_speed) {
-    x = translation.x();
-    y = translation.y();
+  x = translation.x();
+  y = translation.y();
 }
 
 bool TurnToPointCommand::run() {
-    if (!func_initialized) {
-        Pose2d pose = drive_sys.get_position();
-        double dy = y - pose.y();
-        double dx = x - pose.x();
-        heading = rad2deg(atan2(dy, dx));
-        if (dir != vex::directionType::fwd) {
-            heading += 180.0;
-        }
-        func_initialized = true;
+  if (!func_initialized) {
+    Pose2d pose = drive_sys.get_position();
+    double dy = y - pose.y();
+    double dx = x - pose.x();
+    heading = rad2deg(atan2(dy, dx));
+    if (dir != vex::directionType::fwd) {
+      heading += 180.0;
     }
-    printf("heading: %f\n", heading);
-    return drive_sys.turn_to_heading(heading, max_speed, end_speed);
+    func_initialized = true;
+  }
+  printf("heading: %f\n", heading);
+  return drive_sys.turn_to_heading(heading, max_speed, end_speed);
 }
 
 /*
  * Returns a string describing the commands functionality
  */
 std::string TurnToPointCommand::toString() {
-
-    std::string returnStr = "Turning ";
-    returnStr.append((dir == vex::directionType::fwd) ? "towards " : "away from ");
-    returnStr.append(
-      " to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed * 100) +
-      "% speed"
-    );
-    return returnStr;
+  std::string returnStr = "Turning ";
+  returnStr.append((dir == vex::directionType::fwd) ? "towards " : "away from ");
+  returnStr.append(" to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " +
+                   double_to_string(max_speed * 100) + "% speed");
+  return returnStr;
 }
 
 void TurnToPointCommand::on_timeout() { drive_sys.stop(); }
@@ -212,9 +209,8 @@ void TurnToPointCommand::on_timeout() { drive_sys.stop(); }
  * @param heading_deg the heading to turn to in degrees
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
-TurnToHeadingCommand::TurnToHeadingCommand(
-  TankDrive &drive_sys, Feedback &feedback, double heading_deg, double max_speed, double end_speed
-)
+TurnToHeadingCommand::TurnToHeadingCommand(TankDrive& drive_sys, Feedback& feedback, double heading_deg,
+                                           double max_speed, double end_speed)
     : drive_sys(drive_sys), feedback(feedback), heading_deg(heading_deg), max_speed(max_speed), end_speed(end_speed) {}
 
 /**
@@ -228,16 +224,16 @@ bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg,
  * Returns a string describing the commands functionality
  */
 std::string TurnToHeadingCommand::toString() {
-    return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed * 100) +
-           "% speed";
+  return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed * 100) +
+         "% speed";
 }
 
 /**
  * reset the drive system if we don't hit our target
  */
 void TurnToHeadingCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
+  drive_sys.stop();
+  drive_sys.reset_auto();
 }
 
 /**
@@ -248,10 +244,8 @@ void TurnToHeadingCommand::on_timeout() {
  * @param feedback The feedback controller determining speed
  * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
  */
-PurePursuitCommand::PurePursuitCommand(
-  TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed,
-  double end_speed
-)
+PurePursuitCommand::PurePursuitCommand(TankDrive& drive_sys, Feedback& feedback, PurePursuit::Path path,
+                                       directionType dir, double max_speed, double end_speed)
     : drive_sys(drive_sys), path(path), dir(dir), feedback(feedback), max_speed(max_speed), end_speed(end_speed) {}
 
 /**
@@ -263,29 +257,29 @@ bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedba
  * Returns a string describing the commands functionality
  */
 std::string PurePursuitCommand::toString() {
-    std::string returnStr = "Driving through ";
-    std::vector<Translation2d> thePoints = path.get_points();
-    for (int i = 0; i < thePoints.size(); i++) {
-        returnStr.append("(");
-        returnStr.append(double_to_string(thePoints.at(i).x()) + ", " + double_to_string(thePoints.at(i).y()) + ") \n");
-    }
-    returnStr.append(" at " + double_to_string(max_speed * 100) + "% speed");
-    return returnStr;
+  std::string returnStr = "Driving through ";
+  std::vector<Translation2d> thePoints = path.get_points();
+  for (int i = 0; i < thePoints.size(); i++) {
+    returnStr.append("(");
+    returnStr.append(double_to_string(thePoints.at(i).x()) + ", " + double_to_string(thePoints.at(i).y()) + ") \n");
+  }
+  returnStr.append(" at " + double_to_string(max_speed * 100) + "% speed");
+  return returnStr;
 }
 
 /**
  * Reset the drive system when it times out
  */
 void PurePursuitCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
+  drive_sys.stop();
+  drive_sys.reset_auto();
 }
 
 /**
  * Construct a DriveStop Command
  * @param drive_sys the drive system we are commanding
  */
-DriveStopCommand::DriveStopCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
+DriveStopCommand::DriveStopCommand(TankDrive& drive_sys) : drive_sys(drive_sys) {}
 
 /*
  * Returns a string describing the commands functionality
@@ -300,8 +294,8 @@ void DriveStopCommand::on_timeout() { drive_sys.reset_auto(); }
  * @returns true when execution is complete, false otherwise
  */
 bool DriveStopCommand::run() {
-    drive_sys.stop();
-    return true;
+  drive_sys.stop();
+  return true;
 }
 
 // ==== ODOMETRY ====
@@ -310,17 +304,17 @@ bool DriveStopCommand::run() {
  * @param odom the odometry system we are setting
  * @param newpos the now position to set the odometry to
  */
-OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odom(odom), newpos(newpos) {}
+OdomSetPosition::OdomSetPosition(OdometryBase& odom, const Pose2d& newpos) : odom(odom), newpos(newpos) {}
 
 /*
  * Returns a string describing the commands functionality
  */
 std::string OdomSetPosition::toString() {
-    return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) +
-           ", ROT: " + double_to_string(newpos.rotation().degrees());
+  return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) +
+         ", ROT: " + double_to_string(newpos.rotation().degrees());
 }
 
 bool OdomSetPosition::run() {
-    odom.set_position(newpos);
-    return true;
+  odom.set_position(newpos);
+  return true;
 }

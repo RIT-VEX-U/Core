@@ -1,10 +1,12 @@
 #pragma once
 
+#include <math.h>
+
+#include <vector>
+
 #include "core/utils/math_util.h"
 #include "core/utils/moving_average.h"
 #include "vex.h"
-#include <math.h>
-#include <vector>
 
 /**
  * FeedForward
@@ -27,7 +29,7 @@
  * @date 6/13/2022
  */
 class FeedForward {
-public:
+ public:
   /**
    * ff_config_t holds the parameters to make the theoretical model of a real world system
    * equation is of the form
@@ -50,7 +52,7 @@ public:
    * Creates a FeedForward object.
    * @param cfg Configuration Struct for tuning
    */
-  FeedForward(ff_config_t &cfg) : cfg(cfg) {}
+  FeedForward(ff_config_t& cfg) : cfg(cfg) {}
 
   /**
    * @brief Perform the feedforward calculation
@@ -72,8 +74,8 @@ public:
     return (cfg.kS * ks_sign) + (cfg.kV * v) + (cfg.kA * a) + cfg.kG;
   }
 
-private:
-  ff_config_t &cfg;
+ private:
+  ff_config_t& cfg;
 };
 
 /**
@@ -83,4 +85,4 @@ private:
  * @param duration Amount of time the motors spin for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, double duration);
+FeedForward::ff_config_t tune_feedforward(vex::motor_group& motor, double pct, double duration);

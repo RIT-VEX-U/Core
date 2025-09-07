@@ -1,4 +1,5 @@
 #include "core/utils/controls/take_back_half.h"
+
 #include "core/utils/math_util.h"
 
 TakeBackHalf::TakeBackHalf(double gain, double first_cross_split, double thresh)
@@ -23,7 +24,6 @@ void TakeBackHalf::init(double start_pt, double set_pt) {
 }
 
 double TakeBackHalf::update(double val) {
-
   if (target == 0.0) {
     printf("no target\n");
     return 0.0;
@@ -56,7 +56,6 @@ double TakeBackHalf::update(double val) {
 double TakeBackHalf::get() { return output; }
 
 void TakeBackHalf::set_limits(double low, double high) {
-
   lower = low;
   upper = high;
   printf("Set limits: %f, %f\n", lower, upper);

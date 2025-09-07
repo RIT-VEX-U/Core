@@ -8,32 +8,28 @@
  */
 
 #pragma once
-#include "core/utils/command_structure/auto_command.h"
 #include <queue>
 #include <vector>
 
-class CommandController {
-public:
-  /// @brief Create an empty CommandController. Add Command with
-  /// CommandController::add()
-  [[deprecated("Empty constructor is bad. Use list constructor "
-               "instead.")]] CommandController()
-      : command_queue({}) {}
+#include "core/utils/command_structure/auto_command.h"
 
+class CommandController {
+ public:
   /// @brief Create a CommandController with commands pre added. More can be
   /// added with CommandController::add()
   /// @param cmds
-  CommandController(std::initializer_list<AutoCommand *> cmds) : command_queue(cmds) {}
+  CommandController(std::initializer_list<AutoCommand*> cmds) : command_queue(cmds) {}
   /**
    * Adds a command to the queue
    * @param cmd the AutoCommand we want to add to our list
    * @param timeout_seconds the number of seconds we will let the command run for. If it exceeds this, we cancel it and
    * run on_timeout. if it is <= 0 no time out will be applied
    */
-  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch "
-               "(https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
-  add(std::vector<AutoCommand *> cmds);
-  void add(AutoCommand *cmd, double timeout_seconds = 10.0);
+  [[deprecated(
+      "Use list constructor instead. If you need to make a decision before adding new commands, use Branch "
+      "(https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
+  add(std::vector<AutoCommand*> cmds);
+  void add(AutoCommand* cmd, double timeout_seconds = 10.0);
 
   /**
    * Add multiple commands to the queue. No timeout here.
@@ -46,9 +42,10 @@ public:
    * @param timeout_sec timeout in seconds to apply to all commands if they
    * are still the default
    */
-  [[deprecated("Use list constructor instead. If you need to make a decision before adding new commands, use Branch "
-               "(https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
-  add(std::vector<AutoCommand *> cmds, double timeout_sec);
+  [[deprecated(
+      "Use list constructor instead. If you need to make a decision before adding new commands, use Branch "
+      "(https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Utilites#commandcontroller)")]] void
+  add(std::vector<AutoCommand*> cmds, double timeout_sec);
   /**
    * Adds a command that will delay progression
    * of the queue
@@ -70,8 +67,8 @@ public:
   void run();
 
   /*
-  * returns the amount of commands in the controller
-  */
+   * returns the amount of commands in the controller
+   */
   std::string toString();
 
   /**
@@ -84,8 +81,8 @@ public:
   bool last_command_timed_out();
   bool printPathLogs = true;
 
-private:
-  std::queue<AutoCommand *> command_queue;
+ private:
+  std::queue<AutoCommand*> command_queue;
   bool command_timed_out = false;
   std::function<bool()> should_cancel = []() { return false; };
 };

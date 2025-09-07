@@ -29,7 +29,7 @@ AutoChooser::AutoChooser(std::vector<std::string> paths, size_t def) : choice(de
 }
 void AutoChooser::update(bool was_pressed, int x, int y) {
   size_t i = 0;
-  for (const entry_t &e : list) {
+  for (const entry_t& e : list) {
     if (was_pressed && e.rect.contains({(double)x, (double)y})) {
       choice = i;
     }
@@ -37,7 +37,7 @@ void AutoChooser::update(bool was_pressed, int x, int y) {
   }
 }
 
-void AutoChooser::draw(vex::brain::lcd &scr, [[maybe_unused]] bool first_draw,
+void AutoChooser::draw(vex::brain::lcd& scr, [[maybe_unused]] bool first_draw,
                        [[maybe_unused]] unsigned int frame_number) {
   scr.setFont(vex::fontType::mono20);
 

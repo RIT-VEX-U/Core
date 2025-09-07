@@ -1,18 +1,21 @@
 #include "core/subsystems/mecanum_drive.h"
+
 #include "core/utils/math_util.h"
 
 /**
  * Create the Mecanum drivetrain object
  */
-MecanumDrive::MecanumDrive(vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear,
-                           vex::motor &right_rear, vex::rotation *lateral_wheel, vex::inertial *imu,
-                           mecanumdrive_config_t *config)
-    : left_front(left_front), right_front(right_front), left_rear(left_rear), right_rear(right_rear), // MOTOR CONFIG
-      config(config),               // CONFIG ...uh... config
-      lateral_wheel(lateral_wheel), // NON-DRIVEN WHEEL CONFIG
-      imu(imu)                      // IMU CONFIG
+MecanumDrive::MecanumDrive(vex::motor& left_front, vex::motor& right_front, vex::motor& left_rear,
+                           vex::motor& right_rear, vex::rotation* lateral_wheel, vex::inertial* imu,
+                           mecanumdrive_config_t* config)
+    : left_front(left_front),
+      right_front(right_front),
+      left_rear(left_rear),
+      right_rear(right_rear),        // MOTOR CONFIG
+      config(config),                // CONFIG ...uh... config
+      lateral_wheel(lateral_wheel),  // NON-DRIVEN WHEEL CONFIG
+      imu(imu)                       // IMU CONFIG
 {
-
   // If the configuration exists, then allocate memory for the drive and turn pids
   if (config != NULL) {
     drive_pid = new PID(config->drive_pid_conf);
@@ -94,7 +97,7 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
 bool MecanumDrive::auto_drive(double inches, double direction, double speed, bool gyro_correction) {
   if (config == NULL || drive_pid == NULL) {
     fprintf(stderr, "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in constructor\n");
-    return true; // avoid an infinte loop within auto
+    return true;  // avoid an infinte loop within auto
   }
 
   bool enable_gyro = gyro_correction && (imu != NULL);
@@ -102,7 +105,6 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
 
   // INITIALIZE - only run ONCE "per drive" on startup
   if (init == true) {
-
     // Reset all driven encoders, and PID
     left_front.resetPosition();
     right_front.resetPosition();

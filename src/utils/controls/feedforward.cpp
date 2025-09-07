@@ -7,7 +7,7 @@
  * @param duration Amount of time the motors spin for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, double duration) {
+FeedForward::ff_config_t tune_feedforward(vex::motor_group& motor, double pct, double duration) {
   FeedForward::ff_config_t out = {};
 
   double start_pos = motor.position(vex::rotationUnits::rev);
@@ -25,8 +25,8 @@ FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, d
 
   // ========== kV / kA Tuning =========
 
-  std::vector<std::pair<double, double>> vel_data_points;   // time, velocity
-  std::vector<std::pair<double, double>> accel_data_points; // time, accel
+  std::vector<std::pair<double, double>> vel_data_points;    // time, velocity
+  std::vector<std::pair<double, double>> accel_data_points;  // time, accel
 
   double max_speed = 0;
   vex::timer tmr;
@@ -72,8 +72,8 @@ FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, d
   std::vector<std::pair<double, double>> accel_per_pct;
   for (int i = 0; i < vel_data_points.size(); i++) {
     accel_per_pct.push_back(std::pair<double, double>(
-        pct - out.kS - (vel_data_points[i].second * out.kV), // Acceleration-causing percent (X variable)
-        accel_data_points[i].second                          // Measured acceleration (Y variable)
+        pct - out.kS - (vel_data_points[i].second * out.kV),  // Acceleration-causing percent (X variable)
+        accel_data_points[i].second                           // Measured acceleration (Y variable)
         ));
   }
 

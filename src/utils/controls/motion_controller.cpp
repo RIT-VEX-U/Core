@@ -1,6 +1,8 @@
 #include "core/utils/controls/motion_controller.h"
-#include "core/utils/math_util.h"
+
 #include <vector>
+
+#include "core/utils/math_util.h"
 
 /**
  * @brief Construct a new Motion Controller object
@@ -11,7 +13,7 @@
  *    pid_cfg Definitions of kP, kI, and kD
  *    ff_cfg Definitions of kS, kV, and kA
  */
-MotionController::MotionController(m_profile_cfg_t &config)
+MotionController::MotionController(m_profile_cfg_t& config)
     : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
 
 /**
@@ -39,8 +41,7 @@ double MotionController::update(double sensor_val) {
 
   out = pid.get() + ff.calculate(cur_motion.vel, cur_motion.acc, pid.get());
 
-  if (lower_limit != upper_limit)
-    out = clamp(out, lower_limit, upper_limit);
+  if (lower_limit != upper_limit) out = clamp(out, lower_limit, upper_limit);
 
   return out;
 }
@@ -92,7 +93,7 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct,
+FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive& drive, OdometryTank& odometry, double pct,
                                                             double duration) {
   FeedForward::ff_config_t out = {};
 
@@ -111,8 +112,8 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
 
   // ========== kV / kA Tuning =========
 
-  std::vector<std::pair<double, double>> vel_data_points;   // time, velocity
-  std::vector<std::pair<double, double>> accel_data_points; // time, accel
+  std::vector<std::pair<double, double>> vel_data_points;    // time, velocity
+  std::vector<std::pair<double, double>> accel_data_points;  // time, accel
 
   double max_speed = 0;
   timer tmr;
@@ -132,8 +133,7 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
     double accel = accel_ma.get_value();
 
     // For kV:
-    if (speed > max_speed)
-      max_speed = speed;
+    if (speed > max_speed) max_speed = speed;
 
     // For kA:
     // Filter out the acceleration dampening due to motor inductance
@@ -155,8 +155,8 @@ FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive &drive, Od
   std::vector<std::pair<double, double>> accel_per_pct;
   for (int i = 0; i < vel_data_points.size(); i++) {
     accel_per_pct.push_back(std::pair<double, double>(
-        pct - out.kS - (vel_data_points[i].second * out.kV), // Acceleration-causing percent (X variable)
-        accel_data_points[i].second                          // Measured acceleration (Y variable)
+        pct - out.kS - (vel_data_points[i].second * out.kV),  // Acceleration-causing percent (X variable)
+        accel_data_points[i].second                           // Measured acceleration (Y variable)
         ));
   }
 

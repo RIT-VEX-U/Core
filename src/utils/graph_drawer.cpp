@@ -67,7 +67,7 @@ void GraphDrawer::add_samples(std::vector<double> new_samples) {
  * @param width the width of the graphed region
  * @param height the height of the graphed region
  */
-void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int height) {
+void GraphDrawer::draw(vex::brain::lcd& screen, int x, int y, int width, int height) {
   if (series[0].size() < 1) {
     return;
   }
@@ -102,7 +102,7 @@ void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int hei
   for (int j = 0; j < series.size(); j++) {
     double x_s = (double)x;
     double y_s = (double)y + (double)height;
-    const std::vector<Translation2d> &samples = series[j];
+    const std::vector<Translation2d>& samples = series[j];
 
     screen.setPenColor(cols[j]);
     for (int i = sample_index; i < samples.size() + sample_index - 1; i++) {

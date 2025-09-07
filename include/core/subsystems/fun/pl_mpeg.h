@@ -194,7 +194,7 @@ typedef struct {
   int type;
   double pts;
   size_t length;
-  uint8_t *data;
+  uint8_t* data;
 } plm_packet_t;
 
 // Decoded Video Plane
@@ -208,7 +208,7 @@ typedef struct {
 typedef struct {
   unsigned int width;
   unsigned int height;
-  uint8_t *data;
+  uint8_t* data;
 } plm_plane_t;
 
 // Decoded Video Frame
@@ -227,7 +227,7 @@ typedef struct {
 // Callback function type for decoded video frames used by the high-level
 // plm_* interface
 
-typedef void (*plm_video_decode_callback)(plm_t *self, plm_frame_t *frame, void *user);
+typedef void (*plm_video_decode_callback)(plm_t* self, plm_frame_t* frame, void* user);
 
 // Decoded Audio Samples
 // Samples are stored as normalized (-1, 1) float either interleaved, or if
@@ -251,11 +251,11 @@ typedef struct {
 // Callback function type for decoded audio samples used by the high-level
 // plm_* interface
 
-typedef void (*plm_audio_decode_callback)(plm_t *self, plm_samples_t *samples, void *user);
+typedef void (*plm_audio_decode_callback)(plm_t* self, plm_samples_t* samples, void* user);
 
 // Callback function for plm_buffer when it needs more data
 
-typedef void (*plm_buffer_load_callback)(plm_buffer_t *self, void *user);
+typedef void (*plm_buffer_load_callback)(plm_buffer_t* self, void* user);
 
 // -----------------------------------------------------------------------------
 // plm_* public API
@@ -264,29 +264,29 @@ typedef void (*plm_buffer_load_callback)(plm_buffer_t *self, void *user);
 // Create a plmpeg instance with a filename. Returns NULL if the file could not
 // be opened.
 
-plm_t *plm_create_with_filename(const char *filename);
+plm_t* plm_create_with_filename(const char* filename);
 
 // Create a plmpeg instance with a file handle. Pass TRUE to close_when_done to
 // let plmpeg call fclose() on the handle when plm_destroy() is called.
 
-plm_t *plm_create_with_file(FIL *fh, int close_when_done);
+plm_t* plm_create_with_file(FIL* fh, int close_when_done);
 
 // Create a plmpeg instance with a pointer to memory as source. This assumes the
 // whole file is in memory. The memory is not copied. Pass TRUE to
 // free_when_done to let plmpeg call free() on the pointer when plm_destroy()
 // is called.
 
-plm_t *plm_create_with_memory(uint8_t *bytes, size_t length, int free_when_done);
+plm_t* plm_create_with_memory(uint8_t* bytes, size_t length, int free_when_done);
 
 // Create a plmpeg instance with a plm_buffer as source. Pass TRUE to
 // destroy_when_done to let plmpeg call plm_buffer_destroy() on the buffer when
 // plm_destroy() is called.
 
-plm_t *plm_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done);
+plm_t* plm_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done);
 
 // Destroy a plmpeg instance and free all data.
 
-void plm_destroy(plm_t *self);
+void plm_destroy(plm_t* self);
 
 // Get whether we have headers on all available streams and we can accurately
 // report the number of video/audio streams, video dimensions, framerate and
@@ -294,91 +294,91 @@ void plm_destroy(plm_t *self);
 // This returns FALSE if the file is not an MPEG-PS file or - when not using a
 // file as source - when not enough data is available yet.
 
-int plm_has_headers(plm_t *self);
+int plm_has_headers(plm_t* self);
 
 // Get or set whether video decoding is enabled. Default TRUE.
 
-int plm_get_video_enabled(plm_t *self);
-void plm_set_video_enabled(plm_t *self, int enabled);
+int plm_get_video_enabled(plm_t* self);
+void plm_set_video_enabled(plm_t* self, int enabled);
 
 // Get the number of video streams (0--1) reported in the system header.
 
-int plm_get_num_video_streams(plm_t *self);
+int plm_get_num_video_streams(plm_t* self);
 
 // Get the display width/height of the video stream.
 
-int plm_get_width(plm_t *self);
-int plm_get_height(plm_t *self);
+int plm_get_width(plm_t* self);
+int plm_get_height(plm_t* self);
 
 // Get the framerate of the video stream in frames per second.
 
-double plm_get_framerate(plm_t *self);
+double plm_get_framerate(plm_t* self);
 
 // Get or set whether audio decoding is enabled. Default TRUE.
 
-int plm_get_audio_enabled(plm_t *self);
-void plm_set_audio_enabled(plm_t *self, int enabled);
+int plm_get_audio_enabled(plm_t* self);
+void plm_set_audio_enabled(plm_t* self, int enabled);
 
 // Get the number of audio streams (0--4) reported in the system header.
 
-int plm_get_num_audio_streams(plm_t *self);
+int plm_get_num_audio_streams(plm_t* self);
 
 // Set the desired audio stream (0--3). Default 0.
 
-void plm_set_audio_stream(plm_t *self, int stream_index);
+void plm_set_audio_stream(plm_t* self, int stream_index);
 
 // Get the samplerate of the audio stream in samples per second.
 
-int plm_get_samplerate(plm_t *self);
+int plm_get_samplerate(plm_t* self);
 
 // Get or set the audio lead time in seconds - the time in which audio samples
 // are decoded in advance (or behind) the video decode time. Typically this
 // should be set to the duration of the buffer of the audio API that you use
 // for output. E.g. for SDL2: (SDL_AudioSpec.samples / samplerate)
 
-double plm_get_audio_lead_time(plm_t *self);
-void plm_set_audio_lead_time(plm_t *self, double lead_time);
+double plm_get_audio_lead_time(plm_t* self);
+void plm_set_audio_lead_time(plm_t* self, double lead_time);
 
 // Get the current internal time in seconds.
 
-double plm_get_time(plm_t *self);
+double plm_get_time(plm_t* self);
 
 // Get the video duration of the underlying source in seconds.
 
-double plm_get_duration(plm_t *self);
+double plm_get_duration(plm_t* self);
 
 // Rewind all buffers back to the beginning.
 
-void plm_rewind(plm_t *self);
+void plm_rewind(plm_t* self);
 
 // Get or set looping. Default FALSE.
 
-int plm_get_loop(plm_t *self);
-void plm_set_loop(plm_t *self, int loop);
+int plm_get_loop(plm_t* self);
+void plm_set_loop(plm_t* self, int loop);
 
 // Get whether the file has ended. If looping is enabled, this will always
 // return FALSE.
 
-int plm_has_ended(plm_t *self);
+int plm_has_ended(plm_t* self);
 
 // Set the callback for decoded video frames used with plm_decode(). If no
 // callback is set, video data will be ignored and not be decoded. The *user
 // Parameter will be passed to your callback.
 
-void plm_set_video_decode_callback(plm_t *self, plm_video_decode_callback fp, void *user);
+void plm_set_video_decode_callback(plm_t* self, plm_video_decode_callback fp, void* user);
 
 // Set the callback for decoded audio samples used with plm_decode(). If no
 // callback is set, audio data will be ignored and not be decoded. The *user
 // Parameter will be passed to your callback.
 
-void plm_set_audio_decode_callback(plm_t *self, plm_audio_decode_callback fp, void *user);
+void plm_set_audio_decode_callback(plm_t* self, plm_audio_decode_callback fp, void* user);
 
 // Advance the internal timer by seconds and decode video/audio up to this time.
 // This will call the video_decode_callback and audio_decode_callback any number
 // of times. A frame-skip is not implemented, i.e. everything up to current time
 // will be decoded.
 
-void plm_decode(plm_t *self, double seconds);
+void plm_decode(plm_t* self, double seconds);
 
 // Decode and return one video frame. Returns NULL if no frame could be decoded
 // (either because the source ended or data is corrupt). If you only want to
@@ -386,7 +386,7 @@ void plm_decode(plm_t *self, double seconds);
 // The returned plm_frame_t is valid until the next call to plm_decode_video()
 // or until plm_destroy() is called.
 
-plm_frame_t *plm_decode_video(plm_t *self);
+plm_frame_t* plm_decode_video(plm_t* self);
 
 // Decode and return one audio frame. Returns NULL if no frame could be decoded
 // (either because the source ended or data is corrupt). If you only want to
@@ -394,7 +394,7 @@ plm_frame_t *plm_decode_video(plm_t *self);
 // The returned plm_samples_t is valid until the next call to plm_decode_audio()
 // or until plm_destroy() is called.
 
-plm_samples_t *plm_decode_audio(plm_t *self);
+plm_samples_t* plm_decode_audio(plm_t* self);
 
 // Seek to the specified time, clamped between 0 -- duration. This can only be
 // used when the underlying plm_buffer is seekable, i.e. for files, fixed
@@ -409,13 +409,13 @@ plm_samples_t *plm_decode_audio(plm_t *self);
 // satisfied.
 // Returns TRUE if seeking succeeded or FALSE if no frame could be found.
 
-int plm_seek(plm_t *self, double time, int seek_exact);
+int plm_seek(plm_t* self, double time, int seek_exact);
 
 // Similar to plm_seek(), but will not call the video_decode_callback,
 // audio_decode_callback or make any attempts to sync audio.
 // Returns the found frame or NULL if no frame could be found.
 
-plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact);
+plm_frame_t* plm_seek_frame(plm_t* self, double time, int seek_exact);
 
 // -----------------------------------------------------------------------------
 // plm_buffer public API
@@ -430,35 +430,35 @@ plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact);
 // Create a buffer instance with a filename. Returns NULL if the file could not
 // be opened.
 
-plm_buffer_t *plm_buffer_create_with_filename(const char *filename);
+plm_buffer_t* plm_buffer_create_with_filename(const char* filename);
 
 // Create a buffer instance with a file handle. Pass TRUE to close_when_done
 // to let plmpeg call fclose() on the handle when plm_destroy() is called.
 
-plm_buffer_t *plm_buffer_create_with_file(FIL *fh, int close_when_done);
+plm_buffer_t* plm_buffer_create_with_file(FIL* fh, int close_when_done);
 
 // Create a buffer instance with a pointer to memory as source. This assumes
 // the whole file is in memory. The bytes are not copied. Pass 1 to
 // free_when_done to let plmpeg call free() on the pointer when plm_destroy()
 // is called.
 
-plm_buffer_t *plm_buffer_create_with_memory(uint8_t *bytes, size_t length, int free_when_done);
+plm_buffer_t* plm_buffer_create_with_memory(uint8_t* bytes, size_t length, int free_when_done);
 
 // Create an empty buffer with an initial capacity. The buffer will grow
 // as needed. Data that has already been read, will be discarded.
 
-plm_buffer_t *plm_buffer_create_with_capacity(size_t capacity);
+plm_buffer_t* plm_buffer_create_with_capacity(size_t capacity);
 
 // Create an empty buffer with an initial capacity. The buffer will grow
 // as needed. Decoded data will *not* be discarded. This can be used when
 // loading a file over the network, without needing to throttle the download.
 // It also allows for seeking in the already loaded data.
 
-plm_buffer_t *plm_buffer_create_for_appending(size_t initial_capacity);
+plm_buffer_t* plm_buffer_create_for_appending(size_t initial_capacity);
 
 // Destroy a buffer instance and free all data
 
-void plm_buffer_destroy(plm_buffer_t *self);
+void plm_buffer_destroy(plm_buffer_t* self);
 
 // Copy data into the buffer. If the data to be written is larger than the
 // available space, the buffer will realloc() with a larger capacity.
@@ -466,38 +466,38 @@ void plm_buffer_destroy(plm_buffer_t *self);
 // passed in length, except when the buffer was created _with_memory() for
 // which _write() is forbidden.
 
-size_t plm_buffer_write(plm_buffer_t *self, uint8_t *bytes, size_t length);
+size_t plm_buffer_write(plm_buffer_t* self, uint8_t* bytes, size_t length);
 
 // Mark the current byte length as the end of this buffer and signal that no
 // more data is expected to be written to it. This function should be called
 // just after the last plm_buffer_write().
 // For _with_capacity buffers, this is cleared on a plm_buffer_rewind().
 
-void plm_buffer_signal_end(plm_buffer_t *self);
+void plm_buffer_signal_end(plm_buffer_t* self);
 
 // Set a callback that is called whenever the buffer needs more data
 
-void plm_buffer_set_load_callback(plm_buffer_t *self, plm_buffer_load_callback fp, void *user);
+void plm_buffer_set_load_callback(plm_buffer_t* self, plm_buffer_load_callback fp, void* user);
 
 // Rewind the buffer back to the beginning. When loading from a file handle,
 // this also seeks to the beginning of the file.
 
-void plm_buffer_rewind(plm_buffer_t *self);
+void plm_buffer_rewind(plm_buffer_t* self);
 
 // Get the total size. For files, this returns the file size. For all other
 // types it returns the number of bytes currently in the buffer.
 
-size_t plm_buffer_get_size(plm_buffer_t *self);
+size_t plm_buffer_get_size(plm_buffer_t* self);
 
 // Get the number of remaining (yet unread) bytes in the buffer. This can be
 // useful to throttle writing.
 
-size_t plm_buffer_get_remaining(plm_buffer_t *self);
+size_t plm_buffer_get_remaining(plm_buffer_t* self);
 
 // Get whether the read position of the buffer is at the end and no more data
 // is expected.
 
-int plm_buffer_has_ended(plm_buffer_t *self);
+int plm_buffer_has_ended(plm_buffer_t* self);
 
 // -----------------------------------------------------------------------------
 // plm_demux public API
@@ -515,34 +515,34 @@ static const int PLM_DEMUX_PACKET_VIDEO_1 = 0xE0;
 // Create a demuxer with a plm_buffer as source. This will also attempt to read
 // the pack and system headers from the buffer.
 
-plm_demux_t *plm_demux_create(plm_buffer_t *buffer, int destroy_when_done);
+plm_demux_t* plm_demux_create(plm_buffer_t* buffer, int destroy_when_done);
 
 // Destroy a demuxer and free all data.
 
-void plm_demux_destroy(plm_demux_t *self);
+void plm_demux_destroy(plm_demux_t* self);
 
 // Returns TRUE/FALSE whether pack and system headers have been found. This will
 // attempt to read the headers if non are present yet.
 
-int plm_demux_has_headers(plm_demux_t *self);
+int plm_demux_has_headers(plm_demux_t* self);
 
 // Returns the number of video streams found in the system header. This will
 // attempt to read the system header if non is present yet.
 
-int plm_demux_get_num_video_streams(plm_demux_t *self);
+int plm_demux_get_num_video_streams(plm_demux_t* self);
 
 // Returns the number of audio streams found in the system header. This will
 // attempt to read the system header if non is present yet.
 
-int plm_demux_get_num_audio_streams(plm_demux_t *self);
+int plm_demux_get_num_audio_streams(plm_demux_t* self);
 
 // Rewind the internal buffer. See plm_buffer_rewind().
 
-void plm_demux_rewind(plm_demux_t *self);
+void plm_demux_rewind(plm_demux_t* self);
 
 // Get whether the file has ended. This will be cleared on seeking or rewind.
 
-int plm_demux_has_ended(plm_demux_t *self);
+int plm_demux_has_ended(plm_demux_t* self);
 
 // Seek to a packet of the specified type with a PTS just before specified time.
 // If force_intra is TRUE, only packets containing an intra frame will be
@@ -550,23 +550,23 @@ int plm_demux_has_ended(plm_demux_t *self);
 // Note that the specified time is considered 0-based, regardless of the first
 // PTS in the data source.
 
-plm_packet_t *plm_demux_seek(plm_demux_t *self, double time, int type, int force_intra);
+plm_packet_t* plm_demux_seek(plm_demux_t* self, double time, int type, int force_intra);
 
 // Get the PTS of the first packet of this type. Returns PLM_PACKET_INVALID_TS
 // if not packet of this packet type can be found.
 
-double plm_demux_get_start_time(plm_demux_t *self, int type);
+double plm_demux_get_start_time(plm_demux_t* self, int type);
 
 // Get the duration for the specified packet type - i.e. the span between the
 // the first PTS and the last PTS in the data source. This only makes sense when
 // the underlying data source is a file or fixed memory.
 
-double plm_demux_get_duration(plm_demux_t *self, int type);
+double plm_demux_get_duration(plm_demux_t* self, int type);
 
 // Decode and return the next packet. The returned packet_t is valid until
 // the next call to plm_demux_decode() or until the demuxer is destroyed.
 
-plm_packet_t *plm_demux_decode(plm_demux_t *self);
+plm_packet_t* plm_demux_decode(plm_demux_t* self);
 
 // -----------------------------------------------------------------------------
 // plm_video public API
@@ -574,55 +574,55 @@ plm_packet_t *plm_demux_decode(plm_demux_t *self);
 
 // Create a video decoder with a plm_buffer as source.
 
-plm_video_t *plm_video_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done);
+plm_video_t* plm_video_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done);
 
 // Destroy a video decoder and free all data.
 
-void plm_video_destroy(plm_video_t *self);
+void plm_video_destroy(plm_video_t* self);
 
 // Get whether a sequence header was found and we can accurately report on
 // dimensions and framerate.
 
-int plm_video_has_header(plm_video_t *self);
+int plm_video_has_header(plm_video_t* self);
 
 // Get the framerate in frames per second.
 
-double plm_video_get_framerate(plm_video_t *self);
+double plm_video_get_framerate(plm_video_t* self);
 
 // Get the display width/height.
 
-int plm_video_get_width(plm_video_t *self);
-int plm_video_get_height(plm_video_t *self);
+int plm_video_get_width(plm_video_t* self);
+int plm_video_get_height(plm_video_t* self);
 
 // Set "no delay" mode. When enabled, the decoder assumes that the video does
 // *not* contain any B-Frames. This is useful for reducing lag when streaming.
 // The default is FALSE.
 
-void plm_video_set_no_delay(plm_video_t *self, int no_delay);
+void plm_video_set_no_delay(plm_video_t* self, int no_delay);
 
 // Get the current internal time in seconds.
 
-double plm_video_get_time(plm_video_t *self);
+double plm_video_get_time(plm_video_t* self);
 
 // Set the current internal time in seconds. This is only useful when you
 // manipulate the underlying video buffer and want to enforce a correct
 // timestamps.
 
-void plm_video_set_time(plm_video_t *self, double time);
+void plm_video_set_time(plm_video_t* self, double time);
 
 // Rewind the internal buffer. See plm_buffer_rewind().
 
-void plm_video_rewind(plm_video_t *self);
+void plm_video_rewind(plm_video_t* self);
 
 // Get whether the file has ended. This will be cleared on rewind.
 
-int plm_video_has_ended(plm_video_t *self);
+int plm_video_has_ended(plm_video_t* self);
 
 // Decode and return one frame of video and advance the internal time by
 // 1/framerate seconds. The returned frame_t is valid until the next call of
 // plm_video_decode() or until the video decoder is destroyed.
 
-plm_frame_t *plm_video_decode(plm_video_t *self);
+plm_frame_t* plm_video_decode(plm_video_t* self);
 
 // Convert the YCrCb data of a frame into interleaved R G B data. The stride
 // specifies the width in bytes of the destination buffer. I.e. the number of
@@ -631,12 +631,12 @@ plm_frame_t *plm_video_decode(plm_video_t *self);
 // size of at least (stride * frame->height).
 // Note that the alpha component of the dest buffer is always left untouched.
 
-void plm_frame_to_rgb(plm_frame_t *frame, uint8_t *dest, int stride);
-void plm_frame_to_bgr(plm_frame_t *frame, uint8_t *dest, int stride);
-void plm_frame_to_rgba(plm_frame_t *frame, uint8_t *dest, int stride);
-void plm_frame_to_bgra(plm_frame_t *frame, uint8_t *dest, int stride);
-void plm_frame_to_argb(plm_frame_t *frame, uint8_t *dest, int stride);
-void plm_frame_to_abgr(plm_frame_t *frame, uint8_t *dest, int stride);
+void plm_frame_to_rgb(plm_frame_t* frame, uint8_t* dest, int stride);
+void plm_frame_to_bgr(plm_frame_t* frame, uint8_t* dest, int stride);
+void plm_frame_to_rgba(plm_frame_t* frame, uint8_t* dest, int stride);
+void plm_frame_to_bgra(plm_frame_t* frame, uint8_t* dest, int stride);
+void plm_frame_to_argb(plm_frame_t* frame, uint8_t* dest, int stride);
+void plm_frame_to_abgr(plm_frame_t* frame, uint8_t* dest, int stride);
 
 // -----------------------------------------------------------------------------
 // plm_audio public API
@@ -644,51 +644,51 @@ void plm_frame_to_abgr(plm_frame_t *frame, uint8_t *dest, int stride);
 
 // Create an audio decoder with a plm_buffer as source.
 
-plm_audio_t *plm_audio_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done);
+plm_audio_t* plm_audio_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done);
 
 // Destroy an audio decoder and free all data.
 
-void plm_audio_destroy(plm_audio_t *self);
+void plm_audio_destroy(plm_audio_t* self);
 
 // Get whether a frame header was found and we can accurately report on
 // samplerate.
 
-int plm_audio_has_header(plm_audio_t *self);
+int plm_audio_has_header(plm_audio_t* self);
 
 // Get the samplerate in samples per second.
 
-int plm_audio_get_samplerate(plm_audio_t *self);
+int plm_audio_get_samplerate(plm_audio_t* self);
 
 // Get the current internal time in seconds.
 
-double plm_audio_get_time(plm_audio_t *self);
+double plm_audio_get_time(plm_audio_t* self);
 
 // Set the current internal time in seconds. This is only useful when you
 // manipulate the underlying video buffer and want to enforce a correct
 // timestamps.
 
-void plm_audio_set_time(plm_audio_t *self, double time);
+void plm_audio_set_time(plm_audio_t* self, double time);
 
 // Rewind the internal buffer. See plm_buffer_rewind().
 
-void plm_audio_rewind(plm_audio_t *self);
+void plm_audio_rewind(plm_audio_t* self);
 
 // Get whether the file has ended. This will be cleared on rewind.
 
-int plm_audio_has_ended(plm_audio_t *self);
+int plm_audio_has_ended(plm_audio_t* self);
 
 // Decode and return one "frame" of audio and advance the internal time by
 // (PLM_AUDIO_SAMPLES_PER_FRAME/samplerate) seconds. The returned samples_t
 // is valid until the next call of plm_audio_decode() or until the audio
 // decoder is destroyed.
 
-plm_samples_t *plm_audio_decode(plm_audio_t *self);
+plm_samples_t* plm_audio_decode(plm_audio_t* self);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // PL_MPEG_H
+#endif  // PL_MPEG_H
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -716,7 +716,7 @@ plm_samples_t *plm_audio_decode(plm_audio_t *self);
 // plm (high-level interface) implementation
 
 struct plm_t {
-  plm_demux_t *demux;
+  plm_demux_t* demux;
   double time;
   int has_ended;
   int loop;
@@ -724,49 +724,49 @@ struct plm_t {
 
   int video_enabled;
   int video_packet_type;
-  plm_buffer_t *video_buffer;
-  plm_video_t *video_decoder;
+  plm_buffer_t* video_buffer;
+  plm_video_t* video_decoder;
 
   int audio_enabled;
   int audio_stream_index;
   int audio_packet_type;
   double audio_lead_time;
-  plm_buffer_t *audio_buffer;
-  plm_audio_t *audio_decoder;
+  plm_buffer_t* audio_buffer;
+  plm_audio_t* audio_decoder;
 
   plm_video_decode_callback video_decode_callback;
-  void *video_decode_callback_user_data;
+  void* video_decode_callback_user_data;
 
   plm_audio_decode_callback audio_decode_callback;
-  void *audio_decode_callback_user_data;
+  void* audio_decode_callback_user_data;
 };
 
-int plm_init_decoders(plm_t *self);
-void plm_handle_end(plm_t *self);
-void plm_read_video_packet(plm_buffer_t *buffer, void *user);
-void plm_read_audio_packet(plm_buffer_t *buffer, void *user);
-void plm_read_packets(plm_t *self, int requested_type);
+int plm_init_decoders(plm_t* self);
+void plm_handle_end(plm_t* self);
+void plm_read_video_packet(plm_buffer_t* buffer, void* user);
+void plm_read_audio_packet(plm_buffer_t* buffer, void* user);
+void plm_read_packets(plm_t* self, int requested_type);
 
-plm_t *plm_create_with_filename(const char *filename) {
-  plm_buffer_t *buffer = plm_buffer_create_with_filename(filename);
+plm_t* plm_create_with_filename(const char* filename) {
+  plm_buffer_t* buffer = plm_buffer_create_with_filename(filename);
   if (!buffer) {
     return NULL;
   }
   return plm_create_with_buffer(buffer, TRUE);
 }
 
-plm_t *plm_create_with_file(FIL *fh, int close_when_done) {
-  plm_buffer_t *buffer = plm_buffer_create_with_file(fh, close_when_done);
+plm_t* plm_create_with_file(FIL* fh, int close_when_done) {
+  plm_buffer_t* buffer = plm_buffer_create_with_file(fh, close_when_done);
   return plm_create_with_buffer(buffer, TRUE);
 }
 
-plm_t *plm_create_with_memory(uint8_t *bytes, size_t length, int free_when_done) {
-  plm_buffer_t *buffer = plm_buffer_create_with_memory(bytes, length, free_when_done);
+plm_t* plm_create_with_memory(uint8_t* bytes, size_t length, int free_when_done) {
+  plm_buffer_t* buffer = plm_buffer_create_with_memory(bytes, length, free_when_done);
   return plm_create_with_buffer(buffer, TRUE);
 }
 
-plm_t *plm_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done) {
-  plm_t *self = (plm_t *)PLM_MALLOC(sizeof(plm_t));
+plm_t* plm_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done) {
+  plm_t* self = (plm_t*)PLM_MALLOC(sizeof(plm_t));
   memset(self, 0, sizeof(plm_t));
 
   self->demux = plm_demux_create(buffer, destroy_when_done);
@@ -777,7 +777,7 @@ plm_t *plm_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done) {
   return self;
 }
 
-int plm_init_decoders(plm_t *self) {
+int plm_init_decoders(plm_t* self) {
   if (self->has_decoders) {
     return TRUE;
   }
@@ -814,7 +814,7 @@ int plm_init_decoders(plm_t *self) {
   return TRUE;
 }
 
-void plm_destroy(plm_t *self) {
+void plm_destroy(plm_t* self) {
   if (self->video_decoder) {
     plm_video_destroy(self->video_decoder);
   }
@@ -826,9 +826,9 @@ void plm_destroy(plm_t *self) {
   PLM_FREE(self);
 }
 
-int plm_get_audio_enabled(plm_t *self) { return self->audio_enabled; }
+int plm_get_audio_enabled(plm_t* self) { return self->audio_enabled; }
 
-int plm_has_headers(plm_t *self) {
+int plm_has_headers(plm_t* self) {
   if (!plm_demux_has_headers(self->demux)) {
     return FALSE;
   }
@@ -845,7 +845,7 @@ int plm_has_headers(plm_t *self) {
   return TRUE;
 }
 
-void plm_set_audio_enabled(plm_t *self, int enabled) {
+void plm_set_audio_enabled(plm_t* self, int enabled) {
   self->audio_enabled = enabled;
 
   if (!enabled) {
@@ -857,7 +857,7 @@ void plm_set_audio_enabled(plm_t *self, int enabled) {
       (plm_init_decoders(self) && self->audio_decoder) ? PLM_DEMUX_PACKET_AUDIO_1 + self->audio_stream_index : 0;
 }
 
-void plm_set_audio_stream(plm_t *self, int stream_index) {
+void plm_set_audio_stream(plm_t* self, int stream_index) {
   if (stream_index < 0 || stream_index > 3) {
     return;
   }
@@ -867,9 +867,9 @@ void plm_set_audio_stream(plm_t *self, int stream_index) {
   plm_set_audio_enabled(self, self->audio_enabled);
 }
 
-int plm_get_video_enabled(plm_t *self) { return self->video_enabled; }
+int plm_get_video_enabled(plm_t* self) { return self->video_enabled; }
 
-void plm_set_video_enabled(plm_t *self, int enabled) {
+void plm_set_video_enabled(plm_t* self, int enabled) {
   self->video_enabled = enabled;
 
   if (!enabled) {
@@ -880,35 +880,35 @@ void plm_set_video_enabled(plm_t *self, int enabled) {
   self->video_packet_type = (plm_init_decoders(self) && self->video_decoder) ? PLM_DEMUX_PACKET_VIDEO_1 : 0;
 }
 
-int plm_get_num_video_streams(plm_t *self) { return plm_demux_get_num_video_streams(self->demux); }
+int plm_get_num_video_streams(plm_t* self) { return plm_demux_get_num_video_streams(self->demux); }
 
-int plm_get_width(plm_t *self) {
+int plm_get_width(plm_t* self) {
   return (plm_init_decoders(self) && self->video_decoder) ? plm_video_get_width(self->video_decoder) : 0;
 }
 
-int plm_get_height(plm_t *self) {
+int plm_get_height(plm_t* self) {
   return (plm_init_decoders(self) && self->video_decoder) ? plm_video_get_height(self->video_decoder) : 0;
 }
 
-double plm_get_framerate(plm_t *self) {
+double plm_get_framerate(plm_t* self) {
   return (plm_init_decoders(self) && self->video_decoder) ? plm_video_get_framerate(self->video_decoder) : 0;
 }
 
-int plm_get_num_audio_streams(plm_t *self) { return plm_demux_get_num_audio_streams(self->demux); }
+int plm_get_num_audio_streams(plm_t* self) { return plm_demux_get_num_audio_streams(self->demux); }
 
-int plm_get_samplerate(plm_t *self) {
+int plm_get_samplerate(plm_t* self) {
   return (plm_init_decoders(self) && self->audio_decoder) ? plm_audio_get_samplerate(self->audio_decoder) : 0;
 }
 
-double plm_get_audio_lead_time(plm_t *self) { return self->audio_lead_time; }
+double plm_get_audio_lead_time(plm_t* self) { return self->audio_lead_time; }
 
-void plm_set_audio_lead_time(plm_t *self, double lead_time) { self->audio_lead_time = lead_time; }
+void plm_set_audio_lead_time(plm_t* self, double lead_time) { self->audio_lead_time = lead_time; }
 
-double plm_get_time(plm_t *self) { return self->time; }
+double plm_get_time(plm_t* self) { return self->time; }
 
-double plm_get_duration(plm_t *self) { return plm_demux_get_duration(self->demux, PLM_DEMUX_PACKET_VIDEO_1); }
+double plm_get_duration(plm_t* self) { return plm_demux_get_duration(self->demux, PLM_DEMUX_PACKET_VIDEO_1); }
 
-void plm_rewind(plm_t *self) {
+void plm_rewind(plm_t* self) {
   if (self->video_decoder) {
     plm_video_rewind(self->video_decoder);
   }
@@ -921,23 +921,23 @@ void plm_rewind(plm_t *self) {
   self->time = 0;
 }
 
-int plm_get_loop(plm_t *self) { return self->loop; }
+int plm_get_loop(plm_t* self) { return self->loop; }
 
-void plm_set_loop(plm_t *self, int loop) { self->loop = loop; }
+void plm_set_loop(plm_t* self, int loop) { self->loop = loop; }
 
-int plm_has_ended(plm_t *self) { return self->has_ended; }
+int plm_has_ended(plm_t* self) { return self->has_ended; }
 
-void plm_set_video_decode_callback(plm_t *self, plm_video_decode_callback fp, void *user) {
+void plm_set_video_decode_callback(plm_t* self, plm_video_decode_callback fp, void* user) {
   self->video_decode_callback = fp;
   self->video_decode_callback_user_data = user;
 }
 
-void plm_set_audio_decode_callback(plm_t *self, plm_audio_decode_callback fp, void *user) {
+void plm_set_audio_decode_callback(plm_t* self, plm_audio_decode_callback fp, void* user) {
   self->audio_decode_callback = fp;
   self->audio_decode_callback_user_data = user;
 }
 
-void plm_decode(plm_t *self, double tick) {
+void plm_decode(plm_t* self, double tick) {
   if (!plm_init_decoders(self)) {
     return;
   }
@@ -961,7 +961,7 @@ void plm_decode(plm_t *self, double tick) {
     did_decode = FALSE;
 
     if (decode_video && plm_video_get_time(self->video_decoder) < video_target_time) {
-      plm_frame_t *frame = plm_video_decode(self->video_decoder);
+      plm_frame_t* frame = plm_video_decode(self->video_decoder);
       if (frame) {
         self->video_decode_callback(self, frame, self->video_decode_callback_user_data);
         did_decode = TRUE;
@@ -971,7 +971,7 @@ void plm_decode(plm_t *self, double tick) {
     }
 
     if (decode_audio && plm_audio_get_time(self->audio_decoder) < audio_target_time) {
-      plm_samples_t *samples = plm_audio_decode(self->audio_decoder);
+      plm_samples_t* samples = plm_audio_decode(self->audio_decoder);
       if (samples) {
         self->audio_decode_callback(self, samples, self->audio_decode_callback_user_data);
         did_decode = TRUE;
@@ -991,7 +991,7 @@ void plm_decode(plm_t *self, double tick) {
   self->time += tick;
 }
 
-plm_frame_t *plm_decode_video(plm_t *self) {
+plm_frame_t* plm_decode_video(plm_t* self) {
   if (!plm_init_decoders(self)) {
     return NULL;
   }
@@ -1000,7 +1000,7 @@ plm_frame_t *plm_decode_video(plm_t *self) {
     return NULL;
   }
 
-  plm_frame_t *frame = plm_video_decode(self->video_decoder);
+  plm_frame_t* frame = plm_video_decode(self->video_decoder);
   if (frame) {
     self->time = frame->time;
   } else if (plm_demux_has_ended(self->demux)) {
@@ -1009,7 +1009,7 @@ plm_frame_t *plm_decode_video(plm_t *self) {
   return frame;
 }
 
-plm_samples_t *plm_decode_audio(plm_t *self) {
+plm_samples_t* plm_decode_audio(plm_t* self) {
   if (!plm_init_decoders(self)) {
     return NULL;
   }
@@ -1018,7 +1018,7 @@ plm_samples_t *plm_decode_audio(plm_t *self) {
     return NULL;
   }
 
-  plm_samples_t *samples = plm_audio_decode(self->audio_decoder);
+  plm_samples_t* samples = plm_audio_decode(self->audio_decoder);
   if (samples) {
     self->time = samples->time;
   } else if (plm_demux_has_ended(self->demux)) {
@@ -1027,7 +1027,7 @@ plm_samples_t *plm_decode_audio(plm_t *self) {
   return samples;
 }
 
-void plm_handle_end(plm_t *self) {
+void plm_handle_end(plm_t* self) {
   if (self->loop) {
     plm_rewind(self);
   } else {
@@ -1035,20 +1035,20 @@ void plm_handle_end(plm_t *self) {
   }
 }
 
-void plm_read_video_packet(plm_buffer_t *buffer, void *user) {
+void plm_read_video_packet(plm_buffer_t* buffer, void* user) {
   PLM_UNUSED(buffer);
-  plm_t *self = (plm_t *)user;
+  plm_t* self = (plm_t*)user;
   plm_read_packets(self, self->video_packet_type);
 }
 
-void plm_read_audio_packet(plm_buffer_t *buffer, void *user) {
+void plm_read_audio_packet(plm_buffer_t* buffer, void* user) {
   PLM_UNUSED(buffer);
-  plm_t *self = (plm_t *)user;
+  plm_t* self = (plm_t*)user;
   plm_read_packets(self, self->audio_packet_type);
 }
 
-void plm_read_packets(plm_t *self, int requested_type) {
-  plm_packet_t *packet;
+void plm_read_packets(plm_t* self, int requested_type) {
+  plm_packet_t* packet;
   while ((packet = plm_demux_decode(self->demux))) {
     if (packet->type == self->video_packet_type) {
       plm_buffer_write(self->video_buffer, packet->data, packet->length);
@@ -1071,7 +1071,7 @@ void plm_read_packets(plm_t *self, int requested_type) {
   }
 }
 
-plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact) {
+plm_frame_t* plm_seek_frame(plm_t* self, double time, int seek_exact) {
   if (!plm_init_decoders(self)) {
     return NULL;
   }
@@ -1091,7 +1091,7 @@ plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact) {
     time = duration;
   }
 
-  plm_packet_t *packet = plm_demux_seek(self->demux, time, type, TRUE);
+  plm_packet_t* packet = plm_demux_seek(self->demux, time, type, TRUE);
   if (!packet) {
     return NULL;
   }
@@ -1104,7 +1104,7 @@ plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact) {
   plm_video_rewind(self->video_decoder);
   plm_video_set_time(self->video_decoder, packet->pts - start_time);
   plm_buffer_write(self->video_buffer, packet->data, packet->length);
-  plm_frame_t *frame = plm_video_decode(self->video_decoder);
+  plm_frame_t* frame = plm_video_decode(self->video_decoder);
 
   // If we want to seek to an exact frame, we have to decode all frames
   // on top of the intra frame we just jumped to.
@@ -1125,8 +1125,8 @@ plm_frame_t *plm_seek_frame(plm_t *self, double time, int seek_exact) {
   return frame;
 }
 
-int plm_seek(plm_t *self, double time, int seek_exact) {
-  plm_frame_t *frame = plm_seek_frame(self, time, seek_exact);
+int plm_seek(plm_t* self, double time, int seek_exact) {
+  plm_frame_t* frame = plm_seek_frame(self, time, seek_exact);
 
   if (!frame) {
     return FALSE;
@@ -1148,7 +1148,7 @@ int plm_seek(plm_t *self, double time, int seek_exact) {
   double start_time = plm_demux_get_start_time(self->demux, self->video_packet_type);
   plm_audio_rewind(self->audio_decoder);
 
-  plm_packet_t *packet = NULL;
+  plm_packet_t* packet = NULL;
   while ((packet = plm_demux_decode(self->demux))) {
     if (packet->type == self->video_packet_type) {
       plm_buffer_write(self->video_buffer, packet->data, packet->length);
@@ -1177,10 +1177,10 @@ struct plm_buffer_t {
   int has_ended;
   int free_when_done;
   int close_when_done;
-  FIL *fh;
+  FIL* fh;
   plm_buffer_load_callback load_callback;
-  void *load_callback_user_data;
-  uint8_t *bytes;
+  void* load_callback_user_data;
+  uint8_t* bytes;
   enum plm_buffer_mode mode;
 };
 
@@ -1194,32 +1194,32 @@ typedef struct {
   uint16_t value;
 } plm_vlc_uint_t;
 
-void plm_buffer_seek(plm_buffer_t *self, size_t pos);
-size_t plm_buffer_tell(plm_buffer_t *self);
-void plm_buffer_discard_read_bytes(plm_buffer_t *self);
-void plm_buffer_load_file_callback(plm_buffer_t *self, void *user);
+void plm_buffer_seek(plm_buffer_t* self, size_t pos);
+size_t plm_buffer_tell(plm_buffer_t* self);
+void plm_buffer_discard_read_bytes(plm_buffer_t* self);
+void plm_buffer_load_file_callback(plm_buffer_t* self, void* user);
 
-int plm_buffer_has(plm_buffer_t *self, size_t count);
-int plm_buffer_read(plm_buffer_t *self, int count);
-void plm_buffer_align(plm_buffer_t *self);
-void plm_buffer_skip(plm_buffer_t *self, size_t count);
-int plm_buffer_skip_bytes(plm_buffer_t *self, uint8_t v);
-int plm_buffer_next_start_code(plm_buffer_t *self);
-int plm_buffer_find_start_code(plm_buffer_t *self, int code);
-int plm_buffer_no_start_code(plm_buffer_t *self);
-int16_t plm_buffer_read_vlc(plm_buffer_t *self, const plm_vlc_t *table);
-uint16_t plm_buffer_read_vlc_uint(plm_buffer_t *self, const plm_vlc_uint_t *table);
+int plm_buffer_has(plm_buffer_t* self, size_t count);
+int plm_buffer_read(plm_buffer_t* self, int count);
+void plm_buffer_align(plm_buffer_t* self);
+void plm_buffer_skip(plm_buffer_t* self, size_t count);
+int plm_buffer_skip_bytes(plm_buffer_t* self, uint8_t v);
+int plm_buffer_next_start_code(plm_buffer_t* self);
+int plm_buffer_find_start_code(plm_buffer_t* self, int code);
+int plm_buffer_no_start_code(plm_buffer_t* self);
+int16_t plm_buffer_read_vlc(plm_buffer_t* self, const plm_vlc_t* table);
+uint16_t plm_buffer_read_vlc_uint(plm_buffer_t* self, const plm_vlc_uint_t* table);
 
-plm_buffer_t *plm_buffer_create_with_filename(const char *filename) {
-  FIL *fh = vexFileOpen(filename, "rb"); // fopen(filename, "rb");
+plm_buffer_t* plm_buffer_create_with_filename(const char* filename) {
+  FIL* fh = vexFileOpen(filename, "rb");  // fopen(filename, "rb");
   if (!fh) {
     return NULL;
   }
   return plm_buffer_create_with_file(fh, TRUE);
 }
 
-plm_buffer_t *plm_buffer_create_with_file(FIL *fh, int close_when_done) {
-  plm_buffer_t *self = plm_buffer_create_with_capacity(PLM_BUFFER_DEFAULT_SIZE);
+plm_buffer_t* plm_buffer_create_with_file(FIL* fh, int close_when_done) {
+  plm_buffer_t* self = plm_buffer_create_with_capacity(PLM_BUFFER_DEFAULT_SIZE);
   self->fh = fh;
   self->close_when_done = close_when_done;
   self->mode = PLM_BUFFER_MODE_FILE;
@@ -1233,8 +1233,8 @@ plm_buffer_t *plm_buffer_create_with_file(FIL *fh, int close_when_done) {
   return self;
 }
 
-plm_buffer_t *plm_buffer_create_with_memory(uint8_t *bytes, size_t length, int free_when_done) {
-  plm_buffer_t *self = (plm_buffer_t *)PLM_MALLOC(sizeof(plm_buffer_t));
+plm_buffer_t* plm_buffer_create_with_memory(uint8_t* bytes, size_t length, int free_when_done) {
+  plm_buffer_t* self = (plm_buffer_t*)PLM_MALLOC(sizeof(plm_buffer_t));
   memset(self, 0, sizeof(plm_buffer_t));
   self->capacity = length;
   self->length = length;
@@ -1246,25 +1246,25 @@ plm_buffer_t *plm_buffer_create_with_memory(uint8_t *bytes, size_t length, int f
   return self;
 }
 
-plm_buffer_t *plm_buffer_create_with_capacity(size_t capacity) {
-  plm_buffer_t *self = (plm_buffer_t *)PLM_MALLOC(sizeof(plm_buffer_t));
+plm_buffer_t* plm_buffer_create_with_capacity(size_t capacity) {
+  plm_buffer_t* self = (plm_buffer_t*)PLM_MALLOC(sizeof(plm_buffer_t));
   memset(self, 0, sizeof(plm_buffer_t));
   self->capacity = capacity;
   self->free_when_done = TRUE;
-  self->bytes = (uint8_t *)PLM_MALLOC(capacity);
+  self->bytes = (uint8_t*)PLM_MALLOC(capacity);
   self->mode = PLM_BUFFER_MODE_RING;
   self->discard_read_bytes = TRUE;
   return self;
 }
 
-plm_buffer_t *plm_buffer_create_for_appending(size_t initial_capacity) {
-  plm_buffer_t *self = plm_buffer_create_with_capacity(initial_capacity);
+plm_buffer_t* plm_buffer_create_for_appending(size_t initial_capacity) {
+  plm_buffer_t* self = plm_buffer_create_with_capacity(initial_capacity);
   self->mode = PLM_BUFFER_MODE_APPEND;
   self->discard_read_bytes = FALSE;
   return self;
 }
 
-void plm_buffer_destroy(plm_buffer_t *self) {
+void plm_buffer_destroy(plm_buffer_t* self) {
   if (self->fh && self->close_when_done) {
     vexFileClose(self->fh);
   }
@@ -1274,13 +1274,13 @@ void plm_buffer_destroy(plm_buffer_t *self) {
   PLM_FREE(self);
 }
 
-size_t plm_buffer_get_size(plm_buffer_t *self) {
+size_t plm_buffer_get_size(plm_buffer_t* self) {
   return (self->mode == PLM_BUFFER_MODE_FILE) ? self->total_size : self->length;
 }
 
-size_t plm_buffer_get_remaining(plm_buffer_t *self) { return self->length - (self->bit_index >> 3); }
+size_t plm_buffer_get_remaining(plm_buffer_t* self) { return self->length - (self->bit_index >> 3); }
 
-size_t plm_buffer_write(plm_buffer_t *self, uint8_t *bytes, size_t length) {
+size_t plm_buffer_write(plm_buffer_t* self, uint8_t* bytes, size_t length) {
   if (self->mode == PLM_BUFFER_MODE_FIXED_MEM) {
     return 0;
   }
@@ -1303,7 +1303,7 @@ size_t plm_buffer_write(plm_buffer_t *self, uint8_t *bytes, size_t length) {
     do {
       new_size *= 2;
     } while (new_size - self->length < length);
-    self->bytes = (uint8_t *)PLM_REALLOC(self->bytes, new_size);
+    self->bytes = (uint8_t*)PLM_REALLOC(self->bytes, new_size);
     self->capacity = new_size;
   }
 
@@ -1313,16 +1313,16 @@ size_t plm_buffer_write(plm_buffer_t *self, uint8_t *bytes, size_t length) {
   return length;
 }
 
-void plm_buffer_signal_end(plm_buffer_t *self) { self->total_size = self->length; }
+void plm_buffer_signal_end(plm_buffer_t* self) { self->total_size = self->length; }
 
-void plm_buffer_set_load_callback(plm_buffer_t *self, plm_buffer_load_callback fp, void *user) {
+void plm_buffer_set_load_callback(plm_buffer_t* self, plm_buffer_load_callback fp, void* user) {
   self->load_callback = fp;
   self->load_callback_user_data = user;
 }
 
-void plm_buffer_rewind(plm_buffer_t *self) { plm_buffer_seek(self, 0); }
+void plm_buffer_rewind(plm_buffer_t* self) { plm_buffer_seek(self, 0); }
 
-void plm_buffer_seek(plm_buffer_t *self, size_t pos) {
+void plm_buffer_seek(plm_buffer_t* self, size_t pos) {
   self->has_ended = FALSE;
 
   if (self->mode == PLM_BUFFER_MODE_FILE) {
@@ -1342,12 +1342,12 @@ void plm_buffer_seek(plm_buffer_t *self, size_t pos) {
   }
 }
 
-size_t plm_buffer_tell(plm_buffer_t *self) {
+size_t plm_buffer_tell(plm_buffer_t* self) {
   return self->mode == PLM_BUFFER_MODE_FILE ? vexFileTell(self->fh) + (self->bit_index >> 3) - self->length
                                             : self->bit_index >> 3;
 }
 
-void plm_buffer_discard_read_bytes(plm_buffer_t *self) {
+void plm_buffer_discard_read_bytes(plm_buffer_t* self) {
   size_t byte_pos = self->bit_index >> 3;
   if (byte_pos == self->length) {
     self->bit_index = 0;
@@ -1359,7 +1359,7 @@ void plm_buffer_discard_read_bytes(plm_buffer_t *self) {
   }
 }
 
-void plm_buffer_load_file_callback(plm_buffer_t *self, void *user) {
+void plm_buffer_load_file_callback(plm_buffer_t* self, void* user) {
   PLM_UNUSED(user);
 
   if (self->discard_read_bytes) {
@@ -1367,7 +1367,7 @@ void plm_buffer_load_file_callback(plm_buffer_t *self, void *user) {
   }
 
   size_t bytes_available = self->capacity - self->length;
-  size_t bytes_read = vexFileRead((char *)self->bytes + self->length, 1, bytes_available, self->fh);
+  size_t bytes_read = vexFileRead((char*)self->bytes + self->length, 1, bytes_available, self->fh);
   self->length += bytes_read;
 
   if (bytes_read == 0) {
@@ -1375,9 +1375,9 @@ void plm_buffer_load_file_callback(plm_buffer_t *self, void *user) {
   }
 }
 
-int plm_buffer_has_ended(plm_buffer_t *self) { return self->has_ended; }
+int plm_buffer_has_ended(plm_buffer_t* self) { return self->has_ended; }
 
-int plm_buffer_has(plm_buffer_t *self, size_t count) {
+int plm_buffer_has(plm_buffer_t* self, size_t count) {
   if (((self->length << 3) - self->bit_index) >= count) {
     return TRUE;
   }
@@ -1396,7 +1396,7 @@ int plm_buffer_has(plm_buffer_t *self, size_t count) {
   return FALSE;
 }
 
-int plm_buffer_read(plm_buffer_t *self, int count) {
+int plm_buffer_read(plm_buffer_t* self, int count) {
   if (!plm_buffer_has(self, count)) {
     return 0;
   }
@@ -1405,8 +1405,8 @@ int plm_buffer_read(plm_buffer_t *self, int count) {
   while (count) {
     int current_byte = self->bytes[self->bit_index >> 3];
 
-    int remaining = 8 - (self->bit_index & 7);        // Remaining bits in byte
-    int read = remaining < count ? remaining : count; // Bits in self run
+    int remaining = 8 - (self->bit_index & 7);         // Remaining bits in byte
+    int read = remaining < count ? remaining : count;  // Bits in self run
     int shift = remaining - read;
     int mask = (0xff >> (8 - read));
 
@@ -1419,17 +1419,17 @@ int plm_buffer_read(plm_buffer_t *self, int count) {
   return value;
 }
 
-void plm_buffer_align(plm_buffer_t *self) {
-  self->bit_index = ((self->bit_index + 7) >> 3) << 3; // Align to next byte
+void plm_buffer_align(plm_buffer_t* self) {
+  self->bit_index = ((self->bit_index + 7) >> 3) << 3;  // Align to next byte
 }
 
-void plm_buffer_skip(plm_buffer_t *self, size_t count) {
+void plm_buffer_skip(plm_buffer_t* self, size_t count) {
   if (plm_buffer_has(self, count)) {
     self->bit_index += count;
   }
 }
 
-int plm_buffer_skip_bytes(plm_buffer_t *self, uint8_t v) {
+int plm_buffer_skip_bytes(plm_buffer_t* self, uint8_t v) {
   plm_buffer_align(self);
   int skipped = 0;
   while (plm_buffer_has(self, 8) && self->bytes[self->bit_index >> 3] == v) {
@@ -1439,7 +1439,7 @@ int plm_buffer_skip_bytes(plm_buffer_t *self, uint8_t v) {
   return skipped;
 }
 
-int plm_buffer_next_start_code(plm_buffer_t *self) {
+int plm_buffer_next_start_code(plm_buffer_t* self) {
   plm_buffer_align(self);
 
   while (plm_buffer_has(self, (5 << 3))) {
@@ -1453,7 +1453,7 @@ int plm_buffer_next_start_code(plm_buffer_t *self) {
   return -1;
 }
 
-int plm_buffer_find_start_code(plm_buffer_t *self, int code) {
+int plm_buffer_find_start_code(plm_buffer_t* self, int code) {
   int current = 0;
   while (TRUE) {
     current = plm_buffer_next_start_code(self);
@@ -1464,7 +1464,7 @@ int plm_buffer_find_start_code(plm_buffer_t *self, int code) {
   return -1;
 }
 
-int plm_buffer_has_start_code(plm_buffer_t *self, int code) {
+int plm_buffer_has_start_code(plm_buffer_t* self, int code) {
   size_t previous_bit_index = self->bit_index;
   int previous_discard_read_bytes = self->discard_read_bytes;
 
@@ -1476,7 +1476,7 @@ int plm_buffer_has_start_code(plm_buffer_t *self, int code) {
   return current;
 }
 
-int plm_buffer_peek_non_zero(plm_buffer_t *self, int bit_count) {
+int plm_buffer_peek_non_zero(plm_buffer_t* self, int bit_count) {
   if (!plm_buffer_has(self, bit_count)) {
     return FALSE;
   }
@@ -1486,7 +1486,7 @@ int plm_buffer_peek_non_zero(plm_buffer_t *self, int bit_count) {
   return val != 0;
 }
 
-int16_t plm_buffer_read_vlc(plm_buffer_t *self, const plm_vlc_t *table) {
+int16_t plm_buffer_read_vlc(plm_buffer_t* self, const plm_vlc_t* table) {
   plm_vlc_t state = {0, 0};
   do {
     state = table[state.index + plm_buffer_read(self, 1)];
@@ -1494,8 +1494,8 @@ int16_t plm_buffer_read_vlc(plm_buffer_t *self, const plm_vlc_t *table) {
   return state.value;
 }
 
-uint16_t plm_buffer_read_vlc_uint(plm_buffer_t *self, const plm_vlc_uint_t *table) {
-  return (uint16_t)plm_buffer_read_vlc(self, (const plm_vlc_t *)table);
+uint16_t plm_buffer_read_vlc_uint(plm_buffer_t* self, const plm_vlc_uint_t* table) {
+  return (uint16_t)plm_buffer_read_vlc(self, (const plm_vlc_t*)table);
 }
 
 // ----------------------------------------------------------------------------
@@ -1506,7 +1506,7 @@ static const int PLM_START_END = 0xB9;
 static const int PLM_START_SYSTEM = 0xBB;
 
 struct plm_demux_t {
-  plm_buffer_t *buffer;
+  plm_buffer_t* buffer;
   int destroy_buffer_when_done;
   double system_clock_ref;
 
@@ -1526,13 +1526,13 @@ struct plm_demux_t {
   plm_packet_t next_packet;
 };
 
-void plm_demux_buffer_seek(plm_demux_t *self, size_t pos);
-double plm_demux_decode_time(plm_demux_t *self);
-plm_packet_t *plm_demux_decode_packet(plm_demux_t *self, int type);
-plm_packet_t *plm_demux_get_packet(plm_demux_t *self);
+void plm_demux_buffer_seek(plm_demux_t* self, size_t pos);
+double plm_demux_decode_time(plm_demux_t* self);
+plm_packet_t* plm_demux_decode_packet(plm_demux_t* self, int type);
+plm_packet_t* plm_demux_get_packet(plm_demux_t* self);
 
-plm_demux_t *plm_demux_create(plm_buffer_t *buffer, int destroy_when_done) {
-  plm_demux_t *self = (plm_demux_t *)PLM_MALLOC(sizeof(plm_demux_t));
+plm_demux_t* plm_demux_create(plm_buffer_t* buffer, int destroy_when_done) {
+  plm_demux_t* self = (plm_demux_t*)PLM_MALLOC(sizeof(plm_demux_t));
   memset(self, 0, sizeof(plm_demux_t));
 
   self->buffer = buffer;
@@ -1546,14 +1546,14 @@ plm_demux_t *plm_demux_create(plm_buffer_t *buffer, int destroy_when_done) {
   return self;
 }
 
-void plm_demux_destroy(plm_demux_t *self) {
+void plm_demux_destroy(plm_demux_t* self) {
   if (self->destroy_buffer_when_done) {
     plm_buffer_destroy(self->buffer);
   }
   PLM_FREE(self);
 }
 
-int plm_demux_has_headers(plm_demux_t *self) {
+int plm_demux_has_headers(plm_demux_t* self) {
   if (self->has_headers) {
     return TRUE;
   }
@@ -1576,7 +1576,7 @@ int plm_demux_has_headers(plm_demux_t *self) {
 
     self->system_clock_ref = plm_demux_decode_time(self);
     plm_buffer_skip(self->buffer, 1);
-    plm_buffer_skip(self->buffer, 22); // mux_rate * 50
+    plm_buffer_skip(self->buffer, 22);  // mux_rate * 50
     plm_buffer_skip(self->buffer, 1);
 
     self->has_pack_header = TRUE;
@@ -1594,10 +1594,10 @@ int plm_demux_has_headers(plm_demux_t *self) {
     }
     self->start_code = -1;
 
-    plm_buffer_skip(self->buffer, 16); // header_length
-    plm_buffer_skip(self->buffer, 24); // rate bound
+    plm_buffer_skip(self->buffer, 16);  // header_length
+    plm_buffer_skip(self->buffer, 24);  // rate bound
     self->num_audio_streams = plm_buffer_read(self->buffer, 6);
-    plm_buffer_skip(self->buffer, 5); // misc flags
+    plm_buffer_skip(self->buffer, 5);  // misc flags
     self->num_video_streams = plm_buffer_read(self->buffer, 5);
 
     self->has_system_header = TRUE;
@@ -1607,31 +1607,31 @@ int plm_demux_has_headers(plm_demux_t *self) {
   return TRUE;
 }
 
-int plm_demux_get_num_video_streams(plm_demux_t *self) {
+int plm_demux_get_num_video_streams(plm_demux_t* self) {
   return plm_demux_has_headers(self) ? self->num_video_streams : 0;
 }
 
-int plm_demux_get_num_audio_streams(plm_demux_t *self) {
+int plm_demux_get_num_audio_streams(plm_demux_t* self) {
   return plm_demux_has_headers(self) ? self->num_audio_streams : 0;
 }
 
-void plm_demux_rewind(plm_demux_t *self) {
+void plm_demux_rewind(plm_demux_t* self) {
   plm_buffer_rewind(self->buffer);
   self->current_packet.length = 0;
   self->next_packet.length = 0;
   self->start_code = -1;
 }
 
-int plm_demux_has_ended(plm_demux_t *self) { return plm_buffer_has_ended(self->buffer); }
+int plm_demux_has_ended(plm_demux_t* self) { return plm_buffer_has_ended(self->buffer); }
 
-void plm_demux_buffer_seek(plm_demux_t *self, size_t pos) {
+void plm_demux_buffer_seek(plm_demux_t* self, size_t pos) {
   plm_buffer_seek(self->buffer, pos);
   self->current_packet.length = 0;
   self->next_packet.length = 0;
   self->start_code = -1;
 }
 
-double plm_demux_get_start_time(plm_demux_t *self, int type) {
+double plm_demux_get_start_time(plm_demux_t* self, int type) {
   if (self->start_time != PLM_PACKET_INVALID_TS) {
     return self->start_time;
   }
@@ -1642,7 +1642,7 @@ double plm_demux_get_start_time(plm_demux_t *self, int type) {
   // Find first video PTS
   plm_demux_rewind(self);
   do {
-    plm_packet_t *packet = plm_demux_decode(self);
+    plm_packet_t* packet = plm_demux_decode(self);
     if (!packet) {
       break;
     }
@@ -1656,7 +1656,7 @@ double plm_demux_get_start_time(plm_demux_t *self, int type) {
   return self->start_time;
 }
 
-double plm_demux_get_duration(plm_demux_t *self, int type) {
+double plm_demux_get_duration(plm_demux_t* self, int type) {
   size_t file_size = plm_buffer_get_size(self->buffer);
 
   if (self->duration != PLM_PACKET_INVALID_TS && self->last_file_size == file_size) {
@@ -1674,13 +1674,13 @@ double plm_demux_get_duration(plm_demux_t *self, int type) {
     long seek_pos = file_size - range;
     if (seek_pos < 0) {
       seek_pos = 0;
-      range = max_range; // Make sure to bail after this round
+      range = max_range;  // Make sure to bail after this round
     }
     plm_demux_buffer_seek(self, seek_pos);
     self->current_packet.length = 0;
 
     double last_pts = PLM_PACKET_INVALID_TS;
-    plm_packet_t *packet = NULL;
+    plm_packet_t* packet = NULL;
     while ((packet = plm_demux_decode(self))) {
       if (packet->pts != PLM_PACKET_INVALID_TS && packet->type == type) {
         last_pts = packet->pts;
@@ -1698,7 +1698,7 @@ double plm_demux_get_duration(plm_demux_t *self, int type) {
   return self->duration;
 }
 
-plm_packet_t *plm_demux_seek(plm_demux_t *self, double seek_time, int type, int force_intra) {
+plm_packet_t* plm_demux_seek(plm_demux_t* self, double seek_time, int type, int force_intra) {
   if (!plm_demux_has_headers(self)) {
     return NULL;
   }
@@ -1756,7 +1756,7 @@ plm_packet_t *plm_demux_seek(plm_demux_t *self, double seek_time, int type, int 
     // containing an intra frame.
     while (plm_buffer_find_start_code(self->buffer, type) != -1) {
       long packet_start = plm_buffer_tell(self->buffer);
-      plm_packet_t *packet = plm_demux_decode_packet(self, type);
+      plm_packet_t* packet = plm_demux_decode_packet(self, type);
 
       // Skip packet if it has no PTS
       if (!packet || packet->pts == PLM_PACKET_INVALID_TS) {
@@ -1835,7 +1835,7 @@ plm_packet_t *plm_demux_seek(plm_demux_t *self, double seek_time, int type, int 
   return NULL;
 }
 
-plm_packet_t *plm_demux_decode(plm_demux_t *self) {
+plm_packet_t* plm_demux_decode(plm_demux_t* self) {
   if (!plm_demux_has_headers(self)) {
     return NULL;
   }
@@ -1870,7 +1870,7 @@ plm_packet_t *plm_demux_decode(plm_demux_t *self) {
   return NULL;
 }
 
-double plm_demux_decode_time(plm_demux_t *self) {
+double plm_demux_decode_time(plm_demux_t* self) {
   int64_t clock = plm_buffer_read(self->buffer, 3) << 30;
   plm_buffer_skip(self->buffer, 1);
   clock |= plm_buffer_read(self->buffer, 15) << 15;
@@ -1880,7 +1880,7 @@ double plm_demux_decode_time(plm_demux_t *self) {
   return (double)clock / 90000.0;
 }
 
-plm_packet_t *plm_demux_decode_packet(plm_demux_t *self, int type) {
+plm_packet_t* plm_demux_decode_packet(plm_demux_t* self, int type) {
   if (!plm_buffer_has(self->buffer, 16 << 3)) {
     return NULL;
   }
@@ -1889,7 +1889,7 @@ plm_packet_t *plm_demux_decode_packet(plm_demux_t *self, int type) {
 
   self->next_packet.type = type;
   self->next_packet.length = plm_buffer_read(self->buffer, 16);
-  self->next_packet.length -= plm_buffer_skip_bytes(self->buffer, 0xff); // stuffing
+  self->next_packet.length -= plm_buffer_skip_bytes(self->buffer, 0xff);  // stuffing
 
   // skip P-STD
   if (plm_buffer_read(self->buffer, 2) == 0x01) {
@@ -1901,7 +1901,7 @@ plm_packet_t *plm_demux_decode_packet(plm_demux_t *self, int type) {
   if (pts_dts_marker == 0x03) {
     self->next_packet.pts = plm_demux_decode_time(self);
     self->last_decoded_pts = self->next_packet.pts;
-    plm_buffer_skip(self->buffer, 40); // skip dts
+    plm_buffer_skip(self->buffer, 40);  // skip dts
     self->next_packet.length -= 10;
   } else if (pts_dts_marker == 0x02) {
     self->next_packet.pts = plm_demux_decode_time(self);
@@ -1912,13 +1912,13 @@ plm_packet_t *plm_demux_decode_packet(plm_demux_t *self, int type) {
     plm_buffer_skip(self->buffer, 4);
     self->next_packet.length -= 1;
   } else {
-    return NULL; // invalid
+    return NULL;  // invalid
   }
 
   return plm_demux_get_packet(self);
 }
 
-plm_packet_t *plm_demux_get_packet(plm_demux_t *self) {
+plm_packet_t* plm_demux_get_packet(plm_demux_t* self) {
   if (!plm_buffer_has(self->buffer, self->next_packet.length << 3)) {
     return NULL;
   }
@@ -1975,210 +1975,210 @@ static const uint8_t PLM_VIDEO_PREMULTIPLIER_MATRIX[] = {32, 44, 42, 38, 32, 25,
                                                          17, 24, 23, 20, 17, 14, 9,  5,  9,  12, 12, 10, 9,  7,  5,  2};
 
 static const plm_vlc_t PLM_VIDEO_MACROBLOCK_ADDRESS_INCREMENT[] = {
-    {1 << 1, 0},  {0, 1},       //   0: x
-    {2 << 1, 0},  {3 << 1, 0},  //   1: 0x
-    {4 << 1, 0},  {5 << 1, 0},  //   2: 00x
-    {0, 3},       {0, 2},       //   3: 01x
-    {6 << 1, 0},  {7 << 1, 0},  //   4: 000x
-    {0, 5},       {0, 4},       //   5: 001x
-    {8 << 1, 0},  {9 << 1, 0},  //   6: 0000x
-    {0, 7},       {0, 6},       //   7: 0001x
-    {10 << 1, 0}, {11 << 1, 0}, //   8: 0000 0x
-    {12 << 1, 0}, {13 << 1, 0}, //   9: 0000 1x
-    {14 << 1, 0}, {15 << 1, 0}, //  10: 0000 00x
-    {16 << 1, 0}, {17 << 1, 0}, //  11: 0000 01x
-    {18 << 1, 0}, {19 << 1, 0}, //  12: 0000 10x
-    {0, 9},       {0, 8},       //  13: 0000 11x
-    {-1, 0},      {20 << 1, 0}, //  14: 0000 000x
-    {-1, 0},      {21 << 1, 0}, //  15: 0000 001x
-    {22 << 1, 0}, {23 << 1, 0}, //  16: 0000 010x
-    {0, 15},      {0, 14},      //  17: 0000 011x
-    {0, 13},      {0, 12},      //  18: 0000 100x
-    {0, 11},      {0, 10},      //  19: 0000 101x
-    {24 << 1, 0}, {25 << 1, 0}, //  20: 0000 0001x
-    {26 << 1, 0}, {27 << 1, 0}, //  21: 0000 0011x
-    {28 << 1, 0}, {29 << 1, 0}, //  22: 0000 0100x
-    {30 << 1, 0}, {31 << 1, 0}, //  23: 0000 0101x
-    {32 << 1, 0}, {-1, 0},      //  24: 0000 0001 0x
-    {-1, 0},      {33 << 1, 0}, //  25: 0000 0001 1x
-    {34 << 1, 0}, {35 << 1, 0}, //  26: 0000 0011 0x
-    {36 << 1, 0}, {37 << 1, 0}, //  27: 0000 0011 1x
-    {38 << 1, 0}, {39 << 1, 0}, //  28: 0000 0100 0x
-    {0, 21},      {0, 20},      //  29: 0000 0100 1x
-    {0, 19},      {0, 18},      //  30: 0000 0101 0x
-    {0, 17},      {0, 16},      //  31: 0000 0101 1x
-    {0, 35},      {-1, 0},      //  32: 0000 0001 00x
-    {-1, 0},      {0, 34},      //  33: 0000 0001 11x
-    {0, 33},      {0, 32},      //  34: 0000 0011 00x
-    {0, 31},      {0, 30},      //  35: 0000 0011 01x
-    {0, 29},      {0, 28},      //  36: 0000 0011 10x
-    {0, 27},      {0, 26},      //  37: 0000 0011 11x
-    {0, 25},      {0, 24},      //  38: 0000 0100 00x
-    {0, 23},      {0, 22},      //  39: 0000 0100 01x
+    {1 << 1, 0},  {0, 1},        //   0: x
+    {2 << 1, 0},  {3 << 1, 0},   //   1: 0x
+    {4 << 1, 0},  {5 << 1, 0},   //   2: 00x
+    {0, 3},       {0, 2},        //   3: 01x
+    {6 << 1, 0},  {7 << 1, 0},   //   4: 000x
+    {0, 5},       {0, 4},        //   5: 001x
+    {8 << 1, 0},  {9 << 1, 0},   //   6: 0000x
+    {0, 7},       {0, 6},        //   7: 0001x
+    {10 << 1, 0}, {11 << 1, 0},  //   8: 0000 0x
+    {12 << 1, 0}, {13 << 1, 0},  //   9: 0000 1x
+    {14 << 1, 0}, {15 << 1, 0},  //  10: 0000 00x
+    {16 << 1, 0}, {17 << 1, 0},  //  11: 0000 01x
+    {18 << 1, 0}, {19 << 1, 0},  //  12: 0000 10x
+    {0, 9},       {0, 8},        //  13: 0000 11x
+    {-1, 0},      {20 << 1, 0},  //  14: 0000 000x
+    {-1, 0},      {21 << 1, 0},  //  15: 0000 001x
+    {22 << 1, 0}, {23 << 1, 0},  //  16: 0000 010x
+    {0, 15},      {0, 14},       //  17: 0000 011x
+    {0, 13},      {0, 12},       //  18: 0000 100x
+    {0, 11},      {0, 10},       //  19: 0000 101x
+    {24 << 1, 0}, {25 << 1, 0},  //  20: 0000 0001x
+    {26 << 1, 0}, {27 << 1, 0},  //  21: 0000 0011x
+    {28 << 1, 0}, {29 << 1, 0},  //  22: 0000 0100x
+    {30 << 1, 0}, {31 << 1, 0},  //  23: 0000 0101x
+    {32 << 1, 0}, {-1, 0},       //  24: 0000 0001 0x
+    {-1, 0},      {33 << 1, 0},  //  25: 0000 0001 1x
+    {34 << 1, 0}, {35 << 1, 0},  //  26: 0000 0011 0x
+    {36 << 1, 0}, {37 << 1, 0},  //  27: 0000 0011 1x
+    {38 << 1, 0}, {39 << 1, 0},  //  28: 0000 0100 0x
+    {0, 21},      {0, 20},       //  29: 0000 0100 1x
+    {0, 19},      {0, 18},       //  30: 0000 0101 0x
+    {0, 17},      {0, 16},       //  31: 0000 0101 1x
+    {0, 35},      {-1, 0},       //  32: 0000 0001 00x
+    {-1, 0},      {0, 34},       //  33: 0000 0001 11x
+    {0, 33},      {0, 32},       //  34: 0000 0011 00x
+    {0, 31},      {0, 30},       //  35: 0000 0011 01x
+    {0, 29},      {0, 28},       //  36: 0000 0011 10x
+    {0, 27},      {0, 26},       //  37: 0000 0011 11x
+    {0, 25},      {0, 24},       //  38: 0000 0100 00x
+    {0, 23},      {0, 22},       //  39: 0000 0100 01x
 };
 
 static const plm_vlc_t PLM_VIDEO_MACROBLOCK_TYPE_INTRA[] = {
     {1 << 1, 0},
-    {0, 0x01}, //   0: x
+    {0, 0x01},  //   0: x
     {-1, 0},
-    {0, 0x11}, //   1: 0x
+    {0, 0x11},  //   1: 0x
 };
 
 static const plm_vlc_t PLM_VIDEO_MACROBLOCK_TYPE_PREDICTIVE[] = {
-    {1 << 1, 0}, {0, 0x0a},   //   0: x
-    {2 << 1, 0}, {0, 0x02},   //   1: 0x
-    {3 << 1, 0}, {0, 0x08},   //   2: 00x
-    {4 << 1, 0}, {5 << 1, 0}, //   3: 000x
-    {6 << 1, 0}, {0, 0x12},   //   4: 0000x
-    {0, 0x1a},   {0, 0x01},   //   5: 0001x
-    {-1, 0},     {0, 0x11},   //   6: 0000 0x
+    {1 << 1, 0}, {0, 0x0a},    //   0: x
+    {2 << 1, 0}, {0, 0x02},    //   1: 0x
+    {3 << 1, 0}, {0, 0x08},    //   2: 00x
+    {4 << 1, 0}, {5 << 1, 0},  //   3: 000x
+    {6 << 1, 0}, {0, 0x12},    //   4: 0000x
+    {0, 0x1a},   {0, 0x01},    //   5: 0001x
+    {-1, 0},     {0, 0x11},    //   6: 0000 0x
 };
 
 static const plm_vlc_t PLM_VIDEO_MACROBLOCK_TYPE_B[] = {
-    {1 << 1, 0}, {2 << 1, 0},  //   0: x
-    {3 << 1, 0}, {4 << 1, 0},  //   1: 0x
-    {0, 0x0c},   {0, 0x0e},    //   2: 1x
-    {5 << 1, 0}, {6 << 1, 0},  //   3: 00x
-    {0, 0x04},   {0, 0x06},    //   4: 01x
-    {7 << 1, 0}, {8 << 1, 0},  //   5: 000x
-    {0, 0x08},   {0, 0x0a},    //   6: 001x
-    {9 << 1, 0}, {10 << 1, 0}, //   7: 0000x
-    {0, 0x1e},   {0, 0x01},    //   8: 0001x
-    {-1, 0},     {0, 0x11},    //   9: 0000 0x
-    {0, 0x16},   {0, 0x1a},    //  10: 0000 1x
+    {1 << 1, 0}, {2 << 1, 0},   //   0: x
+    {3 << 1, 0}, {4 << 1, 0},   //   1: 0x
+    {0, 0x0c},   {0, 0x0e},     //   2: 1x
+    {5 << 1, 0}, {6 << 1, 0},   //   3: 00x
+    {0, 0x04},   {0, 0x06},     //   4: 01x
+    {7 << 1, 0}, {8 << 1, 0},   //   5: 000x
+    {0, 0x08},   {0, 0x0a},     //   6: 001x
+    {9 << 1, 0}, {10 << 1, 0},  //   7: 0000x
+    {0, 0x1e},   {0, 0x01},     //   8: 0001x
+    {-1, 0},     {0, 0x11},     //   9: 0000 0x
+    {0, 0x16},   {0, 0x1a},     //  10: 0000 1x
 };
 
-static const plm_vlc_t *PLM_VIDEO_MACROBLOCK_TYPE[] = {
+static const plm_vlc_t* PLM_VIDEO_MACROBLOCK_TYPE[] = {
     NULL, PLM_VIDEO_MACROBLOCK_TYPE_INTRA, PLM_VIDEO_MACROBLOCK_TYPE_PREDICTIVE, PLM_VIDEO_MACROBLOCK_TYPE_B};
 
 static const plm_vlc_t PLM_VIDEO_CODE_BLOCK_PATTERN[] = {
-    {1 << 1, 0},  {2 << 1, 0},  //   0: x
-    {3 << 1, 0},  {4 << 1, 0},  //   1: 0x
-    {5 << 1, 0},  {6 << 1, 0},  //   2: 1x
-    {7 << 1, 0},  {8 << 1, 0},  //   3: 00x
-    {9 << 1, 0},  {10 << 1, 0}, //   4: 01x
-    {11 << 1, 0}, {12 << 1, 0}, //   5: 10x
-    {13 << 1, 0}, {0, 60},      //   6: 11x
-    {14 << 1, 0}, {15 << 1, 0}, //   7: 000x
-    {16 << 1, 0}, {17 << 1, 0}, //   8: 001x
-    {18 << 1, 0}, {19 << 1, 0}, //   9: 010x
-    {20 << 1, 0}, {21 << 1, 0}, //  10: 011x
-    {22 << 1, 0}, {23 << 1, 0}, //  11: 100x
-    {0, 32},      {0, 16},      //  12: 101x
-    {0, 8},       {0, 4},       //  13: 110x
-    {24 << 1, 0}, {25 << 1, 0}, //  14: 0000x
-    {26 << 1, 0}, {27 << 1, 0}, //  15: 0001x
-    {28 << 1, 0}, {29 << 1, 0}, //  16: 0010x
-    {30 << 1, 0}, {31 << 1, 0}, //  17: 0011x
-    {0, 62},      {0, 2},       //  18: 0100x
-    {0, 61},      {0, 1},       //  19: 0101x
-    {0, 56},      {0, 52},      //  20: 0110x
-    {0, 44},      {0, 28},      //  21: 0111x
-    {0, 40},      {0, 20},      //  22: 1000x
-    {0, 48},      {0, 12},      //  23: 1001x
-    {32 << 1, 0}, {33 << 1, 0}, //  24: 0000 0x
-    {34 << 1, 0}, {35 << 1, 0}, //  25: 0000 1x
-    {36 << 1, 0}, {37 << 1, 0}, //  26: 0001 0x
-    {38 << 1, 0}, {39 << 1, 0}, //  27: 0001 1x
-    {40 << 1, 0}, {41 << 1, 0}, //  28: 0010 0x
-    {42 << 1, 0}, {43 << 1, 0}, //  29: 0010 1x
-    {0, 63},      {0, 3},       //  30: 0011 0x
-    {0, 36},      {0, 24},      //  31: 0011 1x
-    {44 << 1, 0}, {45 << 1, 0}, //  32: 0000 00x
-    {46 << 1, 0}, {47 << 1, 0}, //  33: 0000 01x
-    {48 << 1, 0}, {49 << 1, 0}, //  34: 0000 10x
-    {50 << 1, 0}, {51 << 1, 0}, //  35: 0000 11x
-    {52 << 1, 0}, {53 << 1, 0}, //  36: 0001 00x
-    {54 << 1, 0}, {55 << 1, 0}, //  37: 0001 01x
-    {56 << 1, 0}, {57 << 1, 0}, //  38: 0001 10x
-    {58 << 1, 0}, {59 << 1, 0}, //  39: 0001 11x
-    {0, 34},      {0, 18},      //  40: 0010 00x
-    {0, 10},      {0, 6},       //  41: 0010 01x
-    {0, 33},      {0, 17},      //  42: 0010 10x
-    {0, 9},       {0, 5},       //  43: 0010 11x
-    {-1, 0},      {60 << 1, 0}, //  44: 0000 000x
-    {61 << 1, 0}, {62 << 1, 0}, //  45: 0000 001x
-    {0, 58},      {0, 54},      //  46: 0000 010x
-    {0, 46},      {0, 30},      //  47: 0000 011x
-    {0, 57},      {0, 53},      //  48: 0000 100x
-    {0, 45},      {0, 29},      //  49: 0000 101x
-    {0, 38},      {0, 26},      //  50: 0000 110x
-    {0, 37},      {0, 25},      //  51: 0000 111x
-    {0, 43},      {0, 23},      //  52: 0001 000x
-    {0, 51},      {0, 15},      //  53: 0001 001x
-    {0, 42},      {0, 22},      //  54: 0001 010x
-    {0, 50},      {0, 14},      //  55: 0001 011x
-    {0, 41},      {0, 21},      //  56: 0001 100x
-    {0, 49},      {0, 13},      //  57: 0001 101x
-    {0, 35},      {0, 19},      //  58: 0001 110x
-    {0, 11},      {0, 7},       //  59: 0001 111x
-    {0, 39},      {0, 27},      //  60: 0000 0001x
-    {0, 59},      {0, 55},      //  61: 0000 0010x
-    {0, 47},      {0, 31},      //  62: 0000 0011x
+    {1 << 1, 0},  {2 << 1, 0},   //   0: x
+    {3 << 1, 0},  {4 << 1, 0},   //   1: 0x
+    {5 << 1, 0},  {6 << 1, 0},   //   2: 1x
+    {7 << 1, 0},  {8 << 1, 0},   //   3: 00x
+    {9 << 1, 0},  {10 << 1, 0},  //   4: 01x
+    {11 << 1, 0}, {12 << 1, 0},  //   5: 10x
+    {13 << 1, 0}, {0, 60},       //   6: 11x
+    {14 << 1, 0}, {15 << 1, 0},  //   7: 000x
+    {16 << 1, 0}, {17 << 1, 0},  //   8: 001x
+    {18 << 1, 0}, {19 << 1, 0},  //   9: 010x
+    {20 << 1, 0}, {21 << 1, 0},  //  10: 011x
+    {22 << 1, 0}, {23 << 1, 0},  //  11: 100x
+    {0, 32},      {0, 16},       //  12: 101x
+    {0, 8},       {0, 4},        //  13: 110x
+    {24 << 1, 0}, {25 << 1, 0},  //  14: 0000x
+    {26 << 1, 0}, {27 << 1, 0},  //  15: 0001x
+    {28 << 1, 0}, {29 << 1, 0},  //  16: 0010x
+    {30 << 1, 0}, {31 << 1, 0},  //  17: 0011x
+    {0, 62},      {0, 2},        //  18: 0100x
+    {0, 61},      {0, 1},        //  19: 0101x
+    {0, 56},      {0, 52},       //  20: 0110x
+    {0, 44},      {0, 28},       //  21: 0111x
+    {0, 40},      {0, 20},       //  22: 1000x
+    {0, 48},      {0, 12},       //  23: 1001x
+    {32 << 1, 0}, {33 << 1, 0},  //  24: 0000 0x
+    {34 << 1, 0}, {35 << 1, 0},  //  25: 0000 1x
+    {36 << 1, 0}, {37 << 1, 0},  //  26: 0001 0x
+    {38 << 1, 0}, {39 << 1, 0},  //  27: 0001 1x
+    {40 << 1, 0}, {41 << 1, 0},  //  28: 0010 0x
+    {42 << 1, 0}, {43 << 1, 0},  //  29: 0010 1x
+    {0, 63},      {0, 3},        //  30: 0011 0x
+    {0, 36},      {0, 24},       //  31: 0011 1x
+    {44 << 1, 0}, {45 << 1, 0},  //  32: 0000 00x
+    {46 << 1, 0}, {47 << 1, 0},  //  33: 0000 01x
+    {48 << 1, 0}, {49 << 1, 0},  //  34: 0000 10x
+    {50 << 1, 0}, {51 << 1, 0},  //  35: 0000 11x
+    {52 << 1, 0}, {53 << 1, 0},  //  36: 0001 00x
+    {54 << 1, 0}, {55 << 1, 0},  //  37: 0001 01x
+    {56 << 1, 0}, {57 << 1, 0},  //  38: 0001 10x
+    {58 << 1, 0}, {59 << 1, 0},  //  39: 0001 11x
+    {0, 34},      {0, 18},       //  40: 0010 00x
+    {0, 10},      {0, 6},        //  41: 0010 01x
+    {0, 33},      {0, 17},       //  42: 0010 10x
+    {0, 9},       {0, 5},        //  43: 0010 11x
+    {-1, 0},      {60 << 1, 0},  //  44: 0000 000x
+    {61 << 1, 0}, {62 << 1, 0},  //  45: 0000 001x
+    {0, 58},      {0, 54},       //  46: 0000 010x
+    {0, 46},      {0, 30},       //  47: 0000 011x
+    {0, 57},      {0, 53},       //  48: 0000 100x
+    {0, 45},      {0, 29},       //  49: 0000 101x
+    {0, 38},      {0, 26},       //  50: 0000 110x
+    {0, 37},      {0, 25},       //  51: 0000 111x
+    {0, 43},      {0, 23},       //  52: 0001 000x
+    {0, 51},      {0, 15},       //  53: 0001 001x
+    {0, 42},      {0, 22},       //  54: 0001 010x
+    {0, 50},      {0, 14},       //  55: 0001 011x
+    {0, 41},      {0, 21},       //  56: 0001 100x
+    {0, 49},      {0, 13},       //  57: 0001 101x
+    {0, 35},      {0, 19},       //  58: 0001 110x
+    {0, 11},      {0, 7},        //  59: 0001 111x
+    {0, 39},      {0, 27},       //  60: 0000 0001x
+    {0, 59},      {0, 55},       //  61: 0000 0010x
+    {0, 47},      {0, 31},       //  62: 0000 0011x
 };
 
 static const plm_vlc_t PLM_VIDEO_MOTION[] = {
-    {1 << 1, 0},  {0, 0},       //   0: x
-    {2 << 1, 0},  {3 << 1, 0},  //   1: 0x
-    {4 << 1, 0},  {5 << 1, 0},  //   2: 00x
-    {0, 1},       {0, -1},      //   3: 01x
-    {6 << 1, 0},  {7 << 1, 0},  //   4: 000x
-    {0, 2},       {0, -2},      //   5: 001x
-    {8 << 1, 0},  {9 << 1, 0},  //   6: 0000x
-    {0, 3},       {0, -3},      //   7: 0001x
-    {10 << 1, 0}, {11 << 1, 0}, //   8: 0000 0x
-    {12 << 1, 0}, {13 << 1, 0}, //   9: 0000 1x
-    {-1, 0},      {14 << 1, 0}, //  10: 0000 00x
-    {15 << 1, 0}, {16 << 1, 0}, //  11: 0000 01x
-    {17 << 1, 0}, {18 << 1, 0}, //  12: 0000 10x
-    {0, 4},       {0, -4},      //  13: 0000 11x
-    {-1, 0},      {19 << 1, 0}, //  14: 0000 001x
-    {20 << 1, 0}, {21 << 1, 0}, //  15: 0000 010x
-    {0, 7},       {0, -7},      //  16: 0000 011x
-    {0, 6},       {0, -6},      //  17: 0000 100x
-    {0, 5},       {0, -5},      //  18: 0000 101x
-    {22 << 1, 0}, {23 << 1, 0}, //  19: 0000 0011x
-    {24 << 1, 0}, {25 << 1, 0}, //  20: 0000 0100x
-    {26 << 1, 0}, {27 << 1, 0}, //  21: 0000 0101x
-    {28 << 1, 0}, {29 << 1, 0}, //  22: 0000 0011 0x
-    {30 << 1, 0}, {31 << 1, 0}, //  23: 0000 0011 1x
-    {32 << 1, 0}, {33 << 1, 0}, //  24: 0000 0100 0x
-    {0, 10},      {0, -10},     //  25: 0000 0100 1x
-    {0, 9},       {0, -9},      //  26: 0000 0101 0x
-    {0, 8},       {0, -8},      //  27: 0000 0101 1x
-    {0, 16},      {0, -16},     //  28: 0000 0011 00x
-    {0, 15},      {0, -15},     //  29: 0000 0011 01x
-    {0, 14},      {0, -14},     //  30: 0000 0011 10x
-    {0, 13},      {0, -13},     //  31: 0000 0011 11x
-    {0, 12},      {0, -12},     //  32: 0000 0100 00x
-    {0, 11},      {0, -11},     //  33: 0000 0100 01x
+    {1 << 1, 0},  {0, 0},        //   0: x
+    {2 << 1, 0},  {3 << 1, 0},   //   1: 0x
+    {4 << 1, 0},  {5 << 1, 0},   //   2: 00x
+    {0, 1},       {0, -1},       //   3: 01x
+    {6 << 1, 0},  {7 << 1, 0},   //   4: 000x
+    {0, 2},       {0, -2},       //   5: 001x
+    {8 << 1, 0},  {9 << 1, 0},   //   6: 0000x
+    {0, 3},       {0, -3},       //   7: 0001x
+    {10 << 1, 0}, {11 << 1, 0},  //   8: 0000 0x
+    {12 << 1, 0}, {13 << 1, 0},  //   9: 0000 1x
+    {-1, 0},      {14 << 1, 0},  //  10: 0000 00x
+    {15 << 1, 0}, {16 << 1, 0},  //  11: 0000 01x
+    {17 << 1, 0}, {18 << 1, 0},  //  12: 0000 10x
+    {0, 4},       {0, -4},       //  13: 0000 11x
+    {-1, 0},      {19 << 1, 0},  //  14: 0000 001x
+    {20 << 1, 0}, {21 << 1, 0},  //  15: 0000 010x
+    {0, 7},       {0, -7},       //  16: 0000 011x
+    {0, 6},       {0, -6},       //  17: 0000 100x
+    {0, 5},       {0, -5},       //  18: 0000 101x
+    {22 << 1, 0}, {23 << 1, 0},  //  19: 0000 0011x
+    {24 << 1, 0}, {25 << 1, 0},  //  20: 0000 0100x
+    {26 << 1, 0}, {27 << 1, 0},  //  21: 0000 0101x
+    {28 << 1, 0}, {29 << 1, 0},  //  22: 0000 0011 0x
+    {30 << 1, 0}, {31 << 1, 0},  //  23: 0000 0011 1x
+    {32 << 1, 0}, {33 << 1, 0},  //  24: 0000 0100 0x
+    {0, 10},      {0, -10},      //  25: 0000 0100 1x
+    {0, 9},       {0, -9},       //  26: 0000 0101 0x
+    {0, 8},       {0, -8},       //  27: 0000 0101 1x
+    {0, 16},      {0, -16},      //  28: 0000 0011 00x
+    {0, 15},      {0, -15},      //  29: 0000 0011 01x
+    {0, 14},      {0, -14},      //  30: 0000 0011 10x
+    {0, 13},      {0, -13},      //  31: 0000 0011 11x
+    {0, 12},      {0, -12},      //  32: 0000 0100 00x
+    {0, 11},      {0, -11},      //  33: 0000 0100 01x
 };
 
 static const plm_vlc_t PLM_VIDEO_DCT_SIZE_LUMINANCE[] = {
-    {1 << 1, 0}, {2 << 1, 0}, //   0: x
-    {0, 1},      {0, 2},      //   1: 0x
-    {3 << 1, 0}, {4 << 1, 0}, //   2: 1x
-    {0, 0},      {0, 3},      //   3: 10x
-    {0, 4},      {5 << 1, 0}, //   4: 11x
-    {0, 5},      {6 << 1, 0}, //   5: 111x
-    {0, 6},      {7 << 1, 0}, //   6: 1111x
-    {0, 7},      {8 << 1, 0}, //   7: 1111 1x
-    {0, 8},      {-1, 0},     //   8: 1111 11x
+    {1 << 1, 0}, {2 << 1, 0},  //   0: x
+    {0, 1},      {0, 2},       //   1: 0x
+    {3 << 1, 0}, {4 << 1, 0},  //   2: 1x
+    {0, 0},      {0, 3},       //   3: 10x
+    {0, 4},      {5 << 1, 0},  //   4: 11x
+    {0, 5},      {6 << 1, 0},  //   5: 111x
+    {0, 6},      {7 << 1, 0},  //   6: 1111x
+    {0, 7},      {8 << 1, 0},  //   7: 1111 1x
+    {0, 8},      {-1, 0},      //   8: 1111 11x
 };
 
 static const plm_vlc_t PLM_VIDEO_DCT_SIZE_CHROMINANCE[] = {
-    {1 << 1, 0}, {2 << 1, 0}, //   0: x
-    {0, 0},      {0, 1},      //   1: 0x
-    {0, 2},      {3 << 1, 0}, //   2: 1x
-    {0, 3},      {4 << 1, 0}, //   3: 11x
-    {0, 4},      {5 << 1, 0}, //   4: 111x
-    {0, 5},      {6 << 1, 0}, //   5: 1111x
-    {0, 6},      {7 << 1, 0}, //   6: 1111 1x
-    {0, 7},      {8 << 1, 0}, //   7: 1111 11x
-    {0, 8},      {-1, 0},     //   8: 1111 111x
+    {1 << 1, 0}, {2 << 1, 0},  //   0: x
+    {0, 0},      {0, 1},       //   1: 0x
+    {0, 2},      {3 << 1, 0},  //   2: 1x
+    {0, 3},      {4 << 1, 0},  //   3: 11x
+    {0, 4},      {5 << 1, 0},  //   4: 111x
+    {0, 5},      {6 << 1, 0},  //   5: 1111x
+    {0, 6},      {7 << 1, 0},  //   6: 1111 1x
+    {0, 7},      {8 << 1, 0},  //   7: 1111 11x
+    {0, 8},      {-1, 0},      //   8: 1111 111x
 };
 
-static const plm_vlc_t *PLM_VIDEO_DCT_SIZE[] = {PLM_VIDEO_DCT_SIZE_LUMINANCE, PLM_VIDEO_DCT_SIZE_CHROMINANCE,
+static const plm_vlc_t* PLM_VIDEO_DCT_SIZE[] = {PLM_VIDEO_DCT_SIZE_LUMINANCE, PLM_VIDEO_DCT_SIZE_CHROMINANCE,
                                                 PLM_VIDEO_DCT_SIZE_CHROMINANCE};
 
 //  dct_coeff bitmap:
@@ -2188,118 +2188,118 @@ static const plm_vlc_t *PLM_VIDEO_DCT_SIZE[] = {PLM_VIDEO_DCT_SIZE_LUMINANCE, PL
 //  Decoded values are unsigned. Sign bit follows in the stream.
 
 static const plm_vlc_uint_t PLM_VIDEO_DCT_COEFF[] = {
-    {1 << 1, 0},   {0, 0x0001},   //   0: x
-    {2 << 1, 0},   {3 << 1, 0},   //   1: 0x
-    {4 << 1, 0},   {5 << 1, 0},   //   2: 00x
-    {6 << 1, 0},   {0, 0x0101},   //   3: 01x
-    {7 << 1, 0},   {8 << 1, 0},   //   4: 000x
-    {9 << 1, 0},   {10 << 1, 0},  //   5: 001x
-    {0, 0x0002},   {0, 0x0201},   //   6: 010x
-    {11 << 1, 0},  {12 << 1, 0},  //   7: 0000x
-    {13 << 1, 0},  {14 << 1, 0},  //   8: 0001x
-    {15 << 1, 0},  {0, 0x0003},   //   9: 0010x
-    {0, 0x0401},   {0, 0x0301},   //  10: 0011x
-    {16 << 1, 0},  {0, 0xffff},   //  11: 0000 0x
-    {17 << 1, 0},  {18 << 1, 0},  //  12: 0000 1x
-    {0, 0x0701},   {0, 0x0601},   //  13: 0001 0x
-    {0, 0x0102},   {0, 0x0501},   //  14: 0001 1x
-    {19 << 1, 0},  {20 << 1, 0},  //  15: 0010 0x
-    {21 << 1, 0},  {22 << 1, 0},  //  16: 0000 00x
-    {0, 0x0202},   {0, 0x0901},   //  17: 0000 10x
-    {0, 0x0004},   {0, 0x0801},   //  18: 0000 11x
-    {23 << 1, 0},  {24 << 1, 0},  //  19: 0010 00x
-    {25 << 1, 0},  {26 << 1, 0},  //  20: 0010 01x
-    {27 << 1, 0},  {28 << 1, 0},  //  21: 0000 000x
-    {29 << 1, 0},  {30 << 1, 0},  //  22: 0000 001x
-    {0, 0x0d01},   {0, 0x0006},   //  23: 0010 000x
-    {0, 0x0c01},   {0, 0x0b01},   //  24: 0010 001x
-    {0, 0x0302},   {0, 0x0103},   //  25: 0010 010x
-    {0, 0x0005},   {0, 0x0a01},   //  26: 0010 011x
-    {31 << 1, 0},  {32 << 1, 0},  //  27: 0000 0000x
-    {33 << 1, 0},  {34 << 1, 0},  //  28: 0000 0001x
-    {35 << 1, 0},  {36 << 1, 0},  //  29: 0000 0010x
-    {37 << 1, 0},  {38 << 1, 0},  //  30: 0000 0011x
-    {39 << 1, 0},  {40 << 1, 0},  //  31: 0000 0000 0x
-    {41 << 1, 0},  {42 << 1, 0},  //  32: 0000 0000 1x
-    {43 << 1, 0},  {44 << 1, 0},  //  33: 0000 0001 0x
-    {45 << 1, 0},  {46 << 1, 0},  //  34: 0000 0001 1x
-    {0, 0x1001},   {0, 0x0502},   //  35: 0000 0010 0x
-    {0, 0x0007},   {0, 0x0203},   //  36: 0000 0010 1x
-    {0, 0x0104},   {0, 0x0f01},   //  37: 0000 0011 0x
-    {0, 0x0e01},   {0, 0x0402},   //  38: 0000 0011 1x
-    {47 << 1, 0},  {48 << 1, 0},  //  39: 0000 0000 00x
-    {49 << 1, 0},  {50 << 1, 0},  //  40: 0000 0000 01x
-    {51 << 1, 0},  {52 << 1, 0},  //  41: 0000 0000 10x
-    {53 << 1, 0},  {54 << 1, 0},  //  42: 0000 0000 11x
-    {55 << 1, 0},  {56 << 1, 0},  //  43: 0000 0001 00x
-    {57 << 1, 0},  {58 << 1, 0},  //  44: 0000 0001 01x
-    {59 << 1, 0},  {60 << 1, 0},  //  45: 0000 0001 10x
-    {61 << 1, 0},  {62 << 1, 0},  //  46: 0000 0001 11x
-    {-1, 0},       {63 << 1, 0},  //  47: 0000 0000 000x
-    {64 << 1, 0},  {65 << 1, 0},  //  48: 0000 0000 001x
-    {66 << 1, 0},  {67 << 1, 0},  //  49: 0000 0000 010x
-    {68 << 1, 0},  {69 << 1, 0},  //  50: 0000 0000 011x
-    {70 << 1, 0},  {71 << 1, 0},  //  51: 0000 0000 100x
-    {72 << 1, 0},  {73 << 1, 0},  //  52: 0000 0000 101x
-    {74 << 1, 0},  {75 << 1, 0},  //  53: 0000 0000 110x
-    {76 << 1, 0},  {77 << 1, 0},  //  54: 0000 0000 111x
-    {0, 0x000b},   {0, 0x0802},   //  55: 0000 0001 000x
-    {0, 0x0403},   {0, 0x000a},   //  56: 0000 0001 001x
-    {0, 0x0204},   {0, 0x0702},   //  57: 0000 0001 010x
-    {0, 0x1501},   {0, 0x1401},   //  58: 0000 0001 011x
-    {0, 0x0009},   {0, 0x1301},   //  59: 0000 0001 100x
-    {0, 0x1201},   {0, 0x0105},   //  60: 0000 0001 101x
-    {0, 0x0303},   {0, 0x0008},   //  61: 0000 0001 110x
-    {0, 0x0602},   {0, 0x1101},   //  62: 0000 0001 111x
-    {78 << 1, 0},  {79 << 1, 0},  //  63: 0000 0000 0001x
-    {80 << 1, 0},  {81 << 1, 0},  //  64: 0000 0000 0010x
-    {82 << 1, 0},  {83 << 1, 0},  //  65: 0000 0000 0011x
-    {84 << 1, 0},  {85 << 1, 0},  //  66: 0000 0000 0100x
-    {86 << 1, 0},  {87 << 1, 0},  //  67: 0000 0000 0101x
-    {88 << 1, 0},  {89 << 1, 0},  //  68: 0000 0000 0110x
-    {90 << 1, 0},  {91 << 1, 0},  //  69: 0000 0000 0111x
-    {0, 0x0a02},   {0, 0x0902},   //  70: 0000 0000 1000x
-    {0, 0x0503},   {0, 0x0304},   //  71: 0000 0000 1001x
-    {0, 0x0205},   {0, 0x0107},   //  72: 0000 0000 1010x
-    {0, 0x0106},   {0, 0x000f},   //  73: 0000 0000 1011x
-    {0, 0x000e},   {0, 0x000d},   //  74: 0000 0000 1100x
-    {0, 0x000c},   {0, 0x1a01},   //  75: 0000 0000 1101x
-    {0, 0x1901},   {0, 0x1801},   //  76: 0000 0000 1110x
-    {0, 0x1701},   {0, 0x1601},   //  77: 0000 0000 1111x
-    {92 << 1, 0},  {93 << 1, 0},  //  78: 0000 0000 0001 0x
-    {94 << 1, 0},  {95 << 1, 0},  //  79: 0000 0000 0001 1x
-    {96 << 1, 0},  {97 << 1, 0},  //  80: 0000 0000 0010 0x
-    {98 << 1, 0},  {99 << 1, 0},  //  81: 0000 0000 0010 1x
-    {100 << 1, 0}, {101 << 1, 0}, //  82: 0000 0000 0011 0x
-    {102 << 1, 0}, {103 << 1, 0}, //  83: 0000 0000 0011 1x
-    {0, 0x001f},   {0, 0x001e},   //  84: 0000 0000 0100 0x
-    {0, 0x001d},   {0, 0x001c},   //  85: 0000 0000 0100 1x
-    {0, 0x001b},   {0, 0x001a},   //  86: 0000 0000 0101 0x
-    {0, 0x0019},   {0, 0x0018},   //  87: 0000 0000 0101 1x
-    {0, 0x0017},   {0, 0x0016},   //  88: 0000 0000 0110 0x
-    {0, 0x0015},   {0, 0x0014},   //  89: 0000 0000 0110 1x
-    {0, 0x0013},   {0, 0x0012},   //  90: 0000 0000 0111 0x
-    {0, 0x0011},   {0, 0x0010},   //  91: 0000 0000 0111 1x
-    {104 << 1, 0}, {105 << 1, 0}, //  92: 0000 0000 0001 00x
-    {106 << 1, 0}, {107 << 1, 0}, //  93: 0000 0000 0001 01x
-    {108 << 1, 0}, {109 << 1, 0}, //  94: 0000 0000 0001 10x
-    {110 << 1, 0}, {111 << 1, 0}, //  95: 0000 0000 0001 11x
-    {0, 0x0028},   {0, 0x0027},   //  96: 0000 0000 0010 00x
-    {0, 0x0026},   {0, 0x0025},   //  97: 0000 0000 0010 01x
-    {0, 0x0024},   {0, 0x0023},   //  98: 0000 0000 0010 10x
-    {0, 0x0022},   {0, 0x0021},   //  99: 0000 0000 0010 11x
-    {0, 0x0020},   {0, 0x010e},   // 100: 0000 0000 0011 00x
-    {0, 0x010d},   {0, 0x010c},   // 101: 0000 0000 0011 01x
-    {0, 0x010b},   {0, 0x010a},   // 102: 0000 0000 0011 10x
-    {0, 0x0109},   {0, 0x0108},   // 103: 0000 0000 0011 11x
-    {0, 0x0112},   {0, 0x0111},   // 104: 0000 0000 0001 000x
-    {0, 0x0110},   {0, 0x010f},   // 105: 0000 0000 0001 001x
-    {0, 0x0603},   {0, 0x1002},   // 106: 0000 0000 0001 010x
-    {0, 0x0f02},   {0, 0x0e02},   // 107: 0000 0000 0001 011x
-    {0, 0x0d02},   {0, 0x0c02},   // 108: 0000 0000 0001 100x
-    {0, 0x0b02},   {0, 0x1f01},   // 109: 0000 0000 0001 101x
-    {0, 0x1e01},   {0, 0x1d01},   // 110: 0000 0000 0001 110x
-    {0, 0x1c01},   {0, 0x1b01},   // 111: 0000 0000 0001 111x
+    {1 << 1, 0},   {0, 0x0001},    //   0: x
+    {2 << 1, 0},   {3 << 1, 0},    //   1: 0x
+    {4 << 1, 0},   {5 << 1, 0},    //   2: 00x
+    {6 << 1, 0},   {0, 0x0101},    //   3: 01x
+    {7 << 1, 0},   {8 << 1, 0},    //   4: 000x
+    {9 << 1, 0},   {10 << 1, 0},   //   5: 001x
+    {0, 0x0002},   {0, 0x0201},    //   6: 010x
+    {11 << 1, 0},  {12 << 1, 0},   //   7: 0000x
+    {13 << 1, 0},  {14 << 1, 0},   //   8: 0001x
+    {15 << 1, 0},  {0, 0x0003},    //   9: 0010x
+    {0, 0x0401},   {0, 0x0301},    //  10: 0011x
+    {16 << 1, 0},  {0, 0xffff},    //  11: 0000 0x
+    {17 << 1, 0},  {18 << 1, 0},   //  12: 0000 1x
+    {0, 0x0701},   {0, 0x0601},    //  13: 0001 0x
+    {0, 0x0102},   {0, 0x0501},    //  14: 0001 1x
+    {19 << 1, 0},  {20 << 1, 0},   //  15: 0010 0x
+    {21 << 1, 0},  {22 << 1, 0},   //  16: 0000 00x
+    {0, 0x0202},   {0, 0x0901},    //  17: 0000 10x
+    {0, 0x0004},   {0, 0x0801},    //  18: 0000 11x
+    {23 << 1, 0},  {24 << 1, 0},   //  19: 0010 00x
+    {25 << 1, 0},  {26 << 1, 0},   //  20: 0010 01x
+    {27 << 1, 0},  {28 << 1, 0},   //  21: 0000 000x
+    {29 << 1, 0},  {30 << 1, 0},   //  22: 0000 001x
+    {0, 0x0d01},   {0, 0x0006},    //  23: 0010 000x
+    {0, 0x0c01},   {0, 0x0b01},    //  24: 0010 001x
+    {0, 0x0302},   {0, 0x0103},    //  25: 0010 010x
+    {0, 0x0005},   {0, 0x0a01},    //  26: 0010 011x
+    {31 << 1, 0},  {32 << 1, 0},   //  27: 0000 0000x
+    {33 << 1, 0},  {34 << 1, 0},   //  28: 0000 0001x
+    {35 << 1, 0},  {36 << 1, 0},   //  29: 0000 0010x
+    {37 << 1, 0},  {38 << 1, 0},   //  30: 0000 0011x
+    {39 << 1, 0},  {40 << 1, 0},   //  31: 0000 0000 0x
+    {41 << 1, 0},  {42 << 1, 0},   //  32: 0000 0000 1x
+    {43 << 1, 0},  {44 << 1, 0},   //  33: 0000 0001 0x
+    {45 << 1, 0},  {46 << 1, 0},   //  34: 0000 0001 1x
+    {0, 0x1001},   {0, 0x0502},    //  35: 0000 0010 0x
+    {0, 0x0007},   {0, 0x0203},    //  36: 0000 0010 1x
+    {0, 0x0104},   {0, 0x0f01},    //  37: 0000 0011 0x
+    {0, 0x0e01},   {0, 0x0402},    //  38: 0000 0011 1x
+    {47 << 1, 0},  {48 << 1, 0},   //  39: 0000 0000 00x
+    {49 << 1, 0},  {50 << 1, 0},   //  40: 0000 0000 01x
+    {51 << 1, 0},  {52 << 1, 0},   //  41: 0000 0000 10x
+    {53 << 1, 0},  {54 << 1, 0},   //  42: 0000 0000 11x
+    {55 << 1, 0},  {56 << 1, 0},   //  43: 0000 0001 00x
+    {57 << 1, 0},  {58 << 1, 0},   //  44: 0000 0001 01x
+    {59 << 1, 0},  {60 << 1, 0},   //  45: 0000 0001 10x
+    {61 << 1, 0},  {62 << 1, 0},   //  46: 0000 0001 11x
+    {-1, 0},       {63 << 1, 0},   //  47: 0000 0000 000x
+    {64 << 1, 0},  {65 << 1, 0},   //  48: 0000 0000 001x
+    {66 << 1, 0},  {67 << 1, 0},   //  49: 0000 0000 010x
+    {68 << 1, 0},  {69 << 1, 0},   //  50: 0000 0000 011x
+    {70 << 1, 0},  {71 << 1, 0},   //  51: 0000 0000 100x
+    {72 << 1, 0},  {73 << 1, 0},   //  52: 0000 0000 101x
+    {74 << 1, 0},  {75 << 1, 0},   //  53: 0000 0000 110x
+    {76 << 1, 0},  {77 << 1, 0},   //  54: 0000 0000 111x
+    {0, 0x000b},   {0, 0x0802},    //  55: 0000 0001 000x
+    {0, 0x0403},   {0, 0x000a},    //  56: 0000 0001 001x
+    {0, 0x0204},   {0, 0x0702},    //  57: 0000 0001 010x
+    {0, 0x1501},   {0, 0x1401},    //  58: 0000 0001 011x
+    {0, 0x0009},   {0, 0x1301},    //  59: 0000 0001 100x
+    {0, 0x1201},   {0, 0x0105},    //  60: 0000 0001 101x
+    {0, 0x0303},   {0, 0x0008},    //  61: 0000 0001 110x
+    {0, 0x0602},   {0, 0x1101},    //  62: 0000 0001 111x
+    {78 << 1, 0},  {79 << 1, 0},   //  63: 0000 0000 0001x
+    {80 << 1, 0},  {81 << 1, 0},   //  64: 0000 0000 0010x
+    {82 << 1, 0},  {83 << 1, 0},   //  65: 0000 0000 0011x
+    {84 << 1, 0},  {85 << 1, 0},   //  66: 0000 0000 0100x
+    {86 << 1, 0},  {87 << 1, 0},   //  67: 0000 0000 0101x
+    {88 << 1, 0},  {89 << 1, 0},   //  68: 0000 0000 0110x
+    {90 << 1, 0},  {91 << 1, 0},   //  69: 0000 0000 0111x
+    {0, 0x0a02},   {0, 0x0902},    //  70: 0000 0000 1000x
+    {0, 0x0503},   {0, 0x0304},    //  71: 0000 0000 1001x
+    {0, 0x0205},   {0, 0x0107},    //  72: 0000 0000 1010x
+    {0, 0x0106},   {0, 0x000f},    //  73: 0000 0000 1011x
+    {0, 0x000e},   {0, 0x000d},    //  74: 0000 0000 1100x
+    {0, 0x000c},   {0, 0x1a01},    //  75: 0000 0000 1101x
+    {0, 0x1901},   {0, 0x1801},    //  76: 0000 0000 1110x
+    {0, 0x1701},   {0, 0x1601},    //  77: 0000 0000 1111x
+    {92 << 1, 0},  {93 << 1, 0},   //  78: 0000 0000 0001 0x
+    {94 << 1, 0},  {95 << 1, 0},   //  79: 0000 0000 0001 1x
+    {96 << 1, 0},  {97 << 1, 0},   //  80: 0000 0000 0010 0x
+    {98 << 1, 0},  {99 << 1, 0},   //  81: 0000 0000 0010 1x
+    {100 << 1, 0}, {101 << 1, 0},  //  82: 0000 0000 0011 0x
+    {102 << 1, 0}, {103 << 1, 0},  //  83: 0000 0000 0011 1x
+    {0, 0x001f},   {0, 0x001e},    //  84: 0000 0000 0100 0x
+    {0, 0x001d},   {0, 0x001c},    //  85: 0000 0000 0100 1x
+    {0, 0x001b},   {0, 0x001a},    //  86: 0000 0000 0101 0x
+    {0, 0x0019},   {0, 0x0018},    //  87: 0000 0000 0101 1x
+    {0, 0x0017},   {0, 0x0016},    //  88: 0000 0000 0110 0x
+    {0, 0x0015},   {0, 0x0014},    //  89: 0000 0000 0110 1x
+    {0, 0x0013},   {0, 0x0012},    //  90: 0000 0000 0111 0x
+    {0, 0x0011},   {0, 0x0010},    //  91: 0000 0000 0111 1x
+    {104 << 1, 0}, {105 << 1, 0},  //  92: 0000 0000 0001 00x
+    {106 << 1, 0}, {107 << 1, 0},  //  93: 0000 0000 0001 01x
+    {108 << 1, 0}, {109 << 1, 0},  //  94: 0000 0000 0001 10x
+    {110 << 1, 0}, {111 << 1, 0},  //  95: 0000 0000 0001 11x
+    {0, 0x0028},   {0, 0x0027},    //  96: 0000 0000 0010 00x
+    {0, 0x0026},   {0, 0x0025},    //  97: 0000 0000 0010 01x
+    {0, 0x0024},   {0, 0x0023},    //  98: 0000 0000 0010 10x
+    {0, 0x0022},   {0, 0x0021},    //  99: 0000 0000 0010 11x
+    {0, 0x0020},   {0, 0x010e},    // 100: 0000 0000 0011 00x
+    {0, 0x010d},   {0, 0x010c},    // 101: 0000 0000 0011 01x
+    {0, 0x010b},   {0, 0x010a},    // 102: 0000 0000 0011 10x
+    {0, 0x0109},   {0, 0x0108},    // 103: 0000 0000 0011 11x
+    {0, 0x0112},   {0, 0x0111},    // 104: 0000 0000 0001 000x
+    {0, 0x0110},   {0, 0x010f},    // 105: 0000 0000 0001 001x
+    {0, 0x0603},   {0, 0x1002},    // 106: 0000 0000 0001 010x
+    {0, 0x0f02},   {0, 0x0e02},    // 107: 0000 0000 0001 011x
+    {0, 0x0d02},   {0, 0x0c02},    // 108: 0000 0000 0001 100x
+    {0, 0x0b02},   {0, 0x1f01},    // 109: 0000 0000 0001 101x
+    {0, 0x1e01},   {0, 0x1d01},    // 110: 0000 0000 0001 110x
+    {0, 0x1c01},   {0, 0x1b01},    // 111: 0000 0000 0001 111x
 };
 
 typedef struct {
@@ -2346,14 +2346,14 @@ struct plm_video_t {
 
   int dc_predictor[3];
 
-  plm_buffer_t *buffer;
+  plm_buffer_t* buffer;
   int destroy_buffer_when_done;
 
   plm_frame_t frame_current;
   plm_frame_t frame_forward;
   plm_frame_t frame_backward;
 
-  uint8_t *frames_data;
+  uint8_t* frames_data;
 
   int block_data[64];
   uint8_t intra_quant_matrix[64];
@@ -2372,22 +2372,22 @@ static inline uint8_t plm_clamp(int n) {
   return n;
 }
 
-int plm_video_decode_sequence_header(plm_video_t *self);
-void plm_video_init_frame(plm_video_t *self, plm_frame_t *frame, uint8_t *base);
-void plm_video_decode_picture(plm_video_t *self);
-void plm_video_decode_slice(plm_video_t *self, int slice);
-void plm_video_decode_macroblock(plm_video_t *self);
-void plm_video_decode_motion_vectors(plm_video_t *self);
-int plm_video_decode_motion_vector(plm_video_t *self, int r_size, int motion);
-void plm_video_predict_macroblock(plm_video_t *self);
-void plm_video_copy_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v);
-void plm_video_interpolate_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v);
-void plm_video_process_macroblock(plm_video_t *self, uint8_t *s, uint8_t *d, int mh, int mb, int bs, int interp);
-void plm_video_decode_block(plm_video_t *self, int block);
-void plm_video_idct(int *block);
+int plm_video_decode_sequence_header(plm_video_t* self);
+void plm_video_init_frame(plm_video_t* self, plm_frame_t* frame, uint8_t* base);
+void plm_video_decode_picture(plm_video_t* self);
+void plm_video_decode_slice(plm_video_t* self, int slice);
+void plm_video_decode_macroblock(plm_video_t* self);
+void plm_video_decode_motion_vectors(plm_video_t* self);
+int plm_video_decode_motion_vector(plm_video_t* self, int r_size, int motion);
+void plm_video_predict_macroblock(plm_video_t* self);
+void plm_video_copy_macroblock(plm_video_t* self, plm_frame_t* s, int motion_h, int motion_v);
+void plm_video_interpolate_macroblock(plm_video_t* self, plm_frame_t* s, int motion_h, int motion_v);
+void plm_video_process_macroblock(plm_video_t* self, uint8_t* s, uint8_t* d, int mh, int mb, int bs, int interp);
+void plm_video_decode_block(plm_video_t* self, int block);
+void plm_video_idct(int* block);
 
-plm_video_t *plm_video_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done) {
-  plm_video_t *self = (plm_video_t *)PLM_MALLOC(sizeof(plm_video_t));
+plm_video_t* plm_video_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done) {
+  plm_video_t* self = (plm_video_t*)PLM_MALLOC(sizeof(plm_video_t));
   memset(self, 0, sizeof(plm_video_t));
 
   self->buffer = buffer;
@@ -2401,7 +2401,7 @@ plm_video_t *plm_video_create_with_buffer(plm_buffer_t *buffer, int destroy_when
   return self;
 }
 
-void plm_video_destroy(plm_video_t *self) {
+void plm_video_destroy(plm_video_t* self) {
   if (self->destroy_buffer_when_done) {
     plm_buffer_destroy(self->buffer);
   }
@@ -2413,22 +2413,22 @@ void plm_video_destroy(plm_video_t *self) {
   PLM_FREE(self);
 }
 
-double plm_video_get_framerate(plm_video_t *self) { return plm_video_has_header(self) ? self->framerate : 0; }
+double plm_video_get_framerate(plm_video_t* self) { return plm_video_has_header(self) ? self->framerate : 0; }
 
-int plm_video_get_width(plm_video_t *self) { return plm_video_has_header(self) ? self->width : 0; }
+int plm_video_get_width(plm_video_t* self) { return plm_video_has_header(self) ? self->width : 0; }
 
-int plm_video_get_height(plm_video_t *self) { return plm_video_has_header(self) ? self->height : 0; }
+int plm_video_get_height(plm_video_t* self) { return plm_video_has_header(self) ? self->height : 0; }
 
-void plm_video_set_no_delay(plm_video_t *self, int no_delay) { self->assume_no_b_frames = no_delay; }
+void plm_video_set_no_delay(plm_video_t* self, int no_delay) { self->assume_no_b_frames = no_delay; }
 
-double plm_video_get_time(plm_video_t *self) { return self->time; }
+double plm_video_get_time(plm_video_t* self) { return self->time; }
 
-void plm_video_set_time(plm_video_t *self, double time) {
+void plm_video_set_time(plm_video_t* self, double time) {
   self->frames_decoded = self->framerate * time;
   self->time = time;
 }
 
-void plm_video_rewind(plm_video_t *self) {
+void plm_video_rewind(plm_video_t* self) {
   plm_buffer_rewind(self->buffer);
   self->time = 0;
   self->frames_decoded = 0;
@@ -2436,14 +2436,14 @@ void plm_video_rewind(plm_video_t *self) {
   self->start_code = -1;
 }
 
-int plm_video_has_ended(plm_video_t *self) { return plm_buffer_has_ended(self->buffer); }
+int plm_video_has_ended(plm_video_t* self) { return plm_buffer_has_ended(self->buffer); }
 
-plm_frame_t *plm_video_decode(plm_video_t *self) {
+plm_frame_t* plm_video_decode(plm_video_t* self) {
   if (!plm_video_has_header(self)) {
     return NULL;
   }
 
-  plm_frame_t *frame = NULL;
+  plm_frame_t* frame = NULL;
   do {
     if (self->start_code != PLM_START_PICTURE) {
       self->start_code = plm_buffer_find_start_code(self->buffer, PLM_START_PICTURE);
@@ -2493,7 +2493,7 @@ plm_frame_t *plm_video_decode(plm_video_t *self) {
   return frame;
 }
 
-int plm_video_has_header(plm_video_t *self) {
+int plm_video_has_header(plm_video_t* self) {
   if (self->has_sequence_header) {
     return TRUE;
   }
@@ -2512,8 +2512,8 @@ int plm_video_has_header(plm_video_t *self) {
   return TRUE;
 }
 
-int plm_video_decode_sequence_header(plm_video_t *self) {
-  int max_header_size = 64 + 2 * 64 * 8; // 64 bit header + 2x 64 byte matrix
+int plm_video_decode_sequence_header(plm_video_t* self) {
+  int max_header_size = 64 + 2 * 64 * 8;  // 64 bit header + 2x 64 byte matrix
   if (!plm_buffer_has(self->buffer, max_header_size)) {
     return FALSE;
   }
@@ -2568,7 +2568,7 @@ int plm_video_decode_sequence_header(plm_video_t *self) {
   size_t chroma_plane_size = self->chroma_width * self->chroma_height;
   size_t frame_data_size = (luma_plane_size + 2 * chroma_plane_size);
 
-  self->frames_data = (uint8_t *)PLM_MALLOC(frame_data_size * 3);
+  self->frames_data = (uint8_t*)PLM_MALLOC(frame_data_size * 3);
   plm_video_init_frame(self, &self->frame_current, self->frames_data + frame_data_size * 0);
   plm_video_init_frame(self, &self->frame_forward, self->frames_data + frame_data_size * 1);
   plm_video_init_frame(self, &self->frame_backward, self->frames_data + frame_data_size * 2);
@@ -2577,7 +2577,7 @@ int plm_video_decode_sequence_header(plm_video_t *self) {
   return TRUE;
 }
 
-void plm_video_init_frame(plm_video_t *self, plm_frame_t *frame, uint8_t *base) {
+void plm_video_init_frame(plm_video_t* self, plm_frame_t* frame, uint8_t* base) {
   size_t luma_plane_size = self->luma_width * self->luma_height;
   size_t chroma_plane_size = self->chroma_width * self->chroma_height;
 
@@ -2596,10 +2596,10 @@ void plm_video_init_frame(plm_video_t *self, plm_frame_t *frame, uint8_t *base) 
   frame->cb.data = base + luma_plane_size + chroma_plane_size;
 }
 
-void plm_video_decode_picture(plm_video_t *self) {
-  plm_buffer_skip(self->buffer, 10); // skip temporalReference
+void plm_video_decode_picture(plm_video_t* self) {
+  plm_buffer_skip(self->buffer, 10);  // skip temporalReference
   self->picture_type = plm_buffer_read(self->buffer, 3);
-  plm_buffer_skip(self->buffer, 16); // skip vbv_delay
+  plm_buffer_skip(self->buffer, 16);  // skip vbv_delay
 
   // D frames or unknown coding type
   if (self->picture_type <= 0 || self->picture_type > PLM_VIDEO_PICTURE_TYPE_B) {
@@ -2654,7 +2654,7 @@ void plm_video_decode_picture(plm_video_t *self) {
   }
 }
 
-void plm_video_decode_slice(plm_video_t *self, int slice) {
+void plm_video_decode_slice(plm_video_t* self, int slice) {
   self->slice_begin = TRUE;
   self->macroblock_address = (slice - 1) * self->mb_width - 1;
 
@@ -2677,7 +2677,7 @@ void plm_video_decode_slice(plm_video_t *self, int slice) {
   } while (self->macroblock_address < self->mb_size - 1 && plm_buffer_peek_non_zero(self->buffer, 23));
 }
 
-void plm_video_decode_macroblock(plm_video_t *self) {
+void plm_video_decode_macroblock(plm_video_t* self) {
   // Decode increment
   int increment = 0;
   int t = plm_buffer_read_vlc(self->buffer, PLM_VIDEO_MACROBLOCK_ADDRESS_INCREMENT);
@@ -2701,7 +2701,7 @@ void plm_video_decode_macroblock(plm_video_t *self) {
     self->macroblock_address += increment;
   } else {
     if (self->macroblock_address + increment >= self->mb_size) {
-      return; // invalid
+      return;  // invalid
     }
     if (increment > 1) {
       // Skipped macroblocks reset DC predictors
@@ -2732,11 +2732,11 @@ void plm_video_decode_macroblock(plm_video_t *self) {
   self->mb_col = self->macroblock_address % self->mb_width;
 
   if (self->mb_col >= self->mb_width || self->mb_row >= self->mb_height) {
-    return; // corrupt stream;
+    return;  // corrupt stream;
   }
 
   // Process the current macroblock
-  const plm_vlc_t *table = PLM_VIDEO_MACROBLOCK_TYPE[self->picture_type];
+  const plm_vlc_t* table = PLM_VIDEO_MACROBLOCK_TYPE[self->picture_type];
   self->macroblock_type = plm_buffer_read_vlc(self->buffer, table);
 
   self->macroblock_intra = (self->macroblock_type & 0x01);
@@ -2774,8 +2774,7 @@ void plm_video_decode_macroblock(plm_video_t *self) {
   }
 }
 
-void plm_video_decode_motion_vectors(plm_video_t *self) {
-
+void plm_video_decode_motion_vectors(plm_video_t* self) {
   // Forward
   if (self->motion_forward.is_set) {
     int r_size = self->motion_forward.r_size;
@@ -2794,7 +2793,7 @@ void plm_video_decode_motion_vectors(plm_video_t *self) {
   }
 }
 
-int plm_video_decode_motion_vector(plm_video_t *self, int r_size, int motion) {
+int plm_video_decode_motion_vector(plm_video_t* self, int r_size, int motion) {
   int fscale = 1 << r_size;
   int m_code = plm_buffer_read_vlc(self->buffer, PLM_VIDEO_MOTION);
   int r = 0;
@@ -2820,7 +2819,7 @@ int plm_video_decode_motion_vector(plm_video_t *self, int r_size, int motion) {
   return motion;
 }
 
-void plm_video_predict_macroblock(plm_video_t *self) {
+void plm_video_predict_macroblock(plm_video_t* self) {
   int fw_h = self->motion_forward.h;
   int fw_v = self->motion_forward.v;
 
@@ -2851,36 +2850,36 @@ void plm_video_predict_macroblock(plm_video_t *self) {
   }
 }
 
-void plm_video_copy_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v) {
-  plm_frame_t *d = &self->frame_current;
+void plm_video_copy_macroblock(plm_video_t* self, plm_frame_t* s, int motion_h, int motion_v) {
+  plm_frame_t* d = &self->frame_current;
   plm_video_process_macroblock(self, s->y.data, d->y.data, motion_h, motion_v, 16, FALSE);
   plm_video_process_macroblock(self, s->cr.data, d->cr.data, motion_h / 2, motion_v / 2, 8, FALSE);
   plm_video_process_macroblock(self, s->cb.data, d->cb.data, motion_h / 2, motion_v / 2, 8, FALSE);
 }
 
-void plm_video_interpolate_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v) {
-  plm_frame_t *d = &self->frame_current;
+void plm_video_interpolate_macroblock(plm_video_t* self, plm_frame_t* s, int motion_h, int motion_v) {
+  plm_frame_t* d = &self->frame_current;
   plm_video_process_macroblock(self, s->y.data, d->y.data, motion_h, motion_v, 16, TRUE);
   plm_video_process_macroblock(self, s->cr.data, d->cr.data, motion_h / 2, motion_v / 2, 8, TRUE);
   plm_video_process_macroblock(self, s->cb.data, d->cb.data, motion_h / 2, motion_v / 2, 8, TRUE);
 }
 
-#define PLM_BLOCK_SET(DEST, DEST_INDEX, DEST_WIDTH, SOURCE_INDEX, SOURCE_WIDTH, BLOCK_SIZE, OP)                        \
-  do {                                                                                                                 \
-    int dest_scan = DEST_WIDTH - BLOCK_SIZE;                                                                           \
-    int source_scan = SOURCE_WIDTH - BLOCK_SIZE;                                                                       \
-    for (int y = 0; y < BLOCK_SIZE; y++) {                                                                             \
-      for (int x = 0; x < BLOCK_SIZE; x++) {                                                                           \
-        DEST[DEST_INDEX] = OP;                                                                                         \
-        SOURCE_INDEX++;                                                                                                \
-        DEST_INDEX++;                                                                                                  \
-      }                                                                                                                \
-      SOURCE_INDEX += source_scan;                                                                                     \
-      DEST_INDEX += dest_scan;                                                                                         \
-    }                                                                                                                  \
+#define PLM_BLOCK_SET(DEST, DEST_INDEX, DEST_WIDTH, SOURCE_INDEX, SOURCE_WIDTH, BLOCK_SIZE, OP) \
+  do {                                                                                          \
+    int dest_scan = DEST_WIDTH - BLOCK_SIZE;                                                    \
+    int source_scan = SOURCE_WIDTH - BLOCK_SIZE;                                                \
+    for (int y = 0; y < BLOCK_SIZE; y++) {                                                      \
+      for (int x = 0; x < BLOCK_SIZE; x++) {                                                    \
+        DEST[DEST_INDEX] = OP;                                                                  \
+        SOURCE_INDEX++;                                                                         \
+        DEST_INDEX++;                                                                           \
+      }                                                                                         \
+      SOURCE_INDEX += source_scan;                                                              \
+      DEST_INDEX += dest_scan;                                                                  \
+    }                                                                                           \
   } while (FALSE)
 
-void plm_video_process_macroblock(plm_video_t *self, uint8_t *s, uint8_t *d, int motion_h, int motion_v, int block_size,
+void plm_video_process_macroblock(plm_video_t* self, uint8_t* s, uint8_t* d, int motion_h, int motion_v, int block_size,
                                   int interpolate) {
   int dw = self->mb_width * block_size;
 
@@ -2894,12 +2893,12 @@ void plm_video_process_macroblock(plm_video_t *self, uint8_t *s, uint8_t *d, int
 
   unsigned int max_address = (dw * (self->mb_height * block_size - block_size + 1) - block_size);
   if (si > max_address || di > max_address) {
-    return; // corrupt video
+    return;  // corrupt video
   }
 
-#define PLM_MB_CASE(INTERPOLATE, ODD_H, ODD_V, OP)                                                                     \
-  case ((INTERPOLATE << 2) | (ODD_H << 1) | (ODD_V)):                                                                  \
-    PLM_BLOCK_SET(d, di, dw, si, dw, block_size, OP);                                                                  \
+#define PLM_MB_CASE(INTERPOLATE, ODD_H, ODD_V, OP)    \
+  case ((INTERPOLATE << 2) | (ODD_H << 1) | (ODD_V)): \
+    PLM_BLOCK_SET(d, di, dw, si, dw, block_size, OP); \
     break
 
   switch ((interpolate << 2) | (odd_h << 1) | (odd_v)) {
@@ -2917,10 +2916,9 @@ void plm_video_process_macroblock(plm_video_t *self, uint8_t *s, uint8_t *d, int
 #undef PLM_MB_CASE
 }
 
-void plm_video_decode_block(plm_video_t *self, int block) {
-
+void plm_video_decode_block(plm_video_t* self, int block) {
   int n = 0;
-  uint8_t *quant_matrix;
+  uint8_t* quant_matrix;
 
   // Decode DC coefficient of intra-coded blocks
   if (self->macroblock_intra) {
@@ -2987,7 +2985,7 @@ void plm_video_decode_block(plm_video_t *self, int block) {
 
     n += run;
     if (n < 0 || n >= 64) {
-      return; // invalid
+      return;  // invalid
     }
 
     int de_zig_zagged = PLM_VIDEO_ZIG_ZAG[n];
@@ -3013,7 +3011,7 @@ void plm_video_decode_block(plm_video_t *self, int block) {
   }
 
   // Move block to its place
-  uint8_t *d;
+  uint8_t* d;
   int dw;
   int di;
 
@@ -3033,7 +3031,7 @@ void plm_video_decode_block(plm_video_t *self, int block) {
     di = ((self->mb_row * self->luma_width) << 2) + (self->mb_col << 3);
   }
 
-  int *s = self->block_data;
+  int* s = self->block_data;
   int si = 0;
   if (self->macroblock_intra) {
     // Overwrite (no prediction)
@@ -3060,7 +3058,7 @@ void plm_video_decode_block(plm_video_t *self, int block) {
   }
 }
 
-void plm_video_idct(int *block) {
+void plm_video_idct(int* block) {
   int b1, b3, b4, b6, b7, tmp1, tmp2, m0, x0, x1, x2, x3, x4, y3, y4, y5, y6, y7;
 
   // Transform columns
@@ -3127,38 +3125,38 @@ void plm_video_idct(int *block) {
 // YCbCr conversion following the BT.601 standard:
 // https://infogalactic.com/info/YCbCr#ITU-R_BT.601_conversion
 
-#define PLM_PUT_PIXEL(RI, GI, BI, Y_OFFSET, DEST_OFFSET)                                                               \
-  y = ((frame->y.data[y_index + Y_OFFSET] - 16) * 76309) >> 16;                                                        \
-  dest[d_index + DEST_OFFSET + RI] = plm_clamp(y + r);                                                                 \
-  dest[d_index + DEST_OFFSET + GI] = plm_clamp(y - g);                                                                 \
+#define PLM_PUT_PIXEL(RI, GI, BI, Y_OFFSET, DEST_OFFSET)        \
+  y = ((frame->y.data[y_index + Y_OFFSET] - 16) * 76309) >> 16; \
+  dest[d_index + DEST_OFFSET + RI] = plm_clamp(y + r);          \
+  dest[d_index + DEST_OFFSET + GI] = plm_clamp(y - g);          \
   dest[d_index + DEST_OFFSET + BI] = plm_clamp(y + b);
 
-#define PLM_DEFINE_FRAME_CONVERT_FUNCTION(NAME, BYTES_PER_PIXEL, RI, GI, BI)                                           \
-  void NAME(plm_frame_t *frame, uint8_t *dest, int stride) {                                                           \
-    int cols = frame->width >> 1;                                                                                      \
-    int rows = frame->height >> 1;                                                                                     \
-    int yw = frame->y.width;                                                                                           \
-    int cw = frame->cb.width;                                                                                          \
-    for (int row = 0; row < rows; row++) {                                                                             \
-      int c_index = row * cw;                                                                                          \
-      int y_index = row * 2 * yw;                                                                                      \
-      int d_index = row * 2 * stride;                                                                                  \
-      for (int col = 0; col < cols; col++) {                                                                           \
-        int y;                                                                                                         \
-        int cr = frame->cr.data[c_index] - 128;                                                                        \
-        int cb = frame->cb.data[c_index] - 128;                                                                        \
-        int r = (cr * 104597) >> 16;                                                                                   \
-        int g = (cb * 25674 + cr * 53278) >> 16;                                                                       \
-        int b = (cb * 132201) >> 16;                                                                                   \
-        PLM_PUT_PIXEL(RI, GI, BI, 0, 0);                                                                               \
-        PLM_PUT_PIXEL(RI, GI, BI, 1, BYTES_PER_PIXEL);                                                                 \
-        PLM_PUT_PIXEL(RI, GI, BI, yw, stride);                                                                         \
-        PLM_PUT_PIXEL(RI, GI, BI, yw + 1, stride + BYTES_PER_PIXEL);                                                   \
-        c_index += 1;                                                                                                  \
-        y_index += 2;                                                                                                  \
-        d_index += 2 * BYTES_PER_PIXEL;                                                                                \
-      }                                                                                                                \
-    }                                                                                                                  \
+#define PLM_DEFINE_FRAME_CONVERT_FUNCTION(NAME, BYTES_PER_PIXEL, RI, GI, BI) \
+  void NAME(plm_frame_t* frame, uint8_t* dest, int stride) {                 \
+    int cols = frame->width >> 1;                                            \
+    int rows = frame->height >> 1;                                           \
+    int yw = frame->y.width;                                                 \
+    int cw = frame->cb.width;                                                \
+    for (int row = 0; row < rows; row++) {                                   \
+      int c_index = row * cw;                                                \
+      int y_index = row * 2 * yw;                                            \
+      int d_index = row * 2 * stride;                                        \
+      for (int col = 0; col < cols; col++) {                                 \
+        int y;                                                               \
+        int cr = frame->cr.data[c_index] - 128;                              \
+        int cb = frame->cb.data[c_index] - 128;                              \
+        int r = (cr * 104597) >> 16;                                         \
+        int g = (cb * 25674 + cr * 53278) >> 16;                             \
+        int b = (cb * 132201) >> 16;                                         \
+        PLM_PUT_PIXEL(RI, GI, BI, 0, 0);                                     \
+        PLM_PUT_PIXEL(RI, GI, BI, 1, BYTES_PER_PIXEL);                       \
+        PLM_PUT_PIXEL(RI, GI, BI, yw, stride);                               \
+        PLM_PUT_PIXEL(RI, GI, BI, yw + 1, stride + BYTES_PER_PIXEL);         \
+        c_index += 1;                                                        \
+        y_index += 2;                                                        \
+        d_index += 2 * BYTES_PER_PIXEL;                                      \
+      }                                                                      \
+    }                                                                        \
   }
 
 PLM_DEFINE_FRAME_CONVERT_FUNCTION(plm_frame_to_rgb, 3, 0, 1, 2)
@@ -3193,13 +3191,13 @@ static const int PLM_AUDIO_MODE_DUAL_CHANNEL = 0x2;
 static const int PLM_AUDIO_MODE_MONO = 0x3;
 
 static const unsigned short PLM_AUDIO_SAMPLE_RATE[] = {
-    44100, 48000, 32000, 0, // MPEG-1
-    22050, 24000, 16000, 0  // MPEG-2
+    44100, 48000, 32000, 0,  // MPEG-1
+    22050, 24000, 16000, 0   // MPEG-2
 };
 
 static const short PLM_AUDIO_BIT_RATE[] = {
-    32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384, // MPEG-1
-    8,  16, 24, 32, 40, 48, 56,  64,  80,  96,  112, 128, 144, 160  // MPEG-2
+    32, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 384,  // MPEG-1
+    8,  16, 24, 32, 40, 48, 56,  64,  80,  96,  112, 128, 144, 160   // MPEG-2
 };
 
 static const int PLM_AUDIO_SCALEFACTOR_BASE[] = {0x02000000, 0x01965FEA, 0x01428A30};
@@ -3256,22 +3254,22 @@ static const float PLM_AUDIO_SYNTHESIS_WINDOW[] = {
 // Quantizer lookup, step 1: bitrate classes
 static const uint8_t PLM_AUDIO_QUANT_LUT_STEP_1[2][16] = {
     // 32, 48, 56, 64, 80, 96,112,128,160,192,224,256,320,384 <- bitrate
-    {0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2}, // mono
+    {0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2},  // mono
     // 16, 24, 28, 32, 40, 48, 56, 64, 80, 96,112,128,160,192 <- bitrate / chan
-    {0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2} // stereo
+    {0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2}  // stereo
 };
 
 // Quantizer lookup, step 2: bitrate class, sample rate -> B2 table idx, sblimit
-#define PLM_AUDIO_QUANT_TAB_A (27 | 64) // Table 3-B.2a: high-rate, sblimit = 27
-#define PLM_AUDIO_QUANT_TAB_B (30 | 64) // Table 3-B.2b: high-rate, sblimit = 30
-#define PLM_AUDIO_QUANT_TAB_C 8         // Table 3-B.2c:  low-rate, sblimit =  8
-#define PLM_AUDIO_QUANT_TAB_D 12        // Table 3-B.2d:  low-rate, sblimit = 12
+#define PLM_AUDIO_QUANT_TAB_A (27 | 64)  // Table 3-B.2a: high-rate, sblimit = 27
+#define PLM_AUDIO_QUANT_TAB_B (30 | 64)  // Table 3-B.2b: high-rate, sblimit = 30
+#define PLM_AUDIO_QUANT_TAB_C 8          // Table 3-B.2c:  low-rate, sblimit =  8
+#define PLM_AUDIO_QUANT_TAB_D 12         // Table 3-B.2d:  low-rate, sblimit = 12
 
 static const uint8_t QUANT_LUT_STEP_2[3][3] = {
     // 44.1 kHz,              48 kHz,                32 kHz
-    {PLM_AUDIO_QUANT_TAB_C, PLM_AUDIO_QUANT_TAB_C, PLM_AUDIO_QUANT_TAB_D}, // 32 - 48 kbit/sec/ch
-    {PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_A}, // 56 - 80 kbit/sec/ch
-    {PLM_AUDIO_QUANT_TAB_B, PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_B}  // 96+	 kbit/sec/ch
+    {PLM_AUDIO_QUANT_TAB_C, PLM_AUDIO_QUANT_TAB_C, PLM_AUDIO_QUANT_TAB_D},  // 32 - 48 kbit/sec/ch
+    {PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_A},  // 56 - 80 kbit/sec/ch
+    {PLM_AUDIO_QUANT_TAB_B, PLM_AUDIO_QUANT_TAB_A, PLM_AUDIO_QUANT_TAB_B}   // 96+	 kbit/sec/ch
 };
 
 // Quantizer lookup, step 3: B2 table, subband -> nbal, row index
@@ -3301,23 +3299,23 @@ typedef struct plm_quantizer_spec_t {
 } plm_quantizer_spec_t;
 
 static const plm_quantizer_spec_t PLM_AUDIO_QUANT_TAB[] = {
-    {3, 1, 5},      //  1
-    {5, 1, 7},      //  2
-    {7, 0, 3},      //  3
-    {9, 1, 10},     //  4
-    {15, 0, 4},     //  5
-    {31, 0, 5},     //  6
-    {63, 0, 6},     //  7
-    {127, 0, 7},    //  8
-    {255, 0, 8},    //  9
-    {511, 0, 9},    // 10
-    {1023, 0, 10},  // 11
-    {2047, 0, 11},  // 12
-    {4095, 0, 12},  // 13
-    {8191, 0, 13},  // 14
-    {16383, 0, 14}, // 15
-    {32767, 0, 15}, // 16
-    {65535, 0, 16}  // 17
+    {3, 1, 5},       //  1
+    {5, 1, 7},       //  2
+    {7, 0, 3},       //  3
+    {9, 1, 10},      //  4
+    {15, 0, 4},      //  5
+    {31, 0, 5},      //  6
+    {63, 0, 6},      //  7
+    {127, 0, 7},     //  8
+    {255, 0, 8},     //  9
+    {511, 0, 9},     // 10
+    {1023, 0, 10},   // 11
+    {2047, 0, 11},   // 12
+    {4095, 0, 12},   // 13
+    {8191, 0, 13},   // 14
+    {16383, 0, 14},  // 15
+    {32767, 0, 15},  // 16
+    {65535, 0, 16}   // 17
 };
 
 struct plm_audio_t {
@@ -3333,10 +3331,10 @@ struct plm_audio_t {
   int next_frame_data_size;
   int has_header;
 
-  plm_buffer_t *buffer;
+  plm_buffer_t* buffer;
   int destroy_buffer_when_done;
 
-  const plm_quantizer_spec_t *allocation[2][32];
+  const plm_quantizer_spec_t* allocation[2][32];
   uint8_t scale_factor_info[2][32];
   int scale_factor[2][32][3];
   int sample[2][32][3];
@@ -3347,21 +3345,21 @@ struct plm_audio_t {
   float U[32];
 };
 
-int plm_audio_find_frame_sync(plm_audio_t *self);
-int plm_audio_decode_header(plm_audio_t *self);
-void plm_audio_decode_frame(plm_audio_t *self);
-const plm_quantizer_spec_t *plm_audio_read_allocation(plm_audio_t *self, int sb, int tab3);
-void plm_audio_read_samples(plm_audio_t *self, int ch, int sb, int part);
-void plm_audio_idct36(int s[32][3], int ss, float *d, int dp);
+int plm_audio_find_frame_sync(plm_audio_t* self);
+int plm_audio_decode_header(plm_audio_t* self);
+void plm_audio_decode_frame(plm_audio_t* self);
+const plm_quantizer_spec_t* plm_audio_read_allocation(plm_audio_t* self, int sb, int tab3);
+void plm_audio_read_samples(plm_audio_t* self, int ch, int sb, int part);
+void plm_audio_idct36(int s[32][3], int ss, float* d, int dp);
 
-plm_audio_t *plm_audio_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done) {
-  plm_audio_t *self = (plm_audio_t *)PLM_MALLOC(sizeof(plm_audio_t));
+plm_audio_t* plm_audio_create_with_buffer(plm_buffer_t* buffer, int destroy_when_done) {
+  plm_audio_t* self = (plm_audio_t*)PLM_MALLOC(sizeof(plm_audio_t));
   memset(self, 0, sizeof(plm_audio_t));
 
   self->samples.count = PLM_AUDIO_SAMPLES_PER_FRAME;
   self->buffer = buffer;
   self->destroy_buffer_when_done = destroy_when_done;
-  self->samplerate_index = 3; // Indicates 0
+  self->samplerate_index = 3;  // Indicates 0
 
   memcpy(self->D, PLM_AUDIO_SYNTHESIS_WINDOW, 512 * sizeof(float));
   memcpy(self->D + 512, PLM_AUDIO_SYNTHESIS_WINDOW, 512 * sizeof(float));
@@ -3372,14 +3370,14 @@ plm_audio_t *plm_audio_create_with_buffer(plm_buffer_t *buffer, int destroy_when
   return self;
 }
 
-void plm_audio_destroy(plm_audio_t *self) {
+void plm_audio_destroy(plm_audio_t* self) {
   if (self->destroy_buffer_when_done) {
     plm_buffer_destroy(self->buffer);
   }
   PLM_FREE(self);
 }
 
-int plm_audio_has_header(plm_audio_t *self) {
+int plm_audio_has_header(plm_audio_t* self) {
   if (self->has_header) {
     return TRUE;
   }
@@ -3388,27 +3386,27 @@ int plm_audio_has_header(plm_audio_t *self) {
   return self->has_header;
 }
 
-int plm_audio_get_samplerate(plm_audio_t *self) {
+int plm_audio_get_samplerate(plm_audio_t* self) {
   return plm_audio_has_header(self) ? PLM_AUDIO_SAMPLE_RATE[self->samplerate_index] : 0;
 }
 
-double plm_audio_get_time(plm_audio_t *self) { return self->time; }
+double plm_audio_get_time(plm_audio_t* self) { return self->time; }
 
-void plm_audio_set_time(plm_audio_t *self, double time) {
+void plm_audio_set_time(plm_audio_t* self, double time) {
   self->samples_decoded = time * (double)PLM_AUDIO_SAMPLE_RATE[self->samplerate_index];
   self->time = time;
 }
 
-void plm_audio_rewind(plm_audio_t *self) {
+void plm_audio_rewind(plm_audio_t* self) {
   plm_buffer_rewind(self->buffer);
   self->time = 0;
   self->samples_decoded = 0;
   self->next_frame_data_size = 0;
 }
 
-int plm_audio_has_ended(plm_audio_t *self) { return plm_buffer_has_ended(self->buffer); }
+int plm_audio_has_ended(plm_audio_t* self) { return plm_buffer_has_ended(self->buffer); }
 
-plm_samples_t *plm_audio_decode(plm_audio_t *self) {
+plm_samples_t* plm_audio_decode(plm_audio_t* self) {
   // Do we have at least enough information to decode the frame header?
   if (!self->next_frame_data_size) {
     if (!plm_buffer_has(self->buffer, 48)) {
@@ -3432,7 +3430,7 @@ plm_samples_t *plm_audio_decode(plm_audio_t *self) {
   return &self->samples;
 }
 
-int plm_audio_find_frame_sync(plm_audio_t *self) {
+int plm_audio_find_frame_sync(plm_audio_t* self) {
   size_t i;
   for (i = self->buffer->bit_index >> 3; i < self->buffer->length - 1; i++) {
     if (self->buffer->bytes[i] == 0xFF && (self->buffer->bytes[i + 1] & 0xFE) == 0xFC) {
@@ -3444,7 +3442,7 @@ int plm_audio_find_frame_sync(plm_audio_t *self) {
   return FALSE;
 }
 
-int plm_audio_decode_header(plm_audio_t *self) {
+int plm_audio_decode_header(plm_audio_t* self) {
   if (!plm_buffer_has(self->buffer, 48)) {
     return 0;
   }
@@ -3482,7 +3480,7 @@ int plm_audio_decode_header(plm_audio_t *self) {
   }
 
   int padding = plm_buffer_read(self->buffer, 1);
-  plm_buffer_skip(self->buffer, 1); // f_private
+  plm_buffer_skip(self->buffer, 1);  // f_private
   int mode = plm_buffer_read(self->buffer, 2);
 
   // If we already have a header, make sure the samplerate, bitrate and mode
@@ -3506,7 +3504,7 @@ int plm_audio_decode_header(plm_audio_t *self) {
   }
 
   // Discard the last 4 bits of the header and the CRC value, if present
-  plm_buffer_skip(self->buffer, 4); // copyright(1), original(1), emphasis(2)
+  plm_buffer_skip(self->buffer, 4);  // copyright(1), original(1), emphasis(2)
   if (hasCRC) {
     plm_buffer_skip(self->buffer, 16);
   }
@@ -3519,7 +3517,7 @@ int plm_audio_decode_header(plm_audio_t *self) {
   return frame_size - (hasCRC ? 6 : 4);
 }
 
-void plm_audio_decode_frame(plm_audio_t *self) {
+void plm_audio_decode_frame(plm_audio_t* self) {
   // Prepare the quantizer table lookups
   int tab3 = 0;
   int sblimit = 0;
@@ -3561,24 +3559,24 @@ void plm_audio_decode_frame(plm_audio_t *self) {
   for (int sb = 0; sb < sblimit; sb++) {
     for (int ch = 0; ch < channels; ch++) {
       if (self->allocation[ch][sb]) {
-        int *sf = self->scale_factor[ch][sb];
+        int* sf = self->scale_factor[ch][sb];
         switch (self->scale_factor_info[ch][sb]) {
-        case 0:
-          sf[0] = plm_buffer_read(self->buffer, 6);
-          sf[1] = plm_buffer_read(self->buffer, 6);
-          sf[2] = plm_buffer_read(self->buffer, 6);
-          break;
-        case 1:
-          sf[0] = sf[1] = plm_buffer_read(self->buffer, 6);
-          sf[2] = plm_buffer_read(self->buffer, 6);
-          break;
-        case 2:
-          sf[0] = sf[1] = sf[2] = plm_buffer_read(self->buffer, 6);
-          break;
-        case 3:
-          sf[0] = plm_buffer_read(self->buffer, 6);
-          sf[1] = sf[2] = plm_buffer_read(self->buffer, 6);
-          break;
+          case 0:
+            sf[0] = plm_buffer_read(self->buffer, 6);
+            sf[1] = plm_buffer_read(self->buffer, 6);
+            sf[2] = plm_buffer_read(self->buffer, 6);
+            break;
+          case 1:
+            sf[0] = sf[1] = plm_buffer_read(self->buffer, 6);
+            sf[2] = plm_buffer_read(self->buffer, 6);
+            break;
+          case 2:
+            sf[0] = sf[1] = sf[2] = plm_buffer_read(self->buffer, 6);
+            break;
+          case 3:
+            sf[0] = plm_buffer_read(self->buffer, 6);
+            sf[1] = sf[2] = plm_buffer_read(self->buffer, 6);
+            break;
         }
       }
     }
@@ -3593,7 +3591,6 @@ void plm_audio_decode_frame(plm_audio_t *self) {
   int out_pos = 0;
   for (int part = 0; part < 3; part++) {
     for (int granule = 0; granule < 4; granule++) {
-
       // Read the samples
       for (int sb = 0; sb < self->bound; sb++) {
         plm_audio_read_samples(self, 0, sb, part);
@@ -3649,7 +3646,7 @@ void plm_audio_decode_frame(plm_audio_t *self) {
 
 // Output samples
 #ifdef PLM_AUDIO_SEPARATE_CHANNELS
-          float *out_channel = ch == 0 ? self->samples.left : self->samples.right;
+          float* out_channel = ch == 0 ? self->samples.left : self->samples.right;
           for (int j = 0; j < 32; j++) {
             out_channel[out_pos + j] = self->U[j] / 2147418112.0f;
           }
@@ -3658,26 +3655,26 @@ void plm_audio_decode_frame(plm_audio_t *self) {
             self->samples.interleaved[((out_pos + j) << 1) + ch] = self->U[j] / 2147418112.0f;
           }
 #endif
-        } // End of synthesis channel loop
+        }  // End of synthesis channel loop
         out_pos += 32;
-      } // End of synthesis sub-block loop
+      }  // End of synthesis sub-block loop
 
-    } // Decoding of the granule finished
+    }  // Decoding of the granule finished
   }
 
   plm_buffer_align(self->buffer);
 }
 
-const plm_quantizer_spec_t *plm_audio_read_allocation(plm_audio_t *self, int sb, int tab3) {
+const plm_quantizer_spec_t* plm_audio_read_allocation(plm_audio_t* self, int sb, int tab3) {
   int tab4 = PLM_AUDIO_QUANT_LUT_STEP_3[tab3][sb];
   int qtab = PLM_AUDIO_QUANT_LUT_STEP_4[tab4 & 15][plm_buffer_read(self->buffer, tab4 >> 4)];
   return qtab ? (&PLM_AUDIO_QUANT_TAB[qtab - 1]) : 0;
 }
 
-void plm_audio_read_samples(plm_audio_t *self, int ch, int sb, int part) {
-  const plm_quantizer_spec_t *q = self->allocation[ch][sb];
+void plm_audio_read_samples(plm_audio_t* self, int ch, int sb, int part) {
+  const plm_quantizer_spec_t* q = self->allocation[ch][sb];
   int sf = self->scale_factor[ch][sb][part];
-  int *sample = self->sample[ch][sb];
+  int* sample = self->sample[ch][sb];
   int val = 0;
 
   if (!q) {
@@ -3724,7 +3721,7 @@ void plm_audio_read_samples(plm_audio_t *self, int ch, int sb, int part) {
   sample[2] = (val * (sf >> 12) + ((val * (sf & 4095) + 2048) >> 12)) >> 12;
 }
 
-void plm_audio_idct36(int s[32][3], int ss, float *d, int dp) {
+void plm_audio_idct36(int s[32][3], int ss, float* d, int dp) {
   float t01, t02, t03, t04, t05, t06, t07, t08, t09, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20, t21, t22,
       t23, t24, t25, t26, t27, t28, t29, t30, t31, t32, t33;
 
@@ -3990,4 +3987,4 @@ void plm_audio_idct36(int s[32][3], int ss, float *d, int dp) {
   d[dp + 16] = 0.0;
 }
 
-#endif // PL_MPEG_IMPLEMENTATION
+#endif  // PL_MPEG_IMPLEMENTATION

@@ -1,12 +1,13 @@
 #pragma once
 
+#include <atomic>
+
 #include "core/robot_specs.h"
 #include "core/subsystems/screen.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
 #include "vex.h"
-#include <atomic>
 
 /**
  * a Flywheel class that handles all control of a high inertia spinning disk
@@ -16,8 +17,7 @@
  *
  */
 class Flywheel {
-
-public:
+ public:
   // CONSTRUCTORS, GETTERS, AND SETTERS
   /**
    * Create the Flywheel object using PID + feedforward for control.
@@ -27,7 +27,7 @@ public:
    * @param ratio       ratio of the gears from the motor to the flywheel just multiplies the velocity
    * @param filter      the filter to use to smooth noisy motor readings
    */
-  Flywheel(vex::motor_group &motors, Feedback &feedback, FeedForward &helper, const double ratio, Filter &filt);
+  Flywheel(vex::motor_group& motors, Feedback& feedback, FeedForward& helper, const double ratio, Filter& filt);
 
   /**
    * Return the target_rpm that the flywheel is currently trying to achieve
@@ -43,7 +43,7 @@ public:
   /**
    * Returns the motors
    */
-  vex::motor_group &get_motors() const;
+  vex::motor_group& get_motors() const;
 
   /**
    * Spin motors using voltage; defaults forward at 12 volts
@@ -75,15 +75,14 @@ public:
    *  @brief Creates a page displaying info about the flywheel
    *  @return the page should be used for `screen::start_screen(screen, {fw.Page()});
    */
-  screen::Page *Page() const;
+  screen::Page* Page() const;
 
   /**
    * @brief Creates a new auto command to spin the flywheel at the desired velocity
    * @param rpm the rpm to spin at
    * @return an auto command to add to a command controller
    */
-  AutoCommand *SpinRpmCmd(int rpm) {
-
+  AutoCommand* SpinRpmCmd(int rpm) {
     return new FunctionCommand([this, rpm]() {
       spin_rpm(rpm);
       return true;
@@ -95,23 +94,23 @@ public:
    * controller
    * @return an auto command to add to a command controller
    */
-  AutoCommand *WaitUntilUpToSpeedCmd() {
+  AutoCommand* WaitUntilUpToSpeedCmd() {
     return new WaitUntilCondition(new FunctionCondition([this]() { return is_on_target(); }));
   }
 
-private:
+ private:
   friend class FlywheelPage;
-  friend int spinRPMTask(void *wheelPointer);
+  friend int spinRPMTask(void* wheelPointer);
 
-  vex::motor_group &motors;       ///< motors that make up the flywheel
-  bool task_running = false;      ///< is the task currently running?
-  Feedback &fb;                   ///< Main Feeback controller
-  FeedForward &ff;                ///< Helper Feedforward Controller
-  vex::mutex fb_mut;              ///< guard for talking to the runner thread
-  double ratio;                   ///< ratio between motor and flywheel. For accurate RPM calcualation
-  std::atomic<double> target_rpm; ///< Desired RPM of the flywheel.
-  task rpm_task;                  ///< task that handles spinning the wheel at a given target_rpm
-  Filter &avger;                  ///< Moving average to smooth out noise from
+  vex::motor_group& motors;        ///< motors that make up the flywheel
+  bool task_running = false;       ///< is the task currently running?
+  Feedback& fb;                    ///< Main Feeback controller
+  FeedForward& ff;                 ///< Helper Feedforward Controller
+  vex::mutex fb_mut;               ///< guard for talking to the runner thread
+  double ratio;                    ///< ratio between motor and flywheel. For accurate RPM calcualation
+  std::atomic<double> target_rpm;  ///< Desired RPM of the flywheel.
+  task rpm_task;                   ///< task that handles spinning the wheel at a given target_rpm
+  Filter& avger;                   ///< Moving average to smooth out noise from
 
   // Functions for internal use only
   /**

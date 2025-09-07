@@ -22,7 +22,7 @@
  * using the vex hardware functions
  */
 class BasicSpinCommand : public AutoCommand {
-public:
+ public:
   // Enumurator for the type of power setting in the motor
   enum type { percent, voltage, velocity };
 
@@ -34,7 +34,7 @@ public:
    * @param setting Power setting in volts,percentage,velocity
    * @param power Value of desired power
    */
-  BasicSpinCommand(vex::motor &motor, vex::directionType dir, BasicSpinCommand::type setting, double power);
+  BasicSpinCommand(vex::motor& motor, vex::directionType dir, BasicSpinCommand::type setting, double power);
 
   /**
    * @brief Runs the BasicSpinCommand
@@ -45,12 +45,12 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
 
-private:
-  vex::motor &motor;
+ private:
+  vex::motor& motor;
 
   type setting;
 
@@ -63,14 +63,14 @@ private:
  * Using the Vex hardware functions
  */
 class BasicStopCommand : public AutoCommand {
-public:
+ public:
   /**
    * @brief Construct a new BasicMotorStop Command
    *
    * @param motor The motor to stop
    * @param setting The brake setting for the motor
    */
-  BasicStopCommand(vex::motor &motor, vex::brakeType setting);
+  BasicStopCommand(vex::motor& motor, vex::brakeType setting);
 
   /**
    * @brief Runs the BasicMotorStop Command
@@ -81,12 +81,12 @@ public:
   bool run() override;
 
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
 
-private:
-  vex::motor &motor;
+ private:
+  vex::motor& motor;
 
   vex::brakeType setting;
 };
@@ -98,14 +98,14 @@ private:
  * Using the Vex hardware functions
  */
 class BasicSolenoidSet : public AutoCommand {
-public:
+ public:
   /**
    * @brief Construct a new BasicSolenoidSet Command
    *
    * @param solenoid Solenoid being set
    * @param setting Setting of the solenoid in boolean (true,false)
    */
-  BasicSolenoidSet(vex::pneumatics &solenoid, bool setting);
+  BasicSolenoidSet(vex::pneumatics& solenoid, bool setting);
 
   /**
    * @brief Runs the BasicSolenoidSet
@@ -115,12 +115,12 @@ public:
    */
   bool run() override;
   /*
-  * Returns a string describing the commands functionality
-  */
+   * Returns a string describing the commands functionality
+   */
   std::string toString() override;
 
-private:
-  vex::pneumatics &solenoid;
+ private:
+  vex::pneumatics& solenoid;
 
   bool setting;
 };
