@@ -1,9 +1,9 @@
 
-#include "core/utils/math/geometry/twist2d.h"
-
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#include "core/utils/math/geometry/twist2d.h"
 
 /**
  * Default Constructor for Twist2d
@@ -17,14 +17,14 @@ constexpr Twist2d::Twist2d() : m_dx(0), m_dy(0), m_dtheta(0) {}
  * @param dy the linear dy component.
  * @param dtheta the angular dtheta component.
  */
-Twist2d::Twist2d(const double& dx, const double& dy, const double& dtheta) : m_dx{dx}, m_dy{dy}, m_dtheta{dtheta} {}
+Twist2d::Twist2d(const double &dx, const double &dy, const double &dtheta) : m_dx{dx}, m_dy{dy}, m_dtheta{dtheta} {}
 
 /**
  * Constructs a twist with given translation and angle deltas.
  *
  * @param twist_vector vector of the form [dx, dy, dtheta]
  */
-Twist2d::Twist2d(const Eigen::Vector3d& twist_vector)
+Twist2d::Twist2d(const Eigen::Vector3d &twist_vector)
     : m_dx{twist_vector(0)}, m_dy{twist_vector(1)}, m_dtheta{twist_vector(2)} {}
 
 /**
@@ -55,9 +55,9 @@ double Twist2d::dtheta() const { return m_dtheta; }
  *
  * @return true if each of the components are within 1e-9 of each other.
  */
-bool Twist2d::operator==(const Twist2d& other) const {
-  return std::abs(dx() - other.dx()) < 1e-9 && std::abs(dy() - other.dy()) < 1e-9 &&
-         std::abs(dtheta() - other.dtheta()) < 1e-9;
+bool Twist2d::operator==(const Twist2d &other) const {
+    return std::abs(dx() - other.dx()) < 1e-9 && std::abs(dy() - other.dy()) < 1e-9 &&
+           std::abs(dtheta() - other.dtheta()) < 1e-9;
 }
 
 /**
@@ -65,8 +65,8 @@ bool Twist2d::operator==(const Twist2d& other) const {
  *
  * @param scalar the scalar value to multiply by.
  */
-Twist2d Twist2d::operator*(const double& scalar) const {
-  return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
+Twist2d Twist2d::operator*(const double &scalar) const {
+    return Twist2d{dx() * scalar, dy() * scalar, dtheta() * scalar};
 }
 
 /**
@@ -74,7 +74,7 @@ Twist2d Twist2d::operator*(const double& scalar) const {
  *
  * @param scalar the scalar value to divide by.
  */
-Twist2d Twist2d::operator/(const double& scalar) const { return *this * (1. / scalar); }
+Twist2d Twist2d::operator/(const double &scalar) const { return *this * (1. / scalar); }
 
 /**
  * Sends a twist to an output stream.
@@ -83,7 +83,7 @@ Twist2d Twist2d::operator/(const double& scalar) const { return *this * (1. / sc
  *
  * prints "Twist2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Twist2d& twist) {
-  os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
-  return os;
+std::ostream &operator<<(std::ostream &os, const Twist2d &twist) {
+    os << "Twist2d[dx: " << twist.dx() << ", dy: " << twist.dy() << ", dtheta: " << twist.dtheta() << "]";
+    return os;
 }

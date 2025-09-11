@@ -6,7 +6,7 @@
  * Use add_entry to supply data and get_value to retrieve the filtered value
  */
 class Filter {
- public:
+public:
   virtual void add_entry(double n) = 0;
   virtual double get_value() const = 0;
 };
@@ -26,7 +26,7 @@ class Filter {
  *
  */
 class MovingAverage : public Filter {
- public:
+public:
   /*
    * Create a moving average calculator with 0 as the default value
    *
@@ -64,10 +64,10 @@ class MovingAverage : public Filter {
    */
   int get_size() const;
 
- private:
-  int buffer_index;            // index of the next value to be overridden
-  std::vector<double> buffer;  // all current data readings we've taken
-  double current_avg;          // the current value of the data
+private:
+  int buffer_index;           // index of the next value to be overridden
+  std::vector<double> buffer; // all current data readings we've taken
+  double current_avg;         // the current value of the data
 };
 
 /**
@@ -85,7 +85,7 @@ class MovingAverage : public Filter {
  *
  */
 class ExponentialMovingAverage : public Filter {
- public:
+public:
   /*
    * Create a moving average calculator with 0 as the default value
    *
@@ -123,8 +123,8 @@ class ExponentialMovingAverage : public Filter {
    */
   int get_size();
 
- private:
-  int buffer_index;            // index of the next value to be overridden
-  std::vector<double> buffer;  // all current data readings we've taken
-  double current_avg;          // the current value of the data
+private:
+  int buffer_index;           // index of the next value to be overridden
+  std::vector<double> buffer; // all current data readings we've taken
+  double current_avg;         // the current value of the data
 };

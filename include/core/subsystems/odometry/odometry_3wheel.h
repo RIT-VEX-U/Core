@@ -30,7 +30,7 @@
  *
  */
 class Odometry3Wheel : public OdometryBase {
- public:
+public:
   /**
    * odometry3wheel_cfg_t holds all the specifications for how to calculate position with 3 encoders
    * See the core wiki for what exactly each of these parameters measures
@@ -51,7 +51,7 @@ class Odometry3Wheel : public OdometryBase {
    * @param cfg robot odometry configuration
    * @param is_async true to constantly run in the background
    */
-  Odometry3Wheel(CustomEncoder& lside_fwd, CustomEncoder& rside_fwd, CustomEncoder& off_axis, odometry3wheel_cfg_t& cfg,
+  Odometry3Wheel(CustomEncoder &lside_fwd, CustomEncoder &rside_fwd, CustomEncoder &off_axis, odometry3wheel_cfg_t &cfg,
                  bool is_async = true);
 
   /**
@@ -70,9 +70,9 @@ class Odometry3Wheel : public OdometryBase {
    * @param con Controller reference, for screen and button control
    * @param drive Drivetrain reference for robot control
    */
-  void tune(vex::controller& con, TankDrive& drive);
+  void tune(vex::controller &con, TankDrive &drive);
 
- private:
+private:
   /**
    * Calculation method for the robot's new position using the change in encoders, the old position, and the robot's
    * configuration. This uses a series of arclength formulae for finding distance driven and change in angle. Then
@@ -86,8 +86,8 @@ class Odometry3Wheel : public OdometryBase {
    * @return The robot's new position (x, y, rot)
    */
   static Pose2d calculate_new_pos(double lside_delta_deg, double rside_delta_deg, double offax_delta_deg,
-                                  Pose2d old_pos, odometry3wheel_cfg_t cfg);
+    Pose2d old_pos, odometry3wheel_cfg_t cfg);
 
   CustomEncoder &lside_fwd, &rside_fwd, &off_axis;
-  odometry3wheel_cfg_t& cfg;
+  odometry3wheel_cfg_t &cfg;
 };

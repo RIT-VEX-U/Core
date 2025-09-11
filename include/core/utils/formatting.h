@@ -1,6 +1,6 @@
 #pragma once
-#include <cstdio>
 #include <string>
+#include <cstdio>
 /**
  * Converts doubles into a string
  */

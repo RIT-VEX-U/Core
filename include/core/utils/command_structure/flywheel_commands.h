@@ -15,28 +15,28 @@
  *
  */
 class SpinRPMCommand : public AutoCommand {
- public:
-  /**
-   * Construct a SpinRPM Command
-   * @param flywheel the flywheel sys to command
-   * @param rpm the rpm that we should spin at
-   */
-  SpinRPMCommand(Flywheel& flywheel, int rpm);
+  public:
+    /**
+     * Construct a SpinRPM Command
+     * @param flywheel the flywheel sys to command
+     * @param rpm the rpm that we should spin at
+     */
+    SpinRPMCommand(Flywheel &flywheel, int rpm);
 
-  /**
-   * Run spin_manual
-   * Overrides run from AutoCommand
-   * @returns true when execution is complete, false otherwise
-   */
-  bool run() override;
-  std::string toString() override;
+    /**
+     * Run spin_manual
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+    std::string toString() override;
 
- private:
-  // Flywheel instance to run the function on
-  Flywheel& flywheel;
+  private:
+    // Flywheel instance to run the function on
+    Flywheel &flywheel;
 
-  // parameters for spin_rpm
-  int rpm;
+    // parameters for spin_rpm
+    int rpm;
 };
 
 /**
@@ -44,28 +44,28 @@ class SpinRPMCommand : public AutoCommand {
  *
  */
 class WaitUntilUpToSpeedCommand : public AutoCommand {
- public:
-  /**
-   * Creat a WaitUntilUpToSpeedCommand
-   * @param flywheel the flywheel system we are commanding
-   * @param threshold_rpm the threshold over and under the flywheel target RPM that we define to be acceptable
-   */
-  WaitUntilUpToSpeedCommand(Flywheel& flywheel, int threshold_rpm);
+  public:
+    /**
+     * Creat a WaitUntilUpToSpeedCommand
+     * @param flywheel the flywheel system we are commanding
+     * @param threshold_rpm the threshold over and under the flywheel target RPM that we define to be acceptable
+     */
+    WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm);
 
-  /**
-   * Run spin_manual
-   * Overrides run from AutoCommand
-   * @returns true when execution is complete, false otherwise
-   */
-  bool run() override;
-  std::string toString() override;
+    /**
+     * Run spin_manual
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
+    std::string toString() override;
 
- private:
-  // Flywheel instance to run the function on
-  Flywheel& flywheel;
+  private:
+    // Flywheel instance to run the function on
+    Flywheel &flywheel;
 
-  // if the actual speed is equal to the desired speed +/- this value, we are ready to fire
-  int threshold_rpm;
+    // if the actual speed is equal to the desired speed +/- this value, we are ready to fire
+    int threshold_rpm;
 };
 
 /**
@@ -74,28 +74,28 @@ class WaitUntilUpToSpeedCommand : public AutoCommand {
  *
  */
 class FlywheelStopCommand : public AutoCommand {
- public:
-  /**
-   * Construct a FlywheelStopCommand
-   * @param flywheel the flywheel system we are commanding
-   */
-  FlywheelStopCommand(Flywheel& flywheel);
+  public:
+    /**
+     * Construct a FlywheelStopCommand
+     * @param flywheel the flywheel system we are commanding
+     */
+    FlywheelStopCommand(Flywheel &flywheel);
 
-  /**
-   * Run stop
-   * Overrides run from AutoCommand
-   * @returns true when execution is complete, false otherwise
-   */
-  bool run() override;
+    /**
+     * Run stop
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
 
-  /*
-   * Returns a string describing the commands functionality
-   */
-  std::string toString() override;
+    /*
+     * Returns a string describing the commands functionality
+     */
+    std::string toString() override;
 
- private:
-  // Flywheel instance to run the function on
-  Flywheel& flywheel;
+  private:
+    // Flywheel instance to run the function on
+    Flywheel &flywheel;
 };
 
 /**
@@ -104,28 +104,28 @@ class FlywheelStopCommand : public AutoCommand {
  *
  */
 class FlywheelStopMotorsCommand : public AutoCommand {
- public:
-  /**
-   * Construct a FlywheeStopMotors Command
-   * @param flywheel the flywheel system we are commanding
-   */
-  FlywheelStopMotorsCommand(Flywheel& flywheel);
+  public:
+    /**
+     * Construct a FlywheeStopMotors Command
+     * @param flywheel the flywheel system we are commanding
+     */
+    FlywheelStopMotorsCommand(Flywheel &flywheel);
 
-  /**
-   * Run stop
-   * Overrides run from AutoCommand
-   * @returns true when execution is complete, false otherwise
-   */
-  bool run() override;
+    /**
+     * Run stop
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
 
-  /*
-   * Returns a string describing the commands functionality
-   */
-  std::string toString() override;
+    /*
+     * Returns a string describing the commands functionality
+     */
+    std::string toString() override;
 
- private:
-  // Flywheel instance to run the function on
-  Flywheel& flywheel;
+  private:
+    // Flywheel instance to run the function on
+    Flywheel &flywheel;
 };
 
 /**
@@ -134,21 +134,21 @@ class FlywheelStopMotorsCommand : public AutoCommand {
  *
  */
 class FlywheelStopNonTasksCommand : public AutoCommand {
-  FlywheelStopNonTasksCommand(Flywheel& flywheel);
+    FlywheelStopNonTasksCommand(Flywheel &flywheel);
 
-  /**
-   * Run stop
-   * Overrides run from AutoCommand
-   * @returns true when execution is complete, false otherwise
-   */
-  bool run() override;
+    /**
+     * Run stop
+     * Overrides run from AutoCommand
+     * @returns true when execution is complete, false otherwise
+     */
+    bool run() override;
 
-  /*
-   * Returns a string describing the commands functionality
-   */
-  std::string toString() override;
+    /*
+     * Returns a string describing the commands functionality
+     */
+    std::string toString() override;
 
- private:
-  // Flywheel instance to run the function on
-  Flywheel& flywheel;
+  private:
+    // Flywheel instance to run the function on
+    Flywheel &flywheel;
 };

@@ -4,74 +4,74 @@
 #include "core/utils/controls/pid.h"
 
 class PIDFF : public Feedback {
- public:
-  PIDFF(PID::pid_config_t& pid_cfg, FeedForward::ff_config_t& ff_cfg);
+  public:
+    PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg);
 
-  /**
-   * Initialize the feedback controller for a movement
-   *
-   * @param start_pt the current sensor value
-   * @param set_pt where the sensor value should be
-   * @param start_vel the current rate of change of the sensor value
-   * @param end_vel the desired ending rate of change of the sensor value
-   */
-  void init(double start_pt, double set_pt) override;
+    /**
+     * Initialize the feedback controller for a movement
+     *
+     * @param start_pt the current sensor value
+     * @param set_pt where the sensor value should be
+     * @param start_vel the current rate of change of the sensor value
+     * @param end_vel the desired ending rate of change of the sensor value
+     */
+    void init(double start_pt, double set_pt) override;
 
-  /**
-   * Set the target of the PID loop
-   * @param set_pt Setpoint / target value
-   */
-  void set_target(double set_pt);
+    /**
+     * Set the target of the PID loop
+     * @param set_pt Setpoint / target value
+     */
+    void set_target(double set_pt);
 
-  double get_target() const;
-  double get_sensor_val() const;
-  /**
-   * Iterate the feedback loop once with an updated sensor value.
-   * Only kS for feedfoward will be applied.
-   *
-   * @param val value from the sensor
-   * @return feedback loop result
-   */
-  double update(double val) override;
+    double get_target() const;
+    double get_sensor_val() const;
+    /**
+     * Iterate the feedback loop once with an updated sensor value.
+     * Only kS for feedfoward will be applied.
+     *
+     * @param val value from the sensor
+     * @return feedback loop result
+     */
+    double update(double val) override;
 
-  /**
-   * Iterate the feedback loop once with an updated sensor value
-   *
-   * @param val value from the sensor
-   * @param vel_setpt Velocity for feedforward
-   * @param a_setpt Acceleration for feedfoward
-   * @return feedback loop result
-   */
-  double update(double val, double vel_setpt, double a_setpt = 0);
+    /**
+     * Iterate the feedback loop once with an updated sensor value
+     *
+     * @param val value from the sensor
+     * @param vel_setpt Velocity for feedforward
+     * @param a_setpt Acceleration for feedfoward
+     * @return feedback loop result
+     */
+    double update(double val, double vel_setpt, double a_setpt = 0);
 
-  /**
-   * @return the last saved result from the feedback controller
-   */
-  double get() override;
+    /**
+     * @return the last saved result from the feedback controller
+     */
+    double get() override;
 
-  /**
-   * Clamp the upper and lower limits of the output. If both are 0, no limits
-   * should be applied.
-   *
-   * @param lower Upper limit
-   * @param upper Lower limit
-   */
-  void set_limits(double lower, double upper) override;
+    /**
+     * Clamp the upper and lower limits of the output. If both are 0, no limits
+     * should be applied.
+     *
+     * @param lower Upper limit
+     * @param upper Lower limit
+     */
+    void set_limits(double lower, double upper) override;
 
-  /**
-   * @return true if the feedback controller has reached it's setpoint
-   */
-  bool is_on_target() override;
+    /**
+     * @return true if the feedback controller has reached it's setpoint
+     */
+    bool is_on_target() override;
 
-  void reset();
+    void reset();
 
-  PID pid;
+    PID pid;
 
- private:
-  FeedForward::ff_config_t& ff_cfg;
+  private:
+    FeedForward::ff_config_t &ff_cfg;
 
-  FeedForward ff;
+    FeedForward ff;
 
-  double out;
-  double lower_lim, upper_lim;
+    double out;
+    double lower_lim, upper_lim;
 };

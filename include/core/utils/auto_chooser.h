@@ -1,10 +1,9 @@
 #pragma once
-#include <string>
-#include <vector>
-
 #include "core/subsystems/screen.h"
 #include "core/utils/geometry.h"
 #include "vex.h"
+#include <string>
+#include <vector>
 
 /**
  * Autochooser is a utility to make selecting robot autonomous programs easier
@@ -16,7 +15,7 @@
  * them.
  */
 class AutoChooser : public screen::Page {
- public:
+public:
   /**
    * Initialize the auto-chooser. This class places a choice menu on the brain screen,
    * so the driver can choose which autonomous to run.
@@ -25,7 +24,7 @@ class AutoChooser : public screen::Page {
   AutoChooser(std::vector<std::string> paths, size_t def = 0);
 
   void update(bool was_pressed, int x, int y);
-  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number);
+  void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number);
 
   /**
    * Get the currently selected auto choice
@@ -33,7 +32,7 @@ class AutoChooser : public screen::Page {
    */
   size_t get_choice();
 
- protected:
+protected:
   /**
    *  entry_t is a datatype used to store information that the chooser knows about an auto selection button
    */

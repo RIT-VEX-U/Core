@@ -10,26 +10,26 @@
 #include "core/utils/command_structure/auto_command.h"
 
 class DelayCommand : public AutoCommand {
- public:
-  /**
-   * Construct a delay command
-   * @param ms the number of milliseconds to delay for
-   */
-  DelayCommand(int ms) : ms(ms) {}
+  public:
+    /**
+     * Construct a delay command
+     * @param ms the number of milliseconds to delay for
+     */
+    DelayCommand(int ms) : ms(ms) {}
 
-  /**
-   * Delays for the amount of milliseconds stored in the command
-   * Overrides run from AutoCommand
-   * @returns true when complete
-   */
-  bool run() override {
-    vexDelay(ms);
-    return true;
-  }
+    /**
+     * Delays for the amount of milliseconds stored in the command
+     * Overrides run from AutoCommand
+     * @returns true when complete
+     */
+    bool run() override {
+        vexDelay(ms);
+        return true;
+    }
 
-  std::string toString() override { return "Delaying for " + double_to_string(ms) + "ms"; }
+    std::string toString() override { return "Delaying for " + double_to_string(ms) + "ms"; }
 
- private:
-  // amount of milliseconds to wait
-  int ms;
+  private:
+    // amount of milliseconds to wait
+    int ms;
 };

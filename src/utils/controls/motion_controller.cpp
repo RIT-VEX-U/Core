@@ -1,8 +1,6 @@
 #include "core/utils/controls/motion_controller.h"
-
-#include <vector>
-
 #include "core/utils/math_util.h"
+#include <vector>
 
 /**
  * @brief Construct a new Motion Controller object
@@ -13,7 +11,7 @@
  *    pid_cfg Definitions of kP, kI, and kD
  *    ff_cfg Definitions of kS, kV, and kA
  */
-MotionController::MotionController(m_profile_cfg_t& config)
+MotionController::MotionController(m_profile_cfg_t &config)
     : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
 
 /**
@@ -35,15 +33,16 @@ void MotionController::init(double start_pt, double end_pt) {
  * @return the motor input generated from the motion profile
  */
 double MotionController::update(double sensor_val) {
-  cur_motion = profile.calculate(tmr.time(timeUnits::sec));
-  pid.set_target(cur_motion.pos);
-  pid.update(sensor_val, cur_motion.vel);
+    cur_motion = profile.calculate(tmr.time(timeUnits::sec));
+    pid.set_target(cur_motion.pos);
+    pid.update(sensor_val, cur_motion.vel);
 
   out = pid.get() + ff.calculate(cur_motion.vel, cur_motion.acc, pid.get());
 
-  if (lower_limit != upper_limit) out = clamp(out, lower_limit, upper_limit);
+    if (lower_limit != upper_limit)
+        out = clamp(out, lower_limit, upper_limit);
 
-  return out;
+    return out;
 }
 
 /**
@@ -58,8 +57,8 @@ double MotionController::get() { return out; }
  * @param upper Lower limit
  */
 void MotionController::set_limits(double lower, double upper) {
-  lower_limit = lower;
-  upper_limit = upper;
+    lower_limit = lower;
+    upper_limit = upper;
 }
 
 /**
@@ -93,76 +92,77 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t MotionController::tune_feedforward(TankDrive& drive, OdometryTank& odometry, double pct,
-                                                            double duration) {
-  FeedForward::ff_config_t out = {};
+FeedForward::ff_config_t
+MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct, double duration) {
+    FeedForward::ff_config_t out = {};
 
-  Pose2d start_pos = odometry.get_position();
+    Pose2d start_pos = odometry.get_position();
 
-  // ========== kS Tuning =========
-  // Start at 0 and slowly increase the power until the robot starts moving
-  double power = 0;
-  while (start_pos.translation().distance(odometry.get_position().translation()) < 0.05) {
-    drive.drive_tank(power, power, 1);
-    power += 0.001;
-    vexDelay(100);
-  }
-  out.kS = power;
-  drive.stop();
+    // ========== kS Tuning =========
+    // Start at 0 and slowly increase the power until the robot starts moving
+    double power = 0;
+    while (start_pos.translation().distance(odometry.get_position().translation()) < 0.05) {
+        drive.drive_tank(power, power, 1);
+        power += 0.001;
+        vexDelay(100);
+    }
+    out.kS = power;
+    drive.stop();
 
-  // ========== kV / kA Tuning =========
+    // ========== kV / kA Tuning =========
 
-  std::vector<std::pair<double, double>> vel_data_points;    // time, velocity
-  std::vector<std::pair<double, double>> accel_data_points;  // time, accel
+    std::vector<std::pair<double, double>> vel_data_points;   // time, velocity
+    std::vector<std::pair<double, double>> accel_data_points; // time, accel
 
-  double max_speed = 0;
-  timer tmr;
-  double time;
+    double max_speed = 0;
+    timer tmr;
+    double time;
 
-  MovingAverage vel_ma(3);
-  MovingAverage accel_ma(3);
+    MovingAverage vel_ma(3);
+    MovingAverage accel_ma(3);
 
-  // Move the robot forward at a fixed percentage for X seconds while taking velocity and accel measurements
-  do {
-    time = tmr.time(sec);
+    // Move the robot forward at a fixed percentage for X seconds while taking velocity and accel measurements
+    do {
+        time = tmr.time(sec);
 
-    vel_ma.add_entry(odometry.get_speed());
-    accel_ma.add_entry(odometry.get_accel());
+        vel_ma.add_entry(odometry.get_speed());
+        accel_ma.add_entry(odometry.get_accel());
 
-    double speed = vel_ma.get_value();
-    double accel = accel_ma.get_value();
+        double speed = vel_ma.get_value();
+        double accel = accel_ma.get_value();
 
-    // For kV:
-    if (speed > max_speed) max_speed = speed;
+        // For kV:
+        if (speed > max_speed)
+            max_speed = speed;
 
-    // For kA:
-    // Filter out the acceleration dampening due to motor inductance
-    if (time > 0.25) {
-      vel_data_points.push_back(std::pair<double, double>(time, speed));
-      accel_data_points.push_back(std::pair<double, double>(time, accel));
+        // For kA:
+        // Filter out the acceleration dampening due to motor inductance
+        if (time > 0.25) {
+            vel_data_points.push_back(std::pair<double, double>(time, speed));
+            accel_data_points.push_back(std::pair<double, double>(time, accel));
+        }
+
+        // Theoretical polling rate = 100hz (it won't be that much, cause, y'know, vex.)
+        vexDelay(10);
+    } while (time < duration);
+
+    drive.stop();
+
+    // Calculate kV (volts/12 per unit per second)
+    out.kV = (pct - out.kS) / max_speed;
+
+    // Calculate kA (volts/12 per unit per second^2)
+    std::vector<std::pair<double, double>> accel_per_pct;
+    for (int i = 0; i < vel_data_points.size(); i++) {
+        accel_per_pct.push_back(std::pair<double, double>(
+          pct - out.kS - (vel_data_points[i].second * out.kV), // Acceleration-causing percent (X variable)
+          accel_data_points[i].second                          // Measured acceleration (Y variable)
+        ));
     }
 
-    // Theoretical polling rate = 100hz (it won't be that much, cause, y'know, vex.)
-    vexDelay(10);
-  } while (time < duration);
+    // kA is the reciprocal of the slope of the linear regression
+    double regres_slope = calculate_linear_regression(accel_per_pct).first;
+    out.kA = 1.0 / regres_slope;
 
-  drive.stop();
-
-  // Calculate kV (volts/12 per unit per second)
-  out.kV = (pct - out.kS) / max_speed;
-
-  // Calculate kA (volts/12 per unit per second^2)
-  std::vector<std::pair<double, double>> accel_per_pct;
-  for (int i = 0; i < vel_data_points.size(); i++) {
-    accel_per_pct.push_back(std::pair<double, double>(
-        pct - out.kS - (vel_data_points[i].second * out.kV),  // Acceleration-causing percent (X variable)
-        accel_data_points[i].second                           // Measured acceleration (Y variable)
-        ));
-  }
-
-  // kA is the reciprocal of the slope of the linear regression
-  double regres_slope = calculate_linear_regression(accel_per_pct).first;
-  out.kA = 1.0 / regres_slope;
-
-  return out;
+    return out;
 }

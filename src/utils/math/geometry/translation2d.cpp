@@ -1,9 +1,9 @@
 
-#include "core/utils/math/geometry/translation2d.h"
-
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Constructs a Translation2d with the given x and y values.
@@ -11,14 +11,14 @@
  * @param x The x component of the translation.
  * @param y The y component of the translation.
  */
-Translation2d::Translation2d(const double& x, const double& y) : m_x{x}, m_y{y} {}
+Translation2d::Translation2d(const double &x, const double &y) : m_x{x}, m_y{y} {}
 
 /**
  * Constructs a Translation2d with the values from the given vector.
  *
  * @param vector The vector whose values will be used.
  */
-Translation2d::Translation2d(const Eigen::Vector2d& vector) : m_x{vector(0)}, m_y{vector(1)} {}
+Translation2d::Translation2d(const Eigen::Vector2d &vector) : m_x{vector(0)}, m_y{vector(1)} {}
 
 /**
  * Constructs a Translation2d given polar coordinates of the form (r, theta).
@@ -26,7 +26,7 @@ Translation2d::Translation2d(const Eigen::Vector2d& vector) : m_x{vector(0)}, m_
  * @param r The radius (magnitude) of the vector.
  * @param theta The angle (direction) of the vector.
  */
-Translation2d::Translation2d(const double& r, const Rotation2d& theta)
+Translation2d::Translation2d(const double &r, const Rotation2d &theta)
     : m_x{r * theta.f_cos()}, m_y{r * theta.f_sin()} {}
 
 /**
@@ -76,8 +76,8 @@ Translation2d Translation2d::normalize() const { return Translation2d(1, theta()
  *
  * @return the distance between two translations.
  */
-double Translation2d::distance(const Translation2d& other) const {
-  return std::hypot(m_x - other.x(), m_y - other.y());
+double Translation2d::distance(const Translation2d &other) const {
+    return std::hypot(m_x - other.x(), m_y - other.y());
 }
 
 /**
@@ -91,8 +91,8 @@ double Translation2d::distance(const Translation2d& other) const {
  *
  * @return the new translation that has been rotated around the origin.
  */
-Translation2d Translation2d::rotate_by(const Rotation2d& rotation) const {
-  return {m_x * rotation.f_cos() - m_y * rotation.f_sin(), m_x * rotation.f_sin() + m_y * rotation.f_cos()};
+Translation2d Translation2d::rotate_by(const Rotation2d &rotation) const {
+    return {m_x * rotation.f_cos() - m_y * rotation.f_sin(), m_x * rotation.f_sin() + m_y * rotation.f_cos()};
 }
 
 /**
@@ -106,9 +106,9 @@ Translation2d Translation2d::rotate_by(const Rotation2d& rotation) const {
  *
  * @return the translation that has been rotated.
  */
-Translation2d Translation2d::rotate_around(const Translation2d& other, const Rotation2d& rotation) const {
-  Translation2d diff = *this - other;
-  return diff.rotate_by(rotation) + other;
+Translation2d Translation2d::rotate_around(const Translation2d &other, const Rotation2d &rotation) const {
+    Translation2d diff = *this - other;
+    return diff.rotate_by(rotation) + other;
 }
 
 /**
@@ -121,7 +121,7 @@ Translation2d Translation2d::rotate_around(const Translation2d& other, const Rot
  *
  * @return the sum of the two translations.
  */
-Translation2d Translation2d::operator+(const Translation2d& other) const { return {m_x + other.x(), m_y + other.y()}; }
+Translation2d Translation2d::operator+(const Translation2d &other) const { return {m_x + other.x(), m_y + other.y()}; }
 
 /**
  * Returns the difference of two translations.
@@ -133,7 +133,7 @@ Translation2d Translation2d::operator+(const Translation2d& other) const { retur
  *
  * @return the difference of the two translations.
  */
-Translation2d Translation2d::operator-(const Translation2d& other) const { return {m_x - other.x(), m_y - other.y()}; }
+Translation2d Translation2d::operator-(const Translation2d &other) const { return {m_x - other.x(), m_y - other.y()}; }
 
 /**
  * Returns the inverse of this translation.
@@ -156,7 +156,7 @@ Translation2d Translation2d::operator-() const { return {-m_x, -m_y}; }
  *
  * @return this translation multiplied by a scalar.
  */
-Translation2d Translation2d::operator*(const double& scalar) const { return {m_x * scalar, m_y * scalar}; }
+Translation2d Translation2d::operator*(const double &scalar) const { return {m_x * scalar, m_y * scalar}; }
 
 /**
  * Returns this translation divided by a scalar.
@@ -168,7 +168,7 @@ Translation2d Translation2d::operator*(const double& scalar) const { return {m_x
  *
  * @return this translation divided by a scalar.
  */
-Translation2d Translation2d::operator/(const double& scalar) const { return {m_x / scalar, m_y / scalar}; }
+Translation2d Translation2d::operator/(const double &scalar) const { return {m_x / scalar, m_y / scalar}; }
 
 /**
  * Returns the dot product of two translations.
@@ -179,7 +179,7 @@ Translation2d Translation2d::operator/(const double& scalar) const { return {m_x
  *
  * @return the scalar valued dot product.
  */
-double Translation2d::operator*(const Translation2d& other) const { return (m_x * other.m_x) + (m_y * other.m_y); }
+double Translation2d::operator*(const Translation2d &other) const { return (m_x * other.m_x) + (m_y * other.m_y); }
 
 /**
  * Compares two translations.
@@ -189,8 +189,8 @@ double Translation2d::operator*(const Translation2d& other) const { return (m_x 
  *
  * @return whether the two translations are equal.
  */
-bool Translation2d::operator==(const Translation2d& other) const {
-  return std::abs(m_x - other.m_x) < 1e-9 && std::abs(m_y - other.m_y) < 1e-9;
+bool Translation2d::operator==(const Translation2d &other) const {
+    return std::abs(m_x - other.m_x) < 1e-9 && std::abs(m_y - other.m_y) < 1e-9;
 }
 
 /**
@@ -200,9 +200,9 @@ bool Translation2d::operator==(const Translation2d& other) const {
  *
  * prints "Translation2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream& operator<<(std::ostream& os, const Translation2d& translation) {
-  os << "Translation2d[x: " << translation.x() << ", y: " << translation.y() << "]";
-  return os;
+std::ostream &operator<<(std::ostream &os, const Translation2d &translation) {
+    os << "Translation2d[x: " << translation.x() << ", y: " << translation.y() << "]";
+    return os;
 }
 
 /**
@@ -212,14 +212,14 @@ std::ostream& operator<<(std::ostream& os, const Translation2d& translation) {
  *
  * @return the single translation mean of the list of translations.
  */
-Translation2d mean(const std::vector<Translation2d>& list) {
-  double sumx = 0;
-  double sumy = 0;
+Translation2d mean(const std::vector<Translation2d> &list) {
+    double sumx = 0;
+    double sumy = 0;
 
-  for (int i = 0; i < list.size(); i++) {
-    sumx += list.at(i).x();
-    sumy += list.at(i).y();
-  }
+    for (int i = 0; i < list.size(); i++) {
+        sumx += list.at(i).x();
+        sumy += list.at(i).y();
+    }
 
-  return Translation2d(sumx / list.size(), sumy / list.size());
+    return Translation2d(sumx / list.size(), sumy / list.size());
 }

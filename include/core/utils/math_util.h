@@ -1,12 +1,10 @@
 #pragma once
-
-#include <vector>
-
+#include "Eigen/Dense"
 #include "core/utils/geometry.h"
-#include "core/utils/math/eigen_interface.h"
-#include "core/utils/math/geometry/translation2d.h"
 #include "math.h"
 #include "vex.h"
+#include <vector>
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Constrain the input between a minimum and a maximum value
@@ -41,13 +39,13 @@ https://en.wikipedia.org/wiki/Variance
 @param values   the values for which the variance is taken
 @param mean     the average of values
 */
-double variance(std::vector<double> const& values, double mean);
+double variance(std::vector<double> const &values, double mean);
 
 /*
 Calculates the average of a vector of doubles
 @param values   the list of values for which the average is taken
 */
-double mean(std::vector<double> const& values);
+double mean(std::vector<double> const &values);
 
 /*
 Calculates the covariance of a set of points (needed for linear regression)
@@ -57,12 +55,12 @@ https://en.wikipedia.org/wiki/Covariance
 @param meanx    the mean value of all x coordinates in points
 @param meany    the mean value of all y coordinates in points
 */
-double covariance(std::vector<std::pair<double, double>> const& points, double meanx, double meany);
+double covariance(std::vector<std::pair<double, double>> const &points, double meanx, double meany);
 
 /*
 Calculates the slope and y intercept of the line of best fit for the data
 @param points the points for the data
 */
-std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const& points);
+std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const &points);
 
-double estimate_path_length(const std::vector<Translation2d>& points);
+double estimate_path_length(const std::vector<Translation2d> &points);

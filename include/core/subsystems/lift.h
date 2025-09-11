@@ -1,12 +1,11 @@
 #pragma once
 
+#include "core/utils/controls/pid.h"
+#include "vex.h"
 #include <atomic>
 #include <iostream>
 #include <map>
 #include <vector>
-
-#include "core/utils/controls/pid.h"
-#include "vex.h"
 
 using namespace vex;
 using namespace std;
@@ -18,9 +17,8 @@ using namespace std;
  *
  * @author Ryan McGee
  */
-template <typename T>
-class Lift {
- public:
+template <typename T> class Lift {
+public:
   /**
    * lift_cfg_t holds the physical parameter specifications of a lify system.
    * includes:
@@ -55,23 +53,22 @@ class Lift {
    * @param setpoint_map
    *   A map of enum type T, in which each enum entry corresponds to a different lift height
    */
-  Lift(motor_group& lift_motors, lift_cfg_t& lift_cfg, map<T, double>& setpoint_map, limit* homing_switch = NULL)
-      : lift_motors(lift_motors),
-        cfg(lift_cfg),
-        lift_pid(cfg.lift_pid_cfg),
-        setpoint_map(setpoint_map),
+  Lift(motor_group &lift_motors, lift_cfg_t &lift_cfg, map<T, double> &setpoint_map, limit *homing_switch = NULL)
+      : lift_motors(lift_motors), cfg(lift_cfg), lift_pid(cfg.lift_pid_cfg), setpoint_map(setpoint_map),
         homing_switch(homing_switch) {
+
     is_async = true;
     setpoint = 0;
 
     // Create a background task that is constantly updating the lift PID, if requested.
     // Set once, and forget.
     task t(
-        [](void* ptr) {
-          Lift& lift = *((Lift*)ptr);
+        [](void *ptr) {
+          Lift &lift = *((Lift *)ptr);
 
           while (true) {
-            if (lift.get_async()) lift.hold();
+            if (lift.get_async())
+              lift.hold();
 
             vexDelay(50);
           }
@@ -110,7 +107,8 @@ class Lift {
       is_async = false;
     } else if (down_ctrl && cur_pos > cfg.softstop_down) {
       // Lower the lift slowly, at a rate defined by down_speed
-      if (setpoint > cfg.softstop_down) setpoint = setpoint - (tmr.time(sec) * cfg.down_speed);
+      if (setpoint > cfg.softstop_down)
+        setpoint = setpoint - (tmr.time(sec) * cfg.down_speed);
       // std::cout << "DEBUG OUT: DOWN " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
       is_async = true;
     } else {
@@ -178,7 +176,8 @@ class Lift {
     static int cur_index = 0;
 
     // Avoid an index overflow. Shouldn't happen unless the user changes pos_list between calls.
-    if (cur_index >= pos_list.size()) cur_index = pos_list.size() - 1;
+    if (cur_index >= pos_list.size())
+      cur_index = pos_list.size() - 1;
 
     // Increment or decrement the index of the list, bringing it up or down.
     if (up_rising && cur_index < (pos_list.size() - 1))
@@ -257,7 +256,8 @@ class Lift {
         break;
     }
 
-    if (reset_sensor != NULL) reset_sensor();
+    if (reset_sensor != NULL)
+      reset_sensor();
 
     lift_motors.resetPosition();
     lift_motors.stop();
@@ -294,12 +294,12 @@ class Lift {
    */
   void set_sensor_reset(void (*fn_ptr)(void)) { this->reset_sensor = fn_ptr; }
 
- private:
-  motor_group& lift_motors;
-  lift_cfg_t& cfg;
+private:
+  motor_group &lift_motors;
+  lift_cfg_t &cfg;
   PID lift_pid;
-  map<T, double>& setpoint_map;
-  limit* homing_switch;
+  map<T, double> &setpoint_map;
+  limit *homing_switch;
 
   atomic<double> setpoint;
   atomic<bool> is_async;

@@ -1,6 +1,6 @@
-#include "core/utils/controls/trapezoid_profile.h"
-
 #include <cmath>
+
+#include "core/utils/controls/trapezoid_profile.h"
 
 /**
  * Constructs a TrapezoidProfile.
@@ -11,13 +11,8 @@
  * @param accel The acceleration.
  * @param decel The deceleration.
  */
-TrapezoidProfile::TrapezoidProfile(const double& x_initial, const double& x_target, const double& v_max,
-                                   const double& accel, const double& decel)
-    : x_initial_(x_initial),
-      x_target_(x_target),
-      v_max_(v_max),
-      accel_(accel),
-      decel_(decel),
+TrapezoidProfile::TrapezoidProfile(const double &x_initial, const double &x_target, const double &v_max, const double &accel, const double &decel)
+    : x_initial_(x_initial), x_target_(x_target), v_max_(v_max), accel_(accel), decel_(decel),
       distance_(x_target - x_initial) {
   direction_ = distance_ > 0 ? 1 : -1;
   dist_accel_ = 0.5 * (v_max_ * v_max_) / accel_;
@@ -84,7 +79,7 @@ motion_t TrapezoidProfile::calculate(double t) {
     } else {
       time_deceled = t - (time_accel_ + time_cruise_);
       pos_local =
-          dist_accel_ + (v_max_ * (time_cruise_ + time_deceled)) - (0.5 * decel_ * (time_deceled * time_deceled));
+        dist_accel_ + (v_max_ * (time_cruise_ + time_deceled)) - (0.5 * decel_ * (time_deceled * time_deceled));
       vel_local = v_max_ - (decel_ * time_deceled);
       acc_local = -decel_;
     }

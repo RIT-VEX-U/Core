@@ -1,64 +1,65 @@
 #include "core/utils/controls/take_back_half.h"
-
 #include "core/utils/math_util.h"
 
 TakeBackHalf::TakeBackHalf(double gain, double first_cross_split, double thresh)
     : TBH_gain(gain), first_cross_split(first_cross_split), on_target_threshhold(fabs(thresh)) {
-  tbh = 0.0;
-  output = 0.0;
-  prev_error = 0.0;
-  lower = 0.0;
-  upper = 0.0;
-  first_cross = true;
+    tbh = 0.0;
+    output = 0.0;
+    prev_error = 0.0;
+    lower = 0.0;
+    upper = 0.0;
+    first_cross = true;
 }
 
 void TakeBackHalf::init(double start_pt, double set_pt) {
-  if (set_pt == target) {
-    // nothing to do
-    return;
-  }
-  first_cross = true;
-  tbh = output;
-  target = set_pt;
-  output = update(start_pt);
+    if (set_pt == target) {
+        // nothing to do
+        return;
+    }
+    first_cross = true;
+    tbh = output;
+    target = set_pt;
+    output = update(start_pt);
 }
 
 double TakeBackHalf::update(double val) {
-  if (target == 0.0) {
-    printf("no target\n");
-    return 0.0;
-  }
 
-  double error = target - val;
-  output += TBH_gain * error;
-
-  // taking back half crossed target
-  if (sign(error) != sign(prev_error)) {
-    if (first_cross) {
-      output = lerp(tbh, output, first_cross_split);
-      tbh = output;
-      first_cross = false;
-      printf("First cross\n");
-    } else {
-      // output = .5 * (output + tbh);
-      output = lerp(tbh, output, .5);
-      tbh = output;
+    if (target == 0.0) {
+        printf("no target\n");
+        return 0.0;
     }
-    prev_error = error;
-  }
 
-  if (lower != upper) {
-    output = clamp(output, lower, upper);
-  }
-  return output;
+    double error = target - val;
+    output += TBH_gain * error;
+
+    // taking back half crossed target
+    if (sign(error) != sign(prev_error)) {
+        if (first_cross) {
+            output = lerp(tbh, output, first_cross_split);
+            tbh = output;
+            first_cross = false;
+            printf("First cross\n");
+        } else {
+            // output = .5 * (output + tbh);
+            output = lerp(tbh, output, .5);
+            tbh = output;
+        }
+        prev_error = error;
+    }
+
+    if (lower != upper) {
+        output = clamp(output, lower, upper);
+    }
+    return output;
 }
 
 double TakeBackHalf::get() { return output; }
 
 void TakeBackHalf::set_limits(double low, double high) {
-  lower = low;
-  upper = high;
-  printf("Set limits: %f, %f\n", lower, upper);
+
+    lower = low;
+    upper = high;
+    printf("Set limits: %f, %f\n", lower, upper);
 }
 
 bool TakeBackHalf::is_on_target() { return fabs(prev_error) < on_target_threshhold; }
