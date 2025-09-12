@@ -6,7 +6,7 @@ var searchData=
   ['clear_3',['clear',['../classVDP_1_1PacketWriter.html#aab041f0274a4f8b152999b2b930fba9b',1,'VDP::PacketWriter::clear()'],['../classInterpolatingMap.html#a87dbbd8789df909ed960186fff174949',1,'InterpolatingMap::clear()']]],
   ['cobs_5fdecode_4',['cobs_decode',['../classOdometrySerial.html#acd8a0707b8d6147bda86c1a505d1fc07',1,'OdometrySerial']]],
   ['cobs_5fencode_5',['cobs_encode',['../classOdometrySerial.html#aeaaaf99bf98c0491674f96f112c176c2',1,'OdometrySerial']]],
-  ['commandcontroller_6',['CommandController',['../classCommandController.html',1,'CommandController'],['../classCommandController.html#afe87cef2dd63449334a46aae33b7edf4',1,'CommandController::CommandController()'],['../classCommandController.html#a9de2dfdf95ff4d80e2ad4906138c1316',1,'CommandController::CommandController(std::initializer_list&lt; AutoCommand * &gt; cmds)']]],
+  ['commandcontroller_6',['CommandController',['../classCommandController.html',1,'CommandController'],['../classCommandController.html#a9de2dfdf95ff4d80e2ad4906138c1316',1,'CommandController::CommandController()']]],
   ['compute_5fx_7',['compute_X',['../classLinearSystem.html#a354f0f9cfc8d41f998615563c036f4ca',1,'LinearSystem']]],
   ['compute_5fy_8',['compute_Y',['../classLinearSystem.html#adb91762c1fde94595e7aa77b50af1eec',1,'LinearSystem']]],
   ['condition_9',['Condition',['../classCondition.html',1,'']]],

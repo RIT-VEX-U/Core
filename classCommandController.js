@@ -1,6 +1,5 @@
 var classCommandController =
 [
-    [ "CommandController", "classCommandController.html#afe87cef2dd63449334a46aae33b7edf4", null ],
     [ "CommandController", "classCommandController.html#a9de2dfdf95ff4d80e2ad4906138c1316", null ],
     [ "add", "classCommandController.html#a4cb2c06abd92fb99578f0da75c1411e5", null ],
     [ "add", "classCommandController.html#a03fc0dd37c12ae7f43200d5588c768b8", null ],

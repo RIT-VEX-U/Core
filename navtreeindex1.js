@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classPose2d.html#a2af1b27c2b6835bb754740baf319590b":[2,0,47,4],
 "classPose2d.html#a3ab083c147be5c6f1ab3681f86308d47":[2,0,47,8],
 "classPose2d.html#a436afceb427555313642912bf3933fe9":[2,0,47,19],
 "classPose2d.html#a59aeeffed7b9bff6ab40972e1c8532c8":[2,0,47,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "classVDP_1_1PacketWriter.html#a9ba61b4c3284ef182f8dd3c8819ab0fe":[2,0,2,6,6],
 "classVDP_1_1PacketWriter.html#aa14f77e50d5e5ad7ce3e5cb5c4027cc2":[2,0,2,6,9],
 "classVDP_1_1PacketWriter.html#aa826c780ddc82044df8ac1a7cd07a068":[2,0,2,6,12],
-"classVDP_1_1PacketWriter.html#aab041f0274a4f8b152999b2b930fba9b":[2,0,2,6,1]
+"classVDP_1_1PacketWriter.html#aab041f0274a4f8b152999b2b930fba9b":[2,0,2,6,1],
+"classVDP_1_1PacketWriter.html#aadab4fba24188f337cda3a4ac5bc990d":[2,0,2,6,4]
 };

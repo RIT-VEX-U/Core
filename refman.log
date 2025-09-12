@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.9.2)  2 SEP 2025 22:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.9.12)  12 SEP 2025 00:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,10 +914,10 @@ Underfull \hbox (badness 10000) detected at line 53
 
 ) (./classAsync.tex) (./classAutoChooser.tex
 Package epstopdf Info: Source file: <classAutoChooser.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3788 bytes
 (epstopdf)             Output file: <classAutoChooser-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:14
+(epstopdf)                    date: 2025-09-12 00:33:29
 (epstopdf)                    size: 5358 bytes
 (epstopdf)             Command: <repstopdf --outfile=classAutoChooser-eps-conve
 rted-to.pdf classAutoChooser.eps>
@@ -973,23 +973,23 @@ Underfull \hbox (badness 10000) detected at line 90
  []
 
 ) (./classCommandController.tex [20] [21] [22]
-Underfull \hbox (badness 10000) detected at line 138
+Underfull \hbox (badness 10000) detected at line 135
 [][][]
  []
 
 ) (./classCondition.tex
 Package epstopdf Info: Source file: <classCondition.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3917 bytes
 (epstopdf)             Output file: <classCondition-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:29
 (epstopdf)                    size: 5558 bytes
 (epstopdf)             Command: <repstopdf --outfile=classCondition-eps-convert
 ed-to.pdf classCondition.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classCondition-eps-converted-to.pdf>
-<classCondition-eps-converted-to.pdf, id=2671, 501.875pt x 164.54472pt>
+<classCondition-eps-converted-to.pdf, id=2668, 501.875pt x 164.54472pt>
 File: classCondition-eps-converted-to.pdf Graphic file (type pdf)
 <use classCondition-eps-converted-to.pdf>
 Package pdftex.def Info: classCondition-eps-converted-to.pdf  used on input lin
@@ -1054,18 +1054,18 @@ Underfull \hbox (badness 10000) detected at line 71
 ) (./structAutoChooser_1_1entry__t.tex [32])
 (./classExponentialMovingAverage.tex
 Package epstopdf Info: Source file: <classExponentialMovingAverage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3802 bytes
 (epstopdf)             Output file: <classExponentialMovingAverage-eps-converte
 d-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:29
 (epstopdf)                    size: 5439 bytes
 (epstopdf)             Command: <repstopdf --outfile=classExponentialMovingAver
 age-eps-converted-to.pdf classExponentialMovingAverage.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classExponentialMovingAverage-eps-converted-to.pdf>
-<classExponentialMovingAverage-eps-converted-to.pdf, id=2846, 501.875pt x 228.1
+<classExponentialMovingAverage-eps-converted-to.pdf, id=2843, 501.875pt x 228.1
 2227pt>
 File: classExponentialMovingAverage-eps-converted-to.pdf Graphic file (type pdf
 )
@@ -1090,17 +1090,17 @@ Underfull \hbox (badness 10000) detected at line 100
 
 ) (./classFeedback.tex
 Package epstopdf Info: Source file: <classFeedback.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3980 bytes
 (epstopdf)             Output file: <classFeedback-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:29
 (epstopdf)                    size: 6021 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFeedback-eps-converte
 d-to.pdf classFeedback.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classFeedback-eps-converted-to.pdf>
-<classFeedback-eps-converted-to.pdf, id=2886, 501.875pt x 117.3986pt>
+<classFeedback-eps-converted-to.pdf, id=2883, 501.875pt x 117.3986pt>
 File: classFeedback-eps-converted-to.pdf Graphic file (type pdf)
 <use classFeedback-eps-converted-to.pdf>
 Package pdftex.def Info: classFeedback-eps-converted-to.pdf  used on input line
@@ -1154,17 +1154,17 @@ Underfull \hbox (badness 10000) detected at line 74
 
 ) (./structFeedForward_1_1ff__config__t.tex [39]) (./classFilter.tex
 Package epstopdf Info: Source file: <classFilter.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3927 bytes
 (epstopdf)             Output file: <classFilter-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:29
 (epstopdf)                    size: 5511 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFilter-eps-converted-
 to.pdf classFilter.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classFilter-eps-converted-to.pdf>
-<classFilter-eps-converted-to.pdf, id=2997, 501.875pt x 114.06615pt>
+<classFilter-eps-converted-to.pdf, id=2994, 501.875pt x 114.06615pt>
 File: classFilter-eps-converted-to.pdf Graphic file (type pdf)
 <use classFilter-eps-converted-to.pdf>
 Package pdftex.def Info: classFilter-eps-converted-to.pdf  used on input line 1
@@ -1213,18 +1213,18 @@ Underfull \hbox (badness 10000) detected at line 40
 ) (./classFlywheelStopNonTasksCommand.tex) (./classFunctionCommand.tex)
 (./classFunctionCondition.tex
 Package epstopdf Info: Source file: <classFunctionCondition.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classFunctionCondition-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:30
 (epstopdf)                    size: 4588 bytes
 (epstopdf)             Command: <repstopdf --outfile=classFunctionCondition-eps
 -converted-to.pdf classFunctionCondition.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classFunctionCondition-eps-converted-to.pdf>
-<classFunctionCondition-eps-converted-to.pdf, id=3113, 501.875pt x 329.0995pt>
+<classFunctionCondition-eps-converted-to.pdf, id=3110, 501.875pt x 329.0995pt>
 File: classFunctionCondition-eps-converted-to.pdf Graphic file (type pdf)
 <use classFunctionCondition-eps-converted-to.pdf>
 Package pdftex.def Info: classFunctionCondition-eps-converted-to.pdf  used on i
@@ -1233,18 +1233,18 @@ nput line 15.
 
 [46]) (./classscreen_1_1FunctionPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1FunctionPage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3806 bytes
 (epstopdf)             Output file: <classscreen_1_1FunctionPage-eps-converted-
 to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:15
+(epstopdf)                    date: 2025-09-12 00:33:30
 (epstopdf)                    size: 5230 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1FunctionPag
 e-eps-converted-to.pdf classscreen_1_1FunctionPage.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classscreen_1_1FunctionPage-eps-converted-to.pdf>
-<classscreen_1_1FunctionPage-eps-converted-to.pdf, id=3127, 501.875pt x 280.768
+<classscreen_1_1FunctionPage-eps-converted-to.pdf, id=3124, 501.875pt x 280.768
 95pt>
 File: classscreen_1_1FunctionPage-eps-converted-to.pdf Graphic file (type pdf)
 <use classscreen_1_1FunctionPage-eps-converted-to.pdf>
@@ -1278,17 +1278,17 @@ Underfull \hbox (badness 10000) detected at line 72
 
 ) (./structPurePursuit_1_1hermite__point.tex) (./classIfTimePassed.tex
 Package epstopdf Info: Source file: <classIfTimePassed.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3784 bytes
 (epstopdf)             Output file: <classIfTimePassed-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:16
+(epstopdf)                    date: 2025-09-12 00:33:30
 (epstopdf)                    size: 5184 bytes
 (epstopdf)             Command: <repstopdf --outfile=classIfTimePassed-eps-conv
 erted-to.pdf classIfTimePassed.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classIfTimePassed-eps-converted-to.pdf>
-<classIfTimePassed-eps-converted-to.pdf, id=3182, 501.875pt x 427.12573pt>
+<classIfTimePassed-eps-converted-to.pdf, id=3179, 501.875pt x 427.12573pt>
 File: classIfTimePassed-eps-converted-to.pdf Graphic file (type pdf)
 <use classIfTimePassed-eps-converted-to.pdf>
 Package pdftex.def Info: classIfTimePassed-eps-converted-to.pdf  used on input 
@@ -1431,18 +1431,18 @@ Underfull \hbox (badness 10000) detected at line 102
 ) (./structMecanumDrive_1_1mecanumdrive__config__t.tex [79])
 (./classMotionController.tex
 Package epstopdf Info: Source file: <classMotionController.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3790 bytes
 (epstopdf)             Output file: <classMotionController-eps-converted-to.pdf
 >
-(epstopdf)                    date: 2025-09-02 22:41:16
+(epstopdf)                    date: 2025-09-12 00:33:30
 (epstopdf)                    size: 5237 bytes
 (epstopdf)             Command: <repstopdf --outfile=classMotionController-eps-
 converted-to.pdf classMotionController.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classMotionController-eps-converted-to.pdf>
-<classMotionController-eps-converted-to.pdf, id=3728, 501.875pt x 352.1958pt>
+<classMotionController-eps-converted-to.pdf, id=3725, 501.875pt x 352.1958pt>
 File: classMotionController-eps-converted-to.pdf Graphic file (type pdf)
 <use classMotionController-eps-converted-to.pdf>
 Package pdftex.def Info: classMotionController-eps-converted-to.pdf  used on in
@@ -1486,18 +1486,18 @@ Underfull \hbox (badness 10000) detected at line 205
 
 ) (./classVDP_1_1MotorDataRecord.tex
 Package epstopdf Info: Source file: <classVDP_1_1MotorDataRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3913 bytes
 (epstopdf)             Output file: <classVDP_1_1MotorDataRecord-eps-converted-
 to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:16
+(epstopdf)                    date: 2025-09-12 00:33:30
 (epstopdf)                    size: 5123 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1MotorDataRecor
 d-eps-converted-to.pdf classVDP_1_1MotorDataRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1MotorDataRecord-eps-converted-to.pdf>
-<classVDP_1_1MotorDataRecord-eps-converted-to.pdf, id=3797, 501.875pt x 396.220
+<classVDP_1_1MotorDataRecord-eps-converted-to.pdf, id=3794, 501.875pt x 396.220
 26pt>
 File: classVDP_1_1MotorDataRecord-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1MotorDataRecord-eps-converted-to.pdf>
@@ -1506,17 +1506,17 @@ Package pdftex.def Info: classVDP_1_1MotorDataRecord-eps-converted-to.pdf  used
 (pdftex.def)             Requested size: 108.11543pt x 85.35826pt.
  [83] [84]) (./classMovingAverage.tex
 Package epstopdf Info: Source file: <classMovingAverage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3780 bytes
 (epstopdf)             Output file: <classMovingAverage-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:16
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5103 bytes
 (epstopdf)             Command: <repstopdf --outfile=classMovingAverage-eps-con
 verted-to.pdf classMovingAverage.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classMovingAverage-eps-converted-to.pdf>
-<classMovingAverage-eps-converted-to.pdf, id=3858, 501.875pt x 361.71133pt>
+<classMovingAverage-eps-converted-to.pdf, id=3855, 501.875pt x 361.71133pt>
 File: classMovingAverage-eps-converted-to.pdf Graphic file (type pdf)
 <use classMovingAverage-eps-converted-to.pdf>
 Package pdftex.def Info: classMovingAverage-eps-converted-to.pdf  used on input
@@ -1539,17 +1539,17 @@ Underfull \hbox (badness 10000) detected at line 100
 
 ) (./classVDP_1_1Number.tex
 Package epstopdf Info: Source file: <classVDP_1_1Number.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3822 bytes
 (epstopdf)             Output file: <classVDP_1_1Number-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:16
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5877 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1Number-eps-con
 verted-to.pdf classVDP_1_1Number.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1Number-eps-converted-to.pdf>
-<classVDP_1_1Number-eps-converted-to.pdf, id=3900, 501.875pt x 173.05653pt>
+<classVDP_1_1Number-eps-converted-to.pdf, id=3897, 501.875pt x 173.05653pt>
 File: classVDP_1_1Number-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1Number-eps-converted-to.pdf>
 Package pdftex.def Info: classVDP_1_1Number-eps-converted-to.pdf  used on input
@@ -1563,17 +1563,17 @@ Underfull \hbox (badness 10000) detected at line 104
 
 [89]) (./classOdometry3Wheel.tex
 Package epstopdf Info: Source file: <classOdometry3Wheel.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classOdometry3Wheel-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5553 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometry3Wheel-eps-co
 nverted-to.pdf classOdometry3Wheel.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classOdometry3Wheel-eps-converted-to.pdf>
-<classOdometry3Wheel-eps-converted-to.pdf, id=3986, 501.875pt x 343.16205pt>
+<classOdometry3Wheel-eps-converted-to.pdf, id=3983, 501.875pt x 343.16205pt>
 File: classOdometry3Wheel-eps-converted-to.pdf Graphic file (type pdf)
 <use classOdometry3Wheel-eps-converted-to.pdf>
 Package pdftex.def Info: classOdometry3Wheel-eps-converted-to.pdf  used on inpu
@@ -1598,17 +1598,17 @@ Underfull \hbox (badness 10000) detected at line 144
 ) (./structOdometry3Wheel_1_1odometry3wheel__cfg__t.tex [93])
 (./classOdometryBase.tex
 Package epstopdf Info: Source file: <classOdometryBase.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 4006 bytes
 (epstopdf)             Output file: <classOdometryBase-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 6229 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometryBase-eps-conv
 erted-to.pdf classOdometryBase.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classOdometryBase-eps-converted-to.pdf>
-<classOdometryBase-eps-converted-to.pdf, id=4103, 501.875pt x 114.38734pt>
+<classOdometryBase-eps-converted-to.pdf, id=4100, 501.875pt x 114.38734pt>
 File: classOdometryBase-eps-converted-to.pdf Graphic file (type pdf)
 <use classOdometryBase-eps-converted-to.pdf>
 Package pdftex.def Info: classOdometryBase-eps-converted-to.pdf  used on input 
@@ -1666,18 +1666,18 @@ Underfull \hbox (badness 10000) detected at line 203
 
 [98]) (./classVDP_1_1OdometryControlRecord.tex
 Package epstopdf Info: Source file: <classVDP_1_1OdometryControlRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3925 bytes
 (epstopdf)             Output file: <classVDP_1_1OdometryControlRecord-eps-conv
 erted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5727 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1OdometryContro
 lRecord-eps-converted-to.pdf classVDP_1_1OdometryControlRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1OdometryControlRecord-eps-converted-to.pdf>
-<classVDP_1_1OdometryControlRecord-eps-converted-to.pdf, id=4201, 501.875pt x 3
+<classVDP_1_1OdometryControlRecord-eps-converted-to.pdf, id=4198, 501.875pt x 3
 18.65047pt>
 File: classVDP_1_1OdometryControlRecord-eps-converted-to.pdf Graphic file (type
  pdf)
@@ -1687,18 +1687,18 @@ Package pdftex.def Info: classVDP_1_1OdometryControlRecord-eps-converted-to.pdf
 (pdftex.def)             Requested size: 134.43593pt x 85.35826pt.
  [99]) (./classVDP_1_1OdometryDataRecord.tex [100]
 Package epstopdf Info: Source file: <classVDP_1_1OdometryDataRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3919 bytes
 (epstopdf)             Output file: <classVDP_1_1OdometryDataRecord-eps-convert
 ed-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5440 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1OdometryDataRe
 cord-eps-converted-to.pdf classVDP_1_1OdometryDataRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1OdometryDataRecord-eps-converted-to.pdf>
-<classVDP_1_1OdometryDataRecord-eps-converted-to.pdf, id=4253, 501.875pt x 346.
+<classVDP_1_1OdometryDataRecord-eps-converted-to.pdf, id=4250, 501.875pt x 346.
 1231pt>
 File: classVDP_1_1OdometryDataRecord-eps-converted-to.pdf Graphic file (type pd
 f)
@@ -1709,18 +1709,18 @@ sed on input line 10.
  [101])
 (./classscreen_1_1OdometryPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1OdometryPage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3806 bytes
 (epstopdf)             Output file: <classscreen_1_1OdometryPage-eps-converted-
 to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:31
 (epstopdf)                    size: 5488 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1OdometryPag
 e-eps-converted-to.pdf classscreen_1_1OdometryPage.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classscreen_1_1OdometryPage-eps-converted-to.pdf>
-<classscreen_1_1OdometryPage-eps-converted-to.pdf, id=4294, 501.875pt x 269.466
+<classscreen_1_1OdometryPage-eps-converted-to.pdf, id=4291, 501.875pt x 269.466
 72pt>
 File: classscreen_1_1OdometryPage-eps-converted-to.pdf Graphic file (type pdf)
 <use classscreen_1_1OdometryPage-eps-converted-to.pdf>
@@ -1739,17 +1739,17 @@ Underfull \hbox (badness 10000) detected at line 76
 
 ) (./classOdometrySerial.tex
 Package epstopdf Info: Source file: <classOdometrySerial.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3794 bytes
 (epstopdf)             Output file: <classOdometrySerial-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:32
 (epstopdf)                    size: 5362 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometrySerial-eps-co
 nverted-to.pdf classOdometrySerial.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classOdometrySerial-eps-converted-to.pdf>
-<classOdometrySerial-eps-converted-to.pdf, id=4329, 501.875pt x 371.75888pt>
+<classOdometrySerial-eps-converted-to.pdf, id=4326, 501.875pt x 371.75888pt>
 File: classOdometrySerial-eps-converted-to.pdf Graphic file (type pdf)
 <use classOdometrySerial-eps-converted-to.pdf>
 Package pdftex.def Info: classOdometrySerial-eps-converted-to.pdf  used on inpu
@@ -1835,17 +1835,17 @@ Underfull \hbox (badness 10000) detected at line 245
 
 ) (./classOdometryTank.tex
 Package epstopdf Info: Source file: <classOdometryTank.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3790 bytes
 (epstopdf)             Output file: <classOdometryTank-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:17
+(epstopdf)                    date: 2025-09-12 00:33:32
 (epstopdf)                    size: 5356 bytes
 (epstopdf)             Command: <repstopdf --outfile=classOdometryTank-eps-conv
 erted-to.pdf classOdometryTank.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classOdometryTank-eps-converted-to.pdf>
-<classOdometryTank-eps-converted-to.pdf, id=4426, 501.875pt x 389.80632pt>
+<classOdometryTank-eps-converted-to.pdf, id=4423, 501.875pt x 389.80632pt>
 File: classOdometryTank-eps-converted-to.pdf Graphic file (type pdf)
 <use classOdometryTank-eps-converted-to.pdf>
 Package pdftex.def Info: classOdometryTank-eps-converted-to.pdf  used on input 
@@ -1880,17 +1880,17 @@ Underfull \hbox (badness 10000) detected at line 77
 
 [114] [115]) (./classscreen_1_1Page.tex
 Package epstopdf Info: Source file: <classscreen_1_1Page.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 4213 bytes
 (epstopdf)             Output file: <classscreen_1_1Page-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:18
+(epstopdf)                    date: 2025-09-12 00:33:32
 (epstopdf)                    size: 6652 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1Page-eps-co
 nverted-to.pdf classscreen_1_1Page.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classscreen_1_1Page-eps-converted-to.pdf>
-<classscreen_1_1Page-eps-converted-to.pdf, id=4614, 501.875pt x 53.89134pt>
+<classscreen_1_1Page-eps-converted-to.pdf, id=4611, 501.875pt x 53.89134pt>
 File: classscreen_1_1Page-eps-converted-to.pdf Graphic file (type pdf)
 <use classscreen_1_1Page-eps-converted-to.pdf>
 Package pdftex.def Info: classscreen_1_1Page-eps-converted-to.pdf  used on inpu
@@ -1898,17 +1898,17 @@ t line 15.
 (pdftex.def)             Requested size: 398.34544pt x 42.77464pt.
  [116] [117]) (./classParallel.tex) (./classVDP_1_1Part.tex
 Package epstopdf Info: Source file: <classVDP_1_1Part.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 5413 bytes
 (epstopdf)             Output file: <classVDP_1_1Part-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:18
-(epstopdf)                    size: 8565 bytes
+(epstopdf)                    date: 2025-09-12 00:33:32
+(epstopdf)                    size: 8559 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1Part-eps-conve
 rted-to.pdf classVDP_1_1Part.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1Part-eps-converted-to.pdf>
-<classVDP_1_1Part-eps-converted-to.pdf, id=4659, 501.875pt x 580.67943pt>
+<classVDP_1_1Part-eps-converted-to.pdf, id=4656, 501.875pt x 580.67943pt>
 File: classVDP_1_1Part-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1Part-eps-converted-to.pdf>
 Package pdftex.def Info: classVDP_1_1Part-eps-converted-to.pdf  used on input l
@@ -2026,17 +2026,17 @@ Overfull \hbox (25.4058pt too wide) in paragraph at lines 154--155
 
 ) (./classPurePursuit_1_1Path.tex [122]) (./classPID.tex
 Package epstopdf Info: Source file: <classPID.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3764 bytes
 (epstopdf)             Output file: <classPID-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:18
+(epstopdf)                    date: 2025-09-12 00:33:32
 (epstopdf)                    size: 4758 bytes
 (epstopdf)             Command: <repstopdf --outfile=classPID-eps-converted-to.
 pdf classPID.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classPID-eps-converted-to.pdf>
-<classPID-eps-converted-to.pdf, id=4866, 501.875pt x 528.2937pt>
+<classPID-eps-converted-to.pdf, id=4863, 501.875pt x 528.2937pt>
 File: classPID-eps-converted-to.pdf Graphic file (type pdf)
 <use classPID-eps-converted-to.pdf>
 Package pdftex.def Info: classPID-eps-converted-to.pdf  used on input line 10.
@@ -2093,18 +2093,18 @@ Underfull \hbox (badness 10000) detected at line 254
 
 ) (./structPID_1_1pid__config__t.tex [128]) (./classVDP_1_1PIDControlRecord.tex
 Package epstopdf Info: Source file: <classVDP_1_1PIDControlRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3915 bytes
 (epstopdf)             Output file: <classVDP_1_1PIDControlRecord-eps-converted
 -to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:18
+(epstopdf)                    date: 2025-09-12 00:33:32
 (epstopdf)                    size: 5363 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1PIDControlReco
 rd-eps-converted-to.pdf classVDP_1_1PIDControlRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1PIDControlRecord-eps-converted-to.pdf>
-<classVDP_1_1PIDControlRecord-eps-converted-to.pdf, id=5034, 501.875pt x 391.07
+<classVDP_1_1PIDControlRecord-eps-converted-to.pdf, id=5031, 501.875pt x 391.07
 103pt>
 File: classVDP_1_1PIDControlRecord-eps-converted-to.pdf Graphic file (type pdf)
 
@@ -2115,18 +2115,18 @@ d on input line 10.
  [129])
 (./classVDP_1_1PIDDataRecord.tex [130]
 Package epstopdf Info: Source file: <classVDP_1_1PIDDataRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3909 bytes
 (epstopdf)             Output file: <classVDP_1_1PIDDataRecord-eps-converted-to
 .pdf>
-(epstopdf)                    date: 2025-09-02 22:41:18
+(epstopdf)                    date: 2025-09-12 00:33:33
 (epstopdf)                    size: 5070 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1PIDDataRecord-
 eps-converted-to.pdf classVDP_1_1PIDDataRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1PIDDataRecord-eps-converted-to.pdf>
-<classVDP_1_1PIDDataRecord-eps-converted-to.pdf, id=5085, 501.875pt x 433.26868
+<classVDP_1_1PIDDataRecord-eps-converted-to.pdf, id=5082, 501.875pt x 433.26868
 pt>
 File: classVDP_1_1PIDDataRecord-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1PIDDataRecord-eps-converted-to.pdf>
@@ -2135,18 +2135,18 @@ n input line 10.
 (pdftex.def)             Requested size: 98.87225pt x 85.35826pt.
  [131]) (./classscreen_1_1PIDPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1PIDPage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3796 bytes
 (epstopdf)             Output file: <classscreen_1_1PIDPage-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2025-09-02 22:41:18
+(epstopdf)                    date: 2025-09-12 00:33:33
 (epstopdf)                    size: 4926 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1PIDPage-eps
 -converted-to.pdf classscreen_1_1PIDPage.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classscreen_1_1PIDPage-eps-converted-to.pdf>
-<classscreen_1_1PIDPage-eps-converted-to.pdf, id=5130, 501.875pt x 352.1958pt>
+<classscreen_1_1PIDPage-eps-converted-to.pdf, id=5127, 501.875pt x 352.1958pt>
 File: classscreen_1_1PIDPage-eps-converted-to.pdf Graphic file (type pdf)
 <use classscreen_1_1PIDPage-eps-converted-to.pdf>
 Package pdftex.def Info: classscreen_1_1PIDPage-eps-converted-to.pdf  used on i
@@ -2209,17 +2209,17 @@ Underfull \hbox (badness 10000) detected at line 346
 
 ) (./classPurePursuitCommand.tex [140]) (./classVDP_1_1Record.tex
 Package epstopdf Info: Source file: <classVDP_1_1Record.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 4567 bytes
 (epstopdf)             Output file: <classVDP_1_1Record-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:19
+(epstopdf)                    date: 2025-09-12 00:33:33
 (epstopdf)                    size: 6591 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1Record-eps-con
 verted-to.pdf classVDP_1_1Record.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1Record-eps-converted-to.pdf>
-<classVDP_1_1Record-eps-converted-to.pdf, id=5349, 501.875pt x 45.52007pt>
+<classVDP_1_1Record-eps-converted-to.pdf, id=5346, 501.875pt x 45.52007pt>
 File: classVDP_1_1Record-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1Record-eps-converted-to.pdf>
 Package pdftex.def Info: classVDP_1_1Record-eps-converted-to.pdf  used on input
@@ -2233,18 +2233,18 @@ Underfull \hbox (badness 10000) detected at line 101
 
 ) (./classResponsePacketVisitor.tex
 Package epstopdf Info: Source file: <classResponsePacketVisitor.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3808 bytes
 (epstopdf)             Output file: <classResponsePacketVisitor-eps-converted-t
 o.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:19
+(epstopdf)                    date: 2025-09-12 00:33:33
 (epstopdf)                    size: 5416 bytes
 (epstopdf)             Command: <repstopdf --outfile=classResponsePacketVisitor
 -eps-converted-to.pdf classResponsePacketVisitor.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classResponsePacketVisitor-eps-converted-to.pdf>
-<classResponsePacketVisitor-eps-converted-to.pdf, id=5505, 501.875pt x 269.4667
+<classResponsePacketVisitor-eps-converted-to.pdf, id=5502, 501.875pt x 269.4667
 2pt>
 File: classResponsePacketVisitor-eps-converted-to.pdf Graphic file (type pdf)
 <use classResponsePacketVisitor-eps-converted-to.pdf>
@@ -2433,18 +2433,18 @@ e IDType, typename Message, int32[]_[]t delay[]_[]ms, bool do[]_[]log =
 
 ) (./classscreen_1_1StatsPage.tex
 Package epstopdf Info: Source file: <classscreen_1_1StatsPage.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3800 bytes
 (epstopdf)             Output file: <classscreen_1_1StatsPage-eps-converted-to.
 pdf>
-(epstopdf)                    date: 2025-09-02 22:41:19
+(epstopdf)                    date: 2025-09-12 00:33:33
 (epstopdf)                    size: 5014 bytes
 (epstopdf)             Command: <repstopdf --outfile=classscreen_1_1StatsPage-e
 ps-converted-to.pdf classscreen_1_1StatsPage.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classscreen_1_1StatsPage-eps-converted-to.pdf>
-<classscreen_1_1StatsPage-eps-converted-to.pdf, id=5931, 501.875pt x 331.81966p
+<classscreen_1_1StatsPage-eps-converted-to.pdf, id=5928, 501.875pt x 331.81966p
 t>
 File: classscreen_1_1StatsPage-eps-converted-to.pdf Graphic file (type pdf)
 <use classscreen_1_1StatsPage-eps-converted-to.pdf>
@@ -2463,17 +2463,17 @@ Underfull \hbox (badness 10000) detected at line 70
 
 ) (./classVDP_1_1String.tex
 Package epstopdf Info: Source file: <classVDP_1_1String.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3782 bytes
 (epstopdf)             Output file: <classVDP_1_1String-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:19
+(epstopdf)                    date: 2025-09-12 00:33:34
 (epstopdf)                    size: 4971 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1String-eps-con
 verted-to.pdf classVDP_1_1String.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1String-eps-converted-to.pdf>
-<classVDP_1_1String-eps-converted-to.pdf, id=5964, 501.875pt x 472.3547pt>
+<classVDP_1_1String-eps-converted-to.pdf, id=5961, 501.875pt x 472.3547pt>
 File: classVDP_1_1String-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1String-eps-converted-to.pdf>
 Package pdftex.def Info: classVDP_1_1String-eps-converted-to.pdf  used on input
@@ -2487,17 +2487,17 @@ Underfull \hbox (badness 10000) detected at line 95
 
 [173] [174]) (./classTakeBackHalf.tex
 Package epstopdf Info: Source file: <classTakeBackHalf.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:27
 (epstopdf)                    size: 3782 bytes
 (epstopdf)             Output file: <classTakeBackHalf-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:19
+(epstopdf)                    date: 2025-09-12 00:33:34
 (epstopdf)                    size: 4977 bytes
 (epstopdf)             Command: <repstopdf --outfile=classTakeBackHalf-eps-conv
 erted-to.pdf classTakeBackHalf.eps>
 (epstopdf)             \includegraphics on input line 15.
 Package epstopdf Info: Output file is already uptodate.
  <./classTakeBackHalf-eps-converted-to.pdf>
-<classTakeBackHalf-eps-converted-to.pdf, id=6035, 501.875pt x 409.6906pt>
+<classTakeBackHalf-eps-converted-to.pdf, id=6032, 501.875pt x 409.6906pt>
 File: classTakeBackHalf-eps-converted-to.pdf Graphic file (type pdf)
 <use classTakeBackHalf-eps-converted-to.pdf>
 Package pdftex.def Info: classTakeBackHalf-eps-converted-to.pdf  used on input 
@@ -2585,18 +2585,18 @@ Underfull \hbox (badness 10000) detected at line 537
 
 ) (./classVDP_1_1TestRecord.tex
 Package epstopdf Info: Source file: <classVDP_1_1TestRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3903 bytes
 (epstopdf)             Output file: <classVDP_1_1TestRecord-eps-converted-to.pd
 f>
-(epstopdf)                    date: 2025-09-02 22:41:20
+(epstopdf)                    date: 2025-09-12 00:33:34
 (epstopdf)                    size: 5232 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1TestRecord-eps
 -converted-to.pdf classVDP_1_1TestRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1TestRecord-eps-converted-to.pdf>
-<classVDP_1_1TestRecord-eps-converted-to.pdf, id=6239, 501.875pt x 519.17964pt>
+<classVDP_1_1TestRecord-eps-converted-to.pdf, id=6236, 501.875pt x 519.17964pt>
 
 File: classVDP_1_1TestRecord-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1TestRecord-eps-converted-to.pdf>
@@ -2605,18 +2605,18 @@ nput line 10.
 (pdftex.def)             Requested size: 82.50713pt x 85.35826pt.
 [187]) (./classVDP_1_1TimestampedRecord.tex
 Package epstopdf Info: Source file: <classVDP_1_1TimestampedRecord.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3917 bytes
 (epstopdf)             Output file: <classVDP_1_1TimestampedRecord-eps-converte
 d-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:20
+(epstopdf)                    date: 2025-09-12 00:33:34
 (epstopdf)                    size: 5603 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1TimestampedRec
 ord-eps-converted-to.pdf classVDP_1_1TimestampedRecord.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1TimestampedRecord-eps-converted-to.pdf>
-<classVDP_1_1TimestampedRecord-eps-converted-to.pdf, id=6273, 501.875pt x 365.0
+<classVDP_1_1TimestampedRecord-eps-converted-to.pdf, id=6270, 501.875pt x 365.0
 0366pt>
 File: classVDP_1_1TimestampedRecord-eps-converted-to.pdf Graphic file (type pdf
 )
@@ -2903,18 +2903,18 @@ Vector(const State[]Vector &, const State[]Vector &)$\OML/cmm/m/it/8 >$ \T1/pcr
 
 [215] [216] [217]) (./classVDP_1_1UpcastNumbersVisitor.tex
 Package epstopdf Info: Source file: <classVDP_1_1UpcastNumbersVisitor.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3816 bytes
 (epstopdf)             Output file: <classVDP_1_1UpcastNumbersVisitor-eps-conve
 rted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:20
+(epstopdf)                    date: 2025-09-12 00:33:35
 (epstopdf)                    size: 5611 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1UpcastNumbersV
 isitor-eps-converted-to.pdf classVDP_1_1UpcastNumbersVisitor.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1UpcastNumbersVisitor-eps-converted-to.pdf>
-<classVDP_1_1UpcastNumbersVisitor-eps-converted-to.pdf, id=6881, 501.875pt x 22
+<classVDP_1_1UpcastNumbersVisitor-eps-converted-to.pdf, id=6877, 501.875pt x 22
 8.12227pt>
 File: classVDP_1_1UpcastNumbersVisitor-eps-converted-to.pdf Graphic file (type 
 pdf)
@@ -2924,17 +2924,17 @@ Package pdftex.def Info: classVDP_1_1UpcastNumbersVisitor-eps-converted-to.pdf
 (pdftex.def)             Requested size: 125.19275pt x 56.9055pt.
  [218]) (./classVDP_1_1Visitor.tex
 Package epstopdf Info: Source file: <classVDP_1_1Visitor.eps>
-(epstopdf)                    date: 2025-09-02 22:41:13
+(epstopdf)                    date: 2025-09-12 00:33:28
 (epstopdf)                    size: 3957 bytes
 (epstopdf)             Output file: <classVDP_1_1Visitor-eps-converted-to.pdf>
-(epstopdf)                    date: 2025-09-02 22:41:20
+(epstopdf)                    date: 2025-09-12 00:33:35
 (epstopdf)                    size: 6058 bytes
 (epstopdf)             Command: <repstopdf --outfile=classVDP_1_1Visitor-eps-co
 nverted-to.pdf classVDP_1_1Visitor.eps>
 (epstopdf)             \includegraphics on input line 10.
 Package epstopdf Info: Output file is already uptodate.
  <./classVDP_1_1Visitor-eps-converted-to.pdf>
-<classVDP_1_1Visitor-eps-converted-to.pdf, id=6898, 501.875pt x 114.06615pt>
+<classVDP_1_1Visitor-eps-converted-to.pdf, id=6895, 501.875pt x 114.06615pt>
 File: classVDP_1_1Visitor-eps-converted-to.pdf Graphic file (type pdf)
 <use classVDP_1_1Visitor-eps-converted-to.pdf>
 Package pdftex.def Info: classVDP_1_1Visitor-eps-converted-to.pdf  used on inpu
@@ -3024,10 +3024,10 @@ Package rerunfilecheck Info: File `refman.out' has not changed.
 (rerunfilecheck)             Checksum: 97F5FE82D2E2AF3F972BBED21D8E21EF;97725.
  ) 
 Here is how much of TeX's memory you used:
- 23290 strings out of 476182
- 438099 string characters out of 5795596
+ 23288 strings out of 476182
+ 437985 string characters out of 5795595
  1960975 words of memory out of 5000000
- 42461 multiletter control sequences out of 15000+600000
+ 42460 multiletter control sequences out of 15000+600000
  610781 words of font info for 116 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,16n,117p,2893b,856s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -3078,10 +3078,10 @@ hare/texlive/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive
 fonts/type1/urw/helvetic/uhvb8ac.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helveti
 c/uhvro8a.pfb>
-Output written on refman.pdf (241 pages, 855662 bytes).
+Output written on refman.pdf (241 pages, 855995 bytes).
 PDF statistics:
- 8500 PDF objects out of 8907 (max. 8388607)
- 8016 compressed objects within 81 object streams
- 2284 named destinations out of 2487 (max. 500000)
+ 8497 PDF objects out of 8907 (max. 8388607)
+ 8013 compressed objects within 81 object streams
+ 2283 named destinations out of 2487 (max. 500000)
  3211 words of extra memory for PDF output out of 10000 (max. 10000000)
 

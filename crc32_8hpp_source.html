@@ -107,44 +107,45 @@ $(function(){initNavTree('crc32_8hpp_source.html',''); initResizable(true); });
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span></div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classCRC32.html">    6</a></span><span class="keyword">class </span><a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a>();</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a6313ae724e3cc191ec6fe4b1a3351978">reset</a>();</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(<span class="keyword">const</span> uint8_t &amp;data);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">   26</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">update</a>(<span class="keyword">const</span> Type &amp;data) { <a class="code hl_function" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">update</a>(&amp;data, 1); }</div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">   33</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">update</a>(<span class="keyword">const</span> Type *data, std::size_t size) {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        std::size_t nBytes = size * <span class="keyword">sizeof</span>(Type);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keyword">const</span> uint8_t *pData = (<span class="keyword">const</span> uint8_t *)data;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; nBytes; i++) {</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(pData[i]);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    }</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span></div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classCRC32.html">    7</a></span><span class="keyword">class </span><a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a>();</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a6313ae724e3cc191ec6fe4b1a3351978">reset</a>();</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(<span class="keyword">const</span> uint8_t &amp;data);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">   27</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">update</a>(<span class="keyword">const</span> Type &amp;data) { <a class="code hl_function" href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">update</a>(&amp;data, 1); }</div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">   34</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">update</a>(<span class="keyword">const</span> Type *data, std::size_t size) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        std::size_t nBytes = size * <span class="keyword">sizeof</span>(Type);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keyword">const</span> uint8_t *pData = (<span class="keyword">const</span> uint8_t *)data;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; nBytes; i++) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(pData[i]);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
 </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    uint32_t <a class="code hl_function" href="classCRC32.html#ae987a7d742b6206c9c7a5d0a9465c59a">finalize</a>() <span class="keyword">const</span>;</div>
-<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">   52</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keyword">static</span> uint32_t <a class="code hl_function" href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">calculate</a>(<span class="keyword">const</span> Type *data, std::size_t size) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a> crc;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        crc.<a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(data, size);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">return</span> crc.<a class="code hl_function" href="classCRC32.html#ae987a7d742b6206c9c7a5d0a9465c59a">finalize</a>();</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    uint32_t <a class="code hl_function" href="classCRC32.html#ae987a7d742b6206c9c7a5d0a9465c59a">finalize</a>() <span class="keyword">const</span>;</div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">   53</a></span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Type&gt; <span class="keyword">static</span> uint32_t <a class="code hl_function" href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">calculate</a>(<span class="keyword">const</span> Type *data, std::size_t size) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_function" href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32</a> crc;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        crc.<a class="code hl_function" href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">update</a>(data, size);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> crc.<a class="code hl_function" href="classCRC32.html#ae987a7d742b6206c9c7a5d0a9465c59a">finalize</a>();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
 </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    uint32_t _state = ~0L;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    uint32_t _state = ~0L;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
-<div class="ttc" id="aclassCRC32_html_a30700fb3c919d13a7809643a83b34c1f"><div class="ttname"><a href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">CRC32::calculate</a></div><div class="ttdeci">static uint32_t calculate(const Type *data, std::size_t size)</div><div class="ttdoc">Calculate the checksum of an arbitrary data array.</div><div class="ttdef"><b>Definition</b> crc32.hpp:52</div></div>
+<div class="ttc" id="aclassCRC32_html_a30700fb3c919d13a7809643a83b34c1f"><div class="ttname"><a href="classCRC32.html#a30700fb3c919d13a7809643a83b34c1f">CRC32::calculate</a></div><div class="ttdeci">static uint32_t calculate(const Type *data, std::size_t size)</div><div class="ttdoc">Calculate the checksum of an arbitrary data array.</div><div class="ttdef"><b>Definition</b> crc32.hpp:53</div></div>
 <div class="ttc" id="aclassCRC32_html_a450b845a91ef96b9e41cc1049cca52fc"><div class="ttname"><a href="classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc">CRC32::CRC32</a></div><div class="ttdeci">CRC32()</div><div class="ttdoc">Initialize an empty CRC32 checksum.</div><div class="ttdef"><b>Definition</b> crc32.cpp:9</div></div>
-<div class="ttc" id="aclassCRC32_html_a60fe325d88644fb0f335b58f58f3386d"><div class="ttname"><a href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">CRC32::update</a></div><div class="ttdeci">void update(const Type &amp;data)</div><div class="ttdoc">Update the current checksum caclulation with the given data.</div><div class="ttdef"><b>Definition</b> crc32.hpp:26</div></div>
+<div class="ttc" id="aclassCRC32_html_a60fe325d88644fb0f335b58f58f3386d"><div class="ttname"><a href="classCRC32.html#a60fe325d88644fb0f335b58f58f3386d">CRC32::update</a></div><div class="ttdeci">void update(const Type &amp;data)</div><div class="ttdoc">Update the current checksum caclulation with the given data.</div><div class="ttdef"><b>Definition</b> crc32.hpp:27</div></div>
 <div class="ttc" id="aclassCRC32_html_a6313ae724e3cc191ec6fe4b1a3351978"><div class="ttname"><a href="classCRC32.html#a6313ae724e3cc191ec6fe4b1a3351978">CRC32::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Reset the checksum claculation.</div><div class="ttdef"><b>Definition</b> crc32.cpp:11</div></div>
 <div class="ttc" id="aclassCRC32_html_a82ee413a3481b7499b7d7ea3aeccdba7"><div class="ttname"><a href="classCRC32.html#a82ee413a3481b7499b7d7ea3aeccdba7">CRC32::update</a></div><div class="ttdeci">void update(const uint8_t &amp;data)</div><div class="ttdoc">Update the current checksum caclulation with the given data.</div><div class="ttdef"><b>Definition</b> crc32.cpp:13</div></div>
-<div class="ttc" id="aclassCRC32_html_a8ade938d5efa3aed8eb59874d01bebd0"><div class="ttname"><a href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">CRC32::update</a></div><div class="ttdeci">void update(const Type *data, std::size_t size)</div><div class="ttdoc">Update the current checksum caclulation with the given data.</div><div class="ttdef"><b>Definition</b> crc32.hpp:33</div></div>
+<div class="ttc" id="aclassCRC32_html_a8ade938d5efa3aed8eb59874d01bebd0"><div class="ttname"><a href="classCRC32.html#a8ade938d5efa3aed8eb59874d01bebd0">CRC32::update</a></div><div class="ttdeci">void update(const Type *data, std::size_t size)</div><div class="ttdoc">Update the current checksum caclulation with the given data.</div><div class="ttdef"><b>Definition</b> crc32.hpp:34</div></div>
 <div class="ttc" id="aclassCRC32_html_ae987a7d742b6206c9c7a5d0a9465c59a"><div class="ttname"><a href="classCRC32.html#ae987a7d742b6206c9c7a5d0a9465c59a">CRC32::finalize</a></div><div class="ttdeci">uint32_t finalize() const</div><div class="ttdef"><b>Definition</b> crc32.cpp:23</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
