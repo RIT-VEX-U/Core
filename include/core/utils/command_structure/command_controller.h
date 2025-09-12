@@ -14,12 +14,6 @@
 
 class CommandController {
   public:
-    /// @brief Create an empty CommandController. Add Command with
-    /// CommandController::add()
-    [[deprecated("Empty constructor is bad. Use list constructor "
-                 "instead.")]] CommandController()
-        : command_queue({}) {}
-
     /// @brief Create a CommandController with commands pre added. More can be
     /// added with CommandController::add()
     /// @param cmds
