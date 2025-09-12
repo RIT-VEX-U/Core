@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <cstddef>
 
 /// \brief A class for calculating the CRC32 checksum from arbitrary data.
 /// \sa http://forum.arduino.cc/index.php?topic=91179.0
