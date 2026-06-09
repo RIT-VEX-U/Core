@@ -52,9 +52,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classPose2d.html#a3ab083c147be5c6f1ab3681f86308d47",
-"classVDP_1_1PacketWriter.html#ac6aedb777b315074cb8e47f512230b77"
+"classPose2d.html#a001801fc38b4bb4fa95a5d45450a5d47",
+"classVDP_1_1Part.html#a280334b8779b40bdb0058a1c2666d976"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronization';
-var SYNCOFFMSG = 'click to enable panel synchronization';
+const SYNCONMSG = 'click to disable panel synchronization';
+const SYNCOFFMSG = 'click to enable panel synchronization';
+const LISTOFALLMEMBERS = 'List of all members';

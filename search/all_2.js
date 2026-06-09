@@ -19,6 +19,5 @@ var searchData=
   ['correction_5fpid_16',['correction_pid',['../structrobot__specs__t.html#a23d091e4a5258c11db6cd9753b598d06',1,'robot_specs_t']]],
   ['crc32_17',['CRC32',['../classCRC32.html',1,'CRC32'],['../classCRC32.html#a450b845a91ef96b9e41cc1049cca52fc',1,'CRC32::CRC32()']]],
   ['current_5fpos_18',['current_pos',['../classOdometryBase.html#a2cff7e2ac1a8860f047acd4f4b8a0465',1,'OdometryBase']]],
-  ['current_5fstate_19',['current_state',['../classStateMachine.html#a24f8150f4963d2522f255cf5430aa1a7',1,'StateMachine']]],
-  ['customencoder_20',['CustomEncoder',['../classCustomEncoder.html',1,'CustomEncoder'],['../classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d',1,'CustomEncoder::CustomEncoder()']]]
+  ['customencoder_19',['CustomEncoder',['../classCustomEncoder.html',1,'CustomEncoder'],['../classCustomEncoder.html#a6c17b425b7a899107be1bb7ed7e80b9d',1,'CustomEncoder::CustomEncoder()']]]
 ];

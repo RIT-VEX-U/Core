@@ -6,8 +6,7 @@ var searchData=
   ['sliderwidget_3',['SliderWidget',['../classscreen_1_1SliderWidget.html',1,'screen']]],
   ['spinrpmcommand_4',['SpinRPMCommand',['../classSpinRPMCommand.html',1,'']]],
   ['spline_5',['spline',['../structPurePursuit_1_1spline.html',1,'PurePursuit']]],
-  ['state_6',['State',['../structStateMachine_1_1State.html',1,'StateMachine']]],
-  ['statemachine_7',['StateMachine',['../classStateMachine.html',1,'']]],
-  ['statspage_8',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]],
-  ['string_9',['String',['../classVDP_1_1String.html',1,'VDP']]]
+  ['state_6',['State',['../structState.html',1,'']]],
+  ['statspage_7',['StatsPage',['../classscreen_1_1StatsPage.html',1,'screen']]],
+  ['string_8',['String',['../classVDP_1_1String.html',1,'VDP']]]
 ];

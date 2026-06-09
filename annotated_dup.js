@@ -1,9 +1,9 @@
 var annotated_dup =
 [
     [ "PurePursuit", null, [
-      [ "hermite_point", "structPurePursuit_1_1hermite__point.html", null ],
       [ "Path", "classPurePursuit_1_1Path.html", "classPurePursuit_1_1Path" ],
-      [ "spline", "structPurePursuit_1_1spline.html", null ]
+      [ "spline", "structPurePursuit_1_1spline.html", null ],
+      [ "hermite_point", "structPurePursuit_1_1hermite__point.html", null ]
     ] ],
     [ "screen", null, [
       [ "ButtonWidget", "classscreen_1_1ButtonWidget.html", "classscreen_1_1ButtonWidget" ],
@@ -68,6 +68,7 @@ var annotated_dup =
     [ "LinearQuadraticRegulator", "classLinearQuadraticRegulator.html", "classLinearQuadraticRegulator" ],
     [ "LinearSystem", "classLinearSystem.html", "classLinearSystem" ],
     [ "Logger", "classLogger.html", "classLogger" ],
+    [ "MaybeMessage", "classMaybeMessage.html", "classMaybeMessage" ],
     [ "MecanumDrive", "classMecanumDrive.html", "classMecanumDrive" ],
     [ "MotionController", "classMotionController.html", "classMotionController" ],
     [ "MovingAverage", "classMovingAverage.html", "classMovingAverage" ],
@@ -87,7 +88,7 @@ var annotated_dup =
     [ "ScaledSphericalSimplexSigmaPoints", "classScaledSphericalSimplexSigmaPoints.html", "classScaledSphericalSimplexSigmaPoints" ],
     [ "Serializer", "classSerializer.html", "classSerializer" ],
     [ "SpinRPMCommand", "classSpinRPMCommand.html", "classSpinRPMCommand" ],
-    [ "StateMachine", "classStateMachine.html", "classStateMachine" ],
+    [ "State", "structState.html", null ],
     [ "TakeBackHalf", "classTakeBackHalf.html", "classTakeBackHalf" ],
     [ "TankDrive", "classTankDrive.html", "classTankDrive" ],
     [ "tracking_wheel_cfg_t", "structtracking__wheel__cfg__t.html", "structtracking__wheel__cfg__t" ],
