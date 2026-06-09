@@ -58,16 +58,10 @@ jobs:
         target: "documentation/html/refman.log"
 
 
-    - name: Get Notebook Link 
-      shell: bash
-      run: |
-        echo "NOTEBOOK_URL=$(curl -s https://docs.google.com/document/d/1MXCeYx3YnUjLv4AaNY4qdkM84N3KkZn0HwgL6a-Di8U/export\?format\=pdf |grep HREF |sed -E "s|.*HREF=\"([^\"]*).*|\1|g")" >> "$GITHUB_ENV"  
-
-
     - name: Download Notebook
       uses: wei/curl@master
       with: 
-        args: ${{ env.NOTEBOOK_URL }} --output documentation/html/notebook_top.pdf
+        args: --fail --location https://docs.google.com/document/d/1MXCeYx3YnUjLv4AaNY4qdkM84N3KkZn0HwgL6a-Di8U/export?format=pdf --output documentation/html/notebook_top.pdf
 
 
 
