@@ -12,7 +12,7 @@
  * 
  * @return The derivative of f(x) at x.
  */
-double numerical_diff(const std::function<double(double)> &f, double x) {
+inline double numerical_diff(const std::function<double(double)> &f, double x) {
     const double h = 1e-6;
     const double x_plus = f(x + h);
     const double x_minus = f(x - h);
@@ -164,7 +164,7 @@ EMat<X, X> numerical_hessian(const std::function<double(const EVec<X> &x)> &f, c
         hess.col(i) = (grad_plus - grad_minus) / (2 * h);
     }
     
-    // Force symmatry.
+    // Force symmetry.
     hess = (hess + hess.transpose()) / 2.0;
     
     return hess;

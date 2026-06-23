@@ -74,7 +74,7 @@ class Dual {
   }
 
   bool operator!=(const Dual& other) const {
-    return val != other.val;
+    return !(*this == other);
   }
 
   bool operator<(const Dual& other) const {

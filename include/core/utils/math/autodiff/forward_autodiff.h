@@ -15,7 +15,7 @@ namespace Autodiff {
  * 
  * @return The derivative of f(x) at x.
  */
-double diff(const std::function<Dual(Dual)>& f, double x) {
+inline double diff(const std::function<Dual(Dual)>& f, double x) {
     Dual x_dual(x, 1.0);
     
     Dual result = f(x_dual);
@@ -71,8 +71,7 @@ double directional_derivative(const std::function<Dual(const EVecX<Dual, X>&)>& 
                                   const EVec<X>& v) {
     EVec<X> v_normalized = v.normalized();
     
-    // Create a dual vector with derivatives set to the normalized direction vector.
-    // This is genius...
+    // Create a dual vector with derivatives set to the direction vector
     EVecX<Dual, X> x_dual;
     for (int i = 0; i < X; i++) {
         x_dual(i) = Dual(x(i), v_normalized(i));
