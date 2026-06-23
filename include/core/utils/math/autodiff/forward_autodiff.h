@@ -69,12 +69,11 @@ template <int X>
 double directional_derivative(const std::function<Dual(const EVecX<Dual, X>&)>& f, 
                                   const EVec<X>& x, 
                                   const EVec<X>& v) {
-    EVec<X> v_normalized = v.normalized();
-    
-    // Create a dual vector with derivatives set to the direction vector
+
+    // Create a dual vector with derivatives set to the direction vector.
     EVecX<Dual, X> x_dual;
     for (int i = 0; i < X; i++) {
-        x_dual(i) = Dual(x(i), v_normalized(i));
+        x_dual(i) = Dual(x(i), v(i));
     }
     
     Dual result = f(x_dual);
