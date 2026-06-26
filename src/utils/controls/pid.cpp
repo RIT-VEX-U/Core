@@ -1,14 +1,15 @@
 #include "core/utils/controls/pid.h"
+
 #include "core/subsystems/odometry/odometry_base.h"
 
 /**
  * Create the PID object
  */
-PID::PID(pid_config_t &config) : config(config) { pid_timer.reset(); }
+PID::PID(pid_config_t& config) : config(config) { pid_timer.reset(); }
 
 void PID::init(double start_pt, double set_pt) {
     set_target(set_pt);
-    target_vel = 0; // TODO change back when trapezoid profiles are fixed
+    target_vel = 0;  // TODO change back when trapezoid profiles are fixed
     sensor_val = start_pt;
     reset();
 }
@@ -32,7 +33,6 @@ double PID::update(double sensor_val) { return update(sensor_val, 0); }
  * @return the new output. What would be returned by PID::get()
  */
 double PID::update(double sensor_val, double v_setpt) {
-
     this->sensor_val = sensor_val;
     // printf("Error: %.2f\n", get_error());
 

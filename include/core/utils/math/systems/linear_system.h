@@ -14,7 +14,7 @@
  */
 template <int STATES, int INPUTS, int OUTPUTS>
 class LinearSystem {
-  public:
+   public:
     using MatrixA = EMat<STATES, STATES>;
     using MatrixB = EMat<STATES, INPUTS>;
     using MatrixC = EMat<OUTPUTS, STATES>;
@@ -26,13 +26,14 @@ class LinearSystem {
 
     /**
      * Constructs a discrete linear system with the given continuous matrices.
-     * 
+     *
      * @param A The continuous system matrix
      * @param B The continuous input matrix
      * @param C The output matrix
      * @param D The feedthrough matrix
      */
-    LinearSystem(const MatrixA &A, const MatrixB &B, const MatrixC &C, const MatrixD &D) : m_Ac(A), m_Bc(B), m_C(C), m_D(D) {}
+    LinearSystem(const MatrixA& A, const MatrixB& B, const MatrixC& C, const MatrixD& D)
+        : m_Ac(A), m_Bc(B), m_C(C), m_D(D) {}
 
     /**
      * Returns the continuous system matrix A.
@@ -47,7 +48,9 @@ class LinearSystem {
     /**
      * Returns a tuple of A and B after being discretized.
      */
-    const std::tuple<std::tuple<MatrixA, MatrixB>> &discAB(const double &dt) { return discretize_AB(m_Ac, m_Bc, dt); }
+    const std::tuple<std::tuple<MatrixA, MatrixB>>& discAB(const double& dt) {
+        return discretize_AB(m_Ac, m_Bc, dt);
+    }
 
     /**
      * Returns the output matrix C.
@@ -62,14 +65,14 @@ class LinearSystem {
     /**
      * Computes the new state vector given the previous state vector, an input
      * vector, and the timestep in seconds.
-     * 
+     *
      * @param x The current state vector.
      * @param u The input vector.
      * @param dt The timestep in seconds.
-     * 
+     *
      * @return The new state vector.
      */
-    VectorX compute_X(const VectorX &x, const VectorU &u, double dt) {
+    VectorX compute_X(const VectorX& x, const VectorU& u, double dt) {
         // Discretize A and B
         auto [Ad, Bd] = discretize_AB(m_Ac, m_Bc, dt);
 
@@ -78,17 +81,15 @@ class LinearSystem {
 
     /**
      * Computes the output vector given a state and an input.
-     * 
+     *
      * @param x The state vector.
      * @param u The input vector.
-     * 
+     *
      * @return The output vector.
      */
-    VectorY compute_Y(const VectorX &x, const VectorU &u) {
-        return m_C * x + m_D * u;
-    }
+    VectorY compute_Y(const VectorX& x, const VectorU& u) { return m_C * x + m_D * u; }
 
-  private:
+   private:
     // Continuous system matrix
     MatrixA m_Ac;
     // Continuous input matrix

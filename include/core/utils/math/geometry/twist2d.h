@@ -1,6 +1,5 @@
 #pragma once
 #include <Eigen/Dense>
-
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -16,7 +15,7 @@
  * +Theta is counterclockwise
  */
 class Twist2d {
-  public:
+   public:
     /**
      * Default Constructor for Twist2d
      */
@@ -29,14 +28,14 @@ class Twist2d {
      * @param dy the linear dy component.
      * @param dtheta the angular dtheta component.
      */
-    Twist2d(const double &dx, const double &dy, const double &dtheta);
+    Twist2d(const double& dx, const double& dy, const double& dtheta);
 
     /**
      * Constructs a twist with given translation and angle deltas.
      *
      * @param twist_vector vector of the form [dx, dy, dtheta]
      */
-    Twist2d(const Eigen::Vector3d &twist_vector);
+    Twist2d(const Eigen::Vector3d& twist_vector);
 
     /**
      * Returns the linear dx component.
@@ -66,21 +65,21 @@ class Twist2d {
      *
      * @return true if each of the components are within 1e-9 of each other.
      */
-    bool operator==(const Twist2d &other) const;
+    bool operator==(const Twist2d& other) const;
 
     /**
      * Multiplies this twist by a scalar.
      *
      * @param scalar the scalar value to multiply by.
      */
-    Twist2d operator*(const double &scalar) const;
+    Twist2d operator*(const double& scalar) const;
 
     /**
      * Divides this twist by a scalar.
      *
      * @param scalar the scalar value to divide by.
      */
-    Twist2d operator/(const double &scalar) const;
+    Twist2d operator/(const double& scalar) const;
 
     /**
      * Sends a twist to an output stream.
@@ -89,9 +88,9 @@ class Twist2d {
      *
      * prints "Twist2d[dx: (value), dy: (value), drad: (radians)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, const Twist2d &twist);
+    friend std::ostream& operator<<(std::ostream& os, const Twist2d& twist);
 
-  private:
+   private:
     double m_dx;
     double m_dy;
     double m_dtheta;

@@ -1,19 +1,27 @@
 #include "core/subsystems/mecanum_drive.h"
+
 #include "core/utils/math_util.h"
 
 /**
  * Create the Mecanum drivetrain object
  */
 MecanumDrive::MecanumDrive(
-  vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear, vex::motor &right_rear,
-  vex::rotation *lateral_wheel, vex::inertial *imu, mecanumdrive_config_t *config
+        vex::motor& left_front,
+        vex::motor& right_front,
+        vex::motor& left_rear,
+        vex::motor& right_rear,
+        vex::rotation* lateral_wheel,
+        vex::inertial* imu,
+        mecanumdrive_config_t* config
 )
-    : left_front(left_front), right_front(right_front), left_rear(left_rear), right_rear(right_rear), // MOTOR CONFIG
-      config(config),               // CONFIG ...uh... config
-      lateral_wheel(lateral_wheel), // NON-DRIVEN WHEEL CONFIG
-      imu(imu)                      // IMU CONFIG
+    : left_front(left_front),
+      right_front(right_front),
+      left_rear(left_rear),
+      right_rear(right_rear),        // MOTOR CONFIG
+      config(config),                // CONFIG ...uh... config
+      lateral_wheel(lateral_wheel),  // NON-DRIVEN WHEEL CONFIG
+      imu(imu)                       // IMU CONFIG
 {
-
     // If the configuration exists, then allocate memory for the drive and turn pids
     if (config != NULL) {
         drive_pid = new PID(config->drive_pid_conf);
@@ -54,14 +62,15 @@ void MecanumDrive::drive_raw(double direction_deg, double magnitude, double rota
 }
 
 /**
- * Drive the robot with a mecanum-style / arcade drive. Inputs are in percent (-100.0 -> 100.0) straight from the
- * controller. Controls are mixed, so the robot can drive forward / strafe / rotate all at the same time.
+ * Drive the robot with a mecanum-style / arcade drive. Inputs are in percent (-100.0 -> 100.0)
+ * straight from the controller. Controls are mixed, so the robot can drive forward / strafe /
+ * rotate all at the same time.
  *
  * @param left_y left joystick, Y axis (forward / backwards)
  * @param left_x left joystick, X axis (strafe left / right)
  * @param right_x right joystick, X axis (rotation left / right)
- * @param power = 2 how much of a "curve" there should be on drive controls; better for low speed maneuvers.
- *                Leave blank for a default curve of 2 (higher means more fidelity)
+ * @param power = 2 how much of a "curve" there should be on drive controls; better for low speed
+ * maneuvers. Leave blank for a default curve of 2 (higher means more fidelity)
  */
 void MecanumDrive::drive(double left_y, double left_x, double right_x, int power) {
     // LATERAL CONTROLS - convert cartesion to a vector
@@ -82,7 +91,8 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
 /**
  * Drive the robot in a straight line automatically.
  * If the inertial was declared in the constructor, use it to correct while driving.
- * If the lateral wheel was declared in the constructor, use it for more accurate positioning while strafing.
+ * If the lateral wheel was declared in the constructor, use it for more accurate positioning while
+ * strafing.
  *
  * @param inches   How far the robot should drive, in inches
  * @param direction    What direction the robot should travel in, in degrees.
@@ -94,8 +104,10 @@ void MecanumDrive::drive(double left_y, double left_x, double right_x, int power
  */
 bool MecanumDrive::auto_drive(double inches, double direction, double speed, bool gyro_correction) {
     if (config == NULL || drive_pid == NULL) {
-        fprintf(stderr, "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in constructor\n");
-        return true; // avoid an infinte loop within auto
+        fprintf(stderr,
+                "Failed to run MecanumDrive::auto_drive - Missing mecanumdrive_config_t in "
+                "constructor\n");
+        return true;  // avoid an infinte loop within auto
     }
 
     bool enable_gyro = gyro_correction && (imu != NULL);
@@ -103,7 +115,6 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
 
     // INITIALIZE - only run ONCE "per drive" on startup
     if (init == true) {
-
         // Reset all driven encoders, and PID
         left_front.resetPosition();
         right_front.resetPosition();
@@ -139,15 +150,17 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
 
     // IF in quadrant 1 or 3, use left front and right rear wheels as "drive" movement
     // ELSE in quadrant 2 or 4, use left rear and right front wheels as "drive" movement
-    // Some wheels are NOT being averaged at any given time since the general mecanum algorithm makes them go slower
-    // than our robot speed somewhat of a nasty hack, but wheel slippage should make up for it, and multivariable calc
-    // is hard.
+    // Some wheels are NOT being averaged at any given time since the general mecanum algorithm
+    // makes them go slower than our robot speed somewhat of a nasty hack, but wheel slippage should
+    // make up for it, and multivariable calc is hard.
     if ((direction > 0 && direction <= 90) || (direction < -90 && direction > -180)) {
-        drive_avg = fabs(left_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) +
-                    fabs(right_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
+        drive_avg =
+                fabs(left_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) +
+                fabs(right_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
     } else {
         drive_avg = fabs(left_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI) +
-                    fabs(right_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
+                    fabs(right_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) /
+                            2.0;
     }
 
     // Only use the encoder wheel if it exists.
@@ -156,8 +169,9 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
         // Distance driven = Magnitude = sqrt(x^2 + y^2)
         // Since drive_avg is already a polar magnitude, turn it into "Y" with cos(theta)
         dist_avg = sqrt(
-          pow(lateral_wheel->position(rotationUnits::rev) * config->lateral_wheel_diam * PI, 2) +
-          pow(drive_avg * cos(direction * (PI / 180.0)), 2)
+                pow(lateral_wheel->position(rotationUnits::rev) * config->lateral_wheel_diam * PI,
+                    2) +
+                pow(drive_avg * cos(direction * (PI / 180.0)), 2)
         );
     } else {
         dist_avg = drive_avg;
@@ -203,7 +217,9 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
 bool MecanumDrive::auto_turn(double degrees, double speed, bool ignore_imu) {
     // Make sure the configurations exist before continuing
     if (config == NULL || turn_pid == NULL) {
-        fprintf(stderr, "Failed to run MecanumDrive::auto_turn - Missing mecanumdrive_config_t in constructor\n");
+        fprintf(stderr,
+                "Failed to run MecanumDrive::auto_turn - Missing mecanumdrive_config_t in "
+                "constructor\n");
         return true;
     }
 
@@ -233,11 +249,14 @@ bool MecanumDrive::auto_turn(double degrees, double speed, bool ignore_imu) {
     double current_angle = 0.0;
 
     if (ignore_imu) {
-        double avg = (left_front.position(rotationUnits::rev) + left_rear.position(rotationUnits::rev) -
-                      right_front.position(rotationUnits::rev) - right_rear.position(rotationUnits::rev)) /
-                     4.0;
+        double avg =
+                (left_front.position(rotationUnits::rev) + left_rear.position(rotationUnits::rev) -
+                 right_front.position(rotationUnits::rev) -
+                 right_rear.position(rotationUnits::rev)) /
+                4.0;
 
-        // Current arclength = (avg * wheel_diam * PI) = (theta * (wheelbase / 2.0)). then convert to degrees
+        // Current arclength = (avg * wheel_diam * PI) = (theta * (wheelbase / 2.0)). then convert
+        // to degrees
         current_angle = (360.0 * avg * config->drive_wheel_diam) / config->wheelbase_width;
     } else {
         current_angle = imu->rotation();

@@ -2,7 +2,6 @@
 #undef __ARM_NEON__
 #undef __ARM_NEON
 #include <Eigen/Dense>
-
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -22,7 +21,7 @@
  * +Theta is counterclockwise
  */
 class Pose2d {
-  public:
+   public:
     /**
      * Default Constructor for Pose2d
      */
@@ -34,7 +33,7 @@ class Pose2d {
      * @param translation translational component.
      * @param rotation rotational component.
      */
-    Pose2d(const Translation2d &translation, const Rotation2d &rotation);
+    Pose2d(const Translation2d& translation, const Rotation2d& rotation);
 
     /**
      * Constructs a pose with given translation and rotation components.
@@ -43,7 +42,7 @@ class Pose2d {
      * @param y y component.
      * @param rotation rotational component.
      */
-    Pose2d(const double &x, const double &y, const Rotation2d &rotation);
+    Pose2d(const double& x, const double& y, const Rotation2d& rotation);
 
     /**
      * Constructs a pose with given translation and rotation components.
@@ -52,7 +51,7 @@ class Pose2d {
      * @param y y component.
      * @param radians rotational component in radians.
      */
-    Pose2d(const double &x, const double &y, const double &radians);
+    Pose2d(const double& x, const double& y, const double& radians);
 
     /**
      * Constructs a pose with given translation and rotation components.
@@ -60,14 +59,14 @@ class Pose2d {
      * @param translation translational component.
      * @param radians rotational component in radians.
      */
-    Pose2d(const Translation2d &translation, const double &radians);
+    Pose2d(const Translation2d& translation, const double& radians);
 
     /**
      * Constructs a pose with given translation and rotation components.
      *
      * @param pose_vector vector of the form [x, y, theta].
      */
-    Pose2d(const Eigen::Vector3d &pose_vector);
+    Pose2d(const Eigen::Vector3d& pose_vector);
 
     /**
      * Returns the translational component.
@@ -121,7 +120,7 @@ class Pose2d {
      *
      * @param scalar the scalar value to multiply by.
      */
-    Pose2d operator*(const double &scalar) const;
+    Pose2d operator*(const double& scalar) const;
 
     /**
      * Divides this pose by a scalar.
@@ -129,7 +128,7 @@ class Pose2d {
      *
      * @param scalar the scalar value to divide by.
      */
-    Pose2d operator/(const double &scalar) const;
+    Pose2d operator/(const double& scalar) const;
 
     /**
      * Adds a transform to this pose.
@@ -137,14 +136,14 @@ class Pose2d {
      *
      * @param transform the change in pose.
      */
-    Pose2d operator+(const Transform2d &transform) const;
+    Pose2d operator+(const Transform2d& transform) const;
 
     /**
      * Subtracts one pose from another to find the transform between them.
      *
      * @param other the pose to subtract.
      */
-    Transform2d operator-(const Pose2d &other) const;
+    Transform2d operator-(const Pose2d& other) const;
 
     /**
      * Sends a pose to an output stream.
@@ -153,16 +152,17 @@ class Pose2d {
      *
      * prints "Pose2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, const Pose2d &pose);
+    friend std::ostream& operator<<(std::ostream& os, const Pose2d& pose);
 
     /**
-     * Finds the pose equivalent to this pose relative to another arbitrary pose rather than the origin.
+     * Finds the pose equivalent to this pose relative to another arbitrary pose rather than the
+     * origin.
      *
      * @param other the pose representing the new origin.
      *
      * @return this pose relative to another pose.
      */
-    Pose2d relative_to(const Pose2d &other) const;
+    Pose2d relative_to(const Pose2d& other) const;
 
     /**
      * Adds a transform to this pose.
@@ -172,16 +172,18 @@ class Pose2d {
      *
      * @return the pose after being transformed.
      */
-    Pose2d transform_by(const Transform2d &transform) const;
+    Pose2d transform_by(const Transform2d& transform) const;
 
     /**
      * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
      *
      * When applying a twist, imagine a constant angular velocity, the translational components must
-     * be rotated into the global frame at every point along the twist, simply adding the deltas does not do this,
-     * and using euler integration results in some error. This is the analytic solution that that problem.
+     * be rotated into the global frame at every point along the twist, simply adding the deltas
+     * does not do this, and using euler integration results in some error. This is the analytic
+     * solution that that problem.
      *
-     * Can also be thought of more simply as applying a twist as following an arc rather than a straight line.
+     * Can also be thought of more simply as applying a twist as following an arc rather than a
+     * straight line.
      *
      * See this document for more information on the pose exponential and its derivation.
      * https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2
@@ -191,7 +193,7 @@ class Pose2d {
      *
      * @return new pose that has been moved forward according to the twist.
      */
-    Pose2d exp(const Twist2d &twist) const;
+    Pose2d exp(const Twist2d& twist) const;
 
     /**
      * The inverse of the pose exponential.
@@ -204,9 +206,9 @@ class Pose2d {
      *
      * @return the twist required to go from this pose to the given end
      */
-    Twist2d log(const Pose2d &end_pose) const;
+    Twist2d log(const Pose2d& end_pose) const;
 
-  private:
+   private:
     Translation2d m_translation;
     Rotation2d m_rotation;
 };
@@ -218,4 +220,4 @@ class Pose2d {
  *
  * @return the single pose mean of the list of poses.
  */
-Pose2d wrapped_mean(const std::vector<Pose2d> &list);
+Pose2d wrapped_mean(const std::vector<Pose2d>& list);

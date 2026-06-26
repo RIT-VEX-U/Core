@@ -1,10 +1,12 @@
 #pragma once
 
+#include <math.h>
+
+#include <vector>
+
 #include "core/utils/math_util.h"
 #include "core/utils/moving_average.h"
 #include "vex.h"
-#include <math.h>
-#include <vector>
 
 /**
  * FeedForward
@@ -27,7 +29,7 @@
  * @date 6/13/2022
  */
 class FeedForward {
-  public:
+   public:
     /**
      * ff_config_t holds the parameters to make the theoretical model of a real world system
      * equation is of the form
@@ -37,20 +39,21 @@ class FeedForward {
      * + kG
      */
     typedef struct {
-        double kS; /**< Coefficient to overcome static friction: the point at which the motor *starts* to move.*/
-        double kV; /**< Veclocity coefficient: the power required to keep the mechanism in motion. Multiplied by the
-                      requested velocity.*/
-        double kA; /**< kA - Acceleration coefficient: the power required to change the mechanism's speed. Multiplied by
-                      the requested acceleration.*/
-        double kG; /**< kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay
-                      at steady state.*/
+        double kS; /**< Coefficient to overcome static friction: the point at which the motor
+                    *starts* to move.*/
+        double kV; /**< Veclocity coefficient: the power required to keep the mechanism in motion.
+                      Multiplied by the requested velocity.*/
+        double kA; /**< kA - Acceleration coefficient: the power required to change the mechanism's
+                      speed. Multiplied by the requested acceleration.*/
+        double kG; /**< kG - Gravity coefficient: only needed for lifts. The power required to
+                      overcome gravity and stay at steady state.*/
     } ff_config_t;
 
     /**
      * Creates a FeedForward object.
      * @param cfg Configuration Struct for tuning
      */
-    FeedForward(ff_config_t &cfg) : cfg(cfg) {}
+    FeedForward(ff_config_t& cfg) : cfg(cfg) {}
 
     /**
      * @brief Perform the feedforward calculation
@@ -72,15 +75,16 @@ class FeedForward {
         return (cfg.kS * ks_sign) + (cfg.kV * v) + (cfg.kA * a) + cfg.kG;
     }
 
-  private:
-    ff_config_t &cfg;
+   private:
+    ff_config_t& cfg;
 };
 
 /**
- * tune_feedforward takes a group of motors and finds the feedforward conifg parameters automagically.
+ * tune_feedforward takes a group of motors and finds the feedforward conifg parameters
+ * automagically.
  *  @param motor the motor group to use
  *  @param pct Maximum velocity in percent (0->1.0)
  * @param duration Amount of time the motors spin for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t tune_feedforward(vex::motor_group &motor, double pct, double duration);
+FeedForward::ff_config_t tune_feedforward(vex::motor_group& motor, double pct, double duration);

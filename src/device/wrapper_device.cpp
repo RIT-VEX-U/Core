@@ -1,9 +1,9 @@
+#include "core/device/wrapper_device.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <vector>
-
-#include "core/device/wrapper_device.hpp"
 namespace VDB {
 /**
  * delay for ms time
@@ -17,9 +17,9 @@ uint32_t time_ms() { return vexSystemTimeGet(); }
 /**
  * the thread for sending data to the wire
  */
-int Device::serial_thread(void *vself) {
+int Device::serial_thread(void* vself) {
     // defines itself within the thread
-    Device &self = *(Device *)vself;
+    Device& self = *(Device*)vself;
 
     // sets up a buffer
     static constexpr size_t buflen = 4096;
@@ -56,10 +56,10 @@ int Device::serial_thread(void *vself) {
  * @param baud_rate the baud rate for the debug board to use
  */
 Device::Device(int32_t port, int32_t baud_rate) : COBSSerialDevice(port, baud_rate) {
-    serial_task = vex::task(Device::serial_thread, (void *)this, vex::thread::threadPriorityHigh);
+    serial_task = vex::task(Device::serial_thread, (void*)this, vex::thread::threadPriorityHigh);
 }
 
-bool Device::send_packet(const VDP::Packet &packet) {
+bool Device::send_packet(const VDP::Packet& packet) {
     if (outbound_packets.size() >= MAX_OUT_QUEUE_SIZE) {
         return false;
     }
@@ -94,8 +94,10 @@ bool Device::write_packet_if_avail() {
  * defines a callback to a functions that calls when the register recieves data from the device
  * @param callback the callback function to call
  */
-void Device::register_receive_callback(std::function<void(const VDP::Packet &packet)> new_callback) {
+void Device::register_receive_callback(
+        std::function<void(const VDP::Packet& packet)> new_callback
+) {
     callback = std::move(new_callback);
 }
 
-} // namespace VDB
+}  // namespace VDB

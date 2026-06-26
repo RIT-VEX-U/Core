@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/utils/math/eigen_interface.h"
-
 #include "core/utils/math/systems/linear_system.h"
 
 /**
@@ -21,8 +20,9 @@
  * @tparam INPUTS Dimension of the control input vector.
  * @tparam OUTPUTS Dimension of the measurement vector.
  */
-template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
-  public:
+template <int STATES, int INPUTS, int OUTPUTS>
+class KalmanFilter {
+   public:
     using StateVector = EVec<STATES>;
     using InputVector = EVec<INPUTS>;
     using OutputVector = EVec<OUTPUTS>;
@@ -38,10 +38,13 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param measurement_stddevs The standard deviations of the measurements.
      */
     KalmanFilter(
-      LinearSystem<STATES, INPUTS, OUTPUTS> &plant, const StateVector &state_stddevs,
-      const OutputVector &measurement_stddevs
+            LinearSystem<STATES, INPUTS, OUTPUTS>& plant,
+            const StateVector& state_stddevs,
+            const OutputVector& measurement_stddevs
     )
-        : KalmanFilter(plant.A(), plant.B(), plant.C(), plant.D(), state_stddevs, measurement_stddevs) {}
+        : KalmanFilter(
+                  plant.A(), plant.B(), plant.C(), plant.D(), state_stddevs, measurement_stddevs
+          ) {}
 
     /**
      * Constructs a Kalman filter.
@@ -54,8 +57,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param measurement_stddevs The standard deviations of the measurements.
      */
     KalmanFilter(
-      const StateMatrix &A, const InputMatrix &B, const EMat<OUTPUTS, STATES> &C, const EMat<OUTPUTS, INPUTS> &D,
-      const StateVector &state_stddevs, const OutputVector &measurement_stddevs
+            const StateMatrix& A,
+            const InputMatrix& B,
+            const EMat<OUTPUTS, STATES>& C,
+            const EMat<OUTPUTS, INPUTS>& D,
+            const StateVector& state_stddevs,
+            const OutputVector& measurement_stddevs
     ) {
         A_ = A;
         B_ = B;
@@ -80,12 +87,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      *
      * @param P The covariance matrix P.
      */
-    void set_P(const StateMatrix &P) { P_ = P; }
+    void set_P(const StateMatrix& P) { P_ = P; }
 
     /**
      * Returns the current state estimate x-hat.
      */
-    const StateVector &xhat() const { return xhat_; }
+    const StateVector& xhat() const { return xhat_; }
 
     /**
      * Returns one element of the current state estimate x-hat.
@@ -97,7 +104,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
     /**
      * Set the current state estimate x-hat.
      */
-    void set_xhat(const StateVector &xhat) { xhat_ = xhat; }
+    void set_xhat(const StateVector& xhat) { xhat_ = xhat; }
 
     /**
      * Set one element of the current state estimate x-hat.
@@ -120,7 +127,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param u The control input.
      * @param dt The timestep in seconds.
      */
-    void predict(const InputVector &u, const double &dt) {
+    void predict(const InputVector& u, const double& dt) {
         // Q is discrete sqrt(process noise)
         EMat<STATES, STATES> Q = Q_ * dt;
         auto [A, B] = discretize_AB(A_, B_, dt);
@@ -138,7 +145,9 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param y The vector of measurements.
      * @param u The control input used in the last predict step.
      */
-    void correct(const OutputVector &y, const InputVector &u) { correct<OUTPUTS>(y, u, C_, D_, R_); }
+    void correct(const OutputVector& y, const InputVector& u) {
+        correct<OUTPUTS>(y, u, C_, D_, R_);
+    }
 
     /**
      * Correct the state estimate using the measurements in y, and custom
@@ -149,7 +158,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      * @param u The control input used in the last predict step.
      * @param R The measurement noise matrix to use for this step.
      */
-    void correct(const OutputVector &y, const InputVector &u, const EMat<OUTPUTS, OUTPUTS> &R) {
+    void correct(const OutputVector& y, const InputVector& u, const EMat<OUTPUTS, OUTPUTS>& R) {
         correct<OUTPUTS>(y, u, C_, D_, R);
     }
 
@@ -167,8 +176,11 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      */
     template <int ROWS>
     void correct(
-      const EVec<ROWS> &y, const InputVector &u, const EMat<ROWS, STATES> &C, const EMat<ROWS, INPUTS> &D,
-      const EMat<ROWS, ROWS> &R
+            const EVec<ROWS>& y,
+            const InputVector& u,
+            const EMat<ROWS, STATES>& C,
+            const EMat<ROWS, INPUTS>& D,
+            const EMat<ROWS, ROWS>& R
     ) {
         // Compute the innovation covariance
         //
@@ -192,11 +204,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
         //
         // P = (I - KC)P(I - KC)ᵀ + KRKᵀ
         //
-        P_ = (EMat<STATES, STATES>::Identity() - K * C) * P_ * (EMat<STATES, STATES>::Identity() - K * C).transpose() +
+        P_ = (EMat<STATES, STATES>::Identity() - K * C) * P_ *
+                     (EMat<STATES, STATES>::Identity() - K * C).transpose() +
              K * R * K.transpose();
     }
 
-  private:
+   private:
     StateVector xhat_;
     StateMatrix P_;
 
@@ -212,4 +225,5 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
 };
 
 // allow using both names
-template <int STATES, int INPUTS, int OUTPUTS> using KF = KalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS>
+using KF = KalmanFilter<STATES, INPUTS, OUTPUTS>;

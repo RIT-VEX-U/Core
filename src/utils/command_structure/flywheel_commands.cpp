@@ -6,7 +6,7 @@
 
 #include "core/utils/command_structure/flywheel_commands.h"
 
-SpinRPMCommand::SpinRPMCommand(Flywheel &flywheel, int rpm) : flywheel(flywheel), rpm(rpm) {}
+SpinRPMCommand::SpinRPMCommand(Flywheel& flywheel, int rpm) : flywheel(flywheel), rpm(rpm) {}
 
 bool SpinRPMCommand::run() {
     flywheel.spin_rpm(rpm);
@@ -18,7 +18,7 @@ std::string SpinRPMCommand::toString() {
     return returnStr;
 }
 
-WaitUntilUpToSpeedCommand::WaitUntilUpToSpeedCommand(Flywheel &flywheel, int threshold_rpm)
+WaitUntilUpToSpeedCommand::WaitUntilUpToSpeedCommand(Flywheel& flywheel, int threshold_rpm)
     : flywheel(flywheel), threshold_rpm(threshold_rpm) {}
 
 bool WaitUntilUpToSpeedCommand::run() {
@@ -35,7 +35,7 @@ std::string WaitUntilUpToSpeedCommand::toString() {
     return returnStr;
 }
 
-FlywheelStopCommand::FlywheelStopCommand(Flywheel &flywheel) : flywheel(flywheel) {}
+FlywheelStopCommand::FlywheelStopCommand(Flywheel& flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopCommand::run() {
     flywheel.stop();
@@ -47,7 +47,7 @@ bool FlywheelStopCommand::run() {
  */
 std::string FlywheelStopCommand::toString() { return "Stopping Flywheel"; }
 
-FlywheelStopMotorsCommand::FlywheelStopMotorsCommand(Flywheel &flywheel) : flywheel(flywheel) {}
+FlywheelStopMotorsCommand::FlywheelStopMotorsCommand(Flywheel& flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopMotorsCommand::run() {
     flywheel.stop();
@@ -59,7 +59,7 @@ bool FlywheelStopMotorsCommand::run() {
  */
 std::string FlywheelStopMotorsCommand::toString() { return "Stopping Flywheel Motors"; }
 
-FlywheelStopNonTasksCommand::FlywheelStopNonTasksCommand(Flywheel &flywheel) : flywheel(flywheel) {}
+FlywheelStopNonTasksCommand::FlywheelStopNonTasksCommand(Flywheel& flywheel) : flywheel(flywheel) {}
 
 bool FlywheelStopNonTasksCommand::run() {
     flywheel.stop();

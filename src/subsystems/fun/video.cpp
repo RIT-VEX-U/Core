@@ -1,4 +1,5 @@
 #include "core/subsystems/fun/video.h"
+
 #include <cstdint>
 
 #define PL_MPEG_IMPLEMENTATION
@@ -11,36 +12,38 @@ enum VideoState { DoesntExist, TooBig, DidntReadRight, Ok, NeverInitialized };
 static vex::task video_task;
 static VideoState state = VideoState::NeverInitialized;
 static std::string name = "";
-static uint8_t *argb_buffer;
+static uint8_t* argb_buffer;
 static int w;
 static int h;
 static int x;
 static int y;
 static bool frame_ready = false;
-static plm_t *plm;
+static plm_t* plm;
 const int32_t video_player_priority = vex::thread::threadPrioritylow;
 static int32_t file_size = 0;
 static bool should_restart = false;
 
 void video_restart() { should_restart = true; }
 
-void explain_error(vex::brain::lcd &screen) {
+void explain_error(vex::brain::lcd& screen) {
     switch (state) {
-    case DoesntExist:
-        screen.printAt(40, 30, true, "Couldn't find video %s", name.c_str());
-        break;
-    case TooBig:
-        screen.printAt(40, 30, true, "%s was too big to open", name.c_str());
-        break;
-    case DidntReadRight:
-        screen.printAt(40, 30, true, "%s wasnt read correctly. Are you sure its mpeg1", name.c_str());
-        break;
-    case NeverInitialized:
-        screen.printAt(40, 30, true, "no video loaded. did you forget set_video()");
-        break;
+        case DoesntExist:
+            screen.printAt(40, 30, true, "Couldn't find video %s", name.c_str());
+            break;
+        case TooBig:
+            screen.printAt(40, 30, true, "%s was too big to open", name.c_str());
+            break;
+        case DidntReadRight:
+            screen.printAt(
+                    40, 30, true, "%s wasnt read correctly. Are you sure its mpeg1", name.c_str()
+            );
+            break;
+        case NeverInitialized:
+            screen.printAt(40, 30, true, "no video loaded. did you forget set_video()");
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -48,10 +51,9 @@ int video_player() {
     if (state != Ok) {
         return 1;
     }
-    plm_frame_t *frame = NULL;
+    plm_frame_t* frame = NULL;
     while (true) {
         for (int i = 1; (frame = plm_decode_video(plm)); i++) {
-
             uint32_t start_ms = vex::timer::system();
 
             frame_ready = false;
@@ -70,9 +72,9 @@ int video_player() {
     return 0;
 }
 
-void set_video(const std::string &filename) {
+void set_video(const std::string& filename) {
     vex::brain Brain;
-    const char *fname = filename.c_str();
+    const char* fname = filename.c_str();
 
     if (!Brain.SDcard.exists(fname)) {
         state = DoesntExist;
@@ -108,7 +110,7 @@ void set_video(const std::string &filename) {
 VideoPlayer::VideoPlayer() {}
 void VideoPlayer::update(bool was_pressed, int x, int y) {}
 
-void VideoPlayer::draw(vex::brain::lcd &screen, bool first_draw, unsigned int frame_number) {
+void VideoPlayer::draw(vex::brain::lcd& screen, bool first_draw, unsigned int frame_number) {
     if (state != Ok) {
         explain_error(screen);
         return;
@@ -120,5 +122,5 @@ void VideoPlayer::draw(vex::brain::lcd &screen, bool first_draw, unsigned int fr
         }
         vexDelay(1);
     }
-    screen.drawImageFromBuffer((uint32_t *)argb_buffer, x, y, w, h);
+    screen.drawImageFromBuffer((uint32_t*)argb_buffer, x, y, w, h);
 }

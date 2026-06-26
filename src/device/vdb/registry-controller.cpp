@@ -1,4 +1,5 @@
 #include "core/device/vdb/registry-controller.hpp"
+
 #include "core/device/cobs_device.h"
 #include "core/device/vdb/protocol.hpp"
 
@@ -9,8 +10,8 @@ namespace VDP {
  * @param device the device to send data to
  * @param reg_type the type of registry it is (Listener or Controller)
  */
-RegistryController::RegistryController(AbstractDevice *device) : device(device) {
-    device->register_receive_callback([&](const Packet &p) {
+RegistryController::RegistryController(AbstractDevice* device) : device(device) {
+    device->register_receive_callback([&](const Packet& p) {
         printf("Controller: GOT PACKET\n");
         take_packet(p);
     });
@@ -19,7 +20,7 @@ RegistryController::RegistryController(AbstractDevice *device) : device(device) 
  * Handles a packet obtained from the Listener
  * according to its type and function
  */
-void RegistryController::take_packet(const Packet &pac) {
+void RegistryController::take_packet(const Packet& pac) {
     VDPTracef("Received packet of size %d", (int)pac.size());
     // checks the validity of the packet
     const VDP::PacketValidity status = validate_packet(pac);
@@ -42,8 +43,8 @@ void RegistryController::take_packet(const Packet &pac) {
         timer.reset();
         // if the packet is a data, get the data from the packet
         VDPTracef("Controller: PacketType Response");
-        //get the number of responses in the queue from the packet
-        //subtracted by 1 since we are reading this one
+        // get the number of responses in the queue from the packet
+        // subtracted by 1 since we are reading this one
         responses_in_queue = pac[1] - 1;
         printf("we see %d responses in the queue\n", responses_in_queue);
         // get the channel id from the third byte of the packet
@@ -92,7 +93,7 @@ PartPtr RegistryController::get_data(ChannelID id) {
  * @param for_data the Part Pointer to the data the channel should hold
  * @return the channel id for the new channel created
  */
-ChannelID RegistryController::open_channel(PartPtr &for_data) {
+ChannelID RegistryController::open_channel(PartPtr& for_data) {
     ChannelID id = new_channel_id();
     Channel chan = Channel{for_data, id};
     channels.push_back(chan);
@@ -124,7 +125,8 @@ bool RegistryController::send_data(ChannelID id) {
     }
     // checks if the channel has been acknowledged yet
     if (!channels[id].acked) {
-        printf("VDB-Controller: Channel %d has not yet been negotiated. Dropping packet\n", (int)id);
+        printf("VDB-Controller: Channel %d has not yet been negotiated. Dropping packet\n",
+               (int)id);
         return false;
     }
     // if it has been acknowledged write the channel's data to a packet and send it to the device
@@ -152,7 +154,7 @@ bool RegistryController::negotiate() {
         for (size_t j = 0; j < BROADCAST_TRIES_PER; j++) {
             VDPDebugf("Controller: Negotiating chan id %d", i);
             // writes the channel's data schematic to a packet
-            const Channel &chan = channels[i];
+            const Channel& chan = channels[i];
             Packet scratch;
             PacketWriter writer{scratch};
             writer.write_channel_broadcast(chan);
@@ -175,14 +177,20 @@ bool RegistryController::negotiate() {
             if (chan.acked == true) {
                 // if the channel was acknowledged, move on to the next channel
                 VDPTracef(
-                  "Controller: Acked channel %d after %d ms on attempt %d", chan.id, (int)(VDB::time_ms() - time),
-                  (int)j + 1
+                        "Controller: Acked channel %d after %d ms on attempt %d",
+                        chan.id,
+                        (int)(VDB::time_ms() - time),
+                        (int)j + 1
                 );
                 break;
             } else {
-                // if the channel was not acknowledged add one to the failed acknowledgements counter and set acked_all
-                // to false then move on to the next channel
-                VDPWarnf("Controller: ack for chan id:%02x expired after %d msec", chan.id, (int)ack_ms);
+                // if the channel was not acknowledged add one to the failed acknowledgements
+                // counter and set acked_all to false then move on to the next channel
+                VDPWarnf(
+                        "Controller: ack for chan id:%02x expired after %d msec",
+                        chan.id,
+                        (int)ack_ms
+                );
                 failed_acks++;
                 if (j == BROADCAST_TRIES_PER - 1) {
                     acked_all = false;
@@ -211,4 +219,4 @@ bool RegistryController::negotiate() {
     // waiting_on_ack_timer.reset();
     // }
 }
-} // namespace VDP
+}  // namespace VDP

@@ -7,7 +7,7 @@
  */
 OdometryBase::OdometryBase(bool is_async) : current_pos(this->zero_pos) {
     if (is_async) {
-        handle = new vex::task(background_task, (void *)this);
+        handle = new vex::task(background_task, (void*)this);
     }
 }
 
@@ -18,8 +18,8 @@ OdometryBase::OdometryBase(bool is_async) : current_pos(this->zero_pos) {
  * @param ptr Pointer to OdometryBase object
  * @return Required integer return code. Unused.
  */
-int OdometryBase::background_task(void *ptr) {
-    OdometryBase &obj = *((OdometryBase *)ptr);
+int OdometryBase::background_task(void* ptr) {
+    OdometryBase& obj = *((OdometryBase*)ptr);
     vexDelay(1000);
     while (!obj.end_task) {
         obj.mut.lock();
@@ -55,7 +55,7 @@ Pose2d OdometryBase::get_position(void) {
 /**
  * Sets the current position of the robot
  */
-void OdometryBase::set_position(const Pose2d &newpos) {
+void OdometryBase::set_position(const Pose2d& newpos) {
     mut.lock();
 
     current_pos = newpos;
@@ -63,7 +63,7 @@ void OdometryBase::set_position(const Pose2d &newpos) {
     mut.unlock();
 }
 
-AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
+AutoCommand* OdometryBase::SetPositionCmd(const Pose2d& newpos) {
     return new FunctionCommand([&]() {
         set_position(newpos);
         return true;

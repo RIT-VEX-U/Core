@@ -1,0 +1,34 @@
+BasedOnStyle: Google
+ColumnLimit: 100
+
+#Indents
+IndentWidth: 4
+ContinuationIndentWidth: 8
+UseTab: Never
+AlwaysBreakTemplateDeclarations: 'Yes'
+
+# Braces and Parentheses
+AlignAfterOpenBracket: BlockIndent
+BreakBeforeBraces: Attach
+SpaceBeforeParens: ControlStatements
+
+#Includes
+SortIncludes: true
+IncludeBlocks: Regroup
+
+#Pointers
+PointerAlignment: Left
+
+#Commas
+InsertTrailingCommas: Wrapped
+
+#Comments
+SpacesBeforeTrailingComments: 2
+
+#Empty Lines
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+
+#Bin Packing
+BinPackArguments: false
+BinPackParameters: false

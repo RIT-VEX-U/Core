@@ -1,10 +1,19 @@
 #include "core/subsystems/odometry/odometry_3wheel.h"
+
 #include "core/utils/math_util.h"
 
 Odometry3Wheel::Odometry3Wheel(
-  CustomEncoder &lside_fwd, CustomEncoder &rside_fwd, CustomEncoder &off_axis, odometry3wheel_cfg_t &cfg, bool is_async
+        CustomEncoder& lside_fwd,
+        CustomEncoder& rside_fwd,
+        CustomEncoder& off_axis,
+        odometry3wheel_cfg_t& cfg,
+        bool is_async
 )
-    : OdometryBase(is_async), lside_fwd(lside_fwd), rside_fwd(rside_fwd), off_axis(off_axis), cfg(cfg) {}
+    : OdometryBase(is_async),
+      lside_fwd(lside_fwd),
+      rside_fwd(rside_fwd),
+      off_axis(off_axis),
+      cfg(cfg) {}
 
 /**
  * Update the current position of the robot once, using the current state of
@@ -50,7 +59,8 @@ Pose2d Odometry3Wheel::update() {
 
         // Calculate robot angular velocity (deg/sec)
         ang_speed_local =
-          smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
+                smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) /
+                tmr.time(sec);
 
         // Calculate robot angular acceleration (deg/sec^2)
         ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
@@ -73,19 +83,25 @@ Pose2d Odometry3Wheel::update() {
 }
 
 /**
- * Calculation method for the robot's new position using the change in encoders, the old position, and the robot's
- * configuration. This uses a series of arclength formulae for finding distance driven and change in angle. Then vector
- * math is used to combine it with the robot's old position data
+ * Calculation method for the robot's new position using the change in encoders, the old position,
+ * and the robot's configuration. This uses a series of arclength formulae for finding distance
+ * driven and change in angle. Then vector math is used to combine it with the robot's old position
+ * data
  *
  * @param lside_delta_deg Left encoder change in rotation, in degrees
  * @param rside_delta_deg Right encoder change in rotation, in degrees
  * @param offax_delta_deg Off-axis (perpendicular) encoder change in rotation, in degrees
  * @param old_pos Robot's old position, for integration
- * @param cfg Data on robot's configuration (wheel diameter, wheelbase, off-axis distance from center)
+ * @param cfg Data on robot's configuration (wheel diameter, wheelbase, off-axis distance from
+ * center)
  * @return The robot's new position Pose2d(x, y, Rotation2d)
  */
 Pose2d Odometry3Wheel::calculate_new_pos(
-  double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, Pose2d old_pos, odometry3wheel_cfg_t cfg
+        double lside_delta_deg,
+        double rside_delta_deg,
+        double offax_delta_deg,
+        Pose2d old_pos,
+        odometry3wheel_cfg_t cfg
 ) {
     Pose2d retval(0, 0, 0);
 
@@ -115,7 +131,10 @@ Pose2d Odometry3Wheel::calculate_new_pos(
     // Tack on the position change to the old position
     Translation2d new_pos_vec = old_pos.translation() + global_displacement;
 
-    retval = Pose2d(new_pos_vec.x(), new_pos_vec.y(), wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
+    retval =
+            Pose2d(new_pos_vec.x(),
+                   new_pos_vec.y(),
+                   wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
 
     return retval;
 }
@@ -128,8 +147,7 @@ Pose2d Odometry3Wheel::calculate_new_pos(
  * It is assumed the gear ratio and encoder PPR have been set correctly
  *
  */
-void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
-
+void Odometry3Wheel::tune(vex::controller& con, TankDrive& drive) {
     // TODO check if all the messages fit on the controller screen
     // STEP 1: Align robot and reset odometry
     con.Screen.clearScreen();
@@ -161,8 +179,9 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
     }
 
     // Wheel diameter is ratio of expected distance / measured distance
-    double avg_deg = ((lside_fwd.position(deg) - old_lval) + (rside_fwd.position(deg) - old_rval)) / 2.0;
-    double measured_dist = 0.5 * deg2rad(avg_deg); // Simulate diam=1", radius=1/2"
+    double avg_deg =
+            ((lside_fwd.position(deg) - old_lval) + (rside_fwd.position(deg) - old_rval)) / 2.0;
+    double measured_dist = 0.5 * deg2rad(avg_deg);  // Simulate diam=1", radius=1/2"
     double found_diam = 120.0 / measured_dist;
 
     // Step 3: Reset alignment for turning test
@@ -211,8 +230,8 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
     con.Screen.newLine();
     con.Screen.print("offax: %f", found_offax_center_dist);
 
-    printf(
-      "Tuning completed.\n  Wheel Diameter: %f\n  Wheelbase: %f\n  Off Axis Distance: %f\n", found_diam,
-      found_wheelbase, found_offax_center_dist
-    );
+    printf("Tuning completed.\n  Wheel Diameter: %f\n  Wheelbase: %f\n  Off Axis Distance: %f\n",
+           found_diam,
+           found_wheelbase,
+           found_offax_center_dist);
 }

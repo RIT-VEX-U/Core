@@ -29,7 +29,7 @@
  * @date Aug 11 2021
  */
 class OdometryBase {
-  public:
+   public:
     /**
      * Construct a new Odometry Base object
      *
@@ -47,8 +47,8 @@ class OdometryBase {
      * Sets the current position of the robot
      * @param newpos the new position that the odometry will believe it is at
      */
-    virtual void set_position(const Pose2d &newpos = zero_pos);
-    AutoCommand *SetPositionCmd(const Pose2d &newpos = zero_pos);
+    virtual void set_position(const Pose2d& newpos = zero_pos);
+    AutoCommand* SetPositionCmd(const Pose2d& newpos = zero_pos);
     /**
      * Update the current position on the field based on the sensors
      * @return the location that the robot is at after the odometry does its calculations
@@ -62,7 +62,7 @@ class OdometryBase {
      * @param ptr Pointer to OdometryBase object
      * @return Required integer return code. Unused.
      */
-    static int background_task(void *ptr);
+    static int background_task(void* ptr);
 
     /**
      * End the background task. Cannot be restarted.
@@ -77,8 +77,8 @@ class OdometryBase {
      * turning left or right, respectively.
      * @param start_deg intitial angle (degrees)
      * @param end_deg final angle (degrees)
-     * @return the smallest angle from the initial to the final angle. This takes into account the wrapping of rotations
-     * around 360 degrees
+     * @return the smallest angle from the initial to the final angle. This takes into account the
+     * wrapping of rotations around 360 degrees
      */
     static double smallest_angle(double start_deg, double end_deg);
 
@@ -114,7 +114,7 @@ class OdometryBase {
     /**
      * handle to the vex task that is running the odometry code
      */
-    vex::task *handle;
+    vex::task* handle;
 
     /**
      * Mutex to control multithreading
