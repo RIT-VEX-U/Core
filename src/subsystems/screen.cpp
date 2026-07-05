@@ -447,4 +447,117 @@ void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsig
     scr.printAt(300, 20, false, "%.2f", pid.get_sensor_val());
 }
 
+InitializerPage::InitializerPage(const Initializer &initializer, size_t starting_index)
+: initializer(initializer), starting_index(starting_index) {
+    InitializerPage::latest_page = this;
+}
+
+InitializerPage* InitializerPage::Next() {
+    return new InitializerPage(latest_page->initializer, latest_page->starting_index + 8);
+}
+
+const std::array<Rect, 8> InitializerPage::buttons = {
+    Rect{Translation2d(48,8), Translation2d(236,58)},
+    Rect{Translation2d(244,8), Translation2d(432,58)},
+    Rect{Translation2d(48,66), Translation2d(236,116)},
+    Rect{Translation2d(244,66), Translation2d(432,116)},
+    Rect{Translation2d(48,124), Translation2d(236,174)},
+    Rect{Translation2d(244,124), Translation2d(432,174)},
+    Rect{Translation2d(48,182), Translation2d(236,232)},
+    Rect{Translation2d(244,182), Translation2d(432,232)},
+};
+
+void InitializerPage::update(bool was_pressed, int x, int y) {
+    //update uses the InitializerPage's selection_buffer to avoid setting the buffer multiple times
+    if(this->selection_buffer != Selector::NO_SELECTION_INDEX || !was_pressed) return;
+
+    const Translation2d pos(x,y);
+    for(int i = 0; i < 8 && starting_index + i < this->initializer.initialization_count(); i++) {
+        if(buttons.at(i).contains(pos)) {
+            this->selection_buffer = starting_index + i;
+            break;
+        }
+    }
+}
+
+void InitializerPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
+    scr.setFont(vex::fontType::mono20);
+    scr.setPenWidth(1);
+    const std::vector<Initialization> &initializations = this->initializer.initializations();
+
+    /*draw uses the Initializer's selected index so that InitializerPage remains an accurate GUI of
+    the Initializer*/
+    if(this->initializer.selected_index() != Selector::NO_SELECTION_INDEX) {
+        if(this->initializer.selected_index() < initializations.size()) {
+            unsigned int rgb = initializations.at(this->selection_buffer).meta;
+            unsigned int y = // Y from the YIQ color space, which represents luma
+                ((((rgb >> 16) & 0xFF) * 299) +
+                (((rgb >> 8) & 0xFF) * 587) +
+                ((rgb & 0xFF) * 114)) / 1000;
+            scr.setFillColor(rgb);
+            scr.setPenColor("#FFFFFF");
+            scr.drawRectangle(40, 0, 400, 240);
+
+            std::string name = this->initializer.selected_name();
+            if(name.length()>23) name = name.substr(0,22) + "\u2026";
+
+            scr.setPenColor((y >= 128) ? "#000000" : "#FFFFFF");
+            scr.printAt(45, 20, false, "Initialization %u selected", this->initializer.selected_index());
+            scr.printAt(45, 70, false, "DEBUG LOG:");
+            scr.printAt(45, 95, false, "       name = \"%s\"", name.c_str());
+            scr.printAt(45, 120, false, "       meta = 0x%08X", this->initializer.selected_meta());
+            scr.printAt(45, 170, false, (this->initializer.uninitialized()) ? "Running post-initialization..." : "Robot initialized");
+
+        } else {
+            scr.setFillColor(vex::color::black);
+            scr.setPenColor("#FFFFFF");
+            scr.drawRectangle(40, 0, 400, 240);
+
+            scr.printAt(45, 20, false, "ERROR: Unable to run selected");
+            scr.printAt(45, 45, false, "       initialization%s", 
+                (this->initializer.selected_index() == DEFAULT_CANCELATION_INDEX) ? " (likely canceled)" : "");
+            scr.printAt(45, 95, false, "DEBUG LOG:");
+            scr.printAt(45, 120, false, "       selection = %u", this->initializer.selected_index());
+            scr.printAt(45, 145, false, "       initializations.size() = %u", initializations.size());
+            scr.printAt(45, 195, false, (this->initializer.uninitialized()) ? "Continuing with post-initialization..." : "Robot initialized");
+        }
+        return;
+    }
+
+    for(int i = 0; i < 8 && starting_index + i < initializations.size(); i++) {
+        const Rect& button = buttons.at(i);
+        const Initialization& initialization = initializations.at(starting_index + i);
+        unsigned int rgb = initialization.meta;
+        unsigned int y = // Y from the YIQ color space, which represents luma
+            ((((rgb >> 16) & 0xFF) * 299) +
+            (((rgb >> 8) & 0xFF) * 587) +
+            ((rgb & 0xFF) * 114)) / 1000;
+
+        scr.setPenColor("#FFFFFF");
+        scr.setFillColor(rgb);
+        scr.drawRectangle(button.min.x(), button.min.y(), button.width(), button.height());
+
+        scr.setPenColor((y >= 128) ? "#000000" : "#FFFFFF");
+        scr.printAt(button.min.x()+5, button.min.y()+20, false, "%d", starting_index + i);
+
+        std::string name = initialization.name;
+        if(name.length()>18) name = name.substr(0,17) + "\u2026";
+        scr.printAt(button.min.x()+5, button.min.y()+40, false, name.c_str());
+    }
+}
+
+size_t InitializerPage::selector() {
+    InitializerPage::selection_buffer = Selector::NO_SELECTION_INDEX;
+
+    while(InitializerPage::selection_buffer == Selector::NO_SELECTION_INDEX) {
+        vexDelay(100);
+    }
+
+    return InitializerPage::selection_buffer;
+}
+
+void InitializerPage::cancel(size_t selected) {
+    InitializerPage::selection_buffer = selected;
+}
+
 } // namespace screen

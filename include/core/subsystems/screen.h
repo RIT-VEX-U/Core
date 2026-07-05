@@ -5,11 +5,13 @@
 #include "core/utils/graph_drawer.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/initializer.h"
 #include "vex.h"
 #include <cassert>
 #include <functional>
 #include <map>
 #include <vector>
+#include <atomic>
 
 namespace screen {
 /// @brief Widget that does something when you tap it. The function is only called once when you first tap it
@@ -293,6 +295,70 @@ class PIDPage : public Page {
     ButtonWidget zero_d;
 
     GraphDrawer graph;
+};
+
+/// @brief InitializerPage provides a way to Select a desired Initialization on the Screen
+class InitializerPage : public Page {
+  public:
+    /// @brief Creates an InitializerPage
+    /// @param initializer The initializer object for which this page provides a GUI of
+    /// @param starting_index The first Initialization to be rendered on the page (note that 8 Initializations are rendered per page)
+    InitializerPage(const Initializer &initializer, size_t starting_index = 0);
+
+    /// @brief @see Page#update
+    void update(bool was_pressed, int x, int y) override;
+    /// @brief @see Page#draw
+    void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number) override;
+
+    /// @brief Creates an InitializerPage that renders the following Initializations from the last.
+    static InitializerPage* Next();
+
+    /// @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
+    /// @param brain The VEX Brain containing the screen to display the InitializerPage objects on
+    /// @param initializer The initializer object for which this page provides a GUI of
+    /// @param o An optional callback to handle other matters during pre-initialization
+    /// @return A pre-initialization function that handles the screen
+    inline static std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, std::function<void()> o = nullptr) {
+      return [&]() {
+        if(o) o();
+
+        std::vector<Page*> pages; size_t initializations = 0;
+        do {
+          pages.push_back(new InitializerPage(initializer, initializations));
+          initializations += 8;
+        } while(initializations < initializer.initialization_count());
+
+        start_screen(brain.Screen, pages);
+      };
+    }
+
+    /// @brief When using InitializerPage to select an Initialization, use this as the raw selector function.
+    static size_t selector();
+
+    /// @brief When using InitializerPage wrapped by a timeout, call this to generate the desired selector function
+    /// @param seconds The amount of seconds after which the selector function will timeout
+    /// @param fallback The value which ends up being selected should the selector function timeout
+    /// @return A selector function wrapped in a Selector::timeout
+    inline static std::function<Selector::selector_t> timed_selector(unsigned int seconds, size_t fallback = DEFAULT_CANCELATION_INDEX) {
+      return Selector::timeout(selector, seconds*1000000, fallback, cancel);
+    }
+
+    /// @brief When using a selector function wrapper that may cancel or otherwise cause the InitializerPage's selector to fail, call this 
+    /// @param selected The value selected that ended up being selected.
+    static void cancel(size_t selected);
+
+    /// @brief The default selected index if a cancelation occured during selection
+    static const size_t DEFAULT_CANCELATION_INDEX = Selector::NO_SELECTION_INDEX - 1;
+  
+  private:
+    /// @brief The buffer that stores the selection of any InitializerPage
+    inline static size_t selection_buffer = Selector::NO_SELECTION_INDEX;
+
+    const Initializer &initializer;
+    const size_t starting_index;
+    inline static InitializerPage* latest_page = nullptr;
+
+    const static std::array<Rect, 8> buttons;
 };
 
 } // namespace screen
