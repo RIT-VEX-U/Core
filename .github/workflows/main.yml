@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Create Latex Manual
-      run: sudo make --directory=documentation/latex
+      run: sudo make --directory=documentation
     - name: Copy Manual PDF
       run: cp documentation/latex/refman.pdf documentation/html/refman.pdf
     - name: Copy Manual Log
