@@ -14,14 +14,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
   Generate-Reference-Manual:
     needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
     - name: Run Doxygen
       uses: mattnotmitt/doxygen-action@edge
       with:
@@ -30,14 +30,13 @@ jobs:
     - name: Install LaTeX
       run: |
         sudo apt-get update
-        sudo apt-get install -y \
-        texlive-latex-base \
-        texlive-latex-extra \
-        texlive-fonts-recommended \ 
-        texlive-latex-recommended \
-        texlive-font-utils \
-        texlive-extra-utils \
-        ghostscript
+        sudo apt-get install -y texlive-latex-base  
+        sudo apt-get install -y texlive-latex-extra 
+        sudo apt-get install -y texlive-fonts-recommended
+        sudo apt-get install -y texlive-latex-recommended
+        sudo apt-get install -y texlive-font-utils
+        sudo apt-get install -y texlive-extra-utils
+        sudo apt-get install -y ghostscript
     - name: Create LaTeX Manual
       run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
@@ -45,7 +44,7 @@ jobs:
     - name: Copy Manual Log
       run: cp documentation/latex/refman.log documentation/html/refman.log
     - name: Upload Pages artifact
-      uses: actions/upload-pages-artifact@v4
+      uses: actions/upload-pages-artifact@v7
       with:
         path: documentation/html
 
