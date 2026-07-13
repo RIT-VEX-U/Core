@@ -33,8 +33,10 @@ jobs:
     needs: Doxygen-Action
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+    - uses actions/checkout@v4
     - name: Create Latex Manual
-      run: sudo make --directory=documentation
+      run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
       run: cp documentation/latex/refman.pdf documentation/html/refman.pdf
     - name: Copy Manual Log
