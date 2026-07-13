@@ -50,6 +50,7 @@ jobs:
 
   Deploy-Pages:
     needs: Generate-Reference-Manual
+    if: gitub.ref_name == 'main'
     permissions:
       pages: write
       id-token: write
