@@ -26,7 +26,7 @@ jobs:
       doxyfile-path: "./Doxyfile"
       working-directory: "."
 
-  Generate-Reference-Manual
+  Generate-Reference-Manual:
     needs: Doxygen-Action
     runs-on: ubuntu-latest
     steps:
