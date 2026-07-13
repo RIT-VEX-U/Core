@@ -1,5 +1,4 @@
 name: main
-
 on: 
   push:
   workflow_dispatch:
@@ -24,7 +23,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Run Doxygen
-    - uses: mattnotmitt/doxygen-action@edge
+      uses: mattnotmitt/doxygen-action@edge
       with:
         doxyfile-path: "./Doxyfile"
         working-directory: "."
@@ -51,4 +50,4 @@ jobs:
     steps:
       - name: Deplay to GitHub pages
         id: deployment
-        uses: actions/deploy-pages@edge
+        uses: actions/deploy-pages@v4
