@@ -28,7 +28,16 @@ jobs:
         doxyfile-path: "./Doxyfile"
         working-directory: "."
     - name: Install LaTeX
-      run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+        texlive-latex-base \
+        texlive-latex-extra \
+        texlive-fonts-recommended \ 
+        texlive-latex-recommended \
+        texlive-font-utils \
+        texlive-extra-utils \
+        ghostscript
     - name: Create LaTeX Manual
       run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
