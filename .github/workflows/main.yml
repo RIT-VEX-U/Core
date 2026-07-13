@@ -40,9 +40,9 @@ jobs:
     - name: Create LaTeX Manual
       run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
-      run: cp documentation/latex/refman.pdf documentation/html/refman.pdf
+      run: sudo cp documentation/latex/refman.pdf documentation/html/refman.pdf
     - name: Copy Manual Log
-      run: cp documentation/latex/refman.log documentation/html/refman.log
+      run: sudo cp documentation/latex/refman.log documentation/html/refman.log
     - name: Upload Pages artifact
       uses: actions/upload-pages-artifact@v5
       with:
