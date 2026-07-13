@@ -27,7 +27,9 @@ jobs:
       with:
         doxyfile-path: "./Doxyfile"
         working-directory: "."
-    - name: Create Latex Manual
+    - name: Install LaTeX
+      run: sudo apt-get update && sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+    - name: Create LaTeX Manual
       run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
       run: cp documentation/latex/refman.pdf documentation/html/refman.pdf
