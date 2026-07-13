@@ -16,31 +16,28 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-    
-  Doxygen-Action:
+
+  Generate-Reference-Manual:
     needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Run Doxygen
-      uses: mattnotmitt/doxygen-action@edge
+    - uses: mattnotmitt/doxygen-action@edge
       with:
         doxyfile-path: "./Doxyfile"
         working-directory: "."
-
-  Generate-Reference-Manual:
-    needs: Doxygen-Action
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
     - name: Create Latex Manual
       run: sudo make --directory=documentation/latex
     - name: Copy Manual PDF
       run: cp documentation/latex/refman.pdf documentation/html/refman.pdf
     - name: Copy Manual Log
       run: cp documentation/latex/refman.log documentation/html/refman.log
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: documentation/html
 
   Deploy-Pages:
     needs: Generate-Reference-Manual
@@ -50,7 +47,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.output.page_url }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Deplay to GitHub pages
         id: deployment
