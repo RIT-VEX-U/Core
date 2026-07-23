@@ -62,9 +62,8 @@ class Angle : public quantity_base<Angle, dim_angle> {
   }
 
  public:
+  using base_type::base_type;
   constexpr explicit Angle(double radians = 0.0) : base_type(radians) {}
-  template <class OtherQuantity>
-  constexpr Angle(const OtherQuantity& other) : base_type(other.canonical_value()) {}
   static constexpr Angle from_canonical(double value) { return Angle(value); }
   template <class UnitTag>
   static constexpr Angle from(double value) {

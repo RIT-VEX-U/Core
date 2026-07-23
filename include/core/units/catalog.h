@@ -139,7 +139,7 @@ NEW_UNIT(Curvature, dim_curvature, 0, -1, 0, 0, 0, 0, 0, 1, radian_per_meter_t, 
 NEW_UNIT_LITERAL(Curvature, radpm, radians_per_meter, radian_per_meter_t, 1, 1)
 NEW_UNIT_LITERAL(Curvature, degpm, degrees_per_meter, degree_per_meter_t, 17453292519943295.0, 1000000000000000000.0)
 NEW_UNIT_LITERAL(Curvature, radpft, radians_per_foot, radian_per_foot_t, 1250, 381)
-NEW_UNIT_LITERAL(Curvature, degpft, degrees_per_foot, degree_per_foot_t, 21816615649929118.0, 290322580645161280.0)
+NEW_UNIT_LITERAL(Curvature, degpft, degrees_per_foot, degree_per_foot_t, 15365682625.0, 268342495191.0)
 
 NEW_UNIT(Frequency, dim_frequency, 0, 0, -1, 0, 0, 0, 0, 0, hertz_t, true)
 NEW_UNIT_LITERAL(Frequency, Hz, hertz, hertz_t, 1, 1)

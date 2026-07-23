@@ -98,15 +98,39 @@ struct same_dimension : std::false_type {};
 template <class Left, class Right>
 struct same_dimension<Left, Right, true> : std::is_same<typename Left::dimension, typename Right::dimension> {};
 
+template <class Left, class Right, bool Enabled = is_quantity<Left>::value && is_quantity<Right>::value>
+struct same_quantity : std::false_type {};
+
+template <class Left, class Right>
+struct same_quantity<Left, Right, true> : std::is_same<Left, Right> {};
+
+template <class Quantity, class Dim, bool Enabled = is_quantity<Quantity>::value>
+struct quantity_has_dimension : std::false_type {};
+
+template <class Quantity, class Dim>
+struct quantity_has_dimension<Quantity, Dim, true> : std::is_same<typename Quantity::dimension, Dim> {};
+
 template <bool Condition, class Type>
 using enable_if_t = typename std::enable_if<Condition, Type>::type;
+
+template <class Quantity, class Dim, class Result = void>
+using enable_if_dimension_compatible_t = enable_if_t<quantity_has_dimension<Quantity, Dim>::value, Result>;
+
+template <class Left, class Right, class Result = void>
+using enable_if_same_quantity_t = enable_if_t<same_quantity<Left, Right>::value, Result>;
 
 template <class Quantity>
 using quantity_result_t = enable_if_t<is_quantity<Quantity>::value, Quantity>;
 
 template <class Left, class Right>
-using same_dimension_result_t =
-    enable_if_t<same_dimension<Left, Right>::value, typename quantity_for_dimension<typename Left::dimension>::type>;
+using same_quantity_result_t = enable_if_same_quantity_t<Left, Right, Left>;
+
+template <class First, class Second, class Third>
+using same_quantity3_result_t = enable_if_t<same_quantity<First, Second>::value && same_quantity<First, Third>::value, First>;
+
+template <class Left, class Right>
+using quantity_pair_left_result_t =
+    enable_if_t<is_quantity<Left>::value && is_quantity<Right>::value, Left>;
 
 template <class Left, class Right>
 using dim_add_result_t = enable_if_t<
@@ -124,7 +148,7 @@ using inverse_quantity_result_t =
                 typename quantity_for_dimension<typename dim_sub<dim_none, typename Quantity::dimension>::type>::type>;
 
 template <class Left, class Right>
-using comparison_result_t = enable_if_t<same_dimension<Left, Right>::value, bool>;
+using comparison_result_t = enable_if_t<same_quantity<Left, Right>::value, bool>;
 
 template <int Factor, class Dim>
 struct dim_scale {
@@ -161,20 +185,20 @@ template <class Quantity, int Factor, bool = is_quantity<Quantity>::value>
 struct can_scale_quantity_impl : std::false_type {};
 template <class Quantity, int Factor>
 struct can_scale_quantity_impl<Quantity, Factor, true> : std::true_type {};
-template <class Quantity, int Divisor, bool = is_quantity<Quantity>::value>
-struct can_root_quantity_impl : std::false_type {};
-template <class Quantity, int Divisor>
-struct can_root_quantity_impl<Quantity, Divisor, true> : dim_divisible_by<typename Quantity::dimension, Divisor> {};
+template <class Quantity, bool = is_quantity<Quantity>::value>
+struct can_sqrt_quantity_impl : std::false_type {};
+template <class Quantity>
+struct can_sqrt_quantity_impl<Quantity, true> : dim_divisible_by<typename Quantity::dimension, 2> {};
 template <class Quantity, int Factor>
 struct can_scale_quantity : can_scale_quantity_impl<Quantity, Factor> {};
-template <class Quantity, int Divisor>
-struct can_root_quantity : can_root_quantity_impl<Quantity, Divisor> {};
+template <class Quantity>
+struct can_sqrt_quantity : can_sqrt_quantity_impl<Quantity> {};
 template <class Quantity>
 using quantity_bool_result_t = enable_if_t<is_quantity<Quantity>::value, bool>;
 template <class Quantity, int Power>
 using power_result_t = enable_if_t<can_scale_quantity<Quantity, Power>::value, scaled_quantity_t<Quantity, Power> >;
-template <class Quantity, int Divisor>
-using root_result_t = enable_if_t<can_root_quantity<Quantity, Divisor>::value, divided_quantity_t<Quantity, Divisor> >;
+template <class Quantity>
+using sqrt_result_t = enable_if_t<can_sqrt_quantity<Quantity>::value, divided_quantity_t<Quantity, 2> >;
 
 // Quantity storage
 // stores canonical values and provides conversion and compound operators
@@ -187,7 +211,9 @@ class quantity_base {
   constexpr explicit quantity_base(double canonical_value = 0.0) : canonical_value_(canonical_value) {}
 
   template <class OtherQuantity>
-  constexpr quantity_base(const OtherQuantity& other) : canonical_value_(other.canonical_value()) {}
+  constexpr quantity_base(const OtherQuantity& other,
+                          enable_if_dimension_compatible_t<OtherQuantity, Dim, int> = 0)
+      : canonical_value_(other.canonical_value()) {}
 
   constexpr double canonical_value() const { return canonical_value_; }
 
@@ -215,13 +241,13 @@ class quantity_base {
 
  public:
   template <class OtherQuantity>
-  Derived& operator+=(const OtherQuantity& other) {
+  enable_if_dimension_compatible_t<OtherQuantity, Dim, Derived&> operator+=(const OtherQuantity& other) {
     set_canonical_value(canonical_value() + other.canonical_value());
     return static_cast<Derived&>(*this);
   }
 
   template <class OtherQuantity>
-  Derived& operator-=(const OtherQuantity& other) {
+  enable_if_dimension_compatible_t<OtherQuantity, Dim, Derived&> operator-=(const OtherQuantity& other) {
     set_canonical_value(canonical_value() - other.canonical_value());
     return static_cast<Derived&>(*this);
   }
@@ -275,7 +301,7 @@ class anonymous_quantity : public quantity_base<anonymous_quantity<Dim>, Dim> {
 
   template <class OtherQuantity>
   constexpr anonymous_quantity(const OtherQuantity& other,
-                               enable_if_t<same_dimension<anonymous_quantity<Dim>, OtherQuantity>::value, int> = 0)
+                               enable_if_dimension_compatible_t<OtherQuantity, Dim, int> = 0)
       : base_type(other.canonical_value()) {}
 
   static constexpr anonymous_quantity from_canonical(double value) { return anonymous_quantity(value); }
@@ -288,13 +314,13 @@ struct is_quantity<anonymous_quantity<Dim> > : std::true_type {};
 // combines as canonical values, and makes sure to return the right dims
 
 template <class Left, class Right>
-constexpr same_dimension_result_t<Left, Right> operator+(const Left& left, const Right& right) {
-  return same_dimension_result_t<Left, Right>::from_canonical(left.canonical_value() + right.canonical_value());
+constexpr same_quantity_result_t<Left, Right> operator+(const Left& left, const Right& right) {
+  return Left::from_canonical(left.canonical_value() + right.canonical_value());
 }
 
 template <class Left, class Right>
-constexpr same_dimension_result_t<Left, Right> operator-(const Left& left, const Right& right) {
-  return same_dimension_result_t<Left, Right>::from_canonical(left.canonical_value() - right.canonical_value());
+constexpr same_quantity_result_t<Left, Right> operator-(const Left& left, const Right& right) {
+  return Left::from_canonical(left.canonical_value() - right.canonical_value());
 }
 
 template <class Left, class Right>
@@ -387,12 +413,12 @@ template <class Quantity>
 constexpr quantity_result_t<Quantity> abs(const Quantity& quantity) {
   return Quantity::from_canonical(gcem::abs(quantity.canonical_value()));
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> min(const Quantity& left, const Quantity& right) {
+template <class Left, class Right>
+constexpr same_quantity_result_t<Left, Right> min(const Left& left, const Right& right) {
   return left < right ? left : right;
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> max(const Quantity& left, const Quantity& right) {
+template <class Left, class Right>
+constexpr same_quantity_result_t<Left, Right> max(const Left& left, const Right& right) {
   return left < right ? right : left;
 }
 inline constexpr Number abs(const Number& value) { return Number(gcem::abs(value.value())); }
@@ -415,50 +441,35 @@ template <int Power>
 inline constexpr Number pow(const Number& value) {
   return Number(gcem::pow(value.value(), Power));
 }
-template <typename Root, class Quantity>
-constexpr root_result_t<Quantity, Root::value> root(const Quantity& quantity) {
-  return divided_quantity_t<Quantity, Root::value>::from_canonical(
-      gcem::pow(quantity.canonical_value(), 1.0 / Root::value));
-}
-template <typename Root>
-inline constexpr Number root(const Number& value) {
-  return Number(gcem::pow(value.value(), 1.0 / Root::value));
-}
 template <class Quantity>
-constexpr root_result_t<Quantity, 2> sqrt(const Quantity& quantity) {
-  return root<std::integral_constant<int, 2> >(quantity);
+constexpr sqrt_result_t<Quantity> sqrt(const Quantity& quantity) {
+  return sqrt_result_t<Quantity>::from_canonical(gcem::sqrt(quantity.canonical_value()));
 }
-inline constexpr Number sqrt(const Number& value) { return root<std::integral_constant<int, 2> >(value); }
-template <class Quantity>
-constexpr root_result_t<Quantity, 3> cbrt(const Quantity& quantity) {
-  return root<std::integral_constant<int, 3> >(quantity);
-}
-inline constexpr Number cbrt(const Number& value) { return root<std::integral_constant<int, 3> >(value); }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> hypot(const Quantity& left, const Quantity& right) {
-  return Quantity::from_canonical(gcem::hypot(left.canonical_value(), right.canonical_value()));
+inline constexpr Number sqrt(const Number& value) { return Number(gcem::sqrt(value.value())); }
+template <class Left, class Right>
+constexpr same_quantity_result_t<Left, Right> hypot(const Left& left, const Right& right) {
+  return Left::from_canonical(gcem::hypot(left.canonical_value(), right.canonical_value()));
 }
 inline constexpr Number hypot(const Number& left, const Number& right) {
   return Number(gcem::hypot(left.value(), right.value()));
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> mod(const Quantity& left, const Quantity& right) {
-  return Quantity::from_canonical(gcem::fmod(left.canonical_value(), right.canonical_value()));
+template <class Left, class Right>
+constexpr same_quantity_result_t<Left, Right> mod(const Left& left, const Right& right) {
+  return Left::from_canonical(gcem::fmod(left.canonical_value(), right.canonical_value()));
 }
 inline constexpr Number mod(const Number& left, const Number& right) {
   return Number(gcem::fmod(left.value(), right.value()));
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> remainder(const Quantity& left, const Quantity& right) {
-  return Quantity::from_canonical(
-      left.canonical_value() - gcem::round(left.canonical_value() / right.canonical_value()) * right.canonical_value());
+template <class Left, class Right>
+constexpr same_quantity_result_t<Left, Right> fmod(const Left& left, const Right& right) {
+  return Left::from_canonical(gcem::fmod(left.canonical_value(), right.canonical_value()));
 }
-inline constexpr Number remainder(const Number& left, const Number& right) {
-  return Number(left.value() - gcem::round(left.value() / right.value()) * right.value());
+inline constexpr Number fmod(const Number& left, const Number& right) {
+  return Number(gcem::fmod(left.value(), right.value()));
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> copysign(const Quantity& left, const Quantity& right) {
-  return Quantity::from_canonical(gcem::copysign(left.canonical_value(), right.canonical_value()));
+template <class Magnitude, class Sign>
+constexpr quantity_pair_left_result_t<Magnitude, Sign> copysign(const Magnitude& magnitude, const Sign& sign) {
+  return Magnitude::from_canonical(gcem::copysign(magnitude.canonical_value(), sign.canonical_value()));
 }
 inline constexpr Number copysign(const Number& left, const Number& right) {
   return Number(gcem::copysign(left.value(), right.value()));
@@ -468,32 +479,32 @@ constexpr quantity_bool_result_t<Quantity> signbit(const Quantity& quantity) {
   return gcem::signbit(quantity.canonical_value());
 }
 inline constexpr bool signbit(const Number& value) { return gcem::signbit(value.value()); }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> clamp(const Quantity& value, const Quantity& low, const Quantity& high) {
+template <class Value, class Low, class High>
+constexpr same_quantity3_result_t<Value, Low, High> clamp(const Value& value, const Low& low, const High& high) {
   return max(low, min(value, high));
 }
 inline constexpr Number clamp(const Number& value, const Number& low, const Number& high) {
   return max(low, min(value, high));
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> ceil(const Quantity& value, const Quantity& step) {
-  return Quantity::from_canonical(gcem::ceil(value.canonical_value() / step.canonical_value()) *
-                                  step.canonical_value());
+template <class Value, class Step>
+constexpr same_quantity_result_t<Value, Step> ceil(const Value& value, const Step& step) {
+  return Value::from_canonical(gcem::ceil(value.canonical_value() / step.canonical_value()) *
+                               step.canonical_value());
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> floor(const Quantity& value, const Quantity& step) {
-  return Quantity::from_canonical(gcem::floor(value.canonical_value() / step.canonical_value()) *
-                                  step.canonical_value());
+template <class Value, class Step>
+constexpr same_quantity_result_t<Value, Step> floor(const Value& value, const Step& step) {
+  return Value::from_canonical(gcem::floor(value.canonical_value() / step.canonical_value()) *
+                               step.canonical_value());
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> trunc(const Quantity& value, const Quantity& step) {
-  return Quantity::from_canonical(gcem::trunc(value.canonical_value() / step.canonical_value()) *
-                                  step.canonical_value());
+template <class Value, class Step>
+constexpr same_quantity_result_t<Value, Step> trunc(const Value& value, const Step& step) {
+  return Value::from_canonical(gcem::trunc(value.canonical_value() / step.canonical_value()) *
+                               step.canonical_value());
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> round(const Quantity& value, const Quantity& step) {
-  return Quantity::from_canonical(gcem::round(value.canonical_value() / step.canonical_value()) *
-                                  step.canonical_value());
+template <class Value, class Step>
+constexpr same_quantity_result_t<Value, Step> round(const Value& value, const Step& step) {
+  return Value::from_canonical(gcem::round(value.canonical_value() / step.canonical_value()) *
+                               step.canonical_value());
 }
 inline constexpr Number ceil(const Number& value, const Number& step) {
   return Number(gcem::ceil(value.value() / step.value()) * step.value());
@@ -507,13 +518,13 @@ inline constexpr Number trunc(const Number& value, const Number& step) {
 inline constexpr Number round(const Number& value, const Number& step) {
   return Number(gcem::round(value.value() / step.value()) * step.value());
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> fma(const Quantity& x, double y, const Quantity& z) {
-  return Quantity::from_canonical(x.canonical_value() * y + z.canonical_value());
+template <class X, class Z>
+constexpr same_quantity_result_t<X, Z> fma(const X& x, double y, const Z& z) {
+  return X::from_canonical(x.canonical_value() * y + z.canonical_value());
 }
-template <class Quantity>
-constexpr quantity_result_t<Quantity> fma(double x, const Quantity& y, const Quantity& z) {
-  return Quantity::from_canonical(x * y.canonical_value() + z.canonical_value());
+template <class Y, class Z>
+constexpr same_quantity_result_t<Y, Z> fma(double x, const Y& y, const Z& z) {
+  return Y::from_canonical(x * y.canonical_value() + z.canonical_value());
 }
 inline constexpr Number fma(const Number& x, const Number& y, const Number& z) {
   return Number(x.value() * y.value() + z.value());
