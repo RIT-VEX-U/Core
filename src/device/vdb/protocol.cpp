@@ -1,15 +1,16 @@
 #include "core/device/vdb/protocol.hpp"
-#include "core/device/vdb/types.hpp"
+
+#include <stdio.h>
 
 #include <cstdint>
 #include <cstring>
 #include <functional>
 #include <sstream>
-#include <stdio.h>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "core/device/vdb/types.hpp"
 
 namespace VDP {
 /**
@@ -19,23 +20,23 @@ ChannelID Channel::getID() const { return id; }
 /*
  * prints out the packet in individual bytes
  */
-void dump_packet_hex(const Packet &pac) {
-  int i = 0;
-  for (const uint8_t d : pac) {
-    if (i % 16 == 0 && i != 0) {
-      printf("\n");
+void dump_packet_hex(const Packet& pac) {
+    int i = 0;
+    for (const uint8_t d : pac) {
+        if (i % 16 == 0 && i != 0) {
+            printf("\n");
+        }
+        printf("%02x ", (int)d);
+        i++;
     }
-    printf("%02x ", (int)d);
-    i++;
-  }
-  printf("\n");
+    printf("\n");
 }
 
-void dump_packet_8bit(const Packet &pac) {
-  for (uint8_t val : pac) {
+void dump_packet_8bit(const Packet& pac) {
+    for (uint8_t val : pac) {
         printf("%d ", (int)val);
     }
-  printf("\n");
+    printf("\n");
 }
 /**
  * @param t the VDP type to return a string of
@@ -43,33 +44,33 @@ void dump_packet_8bit(const Packet &pac) {
  */
 std::string to_string(Type t) {
     switch (t) {
-    case Type::Record:
-        return "record";
-    case Type::String:
-        return "string";
+        case Type::Record:
+            return "record";
+        case Type::String:
+            return "string";
 
-    case Type::Float:
-        return "float";
-    case Type::Double:
-        return "double";
+        case Type::Float:
+            return "float";
+        case Type::Double:
+            return "double";
 
-    case Type::Uint8:
-        return "uint8";
-    case Type::Uint16:
-        return "uint16";
-    case Type::Uint32:
-        return "uint32";
-    case Type::Uint64:
-        return "uint64";
+        case Type::Uint8:
+            return "uint8";
+        case Type::Uint16:
+            return "uint16";
+        case Type::Uint32:
+            return "uint32";
+        case Type::Uint64:
+            return "uint64";
 
-    case Type::Int8:
-        return "int8";
-    case Type::Int16:
-        return "int16";
-    case Type::Int32:
-        return "int32";
-    case Type::Int64:
-        return "int64";
+        case Type::Int8:
+            return "int8";
+        case Type::Int16:
+            return "int16";
+        case Type::Int32:
+            return "int32";
+        case Type::Int64:
+            return "int64";
     }
 
     return "<<UNKNOWN TYPE>>";
@@ -79,7 +80,7 @@ std::string to_string(Type t) {
  * @param ss the stringstream to add indents to
  * @param indent the amount of double spaced indents to add
  */
-void add_indents(std::stringstream &ss, size_t indent) {
+void add_indents(std::stringstream& ss, size_t indent) {
     for (size_t i = 0; i < indent; i++) {
         ss << "  ";
     }
@@ -133,7 +134,7 @@ PacketReader::PacketReader(Packet pac, size_t start) : pac(std::move(pac)), read
  * @param packet the packet to check the validity of
  * @return the PacketValidility (TooSmall, BadChecksum, or Ok)
  */
-VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
+VDP::PacketValidity validate_packet(const VDP::Packet& packet) {
     VDPTracef("Validating packet of size %d", (int)packet.size());
 
     // packet header byte + checksum = 5 bytes,
@@ -148,8 +149,9 @@ VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
 
     // recreates the checksum manually
     auto size = packet.size();
-    const uint32_t written_checksum = (uint32_t(packet[size - 1]) << 24) | (uint32_t(packet[size - 2]) << 16) |
-                                      (uint32_t(packet[size - 3]) << 8) | uint32_t(packet[size - 4]);
+    const uint32_t written_checksum =
+            (uint32_t(packet[size - 1]) << 24) | (uint32_t(packet[size - 2]) << 16) |
+            (uint32_t(packet[size - 3]) << 8) | uint32_t(packet[size - 4]);
     // checks if both checksums match
     if (checksum != written_checksum) {
         VDPWarnf("Checksums do not match: expected: %08lx, got: %08lx", checksum, written_checksum);
@@ -193,7 +195,7 @@ std::string PacketReader::get_string() {
  * creates a packet writer
  * @param scratch_space the packet for the writer to write to
  */
-PacketWriter::PacketWriter(VDP::Packet &scratch) : sofar(scratch) {}
+PacketWriter::PacketWriter(VDP::Packet& scratch) : sofar(scratch) {}
 /**
  * clears the packet the writer is writing to
  */
@@ -216,7 +218,7 @@ void PacketWriter::write_type(Type t) { write_byte((uint8_t)t); }
  * writes a string to the packet
  * @param str the string to write to the packet
  */
-void PacketWriter::write_string(const std::string &str) {
+void PacketWriter::write_string(const std::string& str) {
     // inserts a string into the end of the packet in bytes
     sofar.insert(sofar.end(), str.begin(), str.end());
     // adds a 0 byte after the string to signal the end of the string
@@ -226,16 +228,17 @@ void PacketWriter::write_string(const std::string &str) {
 /**
  * @return the packet the writer is writing to
  */
-const Packet &PacketWriter::get_packet() const { return sofar; }
+const Packet& PacketWriter::get_packet() const { return sofar; }
 
 /**
  * writes a broadcast acknowledgement of a channel to the packet
  * @param chan the channel to write the acknowledgement for
  */
-void PacketWriter::write_channel_acknowledge(const Channel &chan) {
+void PacketWriter::write_channel_acknowledge(const Channel& chan) {
     clear();
     // makes a header byte with the type broadcast and the function acknowledgement
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Acknowledge});
+    const uint8_t header =
+            make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Acknowledge});
 
     // writes the header byte and channel id to the packet
     write_number<uint8_t>(header);
@@ -249,10 +252,11 @@ void PacketWriter::write_channel_acknowledge(const Channel &chan) {
  * writes a broadcast of a channel schematic to the packet
  * @param chan the channel to write the schematic from
  */
-void PacketWriter::write_channel_broadcast(const Channel &chan) {
+void PacketWriter::write_channel_broadcast(const Channel& chan) {
     clear();
     // makes a header byte with the type broadcast and function send
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Send});
+    const uint8_t header =
+            make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Send});
     // writes the header byte and channel id to the packet
     write_number<uint8_t>(header);
     write_number<ChannelID>(chan.getID());
@@ -269,7 +273,7 @@ void PacketWriter::write_channel_broadcast(const Channel &chan) {
  * writes the data from a channel to the packet
  * @param chan the Channel to write the data from
  */
-void PacketWriter::write_data_message(const Channel &chan) {
+void PacketWriter::write_data_message(const Channel& chan) {
     clear();
     // makes a header byte with the type data and function send
     const uint8_t header = make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Send});
@@ -294,7 +298,8 @@ void PacketWriter::write_data_message(const Channel &chan) {
 void PacketWriter::write_request() {
     clear();
     // makes a header byte with the type broadcast and the function acknowledgement
-    const uint8_t header = make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Request});
+    const uint8_t header =
+            make_header_byte(PacketHeader{PacketType::Broadcast, PacketFunction::Request});
     // writes the header byte and channel id to the packet
     write_number<uint8_t>(header);
     // creates and writes the Checksum to the packet
@@ -305,24 +310,24 @@ void PacketWriter::write_request() {
  * writes a response packet to the brain
  * @param response_queue the queue of channels to respond with
  */
-void PacketWriter::write_response(std::deque<Channel> &response_queue) {
-  clear();
-  // makes a header byte with the type broadcast and the function Receive
-  const uint8_t header = make_header_byte(
-      PacketHeader{PacketType::Data, PacketFunction::Response});
+void PacketWriter::write_response(std::deque<Channel>& response_queue) {
+    clear();
+    // makes a header byte with the type broadcast and the function Receive
+    const uint8_t header =
+            make_header_byte(PacketHeader{PacketType::Data, PacketFunction::Response});
 
-  // writes the header byte and number of responses in the queue
-  write_number<uint8_t>(header);
-  write_number<uint8_t>(response_queue.size());
-  //writes the channel id for the channel we are responding to
-  write_number<ChannelID>(response_queue.front().getID());
-  response_queue.front().data->write_message(*this);
-  //removes the response from the queue
-  response_queue.pop_front();
+    // writes the header byte and number of responses in the queue
+    write_number<uint8_t>(header);
+    write_number<uint8_t>(response_queue.size());
+    // writes the channel id for the channel we are responding to
+    write_number<ChannelID>(response_queue.front().getID());
+    response_queue.front().data->write_message(*this);
+    // removes the response from the queue
+    response_queue.pop_front();
 
-  // creates and writes the Checksum to the packet
-  uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
-  write_number<uint32_t>(crc);
+    // creates and writes the Checksum to the packet
+    uint32_t crc = CRC32::calculate(sofar.data(), sofar.size());
+    write_number<uint32_t>(crc);
 }
 
 /**
@@ -334,7 +339,7 @@ AbstractDevice::~AbstractDevice() {}
  * @param pac the packet reader to make a decoder from
  * @return the Part Pointer for the data from the packet
  */
-PartPtr make_decoder(PacketReader &pac) {
+PartPtr make_decoder(PacketReader& pac) {
     /**
      * gets the type and name of the packet and contstructs a Part pointer from it
      */
@@ -342,56 +347,53 @@ PartPtr make_decoder(PacketReader &pac) {
     const std::string name = pac.get_string();
 
     switch (t) {
-    case Type::String:
-        return PartPtr(new String(name));
-    case Type::Record:
-        return PartPtr(new Record(name, pac));
+        case Type::String:
+            return PartPtr(new String(name));
+        case Type::Record:
+            return PartPtr(new Record(name, pac));
 
-    case Type::Float:
-        return PartPtr(new Float(name));
-    case Type::Double:
-        return PartPtr(new Double(name));
+        case Type::Float:
+            return PartPtr(new Float(name));
+        case Type::Double:
+            return PartPtr(new Double(name));
 
-    case Type::Uint8:
-        return PartPtr(new Uint8(name));
-    case Type::Uint16:
-        return PartPtr(new Uint16(name));
-    case Type::Uint32:
-        return PartPtr(new Uint32(name));
-    case Type::Uint64:
-        return PartPtr(new Uint64(name));
+        case Type::Uint8:
+            return PartPtr(new Uint8(name));
+        case Type::Uint16:
+            return PartPtr(new Uint16(name));
+        case Type::Uint32:
+            return PartPtr(new Uint32(name));
+        case Type::Uint64:
+            return PartPtr(new Uint64(name));
 
-    case Type::Int8:
-        return PartPtr(new Int8(name));
-    case Type::Int16:
-        return PartPtr(new Int16(name));
-    case Type::Int32:
-        return PartPtr(new Int32(name));
-    case Type::Int64:
-        return PartPtr(new Int64(name));
+        case Type::Int8:
+            return PartPtr(new Int8(name));
+        case Type::Int16:
+            return PartPtr(new Int16(name));
+        case Type::Int32:
+            return PartPtr(new Int32(name));
+        case Type::Int64:
+            return PartPtr(new Int64(name));
     }
     return nullptr;
 }
 static constexpr auto PACKET_TYPE_BIT_MASK = 0b10000000;
 static constexpr auto PACKET_FUNCTION_BIT_MASK = 0b01100000;
 
-uint8_t make_header_byte(PacketHeader head) {
-  return (uint8_t)head.type | (uint8_t)head.func;
-}
+uint8_t make_header_byte(PacketHeader head) { return (uint8_t)head.type | (uint8_t)head.func; }
 
 PacketHeader decode_header_byte(uint8_t hb) {
-  const PacketType pt = (PacketType)(hb & PACKET_TYPE_BIT_MASK);
-  const PacketFunction func =
-      (PacketFunction)(hb & PACKET_FUNCTION_BIT_MASK);
+    const PacketType pt = (PacketType)(hb & PACKET_TYPE_BIT_MASK);
+    const PacketFunction func = (PacketFunction)(hb & PACKET_FUNCTION_BIT_MASK);
 
-  return {pt, func};
+    return {pt, func};
 }
 /**
  * Decodes the broadcast in a packet
  * @param packet the packet to decode
  * @return the pair of the Channel ID and the Part Pointer of the packet schematic
  */
-std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet) {
+std::pair<ChannelID, PartPtr> decode_broadcast(const Packet& packet) {
     VDPTracef("Decoding broadcast of size: %d", (int)packet.size());
     PacketReader reader(packet);
     // reads the header byte, which had to be read to know were a braodcast
@@ -404,4 +406,4 @@ std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet) {
     return {id, schema};
 }
 
-} // namespace VDP
+}  // namespace VDP

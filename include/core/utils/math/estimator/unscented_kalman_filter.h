@@ -3,19 +3,24 @@
 #include <functional>
 
 #include "core/utils/math/eigen_interface.h"
-
 #include "core/utils/math/numerical/numerical_integration.h"
 
 // Forward declare the sigma points class, it is at the bottom of this file.
-template <int STATES> class ScaledSphericalSimplexSigmaPoints;
+template <int STATES>
+class ScaledSphericalSimplexSigmaPoints;
 
 // Forward declare the Unscented Transform function, it is after the SRUKF class itself.
 template <int COV_DIM, int STATES, int NUM_SIGMAS>
 std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
-  const EMat<COV_DIM, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wm, const EVec<NUM_SIGMAS> &Wc,
-  const std::function<EVec<COV_DIM>(const EMat<COV_DIM, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> &mean_func,
-  const std::function<EVec<COV_DIM>(const EVec<COV_DIM> &, const EVec<COV_DIM> &)> &residual_func,
-  const EMat<COV_DIM, COV_DIM> &square_root_R
+        const EMat<COV_DIM, NUM_SIGMAS>& sigmas,
+        const EVec<NUM_SIGMAS>& Wm,
+        const EVec<NUM_SIGMAS>& Wc,
+        const std::function<
+                EVec<COV_DIM>(const EMat<COV_DIM, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>&
+                mean_func,
+        const std::function<EVec<COV_DIM>(const EVec<COV_DIM>&, const EVec<COV_DIM>&)>&
+                residual_func,
+        const EMat<COV_DIM, COV_DIM>& square_root_R
 );
 
 /**
@@ -59,8 +64,9 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * @tparam INPUTS Dimension of the control input vector.
  * @tparam OUTPUTS Dimension of the measurement vector.
  */
-template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
-  public:
+template <int STATES, int INPUTS, int OUTPUTS>
+class UnscentedKalmanFilter {
+   public:
     static constexpr int NUM_SIGMAS = STATES + 2;
 
     using StateVector = EVec<STATES>;
@@ -70,7 +76,10 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
     using StateMatrix = EMat<STATES, STATES>;
 
     using WithInputIntegrator = std::function<EVec<STATES>(
-      const WithInputDerivative<STATES, INPUTS> &f, const EVec<STATES> &x, const EVec<INPUTS> &u, const double &h
+            const WithInputDerivative<STATES, INPUTS>& f,
+            const EVec<STATES>& x,
+            const EVec<INPUTS>& u,
+            const double& h
     )>;
 
     /**
@@ -86,23 +95,29 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      * @param measurement_stddevs Standard deviations of the measurements.
      */
     UnscentedKalmanFilter(
-      const std::function<StateVector(const StateVector &, const InputVector &)> &f,
-      const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
-      const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs
+            const std::function<StateVector(const StateVector&, const InputVector&)>& f,
+            const std::function<OutputVector(const StateVector&, const InputVector&)>& h,
+            const WithInputIntegrator& integrator,
+            const StateVector& state_stddevs,
+            const OutputVector& measurement_stddevs
     )
         : f_(f), h_(h), integrator_(integrator) {
         sqrt_Q_ = state_stddevs.asDiagonal();
         measurement_stddevs_ = measurement_stddevs;
-        mean_func_X_ = [](const EMat<STATES, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wm) -> StateVector {
-            return sigmas * Wm;
-        };
+        mean_func_X_ = [](const EMat<STATES, NUM_SIGMAS>& sigmas,
+                          const EVec<NUM_SIGMAS>& Wm) -> StateVector { return sigmas * Wm; };
 
-        mean_func_Y_ = [](const EMat<OUTPUTS, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wc) -> OutputVector {
-            return sigmas * Wc;
+        mean_func_Y_ = [](const EMat<OUTPUTS, NUM_SIGMAS>& sigmas,
+                          const EVec<NUM_SIGMAS>& Wc) -> OutputVector { return sigmas * Wc; };
+        residual_func_X_ = [](const StateVector& a, const StateVector& b) -> StateVector {
+            return a - b;
         };
-        residual_func_X_ = [](const StateVector &a, const StateVector &b) -> StateVector { return a - b; };
-        residual_func_Y_ = [](const OutputVector &a, const OutputVector &b) -> OutputVector { return a - b; };
-        add_func_X_ = [](const StateVector &a, const StateVector &b) -> StateVector { return a + b; };
+        residual_func_Y_ = [](const OutputVector& a, const OutputVector& b) -> OutputVector {
+            return a - b;
+        };
+        add_func_X_ = [](const StateVector& a, const StateVector& b) -> StateVector {
+            return a + b;
+        };
 
         reset();
     }
@@ -131,17 +146,31 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      * @param add_funx_X A function that adds two state vectors.
      */
     UnscentedKalmanFilter(
-      const std::function<StateVector(const StateVector &, const InputVector &)> &f,
-      const std::function<OutputVector(const StateVector &, const InputVector &)> &h,
-      const WithInputIntegrator &integrator, const StateVector &state_stddevs, const OutputVector &measurement_stddevs,
-      const std::function<StateVector(const EMat<STATES, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> &mean_func_X,
-      const std::function<OutputVector(const EMat<OUTPUTS, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> &mean_func_Y,
-      const std::function<StateVector(const StateVector &, const StateVector &)> &residual_func_X,
-      const std::function<OutputVector(const OutputVector &, const OutputVector &)> &residual_func_Y,
-      const std::function<StateVector(const StateVector &, const StateVector &)> &add_func_X
+            const std::function<StateVector(const StateVector&, const InputVector&)>& f,
+            const std::function<OutputVector(const StateVector&, const InputVector&)>& h,
+            const WithInputIntegrator& integrator,
+            const StateVector& state_stddevs,
+            const OutputVector& measurement_stddevs,
+            const std::function<
+                    StateVector(const EMat<STATES, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>&
+                    mean_func_X,
+            const std::function<
+                    OutputVector(const EMat<OUTPUTS, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>&
+                    mean_func_Y,
+            const std::function<StateVector(const StateVector&, const StateVector&)>&
+                    residual_func_X,
+            const std::function<OutputVector(const OutputVector&, const OutputVector&)>&
+                    residual_func_Y,
+            const std::function<StateVector(const StateVector&, const StateVector&)>& add_func_X
     )
-        : f_(f), h_(h), integrator_(integrator), mean_func_X_(mean_func_X), mean_func_Y_(mean_func_Y),
-          residual_func_X_(residual_func_X), residual_func_Y_(residual_func_Y), add_func_X_(add_func_X) {
+        : f_(f),
+          h_(h),
+          integrator_(integrator),
+          mean_func_X_(mean_func_X),
+          mean_func_Y_(mean_func_Y),
+          residual_func_X_(residual_func_X),
+          residual_func_Y_(residual_func_Y),
+          add_func_X_(add_func_X) {
         sqrt_Q_ = state_stddevs.asDiagonal();
         measurement_stddevs_ = measurement_stddevs;
 
@@ -166,7 +195,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      *
      * @param S The new square-root covariance matrix S.
      */
-    void set_S(const StateMatrix &S) { S_ = S; }
+    void set_S(const StateMatrix& S) { S_ = S; }
 
     /**
      * Returns the reconstructed covariance matrix P.
@@ -178,7 +207,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      *
      * @param P The covariance matrix P.
      */
-    void set_P(const StateMatrix &P) { S_ = P.llt().matrixL(); }
+    void set_P(const StateMatrix& P) { S_ = P.llt().matrixL(); }
 
     /**
      * Returns the current state estimate x-hat.
@@ -195,7 +224,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
     /**
      * Set the current state estimate x-hat.
      */
-    void set_xhat(const StateVector &xhat) { xhat_ = xhat; }
+    void set_xhat(const StateVector& xhat) { xhat_ = xhat; }
 
     /**
      * Set one element of the current state estimate x-hat.
@@ -219,7 +248,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      * @param u The control input.
      * @param dt The timestep in seconds.
      */
-    void predict(const InputVector &u, double dt) {
+    void predict(const InputVector& u, double dt) {
         // Our noise is continuous, so we need to discretize
         const EMat<STATES, STATES> Q = sqrt_Q_ * sqrt(dt);
 
@@ -245,8 +274,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         //
         // equations (18) (19) and (20)
         auto [xhat, S] = square_root_ut<STATES, STATES>(
-          sigmas_F_, pts_.Wm(), pts_.Wc(), mean_func_X_, residual_func_X_,
-          Q.template triangularView<Eigen::Lower>()
+                sigmas_F_,
+                pts_.Wm(),
+                pts_.Wc(),
+                mean_func_X_,
+                residual_func_X_,
+                Q.template triangularView<Eigen::Lower>()
         );
 
         xhat_ = xhat;
@@ -259,9 +292,16 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      * @param u The control input used in the last predict step.
      * @param y The vector of measurements.
      */
-    void correct(const InputVector &u, const OutputVector &y) {
+    void correct(const InputVector& u, const OutputVector& y) {
         correct<OUTPUTS>(
-          u, y, h_, measurement_stddevs_, mean_func_Y_, residual_func_Y_, residual_func_X_, add_func_X_
+                u,
+                y,
+                h_,
+                measurement_stddevs_,
+                mean_func_Y_,
+                residual_func_Y_,
+                residual_func_X_,
+                add_func_X_
         );
     }
 
@@ -274,9 +314,18 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      * @param measurement_stddevs The vector of standard deviations for each
      * measurement to be used for this correct step.
      */
-    void correct(const InputVector &u, const OutputVector &y, const EVec<OUTPUTS> &measurement_stddevs) {
+    void correct(
+            const InputVector& u, const OutputVector& y, const EVec<OUTPUTS>& measurement_stddevs
+    ) {
         correct<OUTPUTS>(
-          u, y, h_, measurement_stddevs, mean_func_Y_, residual_func_Y_, residual_func_X_, add_func_X_
+                u,
+                y,
+                h_,
+                measurement_stddevs,
+                mean_func_Y_,
+                residual_func_Y_,
+                residual_func_X_,
+                add_func_X_
         );
     }
 
@@ -294,18 +343,33 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      */
     template <int ROWS>
     void correct(
-      const InputVector &u, const EVec<ROWS> &y,
-      const std::function<EVec<ROWS>(const StateVector &, const InputVector &)> &h,
-      const EVec<ROWS> &measurement_stddevs
+            const InputVector& u,
+            const EVec<ROWS>& y,
+            const std::function<EVec<ROWS>(const StateVector&, const InputVector&)>& h,
+            const EVec<ROWS>& measurement_stddevs
     ) {
-        auto mean_func_Y = [](const EMat<OUTPUTS, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wc) -> EVec<ROWS> {
-            return sigmas * Wc;
+        auto mean_func_Y = [](const EMat<OUTPUTS, NUM_SIGMAS>& sigmas,
+                              const EVec<NUM_SIGMAS>& Wc) -> EVec<ROWS> { return sigmas * Wc; };
+        auto residual_func_X = [](const StateVector& a, const StateVector& b) -> StateVector {
+            return a - b;
         };
-        auto residual_func_X = [](const StateVector &a, const StateVector &b) -> StateVector { return a - b; };
-        auto residual_func_Y = [](const EVec<ROWS> &a, const EVec<ROWS> &b) -> EVec<ROWS> { return a - b; };
-        auto add_func_X = [](const StateVector &a, const StateVector &b) -> StateVector { return a + b; };
+        auto residual_func_Y = [](const EVec<ROWS>& a, const EVec<ROWS>& b) -> EVec<ROWS> {
+            return a - b;
+        };
+        auto add_func_X = [](const StateVector& a, const StateVector& b) -> StateVector {
+            return a + b;
+        };
 
-        correct<ROWS>(u, y, h, measurement_stddevs, mean_func_Y, residual_func_Y, residual_func_X, add_func_X);
+        correct<ROWS>(
+                u,
+                y,
+                h,
+                measurement_stddevs,
+                mean_func_Y,
+                residual_func_Y,
+                residual_func_X,
+                add_func_X
+        );
     }
 
     /**
@@ -330,15 +394,17 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
      */
     template <int ROWS>
     void correct(
-      const InputVector &u, const EVec<ROWS> &y,
-      const std::function<EVec<ROWS>(const StateVector &, const InputVector &)> &h,
-      const EVec<ROWS> measurement_stddevs,
-      const std::function<EVec<ROWS>(const EMat<ROWS, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> &mean_func_Y,
-      const std::function<EVec<ROWS>(const EVec<ROWS> &, const EVec<ROWS> &)> &residual_func_Y,
-      const std::function<StateVector(const StateVector &, const StateVector &)> &residual_func_X,
-      const std::function<StateVector(const StateVector &, const StateVector &)> &add_func_X
+            const InputVector& u,
+            const EVec<ROWS>& y,
+            const std::function<EVec<ROWS>(const StateVector&, const InputVector&)>& h,
+            const EVec<ROWS> measurement_stddevs,
+            const std::function<EVec<ROWS>(const EMat<ROWS, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>&
+                    mean_func_Y,
+            const std::function<EVec<ROWS>(const EVec<ROWS>&, const EVec<ROWS>&)>& residual_func_Y,
+            const std::function<StateVector(const StateVector&, const StateVector&)>&
+                    residual_func_X,
+            const std::function<StateVector(const StateVector&, const StateVector&)>& add_func_X
     ) {
-
         EMat<ROWS, ROWS> sqrt_R = measurement_stddevs.asDiagonal();
 
         // Generate new sigma points from the prior mean and covariance
@@ -362,7 +428,12 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         //
         // equations (23) (24) and (25)
         auto [yhat, Sy] = square_root_ut<ROWS, STATES, NUM_SIGMAS>(
-          sigmas_H, pts_.Wm(), pts_.Wc(), mean_func_Y, residual_func_Y, sqrt_R.template triangularView<Eigen::Lower>()
+                sigmas_H,
+                pts_.Wm(),
+                pts_.Wc(),
+                mean_func_Y,
+                residual_func_Y,
+                sqrt_R.template triangularView<Eigen::Lower>()
         );
 
         // Compute cross covariance of the predicted state and measurement sigma
@@ -376,7 +447,8 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         EMat<STATES, ROWS> Pxy;
         Pxy.setZero();
         for (int i = 0; i < NUM_SIGMAS; ++i) {
-            Pxy += pts_.Wc(i) * (residual_func_X(sigmas_F_.template block<STATES, 1>(0, i), xhat_)) *
+            Pxy += pts_.Wc(i) *
+                   (residual_func_X(sigmas_F_.template block<STATES, 1>(0, i), xhat_)) *
                    (residual_func_Y(sigmas_H.template block<ROWS, 1>(0, i), yhat)).transpose();
         }
 
@@ -390,10 +462,11 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         //   K = (S_{y}ᵀ \ (S_{y} \ P_{xy}ᵀ))ᵀ
         //
         // equation (27)
-        EMat<STATES, ROWS> K = (Sy.transpose().template triangularView<Eigen::Upper>().solve(
-                                  Sy.template triangularView<Eigen::Lower>().solve(Pxy.transpose())
-                                ))
-                                 .transpose();
+        EMat<STATES, ROWS> K =
+                (Sy.transpose().template triangularView<Eigen::Upper>().solve(
+                         Sy.template triangularView<Eigen::Lower>().solve(Pxy.transpose())
+                 ))
+                        .transpose();
 
         // Compute the posterior state mean
         //
@@ -412,18 +485,22 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
         //
         // equation (29)
         for (int i = 0; i < ROWS; i++) {
-          Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(S_, U.template block<STATES, 1>(0, i), -1);
+            Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(
+                    S_, U.template block<STATES, 1>(0, i), -1
+            );
         }
-      }
+    }
 
-  private:
-    std::function<StateVector(const StateVector &, const InputVector &)> f_;
-    std::function<OutputVector(const StateVector &, const InputVector &)> h_;
-    std::function<StateVector(const EMat<STATES, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> mean_func_X_;
-    std::function<OutputVector(const EMat<OUTPUTS, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> mean_func_Y_;
-    std::function<StateVector(const StateVector &, const StateVector &)> residual_func_X_;
-    std::function<OutputVector(const OutputVector &, const OutputVector &)> residual_func_Y_;
-    std::function<StateVector(const StateVector &, const StateVector &)> add_func_X_;
+   private:
+    std::function<StateVector(const StateVector&, const InputVector&)> f_;
+    std::function<OutputVector(const StateVector&, const InputVector&)> h_;
+    std::function<StateVector(const EMat<STATES, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>
+            mean_func_X_;
+    std::function<OutputVector(const EMat<OUTPUTS, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>
+            mean_func_Y_;
+    std::function<StateVector(const StateVector&, const StateVector&)> residual_func_X_;
+    std::function<OutputVector(const OutputVector&, const OutputVector&)> residual_func_Y_;
+    std::function<StateVector(const StateVector&, const StateVector&)> add_func_X_;
     StateVector xhat_;
     StateMatrix S_;
     StateMatrix sqrt_Q_;
@@ -456,10 +533,15 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
  */
 template <int COV_DIM, int STATES, int NUM_SIGMAS>
 std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
-  const EMat<COV_DIM, NUM_SIGMAS> &sigmas, const EVec<NUM_SIGMAS> &Wm, const EVec<NUM_SIGMAS> &Wc,
-  const std::function<EVec<COV_DIM>(const EMat<COV_DIM, NUM_SIGMAS> &, const EVec<NUM_SIGMAS> &)> &mean_func,
-  const std::function<EVec<COV_DIM>(const EVec<COV_DIM> &, const EVec<COV_DIM> &)> &residual_func,
-  const EMat<COV_DIM, COV_DIM> &sqrt_R
+        const EMat<COV_DIM, NUM_SIGMAS>& sigmas,
+        const EVec<NUM_SIGMAS>& Wm,
+        const EVec<NUM_SIGMAS>& Wc,
+        const std::function<
+                EVec<COV_DIM>(const EMat<COV_DIM, NUM_SIGMAS>&, const EVec<NUM_SIGMAS>&)>&
+                mean_func,
+        const std::function<EVec<COV_DIM>(const EVec<COV_DIM>&, const EVec<COV_DIM>&)>&
+                residual_func,
+        const EMat<COV_DIM, COV_DIM>& sqrt_R
 ) {
     // New mean is usually just the sum of the sigmas * weights:
     //
@@ -479,7 +561,7 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
     EMat<COV_DIM, NUM_SIGMAS - 1 + COV_DIM> S_bar;
     for (int i = 0; i < NUM_SIGMAS - 1; i++) {
         S_bar.template block<COV_DIM, 1>(0, i) =
-          std::sqrt(Wc[1]) * residual_func(sigmas.template block<COV_DIM, 1>(0, i + 1), x);
+                std::sqrt(Wc[1]) * residual_func(sigmas.template block<COV_DIM, 1>(0, i + 1), x);
     }
     S_bar.template block<COV_DIM, COV_DIM>(0, NUM_SIGMAS - 1) = sqrt_R;
 
@@ -495,18 +577,18 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
     //
     // equations (20) and (24)
     EMat<COV_DIM, COV_DIM> S = S_bar.transpose()
-                                 .householderQr()
-                                 .matrixQR()
-                                 .template block<COV_DIM, COV_DIM>(0, 0)
-                                 .template triangularView<Eigen::Upper>()
-                                 .transpose();
+                                       .householderQr()
+                                       .matrixQR()
+                                       .template block<COV_DIM, COV_DIM>(0, 0)
+                                       .template triangularView<Eigen::Upper>()
+                                       .transpose();
 
     // Update or downdate the square-root covariance with (𝒳₀-x̂)
     // depending on whether its weight (W₀⁽ᶜ⁾) is positive or negative.
     //
     // equations (21) and (25)
     Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(
-      S, residual_func(sigmas.template block<COV_DIM, 1>(0, 0), x), Wc[0]
+            S, residual_func(sigmas.template block<COV_DIM, 1>(0, 0), x), Wc[0]
     );
 
     return std::make_tuple(x, S);
@@ -530,8 +612,9 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
  * @tparam STATES the dimension of the state. NUM_SIGMAS sigma points and
  * weights will be generated.
  */
-template <int STATES> class ScaledSphericalSimplexSigmaPoints {
-  public:
+template <int STATES>
+class ScaledSphericalSimplexSigmaPoints {
+   public:
     static constexpr int NUM_SIGMAS = STATES + 2;
 
     /**
@@ -542,7 +625,9 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
      * @param beta Incorporates prior knowledge of the distribution of the state.
      * For Gaussian distributions, beta = 2 is optimal.
      */
-    ScaledSphericalSimplexSigmaPoints(double alpha = 0.001, double beta = 2) { compute_weights(alpha, beta); }
+    ScaledSphericalSimplexSigmaPoints(double alpha = 0.001, double beta = 2) {
+        compute_weights(alpha, beta);
+    }
 
     /**
      * Returns the number of sigma points, for simplex sigma points this is N+2.
@@ -559,7 +644,9 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
      * point in the same space as x. The first column is the same as the mean,
      * with the others arranged around the mean.
      */
-    EMat<STATES, NUM_SIGMAS> square_root_sigma_points(const EVec<STATES> &x, const EMat<STATES, STATES> &S) {
+    EMat<STATES, NUM_SIGMAS> square_root_sigma_points(
+            const EVec<STATES>& x, const EMat<STATES, STATES>& S
+    ) {
         EMat<STATES, NUM_SIGMAS> sigmas = S * C_;
         sigmas.colwise() += x;
 
@@ -569,12 +656,12 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
     /**
      * Returns a vector containing the weights of each sigma point for the mean.
      */
-    const EVec<NUM_SIGMAS> &Wm() const { return Wm_; }
+    const EVec<NUM_SIGMAS>& Wm() const { return Wm_; }
 
     /**
      * Returns a vector containing the weights of each sigma point for the covariance.
      */
-    const EVec<NUM_SIGMAS> &Wc() const { return Wc_; }
+    const EVec<NUM_SIGMAS>& Wc() const { return Wc_; }
 
     /**
      * Returns the weight for the i-th sigma point for the mean.
@@ -590,7 +677,7 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
      */
     double Wc(int i) const { return Wc_(i); }
 
-  private:
+   private:
     EVec<NUM_SIGMAS> Wm_;
     EVec<NUM_SIGMAS> Wc_;
     EVec<STATES> q_;
@@ -618,7 +705,8 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
             t(i) = i + 1;
         }
 
-        EVec<STATES> q = alpha * ((t * (STATES + 1)).cwiseQuotient(t + EVec<STATES>::Ones())).cwiseSqrt();
+        EVec<STATES> q =
+                alpha * ((t * (STATES + 1)).cwiseQuotient(t + EVec<STATES>::Ones())).cwiseSqrt();
 
         C_ = EMat<STATES, NUM_SIGMAS>::Zero();
         for (int row = 0; row < STATES; row++) {
@@ -629,7 +717,9 @@ template <int STATES> class ScaledSphericalSimplexSigmaPoints {
 };
 
 // allow using both names
-template <int STATES, int INPUTS, int OUTPUTS> using UKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
-template <int STATES, int INPUTS, int OUTPUTS> using SRUKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS>
+using UKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
+template <int STATES, int INPUTS, int OUTPUTS>
+using SRUKF = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;
 template <int STATES, int INPUTS, int OUTPUTS>
 using SquareRootUnscentedKalmanFilter = UnscentedKalmanFilter<STATES, INPUTS, OUTPUTS>;

@@ -1,6 +1,7 @@
 #pragma once
-#include "core/utils/math/geometry/transform2d.h"
 #include <cmath>
+
+#include "core/utils/math/geometry/transform2d.h"
 
 /**
  *  Describes a Rectangle with a minimum and maximum point
@@ -9,7 +10,9 @@
 struct Rect {
     Translation2d min;
     Translation2d max;
-    static Rect from_min_and_size(Translation2d min, Translation2d size) { return {min, min + size}; }
+    static Rect from_min_and_size(Translation2d min, Translation2d size) {
+        return {min, min + size};
+    }
     Translation2d dimensions() const { return max - min; }
     Translation2d center() const { return (min + max) / 2; }
     double width() const { return max.x() - min.x(); }

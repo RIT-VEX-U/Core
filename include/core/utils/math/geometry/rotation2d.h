@@ -2,11 +2,11 @@
 #undef __ARM_NEON__
 #undef __ARM_NEON
 #include <Eigen/Dense>
-
-#include "core/utils/math/geometry/translation2d.h"
 #include <cmath>
 #include <iostream>
 #include <vector>
+
+#include "core/utils/math/geometry/translation2d.h"
 
 #ifndef PI
 #define PI 3.141592654
@@ -24,7 +24,7 @@ class Translation2d;
  * "360" is from [0, 2pi), [0, 360), [0, 1)
  */
 class Rotation2d {
-  public:
+   public:
     /**
      * Default Constructor for Rotation2d
      */
@@ -34,7 +34,7 @@ class Rotation2d {
      *
      * @param radians the value of the rotation in radians.
      */
-    Rotation2d(const double &radians);
+    Rotation2d(const double& radians);
 
     /**
      * Constructs a rotation given x and y values.
@@ -46,7 +46,7 @@ class Rotation2d {
      * @param x the x value of the point
      * @param y the y value of the point
      */
-    Rotation2d(const double &x, const double &y);
+    Rotation2d(const double& x, const double& y);
 
     /**
      * Constructs a rotation given x and y values in the form of a Translation2d.
@@ -57,7 +57,7 @@ class Rotation2d {
      *
      * @param translation
      */
-    Rotation2d(const Translation2d &translation);
+    Rotation2d(const Translation2d& translation);
 
     /**
      * Returns the radian angle value.
@@ -163,7 +163,7 @@ class Rotation2d {
      *
      * @return the sum of the two rotations.
      */
-    Rotation2d operator+(const Rotation2d &other) const;
+    Rotation2d operator+(const Rotation2d& other) const;
 
     /**
      * Subtracts the values of two rotations.
@@ -172,7 +172,7 @@ class Rotation2d {
      *
      * @return the difference between the two rotations.
      */
-    Rotation2d operator-(const Rotation2d &other) const;
+    Rotation2d operator-(const Rotation2d& other) const;
 
     /**
      * Takes the inverse of this rotation by flipping it.
@@ -189,7 +189,7 @@ class Rotation2d {
      *
      * @return the rotation multiplied by the scalar.
      */
-    Rotation2d operator*(const double &scalar) const;
+    Rotation2d operator*(const double& scalar) const;
 
     /**
      * Divides this rotation by a scalar.
@@ -198,17 +198,18 @@ class Rotation2d {
      *
      * @return the rotation divided by the scalar.
      */
-    Rotation2d operator/(const double &scalar) const;
+    Rotation2d operator/(const double& scalar) const;
 
     /**
      * Compares two rotations.
-     * Returns true if their values are within 1e-9 radians of each other, to account for floating point error.
+     * Returns true if their values are within 1e-9 radians of each other, to account for floating
+     * point error.
      *
      * @param other the other rotation to compare to
      *
      * @return whether the values of the rotations are within 1e-9 radians of each other
      */
-    bool operator==(const Rotation2d &other) const;
+    bool operator==(const Rotation2d& other) const;
 
     /**
      * Sends a rotation to an output stream.
@@ -217,9 +218,9 @@ class Rotation2d {
      *
      * prints "Rotation2d[rad: (radians), deg: (degrees)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation);
+    friend std::ostream& operator<<(std::ostream& os, const Rotation2d& rotation);
 
-  private:
+   private:
     double m_radians;
     double m_cos;
     double m_sin;
@@ -232,21 +233,21 @@ class Rotation2d {
  *
  * @param radians angle in radians.
  */
-Rotation2d from_radians(const double &radians);
+Rotation2d from_radians(const double& radians);
 
 /**
  * Constructs a rotation given degree angle value.
  *
  * @param degrees angle in degrees.
  */
-Rotation2d from_degrees(const double &degrees);
+Rotation2d from_degrees(const double& degrees);
 
 /**
  * Constructs a rotation given revolution angle value.
  *
  * @param revolutions angle in revolutions.
  */
-Rotation2d from_revolutions(const double &revolutions);
+Rotation2d from_revolutions(const double& revolutions);
 
 /**
  * Wraps a radian angle value from [-pi, pi).
@@ -255,7 +256,7 @@ Rotation2d from_revolutions(const double &revolutions);
  *
  * @return the wrapped radian angle value from [-pi, pi).
  */
-double wrap_radians_180(const double &angle);
+double wrap_radians_180(const double& angle);
 
 /**
  * Wraps a degree angle value from [-180, 180).
@@ -264,7 +265,7 @@ double wrap_radians_180(const double &angle);
  *
  * @return the wrapped degree angle value from [-180, 180).
  */
-double wrap_degrees_180(const double &angle);
+double wrap_degrees_180(const double& angle);
 
 /**
  * Wraps a revolution angle vlue from [-0.5, 0.5).
@@ -273,7 +274,7 @@ double wrap_degrees_180(const double &angle);
  *
  * @return the wrapped revolution angle vlue from [-0.5, 0.5).
  */
-double wrap_revolutions_180(const double &angle);
+double wrap_revolutions_180(const double& angle);
 
 /**
  * Wraps a radian angle value from [0, 2pi).
@@ -282,7 +283,7 @@ double wrap_revolutions_180(const double &angle);
  *
  * @return the wrapped radian angle value from [0, 2pi).
  */
-double wrap_radians_360(const double &angle);
+double wrap_radians_360(const double& angle);
 
 /**
  * Wraps a degree angle value from [0, 360).
@@ -291,7 +292,7 @@ double wrap_radians_360(const double &angle);
  *
  * @return the wrapped degree angle value from [0, 360).
  */
-double wrap_degrees_360(const double &angle);
+double wrap_degrees_360(const double& angle);
 
 /**
  * Wraps a revolution angle value from [0, 1).
@@ -300,7 +301,7 @@ double wrap_degrees_360(const double &angle);
  *
  * @return the wrapped revolution angle value from [0, 1).
  */
-double wrap_revolutions_360(const double &angle);
+double wrap_revolutions_360(const double& angle);
 
 /**
  * General function for converting degrees to radians
@@ -325,7 +326,7 @@ double rad2deg(double r);
  *
  * @return the single rotation mean of the list of rotations.
  */
-Rotation2d unwrapped_mean(const std::vector<Rotation2d> &list);
+Rotation2d unwrapped_mean(const std::vector<Rotation2d>& list);
 
 /**
  * Calculates the mean of a list of angle values directly.
@@ -335,4 +336,4 @@ Rotation2d unwrapped_mean(const std::vector<Rotation2d> &list);
  *
  * @return the single rotation mean of the list of rotations.
  */
-Rotation2d wrapped_mean(const std::vector<Rotation2d> &list);
+Rotation2d wrapped_mean(const std::vector<Rotation2d>& list);

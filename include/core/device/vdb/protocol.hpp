@@ -1,5 +1,4 @@
 #pragma once
-#include "core/device/vdb/crc32.hpp"
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -10,10 +9,12 @@
 #include <string>
 #include <vector>
 
+#include "core/device/vdb/crc32.hpp"
+
 namespace VDB {
 uint32_t time_ms();
 void delay_ms(uint32_t ms);
-} // namespace VDB
+}  // namespace VDB
 
 // #define VDPTRACE
 #define VDPDEBUG
@@ -50,8 +51,9 @@ using Packet = std::vector<uint8_t>;
 // defines a channel id as an 8bit unsigned integer
 using ChannelID = uint8_t;
 class Channel {
-  public:
-    template <typename MutexType> friend class RegistryListener;
+   public:
+    template <typename MutexType>
+    friend class RegistryListener;
     friend class RegistryController;
     /**
      * Creates a channel used for sending data to the brain
@@ -64,7 +66,7 @@ class Channel {
      */
     ChannelID getID() const;
 
-  private:
+   private:
     /**
      * Creates a channel used for sending data to the brain
      * @param data Part Pointer of data to be stored at the channel
@@ -81,21 +83,18 @@ class Channel {
 /**
  * Prints out a packet of data
  */
-void dump_packet_hex(const Packet &pac);
-void dump_packet_8bit(const Packet &pac);
+void dump_packet_hex(const Packet& pac);
+void dump_packet_8bit(const Packet& pac);
 
 /**
  * defines what byte value correspondes to what packet type or packet function
  */
-enum class PacketType : uint8_t {
-  Broadcast = 0b00000000,
-  Data = 0b10000000
-};
+enum class PacketType : uint8_t { Broadcast = 0b00000000, Data = 0b10000000 };
 enum class PacketFunction : uint8_t {
-  Send = 0b00000000,
-  Acknowledge = 0b00100000,
-  Response = 0b01000000,
-  Request = 0b01100000
+    Send = 0b00000000,
+    Acknowledge = 0b00100000,
+    Response = 0b01000000,
+    Request = 0b01100000
 };
 /**
  * struct to define the header of a packet,
@@ -111,7 +110,7 @@ enum PacketValidity : uint8_t {
     BadChecksum,
     TooSmall,
 };
-PacketValidity validate_packet(const VDP::Packet &packet);
+PacketValidity validate_packet(const VDP::Packet& packet);
 /**
  * defines what byte value is what type in a packet
  */
@@ -145,7 +144,7 @@ class Visitor;
  * @param ss the stringstream to add indents to
  * @param indent the amount of double spaced indents to add
  */
-void add_indents(std::stringstream &ss, size_t indent);
+void add_indents(std::stringstream& ss, size_t indent);
 
 /**
  * defines a Part, which has a name and contains data
@@ -156,7 +155,7 @@ class Part {
     friend class PacketWriter;
     friend class Record;
 
-  public:
+   public:
     /**
      * Creates a Part with a name
      * a part is essentially data formatted so that it can be sent to the debug board
@@ -183,46 +182,48 @@ class Part {
 
     virtual void response();
 
-    template<typename T>
-      PartPtr to_PartPtr(){
+    template <typename T>
+    PartPtr to_PartPtr() {
         return std::make_shared<T>(this);
-      };
+    };
 
     virtual VDP::PartPtr clone() = 0;
     /**
      * sets the data the part contains to the data from a packet, meant to be overrided
      * @param reader the PacketReader to read data from
      */
-    virtual void read_data_from_message(PacketReader &reader) = 0;
+    virtual void read_data_from_message(PacketReader& reader) = 0;
 
     std::string get_name() const;
 
-    virtual void Visit(Visitor *) = 0;
+    virtual void Visit(Visitor*) = 0;
 
-  protected:
+   protected:
     // These are needed to decode correctly but you shouldn't call them directly
     /**
-     * writes the Part schematic to a packet so that it can be sent to the debug board, meant to be overrided
+     * writes the Part schematic to a packet so that it can be sent to the debug board, meant to be
+     * overrided
      * @param sofar the packet writer to write with
      */
-    virtual void write_schema(PacketWriter &sofar) const = 0;
+    virtual void write_schema(PacketWriter& sofar) const = 0;
     /**
      * writes the value of the Part to a packet so that it can be sent to the debug board
      * @param sofar the packet writer to write with
      */
-    virtual void write_message(PacketWriter &sofar) const = 0;
+    virtual void write_message(PacketWriter& sofar) const = 0;
     /**
      * changes a stringstream to a specified format, meant to be overrided
      * @param ss the stream of strings to change
      * @param indent the amount of double spaced indents to add to the string
      */
-    virtual void pprint(std::stringstream &ss, size_t indent) const = 0;
+    virtual void pprint(std::stringstream& ss, size_t indent) const = 0;
     /**
-     * changes a stringstream to the contain the Part's data in a specified format, meant to be overrided
+     * changes a stringstream to the contain the Part's data in a specified format, meant to be
+     * overrided
      * @param ss the stream of strings to change
      * @param indent the amount of double spaced indents to add to the string
      */
-    virtual void pprint_data(std::stringstream &ss, size_t indent) const = 0;
+    virtual void pprint_data(std::stringstream& ss, size_t indent) const = 0;
 
     std::string name;
 };
@@ -230,7 +231,7 @@ class Part {
  * Defines a PacketReader, it reads packets
  */
 class PacketReader {
-  public:
+   public:
     /**
      * Defines a PacketReader to read a packet
      * @param pac the packet to read
@@ -258,21 +259,24 @@ class PacketReader {
     /**
      * @return the value stored by a Number Part
      */
-    template <typename Number> Number get_number() {
+    template <typename Number>
+    Number get_number() {
         // ensures that the function is only used on numbers
         static_assert(
-          std::is_floating_point<Number>::value || std::is_integral<Number>::value,
-          "This function should only be used on numbers"
+                std::is_floating_point<Number>::value || std::is_integral<Number>::value,
+                "This function should only be used on numbers"
         );
         // checks that the size of the number its trying to read combined with its location
         // doesnt put it past the packet size
         if (read_head + sizeof(Number) > pac.size()) {
-            printf(
-              "%s:%d: Reading a number[%d] at position %d would read past "
-              "buffer of "
-              "size %d\n",
-              __FILE__, __LINE__, sizeof(Number), read_head, pac.size()
-            );
+            printf("%s:%d: Reading a number[%d] at position %d would read past "
+                   "buffer of "
+                   "size %d\n",
+                   __FILE__,
+                   __LINE__,
+                   sizeof(Number),
+                   read_head,
+                   pac.size());
             return 0;
         }
         Number value = 0;
@@ -283,7 +287,7 @@ class PacketReader {
         return value;
     }
 
-  private:
+   private:
     Packet pac;
     size_t read_head;
 };
@@ -291,12 +295,12 @@ class PacketReader {
  * Defines a PacketWriter, it writes packets
  */
 class PacketWriter {
-  public:
+   public:
     /**
      * creates a packet writer
      * @param scratch_space the packet for the writer to write to
      */
-    explicit PacketWriter(Packet &scratch_space);
+    explicit PacketWriter(Packet& scratch_space);
     /**
      * clears the packet the writer is writing to
      */
@@ -319,27 +323,27 @@ class PacketWriter {
      * writes a string to the packet
      * @param str the string to write to the packet
      */
-    void write_string(const std::string &str);
+    void write_string(const std::string& str);
     /**
      * writes a broadcast acknowledgement of a channel to the packet
      * @param chan the channel to write the acknowledgement for
      */
-    void write_channel_acknowledge(const Channel &chan);
+    void write_channel_acknowledge(const Channel& chan);
     /**
      * writes a broadcast of a channel schematic to the packet
      * @param chan the channel to write the schematic from
      */
-    void write_channel_broadcast(const Channel &chan);
+    void write_channel_broadcast(const Channel& chan);
     /**
      * writes a response packet to the packets
      * @param chan the Channel to write the data from
      */
-    void write_response(std::deque<Channel> &channels);
+    void write_response(std::deque<Channel>& channels);
     /**
      * writes the data from a channel to the packet
      * @param chan the Channel to write the data from
      */
-    void write_data_message(const Channel &part);
+    void write_data_message(const Channel& part);
     /**
      * writes a request for a channel schematic to the packets
      * @param chan the Channel to write the data from
@@ -348,11 +352,12 @@ class PacketWriter {
     /**
      * @return the packet the writer is writing to
      */
-    const Packet &get_packet() const;
+    const Packet& get_packet() const;
     /**
      * writes a number to the end of the packet
      */
-    template <typename Number> void write_number(const Number &num) {
+    template <typename Number>
+    void write_number(const Number& num) {
         std::array<uint8_t, sizeof(Number)> bytes;
         std::memcpy(&bytes, &num, sizeof(Number));
         for (const uint8_t b : bytes) {
@@ -360,27 +365,29 @@ class PacketWriter {
         }
     }
 
-  private:
-    Packet &sofar;
+   private:
+    Packet& sofar;
 };
 /**
  * defines a generic device to trasmit packets through
  */
 class AbstractDevice {
-  public:
+   public:
     /** Sends a packet over some transmission medium
      * It is not specified how the packet reaches the partner
      * The transmission medium and wire format are left to the user
      * @param packet the packet to send through the device
      * @return whether the packet was sent sucessfully or not
      */
-    virtual bool send_packet(const VDP::Packet &packet) = 0;
+    virtual bool send_packet(const VDP::Packet& packet) = 0;
     /**
      * a callback to function that runs when a new packet is available
      * @param the function for the callback to call
      * me when my ex-wife
      */
-    virtual void register_receive_callback(std::function<void(const VDP::Packet &packet)> callback) = 0;
+    virtual void register_receive_callback(
+            std::function<void(const VDP::Packet& packet)> callback
+    ) = 0;
     /**
      *  deleter for the device, used to delete it when it is no longer needed
      */
@@ -391,7 +398,7 @@ class AbstractDevice {
  * @param pac the packet reader to make a decoder from
  * @return the Part Pointer for the data from the packet
  */
-PartPtr make_decoder(PacketReader &pac);
+PartPtr make_decoder(PacketReader& pac);
 /**
  * creates a byte from a given packet header
  * @return the header byte created
@@ -407,8 +414,8 @@ PacketHeader decode_header_byte(uint8_t hb);
  * @param packet the packet to decode
  * @return the pair of the Channel ID and the Part Pointer of the packet schematic
  */
-std::pair<ChannelID, PartPtr> decode_broadcast(const Packet &packet);
+std::pair<ChannelID, PartPtr> decode_broadcast(const Packet& packet);
 
-std::pair<ChannelID, PartPtr> decode_data(const Packet &packet);
+std::pair<ChannelID, PartPtr> decode_data(const Packet& packet);
 
-} // namespace VDP
+}  // namespace VDP

@@ -1,9 +1,10 @@
 
+#include "core/utils/math/geometry/pose2d.h"
+
 #include <cmath>
 #include <iostream>
 #include <vector>
 
-#include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/transform2d.h"
 #include "core/utils/math/geometry/translation2d.h"
@@ -15,7 +16,7 @@
  * @param translation translational component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
+Pose2d::Pose2d(const Translation2d& translation, const Rotation2d& rotation)
     : m_translation{translation}, m_rotation{rotation} {}
 
 /**
@@ -25,7 +26,7 @@ Pose2d::Pose2d(const Translation2d &translation, const Rotation2d &rotation)
  * @param y y component.
  * @param rotation rotational component.
  */
-Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
+Pose2d::Pose2d(const double& x, const double& y, const Rotation2d& rotation)
     : m_translation{x, y}, m_rotation{rotation} {}
 
 /**
@@ -35,7 +36,8 @@ Pose2d::Pose2d(const double &x, const double &y, const Rotation2d &rotation)
  * @param y y component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_translation{x, y}, m_rotation{radians} {}
+Pose2d::Pose2d(const double& x, const double& y, const double& radians)
+    : m_translation{x, y}, m_rotation{radians} {}
 
 /**
  * Constructs a pose with given translation and rotation components.
@@ -43,7 +45,7 @@ Pose2d::Pose2d(const double &x, const double &y, const double &radians) : m_tran
  * @param translation translational component.
  * @param radians rotational component in radians.
  */
-Pose2d::Pose2d(const Translation2d &translation, const double &radians)
+Pose2d::Pose2d(const Translation2d& translation, const double& radians)
     : m_translation{translation}, m_rotation{radians} {}
 
 /**
@@ -51,7 +53,7 @@ Pose2d::Pose2d(const Translation2d &translation, const double &radians)
  *
  * @param pose_vector vector of the form [x, y, theta].
  */
-Pose2d::Pose2d(const Eigen::Vector3d &pose_vector)
+Pose2d::Pose2d(const Eigen::Vector3d& pose_vector)
     : m_translation{pose_vector(0), pose_vector(1)}, m_rotation{pose_vector(2)} {}
 
 /**
@@ -103,7 +105,9 @@ bool Pose2d::operator==(const Pose2d other) const {
  *
  * @param scalar the scalar value to multiply by.
  */
-Pose2d Pose2d::operator*(const double &scalar) const { return Pose2d{m_translation * scalar, m_rotation * scalar}; }
+Pose2d Pose2d::operator*(const double& scalar) const {
+    return Pose2d{m_translation * scalar, m_rotation * scalar};
+}
 
 /**
  * Divides this pose by a scalar.
@@ -111,7 +115,7 @@ Pose2d Pose2d::operator*(const double &scalar) const { return Pose2d{m_translati
  *
  * @param scalar the scalar value to divide by.
  */
-Pose2d Pose2d::operator/(const double &scalar) const { return *this * (1. / scalar); }
+Pose2d Pose2d::operator/(const double& scalar) const { return *this * (1. / scalar); }
 
 /**
  * Adds a transform to this pose.
@@ -119,8 +123,11 @@ Pose2d Pose2d::operator/(const double &scalar) const { return *this * (1. / scal
  *
  * @param transform the change in pose.
  */
-Pose2d Pose2d::operator+(const Transform2d &transform) const {
-    return Pose2d{translation() + (transform.translation().rotate_by(rotation())), transform.rotation() + rotation()};
+Pose2d Pose2d::operator+(const Transform2d& transform) const {
+    return Pose2d{
+            translation() + (transform.translation().rotate_by(rotation())),
+            transform.rotation() + rotation()
+    };
 }
 
 /**
@@ -128,7 +135,7 @@ Pose2d Pose2d::operator+(const Transform2d &transform) const {
  *
  * @param other the pose to subtract.
  */
-Transform2d Pose2d::operator-(const Pose2d &other) const {
+Transform2d Pose2d::operator-(const Pose2d& other) const {
     Pose2d pose_diff = relative_to(other);
     return Transform2d(pose_diff.translation(), pose_diff.rotation());
 }
@@ -140,7 +147,7 @@ Transform2d Pose2d::operator-(const Pose2d &other) const {
  *
  * prints "Pose2d[x: (value), y: (value), rad: (radians), deg: (degrees)]"
  */
-std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
+std::ostream& operator<<(std::ostream& os, const Pose2d& pose) {
     os << "Pose2d[x: " << pose.x() << ", y: " << pose.y() << ", rad: " << pose.rotation().radians()
        << ", deg: " << pose.rotation().degrees() << "]";
     return os;
@@ -153,7 +160,7 @@ std::ostream &operator<<(std::ostream &os, const Pose2d &pose) {
  *
  * @return this pose relative to another pose.
  */
-Pose2d Pose2d::relative_to(const Pose2d &other) const {
+Pose2d Pose2d::relative_to(const Pose2d& other) const {
     Transform2d transform{other, *this};
     return Pose2d{transform.translation(), transform.rotation()};
 }
@@ -166,18 +173,23 @@ Pose2d Pose2d::relative_to(const Pose2d &other) const {
  *
  * @return the pose after being transformed.
  */
-Pose2d Pose2d::transform_by(const Transform2d &transform) const {
-    return Pose2d{translation() + (transform.translation().rotate_by(rotation())), rotation() + transform.rotation()};
+Pose2d Pose2d::transform_by(const Transform2d& transform) const {
+    return Pose2d{
+            translation() + (transform.translation().rotate_by(rotation())),
+            rotation() + transform.rotation()
+    };
 }
 
 /**
  * Applies a twist (pose delta) to a pose by including first order dynamics of heading.
  *
  * When applying a twist, imagine a constant angular velocity, the translational components must
- * be rotated into the global frame at every point along the twist, simply adding the deltas does not do this,
- * and using euler integration results in some error. This is the analytic solution that that problem.
+ * be rotated into the global frame at every point along the twist, simply adding the deltas does
+ * not do this, and using euler integration results in some error. This is the analytic solution
+ * that that problem.
  *
- * Can also be thought of more simply as applying a twist as following an arc rather than a straight line.
+ * Can also be thought of more simply as applying a twist as following an arc rather than a straight
+ * line.
  *
  * See this document for more information on the pose exponential and its derivation.
  * https://file.tavsys.net/control/controls-engineering-in-frc.pdf#section.10.2
@@ -187,7 +199,7 @@ Pose2d Pose2d::transform_by(const Transform2d &transform) const {
  *
  * @return new pose that has been moved forward according to the twist.
  */
-Pose2d Pose2d::exp(const Twist2d &twist) const {
+Pose2d Pose2d::exp(const Twist2d& twist) const {
     const double dx = twist.dx();
     const double dy = twist.dy();
     const double dtheta = twist.dtheta();
@@ -204,7 +216,9 @@ Pose2d Pose2d::exp(const Twist2d &twist) const {
         c = (1 - cos_theta) / dtheta;
     }
 
-    const Transform2d transform{Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}};
+    const Transform2d transform{
+            Translation2d{dx * s - dy * c, dx * c + dy * s}, Rotation2d{cos_theta, sin_theta}
+    };
 
     return *this + transform;
 }
@@ -220,7 +234,7 @@ Pose2d Pose2d::exp(const Twist2d &twist) const {
  *
  * @return the twist required to go from this pose to the given end
  */
-Twist2d Pose2d::log(const Pose2d &end_pose) const {
+Twist2d Pose2d::log(const Pose2d& end_pose) const {
     const Pose2d transform = end_pose.relative_to(*this);
     const double dtheta = transform.rotation().radians();
     const double halfDtheta = dtheta / 2.0;
@@ -235,8 +249,9 @@ Twist2d Pose2d::log(const Pose2d &end_pose) const {
         halfThetaByTanOfHalfDtheta = -(halfDtheta * transform.rotation().f_sin()) / cosMinusOne;
     }
 
-    const Translation2d translationPart = transform.translation().rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
-                                          std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+    const Translation2d translationPart =
+            transform.translation().rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
+            std::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
 
     return Twist2d{translationPart.x(), translationPart.y(), dtheta};
 }
@@ -248,7 +263,7 @@ Twist2d Pose2d::log(const Pose2d &end_pose) const {
  *
  * @return the single pose mean of the list of poses.
  */
-Pose2d pose_mean(const std::vector<Pose2d> &list) {
+Pose2d pose_mean(const std::vector<Pose2d>& list) {
     double sumx = 0;
     double sumy = 0;
 
@@ -264,6 +279,7 @@ Pose2d pose_mean(const std::vector<Pose2d> &list) {
     }
 
     return Pose2d{
-      Translation2d{sumx / list.size(), sumy / list.size()}, Rotation2d{sum_sin / list.size(), sum_cos / list.size()}
+            Translation2d{sumx / list.size(), sumy / list.size()},
+            Rotation2d{sum_sin / list.size(), sum_cos / list.size()}
     };
 }

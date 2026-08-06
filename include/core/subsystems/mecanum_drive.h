@@ -12,8 +12,7 @@
  * Contains 4 motors, a possible IMU (intertial), and a possible undriven perpendicular wheel.
  */
 class MecanumDrive {
-
-  public:
+   public:
     /**
      * Configure the Mecanum drive PID tunings and robot configurations
      */
@@ -37,8 +36,13 @@ class MecanumDrive {
      * Create the Mecanum drivetrain object
      */
     MecanumDrive(
-      vex::motor &left_front, vex::motor &right_front, vex::motor &left_rear, vex::motor &right_rear,
-      vex::rotation *lateral_wheel = NULL, vex::inertial *imu = NULL, mecanumdrive_config_t *config = NULL
+            vex::motor& left_front,
+            vex::motor& right_front,
+            vex::motor& left_rear,
+            vex::motor& right_rear,
+            vex::rotation* lateral_wheel = NULL,
+            vex::inertial* imu = NULL,
+            mecanumdrive_config_t* config = NULL
     );
 
     /**
@@ -52,28 +56,31 @@ class MecanumDrive {
     void drive_raw(double direction_deg, double magnitude, double rotation);
 
     /**
-     * Drive the robot with a mecanum-style / arcade drive. Inputs are in percent (-100.0 -> 100.0) straight from the
-     * controller. Controls are mixed, so the robot can drive forward / strafe / rotate all at the same time.
+     * Drive the robot with a mecanum-style / arcade drive. Inputs are in percent (-100.0 -> 100.0)
+     * straight from the controller. Controls are mixed, so the robot can drive forward / strafe /
+     * rotate all at the same time.
      *
      * @param left_y left joystick, Y axis (forward / backwards)
      * @param left_x left joystick, X axis (strafe left / right)
      * @param right_x right joystick, X axis (rotation left / right)
-     * @param power =2 how much of a "curve" there should be on drive controls; better for low speed maneuvers.
-     *                Leave blank for a default curve of 2 (higher means more fidelity)
+     * @param power =2 how much of a "curve" there should be on drive controls; better for low speed
+     * maneuvers. Leave blank for a default curve of 2 (higher means more fidelity)
      */
     void drive(double left_y, double left_x, double right_x, int power = 2);
 
     /**
      * Drive the robot in a straight line automatically.
      * If the inertial was declared in the constructor, use it to correct while driving.
-     * If the lateral wheel was declared in the constructor, use it for more accurate positioning while strafing.
+     * If the lateral wheel was declared in the constructor, use it for more accurate positioning
+     * while strafing.
      *
      * @param inches   How far the robot should drive, in inches
      * @param direction    What direction the robot should travel in, in degrees.
      *                     0 is forward, +/-180 is reverse, clockwise is positive.
      * @param speed    The maximum speed the robot should travel, in percent: -1.0->+1.0
      * @param gyro_correction =true   Whether or not to use the gyro to help correct while driving.
-     *                               Will always be false if no gyro was declared in the constructor.
+     *                               Will always be false if no gyro was declared in the
+     * constructor.
      */
     bool auto_drive(double inches, double direction, double speed, bool gyro_correction = true);
 
@@ -89,16 +96,16 @@ class MecanumDrive {
      */
     bool auto_turn(double degrees, double speed, bool ignore_imu = false);
 
-  private:
+   private:
     vex::motor &left_front, &right_front, &left_rear, &right_rear;
 
-    mecanumdrive_config_t *config;
-    vex::rotation *lateral_wheel;
-    vex::inertial *imu;
+    mecanumdrive_config_t* config;
+    vex::rotation* lateral_wheel;
+    vex::inertial* imu;
 
-    PID *drive_pid = NULL;
-    PID *drive_gyro_pid = NULL;
-    PID *turn_pid = NULL;
+    PID* drive_pid = NULL;
+    PID* drive_gyro_pid = NULL;
+    PID* turn_pid = NULL;
 
     bool init = true;
 };

@@ -1,26 +1,30 @@
 #include "core/utils/moving_average.h"
+
 #include <cmath>
 #include <vector>
 
 /*
  * MovingAverage
  *
- * A moving average is a way of smoothing out noisy data. For many sensor readings, the noise is roughly symmetric
- * around the actual value. This means that if you collect enough samples those that are too high are cancelled out by
- * the samples that are too low leaving the real value.
+ * A moving average is a way of smoothing out noisy data. For many sensor readings, the noise is
+ * roughly symmetric around the actual value. This means that if you collect enough samples those
+ * that are too high are cancelled out by the samples that are too low leaving the real value.
  *
- * The MovingAverage class provides a simple interface to do this smoothing from our noisy sensor values.
+ * The MovingAverage class provides a simple interface to do this smoothing from our noisy sensor
+ * values.
  *
- * WARNING: because we need a lot of samples to get the actual value, the value given by the MovingAverage will 'lag'
- * behind the actual value that the sensor is reading. Using a MovingAverage is thus a tradeoff between accuracy and lag
- * time (more samples) vs. less accuracy and faster updating (less samples).
+ * WARNING: because we need a lot of samples to get the actual value, the value given by the
+ * MovingAverage will 'lag' behind the actual value that the sensor is reading. Using a
+ * MovingAverage is thus a tradeoff between accuracy and lag time (more samples) vs. less accuracy
+ * and faster updating (less samples).
  *
  */
 
 /**
  * Create a moving average calculator with 0 as the default value
  *
- * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
+ * @param buffer_size    The size of the buffer. The number of samples that constitute a valid
+ * reading
  */
 MovingAverage::MovingAverage(int buffer_size) {
     buffer = std::vector<double>(buffer_size, 0.0);
@@ -30,7 +34,8 @@ MovingAverage::MovingAverage(int buffer_size) {
 
 /**
  * Create a moving average calculator with a specified default value
- * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
+ * @param buffer_size    The size of the buffer. The number of samples that constitute a valid
+ * reading
  * @param starting_value The value that the average will be before any data is added
  */
 MovingAverage::MovingAverage(int buffer_size, double starting_value) {
@@ -70,7 +75,8 @@ int MovingAverage::get_size() const { return buffer.size(); }
 /**
  * Create a moving average calculator with 0 as the default value
  *
- * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
+ * @param buffer_size    The size of the buffer. The number of samples that constitute a valid
+ * reading
  */
 ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size) {
     buffer = std::vector<double>(buffer_size, 0.0);
@@ -80,7 +86,8 @@ ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size) {
 
 /**
  * Create a moving average calculator with a specified default value
- * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
+ * @param buffer_size    The size of the buffer. The number of samples that constitute a valid
+ * reading
  * @param starting_value The value that the average will be before any data is added
  */
 ExponentialMovingAverage::ExponentialMovingAverage(int buffer_size, double starting_value) {

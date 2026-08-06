@@ -7,20 +7,19 @@
 
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math_util.h"
-
 #include "core/utils/math/geometry/pose2d.h"
+#include "core/utils/math_util.h"
 
 /**
  * OdometrySerial
  *
- * This class handles the code for an odometry setup where calculations are done on an external coprocessor.
- * Data is sent to the brain via smart port, using a generic serial (UART) connection.
+ * This class handles the code for an odometry setup where calculations are done on an external
+ * coprocessor. Data is sent to the brain via smart port, using a generic serial (UART) connection.
  *
  *
  *
- * This is a "set and forget" class, meaning once the object is created, the robot will immediately begin
- * tracking it's movement in the background.
+ * This is a "set and forget" class, meaning once the object is created, the robot will immediately
+ * begin tracking it's movement in the background.
  *
  * https://rit.enterprise.slack.com/files/U04112Y5RB6/F080M01KPA5/predictperpindiculars2.pdf
  * 2024-2025 Notebook: Entries/Software Entries/Localization/N-Pod Odometry
@@ -33,10 +32,18 @@
  * Construct a new Odometry Serial Object
  */
 OdometrySerial::OdometrySerial(
-  bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate
+        bool is_async,
+        bool calc_vel_acc_on_brain,
+        Pose2d initial_pose,
+        Pose2d sensor_offset,
+        int32_t port,
+        int32_t baudrate
 )
-    : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
-      pose_offset(Pose2d(0, 0, 0)), _port(port) {
+    : OdometryBase(is_async),
+      calc_vel_acc_on_brain(calc_vel_acc_on_brain),
+      pose(Pose2d(0, 0, 0)),
+      pose_offset(Pose2d(0, 0, 0)),
+      _port(port) {
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
     send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
@@ -46,7 +53,7 @@ OdometrySerial::OdometrySerial(
  * Send
  */
 void OdometrySerial::send_config(
-  const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain
+        const Pose2d& initial_pose, const Pose2d& sensor_offset, const bool& calc_vel_acc_on_brain
 ) {
     uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
@@ -73,24 +80,26 @@ void OdometrySerial::send_config(
 }
 
 /**
- * Attempts to recieve an entire packet encoded with COBS, stops at delimiter or there's a buffer overflow
+ * Attempts to recieve an entire packet encoded with COBS, stops at delimiter or there's a buffer
+ * overflow
  *
  * @param port the port number the serial is plugged into, counts from 0 instead of 1
  * @param buffer pointer to a uint8_t[] where we put the data
  * @param buffer_size length in bytes of the buffer
  * @return 0 success
  */
-int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size) {
+int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t* buffer, size_t buffer_size) {
     size_t index = 0;
 
     while (true) {
-        // wait for a byte (we read byte by byte into our own buffer rather than grabbing the whole packet all at once)
+        // wait for a byte (we read byte by byte into our own buffer rather than grabbing the whole
+        // packet all at once)
         if (vexGenericSerialReceiveAvail(port) > 0) {
             uint8_t character = vexGenericSerialReadChar(port);
 
             // if delimiter
             if (character == 0x00) {
-                return index; // return packet length
+                return index;  // return packet length
             }
 
             // store character in buffer
@@ -107,8 +116,8 @@ int OdometrySerial::receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t b
 }
 
 /**
- * Update the current position of the robot once by reading a single packet from the serial port, then updating all over
- * values, velocity, accel
+ * Update the current position of the robot once by reading a single packet from the serial port,
+ * then updating all over values, velocity, accel
  *
  * @return the robot's updated position
  */
@@ -127,7 +136,7 @@ Pose2d OdometrySerial::update() {
 
     if (packet_length == cobs_encoded_size) {
         if (cobs_decode(cobs_encoded, packet_length, decoded_packet) == packet_size) {
-            float *floats = (float *)decoded_packet;
+            float* floats = (float*)decoded_packet;
 
             updated_pose = Pose2d(Translation2d(floats[0], floats[1]), from_degrees(floats[2]));
             this->pose = updated_pose;
@@ -151,7 +160,7 @@ Pose2d OdometrySerial::update() {
  *
  * @param new_pose the pose to set the odometry to
  */
-void OdometrySerial::set_position(const Pose2d &new_pose) { pose_offset = new_pose; }
+void OdometrySerial::set_position(const Pose2d& new_pose) { pose_offset = new_pose; }
 
 /**
  * Gets the current position and rotation
@@ -179,25 +188,24 @@ Pose2d OdometrySerial::get_pose2d(void) { return pose.relative_to(pose_offset); 
  * @return Encoded buffer length in bytes
  * @note Does not output delimiter byte
  */
-size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buffer) {
+size_t OdometrySerial::cobs_encode(const void* data, size_t length, uint8_t* buffer) {
     assert(data && buffer);
 
-    uint8_t *encode = buffer;  // Encoded byte pointer
-    uint8_t *codep = encode++; // Output code pointer
-    uint8_t code = 1;          // Code value
+    uint8_t* encode = buffer;   // Encoded byte pointer
+    uint8_t* codep = encode++;  // Output code pointer
+    uint8_t code = 1;           // Code value
 
-    for (const uint8_t *byte = (const uint8_t *)data; length--; ++byte) {
-        if (*byte) // Byte not zero, write it
+    for (const uint8_t* byte = (const uint8_t*)data; length--; ++byte) {
+        if (*byte)  // Byte not zero, write it
             *encode++ = *byte, ++code;
 
-        if (!*byte || code == 0xff) // Input is zero or block completed, restart
+        if (!*byte || code == 0xff)  // Input is zero or block completed, restart
         {
             *codep = code, code = 1, codep = encode;
-            if (!*byte || length)
-                ++encode;
+            if (!*byte || length) ++encode;
         }
     }
-    *codep = code; // Write final code value
+    *codep = code;  // Write final code value
 
     return (size_t)(encode - buffer);
 }
@@ -210,26 +218,26 @@ size_t OdometrySerial::cobs_encode(const void *data, size_t length, uint8_t *buf
  * @return Number of bytes successfully decoded
  * @note Stops decoding if delimiter byte is found
  */
-size_t OdometrySerial::cobs_decode(const uint8_t *buffer, size_t length, void *data) {
+size_t OdometrySerial::cobs_decode(const uint8_t* buffer, size_t length, void* data) {
     assert(buffer && data);
 
-    const uint8_t *byte = buffer;      // Encoded input byte pointer
-    uint8_t *decode = (uint8_t *)data; // Decoded output byte pointer
+    const uint8_t* byte = buffer;      // Encoded input byte pointer
+    uint8_t* decode = (uint8_t*)data;  // Decoded output byte pointer
 
     for (uint8_t code = 0xff, block = 0; byte < buffer + length; --block) {
-        if (block) // Decode block byte
+        if (block)  // Decode block byte
             *decode++ = *byte++;
         else {
-            block = *byte++;             // Fetch the next block length
-            if (block && (code != 0xff)) // Encoded zero, write it unless it's delimiter.
+            block = *byte++;              // Fetch the next block length
+            if (block && (code != 0xff))  // Encoded zero, write it unless it's delimiter.
                 *decode++ = 0;
             code = block;
-            if (!code) // Delimiter code found
+            if (!code)  // Delimiter code found
                 break;
         }
     }
 
-    return (size_t)(decode - (uint8_t *)data);
+    return (size_t)(decode - (uint8_t*)data);
 }
 
 double OdometrySerial::get_speed() {

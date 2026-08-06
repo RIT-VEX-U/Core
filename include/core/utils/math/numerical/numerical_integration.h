@@ -1,7 +1,6 @@
 #pragma once
 
 #include <../vendor/eigen/Eigen/Dense>
-
 #include <functional>
 
 /**
@@ -32,14 +31,16 @@
  */
 
 template <int X, int U>
-using WithInputDerivative =
-  std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &, const Eigen::Vector<double, U> &)>;
+using WithInputDerivative = std::function<
+        Eigen::Vector<double, X>(const Eigen::Vector<double, X>&, const Eigen::Vector<double, U>&)>;
 
 template <int X>
-using WithoutInputDerivative = std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X> &)>;
+using WithoutInputDerivative =
+        std::function<Eigen::Vector<double, X>(const Eigen::Vector<double, X>&)>;
 
 template <int Y>
-using TimeVariantDerivative = std::function<Eigen::Vector<double, Y>(const double &, const Eigen::Vector<double, Y> &)>;
+using TimeVariantDerivative =
+        std::function<Eigen::Vector<double, Y>(const double&, const Eigen::Vector<double, Y>&)>;
 
 /**
  * Performs first order numerical integration of the time-invariant differential
@@ -56,8 +57,10 @@ using TimeVariantDerivative = std::function<Eigen::Vector<double, Y>(const doubl
  */
 template <int X, int U>
 Eigen::Vector<double, X> euler_with_input(
-  const WithInputDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u,
-  const double &h
+        const WithInputDerivative<X, U>& f,
+        const Eigen::Vector<double, X>& x,
+        const Eigen::Vector<double, U>& u,
+        const double& h
 ) {
     Eigen::Vector<double, X> k1 = f(x, u);
 
@@ -77,8 +80,9 @@ Eigen::Vector<double, X> euler_with_input(
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X>
-euler_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> euler_without_input(
+        const WithoutInputDerivative<X>& f, const Eigen::Vector<double, X>& x, const double& h
+) {
     Eigen::Vector<double, X> k1 = f(x);
 
     return x + h * k1;
@@ -99,7 +103,10 @@ euler_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<doub
  */
 template <int Y>
 Eigen::Vector<double, Y> euler_time_variant(
-  const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h
+        const TimeVariantDerivative<Y>& f,
+        const double& t,
+        const Eigen::Vector<double, Y>& y,
+        const double& h
 ) {
     Eigen::Vector<double, Y> k1 = f(t, y);
 
@@ -122,8 +129,10 @@ Eigen::Vector<double, Y> euler_time_variant(
  */
 template <int X, int U>
 Eigen::Vector<double, X> RK2_with_input(
-  const WithInputDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u,
-  const double &h
+        const WithInputDerivative<X, U>& f,
+        const Eigen::Vector<double, X>& x,
+        const Eigen::Vector<double, U>& u,
+        const double& h
 ) {
     Eigen::Vector<double, X> k1 = f(x, u);
     Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
@@ -145,8 +154,9 @@ Eigen::Vector<double, X> RK2_with_input(
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X>
-RK2_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> RK2_without_input(
+        const WithoutInputDerivative<X>& f, const Eigen::Vector<double, X>& x, const double& h
+) {
     Eigen::Vector<double, X> k1 = f(x);
     Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
 
@@ -169,7 +179,10 @@ RK2_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<double
  */
 template <int Y>
 Eigen::Vector<double, Y> RK2_time_variant(
-  const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h
+        const TimeVariantDerivative<Y>& f,
+        const double& t,
+        const Eigen::Vector<double, Y>& y,
+        const double& h
 ) {
     Eigen::Vector<double, Y> k1 = f(t, y);
     Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);
@@ -195,8 +208,10 @@ Eigen::Vector<double, Y> RK2_time_variant(
  */
 template <int X, int U>
 Eigen::Vector<double, X> RK4_with_input(
-  const WithInputDerivative<X, U> &f, const Eigen::Vector<double, X> &x, const Eigen::Vector<double, U> &u,
-  const double &h
+        const WithInputDerivative<X, U>& f,
+        const Eigen::Vector<double, X>& x,
+        const Eigen::Vector<double, U>& u,
+        const double& h
 ) {
     Eigen::Vector<double, X> k1 = f(x, u);
     Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1, u);
@@ -222,8 +237,9 @@ Eigen::Vector<double, X> RK4_with_input(
  * @param h The time over which to integrate.
  */
 template <int X>
-Eigen::Vector<double, X>
-RK4_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<double, X> &x, const double &h) {
+Eigen::Vector<double, X> RK4_without_input(
+        const WithoutInputDerivative<X>& f, const Eigen::Vector<double, X>& x, const double& h
+) {
     Eigen::Vector<double, X> k1 = f(x);
     Eigen::Vector<double, X> k2 = f(x + h * 0.5 * k1);
     Eigen::Vector<double, X> k3 = f(x + h * 0.5 * k2);
@@ -250,7 +266,10 @@ RK4_without_input(const WithoutInputDerivative<X> &f, const Eigen::Vector<double
  */
 template <int Y>
 Eigen::Vector<double, Y> RK4_time_variant(
-  const TimeVariantDerivative<Y> &f, const double &t, const Eigen::Vector<double, Y> &y, const double &h
+        const TimeVariantDerivative<Y>& f,
+        const double& t,
+        const Eigen::Vector<double, Y>& y,
+        const double& h
 ) {
     Eigen::Vector<double, Y> k1 = f(t, y);
     Eigen::Vector<double, Y> k2 = f(t + h * 0.5, y + h * 0.5 * k1);

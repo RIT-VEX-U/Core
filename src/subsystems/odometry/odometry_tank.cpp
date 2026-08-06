@@ -4,58 +4,94 @@
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_side The left motors
  * @param right_side The right motors
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
- * is contained
- * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
- * to manually call update().
+ * @param config the specifications that supply the odometry with descriptions of the robot. See
+ * robot_specs_t for what is contained
+ * @param imu The robot's inertial sensor. If not included, rotation is calculated from the
+ * encoders.
+ * @param is_async If true, position will be updated in the background continuously. If false, the
+ * programmer will have to manually call update().
  */
 OdometryTank::OdometryTank(
-  vex::motor_group &left_side, vex::motor_group &right_side, robot_specs_t &config, vex::inertial *imu, bool is_async
+        vex::motor_group& left_side,
+        vex::motor_group& right_side,
+        robot_specs_t& config,
+        vex::inertial* imu,
+        bool is_async
 )
-    : OdometryBase(is_async), left_side(&left_side), right_side(&right_side), left_custom_enc(NULL),
-      right_custom_enc(NULL), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config) {}
+    : OdometryBase(is_async),
+      left_side(&left_side),
+      right_side(&right_side),
+      left_custom_enc(NULL),
+      right_custom_enc(NULL),
+      left_vex_enc(NULL),
+      right_vex_enc(NULL),
+      imu(imu),
+      config(config) {}
 
 /**
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_custom_enc The left custom encoder
  * @param right_custom_enc The right custom encoder
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
- * is contained
- * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
- * to manually call update().
+ * @param config the specifications that supply the odometry with descriptions of the robot. See
+ * robot_specs_t for what is contained
+ * @param imu The robot's inertial sensor. If not included, rotation is calculated from the
+ * encoders.
+ * @param is_async If true, position will be updated in the background continuously. If false, the
+ * programmer will have to manually call update().
  */
 OdometryTank::OdometryTank(
-  CustomEncoder &left_custom_enc, CustomEncoder &right_custom_enc, robot_specs_t &config, vex::inertial *imu,
-  bool is_async
+        CustomEncoder& left_custom_enc,
+        CustomEncoder& right_custom_enc,
+        robot_specs_t& config,
+        vex::inertial* imu,
+        bool is_async
 )
-    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(&left_custom_enc),
-      right_custom_enc(&right_custom_enc), left_vex_enc(NULL), right_vex_enc(NULL), imu(imu), config(config) {}
+    : OdometryBase(is_async),
+      left_side(NULL),
+      right_side(NULL),
+      left_custom_enc(&left_custom_enc),
+      right_custom_enc(&right_custom_enc),
+      left_vex_enc(NULL),
+      right_vex_enc(NULL),
+      imu(imu),
+      config(config) {}
 
 /**
  * Initialize the Odometry module, calculating position from the drive motors.
  * @param left_vex_enc The left vex encoder
  * @param right_vex_enc The right vex encoder
- * @param config the specifications that supply the odometry with descriptions of the robot. See robot_specs_t for what
- * is contained
- * @param imu The robot's inertial sensor. If not included, rotation is calculated from the encoders.
- * @param is_async If true, position will be updated in the background continuously. If false, the programmer will have
- * to manually call update().
+ * @param config the specifications that supply the odometry with descriptions of the robot. See
+ * robot_specs_t for what is contained
+ * @param imu The robot's inertial sensor. If not included, rotation is calculated from the
+ * encoders.
+ * @param is_async If true, position will be updated in the background continuously. If false, the
+ * programmer will have to manually call update().
  */
 OdometryTank::OdometryTank(
-  vex::encoder &left_vex_enc, vex::encoder &right_vex_enc, robot_specs_t &config, vex::inertial *imu, bool is_async
+        vex::encoder& left_vex_enc,
+        vex::encoder& right_vex_enc,
+        robot_specs_t& config,
+        vex::inertial* imu,
+        bool is_async
 )
-    : OdometryBase(is_async), left_side(NULL), right_side(NULL), left_custom_enc(NULL), right_custom_enc(NULL),
-      left_vex_enc(&left_vex_enc), right_vex_enc(&right_vex_enc), imu(imu), config(config) {}
+    : OdometryBase(is_async),
+      left_side(NULL),
+      right_side(NULL),
+      left_custom_enc(NULL),
+      right_custom_enc(NULL),
+      left_vex_enc(&left_vex_enc),
+      right_vex_enc(&right_vex_enc),
+      imu(imu),
+      config(config) {}
 
 /**
  * Resets the position and rotational data to the input.
  *
  */
-void OdometryTank::set_position(const Pose2d &newpos) {
+void OdometryTank::set_position(const Pose2d& newpos) {
     mut.lock();
-    rotation_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - rotation_offset);
+    rotation_offset =
+            newpos.rotation().degrees() - (current_pos.rotation().degrees() - rotation_offset);
     mut.unlock();
 
     OdometryBase::set_position(newpos);
@@ -103,7 +139,8 @@ Pose2d OdometryTank::update() {
     angle += rotation_offset;
 
     // Limit the angle betwen 0 and 360.
-    // fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's negative.
+    // fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's
+    // negative.
     angle = fmod(angle, 360.0);
     if (angle < 0) {
         angle += 360;
@@ -120,14 +157,17 @@ Pose2d OdometryTank::update() {
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
         // Calculate robot velocity
-        double this_speed = current_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
+        double this_speed =
+                current_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
         ema.add_entry(this_speed);
         speed = ema.get_value();
         // Calculate robot acceleration
         accel = (speed - last_speed) / tmr.time(sec);
 
         // Calculate robot angular velocity (deg/sec)
-        ang_speed_deg = smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
+        ang_speed_deg =
+                smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) /
+                tmr.time(sec);
 
         // Calculate robot angular acceleration (deg/sec^2)
         ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(sec);
@@ -146,19 +186,24 @@ Pose2d OdometryTank::update() {
  * of the robot, relative to when this method was previously ran.
  */
 Pose2d OdometryTank::calculate_new_pos(
-  robot_specs_t &config, Pose2d &curr_pos, double lside_revs, double rside_revs, double angle_deg
+        robot_specs_t& config,
+        Pose2d& curr_pos,
+        double lside_revs,
+        double rside_revs,
+        double angle_deg
 ) {
     Pose2d new_pos(0, 0, 0);
 
     static double stored_lside_revs = lside_revs;
     static double stored_rside_revs = rside_revs;
 
-    // Convert the revolutions into "change in distance", and average the values for a "distance driven"
+    // Convert the revolutions into "change in distance", and average the values for a "distance
+    // driven"
     double lside_diff = (lside_revs - stored_lside_revs) * PI * config.odom_wheel_diam;
     double rside_diff = (rside_revs - stored_rside_revs) * PI * config.odom_wheel_diam;
     double dist_driven = (lside_diff + rside_diff) / 2.0;
 
-    double angle = angle_deg * PI / 180.0; // Degrees to radians
+    double angle = angle_deg * PI / 180.0;  // Degrees to radians
 
     // Create a vector from the change in distance in the current direction of the robot
     // deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)

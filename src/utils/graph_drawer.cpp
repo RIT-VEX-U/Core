@@ -1,13 +1,21 @@
 #include "core/utils/graph_drawer.h"
 
-/// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
-/// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
-/// @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
-/// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+/// @brief Creates a graph drawer with the specified number of series (each series is a separate
+/// line)
+/// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data
+/// points)
+/// @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto
+/// calculate bounds)
+/// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto
+/// calculate bounds)
 /// @param colors the colors of the series. must be of size num_series
 /// @param num_series the number of series to graph
 GraphDrawer::GraphDrawer(
-  int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series
+        int num_samples,
+        double lower_bound,
+        double upper_bound,
+        std::vector<vex::color> colors,
+        size_t num_series
 )
     : cols(colors), auto_fit(lower_bound == upper_bound) {
     if (colors.size() != num_series) {
@@ -33,7 +41,9 @@ GraphDrawer::GraphDrawer(
  */
 void GraphDrawer::add_samples(std::vector<Translation2d> new_samples) {
     if (series.size() != new_samples.size()) {
-        printf("Mismatch between # of samples given and number of series. %s : %d\n", __FILE__, __LINE__);
+        printf("Mismatch between # of samples given and number of series. %s : %d\n",
+               __FILE__,
+               __LINE__);
     }
     for (size_t i = 0; i < series.size(); i++) {
         series[i][sample_index] = new_samples[i];
@@ -48,7 +58,9 @@ void GraphDrawer::add_samples(std::vector<Translation2d> new_samples) {
 
 void GraphDrawer::add_samples(std::vector<double> new_samples) {
     if (series.size() != new_samples.size()) {
-        printf("Mismatch between # of samples given and number of series. %s : %d\n", __FILE__, __LINE__);
+        printf("Mismatch between # of samples given and number of series. %s : %d\n",
+               __FILE__,
+               __LINE__);
     }
     for (size_t i = 0; i < series.size(); i++) {
         series[i][sample_index] = {(double)vex::timer::system(), new_samples[i]};
@@ -68,7 +80,7 @@ void GraphDrawer::add_samples(std::vector<double> new_samples) {
  * @param width the width of the graphed region
  * @param height the height of the graphed region
  */
-void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int height) {
+void GraphDrawer::draw(vex::brain::lcd& screen, int x, int y, int width, int height) {
     if (series[0].size() < 1) {
         return;
     }
@@ -103,7 +115,7 @@ void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int hei
     for (int j = 0; j < series.size(); j++) {
         double x_s = (double)x;
         double y_s = (double)y + (double)height;
-        const std::vector<Translation2d> &samples = series[j];
+        const std::vector<Translation2d>& samples = series[j];
 
         screen.setPenColor(cols[j]);
         for (int i = sample_index; i < samples.size() + sample_index - 1; i++) {

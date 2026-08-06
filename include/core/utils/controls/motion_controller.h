@@ -24,18 +24,18 @@
  * @date 7/13/2022
  */
 class MotionController : public Feedback {
-  public:
+   public:
     /**
      * m_profile_config holds all data the motion controller uses to plan paths
-     * When motion pofile is given a target to drive to, max_v and accel are used to make the trapezoid profile
-     * instructing the controller how to drive pid_cfg, ff_cfg are used to find the motor outputs necessary to execute
-     * this path
+     * When motion pofile is given a target to drive to, max_v and accel are used to make the
+     * trapezoid profile instructing the controller how to drive pid_cfg, ff_cfg are used to find
+     * the motor outputs necessary to execute this path
      */
     typedef struct {
-        double max_v;                    ///< the maximum velocity the robot can drive
-        double accel;                    ///< the most acceleration the robot can do
-        PID::pid_config_t pid_cfg;       ///< configuration parameters for the internal PID controller
-        FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal
+        double max_v;               ///< the maximum velocity the robot can drive
+        double accel;               ///< the most acceleration the robot can do
+        PID::pid_config_t pid_cfg;  ///< configuration parameters for the internal PID controller
+        FeedForward::ff_config_t ff_cfg;  ///< configuration parameters for the internal
     } m_profile_cfg_t;
 
     /**
@@ -47,7 +47,7 @@ class MotionController : public Feedback {
      *    pid_cfg Definitions of kP, kI, and kD
      *    ff_cfg Definitions of kS, kV, and kA
      */
-    MotionController(m_profile_cfg_t &config);
+    MotionController(m_profile_cfg_t& config);
 
     /**
      * @brief Initialize the motion profile for a new movement
@@ -88,19 +88,20 @@ class MotionController : public Feedback {
      */
     motion_t get_motion() const;
 
-    screen::Page *Page();
+    screen::Page* Page();
 
     /**
-     * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
-     * It does this by first calculating the kS (voltage to overcome static friction) by slowly increasing
-     * the voltage until it moves.
+     * This method attempts to characterize the robot's drivetrain and automatically tune the
+     * feedforward. It does this by first calculating the kS (voltage to overcome static friction)
+     * by slowly increasing the voltage until it moves.
      *
-     * Next is kV (voltage to sustain a certain velocity), where the robot will record it's steady-state velocity
-     * at 'pct' speed.
+     * Next is kV (voltage to sustain a certain velocity), where the robot will record it's
+     * steady-state velocity at 'pct' speed.
      *
-     * Finally, kA (voltage needed to accelerate by a certain rate), where the robot will record the entire movement's
-     * velocity and acceleration, record a plot of [X=(pct-kV*V-kS), Y=(Acceleration)] along the movement,
-     * and since kA*Accel = pct-kV*V-kS, the reciprocal of the linear regression is the kA value.
+     * Finally, kA (voltage needed to accelerate by a certain rate), where the robot will record the
+     * entire movement's velocity and acceleration, record a plot of [X=(pct-kV*V-kS),
+     * Y=(Acceleration)] along the movement, and since kA*Accel = pct-kV*V-kS, the reciprocal of the
+     * linear regression is the kA value.
      *
      * @param drive The tankdrive to operate on
      * @param odometry The robot's odometry subsystem
@@ -108,10 +109,11 @@ class MotionController : public Feedback {
      * @param duration Amount of time the robot should be moving for the test
      * @return A tuned feedforward object
      */
-    static FeedForward::ff_config_t
-    tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct = 0.6, double duration = 2);
+    static FeedForward::ff_config_t tune_feedforward(
+            TankDrive& drive, OdometryTank& odometry, double pct = 0.6, double duration = 2
+    );
 
-  private:
+   private:
     m_profile_cfg_t config;
 
     PID pid;

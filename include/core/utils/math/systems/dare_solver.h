@@ -4,7 +4,7 @@
 
 /**
  * Copyright (c) FIRST and other WPILib contributors.
- * 
+ *
  * Computes the unique stabilizing solution X to the discrete-time algebraic
  * Riccati equation:
  *
@@ -22,7 +22,7 @@
  *
  * This algorithm is taken directly from WPILib. The version that I wrote was
  * slower, unsurprisingly, so we will use theirs instead.
- * 
+ *
  * This is also the algorithm used by Drake, an advanced robotics library.
  *
  * @tparam STATES Number of STATES.
@@ -35,8 +35,10 @@
  */
 template <int STATES, int INPUTS>
 EMat<STATES, STATES> DARE(
-  const EMat<STATES, STATES> &A, const EMat<STATES, INPUTS> &B, const EMat<STATES, STATES> &Q,
-  const EMat<INPUTS, INPUTS> &R
+        const EMat<STATES, STATES>& A,
+        const EMat<STATES, INPUTS>& B,
+        const EMat<STATES, STATES>& Q,
+        const EMat<INPUTS, INPUTS>& R
 ) {
     const Eigen::LLT<EMat<INPUTS, INPUTS>> R_llt = R.llt();
     using StateMatrix = EMat<STATES, STATES>;
@@ -56,8 +58,6 @@ EMat<STATES, STATES> DARE(
     StateMatrix G_k = B * R_llt.solve(B.transpose());
     StateMatrix H_k;
     StateMatrix H_k1 = Q;
-
-
 
     do {
         H_k = H_k1;
@@ -91,7 +91,6 @@ EMat<STATES, STATES> DARE(
         G_k += A_k * V_2 * A_k.transpose();
         H_k1 = H_k + V_1.transpose() * H_k * A_k;
         A_k *= V_1;
-        
 
         // while |Hₖ₊₁ − Hₖ| > ε |Hₖ₊₁|
     } while ((H_k1 - H_k).norm() > 1e-10 * H_k1.norm());

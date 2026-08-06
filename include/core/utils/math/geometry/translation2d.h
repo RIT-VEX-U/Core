@@ -19,7 +19,7 @@ class Rotation2d;
  * +Theta is counterclockwise
  */
 class Translation2d {
-  public:
+   public:
     /**
      * Default Constructor for Translation2d
      */
@@ -31,14 +31,14 @@ class Translation2d {
      * @param x The x component of the translation.
      * @param y The y component of the translation.
      */
-    Translation2d(const double &x, const double &y);
+    Translation2d(const double& x, const double& y);
 
     /**
      * Constructs a Translation2d with the values from the given vector.
      *
      * @param vector The vector whose values will be used.
      */
-    Translation2d(const Eigen::Vector2d &vector);
+    Translation2d(const Eigen::Vector2d& vector);
 
     /**
      * Constructs a Translation2d given polar coordinates of the form (r, theta).
@@ -46,7 +46,7 @@ class Translation2d {
      * @param r The radius (magnitude) of the vector.
      * @param theta The angle (direction) of the vector.
      */
-    Translation2d(const double &r, const Rotation2d &theta);
+    Translation2d(const double& r, const Rotation2d& theta);
 
     /**
      * Returns the x value of the translation.
@@ -105,7 +105,7 @@ class Translation2d {
      *
      * @return the distance between two translations.
      */
-    double distance(const Translation2d &other) const;
+    double distance(const Translation2d& other) const;
 
     /**
      * Applies a rotation to this translation around the origin.
@@ -118,7 +118,7 @@ class Translation2d {
      *
      * @return the new translation that has been rotated around the origin.
      */
-    Translation2d rotate_by(const Rotation2d &rotation) const;
+    Translation2d rotate_by(const Rotation2d& rotation) const;
 
     /**
      * Applies a rotation to this translation around another given point.
@@ -131,7 +131,7 @@ class Translation2d {
      *
      * @return the translation that has been rotated.
      */
-    Translation2d rotate_around(const Translation2d &other, const Rotation2d &rotation) const;
+    Translation2d rotate_around(const Translation2d& other, const Rotation2d& rotation) const;
 
     /**
      * Returns the sum of two translations.
@@ -143,7 +143,7 @@ class Translation2d {
      *
      * @return the sum of the two translations.
      */
-    Translation2d operator+(const Translation2d &other) const;
+    Translation2d operator+(const Translation2d& other) const;
 
     /**
      * Returns the difference of two translations.
@@ -155,7 +155,7 @@ class Translation2d {
      *
      * @return the difference of the two translations.
      */
-    Translation2d operator-(const Translation2d &other) const;
+    Translation2d operator-(const Translation2d& other) const;
 
     /**
      * Returns the inverse of this translation.
@@ -178,7 +178,7 @@ class Translation2d {
      *
      * @return this translation multiplied by a scalar.
      */
-    Translation2d operator*(const double &scalar) const;
+    Translation2d operator*(const double& scalar) const;
 
     /**
      * Returns this translation divided by a scalar.
@@ -190,7 +190,7 @@ class Translation2d {
      *
      * @return this translation divided by a scalar.
      */
-    Translation2d operator/(const double &scalar) const;
+    Translation2d operator/(const double& scalar) const;
 
     /**
      * Returns the dot product of two translations.
@@ -201,7 +201,7 @@ class Translation2d {
      *
      * @return the scalar valued dot product.
      */
-    double operator*(const Translation2d &other) const;
+    double operator*(const Translation2d& other) const;
 
     /**
      * Compares two translations.
@@ -211,7 +211,7 @@ class Translation2d {
      *
      * @return whether the two translations are equal.
      */
-    bool operator==(const Translation2d &other) const;
+    bool operator==(const Translation2d& other) const;
 
     /**
      * Sends a translation to an output stream.
@@ -220,9 +220,9 @@ class Translation2d {
      *
      * prints "Translation2d[x: (value), y: (value)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, const Translation2d &translation);
+    friend std::ostream& operator<<(std::ostream& os, const Translation2d& translation);
 
-  private:
+   private:
     double m_x;
     double m_y;
 };
@@ -234,4 +234,4 @@ class Translation2d {
  *
  * @return the single translation mean of the list of translation.
  */
-Translation2d mean(const std::vector<Translation2d> &list);
+Translation2d mean(const std::vector<Translation2d>& list);
