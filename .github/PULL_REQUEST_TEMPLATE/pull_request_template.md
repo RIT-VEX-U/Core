@@ -1,7 +1,5 @@
-Closes: (reference to github issue that this feature closes)
-
 # Description
-A brief description of how to use the feature
+A brief description of what this PR does
 
 # Usage
 
