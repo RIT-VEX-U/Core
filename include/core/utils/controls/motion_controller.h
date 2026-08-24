@@ -1,5 +1,5 @@
 #pragma once
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "core/subsystems/tank_drive.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/feedforward.h"

@@ -1,5 +1,5 @@
 #pragma once
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "core/utils/geometry.h"
 #include "vex.h"
 #include <string>
