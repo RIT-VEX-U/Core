@@ -25,14 +25,14 @@ class Quantity {
   double value;
 
  public:
-  typedef Mass mass;
-  typedef Length length;
-  typedef Time time;
-  typedef Current current;
-  typedef Angle angle;
-  typedef Temperature temperature;
-  typedef Luminosity luminosity;
-  typedef Moles moles;
+  using mass = Mass;
+  using length = Length;
+  using time = Time;
+  using current = Current;
+  using angle = Angle;
+  using temperature = Temperature;
+  using luminosity = Luminosity;
+  using moles = Moles;
 
   using Self = Quantity<Mass, Length, Time, Current, Angle, Temperature, Luminosity, Moles>;
 
@@ -63,6 +63,14 @@ class Quantity {
       : value(value) {}
 
   /**
+   * Construct a quantity from a numeric value expressed in a specific unit.
+   *
+   * @param value numeric value in the provided unit
+   * @param unit unit in which value is expressed
+   */
+  constexpr Quantity(double value, Self unit) : value(value * unit.value) {}
+
+  /**
    * Double cast overload, gets internal value.
    *
    * @return internal value
@@ -78,7 +86,7 @@ class Quantity {
    *
    * @param other the quantity to copy
    */
-  constexpr Quantity(const Self& other) : value(other.value) {}
+  constexpr Quantity(const Self& other) = default;
 
   /**
    * Gets the internal raw value
@@ -88,13 +96,16 @@ class Quantity {
   constexpr double internal() const { return value; }
 
   /**
-   * Converts internal value to requested unit.
-   * i.e. the "to" function goes from Distance to specifically "meters"
-   *
-   * @param quantity to convert
-   * @return converted value
+   * Gets the internal value as a specific unit
+   * e.g. Velocity v = 5_inps;
+   *      double v_mps = v.in(mps);
    */
-  constexpr double convert(Self quantity) const { return value / quantity.value; }
+  constexpr double in(Self unit) const { return value / unit.value; }
+
+  /**
+   * Backwards-compatible alias for in().
+   */
+  constexpr double convert(Self unit) const { return in(unit); }
 
   /**
    * Adds another quantity's value to this.
@@ -176,12 +187,6 @@ concept isQuantity = requires(Q q) { quantityChecker(q); };
 // Isomorphic concept checks whether dimensions are the same between quantities
 template <typename Q, typename... Quantities>
 concept Isomorphic = ((std::convertible_to<Q, Quantities> && std::convertible_to<Quantities, Q>) && ...);
-
-// Force cast quantities
-template <isQuantity Q1, isQuantity Q2>
-inline constexpr Q1 unit_cast(Q2 quantity) {
-  return Q1(quantity.internal());
-}
 
 // Multiplying quantities adds their dimensions
 template <isQuantity Q1, isQuantity Q2>
@@ -409,24 +414,20 @@ constexpr bool operator>(const Q& lhs, const R& rhs)
     return Name(Quantity<std::ratio<m>, std::ratio<l>, std::ratio<t>, std::ratio<i>, std::ratio<a>, std::ratio<o>,     \
                          std::ratio<j>, std::ratio<n>>(static_cast<double>(value)));                                   \
   }                                                                                                                    \
-  constexpr inline Name from_##long_suffix(double value) { return Name(value); }                                       \
-  constexpr inline Name from_##suffix(double value) { return Name(value); }                                            \
-  constexpr inline Name from_##long_suffix(Number value) { return Name(value.internal()); }                            \
-  constexpr inline Name from_##suffix(Number value) { return Name(value.internal()); }                                 \
-  constexpr inline double to_##long_suffix(Name quantity) { return quantity.internal(); }                              \
-  constexpr inline double to_##suffix(Name quantity) { return quantity.internal(); }
+  constexpr Name from_##long_suffix(double value) { return Name(value); }                                              \
+  constexpr Name from_##suffix(double value) { return Name(value); }                                                   \
+  constexpr Name from_##long_suffix(Number value) { return Name(value.internal()); }                                   \
+  constexpr Name from_##suffix(Number value) { return Name(value.internal()); }                                        \
 
-#define NEW_UNIT_LITERAL(Name, long_suffix, suffix, multiple)                                                         \
-  [[maybe_unused]]                                                                                                    \
-  constexpr Name suffix = multiple;                                                                                   \
-  constexpr Name operator""_##long_suffix(long double value) { return static_cast<double>(value) * multiple; }        \
-  constexpr Name operator""_##suffix(long double value) { return static_cast<double>(value) * multiple; }             \
-  constexpr Name operator""_##long_suffix(unsigned long long value) { return static_cast<double>(value) * multiple; } \
-  constexpr Name operator""_##suffix(unsigned long long value) { return static_cast<double>(value) * multiple; }      \
-  constexpr inline Name from_##long_suffix(Number value) { return value.internal() * multiple; }                      \
-  constexpr inline Name from_##suffix(Number value) { return value.internal() * multiple; }                           \
-  constexpr inline double to_##long_suffix(Name quantity) { return quantity.convert(multiple); }                      \
-  constexpr inline double to_##suffix(Name quantity) { return quantity.convert(multiple); }
+#define NEW_UNIT_LITERAL(Name, long_suffix, suffix, multiple)                                                          \
+  [[maybe_unused]]                                                                                                     \
+  constexpr Name suffix = multiple;                                                                                    \
+  constexpr Name operator""_##long_suffix(long double value) { return static_cast<double>(value) * multiple; }         \
+  constexpr Name operator""_##suffix(long double value) { return static_cast<double>(value) * multiple; }              \
+  constexpr Name operator""_##long_suffix(unsigned long long value) { return static_cast<double>(value) * multiple; }  \
+  constexpr Name operator""_##suffix(unsigned long long value) { return static_cast<double>(value) * multiple; }       \
+  constexpr Name from_##long_suffix(Number value) { return value.internal() * multiple; }                              \
+  constexpr Name from_##suffix(Number value) { return value.internal() * multiple; }                                   \
 
 #define NEW_METRIC_PREFIXES(Name, long_base, base)         \
   NEW_UNIT_LITERAL(Name, tera##base, T##base, base * 1E12) \
@@ -604,6 +605,46 @@ NEW_UNIT_LITERAL(AngularVelocityDerivativeGain, volt_seconds_squared_per_degree,
 
 using AngularVelocityIntegralGain = AngularProportionalGain;
 
+// Temperature gets special treatment since its conversions are affine
+using Temperature =
+    Quantity<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>,
+             std::ratio<0>, std::ratio<0>>;
+
+constexpr Temperature kelvin = Temperature(1.0);
+constexpr Temperature K = kelvin;
+
+constexpr Temperature operator""_kelvin(long double value) {
+  return Temperature(static_cast<double>(value));
+}
+
+constexpr Temperature operator""_kelvin(unsigned long long value) {
+  return Temperature(static_cast<double>(value));
+}
+
+constexpr Temperature operator""_K(long double value) {
+  return Temperature(static_cast<double>(value));
+}
+
+constexpr Temperature operator""_K(unsigned long long value) {
+  return Temperature(static_cast<double>(value));
+}
+
+constexpr Temperature operator""_celsius(long double value) {
+  return Temperature(static_cast<double>(value) + 273.15);
+}
+
+constexpr Temperature operator""_celsius(unsigned long long value) {
+  return Temperature(static_cast<double>(value) + 273.15);
+}
+
+constexpr Temperature operator""_fahrenheit(long double value) {
+  return Temperature((static_cast<double>(value) - 32.0) * (5.0 / 9.0) + 273.15);
+}
+
+constexpr Temperature operator""_fahrenheit(unsigned long long value) {
+  return Temperature((static_cast<double>(value) - 32.0) * (5.0 / 9.0) + 273.15);
+}
+
 namespace units {
 // Helper that converts arithmetic types to Number so they can be used in the following functions
 template <typename T>
@@ -620,12 +661,14 @@ using quantity_type = decltype(to_quantity(std::declval<T>()));
 template <typename T, typename... U>
 concept IsomorphicValues = Isomorphic<quantity_type<T>, quantity_type<U>...>;
 
-// Using this first function as an example, the "if consteval" checks whether
-// it is being executed at compile time or runtime.
-// std::abs is not marked constexpr, gcem::abs is. We prefer std::abs at runtime
-// since it uses libm (or compiler intrinsics) for this specific cpu rather than gcem's 
-// generic abs implementation. This mostly only matters for things like sin or pow where
-// performance might matter.
+/**
+ * Using this first function as an example, the "if consteval" checks whether
+ * it is being executed at compile time or runtime.
+ * std::abs is not marked constexpr, gcem::abs is. We prefer std::abs at runtime
+ * since it uses libm (or compiler intrinsics) for this specific cpu rather than gcem's 
+ * generic abs implementation. This mostly only matters for things like sin or pow where
+ * performance might matter.
+ */
 template <typename T>
 constexpr T abs(const T& lhs) {
   auto q = to_quantity(lhs);
@@ -815,5 +858,104 @@ template <isQuantity Q>
 requires std::ratio_equal_v<typename Q::length, std::ratio<1>> && std::ratio_equal_v<typename Q::angle, std::ratio<0>>
 constexpr auto to_angular(Q linear_distance, Length diameter) {
     return linear_distance / (diameter / 2.0) * rad;
+}
+
+// Trig stuff
+constexpr Number sin(Angle angle) {
+  if consteval {
+    return Number(gcem::sin(angle.internal()));
+  } else {
+    return Number(std::sin(angle.internal()));
+  }
+}
+
+constexpr Number cos(Angle angle) {
+  if consteval {
+    return Number(gcem::cos(angle.internal()));
+  } else {
+    return Number(std::cos(angle.internal()));
+  }
+}
+
+constexpr Number tan(Angle angle) {
+  if consteval {
+    return Number(gcem::tan(angle.internal()));
+  } else {
+    return Number(std::tan(angle.internal()));
+  }
+}
+
+constexpr Angle asin(Number value) {
+  if consteval {
+    return Angle(gcem::asin(value.internal()));
+  } else {
+    return Angle(std::asin(value.internal()));
+  }
+}
+
+constexpr Angle acos(Number value) {
+  if consteval {
+    return Angle(gcem::acos(value.internal()));
+  } else {
+    return Angle(std::acos(value.internal()));
+  }
+}
+
+constexpr Angle atan(Number value) {
+  if consteval {
+    return Angle(gcem::atan(value.internal()));
+  } else {
+    return Angle(std::atan(value.internal()));
+  }
+}
+
+template <typename T, typename U>
+  requires IsomorphicValues<T, U>
+constexpr Angle atan2(const T& y, const U& x) {
+  auto qy = to_quantity(y);
+  auto qx = to_quantity(x);
+  if consteval {
+    return Angle(gcem::atan2(qy.internal(), qx.internal()));
+  } else {
+    return Angle(std::atan2(qy.internal(), qx.internal()));
+  }
+}
+
+// Angle wrapping
+constexpr Angle wrap_positive(Angle angle) {
+  Angle wrapped = mod(angle, rev);
+  return wrapped < 0_rad ? wrapped + rev : wrapped;
+}
+
+constexpr Angle wrap_signed(Angle angle) {
+  return wrap_positive(angle + 0.5_rev) - 0.5_rev;
+}
+
+constexpr Angle shortest_difference(Angle start, Angle end) {
+  return wrap_signed(end - start);
+}
+
+constexpr Temperature from_kelvin(Number value) {
+  return Temperature(value.internal());
+}
+
+constexpr double to_kelvin(Temperature temperature) {
+  return temperature.internal();
+}
+
+constexpr Temperature from_celsius(Number value) {
+  return Temperature(value.internal() + 273.15);
+}
+
+constexpr double to_celsius(Temperature temperature) {
+  return temperature.internal() - 273.15;
+}
+
+constexpr Temperature from_fahrenheit(Number value) {
+  return Temperature((value.internal() - 32.0) * (5.0 / 9.0) + 273.15);
+}
+
+constexpr double to_fahrenheit(Temperature temperature) {
+  return (temperature.internal() - 273.15) * (9.0 / 5.0) + 32.0;
 }
 }  // namespace units
