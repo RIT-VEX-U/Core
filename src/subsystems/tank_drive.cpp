@@ -4,7 +4,7 @@
 #include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
-TankDrive::TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
+TankDrive::TankDrive(vex::motor_group &left_motors, vex::motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
     : left_motors(left_motors), right_motors(right_motors), correction_pid(config.correction_pid), odometry(odom),
       config(config) {
     drive_default_feedback = config.drive_feedback;
@@ -55,11 +55,11 @@ AutoCommand *TankDrive::TurnDegreesCmd(double degrees, double max_speed, double 
 AutoCommand *TankDrive::TurnDegreesCmd(Feedback &fb, double degrees, double max_speed, double end_speed) {
     return new TurnDegreesCommand(*this, fb, degrees, max_speed, end_speed);
 }
-AutoCommand *TankDrive::PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed, double end_speed) {
+AutoCommand *TankDrive::PurePursuitCmd(PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed) {
     return new PurePursuitCommand(*this, *drive_default_feedback, path, dir, max_speed, end_speed);
 }
 AutoCommand *TankDrive::PurePursuitCmd(
-  Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed, double end_speed
+  Feedback &feedback, PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed
 ) {
     return new PurePursuitCommand(*this, feedback, path, dir, max_speed, end_speed);
 }
@@ -123,8 +123,8 @@ void TankDrive::stop() {
 Pose2d TankDrive::get_position() { return this->odometry->get_position(); }
 
 void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
-    left_motors.spin(directionType::fwd, left_norm * 12, voltageUnits::volt);
-    right_motors.spin(directionType::fwd, right_norm * 12, voltageUnits::volt);
+    left_motors.spin(vex::directionType::fwd, left_norm * 12, vex::voltageUnits::volt);
+    right_motors.spin(vex::directionType::fwd, right_norm * 12, vex::voltageUnits::volt);
 }
 /**
  * Drive the robot using differential style controls. left_motors controls the
@@ -157,8 +157,8 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
         zero_vel_pid.set_target(0);
         double vel = left_motors.velocity(vex::velocityUnits::pct) + right_motors.velocity(vex::velocityUnits::pct);
         double outp = zero_vel_pid.update(vel);
-        left_motors.spin(directionType::fwd, outp, voltageUnits::volt);
-        right_motors.spin(directionType::fwd, outp, voltageUnits::volt);
+        left_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
+        right_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
     } else if (bt == BrakeType::Smart) {
         static Pose2d target_pose(0.0, 0.0, 0.0);
 
@@ -177,8 +177,8 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
             }
         } else {
             double outp = zero_vel_pid.update(vel);
-            left_motors.spin(directionType::fwd, outp, voltageUnits::volt);
-            right_motors.spin(directionType::fwd, outp, voltageUnits::volt);
+            left_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
+            right_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
         }
     }
     was_breaking = should_brake;
@@ -213,7 +213,7 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power, 
  * @param end_speed  the movement profile will attempt to reach this velocity by its completion
  */
 bool TankDrive::drive_forward(
-  double inches, directionType dir, Feedback &feedback, double max_speed, double end_speed
+  double inches, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
     static Pose2d pos_setpt(0, 0, 0);
 
@@ -229,7 +229,7 @@ bool TankDrive::drive_forward(
         Pose2d cur_pos = odometry->get_position();
 
         // forwards is positive Y axis, backwards is negative
-        if (dir == directionType::rev) {
+        if (dir == vex::directionType::rev) {
             printf("going backwards\n");
             inches = -fabs(inches);
         } else {
@@ -261,7 +261,7 @@ bool TankDrive::drive_forward(
  * by its completion
  * @return true if we have finished driving to our point
  */
-bool TankDrive::drive_forward(double inches, directionType dir, double max_speed, double end_speed) {
+bool TankDrive::drive_forward(double inches, vex::directionType dir, double max_speed, double end_speed) {
     if (drive_default_feedback != NULL) {
         return drive_forward(inches, dir, *drive_default_feedback, max_speed, end_speed);
     }
@@ -402,9 +402,9 @@ bool TankDrive::drive_to_point(
     }
 
     // If the angle is behind the robot, report negative.
-    if (dir == directionType::fwd && angle > 90 && angle < 270) {
+    if (dir == vex::directionType::fwd && angle > 90 && angle < 270) {
         sign = -1;
-    } else if (dir == directionType::rev && (angle < 90 || angle > 270)) {
+    } else if (dir == vex::directionType::rev && (angle < 90 || angle > 270)) {
         sign = -1;
     }
 
@@ -420,7 +420,7 @@ bool TankDrive::drive_to_point(
     double delta_heading = 0;
 
     // Going backwards "flips" the robot's current heading
-    if (dir == directionType::fwd) {
+    if (dir == vex::directionType::fwd) {
         delta_heading = OdometryBase::smallest_angle(current_pos.rotation().degrees(), heading);
     } else {
         delta_heading = OdometryBase::smallest_angle(current_pos.rotation().degrees() - 180, heading);
@@ -438,7 +438,7 @@ bool TankDrive::drive_to_point(
 
     // Reverse the drive_pid output if we're going backwards
     double drive_pid_rval;
-    if (dir == directionType::rev) {
+    if (dir == vex::directionType::rev) {
         drive_pid_rval = feedback.get() * -1;
     } else {
         drive_pid_rval = feedback.get();
@@ -582,7 +582,7 @@ double TankDrive::modify_inputs(double input, int power) { return sign(input) * 
  * @return True when the path is complete
  */
 bool TankDrive::pure_pursuit(
-  PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed, double end_speed
+  PurePursuit::Path path, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
     std::vector<Translation2d> points = path.get_points();
     if (!path.is_valid()) {
@@ -592,7 +592,7 @@ bool TankDrive::pure_pursuit(
 
     // On function initialization, send the path-length estimate to the feedback controller
     if (!func_initialized) {
-        if (dir != directionType::rev) {
+        if (dir != vex::directionType::rev) {
             feedback.init(-estimate_path_length(points), 0);
         } else {
             feedback.init(estimate_path_length(points), 0);
@@ -612,7 +612,7 @@ bool TankDrive::pure_pursuit(
     double angle_diff = 0;
 
     // Robot is facing forwards / backwards, change the bot's angle by 180
-    if (dir != directionType::rev) {
+    if (dir != vex::directionType::rev) {
         angle_diff =
           OdometryBase::smallest_angle(robot_pose.rotation().degrees(), rad2deg(atan2(localized.y(), localized.x())));
     } else {
@@ -630,7 +630,7 @@ bool TankDrive::pure_pursuit(
         dist_remaining *= cos(angle_diff * (PI / 180.0));
     }
 
-    if (dir != directionType::rev) {
+    if (dir != vex::directionType::rev) {
         feedback.update(-dist_remaining);
     } else {
         feedback.update(dist_remaining);
@@ -667,6 +667,6 @@ bool TankDrive::pure_pursuit(
  * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
  * @return True when the path is complete
  */
-bool TankDrive::pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed, double end_speed) {
+bool TankDrive::pure_pursuit(PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed) {
     return pure_pursuit(path, dir, *config.drive_feedback, max_speed, end_speed);
 }

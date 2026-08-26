@@ -6,13 +6,11 @@
 #include "core/utils/math_util.h"
 #include "vex.h"
 
-using namespace vex;
-
 /*********************************************************
  *         CONSTRUCTOR, GETTERS, SETTERS
  *********************************************************/
 
-Flywheel::Flywheel(motor_group &motors, Feedback &feedback, FeedForward &helper, const double ratio, Filter &filt)
+Flywheel::Flywheel(vex::motor_group &motors, Feedback &feedback, FeedForward &helper, const double ratio, Filter &filt)
     : motors(motors), task_running(false), fb(feedback), ff(helper), ratio(ratio), avger(filt) {}
 
 /**
@@ -23,14 +21,14 @@ double Flywheel::get_target() const { return target_rpm; }
 /**
  * @return the motors used to run the flywheel
  */
-motor_group &Flywheel::get_motors() const { return motors; }
+vex::motor_group &Flywheel::get_motors() const { return motors; }
 
 /**
  * return the current velocity of the flywheel motors, in RPM
  * @return the measured velocity of the flywheel
  */
 double Flywheel::measure_RPM() {
-    double rawRPM = ratio * motors.velocity(velocityUnits::rpm);
+    double rawRPM = ratio * motors.velocity(vex::velocityUnits::rpm);
     avger.add_entry(rawRPM);
     return avger.get_value();
 }
@@ -57,7 +55,7 @@ int spinRPMTask(void *wheelPointer) {
                 wheel.fb_mut.unlock();
             }
 
-            wheel.spin_raw(output, fwd); // set the motors to whatever feedforward tells them to do
+            wheel.spin_raw(output, vex::fwd); // set the motors to whatever feedforward tells them to do
         }
         vexDelay(5);
     }
@@ -74,7 +72,7 @@ int spinRPMTask(void *wheelPointer) {
  * @param speed - speed (between -1 and 1) to set the motor
  * @param dir - direction that the motor moves in; defaults to forward
  */
-void Flywheel::spin_raw(double speed, directionType dir) { motors.spin(dir, speed * 12, voltageUnits::volt); }
+void Flywheel::spin_raw(double speed, vex::directionType dir) { motors.spin(dir, speed * 12, vex::voltageUnits::volt); }
 
 /**
  * Spin motors using voltage; defaults forward at 12 volts
@@ -82,9 +80,9 @@ void Flywheel::spin_raw(double speed, directionType dir) { motors.spin(dir, spee
  * @param speed - speed (between -1 and 1) to set the motor
  * @param dir - direction that the motor moves in; defaults to forward
  */
-void Flywheel::spin_manual(double speed, directionType dir) {
+void Flywheel::spin_manual(double speed, vex::directionType dir) {
     if (!task_running) {
-        motors.spin(dir, speed * 12, voltageUnits::volt);
+        motors.spin(dir, speed * 12, vex::voltageUnits::volt);
     }
 }
 
@@ -100,7 +98,7 @@ void Flywheel::spin_rpm(double input_rpm) {
     }
     // only run if the RPM is different or it isn't already running
     if (!task_running) {
-        rpm_task = task(spinRPMTask, this);
+        rpm_task = vex::task(spinRPMTask, this);
         task_running = true;
     }
     // now that its running, set the target

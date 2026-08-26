@@ -51,7 +51,7 @@ public:
    * @param speed - speed (between -1 and 1) to set the motor
    * @param dir - direction that the motor moves in; defaults to forward
    */
-  void spin_manual(double speed, directionType dir = fwd);
+  void spin_manual(double speed, vex::directionType dir = vex::fwd);
 
   /**
    * starts or sets the target_rpm thread at new value
@@ -110,7 +110,7 @@ private:
   vex::mutex fb_mut;              ///< guard for talking to the runner thread
   double ratio;                   ///< ratio between motor and flywheel. For accurate RPM calcualation
   std::atomic<double> target_rpm; ///< Desired RPM of the flywheel.
-  task rpm_task;                  ///< task that handles spinning the wheel at a given target_rpm
+  vex::task rpm_task;                  ///< task that handles spinning the wheel at a given target_rpm
   Filter &avger;                  ///< Moving average to smooth out noise from
 
   // Functions for internal use only
@@ -130,5 +130,5 @@ private:
    * @param speed - speed (between -1 and 1) to set the motor
    * @param dir - direction that the motor moves in; defaults to forward
    */
-  void spin_raw(double speed, directionType dir = fwd);
+  void spin_raw(double speed, vex::directionType dir = vex::fwd);
 };
