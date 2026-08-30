@@ -486,7 +486,7 @@ NEW_UNIT(Length, meters, m, 0, 1, 0, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Length, meters, m)
 NEW_UNIT_LITERAL(Length, inches, in, cm * 2.54)
 NEW_UNIT_LITERAL(Length, feet, ft, in * 12)
-NEW_UNIT_LITERAL(Length, yard, yd, ft * 3)
+NEW_UNIT_LITERAL(Length, yards, yd, ft * 3)
 NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
 // Tile is the measured length of a vex field tile in real life
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
