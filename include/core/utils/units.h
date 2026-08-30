@@ -15,7 +15,9 @@
 
 namespace units {
 
-// Quantity class represents a value that has a unit. Storage is in the SI base.
+/**
+ * Quantity class represents a value that has a unit. Storage is in the SI base.
+ */
 template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
           typename Time = std::ratio<0>, typename Current = std::ratio<0>,
           typename Angle = std::ratio<0>, typename Temperature = std::ratio<0>,
@@ -166,10 +168,14 @@ public:
   }
 };
 
-// Number is just dimensionless
+/**
+ * Number is just dimensionless
+ */
 using Number = Quantity<>;
 
-// quantity checker. Used by the is_quantity concept
+/**
+ * quantity checker. Used by the is_quantity concept
+ */
 template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
           typename Time = std::ratio<0>, typename Current = std::ratio<0>,
           typename Angle = std::ratio<0>, typename Temperature = std::ratio<0>,
@@ -177,7 +183,9 @@ template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
 void quantity_checker(Quantity<Mass, Length, Time, Current, Angle, Temperature,
                                Luminosity, Moles>) {}
 
-// Used to require a Quantity be passed in a template (instead of typename Q)
+/**
+ * Used to require a Quantity be passed in a template (instead of typename Q)
+ */
 template <typename Q>
 concept IsQuantity = requires(Q q) { quantity_checker(q); };
 
@@ -189,13 +197,17 @@ template <IsQuantity Q> constexpr Q from(double value, Q unit) {
   return Q(value * unit.internal());
 }
 
-// Isomorphic concept checks whether dimensions are the same between quantities
+/**
+ * Isomorphic concept checks whether dimensions are the same between quantities
+ */
 template <typename Q, typename... Quantities>
 concept Isomorphic = ((std::convertible_to<Q, Quantities> &&
                        std::convertible_to<Quantities, Q>) &&
                       ...);
 
-// Multiplying quantities adds their dimensions
+/**
+ * Multiplying quantities adds their dimensions
+ */
 template <IsQuantity Q1, IsQuantity Q2>
 using Multiplied =
     Quantity<std::ratio_add<typename Q1::mass, typename Q2::mass>,
@@ -207,7 +219,9 @@ using Multiplied =
              std::ratio_add<typename Q1::luminosity, typename Q2::luminosity>,
              std::ratio_add<typename Q1::moles, typename Q2::moles>>;
 
-// Dividing quantities subtracts their dimensions
+/**
+ * Dividing quantities subtracts their dimensions
+ */
 template <IsQuantity Q1, IsQuantity Q2>
 using Divided = Quantity<
     std::ratio_subtract<typename Q1::mass, typename Q2::mass>,
@@ -219,7 +233,9 @@ using Divided = Quantity<
     std::ratio_subtract<typename Q1::luminosity, typename Q2::luminosity>,
     std::ratio_subtract<typename Q1::moles, typename Q2::moles>>;
 
-// Exponentiating a quantity multiplies its dimensions by the power
+/**
+ * Exponentiating a quantity multiplies its dimensions by the power
+ */
 template <IsQuantity Q, typename factor>
 using Exponentiated =
     Quantity<std::ratio_multiply<typename Q::mass, factor>,
@@ -231,7 +247,9 @@ using Exponentiated =
              std::ratio_multiply<typename Q::luminosity, factor>,
              std::ratio_multiply<typename Q::moles, factor>>;
 
-// Rooting a quantity divides its dimensions by the root
+/**
+ * Rooting a quantity divides its dimensions by the root
+ */
 template <IsQuantity Q, typename quotient>
 using Rooted = Quantity<std::ratio_divide<typename Q::mass, quotient>,
                         std::ratio_divide<typename Q::length, quotient>,
@@ -488,7 +506,7 @@ NEW_UNIT_LITERAL(Length, inches, in, cm * 2.54)
 NEW_UNIT_LITERAL(Length, feet, ft, in * 12)
 NEW_UNIT_LITERAL(Length, yards, yd, ft * 3)
 NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
-// Tile is the measured length of a vex field tile in real life
+/// Tile is the measured length of a vex field tile in real life
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
 
 NEW_UNIT(Area, square_meters, m2, 0, 2, 0, 0, 0, 0, 0, 0)
@@ -580,16 +598,20 @@ NEW_METRIC_PREFIXES(Power, watts, W)
 NEW_UNIT(Momentum, kilogram_meters_per_second, kgmps, 1, 1, -1, 0, 0, 0, 0, 0)
 NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N *s)
 
-// Inertia as in moment of inertia is divided by radians^2
-// normally kg*m^2, but also J*s^2 / rad^2... rad is normally dimensionless, not
-// here
+/**
+ * Inertia as in moment of inertia is divided by radians^2
+ * normally kg*m^2, but also J*s^2 / rad^2... rad is normally dimensionless, not
+ * here
+ */
 NEW_UNIT(Inertia, kilogram_meters_squared, kgm2, 1, 2, 0, 0, -2, 0, 0, 0)
 
 NEW_UNIT(Energy, joules, J, 1, 2, -2, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Energy, joules, J)
 
-// Torque and Energy are NOT the same here, torque is divided by radians...
-// as in, energy per radian. J and Nm are normally the same but here they're not
+/**
+ * Torque and Energy are NOT the same here, torque is divided by radians...
+ * as in, energy per radian. J and Nm are normally the same but here they're not
+ */
 NEW_UNIT(Torque, newton_meters, Nm, 1, 2, -2, 0, -1, 0, 0, 0)
 NEW_UNIT_LITERAL(Torque, pound_feet, lbft, Nm * 1.3558179483)
 
@@ -621,8 +643,10 @@ NEW_UNIT(LinearDerivativeGain, volt_seconds_per_meter, VspM, 1, 1, -2, -1, 0, 0,
          0, 0)
 NEW_UNIT_LITERAL(LinearDerivativeGain, volt_seconds_per_inch, VspIn, V / inps)
 
-// These are the same dimension, and we don't have special names, so "using" is
-// cleanest
+/**
+ * These are the same dimension, and we don't have special names, so "using" is
+ * cleanest
+ */
 using LinearVelocityProportionalGain = LinearDerivativeGain;
 
 NEW_UNIT(LinearVelocityDerivativeGain, volt_seconds_squared_per_meter, Vs2pM, 1,
@@ -669,8 +693,10 @@ using AngularVelocityIntegralGain = AngularProportionalGain;
 #undef NEW_UNIT_LITERAL
 #undef NEW_UNIT
 
-// Temperature gets special treatment since its conversions are affine.
-// Addition subtraction and negation are all just not allowed. Do it manually.
+/**
+ * Temperature gets special treatment since its conversions are affine.
+ * Addition subtraction and negation are all just not allowed. Do it manually.
+ */
 using TemperatureQuantity =
     Quantity<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>,
              std::ratio<0>, std::ratio<1>, std::ratio<0>, std::ratio<0>>;
@@ -759,8 +785,10 @@ constexpr Temperature operator""_fahrenheit(unsigned long long value) {
 
 } // namespace literals
 
-// Helper that converts arithmetic types to Number so they can be used in the
-// following functions
+/**
+ * Helper that converts arithmetic types to Number so they can be used in the
+ * following
+ */
 template <typename T>
 constexpr auto to_quantity(T value)
     -> std::conditional_t<std::is_arithmetic_v<T>, Number, T> {
@@ -983,7 +1011,9 @@ constexpr auto round(const T &lhs, const U &rhs) {
   }
 }
 
-// Only allows nonzero length, time, angle for the next two functions
+/**
+ * Only allows nonzero length, time, angle for the next two functions
+ */
 template <typename Q>
 concept KinematicQuantity =
     IsQuantity<Q> && std::ratio_equal_v<typename Q::mass, std::ratio<0>> &&
@@ -992,8 +1022,10 @@ concept KinematicQuantity =
     std::ratio_equal_v<typename Q::luminosity, std::ratio<0>> &&
     std::ratio_equal_v<typename Q::moles, std::ratio<0>>;
 
-// Helper to go from angular to linear, like from encoder rotation to wheel
-// distance travel
+/**
+ * Helper to go from angular to linear, like from encoder rotation to wheel
+ * distance travel
+ */
 template <KinematicQuantity Q>
   requires std::ratio_equal_v<typename Q::angle, std::ratio<1>> &&
            std::ratio_equal_v<typename Q::length, std::ratio<0>>
@@ -1001,8 +1033,10 @@ constexpr auto to_linear(Q angular_distance, Length diameter) {
   return angular_distance * (diameter / 2.0) / rad;
 }
 
-// Helper to go from linear to angular, like from wheel distance travel to wheel
-// rotation
+/**
+ * Helper to go from linear to angular, like from wheel distance travel to wheel
+ * rotation
+ */
 template <KinematicQuantity Q>
   requires std::ratio_equal_v<typename Q::length, std::ratio<1>> &&
            std::ratio_equal_v<typename Q::angle, std::ratio<0>>
@@ -1010,7 +1044,9 @@ constexpr auto to_angular(Q linear_distance, Length diameter) {
   return linear_distance / (diameter / 2.0) * rad;
 }
 
-// Trig stuff
+/**
+ * Trig stuff
+ */
 constexpr Number sin(Angle angle) {
   if consteval {
     return Number(cevalm::sin(angle.internal()));
@@ -1071,7 +1107,9 @@ constexpr Angle atan2(const T &y, const U &x) {
   }
 }
 
-// Angle wrapping
+/**
+ * Angle wrapping
+ */
 constexpr Angle wrap_positive(Angle angle) {
   Angle wrapped = mod(angle, rev);
   return wrapped < Angle(0) ? wrapped + rev : wrapped;
