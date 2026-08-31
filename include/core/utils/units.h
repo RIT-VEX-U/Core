@@ -599,7 +599,7 @@ NEW_METRIC_PREFIXES(Power, watts, W)
 NEW_UNIT(Momentum, kilogram_meters_per_second, kgmps, 1, 1, -1, 0, 0, 0, 0, 0)
 NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N * s)
 
-/**
+/*
  * Inertia as in moment of inertia is divided by radians^2
  * normally kg*m^2, but also J*s^2 / rad^2... rad is normally dimensionless, not
  * here
@@ -609,7 +609,7 @@ NEW_UNIT(Inertia, kilogram_meters_squared, kgm2, 1, 2, 0, 0, -2, 0, 0, 0)
 NEW_UNIT(Energy, joules, J, 1, 2, -2, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Energy, joules, J)
 
-/**
+/*
  * Torque and Energy are NOT the same here, torque is divided by radians...
  * as in, energy per radian. J and Nm are normally the same but here they're not
  */
@@ -644,7 +644,7 @@ NEW_UNIT(LinearDerivativeGain, volt_seconds_per_meter, VspM, 1, 1, -2, -1, 0, 0,
          0, 0)
 NEW_UNIT_LITERAL(LinearDerivativeGain, volt_seconds_per_inch, VspIn, V / inps)
 
-/**
+/*
  * These are the same dimension, and we don't have special names, so "using" is
  * cleanest
  */
@@ -694,7 +694,7 @@ using AngularVelocityIntegralGain = AngularProportionalGain;
 #undef NEW_UNIT_LITERAL
 #undef NEW_UNIT
 
-/**
+/*
  * Temperature gets special treatment since its conversions are affine.
  * Addition subtraction and negation are all just not allowed. Do it manually.
  */
@@ -805,13 +805,12 @@ using quantity_type = decltype(to_quantity(std::declval<T>()));
 template <typename T, typename... U>
 concept IsomorphicValues = Isomorphic<quantity_type<T>, quantity_type<U>...>;
 
-/**
+/*
  * Using this first function as an example, the "if consteval" checks whether
  * it is being executed at compile time or runtime.
- * std::abs is not marked constexpr, gcem::abs is. We prefer std::abs at runtime
+ * cevalm::abs is consteval, std::abs is runtime only. We prefer std::abs at runtime
  * since it uses libm (or compiler intrinsics) for this specific cpu rather than
- * gcem's generic abs implementation. This mostly only matters for things like
- * sin or pow where performance might matter.
+ * cevalm which reimplements fdlibm manually.
  */
 template <typename T> constexpr T abs(const T &lhs) {
   auto q = to_quantity(lhs);
@@ -1045,9 +1044,7 @@ constexpr auto to_angular(Q linear_distance, Length diameter) {
   return linear_distance / (diameter / 2.0) * rad;
 }
 
-/**
- * Trig stuff
- */
+// Trig stuff
 constexpr Number sin(Angle angle) {
   if consteval {
     return Number(cevalm::sin(angle.internal()));
@@ -1108,9 +1105,7 @@ constexpr Angle atan2(const T &y, const U &x) {
   }
 }
 
-/**
- * Angle wrapping
- */
+// Angle wrapping
 constexpr Angle wrap_positive(Angle angle) {
   Angle wrapped = mod(angle, rev);
   return wrapped < Angle(0) ? wrapped + rev : wrapped;
