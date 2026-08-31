@@ -491,8 +491,8 @@ constexpr bool operator>(const Q &lhs, const R &rhs)
 NEW_UNIT(Mass, kilograms, kg, 1, 0, 0, 0, 0, 0, 0, 0)
 NEW_UNIT_LITERAL(Mass, grams, g, kg / 1000)
 NEW_UNIT_LITERAL(Mass, ounces, oz, g * 28.349523125)
-NEW_UNIT_LITERAL(Mass, pounds, lb, oz * 16)
-NEW_UNIT_LITERAL(Mass, tons, ton, lb * 2000)
+NEW_UNIT_LITERAL(Mass, pounds_mass, lbm, oz * 16)
+NEW_UNIT_LITERAL(Mass, tons, ton, lbm * 2000)
 
 NEW_UNIT(Time, seconds, s, 0, 0, 1, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Time, seconds, s)
@@ -510,9 +510,9 @@ NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
 
 NEW_UNIT(Area, square_meters, m2, 0, 2, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Area, square_yards, yd2, yd *yd)
-NEW_UNIT_LITERAL(Area, square_feet, ft2, ft *ft)
-NEW_UNIT_LITERAL(Area, square_inches, in2, in *in)
+NEW_UNIT_LITERAL(Area, square_yards, yd2, yd * yd)
+NEW_UNIT_LITERAL(Area, square_feet, ft2, ft * ft)
+NEW_UNIT_LITERAL(Area, square_inches, in2, in * in)
 NEW_UNIT_LITERAL(Area, acres, acre, yd2 * 4840)
 
 NEW_UNIT(Volume, cubic_meters, m3, 0, 3, 0, 0, 0, 0, 0, 0)
@@ -529,14 +529,14 @@ NEW_UNIT_LITERAL(Velocity, miles_per_hour, miph, mi / hr)
 
 NEW_UNIT(Acceleration, meters_per_second_squared, mps2, 0, 1, -2, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Acceleration, mps2, mps2)
-NEW_UNIT_LITERAL(Acceleration, inches_per_second_squared, inps2, in / s / s)
+NEW_UNIT_LITERAL(Acceleration, inches_per_second_squared, inps2, in / (s * s))
 
 NEW_UNIT(Jerk, meters_per_second_cubed, mps3, 0, 1, -3, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Jerk, mps3, mps3)
 NEW_UNIT_LITERAL(Jerk, inches_per_second_cubed, inps3, in / (s * s * s))
 
 NEW_UNIT(Absement, meter_seconds, m_s, 0, 1, 1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in *s)
+NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in * s)
 
 NEW_UNIT(Angle, radians, rad, 0, 0, 0, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(Angle, degrees, deg, rad *std::numbers::pi / 180)
@@ -551,9 +551,9 @@ NEW_UNIT_LITERAL(AngularVelocity, revolutions_per_minute, rpm, rev / mins)
 NEW_UNIT(AngularAcceleration, radians_per_second_squared, radps2, 0, 0, -2, 0,
          1, 0, 0, 0)
 NEW_UNIT_LITERAL(AngularAcceleration, degrees_per_second_squared, dps2,
-                 deg / s / s)
+                 deg / (s * s))
 NEW_UNIT_LITERAL(AngularAcceleration, revolutions_per_second_squared, revps2,
-                 rev / s / s)
+                 rev / (s * s))
 
 NEW_UNIT(AngularJerk, radians_per_second_cubed, radps3, 0, 0, -3, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(AngularJerk, degrees_per_second_cubed, dps3, deg / (s * s * s))
@@ -561,8 +561,8 @@ NEW_UNIT_LITERAL(AngularJerk, revolutions_per_second_cubed, revps3,
                  rev / (s * s * s))
 
 NEW_UNIT(AngularAbsement, radian_seconds, rad_s, 0, 0, 1, 0, 1, 0, 0, 0)
-NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg *s)
-NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev *s)
+NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg * s)
+NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev * s)
 
 NEW_UNIT(Curvature, radians_per_meter, radpm, 0, -1, 0, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(Curvature, degrees_per_meter, degpm, deg / m)
@@ -591,12 +591,13 @@ NEW_METRIC_PREFIXES(Inductance, henries, H)
 
 NEW_UNIT(Force, newtons, N, 1, 1, -2, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Force, newtons, N)
+NEW_UNIT_LITERAL(Force, pounds_force, lbf, lbm * 9.80665 * m / (s * s))
 
 NEW_UNIT(Power, watts, W, 1, 2, -3, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Power, watts, W)
 
 NEW_UNIT(Momentum, kilogram_meters_per_second, kgmps, 1, 1, -1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N *s)
+NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N * s)
 
 /**
  * Inertia as in moment of inertia is divided by radians^2
