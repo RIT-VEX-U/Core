@@ -2,6 +2,13 @@
 
 
 /**
+ * Shorthand for constructing an Initializer that bypasses selection and simply calls the provided callback function during initialization. Ideally, this constructor will never be used, but is included to allow quick, simple changes to programs without forcing extra changes or unnecessary syntax.
+ * @param initialize        The callback function used to initialize the robot
+ */
+Initializer::Initializer(std::function<void()> initialize)
+ : selector(nullptr), initialization_list({}), pre_init(initialize), post_init(nullptr) {}
+
+/**
  * The constructor for Initializer
  * @param initializations   A vector of Initializations
  * @param selector          A function used to select the Initialization. If a nullptr is passed for this, the initialize() function will call the first Initialization.
@@ -10,7 +17,7 @@
  */
 Initializer::Initializer(   std::vector<Initialization> initializations, std::function<Selector::selector_t> selector,
                             std::function<void()> pre_init, std::function<void()> post_init )
-: selector(selector), initialization_list(initializations), pre_init(pre_init), post_init(post_init) {}
+ : selector(selector), initialization_list(initializations), pre_init(pre_init), post_init(post_init) {}
 
 /**
  * Initializes the robot

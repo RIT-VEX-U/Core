@@ -196,7 +196,13 @@ inline std::function<selector_t> weighted_potentiometer(vex::pot& potentiometer,
 class Initializer {
 public:
     /**
-     * The constructor for Initializer
+     * Shorthand for constructing an Initializer that bypasses selection and simply calls the provided callback function during initialization. Ideally, this constructor will never be used, but is included to allow quick, simple changes to programs without forcing extra changes or unnecessary syntax.
+     * @param initialize        The callback function used to initialize the robot
+     */
+    Initializer(std::function<void()> initialize);
+
+    /**
+     * The primary constructor for Initializer
      * @param initializations   A vector of Initializations
      * @param selector          A function used to select the Initialization. If a nullptr is passed for this, the initialize() function will call the first Initialization.
      * @param pre_init          A function for common code that runs before the selection-dependent initialization. This should only be used to setup anything needed by the initializer selector function.
