@@ -502,9 +502,9 @@ NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
 
 NEW_UNIT(Area, square_meters, m2, 0, 2, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Area, square_yards, yd2, yd *yd)
-NEW_UNIT_LITERAL(Area, square_feet, ft2, ft *ft)
-NEW_UNIT_LITERAL(Area, square_inches, in2, in *in)
+NEW_UNIT_LITERAL(Area, square_yards, yd2, yd * yd)
+NEW_UNIT_LITERAL(Area, square_feet, ft2, ft * ft)
+NEW_UNIT_LITERAL(Area, square_inches, in2, in * in)
 NEW_UNIT_LITERAL(Area, acres, acre, yd2 * 4840)
 
 NEW_UNIT(Volume, cubic_meters, m3, 0, 3, 0, 0, 0, 0, 0, 0)
@@ -528,11 +528,11 @@ NEW_METRIC_PREFIXES(Jerk, mps3, mps3)
 NEW_UNIT_LITERAL(Jerk, inches_per_second_cubed, inps3, in / (s * s * s))
 
 NEW_UNIT(Absement, meter_seconds, m_s, 0, 1, 1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in *s)
+NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in * s)
 
 NEW_UNIT(Angle, radians, rad, 0, 0, 0, 0, 1, 0, 0, 0)
-NEW_UNIT_LITERAL(Angle, degrees, deg, rad *std::numbers::pi / 180)
-NEW_UNIT_LITERAL(Angle, revolutions, rev, rad *std::numbers::pi * 2)
+NEW_UNIT_LITERAL(Angle, degrees, deg, rad * std::numbers::pi / 180)
+NEW_UNIT_LITERAL(Angle, revolutions, rev, rad * std::numbers::pi * 2)
 NEW_UNIT_LITERAL(Angle, gradians, grad, deg * 0.9)
 
 NEW_UNIT(AngularVelocity, radians_per_second, radps, 0, 0, -1, 0, 1, 0, 0, 0)
@@ -553,8 +553,8 @@ NEW_UNIT_LITERAL(AngularJerk, revolutions_per_second_cubed, revps3,
                  rev / (s * s * s))
 
 NEW_UNIT(AngularAbsement, radian_seconds, rad_s, 0, 0, 1, 0, 1, 0, 0, 0)
-NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg *s)
-NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev *s)
+NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg * s)
+NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev * s)
 
 NEW_UNIT(Curvature, radians_per_meter, radpm, 0, -1, 0, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(Curvature, degrees_per_meter, degpm, deg / m)
@@ -589,7 +589,7 @@ NEW_UNIT(Power, watts, W, 1, 2, -3, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Power, watts, W)
 
 NEW_UNIT(Momentum, kilogram_meters_per_second, kgmps, 1, 1, -1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N *s)
+NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N * s)
 
 /*
  * Inertia as in moment of inertia is divided by radians^2
