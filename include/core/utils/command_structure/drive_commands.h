@@ -23,7 +23,6 @@
 #include "core/utils/geometry.h"
 #include "vex.h"
 #include "core/utils/math/geometry/pose2d.h"
-using namespace vex;
 
 // ==== DRIVING ====
 
@@ -34,7 +33,7 @@ using namespace vex;
  */
 class DriveForwardCommand : public AutoCommand {
 public:
-  DriveForwardCommand(TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed = 1,
+  DriveForwardCommand(TankDrive &drive_sys, Feedback &feedback, double inches, vex::directionType dir, double max_speed = 1,
                       double end_speed = 0);
 
   /**
@@ -63,7 +62,7 @@ private:
 
   // parameters for drive_forward
   double inches;
-  directionType dir;
+  vex::directionType dir;
   double max_speed;
   double end_speed;
 };
@@ -113,9 +112,9 @@ private:
  */
 class DriveToPointCommand : public AutoCommand {
 public:
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir,
+  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, double x, double y, vex::directionType dir,
                       double max_speed = 1, double end_speed = 0);
-  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed = 1,
+  DriveToPointCommand(TankDrive &drive_sys, Feedback &feedback, Translation2d translation, vex::directionType dir, double max_speed = 1,
                       double end_speed = 0);
 
   /**
@@ -144,7 +143,7 @@ private:
   // parameters for drive_to_point
   double x;
   double y;
-  directionType dir;
+  vex::directionType dir;
   double max_speed;
   double end_speed;
 };
@@ -227,7 +226,7 @@ public:
    * @param feedback The feedback controller determining speed
    * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
    */
-  PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, directionType dir,
+  PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, vex::directionType dir,
                      double max_speed = 1, double end_speed = 0);
 
   /**
@@ -248,7 +247,7 @@ public:
 private:
   TankDrive &drive_sys;
   PurePursuit::Path path;
-  directionType dir;
+  vex::directionType dir;
   Feedback &feedback;
   double max_speed;
   double end_speed;

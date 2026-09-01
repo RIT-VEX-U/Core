@@ -143,11 +143,11 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
     // than our robot speed somewhat of a nasty hack, but wheel slippage should make up for it, and multivariable calc
     // is hard.
     if ((direction > 0 && direction <= 90) || (direction < -90 && direction > -180)) {
-        drive_avg = fabs(left_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) +
-                    fabs(right_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
+        drive_avg = fabs(left_front.position(vex::rotationUnits::rev) * config->drive_wheel_diam * PI) +
+                    fabs(right_rear.position(vex::rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
     } else {
-        drive_avg = fabs(left_rear.position(rotationUnits::rev) * config->drive_wheel_diam * PI) +
-                    fabs(right_front.position(rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
+        drive_avg = fabs(left_rear.position(vex::rotationUnits::rev) * config->drive_wheel_diam * PI) +
+                    fabs(right_front.position(vex::rotationUnits::rev) * config->drive_wheel_diam * PI) / 2.0;
     }
 
     // Only use the encoder wheel if it exists.
@@ -156,7 +156,7 @@ bool MecanumDrive::auto_drive(double inches, double direction, double speed, boo
         // Distance driven = Magnitude = sqrt(x^2 + y^2)
         // Since drive_avg is already a polar magnitude, turn it into "Y" with cos(theta)
         dist_avg = sqrt(
-          pow(lateral_wheel->position(rotationUnits::rev) * config->lateral_wheel_diam * PI, 2) +
+          pow(lateral_wheel->position(vex::rotationUnits::rev) * config->lateral_wheel_diam * PI, 2) +
           pow(drive_avg * cos(direction * (PI / 180.0)), 2)
         );
     } else {
@@ -233,8 +233,8 @@ bool MecanumDrive::auto_turn(double degrees, double speed, bool ignore_imu) {
     double current_angle = 0.0;
 
     if (ignore_imu) {
-        double avg = (left_front.position(rotationUnits::rev) + left_rear.position(rotationUnits::rev) -
-                      right_front.position(rotationUnits::rev) - right_rear.position(rotationUnits::rev)) /
+        double avg = (left_front.position(vex::rotationUnits::rev) + left_rear.position(vex::rotationUnits::rev) -
+                      right_front.position(vex::rotationUnits::rev) - right_rear.position(vex::rotationUnits::rev)) /
                      4.0;
 
         // Current arclength = (avg * wheel_diam * PI) = (theta * (wheelbase / 2.0)). then convert to degrees
