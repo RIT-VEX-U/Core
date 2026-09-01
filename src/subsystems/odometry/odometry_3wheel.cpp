@@ -15,9 +15,9 @@ Odometry3Wheel::Odometry3Wheel(
 Pose2d Odometry3Wheel::update() {
     static double lside_old = 0, rside_old = 0, offax_old = 0;
 
-    double lside = lside_fwd.position(deg);
-    double rside = rside_fwd.position(deg);
-    double offax = off_axis.position(deg);
+    double lside = lside_fwd.position(vex::deg);
+    double rside = rside_fwd.position(vex::deg);
+    double offax = off_axis.position(vex::deg);
 
     double lside_delta = lside - lside_old;
     double rside_delta = rside - rside_old;
@@ -32,28 +32,28 @@ Pose2d Odometry3Wheel::update() {
     static Pose2d last_pos = updated_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
-    static timer tmr;
+    static vex::timer tmr;
 
     double speed_local = 0;
     double accel_local = 0;
     double ang_speed_local = 0;
     double ang_accel_local = 0;
-    bool update_vel_accel = tmr.time(sec) > 0.1;
+    bool update_vel_accel = tmr.time(vex::sec) > 0.1;
 
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
         // Calculate robot velocity
-        speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
+        speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
 
         // Calculate robot acceleration
-        accel_local = (speed_local - last_speed) / tmr.time(sec);
+        accel_local = (speed_local - last_speed) / tmr.time(vex::sec);
 
         // Calculate robot angular velocity (deg/sec)
         ang_speed_local =
-          smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
+          smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(vex::sec);
 
         // Calculate robot angular acceleration (deg/sec^2)
-        ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
+        ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(vex::sec);
 
         tmr.reset();
         last_pos = updated_pos;
@@ -144,8 +144,8 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
         vexDelay(20);
     }
 
-    double old_lval = lside_fwd.position(deg);
-    double old_rval = rside_fwd.position(deg);
+    double old_lval = lside_fwd.position(vex::deg);
+    double old_rval = rside_fwd.position(vex::deg);
 
     // Step 2: Drive robot a known distance
     con.Screen.clearLine(2);
@@ -161,7 +161,7 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
     }
 
     // Wheel diameter is ratio of expected distance / measured distance
-    double avg_deg = ((lside_fwd.position(deg) - old_lval) + (rside_fwd.position(deg) - old_rval)) / 2.0;
+    double avg_deg = ((lside_fwd.position(vex::deg) - old_lval) + (rside_fwd.position(vex::deg) - old_rval)) / 2.0;
     double measured_dist = 0.5 * deg2rad(avg_deg); // Simulate diam=1", radius=1/2"
     double found_diam = 120.0 / measured_dist;
 
@@ -179,9 +179,9 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
     }
     con.Screen.clearScreen();
 
-    old_lval = lside_fwd.position(deg);
-    old_rval = rside_fwd.position(deg);
-    double old_offax = off_axis.position(deg);
+    old_lval = lside_fwd.position(vex::deg);
+    old_rval = rside_fwd.position(vex::deg);
+    double old_offax = off_axis.position(vex::deg);
 
     con.Screen.setCursor(2, 1);
     con.Screen.clearLine();
@@ -195,9 +195,9 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
         vexDelay(20);
     }
 
-    double lside_dist = deg2rad(lside_fwd.position(deg) - old_lval) * (found_diam / 2.0);
-    double rside_dist = deg2rad(rside_fwd.position(deg) - old_rval) * (found_diam / 2.0);
-    double offax_dist = deg2rad(off_axis.position(deg) - old_offax) * (found_diam / 2.0);
+    double lside_dist = deg2rad(lside_fwd.position(vex::deg) - old_lval) * (found_diam / 2.0);
+    double rside_dist = deg2rad(rside_fwd.position(vex::deg) - old_rval) * (found_diam / 2.0);
+    double offax_dist = deg2rad(off_axis.position(vex::deg) - old_offax) * (found_diam / 2.0);
 
     double expected_angle = 10 * (2 * PI);
     double found_wheelbase = fabs(rside_dist - lside_dist) / expected_angle;

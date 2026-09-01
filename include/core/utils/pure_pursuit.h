@@ -6,8 +6,6 @@
 #include "vex.h"
 #include <vector>
 
-using namespace vex;
-
 namespace PurePursuit {
 /**
  * Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
