@@ -330,11 +330,7 @@ constexpr auto operator/(Number enumerator, Q divisor) {
  */
 template <IsQuantity Q1, IsQuantity Q2>
 constexpr auto operator*(Q1 lhs, Q2 rhs) {
-  using Result = Multiplied<Q1, Q2>;
-  if constexpr (std::is_same_v<Result, Number>)
-    return lhs.internal() * rhs.internal();
-  else
-    return Result(lhs.internal() * rhs.internal());
+  return Multiplied<Q1, Q2>(lhs.internal() * rhs.internal());
 }
 
 /**
@@ -342,11 +338,7 @@ constexpr auto operator*(Q1 lhs, Q2 rhs) {
  */
 template <IsQuantity Q1, IsQuantity Q2>
 constexpr auto operator/(Q1 lhs, Q2 rhs) {
-  using Result = Divided<Q1, Q2>;
-  if constexpr (std::is_same_v<Result, Number>)
-    return lhs.internal() / rhs.internal();
-  else
-    return Result(lhs.internal() / rhs.internal());
+  return Divided<Q1, Q2>(lhs.internal() / rhs.internal());
 }
 
 /**
@@ -510,9 +502,9 @@ NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
 
 NEW_UNIT(Area, square_meters, m2, 0, 2, 0, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Area, square_yards, yd2, yd * yd)
-NEW_UNIT_LITERAL(Area, square_feet, ft2, ft * ft)
-NEW_UNIT_LITERAL(Area, square_inches, in2, in * in)
+NEW_UNIT_LITERAL(Area, square_yards, yd2, yd *yd)
+NEW_UNIT_LITERAL(Area, square_feet, ft2, ft *ft)
+NEW_UNIT_LITERAL(Area, square_inches, in2, in *in)
 NEW_UNIT_LITERAL(Area, acres, acre, yd2 * 4840)
 
 NEW_UNIT(Volume, cubic_meters, m3, 0, 3, 0, 0, 0, 0, 0, 0)
@@ -536,7 +528,7 @@ NEW_METRIC_PREFIXES(Jerk, mps3, mps3)
 NEW_UNIT_LITERAL(Jerk, inches_per_second_cubed, inps3, in / (s * s * s))
 
 NEW_UNIT(Absement, meter_seconds, m_s, 0, 1, 1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in * s)
+NEW_UNIT_LITERAL(Absement, inch_seconds, in_s, in *s)
 
 NEW_UNIT(Angle, radians, rad, 0, 0, 0, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(Angle, degrees, deg, rad *std::numbers::pi / 180)
@@ -561,8 +553,8 @@ NEW_UNIT_LITERAL(AngularJerk, revolutions_per_second_cubed, revps3,
                  rev / (s * s * s))
 
 NEW_UNIT(AngularAbsement, radian_seconds, rad_s, 0, 0, 1, 0, 1, 0, 0, 0)
-NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg * s)
-NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev * s)
+NEW_UNIT_LITERAL(AngularAbsement, degree_seconds, d_s, deg *s)
+NEW_UNIT_LITERAL(AngularAbsement, revolution_seconds, rev_s, rev *s)
 
 NEW_UNIT(Curvature, radians_per_meter, radpm, 0, -1, 0, 0, 1, 0, 0, 0)
 NEW_UNIT_LITERAL(Curvature, degrees_per_meter, degpm, deg / m)
@@ -597,7 +589,7 @@ NEW_UNIT(Power, watts, W, 1, 2, -3, 0, 0, 0, 0, 0)
 NEW_METRIC_PREFIXES(Power, watts, W)
 
 NEW_UNIT(Momentum, kilogram_meters_per_second, kgmps, 1, 1, -1, 0, 0, 0, 0, 0)
-NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N * s)
+NEW_UNIT_LITERAL(Momentum, newton_seconds, Ns, N *s)
 
 /*
  * Inertia as in moment of inertia is divided by radians^2
@@ -706,7 +698,7 @@ enum class TemperatureUnit { Kelvin, Celsius, Fahrenheit };
 
 class Temperature : public TemperatureQuantity {
 public:
-  constexpr Temperature() = default;
+  explicit constexpr Temperature() = default;
   explicit constexpr Temperature(double kelvins)
       : TemperatureQuantity(kelvins) {}
 
@@ -808,11 +800,11 @@ concept IsomorphicValues = Isomorphic<quantity_type<T>, quantity_type<U>...>;
 /*
  * Using this first function as an example, the "if consteval" checks whether
  * it is being executed at compile time or runtime.
- * cevalm::abs is consteval, std::abs is runtime only. We prefer std::abs at runtime
- * since it uses libm (or compiler intrinsics) for this specific cpu rather than
- * cevalm which reimplements fdlibm manually.
+ * cevalm::abs is consteval, std::abs is runtime only. We prefer std::abs at
+ * runtime since it uses libm (or compiler intrinsics) for this specific cpu
+ * rather than cevalm which reimplements fdlibm manually.
  */
-template <typename T> constexpr T abs(const T &lhs) {
+template <typename T> constexpr auto abs(const T &lhs) {
   auto q = to_quantity(lhs);
   using Q = decltype(q);
   if consteval {
@@ -847,14 +839,20 @@ template <typename T> constexpr auto sgn(const T &lhs) {
   return Number(0);
 }
 
-template <int R, typename T> constexpr auto pow(const T &lhs) {
-  auto q = to_quantity(lhs);
-  using Q = decltype(q);
-  using S = Exponentiated<Q, std::ratio<R>>;
-  if consteval {
-    return S(cevalm::pow(q.internal(), R));
+template <int R, typename T>
+  requires IsQuantity<quantity_type<T>>
+constexpr auto pow(const T &lhs) {
+  if constexpr (R == 0) {
+    return Number(1.0);
   } else {
-    return S(std::pow(q.internal(), R));
+    auto q = to_quantity(lhs);
+    using Q = decltype(q);
+    using S = Exponentiated<Q, std::ratio<R>>;
+    if consteval {
+      return S(cevalm::pow(q.internal(), R));
+    } else {
+      return S(std::pow(q.internal(), R));
+    }
   }
 }
 

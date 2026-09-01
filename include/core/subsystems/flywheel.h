@@ -110,7 +110,7 @@ private:
   vex::mutex fb_mut;              ///< guard for talking to the runner thread
   double ratio;                   ///< ratio between motor and flywheel. For accurate RPM calcualation
   std::atomic<double> target_rpm; ///< Desired RPM of the flywheel.
-  vex::task rpm_task;                  ///< task that handles spinning the wheel at a given target_rpm
+  vex::task rpm_task;             ///< task that handles spinning the wheel at a given target_rpm
   Filter &avger;                  ///< Moving average to smooth out noise from
 
   // Functions for internal use only
