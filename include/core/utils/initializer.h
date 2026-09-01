@@ -226,7 +226,7 @@ public:
      * Returns the name of the selected Initialization
      * @returns If an Initialization has been selected using the initialize() function, this returns that Initialization's name. Otherwise, this returns an empty string.
      */
-    const std::string& selected_name() const;
+    const std::string selected_name() const;
 
     /**
      * Returns the meta of the selected Initialization

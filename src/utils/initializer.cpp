@@ -46,7 +46,7 @@ const std::size_t Initializer::initialization_count() const {
  * Returns the name of the selected Initialization
  * @returns If an Initialization has been selected using the initialize() function, this returns that Initialization's name. Otherwise, this returns an empty string.
  */
-const std::string& Initializer::selected_name() const {
+const std::string Initializer::selected_name() const {
     return (this->selected_initialization == nullptr) ? "" : this->selected_initialization->name;
 }
 
