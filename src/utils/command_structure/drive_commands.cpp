@@ -29,7 +29,7 @@
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
 DriveForwardCommand::DriveForwardCommand(
-  TankDrive &drive_sys, Feedback &feedback, double inches, directionType dir, double max_speed, double end_speed
+  TankDrive &drive_sys, Feedback &feedback, double inches, vex::directionType dir, double max_speed, double end_speed
 )
     : drive_sys(drive_sys), feedback(feedback), inches(inches), dir(dir), max_speed(max_speed), end_speed(end_speed) {}
 
@@ -46,10 +46,10 @@ bool DriveForwardCommand::run() { return drive_sys.drive_forward(inches, dir, fe
 std::string DriveForwardCommand::toString() {
     std::string returnStr = "Driving ";
     switch (dir) {
-    case directionType::fwd:
+        case vex::directionType::fwd:
         returnStr.append("forwards ");
         break;
-    case directionType::rev:
+        case vex::directionType::rev:
         returnStr.append("reverse ");
     default:
         break;
@@ -109,7 +109,7 @@ void TurnDegreesCommand::on_timeout() {
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
 DriveToPointCommand::DriveToPointCommand(
-  TankDrive &drive_sys, Feedback &feedback, double x, double y, directionType dir, double max_speed, double end_speed
+  TankDrive &drive_sys, Feedback &feedback, double x, double y, vex::directionType dir, double max_speed, double end_speed
 )
     : drive_sys(drive_sys), feedback(feedback), x(x), y(y), dir(dir), max_speed(max_speed), end_speed(end_speed) {}
 
@@ -122,7 +122,7 @@ DriveToPointCommand::DriveToPointCommand(
  * @param max_speed 0 -> 1 percentage of the drive systems speed to drive at
  */
 DriveToPointCommand::DriveToPointCommand(
-  TankDrive &drive_sys, Feedback &feedback, Translation2d translation, directionType dir, double max_speed,
+  TankDrive &drive_sys, Feedback &feedback, Translation2d translation, vex::directionType dir, double max_speed,
   double end_speed
 )
     : drive_sys(drive_sys), feedback(feedback), x(translation.x()), y(translation.y()), dir(dir), max_speed(max_speed),
@@ -249,7 +249,7 @@ void TurnToHeadingCommand::on_timeout() {
  * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
  */
 PurePursuitCommand::PurePursuitCommand(
-  TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed,
+  TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, vex::directionType dir, double max_speed,
   double end_speed
 )
     : drive_sys(drive_sys), path(path), dir(dir), feedback(feedback), max_speed(max_speed), end_speed(end_speed) {}
