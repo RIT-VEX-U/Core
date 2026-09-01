@@ -7,7 +7,6 @@
 #include <map>
 #include <vector>
 
-using namespace vex;
 using namespace std;
 
 /**
@@ -53,7 +52,7 @@ public:
    * @param setpoint_map
    *   A map of enum type T, in which each enum entry corresponds to a different lift height
    */
-  Lift(motor_group &lift_motors, lift_cfg_t &lift_cfg, map<T, double> &setpoint_map, limit *homing_switch = NULL)
+  Lift(vex::motor_group &lift_motors, lift_cfg_t &lift_cfg, map<T, double> &setpoint_map, vex::limit *homing_switch = NULL)
       : lift_motors(lift_motors), cfg(lift_cfg), lift_pid(cfg.lift_pid_cfg), setpoint_map(setpoint_map),
         homing_switch(homing_switch) {
 
@@ -62,7 +61,7 @@ public:
 
     // Create a background task that is constantly updating the lift PID, if requested.
     // Set once, and forget.
-    task t(
+    vex::task t(
         [](void *ptr) {
           Lift &lift = *((Lift *)ptr);
 
@@ -87,18 +86,18 @@ public:
    *    Button controlling the "DOWN" motion
    */
   void control_continuous(bool up_ctrl, bool down_ctrl) {
-    static timer tmr;
+    static vex::timer tmr;
 
     double cur_pos = 0;
 
     // Check if there's a hook for a custom sensor. If not, use the motors.
     if (get_sensor == NULL)
-      cur_pos = lift_motors.position(rev);
+      cur_pos = lift_motors.position(vex::rev);
     else
       cur_pos = get_sensor();
 
     if (up_ctrl && cur_pos < cfg.softstop_up) {
-      lift_motors.spin(directionType::fwd, cfg.up_speed, volt);
+      lift_motors.spin(vex::directionType::fwd, cfg.up_speed, vex::volt);
       setpoint = cur_pos + .3;
 
       // std::cout << "DEBUG OUT: UP " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
@@ -108,7 +107,7 @@ public:
     } else if (down_ctrl && cur_pos > cfg.softstop_down) {
       // Lower the lift slowly, at a rate defined by down_speed
       if (setpoint > cfg.softstop_down)
-        setpoint = setpoint - (tmr.time(sec) * cfg.down_speed);
+        setpoint = setpoint - (tmr.time(vex::sec) * cfg.down_speed);
       // std::cout << "DEBUG OUT: DOWN " << setpoint << ", " << tmr.time(sec) << ", " << cfg.down_speed << "\n";
       is_async = true;
     } else {
@@ -137,7 +136,7 @@ public:
       is_async = false;
     }
 
-    double rev = lift_motors.position(rotationUnits::rev);
+    double rev = lift_motors.position(vex::rotationUnits::rev);
 
     if (rev < cfg.softstop_down && down_btn)
       down_hold = true;
@@ -145,11 +144,11 @@ public:
       down_hold = false;
 
     if (up_btn && rev < cfg.softstop_up)
-      lift_motors.spin(directionType::fwd, volt_up, voltageUnits::volt);
+      lift_motors.spin(vex::directionType::fwd, volt_up, vex::voltageUnits::volt);
     else if (down_btn && rev > cfg.softstop_down && !down_hold)
-      lift_motors.spin(directionType::rev, volt_down, voltageUnits::volt);
+      lift_motors.spin(vex::directionType::rev, volt_down, vex::voltageUnits::volt);
     else
-      lift_motors.spin(directionType::fwd, 0, voltageUnits::volt);
+      lift_motors.spin(vex::directionType::fwd, 0, vex::voltageUnits::volt);
   }
 
   /**
@@ -232,11 +231,11 @@ public:
     if (get_sensor != NULL)
       lift_pid.update(get_sensor());
     else
-      lift_pid.update(lift_motors.position(rev));
+      lift_pid.update(lift_motors.position(vex::rev));
 
     // std::cout << "DEBUG OUT: ROTATION " << lift_motors.rotation(rev) << "\n\n";
 
-    lift_motors.spin(fwd, lift_pid.get(), volt);
+    lift_motors.spin(vex::fwd, lift_pid.get(), vex::volt);
   }
 
   /**
@@ -244,13 +243,13 @@ public:
    * and sets the position to 0. A watchdog times out after 3 seconds, to avoid damage.
    */
   void home() {
-    static timer tmr;
+    static vex::timer tmr;
     tmr.reset();
 
-    while (tmr.time(sec) < 3) {
-      lift_motors.spin(directionType::rev, 6, volt);
+    while (tmr.time(vex::sec) < 3) {
+      lift_motors.spin(vex::directionType::rev, 6, vex::volt);
 
-      if (homing_switch == NULL && lift_motors.current(currentUnits::amp) > 1.5)
+      if (homing_switch == NULL && lift_motors.current(vex::currentUnits::amp) > 1.5)
         break;
       else if (homing_switch != NULL && homing_switch->pressing())
         break;
@@ -295,11 +294,11 @@ public:
   void set_sensor_reset(void (*fn_ptr)(void)) { this->reset_sensor = fn_ptr; }
 
 private:
-  motor_group &lift_motors;
+  vex::motor_group &lift_motors;
   lift_cfg_t &cfg;
   PID lift_pid;
   map<T, double> &setpoint_map;
-  limit *homing_switch;
+  vex::limit *homing_switch;
 
   atomic<double> setpoint;
   atomic<bool> is_async;

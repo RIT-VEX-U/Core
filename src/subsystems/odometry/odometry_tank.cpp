@@ -114,23 +114,23 @@ Pose2d OdometryTank::update() {
     static Pose2d last_pos = current_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
-    static timer tmr;
-    bool update_vel_accel = tmr.time(sec) > 0.02;
+    static vex::timer tmr;
+    bool update_vel_accel = tmr.time(vex::sec) > 0.02;
 
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
         // Calculate robot velocity
-        double this_speed = current_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
+        double this_speed = current_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
         ema.add_entry(this_speed);
         speed = ema.get_value();
         // Calculate robot acceleration
-        accel = (speed - last_speed) / tmr.time(sec);
+        accel = (speed - last_speed) / tmr.time(vex::sec);
 
         // Calculate robot angular velocity (deg/sec)
-        ang_speed_deg = smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
+        ang_speed_deg = smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(vex::sec);
 
         // Calculate robot angular acceleration (deg/sec^2)
-        ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(sec);
+        ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(vex::sec);
 
         tmr.reset();
         last_pos = current_pos;

@@ -4,8 +4,6 @@
 #include "vex.h"
 #include <cmath>
 
-using namespace vex;
-
 /**
  * PID Class
  *
@@ -176,7 +174,7 @@ class PID : public Feedback {
 
     bool is_checking_on_target = false; ///< true if the sensor reading is within target +/- deadband
 
-    timer pid_timer; ///< used for calculating integrals and derivatives in line
+    vex::timer pid_timer; ///< used for calculating integrals and derivatives in line
                      ///< with the real world times and checking the time we are
                      ///< on target
 };

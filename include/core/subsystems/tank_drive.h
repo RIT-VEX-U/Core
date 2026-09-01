@@ -13,8 +13,6 @@
 #include "vex.h"
 #include <vector>
 
-using namespace vex;
-
 /**
  * TankDrive is a class to run a tank drive system.
  * A tank drive system, sometimes called differential drive, has a motor (or group of synchronized motors) on the left
@@ -36,7 +34,7 @@ class TankDrive {
      * more info
      * @param odom an odometry system to track position and rotation. this is necessary to execute autonomous paths
      */
-    TankDrive(motor_group &left_motors, motor_group &right_motors, robot_specs_t &config, OdometryBase *odom = NULL);
+    TankDrive(vex::motor_group &left_motors, vex::motor_group &right_motors, robot_specs_t &config, OdometryBase *odom = NULL);
 
     AutoCommand *DriveToPointCmd(
       Translation2d pt, vex::directionType dir = vex::forward, double max_speed = 1.0, double end_speed = 0.0
@@ -71,9 +69,9 @@ class TankDrive {
     AutoCommand *TurnDegreesCmd(double degrees, double max_speed = 1.0, double start_speed = 0.0);
     AutoCommand *TurnDegreesCmd(Feedback &fb, double degrees, double max_speed = 1.0, double end_speed = 0.0);
 
-    AutoCommand *PurePursuitCmd(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
+    AutoCommand *PurePursuitCmd(PurePursuit::Path path, vex::directionType dir, double max_speed = 1, double end_speed = 0);
     AutoCommand *PurePursuitCmd(
-      Feedback &feedback, PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0
+      Feedback &feedback, PurePursuit::Path path, vex::directionType dir, double max_speed = 1, double end_speed = 0
     );
     Condition *DriveStalledCondition(double stall_time);
     AutoCommand *DriveTankCmd(double left, double right);
@@ -133,7 +131,7 @@ class TankDrive {
      * @return true when we have reached our target distance
      */
     bool
-    drive_forward(double inches, directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
+    drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
     /**
      * Autonomously drive the robot forward a certain distance
@@ -147,7 +145,7 @@ class TankDrive {
      * @param end_speed   the movement profile will attempt to reach this
      * velocity by its completion
      */
-    bool drive_forward(double inches, directionType dir, double max_speed = 1, double end_speed = 0);
+    bool drive_forward(double inches, vex::directionType dir, double max_speed = 1, double end_speed = 0);
 
     /**
      * Autonomously turn the robot X degrees counterclockwise (negative for
@@ -265,7 +263,7 @@ class TankDrive {
      * @return True when the path is complete
      */
     bool pure_pursuit(
-      PurePursuit::Path path, directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0
+      PurePursuit::Path path, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0
     );
 
     /**
@@ -284,9 +282,9 @@ class TankDrive {
      * @return True when the path is complete
      */
   private:
-    bool pure_pursuit(PurePursuit::Path path, directionType dir, double max_speed = 1, double end_speed = 0);
-    motor_group &left_motors;  ///< left drive motors
-    motor_group &right_motors; ///< right drive motors
+    bool pure_pursuit(PurePursuit::Path path, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+    vex::motor_group &left_motors;  ///< left drive motors
+    vex::motor_group &right_motors; ///< right drive motors
 
     OdometryBase *odometry; ///< odometry system to track position and rotation.
                             ///< necessary for autonomous driving
