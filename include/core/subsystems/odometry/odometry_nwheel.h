@@ -104,7 +104,7 @@ public:
     Eigen::Vector<double, WHEELS> radian_deltas;
 
     for (int i = 0; i < WHEELS; i++) {
-      double angle_rad = encoders[i].position(rev) * M_PI * 2;
+      double angle_rad = encoders[i].position(vex::rev) * M_PI * 2;
       radian_deltas(i) = angle_rad - old_wheel_angles[i];
 
       old_wheel_angles[i] = angle_rad;
@@ -124,27 +124,27 @@ public:
     static Pose2d last_pos = updated_pos;
     static double last_speed = 0;
     static double last_ang_speed = 0;
-    static timer tmr;
+    static vex::timer tmr;
 
     double speed_local = 0;
     double accel_local = 0;
     double ang_speed_local = 0;
     double ang_accel_local = 0;
-    bool update_vel_accel = tmr.time(sec) > 0.1;
+    bool update_vel_accel = tmr.time(vex::sec) > 0.1;
 
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
       // Calculate robot velocity
-      speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(sec);
+      speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
 
       // Calculate robot acceleration
-      accel_local = (speed_local - last_speed) / tmr.time(sec);
+      accel_local = (speed_local - last_speed) / tmr.time(vex::sec);
 
       // Calculate robot angular velocity (deg/sec)
-      ang_speed_local = smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(sec);
+      ang_speed_local = smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(vex::sec);
 
       // Calculate robot angular acceleration (deg/sec^2)
-      ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(sec);
+      ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(vex::sec);
 
       tmr.reset();
       last_pos = updated_pos;
