@@ -9,14 +9,14 @@
 #include <type_traits>
 #include <utility>
 
-#if __cplusplus < 202300L
-#error "requires >= C++23"
-#endif
-
 namespace units {
 
 /**
- * Quantity class represents a value that has a unit. Storage is in the SI base.
+ * This class provides a physical unit conversion and dimensional analysis API.
+ * Quantities define a unit given the SI base dimensions. The dimensions are the exponents
+ * of each base, Mass, Length, Time, Current, Angle, Temperature, Luminosity, Moles.
+ * E.g. Velocity is length^1 * time^-1, length/time...
+ * Arithmetic and math functions can be used on Quantities like normal. Mass * Mass = Area.
  */
 template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
           typename Time = std::ratio<0>, typename Current = std::ratio<0>,
