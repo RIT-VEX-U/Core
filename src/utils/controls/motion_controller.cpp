@@ -33,7 +33,7 @@ void MotionController::init(double start_pt, double end_pt) {
  * @return the motor input generated from the motion profile
  */
 double MotionController::update(double sensor_val) {
-    cur_motion = profile.calculate(tmr.time(timeUnits::sec));
+    cur_motion = profile.calculate(tmr.time(vex::timeUnits::sec));
     pid.set_target(cur_motion.pos);
     pid.update(sensor_val, cur_motion.vel);
 
@@ -66,7 +66,7 @@ void MotionController::set_limits(double lower, double upper) {
  * confirms it is on target
  */
 bool MotionController::is_on_target() {
-  return (tmr.time(timeUnits::sec) > profile.total_time()) && pid.is_on_target();
+  return (tmr.time(vex::timeUnits::sec) > profile.total_time()) && pid.is_on_target();
 }
 
 /**
@@ -115,7 +115,7 @@ MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, dou
     std::vector<std::pair<double, double>> accel_data_points; // time, accel
 
     double max_speed = 0;
-    timer tmr;
+    vex::timer tmr;
     double time;
 
     MovingAverage vel_ma(3);
@@ -123,7 +123,7 @@ MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, dou
 
     // Move the robot forward at a fixed percentage for X seconds while taking velocity and accel measurements
     do {
-        time = tmr.time(sec);
+        time = tmr.time(vex::sec);
 
         vel_ma.add_entry(odometry.get_speed());
         accel_ma.add_entry(odometry.get_accel());
