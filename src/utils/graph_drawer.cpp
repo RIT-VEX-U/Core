@@ -76,10 +76,10 @@ void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int hei
         printf("The number of colors does not match the number of series in graph drawer\n");
     }
 
-    size_t newest_index = (sample_index - 1);
-    if (sample_index < 0) {
-        sample_index += series[0].size();
-    }
+    // sample_index is next write slot, new is the one before
+    // so gotta wrap here, and new is unsigned cause size t
+    // sample_index - 1 is SIZE_MAX on wrap
+    size_t newest_index = (sample_index == 0) ? series[0].size() - 1 : (size_t)(sample_index - 1);
 
     double earliest_time = series[0][sample_index].x();
     double latest_time = series[0][newest_index].x();
