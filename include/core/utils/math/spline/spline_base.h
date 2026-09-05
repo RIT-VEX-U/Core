@@ -189,6 +189,8 @@ class SplineBase {
   protected:
     /**
      * @brief Evaluates polynomial P(u) using Horner's method.
+     * @note Loop iterates backwards (from highest degree to lowest: coeffs[N-1] down to coeffs[0])
+     *       which is the correct iteration order for Horner's method.
      */
     template <size_t N> static double eval_poly(const std::array<double, N> &coeffs, double u) {
         double out = 0.0;
