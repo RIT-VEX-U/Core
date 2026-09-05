@@ -7,11 +7,13 @@
 #include "core/units/units.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math_util.h"
-#include "core/utils/trajectory/constraints/trajectory_constraint.h"
-#include "core/utils/trajectory/constraints/centripetal_acceleration_constraint.h"
-#include "core/utils/trajectory/constraints/max_velocity_constraint.h"
-#include "core/utils/trajectory/constraints/tank_kinematics_constraint.h"
-#include "core/utils/trajectory/constraints/tank_voltage_constraint.h"
+/**
+ * @brief Pair representing 2D Pose and scalar path Curvature.
+ */
+struct PoseWithCurvature {
+  Pose2d pose;
+  Curvature curvature;
+};
 
 /**
  * @brief Represents a time-parameterized 2D motion trajectory.
@@ -52,7 +54,7 @@ class Trajectory {
     }
 
     /**
-     * @brief Linearly interpolates between this state and end_value at fraction i ∈ [0, 1].
+     * @brief Linearly interpolates between this state and end_value at fraction i in [0, 1].
      * @param end_value Target state for interpolation.
      * @param i Interpolation fraction ratio [0, 1].
      * @return Interpolated State.
@@ -225,6 +227,10 @@ class TrajectorySampler {
  public:
   /**
    * @brief Constructs a TrajectorySampler bound to a target Trajectory.
+   * 
+   * @warning The TrajectorySampler holds a non-owning pointer to the trajectory. 
+   * The provided Trajectory object MUST outlive the sampler. Do not pass temporary objects.
+   * 
    * @param trajectory Reference to trajectory to sample.
    */
   explicit TrajectorySampler(const Trajectory &trajectory)

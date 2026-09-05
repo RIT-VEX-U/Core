@@ -9,20 +9,44 @@
 #include "core/utils/math_util.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
 
+/**
+ * @brief Trajectory constraint that limits acceleration based on available battery voltage and motor capabilities.
+ */
 class TankVoltageConstraint : public TrajectoryConstraint {
  public:
+  /**
+   * @brief Constructs a TankVoltageConstraint.
+   * @param Kv Linear velocity feedforward constant.
+   * @param Ka Linear acceleration feedforward constant.
+   * @param maxVoltage Maximum available voltage.
+   * @param trackWidth Robot track width (distance between left and right wheels).
+   */
   TankVoltageConstraint(LinearVelocityFeedforward Kv, LinearAccelerationFeedforward Ka, Voltage maxVoltage, Length trackWidth)
       : m_Kv(Kv),
         m_Ka(Ka),
         m_maxVoltage(maxVoltage),
         m_trackWidth(trackWidth) {}
 
+  /**
+   * @brief Computes maximum allowed velocity.
+   * @param pose 2D position and orientation.
+   * @param curvature Path curvature in rad/meter.
+   * @param velocity Candidate linear velocity.
+   * @return Constrained Velocity limit.
+   */
   Velocity max_velocity(
       const Pose2d& pose, Curvature curvature,
       Velocity velocity) const override {
     return Velocity(std::numeric_limits<double>::max());
   }
 
+  /**
+   * @brief Computes minimum and maximum allowed linear accelerations based on voltage limits.
+   * @param pose 2D position and orientation.
+   * @param curvature Path curvature in rad/meter.
+   * @param speed Current scalar speed.
+   * @return MinMax acceleration bounds struct.
+   */
   MinMax min_max_acceleration(
       const Pose2d& pose, Curvature curvature,
       Velocity speed) const override {
@@ -59,13 +83,17 @@ class TankVoltageConstraint : public TrajectoryConstraint {
     return {minChassisAcceleration, maxChassisAcceleration};
   }
 
+  /**
+   * @brief Polymorphic deep-copy factory method.
+   * @return Unique pointer to cloned TankVoltageConstraint instance.
+   */
   std::unique_ptr<TrajectoryConstraint> clone() const override {
     return std::unique_ptr<TrajectoryConstraint>(new TankVoltageConstraint(*this));
   }
 
  private:
-  LinearVelocityFeedforward m_Kv;
-  LinearAccelerationFeedforward m_Ka;
-  Voltage m_maxVoltage;
-  Length m_trackWidth;
+  LinearVelocityFeedforward m_Kv; ///< Linear velocity feedforward constant
+  LinearAccelerationFeedforward m_Ka; ///< Linear acceleration feedforward constant
+  Voltage m_maxVoltage; ///< Maximum available voltage
+  Length m_trackWidth; ///< Robot track width
 };

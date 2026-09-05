@@ -15,7 +15,7 @@ struct SplineSample {
     double s = 0.0;              ///< Arc length along spline from start in inches
     Translation2d position;     ///< 2D position (x, y)
     Translation2d velocity;     ///< 1D/2D parametric velocity vector (dx/du, dy/du)
-    Translation2d acceleration; ///< 1D/2D parametric acceleration vector (d²x/du², d²y/du²)
+    Translation2d acceleration; ///< 1D/2D parametric acceleration vector (d^2x/du^2, d^2y/du^2)
     Rotation2d heading;         ///< Heading angle theta along path
     Curvature curvature = 0_radpm; ///< Path curvature (rad/meter)
 };
@@ -47,7 +47,7 @@ class SplineBase {
     /**
      * @brief Computes 2D parametric acceleration (second derivative) at parameter u.
      * @param u Parameter in range [0, 1].
-     * @return Second derivative vector (d²x/du², d²y/du²).
+     * @return Second derivative vector (d^2x/du^2, d^2y/du^2).
      */
     virtual Translation2d acceleration(double u) const = 0;
 
@@ -77,7 +77,7 @@ class SplineBase {
         // Convert 2D parametric curvature (in rad/inch) to canonical curvature (in rad/meter)
         constexpr double kInchesPerMeter = Length::from<meter_tag>(1.0).in();
         const double curvature_rad_per_in = ((vel.x() * acc.y()) - (vel.y() * acc.x())) / denom;
-        return Curvature::from<radians_per_meter_tag>(curvature_rad_per_in * kInchesPerMeter);
+        return Curvature::from<radians_per_meter_tag>(curvature_rad_per_in / kInchesPerMeter);
     }
 
     /**
@@ -264,7 +264,9 @@ class SplineBase {
         arc_lengths_.push_back(0.0);
 
         double prev_u = 0.0;
-        for (double u = step; u < 1.0; u += step) {
+        const int n = static_cast<int>(std::ceil(1.0 / step));
+        for (int k = 1; k < n; ++k) {
+            double u = static_cast<double>(k) / static_cast<double>(n);
             accum += integrate_segment_length(prev_u, u);
             us_.push_back(u);
             arc_lengths_.push_back(accum);
@@ -316,4 +318,31 @@ class SplineBase {
 
     std::vector<double> us_;
     std::vector<double> arc_lengths_;
+};
+
+/**
+ * @brief CRTP base class for Hermite splines of specific polynomial order.
+ * @tparam Order The polynomial order (e.g., 3 for Cubic, 5 for Quintic).
+ */
+template <size_t Order>
+class HermiteSpline : public SplineBase {
+  public:
+    Translation2d position(double u) const override {
+        const double clamped_u = clamp_u(u);
+        return Translation2d(eval_poly(x_, clamped_u), eval_poly(y_, clamped_u));
+    }
+
+    Translation2d velocity(double u) const override {
+        const double clamped_u = clamp_u(u);
+        return Translation2d(eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u));
+    }
+
+    Translation2d acceleration(double u) const override {
+        const double clamped_u = clamp_u(u);
+        return Translation2d(eval_poly_second_derivative(x_, clamped_u), eval_poly_second_derivative(y_, clamped_u));
+    }
+
+  protected:
+    std::array<double, Order + 1> x_{};
+    std::array<double, Order + 1> y_{};
 };

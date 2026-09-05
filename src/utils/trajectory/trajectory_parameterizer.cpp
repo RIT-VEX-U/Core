@@ -11,7 +11,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     Velocity end_velocity,
     Velocity max_velocity,
     Acceleration max_acceleration,
-    bool reversed) {
+    bool reversed,
+    std::function<void(const char*)> error_handler) {
   if (points.empty()) {
     return Trajectory{};
   }
@@ -35,8 +36,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     auto& constrainedState = constrainedStates[i];
     constrainedState.pose = points[i];
 
-    Length ds = Length::from<inch_tag>(constrainedState.pose.first.translation().distance(
-        predecessor.pose.first.translation()));
+    Length ds = Length::from<inch_tag>(constrainedState.pose.pose.translation().distance(
+        predecessor.pose.pose.translation()));
     constrainedState.distance = ds + predecessor.distance;
 
     while (true) {
@@ -53,12 +54,12 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
       for (const auto& constraint : constraints) {
         constrainedState.maxVelocity = std::min(
             constrainedState.maxVelocity,
-            constraint->max_velocity(constrainedState.pose.first,
-                                    constrainedState.pose.second,
+            constraint->max_velocity(constrainedState.pose.pose,
+                                    constrainedState.pose.curvature,
                                     constrainedState.maxVelocity));
       }
 
-      if (!enforce_acceleration_limits(reversed, constraints, &constrainedState)) {
+      if (!enforce_acceleration_limits(reversed, constraints, &constrainedState, error_handler)) {
         return Trajectory{};
       }
 
@@ -107,7 +108,7 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
 
       constrainedState.maxVelocity = newMaxVelocity;
 
-      if (!enforce_acceleration_limits(reversed, constraints, &constrainedState)) {
+      if (!enforce_acceleration_limits(reversed, constraints, &constrainedState, error_handler)) {
         return Trajectory{};
       }
 
@@ -152,7 +153,11 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
         dt = ds / v;
       } else {
         if (abs(ds) > kEpsilonLength) {
-          std::fprintf(stderr, "TrajectoryParameterizer: time parameterization failed.\n");
+          if (error_handler) {
+            error_handler("TrajectoryParameterizer: time parameterization failed.");
+          } else {
+            std::fprintf(stderr, "TrajectoryParameterizer: time parameterization failed.\n");
+          }
           return Trajectory{};
         }
       }
@@ -164,7 +169,7 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     t += dt;
 
     states[i] = {t, reversed ? -v : v, 0_inps2,
-                 state.pose.first, state.pose.second};
+                 state.pose.pose, state.pose.curvature};
   }
 
   if (states.size() >= 2) {
@@ -177,17 +182,22 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
 bool TrajectoryParameterizer::enforce_acceleration_limits(
     bool reverse,
     const std::vector<std::unique_ptr<TrajectoryConstraint>>& constraints,
-    ConstrainedState* state) {
+    ConstrainedState* state,
+    const std::function<void(const char*)>& error_handler) {
   for (auto&& constraint : constraints) {
     double factor = reverse ? -1.0 : 1.0;
 
     auto minMaxAccel = constraint->min_max_acceleration(
-        state->pose.first, state->pose.second, state->maxVelocity * factor);
+        state->pose.pose, state->pose.curvature, state->maxVelocity * factor);
 
     if (minMaxAccel.minAcceleration > minMaxAccel.maxAcceleration) {
-      std::fprintf(
-          stderr,
-          "TrajectoryParameterizer: infeasible trajectory constraint.\n");
+      if (error_handler) {
+        error_handler("TrajectoryParameterizer: infeasible trajectory constraint.");
+      } else {
+        std::fprintf(
+            stderr,
+            "TrajectoryParameterizer: infeasible trajectory constraint.\n");
+      }
       return false;
     }
 
