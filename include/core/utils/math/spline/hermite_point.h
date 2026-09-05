@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/translation2d.h"
 
@@ -12,7 +13,7 @@
 struct HermitePoint {
     Translation2d point;             ///< 2D position coordinates (x, y)
     Translation2d tangent;           ///< First derivative vector (dx/du, dy/du)
-    Translation2d second_derivative; ///< Second derivative vector (d²x/du², d²y/du²)
+    Translation2d second_derivative; ///< Second derivative vector (d^2x/du^2, d^2y/du^2)
 
     /**
      * @brief Default constructor initializing all vectors to zero.
@@ -77,44 +78,61 @@ struct HermitePoint {
      * @brief Factory method constructing HermitePoint from heading angle and scalar speed.
      * @param x X coordinate in inches.
      * @param y Y coordinate in inches.
-     * @param heading_rad Heading angle in radians.
+     * @param heading Heading angle.
      * @param speed Tangent magnitude (speed factor).
-     * @param accel_heading_rad Second derivative direction in radians.
+     * @param accel_heading Second derivative direction.
      * @param accel_mag Second derivative magnitude.
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_heading(
-      double x,
-      double y,
-      double heading_rad,
+      Length x,
+      Length y,
+      Rotation2d heading,
       double speed,
-      double accel_heading_rad = 0.0,
+      Rotation2d accel_heading = Rotation2d(),
       double accel_mag = 0.0) {
         return HermitePoint(
-          Translation2d(x, y),
-          Translation2d(speed, Rotation2d(heading_rad)),
-          Translation2d(accel_mag, Rotation2d(accel_heading_rad)));
+          Translation2d(x.in(), y.in()),
+          Translation2d(speed, heading),
+          Translation2d(accel_mag, accel_heading));
     }
 
     /**
      * @brief Factory method constructing HermitePoint from position vector, heading angle, and speed.
      * @param point 2D position vector.
-     * @param heading_rad Heading angle in radians.
+     * @param heading Heading angle.
      * @param speed Tangent magnitude.
-     * @param accel_heading_rad Second derivative direction in radians.
+     * @param accel_heading Second derivative direction.
      * @param accel_mag Second derivative magnitude.
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_heading(
       const Translation2d &point,
-      double heading_rad,
+      Rotation2d heading,
       double speed,
-      double accel_heading_rad = 0.0,
+      Rotation2d accel_heading = Rotation2d(),
       double accel_mag = 0.0) {
         return HermitePoint(
           point,
-          Translation2d(speed, Rotation2d(heading_rad)),
-          Translation2d(accel_mag, Rotation2d(accel_heading_rad)));
+          Translation2d(speed, heading),
+          Translation2d(accel_mag, accel_heading));
+    }
+
+    /**
+     * @brief Factory method constructing HermitePoint from Pose2d and speeds.
+     * @param pose 2D position and orientation.
+     * @param speed Tangent magnitude.
+     * @param accel_mag Second derivative magnitude.
+     * @return Constructed HermitePoint instance.
+     */
+    static HermitePoint from_pose(
+      const Pose2d &pose,
+      double speed,
+      double accel_mag = 0.0) {
+        return HermitePoint(
+          pose.translation(),
+          Translation2d(speed, pose.rotation()),
+          Translation2d(accel_mag, pose.rotation()));
     }
 
     /** @return 2D position vector. */
