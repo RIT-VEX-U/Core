@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -22,15 +23,18 @@ class SplinePath {
     SplinePath() = default;
 
     /**
-     * @brief Constructs a multi-segment path from a vector of Hermite waypoints.
-     * @param points Hermite waypoints defining path positions, tangents, and optional second derivatives.
-     * @param order Spline order (Cubic or Quintic).
+     * @brief Constructs a multi-segment path using a custom Spline factory.
+     * @param points Boundary waypoints.
+     * @param factory Factory closure producing SplineBase segments.
      * @param du Parameter step size used to build segment arc tables.
      * @return Constructed SplinePath instance.
      */
-    static SplinePath from_hermite(const std::vector<HermitePoint> &points, Order order = Order::Quintic, double du = 0.01) {
+    static SplinePath from_waypoints(
+        const std::vector<HermitePoint> &points,
+        std::function<std::unique_ptr<SplineBase>(const HermitePoint&, const HermitePoint&, double)> factory,
+        double du = 0.01) {
         SplinePath path;
-        if (points.size() < 2) {
+        if (points.size() < 2 || !factory) {
             return path;
         }
 
@@ -39,12 +43,8 @@ class SplinePath {
 
         double accum = 0.0;
         for (size_t i = 0; i + 1 < points.size(); ++i) {
-            std::unique_ptr<SplineBase> segment;
-            if (order == Order::Cubic) {
-                segment = std::unique_ptr<SplineBase>(new CubicHermiteSpline(points[i], points[i + 1], du));
-            } else {
-                segment = std::unique_ptr<SplineBase>(new QuinticHermiteSpline(points[i], points[i + 1], du));
-            }
+            std::unique_ptr<SplineBase> segment = factory(points[i], points[i + 1], du);
+            if (!segment) continue;
 
             path.segment_starts_.push_back(accum);
             accum += segment->length();
@@ -52,6 +52,23 @@ class SplinePath {
         }
         path.total_length_ = accum;
         return path;
+    }
+
+    /**
+     * @brief Constructs a multi-segment path from a vector of Hermite waypoints.
+     * @param points Hermite waypoints defining path positions, tangents, and optional second derivatives.
+     * @param order Spline order (Cubic or Quintic).
+     * @param du Parameter step size used to build segment arc tables.
+     * @return Constructed SplinePath instance.
+     */
+    static SplinePath from_hermite(const std::vector<HermitePoint> &points, Order order = Order::Quintic, double du = 0.01) {
+        return from_waypoints(points, [order](const HermitePoint& p0, const HermitePoint& p1, double step) -> std::unique_ptr<SplineBase> {
+            if (order == Order::Cubic) {
+                return std::unique_ptr<SplineBase>(new CubicHermiteSpline(p0, p1, step));
+            } else {
+                return std::unique_ptr<SplineBase>(new QuinticHermiteSpline(p0, p1, step));
+            }
+        }, du);
     }
 
     /** @return True if the path contains no segments. */
