@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -16,8 +17,6 @@
  */
 class TrajectoryParameterizer {
  public:
-  /** @brief Pair representing 2D Pose and scalar path Curvature. */
-  using PoseWithCurvature = std::pair<Pose2d, Curvature>;
 
   /**
    * @brief Time-parameterizes a list of discrete path points into a Trajectory under physical constraints.
@@ -37,7 +36,8 @@ class TrajectoryParameterizer {
       Velocity end_velocity,
       Velocity max_velocity,
       Acceleration max_acceleration,
-      bool reversed);
+      bool reversed,
+      std::function<void(const char*)> error_handler = nullptr);
 
  private:
   constexpr static double kEpsilon = 1E-6;
@@ -53,5 +53,6 @@ class TrajectoryParameterizer {
   static bool enforce_acceleration_limits(
       bool reverse,
       const std::vector<std::unique_ptr<TrajectoryConstraint>>& constraints,
-      ConstrainedState* state);
+      ConstrainedState* state,
+      const std::function<void(const char*)>& error_handler);
 };

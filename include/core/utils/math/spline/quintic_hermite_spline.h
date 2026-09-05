@@ -7,9 +7,9 @@
 /**
  * @brief Quintic Hermite spline segment defined by endpoint positions, tangents, and second derivatives.
  *
- * P(u) = c0 + c1*u + c2*u² + c3*u³ + c4*u⁴ + c5*u⁵, where u ∈ [0, 1].
+ * P(u) = c0 + c1*u + c2*u^2 + c3*u^3 + c4*u^4 + c5*u^5, where u in [0, 1].
  */
-class QuinticHermiteSpline : public SplineBase {
+class QuinticHermiteSpline : public HermiteSpline<5> {
   public:
     /** @brief Default constructor. */
     QuinticHermiteSpline() = default;
@@ -48,40 +48,12 @@ class QuinticHermiteSpline : public SplineBase {
       const Translation2d &a0,
       const Translation2d &a1,
       double du = 0.01) {
-        x_ = quintic_coeffs(p0.x(), p1.x(), t0.x(), t1.x(), a0.x(), a1.x());
-        y_ = quintic_coeffs(p0.y(), p1.y(), t0.y(), t1.y(), a0.y(), a1.y());
+        this->x_ = quintic_coeffs(p0.x(), p1.x(), t0.x(), t1.x(), a0.x(), a1.x());
+        this->y_ = quintic_coeffs(p0.y(), p1.y(), t0.y(), t1.y(), a0.y(), a1.y());
         build_arc_table(du);
     }
 
-    /**
-     * @brief Computes 2D position at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return 2D position vector.
-     */
-    Translation2d position(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly(x_, clamped_u), eval_poly(y_, clamped_u));
-    }
 
-    /**
-     * @brief Computes 2D parametric velocity (dx/du, dy/du) at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return First derivative vector.
-     */
-    Translation2d velocity(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u));
-    }
-
-    /**
-     * @brief Computes 2D parametric acceleration (d²x/du², d²y/du²) at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return Second derivative vector.
-     */
-    Translation2d acceleration(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_second_derivative(x_, clamped_u), eval_poly_second_derivative(y_, clamped_u));
-    }
 
   private:
     /**
@@ -98,6 +70,4 @@ class QuinticHermiteSpline : public SplineBase {
         };
     }
 
-    std::array<double, 6> x_{};
-    std::array<double, 6> y_{};
 };
