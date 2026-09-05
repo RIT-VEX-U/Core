@@ -39,16 +39,16 @@ class SplinePath {
 
         double accum = 0.0;
         for (size_t i = 0; i + 1 < points.size(); ++i) {
-            std::shared_ptr<SplineBase> segment;
+            std::unique_ptr<SplineBase> segment;
             if (order == Order::Cubic) {
-                segment = std::shared_ptr<SplineBase>(new CubicHermiteSpline(points[i], points[i + 1], du));
+                segment = std::unique_ptr<SplineBase>(new CubicHermiteSpline(points[i], points[i + 1], du));
             } else {
-                segment = std::shared_ptr<SplineBase>(new QuinticHermiteSpline(points[i], points[i + 1], du));
+                segment = std::unique_ptr<SplineBase>(new QuinticHermiteSpline(points[i], points[i + 1], du));
             }
 
             path.segment_starts_.push_back(accum);
             accum += segment->length();
-            path.segments_.push_back(segment);
+            path.segments_.push_back(std::move(segment));
         }
         path.total_length_ = accum;
         return path;
@@ -146,7 +146,7 @@ class SplinePath {
         return idx;
     }
 
-    std::vector<std::shared_ptr<SplineBase>> segments_;
+    std::vector<std::unique_ptr<SplineBase>> segments_;
     std::vector<double> segment_starts_;
     double total_length_ = 0.0;
 };

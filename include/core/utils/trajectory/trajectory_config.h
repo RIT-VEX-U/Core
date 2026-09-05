@@ -5,7 +5,10 @@
 #include <utility>
 #include <vector>
 
+#include <functional>
+
 #include "core/units/units.h"
+#include "core/utils/math/spline/spline_path.h"
 #include "core/utils/trajectory/constraints/tank_kinematics_constraint.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
 
@@ -131,6 +134,12 @@ class TrajectoryConfig {
   /** @brief Sets spatial discretization step size for spline sampling. */
   void set_sample_ds(Length sample_ds) { m_sample_ds = sample_ds; }
 
+  /** @brief Sets spline order. */
+  void set_spline_order(SplinePath::Order order) { m_spline_order = order; }
+
+  /** @brief Sets error handler for trajectory generation failures. */
+  void set_error_handler(std::function<void(const char*)> handler) { m_error_handler = std::move(handler); }
+
   /**
    * @brief Adds a user-defined TrajectoryConstraint.
    * @tparam Constraint Constraint class inheriting from TrajectoryConstraint.
@@ -167,6 +176,12 @@ class TrajectoryConfig {
   /** @return True if trajectory is driven in reverse. */
   bool is_reversed() const { return m_reversed; }
 
+  /** @return Spline order used for path generation. */
+  SplinePath::Order spline_order() const { return m_spline_order; }
+
+  /** @return Error handler callback. */
+  const std::function<void(const char*)>& error_handler() const { return m_error_handler; }
+
  private:
   Velocity m_start_velocity = 0_inps;
   Velocity m_end_velocity = 0_inps;
@@ -175,6 +190,8 @@ class TrajectoryConfig {
   Length m_sample_ds = 0.5_in;
   std::vector<std::unique_ptr<TrajectoryConstraint>> m_constraints;
   bool m_reversed = false;
+  SplinePath::Order m_spline_order = SplinePath::Order::Quintic;
+  std::function<void(const char*)> m_error_handler;
 };
 
 /**
@@ -215,6 +232,18 @@ class TrajectoryConfigBuilder {
   /** @brief Configures drivetrain track width kinematics constraint. */
   TrajectoryConfigBuilder &with_track_width(Length track_width) {
     m_config.set_track_width(track_width);
+    return *this;
+  }
+
+  /** @brief Configures spline order. */
+  TrajectoryConfigBuilder &with_spline_order(SplinePath::Order order) {
+    m_config.set_spline_order(order);
+    return *this;
+  }
+
+  /** @brief Configures custom error handler callback. */
+  TrajectoryConfigBuilder &with_error_handler(std::function<void(const char*)> handler) {
+    m_config.set_error_handler(std::move(handler));
     return *this;
   }
 

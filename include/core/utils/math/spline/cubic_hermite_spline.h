@@ -8,9 +8,9 @@
 /**
  * @brief Cubic Hermite spline segment defined by endpoint positions and tangents.
  *
- * P(u) = c0 + c1*u + c2*u² + c3*u³, where u ∈ [0, 1].
+ * P(u) = c0 + c1*u + c2*u^2 + c3*u^3, where u in [0, 1].
  */
-class CubicHermiteSpline : public SplineBase {
+class CubicHermiteSpline : public HermiteSpline<3> {
   public:
     /** @brief Default constructor. */
     CubicHermiteSpline() = default;
@@ -38,40 +38,12 @@ class CubicHermiteSpline : public SplineBase {
       const Translation2d &t0,
       const Translation2d &t1,
       double du = 0.01) {
-        x_ = cubic_coeffs(p0.x(), p1.x(), t0.x(), t1.x());
-        y_ = cubic_coeffs(p0.y(), p1.y(), t0.y(), t1.y());
+        this->x_ = cubic_coeffs(p0.x(), p1.x(), t0.x(), t1.x());
+        this->y_ = cubic_coeffs(p0.y(), p1.y(), t0.y(), t1.y());
         build_arc_table(du);
     }
 
-    /**
-     * @brief Computes 2D position at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return 2D position vector.
-     */
-    Translation2d position(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly(x_, clamped_u), eval_poly(y_, clamped_u));
-    }
 
-    /**
-     * @brief Computes 2D parametric velocity (dx/du, dy/du) at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return First derivative vector.
-     */
-    Translation2d velocity(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u));
-    }
-
-    /**
-     * @brief Computes 2D parametric acceleration (d²x/du², d²y/du²) at parameter u.
-     * @param u Parameter in range [0, 1].
-     * @return Second derivative vector.
-     */
-    Translation2d acceleration(double u) const override {
-        const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_second_derivative(x_, clamped_u), eval_poly_second_derivative(y_, clamped_u));
-    }
 
   private:
     /**
@@ -86,6 +58,4 @@ class CubicHermiteSpline : public SplineBase {
         };
     }
 
-    std::array<double, 4> x_{};
-    std::array<double, 4> y_{};
 };
