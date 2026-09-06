@@ -185,6 +185,23 @@ class Trajectory {
   }
 
   /**
+   * @brief Returns a time-reversed version of this trajectory (traces the path from end to start).
+   * @return Reversed Trajectory.
+   */
+  Trajectory reverse() const {
+    std::vector<State> new_states;
+    new_states.reserve(m_states.size());
+    for (auto it = m_states.rbegin(); it != m_states.rend(); ++it) {
+      State s = *it;
+      s.t = m_total_time - s.t;
+      s.velocity = -s.velocity;
+      s.curvature = -s.curvature;
+      new_states.push_back(s);
+    }
+    return Trajectory(new_states);
+  }
+
+  /**
    * @brief Concatenates two trajectories end-to-end.
    * @param other Secondary trajectory to append.
    * @return Combined Trajectory.
