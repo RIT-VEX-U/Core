@@ -62,7 +62,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
     }
   }
 
-  return TrajectoryParameterizer::time_parameterize_trajectory(
+  Trajectory traj = TrajectoryParameterizer::time_parameterize_trajectory(
       points,
       config.constraints(),
       config.start_velocity(),
@@ -71,4 +71,11 @@ Trajectory TrajectoryGenerator::generate_trajectory(
       config.max_acceleration(),
       config.is_reversed(),
       config.error_handler());
+
+  if (config.max_jerk() > 0_inps3) {
+    traj = TrajectoryParameterizer::jerk_limit_trajectory(
+        traj, config.max_acceleration(), config.max_jerk());
+  }
+
+  return traj;
 }

@@ -179,6 +179,12 @@ class TrajectoryConfig {
   /** @return Spline order used for path generation. */
   SplinePath::Order spline_order() const { return m_spline_order; }
 
+  /** @return Maximum jerk limit for S-curve generation. Returns 0_inps3 if disabled. */
+  Jerk max_jerk() const { return m_max_jerk; }
+
+  /** @brief Sets maximum jerk limit. Set to 0 to disable (pure trapezoidal). */
+  void set_max_jerk(Jerk jerk) { m_max_jerk = jerk; }
+
   /** @return Error handler callback. */
   const std::function<void(const char*)>& error_handler() const { return m_error_handler; }
 
@@ -187,6 +193,7 @@ class TrajectoryConfig {
   Velocity m_end_velocity = 0_inps;
   Velocity m_max_velocity;
   Acceleration m_max_acceleration;
+  Jerk m_max_jerk = 0_inps3;
   Length m_sample_ds = 0.5_in;
   std::vector<std::unique_ptr<TrajectoryConstraint>> m_constraints;
   bool m_reversed = false;
@@ -232,6 +239,12 @@ class TrajectoryConfigBuilder {
   /** @brief Configures drivetrain track width kinematics constraint. */
   TrajectoryConfigBuilder &with_track_width(Length track_width) {
     m_config.set_track_width(track_width);
+    return *this;
+  }
+
+  /** @brief Configures jerk limit for S-curve generation. */
+  TrajectoryConfigBuilder &with_max_jerk(Jerk max_jerk) {
+    m_config.set_max_jerk(max_jerk);
     return *this;
   }
 
