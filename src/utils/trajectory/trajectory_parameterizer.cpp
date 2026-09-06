@@ -212,3 +212,99 @@ bool TrajectoryParameterizer::enforce_acceleration_limits(
 
   return true;
 }
+
+Trajectory TrajectoryParameterizer::jerk_limit_trajectory(
+    const Trajectory& base,
+    Acceleration max_acceleration,
+    Jerk max_jerk) {
+  if (base.empty() || max_jerk <= 0_inps3) {
+    return base;
+  }
+
+  Time t_window = max_acceleration / max_jerk;
+  if (t_window < 10_ms) {
+    return base;
+  }
+
+  Time dt = 10_ms;
+  Time old_time = base.total_time();
+  Time new_time = old_time + t_window;
+
+  int num_samples = static_cast<int>(std::ceil((new_time / dt).value())) + 1;
+  std::vector<Trajectory::State> new_states;
+  new_states.reserve(num_samples);
+
+  const auto& base_states = base.states();
+  std::vector<Length> base_s(base_states.size());
+  base_s[0] = 0_in;
+  for (size_t i = 1; i < base_states.size(); ++i) {
+    base_s[i] = base_s[i - 1] + Length::from<inch_tag>(
+        base_states[i].pose.translation().distance(base_states[i - 1].pose.translation()));
+  }
+  Length total_s = base_s.back();
+
+  Velocity current_v = 0_inps;
+  Length current_s = 0_in;
+
+  for (int i = 0; i < num_samples; ++i) {
+    Time t = i * dt;
+    Time t_start = t - t_window;
+    
+    const int sub_samples = 50;
+    Time sub_dt = t_window / sub_samples;
+    Velocity v_sum = 0_inps;
+    
+    for (int j = 0; j <= sub_samples; ++j) {
+      Time sample_t = t_start + (j * sub_dt);
+      if (sample_t >= 0_s && sample_t <= old_time) {
+        v_sum += base.sample(sample_t).velocity;
+      } else if (sample_t > old_time) {
+        v_sum += base_states.back().velocity;
+      }
+    }
+    
+    Velocity v_avg = v_sum / (sub_samples + 1);
+
+    if (i > 0) {
+      current_s += abs((current_v + v_avg) / 2.0 * dt);
+    }
+    
+    if (current_s > total_s) {
+      current_s = total_s;
+    }
+    
+    Time t_base = 0_s;
+    auto upper = std::upper_bound(base_s.begin(), base_s.end(), current_s);
+    if (upper == base_s.end()) {
+      t_base = old_time;
+    } else if (upper == base_s.begin()) {
+      t_base = 0_s;
+    } else {
+      size_t idx = std::distance(base_s.begin(), upper);
+      Length s0 = base_s[idx - 1];
+      Length s1 = base_s[idx];
+      Time t0 = base_states[idx - 1].t;
+      Time t1 = base_states[idx].t;
+      
+      double alpha = (s1 == s0) ? 0.0 : ((current_s - s0) / (s1 - s0)).value();
+      t_base = t0 + (t1 - t0) * alpha;
+    }
+    
+    Trajectory::State mapped_state = base.sample(t_base);
+    
+    Acceleration a = 0_inps2;
+    if (i > 0) {
+      a = (v_avg - current_v) / dt;
+      new_states.back().acceleration = a;
+    }
+    
+    new_states.push_back({t, v_avg, a, mapped_state.pose, mapped_state.curvature});
+    current_v = v_avg;
+  }
+  
+  if (new_states.size() >= 2) {
+    new_states.back().acceleration = new_states[new_states.size() - 2].acceleration;
+  }
+  
+  return Trajectory(new_states);
+}
