@@ -86,3 +86,58 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
   return traj;
 }
+
+Trajectory TrajectoryGenerator::generate_trajectory(
+    const std::vector<Pose2d>& waypoints,
+    const TrajectoryConfig& config) {
+  std::vector<HermitePoint> hermite_points;
+  hermite_points.reserve(waypoints.size());
+
+  for (size_t i = 0; i < waypoints.size(); ++i) {
+    double speed = 0.0;
+    if (i < waypoints.size() - 1) {
+      speed = waypoints[i].translation().distance(waypoints[i+1].translation()) * 1.2;
+    } else if (i > 0) {
+      speed = waypoints[i].translation().distance(waypoints[i-1].translation()) * 1.2;
+    }
+    hermite_points.push_back(HermitePoint::from_pose(waypoints[i], speed));
+  }
+
+  return generate_trajectory(hermite_points, config);
+}
+
+Trajectory TrajectoryGenerator::generate_trajectory(
+    const Pose2d& current_pose,
+    Velocity current_velocity,
+    const std::vector<Pose2d>& target_waypoints,
+    TrajectoryConfig config) {
+  
+  std::vector<Pose2d> full_waypoints;
+  full_waypoints.reserve(target_waypoints.size() + 1);
+  full_waypoints.push_back(current_pose);
+  for (const auto& wp : target_waypoints) {
+    full_waypoints.push_back(wp);
+  }
+
+  std::vector<HermitePoint> hermite_points;
+  hermite_points.reserve(full_waypoints.size());
+
+  for (size_t i = 0; i < full_waypoints.size(); ++i) {
+    double speed = 0.0;
+    if (i == 0) {
+      // Scale tangent speed based on instantaneous velocity!
+      // If moving very slow, we still need some minimal tangent bulge to form a spline
+      speed = std::max(current_velocity.canonical_value(), full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2);
+    } else if (i < full_waypoints.size() - 1) {
+      speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2;
+    } else {
+      speed = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()) * 1.2;
+    }
+    hermite_points.push_back(HermitePoint::from_pose(full_waypoints[i], speed));
+  }
+
+  // Force the start velocity parameter to match the robot's actual state
+  config.set_start_velocity(current_velocity);
+
+  return generate_trajectory(hermite_points, config);
+}
