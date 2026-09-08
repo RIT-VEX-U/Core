@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "core/units/units.h"
+#include <string>
 #include "core/utils/math/spline/spline_path.h"
 #include "core/utils/trajectory/constraints/tank_kinematics_constraint.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
@@ -16,6 +17,11 @@
 /**
  * @brief Configuration parameters and constraint container for generating trajectories.
  */
+struct DistanceEvent {
+  Length distance;
+  std::string name;
+};
+
 class TrajectoryConfig {
  public:
   /**
@@ -88,13 +94,15 @@ class TrajectoryConfig {
         m_max_velocity(other.m_max_velocity),
         m_max_acceleration(other.m_max_acceleration),
         m_sample_ds(other.m_sample_ds),
-        m_reversed(other.m_reversed) {
+        m_reversed(other.m_reversed),
+        m_events(other.m_events) {
     m_constraints.reserve(other.m_constraints.size());
     for (const auto &c : other.m_constraints) {
       if (c) {
         m_constraints.push_back(c->clone());
       }
     }
+      m_events = other.m_events;
   }
 
   /** @brief Polymorphic deep-copy assignment operator. */
@@ -113,6 +121,7 @@ class TrajectoryConfig {
           m_constraints.push_back(c->clone());
         }
       }
+      m_events = other.m_events;
     }
     return *this;
   }
@@ -123,6 +132,7 @@ class TrajectoryConfig {
   TrajectoryConfig &operator=(TrajectoryConfig &&) = default;
 
   /** @brief Sets initial trajectory velocity. */
+  void add_event(const std::string& name, Length distance) { m_events.push_back({distance, name}); }
   void set_start_velocity(Velocity start_velocity) { m_start_velocity = start_velocity; }
 
   /** @brief Sets final trajectory velocity. */
@@ -172,6 +182,7 @@ class TrajectoryConfig {
 
   /** @return Vector of polymorphic trajectory constraint pointers. */
   const std::vector<std::unique_ptr<TrajectoryConstraint>> &constraints() const { return m_constraints; }
+  const std::vector<DistanceEvent>& events() const { return m_events; }
 
   /** @return True if trajectory is driven in reverse. */
   bool is_reversed() const { return m_reversed; }
@@ -196,6 +207,7 @@ class TrajectoryConfig {
   Jerk m_max_jerk = 0_inps3;
   Length m_sample_ds = 0.5_in;
   std::vector<std::unique_ptr<TrajectoryConstraint>> m_constraints;
+  std::vector<DistanceEvent> m_events;
   bool m_reversed = false;
   SplinePath::Order m_spline_order = SplinePath::Order::Quintic;
   std::function<void(const char*)> m_error_handler;
@@ -268,6 +280,10 @@ class TrajectoryConfigBuilder {
   }
 
   /** @brief Builds and returns constructed TrajectoryConfig instance. */
+  TrajectoryConfigBuilder &with_event(const std::string& name, Length distance) {
+    m_config.add_event(name, distance);
+    return *this;
+  }
   TrajectoryConfig build() { return std::move(m_config); }
 
  private:
