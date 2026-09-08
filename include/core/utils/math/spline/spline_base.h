@@ -252,32 +252,48 @@ class SplineBase {
     }
 
     /**
-     * @brief Builds pre-computed parameter u and arc-length lookup tables using 5-point Gauss-Legendre quadrature.
-     * @param du Parameter step size.
+     * @brief Recursively builds the arc table to satisfy a linear interpolation error bound.
      */
-    void build_arc_table(double du = 0.01) {
+    void build_arc_table_recursive(double u0, double u1, double s0, double segment_length, double max_err) {
+        double mid_u = (u0 + u1) * 0.5;
+        double len1 = integrate_segment_length(u0, mid_u);
+        double len2 = integrate_segment_length(mid_u, u1);
+
+        double actual_mid_s = s0 + len1;
+        double linear_mid_s = s0 + segment_length * 0.5;
+
+        double integral_err = std::abs((len1 + len2) - segment_length);
+        double interp_err = std::abs(actual_mid_s - linear_mid_s);
+
+        if ((integral_err > max_err || interp_err > max_err) && (u1 - u0) > 1e-5) {
+            build_arc_table_recursive(u0, mid_u, s0, len1, max_err);
+            build_arc_table_recursive(mid_u, u1, actual_mid_s, len2, max_err);
+        } else {
+            us_.push_back(u1);
+            arc_lengths_.push_back(s0 + len1 + len2);
+        }
+    }
+
+    /**
+     * @brief Builds pre-computed parameter u and arc-length lookup tables using adaptive refinement.
+     * @param max_err Maximum allowable interpolation error in inches.
+     */
+    void build_arc_table(double max_err = 1e-4) {
         us_.clear();
         arc_lengths_.clear();
-
-        const double step = std::max(du, 1e-4);
-        double accum = 0.0;
 
         us_.push_back(0.0);
         arc_lengths_.push_back(0.0);
 
-        double prev_u = 0.0;
-        const int n = static_cast<int>(std::ceil(1.0 / step));
-        for (int k = 1; k < n; ++k) {
-            double u = static_cast<double>(k) / static_cast<double>(n);
-            accum += integrate_segment_length(prev_u, u);
-            us_.push_back(u);
-            arc_lengths_.push_back(accum);
-            prev_u = u;
+        const int initial_segments = 10;
+        double s0 = 0.0;
+        for (int i = 0; i < initial_segments; ++i) {
+            double u0 = static_cast<double>(i) / initial_segments;
+            double u1 = static_cast<double>(i + 1) / initial_segments;
+            double len = integrate_segment_length(u0, u1);
+            build_arc_table_recursive(u0, u1, s0, len, max_err);
+            s0 = arc_lengths_.back();
         }
-
-        accum += integrate_segment_length(prev_u, 1.0);
-        us_.push_back(1.0);
-        arc_lengths_.push_back(accum);
     }
 
     static double clamp_u(double u) { return clamp_value(u, 0.0, 1.0); }

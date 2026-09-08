@@ -2,17 +2,27 @@
 
 #include <algorithm>
 #include <cmath>
+#include <string>
 #include <vector>
 
 #include "core/units/units.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math_util.h"
+
 /**
  * @brief Pair representing 2D Pose and scalar path Curvature.
  */
 struct PoseWithCurvature {
   Pose2d pose;
   Curvature curvature;
+};
+
+/**
+ * @brief Represents an action event triggered at a specific time along a trajectory.
+ */
+struct TrajectoryEvent {
+  Time time;
+  std::string name;
 };
 
 /**
@@ -28,6 +38,7 @@ class Trajectory {
    */
   struct State {
     Time t = 0_s;                        ///< Elapsed time from trajectory start
+    Length s = 0_in;                     ///< Distance along trajectory
     Velocity velocity = 0_inps;          ///< Linear chassis velocity
     Acceleration acceleration = 0_inps2;  ///< Linear chassis acceleration
     Pose2d pose{0.0, 0.0, 0.0};           ///< 2D robot pose (x, y, theta)
@@ -44,8 +55,8 @@ class Trajectory {
      * @param pose 2D pose.
      * @param curvature Path curvature.
      */
-    State(Time t, Velocity velocity, Acceleration acceleration, Pose2d pose, Curvature curvature)
-        : t(t), velocity(velocity), acceleration(acceleration), pose(pose), curvature(curvature) {}
+    State(Time t, Velocity velocity, Acceleration acceleration, Pose2d pose, Curvature curvature, Length s = 0_in)
+        : t(t), s(s), velocity(velocity), acceleration(acceleration), pose(pose), curvature(curvature) {}
 
     /** @brief Checks equality between two States. */
     bool operator==(const State &other) const {
@@ -73,7 +84,7 @@ class Trajectory {
         (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) * (reversing ? -1.0 : 1.0);
 
       const Length distance = Length(end_value.pose.translation().distance(pose.translation()));
-      const double interpolation_frac = distance > 1E-9_in ? (new_s / distance).value() : i;
+      const double interpolation_frac = distance > 1E-9_in ? (new_s / distance).canonical_value() : i;
 
       Translation2d new_trans(
         pose.x() + (end_value.pose.x() - pose.x()) * interpolation_frac,
@@ -88,7 +99,7 @@ class Trajectory {
         curvature.radpm() + (end_value.curvature.radpm() - curvature.radpm()) * interpolation_frac
       );
 
-      return State(new_t, new_v, acceleration, new_pose, new_curvature);
+      return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
     }
   };
 
@@ -113,6 +124,32 @@ class Trajectory {
 
   /** @return Reference to the internal vector of State samples. */
   const std::vector<State> &states() const { return m_states; }
+
+  /** @return Vector of events attached to this trajectory. */
+  const std::vector<TrajectoryEvent>& events() const { return m_events; }
+
+  /** @brief Attaches a vector of time-parameterized events to the trajectory. */
+  void set_events(std::vector<TrajectoryEvent> events) { m_events = std::move(events); }
+
+  /**
+   * @brief Interpolates the time at which a given arc distance is reached.
+   * @param s Arc distance along trajectory.
+   * @return Interpolated time.
+   */
+  Time time_from_distance(Length s) const {
+    if (m_states.empty() || s <= 0_in) return 0_s;
+    if (s >= m_states.back().s) return m_total_time;
+    
+    auto it = std::lower_bound(m_states.begin() + 1, m_states.end(), s, 
+      [](const State& st, Length val) { return st.s < val; });
+      
+    const State& s0 = *(it - 1);
+    const State& s1 = *it;
+    
+    if (s1.s == s0.s) return s1.t;
+    double alpha = (s - s0.s).canonical_value() / (s1.s - s0.s).canonical_value();
+    return s0.t + (s1.t - s0.t) * alpha;
+  }
 
   /**
    * @brief Samples trajectory state at timestamp t using binary search interpolation.
@@ -143,7 +180,7 @@ class Trajectory {
       return *sample;
     }
 
-    return prev_sample->interpolate(*sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)).value());
+    return prev_sample->interpolate(*sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)).canonical_value());
   }
 
   /**
@@ -192,11 +229,12 @@ class Trajectory {
     std::vector<State> new_states;
     new_states.reserve(m_states.size());
     for (auto it = m_states.rbegin(); it != m_states.rend(); ++it) {
-      State s = *it;
-      s.t = m_total_time - s.t;
-      s.velocity = -s.velocity;
-      s.curvature = -s.curvature;
-      new_states.push_back(s);
+      State st = *it;
+      st.t = m_total_time - st.t;
+      st.velocity = -st.velocity;
+      st.curvature = -st.curvature;
+      st.s = m_states.back().s - st.s;
+      new_states.push_back(st);
     }
     return Trajectory(new_states);
   }
@@ -231,6 +269,7 @@ class Trajectory {
 
  private:
   std::vector<State> m_states;
+  std::vector<TrajectoryEvent> m_events;
   Time m_total_time = 0_s;
 };
 
@@ -291,7 +330,7 @@ class TrajectorySampler {
     if (abs(next.t - prev.t) < 1E-9_s) {
       return next;
     }
-    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).value());
+    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).canonical_value());
   }
 
  private:

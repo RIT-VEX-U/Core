@@ -77,5 +77,12 @@ Trajectory TrajectoryGenerator::generate_trajectory(
         traj, config.max_acceleration(), config.max_jerk());
   }
 
+
+  std::vector<TrajectoryEvent> evs;
+  for (const auto& ev : config.events()) {
+    evs.push_back({traj.time_from_distance(ev.distance), ev.name});
+  }
+  traj.set_events(std::move(evs));
+
   return traj;
 }
