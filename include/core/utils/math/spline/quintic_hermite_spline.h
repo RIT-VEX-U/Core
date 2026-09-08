@@ -20,15 +20,14 @@ class QuinticHermiteSpline : public HermiteSpline<5> {
      * @param end Final endpoint with position, tangent, and second derivative.
      * @param du Parameter step size used to build the arc-length lookup table.
      */
-    QuinticHermiteSpline(const HermitePoint &start, const HermitePoint &end, double du = 0.01)
+    QuinticHermiteSpline(const HermitePoint &start, const HermitePoint &end, double max_err = 1e-4)
         : QuinticHermiteSpline(
             start.point,
             end.point,
             start.tangent,
             end.tangent,
             start.second_derivative,
-            end.second_derivative,
-            du) {}
+            end.second_derivative) {}
 
     /**
      * @brief Constructs quintic Hermite spline from explicit 2D position, tangent, and acceleration vectors.
@@ -47,10 +46,10 @@ class QuinticHermiteSpline : public HermiteSpline<5> {
       const Translation2d &t1,
       const Translation2d &a0,
       const Translation2d &a1,
-      double du = 0.01) {
+      double max_err = 1e-4) {
         this->x_ = quintic_coeffs(p0.x(), p1.x(), t0.x(), t1.x(), a0.x(), a1.x());
         this->y_ = quintic_coeffs(p0.y(), p1.y(), t0.y(), t1.y(), a0.y(), a1.y());
-        build_arc_table(du);
+        build_arc_table(max_err);
     }
 
 

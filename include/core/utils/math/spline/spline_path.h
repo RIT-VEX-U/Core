@@ -32,7 +32,7 @@ class SplinePath {
     static SplinePath from_waypoints(
         const std::vector<HermitePoint> &points,
         std::function<std::unique_ptr<SplineBase>(const HermitePoint&, const HermitePoint&, double)> factory,
-        double du = 0.01) {
+        double max_err = 1e-4) {
         SplinePath path;
         if (points.size() < 2 || !factory) {
             return path;
@@ -43,7 +43,7 @@ class SplinePath {
 
         double accum = 0.0;
         for (size_t i = 0; i + 1 < points.size(); ++i) {
-            std::unique_ptr<SplineBase> segment = factory(points[i], points[i + 1], du);
+            std::unique_ptr<SplineBase> segment = factory(points[i], points[i + 1], max_err);
             if (!segment) continue;
 
             path.segment_starts_.push_back(accum);
@@ -61,14 +61,14 @@ class SplinePath {
      * @param du Parameter step size used to build segment arc tables.
      * @return Constructed SplinePath instance.
      */
-    static SplinePath from_hermite(const std::vector<HermitePoint> &points, Order order = Order::Quintic, double du = 0.01) {
+    static SplinePath from_hermite(const std::vector<HermitePoint> &points, Order order = Order::Quintic, double max_err = 1e-4) {
         return from_waypoints(points, [order](const HermitePoint& p0, const HermitePoint& p1, double step) -> std::unique_ptr<SplineBase> {
             if (order == Order::Cubic) {
                 return std::unique_ptr<SplineBase>(new CubicHermiteSpline(p0, p1, step));
             } else {
                 return std::unique_ptr<SplineBase>(new QuinticHermiteSpline(p0, p1, step));
             }
-        }, du);
+        }, max_err);
     }
 
     /** @return True if the path contains no segments. */

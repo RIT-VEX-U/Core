@@ -2,6 +2,9 @@
 
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/rotation2d.h"
+#include "core/units/units.h"
+#include "core/utils/math/geometry/rotation2d.h"
+#include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
 
 /**
@@ -85,8 +88,8 @@ struct HermitePoint {
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_heading(
-      Length x,
-      Length y,
+      units::Length x,
+      units::Length y,
       Rotation2d heading,
       double speed,
       Rotation2d accel_heading = Rotation2d(),

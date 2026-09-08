@@ -169,7 +169,7 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     t += dt;
 
     states[i] = {t, reversed ? -v : v, 0_inps2,
-                 state.pose.pose, state.pose.curvature};
+                 state.pose.pose, state.pose.curvature, s};
   }
 
   if (states.size() >= 2) {
@@ -298,7 +298,7 @@ Trajectory TrajectoryParameterizer::jerk_limit_trajectory(
       new_states.back().acceleration = a;
     }
     
-    new_states.push_back({t, v_avg, a, mapped_state.pose, mapped_state.curvature});
+    new_states.push_back({t, v_avg, a, mapped_state.pose, mapped_state.curvature, mapped_state.s});
     current_v = v_avg;
   }
   
