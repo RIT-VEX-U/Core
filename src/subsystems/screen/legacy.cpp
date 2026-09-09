@@ -49,115 +49,115 @@ static ScreenData *screen_data_ptr;
 /// @param screen the brain screen
 /// @param pages the list of pages in your UI slideshow
 /// @param first_page the page to start on (by default 0)
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page) {
-    if (pages.size() == 0) {
-        printf("No pages, not starting screen");
-        return;
-    }
-    first_page %= pages.size();
+// void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page) {
+//     if (pages.size() == 0) {
+//         printf("No pages, not starting screen");
+//         return;
+//     }
+//     first_page %= pages.size();
 
-    if (running) {
-        printf("THERE IS ALREADY A SCREEN THREAD RUNNING\n");
-        return;
-    }
+//     if (running) {
+//         printf("THERE IS ALREADY A SCREEN THREAD RUNNING\n");
+//         return;
+//     }
 
-    ScreenData *data = new ScreenData{pages, first_page, screen};
+//     ScreenData *data = new ScreenData{pages, first_page, screen};
 
-    screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
-}
+//     screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
+// }
 
-void stop_screen() { running = false; }
+// void stop_screen() { running = false; }
 
-void prev_page() {
-    screen_data_ptr->page--;
-    if (screen_data_ptr->page < 0) {
-        screen_data_ptr->page += screen_data_ptr->pages.size();
-    }
-}
-void next_page() {
-    screen_data_ptr->page++;
-    screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
-void goto_page(size_t page) {
-    screen_data_ptr->page = page;
-    screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
+// void prev_page() {
+//     screen_data_ptr->page--;
+//     if (screen_data_ptr->page < 0) {
+//         screen_data_ptr->page += screen_data_ptr->pages.size();
+//     }
+// }
+// void next_page() {
+//     screen_data_ptr->page++;
+//     screen_data_ptr->page %= screen_data_ptr->pages.size();
+// }
+// void goto_page(size_t page) {
+//     screen_data_ptr->page = page;
+//     screen_data_ptr->page %= screen_data_ptr->pages.size();
+// }
 
 /**
  * @brief runs the screen thread
  * This should only be called by start_screen
  * If you are calling this, maybe don't
  */
-int screen_thread_func(void *screen_data_v) {
-    ScreenData &screen_data = *static_cast<ScreenData *>(screen_data_v);
-    screen_data_ptr = static_cast<ScreenData *>(screen_data_v);
-    running = true;
-    unsigned int frame = 0;
+// int screen_thread_func(void *screen_data_v) {
+//     ScreenData &screen_data = *static_cast<ScreenData *>(screen_data_v);
+//     screen_data_ptr = static_cast<ScreenData *>(screen_data_v);
+//     running = true;
+//     unsigned int frame = 0;
 
-    bool was_pressed = false;
-    int x_press = 0;
-    int y_press = 0;
+//     bool was_pressed = false;
+//     int x_press = 0;
+//     int y_press = 0;
 
-    while (running) {
-        Page *front_page = screen_data.pages[screen_data.page];
-        bool pressing = screen_data.screen.pressing();
+//     while (running) {
+//         Page *front_page = screen_data.pages[screen_data.page];
+//         bool pressing = screen_data.screen.pressing();
 
-        if (pressing) {
-            pressing = true;
-            x_press = screen_data.screen.xPosition();
-            y_press = screen_data.screen.yPosition();
-        }
-        bool just_pressed = pressing && !was_pressed;
+//         if (pressing) {
+//             pressing = true;
+//             x_press = screen_data.screen.xPosition();
+//             y_press = screen_data.screen.yPosition();
+//         }
+//         bool just_pressed = pressing && !was_pressed;
 
-        if (just_pressed && x_press < 40) {
-            screen_data.page--;
-            if (screen_data.page < 0) {
-                screen_data.page += screen_data.pages.size();
-            }
-        }
-        if (just_pressed && x_press > 440) {
-            screen_data.page++;
-            screen_data.page %= screen_data.pages.size();
-        }
+//         if (just_pressed && x_press < 40) {
+//             screen_data.page--;
+//             if (screen_data.page < 0) {
+//                 screen_data.page += screen_data.pages.size();
+//             }
+//         }
+//         if (just_pressed && x_press > 440) {
+//             screen_data.page++;
+//             screen_data.page %= screen_data.pages.size();
+//         }
 
-        // Update all pages
-        for (auto page : screen_data.pages) {
-            if (page == front_page) {
-                page->update(was_pressed, x_press, y_press);
-            } else {
-                page->update(false, 0, 0);
-            }
-        }
+//         // Update all pages
+//         for (auto page : screen_data.pages) {
+//             if (page == front_page) {
+//                 page->update(was_pressed, x_press, y_press);
+//             } else {
+//                 page->update(false, 0, 0);
+//             }
+//         }
 
-        // Draw First Page
-        if (frame % 2 == 0) {
-            screen_data.screen.clearScreen(vex::color::black);
-            screen_data.screen.setPenColor("#FFFFFF");
-            screen_data.screen.setFillColor("#000000");
-            front_page->draw(screen_data.screen, false, frame / 5);
+//         // Draw First Page
+//         if (frame % 2 == 0) {
+//             screen_data.screen.clearScreen(vex::color::black);
+//             screen_data.screen.setPenColor("#FFFFFF");
+//             screen_data.screen.setFillColor("#000000");
+//             front_page->draw(screen_data.screen, false, frame / 5);
 
-            // Draw side boxes
-            screen_data.screen.setPenColor("#202020");
-            screen_data.screen.setFillColor("#202020");
-            screen_data.screen.drawRectangle(0, 0, 40, 240);
-            screen_data.screen.drawRectangle(440, 0, 40, 240);
-            screen_data.screen.setPenColor("#FFFFFF");
-            // left arrow
-            screen_data.screen.drawLine(30, 100, 15, 120);
-            screen_data.screen.drawLine(30, 140, 15, 120);
-            // right arrow
-            screen_data.screen.drawLine(450, 100, 465, 120);
-            screen_data.screen.drawLine(450, 140, 465, 120);
-        }
+//             // Draw side boxes
+//             screen_data.screen.setPenColor("#202020");
+//             screen_data.screen.setFillColor("#202020");
+//             screen_data.screen.drawRectangle(0, 0, 40, 240);
+//             screen_data.screen.drawRectangle(440, 0, 40, 240);
+//             screen_data.screen.setPenColor("#FFFFFF");
+//             // left arrow
+//             screen_data.screen.drawLine(30, 100, 15, 120);
+//             screen_data.screen.drawLine(30, 140, 15, 120);
+//             // right arrow
+//             screen_data.screen.drawLine(450, 100, 465, 120);
+//             screen_data.screen.drawLine(450, 140, 465, 120);
+//         }
 
-        screen_data.screen.render();
-        frame++;
-        was_pressed = pressing;
-        vexDelay(5);
-    }
+//         screen_data.screen.render();
+//         frame++;
+//         was_pressed = pressing;
+//         vexDelay(5);
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 /**
  * @brief FunctionPage
  * @param update_f drawing function

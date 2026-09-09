@@ -1,5 +1,6 @@
 #pragma once
 #include "core/subsystems/odometry/odometry_base.h"
+#include "core/subsystems/screen/screen_controller.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/graph_drawer.h"
@@ -173,14 +174,14 @@ class WidgetPage : public Page {
  * @param pages drawing pages
  * @param first_page optional, which page to start the program at. by default 0
  */
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
+// void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
 
-void next_page();
-void prev_page();
-void goto_page(size_t page);
+// void next_page();
+// void prev_page();
+// void goto_page(size_t page);
 
 /// @brief stops the screen. If you have a drive team that hates fun call this at the start of opcontrol
-void stop_screen();
+// void stop_screen();
 
 /// @brief  type of function needed for update
 using update_func_t = std::function<void(bool, int, int)>;
@@ -311,25 +312,6 @@ class InitializerPage : public Page {
 
     /// @brief Creates an InitializerPage that renders the following Initializations from the last.
     static InitializerPage* Next();
-
-    /// @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
-    /// @param brain The VEX Brain containing the screen to display the InitializerPage objects on
-    /// @param initializer The initializer object for which this page provides a GUI of
-    /// @param o An optional callback to handle other matters during pre-initialization
-    /// @return A pre-initialization function that handles the screen
-    inline static std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, std::function<void()> o = nullptr) {
-      return [&]() {
-        if(o) o();
-
-        std::vector<Page*> pages; size_t initializations = 0;
-        do {
-          pages.push_back(new InitializerPage(initializer, initializations));
-          initializations += 8;
-        } while(initializations < initializer.initialization_count());
-
-        start_screen(brain.Screen, pages);
-      };
-    }
 
     /// @brief When using InitializerPage to select an Initialization, use this as the raw selector function.
     static size_t selector();

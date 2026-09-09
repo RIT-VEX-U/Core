@@ -6,7 +6,7 @@
  * @param initialize        The callback function used to initialize the robot
  */
 Initializer::Initializer(std::function<void()> initialize)
- : selector(nullptr), initialization_list({}), pre_init(initialize), post_init(nullptr) {}
+ : selector(nullptr), initialization_list(std::vector<Initialization>()), pre_init(initialize), post_init(nullptr) {}
 
 /**
  * The constructor for Initializer
@@ -26,8 +26,10 @@ void Initializer::initialize() {
     if(this->pre_init) this->pre_init();
 
     if(this->selector) this->selection = this->selector();
-    if(this->selection < this->initialization_list.size()) 
-        (this->selected_initialization = &this->initialization_list.at(this->selection))->init();
+    if(this->selection < this->initialization_list.size()) {
+        this->selected_initialization = &this->initialization_list.at(this->selection);
+        if(this->selected_initialization->init) this->selected_initialization->init();
+    }
 
     if(this->post_init) this->post_init();
     this->initialized = true;
