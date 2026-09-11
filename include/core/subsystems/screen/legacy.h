@@ -13,7 +13,7 @@
 #include <map>
 #include <vector>
 
-namespace screen {
+namespace LegacyScreen {
 /// @brief Widget that does something when you tap it. The function is only called once when you first tap it
 class ButtonWidget {
   public:
@@ -128,6 +128,7 @@ class Page;
 /// @brief Page describes one part of the screen slideshow
 class Page {
   public:
+    virtual ~Page() = default;
     /**
      * @brief collect data, respond to screen input, do fast things (runs at
      * 50hz even if you're not focused on this Page (only drawn page gets

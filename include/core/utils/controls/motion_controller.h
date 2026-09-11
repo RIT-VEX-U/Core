@@ -88,7 +88,7 @@ class MotionController : public Feedback {
      */
     motion_t get_motion() const;
 
-    screen::Page *Page();
+    LegacyScreen::Page *Page();
 
     /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.

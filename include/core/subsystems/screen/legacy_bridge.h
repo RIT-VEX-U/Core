@@ -6,17 +6,22 @@
 #include "legacy.h"
 #include "\core\subsystems\screen\screen_controller.h"
 
-namespace screen {
+namespace LegacyScreen {
 
 class LegacyPage {
 public:
 
     LegacyPage(vex::brain::lcd screen, std::initializer_list<Page *> pages);
     LegacyPage(vex::brain::lcd screen, std::vector<Page *> pages);
-    ~LegacyPage();
+    LegacyPage() = default;
 
-    constexpr std::function<void()> handle() {
+    inline std::function<void()> handle() {
         return [this]() {
+            if(this->pages.empty()) {
+                this->screen.clearScreen(vex::color::red);
+                return;
+            }
+
             Page *front_page = this->pages[this->index];
             std::optional<Translation2d> pressing;
 
@@ -88,8 +93,8 @@ private:
 /// @param initializer The initializer object for which this page provides a GUI of
 /// @param o An optional callback to handle other matters during pre-initialization
 /// @return A pre-initialization function that handles the screen
-inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, LegacyPage** page, std::function<void()> o = nullptr) {
-    return [&, o]() {
+inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, LegacyPage* page, std::function<void()> o = nullptr) {
+    return [&, o, page]() {
         if(o) o();
 
         std::vector<Page*> pages; size_t initializations = 0;
@@ -98,8 +103,8 @@ inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& init
             initializations += 8;
         } while(initializations < initializer.initialization_count());
 
-        *page = new LegacyPage(brain.Screen, pages);
-        ScreenController::set((*page)->handle());
+        *page = LegacyPage(brain.Screen, pages);
+        ScreenController::set(page->handle());
     };
 }
 
