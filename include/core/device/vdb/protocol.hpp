@@ -1,5 +1,4 @@
 #pragma once
-#include "core/device/vdb/crc32.hpp"
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -9,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "crc32.hpp"
 
 namespace VDB {
 uint32_t time_ms();
@@ -71,6 +71,7 @@ class Channel {
      * @param channel_id The Channel ID to assign the channel from 0 - 256
      */
     Channel(PartPtr data, ChannelID channel_id) : data(data), id(channel_id) {}
+    
 
     ChannelID id = 0;
     Packet packet_scratch_space;
