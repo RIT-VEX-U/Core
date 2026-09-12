@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/robot_specs.h"
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
@@ -75,7 +75,7 @@ public:
    *  @brief Creates a page displaying info about the flywheel
    *  @return the page should be used for `screen::start_screen(screen, {fw.Page()});
    */
-  screen::Page *Page() const;
+  LegacyScreen::Page *Page() const;
 
   /**
    * @brief Creates a new auto command to spin the flywheel at the desired velocity

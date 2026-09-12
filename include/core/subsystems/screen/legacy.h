@@ -1,17 +1,19 @@
 #pragma once
 #include "core/subsystems/odometry/odometry_base.h"
+#include "core/subsystems/screen/screen_controller.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/graph_drawer.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/initializer.h"
 #include "vex.h"
 #include <cassert>
 #include <functional>
 #include <map>
 #include <vector>
 
-namespace screen {
+namespace LegacyScreen {
 /// @brief Widget that does something when you tap it. The function is only called once when you first tap it
 class ButtonWidget {
   public:
@@ -126,6 +128,7 @@ class Page;
 /// @brief Page describes one part of the screen slideshow
 class Page {
   public:
+    virtual ~Page() = default;
     /**
      * @brief collect data, respond to screen input, do fast things (runs at
      * 50hz even if you're not focused on this Page (only drawn page gets
@@ -165,21 +168,6 @@ class WidgetPage : public Page {
   private:
     WidgetConfig &base_widget;
 };
-
-/**
- * @brief Start the screen background task. Once you start this, no need to draw to the screen manually elsewhere
- * @param screen reference to the vex screen
- * @param pages drawing pages
- * @param first_page optional, which page to start the program at. by default 0
- */
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
-
-void next_page();
-void prev_page();
-void goto_page(size_t page);
-
-/// @brief stops the screen. If you have a drive team that hates fun call this at the start of opcontrol
-void stop_screen();
 
 /// @brief  type of function needed for update
 using update_func_t = std::function<void(bool, int, int)>;
@@ -293,6 +281,51 @@ class PIDPage : public Page {
     ButtonWidget zero_d;
 
     GraphDrawer graph;
+};
+
+/// @brief InitializerPage provides a way to Select a desired Initialization on the Screen
+class InitializerPage : public Page {
+  public:
+    /// @brief Creates an InitializerPage
+    /// @param initializer The initializer object for which this page provides a GUI of
+    /// @param starting_index The first Initialization to be rendered on the page (note that 8 Initializations are rendered per page)
+    InitializerPage(const Initializer &initializer, size_t starting_index = 0);
+
+    /// @brief @see Page#update
+    void update(bool was_pressed, int x, int y) override;
+    /// @brief @see Page#draw
+    void draw(vex::brain::lcd &, bool first_draw, unsigned int frame_number) override;
+
+    /// @brief Creates an InitializerPage that renders the following Initializations from the last.
+    static InitializerPage* Next();
+
+    /// @brief When using InitializerPage to select an Initialization, use this as the raw selector function.
+    static size_t selector();
+
+    /// @brief When using InitializerPage wrapped by a timeout, call this to generate the desired selector function
+    /// @param seconds The amount of seconds after which the selector function will timeout
+    /// @param fallback The value which ends up being selected should the selector function timeout
+    /// @return A selector function wrapped in a Selector::timeout
+    inline static std::function<Selector::selector_t> timed_selector(unsigned int seconds, size_t fallback = DEFAULT_CANCELATION_INDEX) {
+      return Selector::timeout(selector, seconds*1000000, fallback, cancel);
+    }
+
+    /// @brief When using a selector function wrapper that may cancel or otherwise cause the InitializerPage's selector to fail, call this 
+    /// @param selected The value selected that ended up being selected.
+    static void cancel(size_t selected);
+
+    /// @brief The default selected index if a cancelation occured during selection
+    static const size_t DEFAULT_CANCELATION_INDEX = Selector::NO_SELECTION_INDEX - 1;
+  
+  private:
+    /// @brief The buffer that stores the selection of any InitializerPage
+    inline static size_t selection_buffer = Selector::NO_SELECTION_INDEX;
+
+    const Initializer &initializer;
+    const size_t starting_index;
+    inline static InitializerPage* latest_page = nullptr;
+
+    const static std::array<Rect, 8> buttons;
 };
 
 } // namespace screen
