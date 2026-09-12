@@ -169,21 +169,6 @@ class WidgetPage : public Page {
     WidgetConfig &base_widget;
 };
 
-/**
- * @brief Start the screen background task. Once you start this, no need to draw to the screen manually elsewhere
- * @param screen reference to the vex screen
- * @param pages drawing pages
- * @param first_page optional, which page to start the program at. by default 0
- */
-// void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page = 0);
-
-// void next_page();
-// void prev_page();
-// void goto_page(size_t page);
-
-/// @brief stops the screen. If you have a drive team that hates fun call this at the start of opcontrol
-// void stop_screen();
-
 /// @brief  type of function needed for update
 using update_func_t = std::function<void(bool, int, int)>;
 
