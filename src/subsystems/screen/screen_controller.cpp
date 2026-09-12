@@ -96,8 +96,11 @@ int screen_task_func() {
             last_frame_time = current_frame_time;
         }
 
-        // Updates the screen pause status
-        if(controller_flags.bits.paused != controller_flags.bits.paused_buffer) {
+        /* Updates the screen pause status
+           If the screen changes, it should run for one frame to ensure that the previous effects of the previous
+           callbacks are replaced. As such, the following condition is an else-if, as that prevents the screen from
+           being set and paused without a frame passing. */ 
+        else if(controller_flags.bits.paused != controller_flags.bits.paused_buffer) {
             last_frame_time = current_frame_time;
             controller_flags.bits.paused = controller_flags.bits.paused_buffer;
         }
@@ -106,7 +109,7 @@ int screen_task_func() {
         if(controller_flags.bits.paused || controller_flags.bits.turned_off) {
             vexDelay(50);
             continue;
-        }
+        }   
 
         // Update
         if(handle_callbacks[controller_flags.bits.callback_index])
@@ -145,7 +148,7 @@ void unset() {
     controller_flags.bits.turning_off = 1;
 }
 
-inline bool was_initialized() {
+bool was_initialized() {
     return screen_task != nullptr;
 }
 
@@ -157,7 +160,7 @@ void resume() {
     controller_flags.bits.paused_buffer = 0;
 }
 
-inline bool is_running() {
+bool is_running() {
     return was_initialized() && !controller_flags.bits.paused && !controller_flags.bits.turned_off;
 }
 

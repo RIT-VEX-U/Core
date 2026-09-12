@@ -3,7 +3,6 @@
 #include <functional>
 #include <optional>
 
-#include "vex.h"
 #include "core/utils/math/geometry/translation2d.h"
 
 namespace ScreenController {
@@ -25,7 +24,7 @@ bool set(std::function<screen_handle> handle, std::function<screen_handle> draw 
 void unset();
 
 /**
- * Returns whether the screen has been initialized with the ScreenController functions or not
+ * Returns whether the screen has been initialized with ScreenController::set()
  * @returns TRUE if the screen has been initialized, and FALSE if it has not been
  */
 bool was_initialized();
