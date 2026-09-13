@@ -62,7 +62,7 @@ class Record : public Part {
 
     PartPtr clone() override;
 
-    void Visit(Visitor *);
+    void Visit(Visitor *) override;
 
   protected:
     // Encode the schema itself for transmission on the wire
@@ -134,7 +134,7 @@ class String : public Part {
      */
     void pprint_data(std::stringstream &ss, size_t indent) const override;
 
-    void Visit(Visitor *);
+    void Visit(Visitor *) override;
 
   protected:
     void write_schema(PacketWriter &sofar) const override;
@@ -243,7 +243,7 @@ public:
   Float(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Double : public Number<double, Type::Double> {
@@ -252,7 +252,7 @@ public:
   Double(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 
@@ -262,7 +262,7 @@ public:
   Uint8(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Uint16 : public Number<uint16_t, Type::Uint16> {
@@ -271,7 +271,7 @@ public:
   Uint16(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Uint32 : public Number<uint32_t, Type::Uint32> {
@@ -280,7 +280,7 @@ public:
   Uint32(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Uint64 : public Number<uint64_t, Type::Uint64> {
@@ -289,7 +289,7 @@ public:
   Uint64(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 
@@ -299,7 +299,7 @@ public:
   Int8(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Int16 : public Number<int16_t, Type::Int16> {
@@ -308,7 +308,7 @@ public:
   Int16(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 class Int32 : public Number<int32_t, Type::Int32> {
@@ -317,7 +317,7 @@ public:
   Int32(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 
@@ -327,7 +327,7 @@ public:
   Int64(
       std::string name,
       NumT::FetchFunc func = []() { return (NumT::NumberType)0; });
-  void Visit(Visitor *);
+  void Visit(Visitor *) override;
   PartPtr clone() override;
 };
 /**

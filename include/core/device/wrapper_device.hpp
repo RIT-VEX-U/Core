@@ -20,7 +20,7 @@ class Device : public VDP::AbstractDevice, public COBSSerialDevice {
      */
     explicit Device(int32_t port, int32_t baud_rate);
 
-    bool send_packet(const VDP::Packet &packet);
+    bool send_packet(const VDP::Packet &packet) override;
     /**
      * defines a callback to a functions that calls when the register recieves data from the debug board
      * @param callback the callback function to call

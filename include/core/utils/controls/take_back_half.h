@@ -15,7 +15,7 @@ class TakeBackHalf : public Feedback {
      * @param start_vel Movement starting velocity (IGNORED)
      * @param end_vel Movement ending velocity (IGNORED)
      */
-    void init(double start_pt, double set_pt);
+    void init(double start_pt, double set_pt) override;
     /**
      * Iterate the feedback loop once with an updated sensor value
      *

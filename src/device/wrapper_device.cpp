@@ -23,7 +23,7 @@ int Device::serial_thread(void *vself) {
 
     // sets up a buffer
     static constexpr size_t buflen = 4096;
-    static uint8_t buf[buflen] = {0};
+    [[maybe_unused]] static uint8_t buf[buflen] = {0};
     vex::timer timer;
     // loop for the thread
     while (true) {
