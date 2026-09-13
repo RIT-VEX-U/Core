@@ -1,10 +1,19 @@
+#pragma once
+#include <bit>
+#include <cstddef>
 #include <cstdint>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <utility>
+#include <vector>
+
 #include "vex.h"
 
-///Type Ids
+namespace VDP {
+using Packet = std::vector<uint8_t>;
+
+/// Type Ids
 enum class TypeId : uint8_t {
   Record = 0,
   Boolean = 1,
@@ -48,93 +57,94 @@ enum class TypeId : uint8_t {
   UNKNOWN = 34,
 };
 
-///Record proto
+std::string to_string(TypeId t);
+
+/// Record proto
 template <typename... Fields>
 class Record;
 
-///Field proto
+/// Field proto
 template <typename T>
 class Field;
 
-///TypeIdMap proto 
+/// TypeIdMap proto
 template <typename T>
 struct TypeIdMap;
 
 /// Maps each type -> TypeId
 
-template<typename... Fields>
+template <typename... Fields>
 struct TypeIdMap<Record<Fields...>> {
   static constexpr TypeId value = TypeId::Record;
 };
 
-template<>
+template <>
 struct TypeIdMap<bool> {
   static constexpr TypeId value = TypeId::Boolean;
 };
 
-template<>
+template <>
 struct TypeIdMap<std::string> {
   static constexpr TypeId value = TypeId::String;
 };
 
-template<>
+template <>
 struct TypeIdMap<double> {
   static constexpr TypeId value = TypeId::Double;
 };
 
-template<>
+template <>
 struct TypeIdMap<float> {
   static constexpr TypeId value = TypeId::Float;
 };
 
-template<>
+template <>
 struct TypeIdMap<uint8_t> {
   static constexpr TypeId value = TypeId::Uint8;
 };
 
-template<>
+template <>
 struct TypeIdMap<uint16_t> {
   static constexpr TypeId value = TypeId::Uint16;
 };
 
-template<>
+template <>
 struct TypeIdMap<uint32_t> {
   static constexpr TypeId value = TypeId::Uint32;
 };
 
-template<>
+template <>
 struct TypeIdMap<uint64_t> {
   static constexpr TypeId value = TypeId::Uint64;
 };
 
-template<>
+template <>
 struct TypeIdMap<int8_t> {
   static constexpr TypeId value = TypeId::Int8;
 };
 
-template<>
+template <>
 struct TypeIdMap<int16_t> {
   static constexpr TypeId value = TypeId::Int16;
 };
 
-template<>
+template <>
 struct TypeIdMap<int32_t> {
   static constexpr TypeId value = TypeId::Int32;
 };
 
-template<>
+template <>
 struct TypeIdMap<int64_t> {
   static constexpr TypeId value = TypeId::Int64;
 };
 
-/// fiexd point template 
+/// fixed point template
 template <TypeId FixedPointType, typename Storage>
 struct FixedPoint {
   static constexpr TypeId type = FixedPointType;
 
   Storage raw_value;
 };
-
 
 /// fixed point aliases
 
@@ -163,18 +173,39 @@ using Q8_24 = FixedPoint<TypeId::Q8_24, int32_t>;
 using Q31_32 = FixedPoint<TypeId::Q31_32, int64_t>;
 using Q32_32 = FixedPoint<TypeId::Q32_32, uint64_t>;
 
-template<TypeId Id, typename Storage>
+template <TypeId Id, typename Storage>
 struct TypeIdMap<FixedPoint<Id, Storage>> {
   static constexpr TypeId value = Id;
 };
 
 /// primary template to check if a type has an associated id
-template<typename T, typename = void>
+template <typename T, typename = void>
 struct HasTypeId : std::false_type {};
 
 /// actual check for if a type has an associated id
 template <typename T>
 struct HasTypeId<T, std::void_t<decltype(TypeIdMap<T>::value)>> : std::true_type {};
+
+/// check for if a template is a field type
+template <typename T>
+struct IsField : std::false_type {};
+
+template <typename T>
+struct IsField<Field<T>> : std::true_type {};
+
+template <typename... Fields>
+struct IsField<Record<Fields...>> : std::true_type {};
+template <typename... Fields>
+  requires(IsField<std::remove_cvref_t<Fields>>::value && ...)
+struct TypeIdMap<std::tuple<Fields...>> {
+  static constexpr TypeId value = TypeId::Record;
+};
+
+template <typename T>
+struct IsFixedPoint : std::false_type {};
+
+template <TypeId Id, typename Storage>
+struct IsFixedPoint<FixedPoint<Id, Storage>> : std::true_type {};
 
 /**
  * defines a Field
@@ -182,9 +213,8 @@ struct HasTypeId<T, std::void_t<decltype(TypeIdMap<T>::value)>> : std::true_type
  */
 template <typename T>
 class Field {
-  static_assert(
-      HasTypeId<T>::value,
-      "Field<T>: T does not have an associated TypeId");
+  static_assert(HasTypeId<T>::value, "Field<T>: T does not have an associated TypeId");
+
  public:
   /**
    * Creates a Field
@@ -193,79 +223,201 @@ class Field {
    */
   Field(std::string name, T value) : name_(std::move(name)), value_(std::move(value)) {};
 
-  const std::string& get_name() const;
+  /**
+   * Gets the name of the field
+   * @return the field name
+   */
+  const std::string& get_name() const { return name_; };
 
-  T& get_value() {
-    return value_;
+  /**
+   * Gets the value currently stored by the field
+   * @return the value currently stored by the field
+   */
+  const T& get_value() const { return value_; }
+
+  /**
+   * Gets the type of the field in the form of a TypeId enum
+   * @return the type id of the field
+   */
+  const TypeId get_type() const { return TypeIdMap<T>::value; }
+
+  /**
+   * serializes the field's schema in the form of a VDP::Packet
+   * @return the serialized schema
+   */
+  VDP::Packet serialize_schema() const {
+    VDP::Packet out;
+    out.push_back(static_cast<uint8_t>(get_type()));
+    out.insert(out.end(), name_.begin(), name_.end());
+    out.push_back(0);
+
+    return (out);
   }
 
-  TypeId get_type() const {
-    return TypeIdMap<T>::value;
+  /**
+   * serializes the field's data in the form of a VDP::Packet
+   * @return the serialized data
+   */
+  VDP::Packet serialize_data() const {
+    VDP::Packet out(sizeof(T));
+    std::memcpy(out.data(), &value_, sizeof(T));
+    return out;
   }
 
-  template<typename U>
-  bool schemas_match(Field<U>& other) const {
-    if (name_ != other.get_name() || get_type() != other.get_type()) {
-      return false;
+  /**
+   * serializes the field's data in the form of a VDP::Packet
+   * @return the serialized data
+   */
+  void apply_update(VDP::Packet packet_in) {
+    value_ = std::bit_cast<T>(*reinterpret_cast<T*>(packet_in.data()));
+  }
+
+  /**
+   * formats the field's data as a string
+   * @return a string representation of the field's data
+   */
+  std::string data_to_string(std::size_t depth = 0) const {
+    // add the name and a specified number of indents to the string
+    std::string out = std::string(depth * 2, ' ') + name_ + " : ";
+
+    // check the held type
+    if constexpr (std::is_same_v<T, std::string>) {
+      // if it is a string just add the value directly
+      return out + value_;
+    } else if constexpr (std::is_same_v<T, bool>) {
+      // if it is a boolean translate it to a true or false string
+      return out + (value_ ? "true" : "false");
+    } else if constexpr (std::is_integral_v<T>) {
+      // if it is an integral check if it is signed or unsigned,
+      // convert to uint64_t or int64_t accordingly, and get the string
+      // format of that
+      if (std::is_signed_v<T>) {
+        return out + std::to_string(static_cast<int64_t>(value_));
+      } else {
+        return std::to_string(static_cast<uint64_t>(value_));
+      }
+    } else if constexpr (std::is_floating_point_v<T>) {
+      //if it is a floating point we can just cast it to a string
+      return std::to_string(value_);
+    } else if constexpr (IsFixedPoint<T>::value) {
+      // if it is a fixed point check if it is signed or unsigned,
+      // cast the raw byte value of the data to an int64_t or uint64_t,
+      // and then get the string format of that
+      if constexpr (std::is_signed_v<decltype(value_.raw_value)>) {
+        return std::to_string(static_cast<int64_t>(value_.raw_value));
+      } else {
+        return std::to_string(static_cast<uint64_t>(value_.raw_value));
+      }
+    } else {
+      //if none of those work then we do not support this type
+      static_assert(std::is_same_v<T, void>, "data_to_string does not support this type");
     }
-    if (get_type() == TypeId::Record) {
-      return value_.schemas_match(other.get_value());
-    }
-    return true;
   }
 
-  template<typename U>
-  bool apply_update(Field<U>& other) {
-    if (schemas_match(other)) {
-      mut.lock();
-      value_ = other.get_value();
-      mut.unlock();
-      return true;
-    }
-    return false;
+  /**
+   * formats the field's schema as a string
+   * @return the string representation of the field's schema
+   */
+  std::string schema_to_string(std::size_t depth = 0) const {
+    return std::string(depth * 2, ' ') + name_ + " : " + VDP::to_string(get_type());
   }
 
- private:
+
+ protected:
   std::string name_;
   vex::mutex mut;
   T value_;
 };
 
-template <typename... Fields>
-class Record {
- public:
-  explicit Record(Fields... fields) : fields_(std::move(fields)...) {}
+// deduction guides to convert cstrings into c++ strings and ints into int64_ts
+Field(std::string, const char*) -> Field<std::string>;
+Field(std::string, const int) -> Field<int64_t>;
 
+/**
+ * Defines a record
+ * a record is an extension of a Field that contains a tuple of Fields
+ * as it's held value
+ */
+template <typename... Fields>
+class Record : public Field<std::tuple<Fields...>> {
+  //checks that each element being input is a Field or a Record 
+  static_assert((IsField<std::remove_cvref_t<Fields>>::value && ...),
+                "Record elements must all be Field or Record objects");
+
+ public:
+  explicit Record(std::string name, Fields... fields)
+      : Field<std::tuple<Fields...>>(std::move(name), std::tuple<Fields...>(std::move(fields)...)) {}
+
+  static constexpr std::size_t size() { return sizeof...(Fields); }
+
+  /**
+   * Returns the field at a specified index of the held tuple
+   */
   template <std::size_t I>
   const auto& get() const {
-    return std::get<I>(fields_);
-  }
-
-  static constexpr std::size_t size() {
-    return sizeof...(Fields);
+    return std::get<I>(Field<std::tuple<Fields...>>::get_value);
   }
 
   template <typename Function>
   void for_each(Function&& function) {
+    std::apply([&](auto&... fields) { (function(fields), ...); }, Field<std::tuple<Fields...>>::get_value);
+  }
+
+  VDP::Packet serialize_schema() const {
+    static_assert(sizeof...(Fields) <= 255, "A record cannot contain more than 255 fields");
+    Packet out;
+
+    out.push_back(static_cast<uint8_t>(TypeId::Record));
+
+    out.insert(out.end(), this->get_name().begin(), this->get_name().end());
+    out.push_back(0);
+
+    out.push_back((static_cast<uint8_t>(size())));
+
     std::apply(
-        [&](auto&... fields) {
-          (function(fields), ...);
+        [&](const auto&... fields) {
+          (
+              [&] {
+                Packet field_schema = fields.serialize_schema();
+
+                out.insert(out.end(), field_schema.begin(), field_schema.end());
+              }(),
+              ...);
         },
-        fields_);
+        Field<std::tuple<Fields...>>::get_value());
+    return out;
+  }
+
+  std::string data_to_string(std::size_t depth = 0) const {
+    std::string out = std::string(depth * 2, ' ') + this->get_name() + " : {\n";
+
+    std::apply([&](const auto&... fields) { ([&] { out += fields.data_to_string(depth + 1) += ",\n"; }(), ...); },
+               this->value_);
+    out += std::string(depth * 2, ' ') + "}";
+    return out;
+  }
+
+  std::string schema_to_string(std::size_t depth = 0) const {
+    std::string out = std::string(depth * 2, ' ') + this->get_name() + " : record {\n";
+
+    std::apply([&](const auto&... fields) { ([&] { out += fields.schema_to_string(depth + 1) + ",\n"; }(), ...); },
+               this->value_);
+    out += std::string(depth * 2, ' ') + "}";
+    return out;
   }
 
   template <typename... OtherFields>
   bool schemas_match(const Record<OtherFields...>& other) const {
-    if constexpr (size() != other.size()) {
+    if (size() != other.size() || this->get_name() != other.get_name()) {
       return false;
     }
     return [&]<std::size_t... I>(std::index_sequence<I...>) {
       return (get<I>().schemas_match(other.template get<I>()) && ...);
     }(std::index_sequence_for<Fields...>{});
   }
- private:
-std::tuple<Fields...> fields_;
 };
 
 template <typename... Fields>
-Record(Fields...) -> Record<Fields...>;
+Record(std::string, Fields...) -> Record<Fields...>;
+
+}  // namespace VDP
