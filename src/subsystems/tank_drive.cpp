@@ -489,9 +489,15 @@ bool TankDrive::drive_to_point(
   double lside = drive_pid_rval + correction;
   double rside = drive_pid_rval - correction;
 
+  double max = std::max({std::abs(lside), std::abs(rside)});
+  if (max > max_speed) {
+    double scalar = max_speed / max;
+    lside *= scalar;
+    rside *= scalar;
+  }
   // limit the outputs between -1 and +1
-  lside = clamp(lside, -max_speed, max_speed);
-  rside = clamp(rside, -max_speed, max_speed);
+  //lside = clamp(lside, -max_speed, max_speed);
+  //rside = clamp(rside, -max_speed, max_speed);
 
   drive_tank(lside, rside);
 

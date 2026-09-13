@@ -31,7 +31,7 @@ class Lift {
     double up_speed, down_speed;
     double softstop_up, softstop_down;
 
-    PID lift_pid_cfg;
+    PID lift_pid;
   };
 
   /**
