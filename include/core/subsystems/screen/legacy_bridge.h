@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "legacy.h"
-#include "\core\subsystems\screen\screen_controller.h"
+#include "core/subsystems/screen/screen_controller.h"
 
 namespace LegacyScreen {
 
