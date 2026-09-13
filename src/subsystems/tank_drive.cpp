@@ -496,8 +496,8 @@ bool TankDrive::drive_to_point(
     rside *= scalar;
   }
   // limit the outputs between -1 and +1
-  //lside = clamp(lside, -max_speed, max_speed);
-  //rside = clamp(rside, -max_speed, max_speed);
+  // lside = clamp(lside, -max_speed, max_speed);
+  // rside = clamp(rside, -max_speed, max_speed);
 
   drive_tank(lside, rside);
 
@@ -583,7 +583,17 @@ bool TankDrive::turn_to_heading(
 
   fflush(stdout);
 
-  drive_tank(-feedback.get(), feedback.get());
+  double lside = -feedback.get();
+  double rside = feedback.get();
+
+  double max = std::max({std::abs(lside), std::abs(rside)});
+  if (max > max_speed) {
+    double scalar = max_speed / max;
+    lside *= scalar;
+    rside *= scalar;
+  }
+
+  drive_tank(lside, rside);
 
   // When the robot has reached it's angle, return true.
   if (feedback.is_on_target()) {
