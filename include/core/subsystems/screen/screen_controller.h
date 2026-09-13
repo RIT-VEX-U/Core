@@ -3,7 +3,7 @@
 #include <functional>
 #include <optional>
 
-#include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/vertex2d.h"
 
 namespace ScreenController {
 
@@ -46,21 +46,21 @@ bool is_running();
  * @returns An optional that, when the screen is running and being touched, stores a Translation2d object representing
  * the current coordinate.
  */
-std::optional<Translation2d> get_press_pos();
+std::optional<Vertex2d> get_press_pos();
 
 /**
  * If the screen is running and being held, this will return the last coordinates pressed.
  * @returns An optional that, when the screen is running and being held, stores a Translation2d object representing
  * the previous coordinate it was held at.
  */
-std::optional<Translation2d> get_last_press_pos();
+std::optional<Vertex2d> get_last_press_pos();
 
 /**
  * If the screen is running and being touched, this will return the first coordinates pressed as part of the action
  * @returns An optional that, when the screen is running and being touched, stores a Translation2d object representing
  * the first coordinates to be held during the touch.
  */
-std::optional<Translation2d> get_first_press_pos();
+std::optional<Vertex2d> get_first_press_pos();
 
 /**
  * Returns the current frame number since the screen has been started.

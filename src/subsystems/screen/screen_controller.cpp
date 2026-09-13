@@ -1,4 +1,3 @@
-#include "core/utils/math/geometry/translation2d.h"
 #include "vex.h"
 #include <v5_apitypes.h>
 #include "core/subsystems/screen/screen_controller.h"
@@ -44,13 +43,13 @@ uint64_t last_frame_time;
 uint64_t current_frame_time;
 
 /// Stores the latest pressed location on the brain screen.
-Translation2d curr_touch_pos;
+Vertex2d curr_touch_pos;
 
 /// Stores the previous pressed location on the brain screen.
-Translation2d last_touch_pos;
+Vertex2d last_touch_pos;
 
 /// Stores the first pressed location of the current action on the brain screen.
-Translation2d first_touch_pos;
+Vertex2d first_touch_pos;
 
 /// The primary callback of the ScreenController task
 int screen_task_func() {
@@ -58,9 +57,9 @@ int screen_task_func() {
     vexTouchUserCallbackSet([](V5_TouchEvent te, int32_t x, int32_t y) {
         if(te == kTouchEventPressAuto && controller_flags.bits.screen_touch) {
             last_touch_pos = curr_touch_pos;
-            curr_touch_pos = Translation2d(x, y);
+            curr_touch_pos = Vertex2d(x, y);
         } else if(te == kTouchEventPress) {
-            first_touch_pos = last_touch_pos = curr_touch_pos = Translation2d(x, y);
+            first_touch_pos = last_touch_pos = curr_touch_pos = Vertex2d(x, y);
             controller_flags.bits.screen_touch = 1;
         } else { // kTouchEventRelease
             controller_flags.bits.screen_touch = 0;
@@ -96,10 +95,12 @@ int screen_task_func() {
             last_frame_time = current_frame_time;
         }
 
-        /* Updates the screen pause status
-           If the screen changes, it should run for one frame to ensure that the previous effects of the previous
-           callbacks are replaced. As such, the following condition is an else-if, as that prevents the screen from
-           being set and paused without a frame passing. */ 
+        /* 
+         * Updates the screen pause status
+         * If the screen changes, it should run for one frame to ensure that the previous effects of the previous
+         * callbacks are replaced. As such, the following condition is an else-if, as that prevents the screen from
+         * being set and paused without a frame passing. 
+         */ 
         else if(controller_flags.bits.paused != controller_flags.bits.paused_buffer) {
             last_frame_time = current_frame_time;
             controller_flags.bits.paused = controller_flags.bits.paused_buffer;
@@ -109,7 +110,7 @@ int screen_task_func() {
         if(controller_flags.bits.paused || controller_flags.bits.turned_off) {
             vexDelay(50);
             continue;
-        }   
+        }
 
         // Update
         if(handle_callbacks[controller_flags.bits.callback_index])
@@ -164,17 +165,17 @@ bool is_running() {
     return was_initialized() && !controller_flags.bits.paused && !controller_flags.bits.turned_off;
 }
 
-std::optional<Translation2d> get_press_pos() {
+std::optional<Vertex2d> get_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return curr_touch_pos;
     return std::nullopt;
 }
 
-std::optional<Translation2d> get_last_press_pos() {
+std::optional<Vertex2d> get_last_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return last_touch_pos;
     return std::nullopt;
 }
 
-std::optional<Translation2d> get_first_press_pos() {
+std::optional<Vertex2d> get_first_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return first_touch_pos;
     return std::nullopt;
 }

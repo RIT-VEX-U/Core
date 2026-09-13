@@ -23,7 +23,7 @@ public:
             }
 
             Page *front_page = this->pages[this->index];
-            std::optional<Translation2d> pressing;
+            std::optional<Vertex2d> pressing;
 
             if((pressing = ScreenController::get_press_pos()).has_value()) {
                 this->x_press = pressing->x();
@@ -88,11 +88,13 @@ private:
     vex::brain::lcd screen;
 };
 
-/// @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
-/// @param brain The VEX Brain containing the screen to display the InitializerPage objects on
-/// @param initializer The initializer object for which this page provides a GUI of
-/// @param o An optional callback to handle other matters during pre-initialization
-/// @return A pre-initialization function that handles the screen
+/** 
+ * @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
+ * @param brain The VEX Brain containing the screen to display the InitializerPage objects on
+ * @param initializer The initializer object for which this page provides a GUI of
+ * @param o An optional callback to handle other matters during pre-initialization
+ * @return A pre-initialization function that handles the screen
+ */
 inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, LegacyPage* page, std::function<void()> o = nullptr) {
     return [&, o, page]() {
         if(o) o();
