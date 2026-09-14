@@ -1,6 +1,6 @@
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "core/utils/math_util.h"
-namespace screen {
+namespace LegacyScreen {
 void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
     uint32_t height = scr.getStringHeight(lbl.c_str());
     scr.printAt(rect.x1 + 1, rect.y1 + height, true, "%s", lbl.c_str());
@@ -24,140 +24,6 @@ void draw_widget(vex::brain::lcd &scr, WidgetConfig &widget, ScreenRect rect) {
     }
 }
 
-/**
- * @brief The ScreenData class holds the data that will be passed to the
- * screen thread
- * you probably shouldnt have to use it
- */
-struct ScreenData {
-    ScreenData(const std::vector<Page *> &m_pages, int m_page, vex::brain::lcd &m_screen)
-        : pages(m_pages), page(m_page), screen(m_screen) {}
-    std::vector<Page *> pages;
-    int page = 0;
-    vex::brain::lcd screen;
-};
-
-static vex::thread *screen_thread = nullptr;
-static bool running = false;
-static int screen_thread_func(void *screen_data_v);
-static ScreenData *screen_data_ptr;
-
-/// @brief start_screen begins a screen. only call this once per program (a
-/// good place is vexcodeInit)
-/// This is a set and forget type function. You don't have to wait on it or
-/// start it in a new thread
-/// @param screen the brain screen
-/// @param pages the list of pages in your UI slideshow
-/// @param first_page the page to start on (by default 0)
-void start_screen(vex::brain::lcd &screen, std::vector<Page *> pages, int first_page) {
-    if (pages.size() == 0) {
-        printf("No pages, not starting screen");
-        return;
-    }
-    first_page %= pages.size();
-
-    if (running) {
-        printf("THERE IS ALREADY A SCREEN THREAD RUNNING\n");
-        return;
-    }
-
-    ScreenData *data = new ScreenData{pages, first_page, screen};
-
-    screen_thread = new vex::thread(screen_thread_func, static_cast<void *>(data));
-}
-
-void stop_screen() { running = false; }
-
-void prev_page() {
-    screen_data_ptr->page--;
-    if (screen_data_ptr->page < 0) {
-        screen_data_ptr->page += screen_data_ptr->pages.size();
-    }
-}
-void next_page() {
-    screen_data_ptr->page++;
-    screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
-void goto_page(size_t page) {
-    screen_data_ptr->page = page;
-    screen_data_ptr->page %= screen_data_ptr->pages.size();
-}
-
-/**
- * @brief runs the screen thread
- * This should only be called by start_screen
- * If you are calling this, maybe don't
- */
-int screen_thread_func(void *screen_data_v) {
-    ScreenData &screen_data = *static_cast<ScreenData *>(screen_data_v);
-    screen_data_ptr = static_cast<ScreenData *>(screen_data_v);
-    running = true;
-    unsigned int frame = 0;
-
-    bool was_pressed = false;
-    int x_press = 0;
-    int y_press = 0;
-
-    while (running) {
-        Page *front_page = screen_data.pages[screen_data.page];
-        bool pressing = screen_data.screen.pressing();
-
-        if (pressing) {
-            pressing = true;
-            x_press = screen_data.screen.xPosition();
-            y_press = screen_data.screen.yPosition();
-        }
-        bool just_pressed = pressing && !was_pressed;
-
-        if (just_pressed && x_press < 40) {
-            screen_data.page--;
-            if (screen_data.page < 0) {
-                screen_data.page += screen_data.pages.size();
-            }
-        }
-        if (just_pressed && x_press > 440) {
-            screen_data.page++;
-            screen_data.page %= screen_data.pages.size();
-        }
-
-        // Update all pages
-        for (auto page : screen_data.pages) {
-            if (page == front_page) {
-                page->update(was_pressed, x_press, y_press);
-            } else {
-                page->update(false, 0, 0);
-            }
-        }
-
-        // Draw First Page
-        if (frame % 2 == 0) {
-            screen_data.screen.clearScreen(vex::color::black);
-            screen_data.screen.setPenColor("#FFFFFF");
-            screen_data.screen.setFillColor("#000000");
-            front_page->draw(screen_data.screen, false, frame / 5);
-
-            // Draw side boxes
-            screen_data.screen.setPenColor("#202020");
-            screen_data.screen.setFillColor("#202020");
-            screen_data.screen.drawRectangle(0, 0, 40, 240);
-            screen_data.screen.drawRectangle(440, 0, 40, 240);
-            screen_data.screen.setPenColor("#FFFFFF");
-            // left arrow
-            screen_data.screen.drawLine(30, 100, 15, 120);
-            screen_data.screen.drawLine(30, 140, 15, 120);
-            // right arrow
-            screen_data.screen.drawLine(450, 100, 465, 120);
-            screen_data.screen.drawLine(450, 140, 465, 120);
-        }
-
-        screen_data.screen.render();
-        frame++;
-        was_pressed = pressing;
-        vexDelay(5);
-    }
-
-    return 0;
-}
 /**
  * @brief FunctionPage
  * @param update_f drawing function
@@ -445,6 +311,119 @@ void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsig
     scr.printAt(240, 20, false, "%.2f", pid.get_target());
     scr.setPenColor(vex::green);
     scr.printAt(300, 20, false, "%.2f", pid.get_sensor_val());
+}
+
+InitializerPage::InitializerPage(const Initializer &initializer, size_t starting_index)
+: initializer(initializer), starting_index(starting_index) {
+    InitializerPage::latest_page = this;
+}
+
+InitializerPage* InitializerPage::Next() {
+    return new InitializerPage(latest_page->initializer, latest_page->starting_index + 8);
+}
+
+const std::array<Rect, 8> InitializerPage::buttons = {
+    Rect{Translation2d(48,8), Translation2d(236,58)},
+    Rect{Translation2d(244,8), Translation2d(432,58)},
+    Rect{Translation2d(48,66), Translation2d(236,116)},
+    Rect{Translation2d(244,66), Translation2d(432,116)},
+    Rect{Translation2d(48,124), Translation2d(236,174)},
+    Rect{Translation2d(244,124), Translation2d(432,174)},
+    Rect{Translation2d(48,182), Translation2d(236,232)},
+    Rect{Translation2d(244,182), Translation2d(432,232)},
+};
+
+void InitializerPage::update(bool was_pressed, int x, int y) {
+    //update uses the InitializerPage's selection_buffer to avoid setting the buffer multiple times
+    if(this->selection_buffer != Selector::NO_SELECTION_INDEX || !was_pressed) return;
+
+    const Translation2d pos(x,y);
+    for(int i = 0; i < 8 && starting_index + i < this->initializer.initialization_count(); i++) {
+        if(buttons.at(i).contains(pos)) {
+            this->selection_buffer = starting_index + i;
+            break;
+        }
+    }
+}
+
+void InitializerPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
+    scr.setFont(vex::fontType::mono20);
+    scr.setPenWidth(1);
+    const std::vector<Initialization> &initializations = this->initializer.initializations();
+
+    /*draw uses the Initializer's selected index so that InitializerPage remains an accurate GUI of
+    the Initializer*/
+    if(this->initializer.selected_index() != Selector::NO_SELECTION_INDEX) {
+        if(this->initializer.selected_index() < initializations.size()) {
+            unsigned int rgb = initializations.at(this->selection_buffer).meta;
+            unsigned int y = // Y from the YIQ color space, which represents luma
+                ((((rgb >> 16) & 0xFF) * 299) +
+                (((rgb >> 8) & 0xFF) * 587) +
+                ((rgb & 0xFF) * 114)) / 1000;
+            scr.setFillColor(rgb);
+            scr.setPenColor("#FFFFFF");
+            scr.drawRectangle(40, 0, 400, 240);
+
+            std::string name = this->initializer.selected_name();
+            if(name.length()>23) name = name.substr(0,22) + "\u2026";
+
+            scr.setPenColor((y >= 128) ? "#000000" : "#FFFFFF");
+            scr.printAt(45, 20, false, "Initialization %u selected", this->initializer.selected_index());
+            scr.printAt(45, 70, false, "DEBUG LOG:");
+            scr.printAt(45, 95, false, "       name = \"%s\"", name.c_str());
+            scr.printAt(45, 120, false, "       meta = 0x%08X", this->initializer.selected_meta());
+            scr.printAt(45, 170, false, (this->initializer.uninitialized()) ? "Running post-initialization..." : "Robot initialized");
+
+        } else {
+            scr.setFillColor(vex::color::black);
+            scr.setPenColor("#FFFFFF");
+            scr.drawRectangle(40, 0, 400, 240);
+
+            scr.printAt(45, 20, false, "ERROR: Unable to run selected");
+            scr.printAt(45, 45, false, "       initialization%s", 
+                (this->initializer.selected_index() == DEFAULT_CANCELATION_INDEX) ? " (likely canceled)" : "");
+            scr.printAt(45, 95, false, "DEBUG LOG:");
+            scr.printAt(45, 120, false, "       selection = %u", this->initializer.selected_index());
+            scr.printAt(45, 145, false, "       initializations.size() = %u", initializations.size());
+            scr.printAt(45, 195, false, (this->initializer.uninitialized()) ? "Continuing with post-initialization..." : "Robot initialized");
+        }
+        return;
+    }
+
+    for(int i = 0; i < 8 && starting_index + i < initializations.size(); i++) {
+        const Rect& button = buttons.at(i);
+        const Initialization& initialization = initializations.at(starting_index + i);
+        unsigned int rgb = initialization.meta;
+        unsigned int y = // Y from the YIQ color space, which represents luma
+            ((((rgb >> 16) & 0xFF) * 299) +
+            (((rgb >> 8) & 0xFF) * 587) +
+            ((rgb & 0xFF) * 114)) / 1000;
+
+        scr.setPenColor("#FFFFFF");
+        scr.setFillColor(rgb);
+        scr.drawRectangle(button.min.x(), button.min.y(), button.width(), button.height());
+
+        scr.setPenColor((y >= 128) ? "#000000" : "#FFFFFF");
+        scr.printAt(button.min.x()+5, button.min.y()+20, false, "%d", starting_index + i);
+
+        std::string name = initialization.name;
+        if(name.length()>18) name = name.substr(0,17) + "\u2026";
+        scr.printAt(button.min.x()+5, button.min.y()+40, false, name.c_str());
+    }
+}
+
+size_t InitializerPage::selector() {
+    InitializerPage::selection_buffer = Selector::NO_SELECTION_INDEX;
+
+    while(InitializerPage::selection_buffer == Selector::NO_SELECTION_INDEX) {
+        vexDelay(100);
+    }
+
+    return InitializerPage::selection_buffer;
+}
+
+void InitializerPage::cancel(size_t selected) {
+    InitializerPage::selection_buffer = selected;
 }
 
 } // namespace screen
