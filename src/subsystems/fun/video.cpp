@@ -50,7 +50,7 @@ int video_player() {
     }
     plm_frame_t *frame = NULL;
     while (true) {
-        for (int i = 1; (frame = plm_decode_video(plm)); i++) {
+        for ([[maybe_unused]] int i = 1; (frame = plm_decode_video(plm)); i++) {
 
             uint32_t start_ms = vex::timer::system();
 
