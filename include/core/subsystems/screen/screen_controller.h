@@ -15,10 +15,11 @@ using screen_handle = void();
  * both start and reset the ScreenController.
  * @param handle A callback function for handling/updating the screen. This runs before the draw callback.
  * @param draw An optional callback function for drawing to the screen. This runs after the handle callback.
+ * @param clear An optional callback for denoting whether the screen should clear once being set. Defaults to TRUE.
  * @returns FALSE if the ScreenController can be started without error, and TRUE if it cannot (usually because it has
  * already been started)
  */
-bool set(std::function<screen_handle> handle, std::function<screen_handle> draw = nullptr);
+bool set(std::function<screen_handle> handle, std::function<screen_handle> draw = nullptr, bool clear = true);
 
 /// Unsets the ScreenController's callbacks and data. Use this to stop the screen, effectively turning it off.
 void unset();

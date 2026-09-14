@@ -20,13 +20,13 @@ union {
     /// Field for accessing the individual flag bits of the ScreenController
     struct {
         uint8_t buffer_ready : 1;   /// Determines if the buffered data is ready to be loaded
+        uint8_t clear_screen : 1;   /// Determines if the screen should be cleared when the new buffer is loaded
         uint8_t callback_index : 1; /// Denotes which handle buffers are actively being used
         uint8_t turning_off : 1;    /// Denotes if the ScreenController should "turn off", or pause on a blank screen
         uint8_t turned_off : 1;     /// Denotes if the ScreenController is "turned off", or paused on a blank screen
         uint8_t paused_buffer : 1;  /// Buffer denoting if the screen should be paused for the next frame
         uint8_t paused : 1;         /// Denotes if the screen is currently paused
         uint8_t screen_touch : 1;   /// Denotes if the screen is being touched
-        // extra
     } bits;
 
     /// Field for accessing the flags collectively as a whole byte
@@ -54,6 +54,7 @@ Vertex2d first_touch_pos;
 /// The primary callback of the ScreenController task
 int screen_task_func() {
     vexDisplayBackgroundColor(ClrBlack);
+    controller_flags.bits.clear_screen = 0;
     vexTouchUserCallbackSet([](V5_TouchEvent te, int32_t x, int32_t y) {
         if(te == kTouchEventPressAuto && controller_flags.bits.screen_touch) {
             last_touch_pos = curr_touch_pos;
@@ -93,6 +94,10 @@ int screen_task_func() {
             controller_flags.bits.buffer_ready = 0;
             frame_count = 0;
             last_frame_time = current_frame_time;
+            if(controller_flags.bits.clear_screen) {
+                vexDisplayErase();
+                controller_flags.bits.clear_screen = 0;
+            }
         }
 
         /* 
@@ -131,12 +136,13 @@ int screen_task_func() {
 
 } // namespace
 
-bool set(std::function<screen_handle> handle, std::function<screen_handle> draw) {
+bool set(std::function<screen_handle> handle, std::function<screen_handle> draw, bool clear) {
     handle_callbacks[!controller_flags.bits.callback_index] = handle;
     draw_callbacks[!controller_flags.bits.callback_index] = draw;
     controller_flags.bits.paused_buffer = 0;
     controller_flags.bits.turning_off = 0;
     controller_flags.bits.buffer_ready = 1;
+    controller_flags.bits.clear_screen = clear;
     
     if(screen_task == nullptr) {
         screen_task = new vex::task(screen_task_func);
