@@ -206,8 +206,7 @@ void StatsPage::draw_motor_stats(
     scr.printAt(x + 2, y + 16, false, " %2d   %2.0fC   %.7s", port, temp, name.c_str());
 }
 void StatsPage::draw(
-  vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]
-) {
+  vex::brain::lcd &scr, bool first_draw, unsigned int frame_number) {
     int num = 0;
     int x = 40;
     int y = y_start + row_height;
@@ -256,8 +255,7 @@ int in_to_px(double in) {
 }
 
 void OdometryPage::draw(
-  vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]
-) {
+  vex::brain::lcd &scr, bool first_draw, unsigned int frame_number) {
     Pose2d pose = odom.get_position();
     path[path_index] = pose;
 
@@ -350,8 +348,7 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
     return false;
 }
 void SliderWidget::draw(
-  vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]
-) {
+  vex::brain::lcd &scr, bool first_draw, unsigned int frame_number) {
     if (rect.height() <= 0) {
         printf("Slider: %s has no height. Cant use it.", name.c_str());
     }
@@ -393,8 +390,7 @@ bool ButtonWidget::update(bool was_pressed, int x, int y) {
 }
 
 void ButtonWidget::draw(
-  vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]
-) {
+  vex::brain::lcd &scr, bool first_draw, unsigned int frame_number) {
     scr.setPenColor(vex::white);
     scr.setPenWidth(1);
     scr.setFillColor(vex::color(50, 50, 50));
@@ -427,7 +423,7 @@ void PIDPage::update(bool was_pressed, int x, int y) {
         onchange();
     }
 }
-void PIDPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]], unsigned int frame_number [[maybe_unused]]) {
+void PIDPage::draw(vex::brain::lcd &scr, bool first_draw, unsigned int frame_number) {
     p_slider.draw(scr, first_draw, frame_number);
     i_slider.draw(scr, first_draw, frame_number);
     d_slider.draw(scr, first_draw, frame_number);

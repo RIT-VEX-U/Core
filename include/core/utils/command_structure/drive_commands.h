@@ -98,7 +98,7 @@ private:
   TankDrive &drive_sys;
 
   // feedback controller to use
-  [[maybe_unused]] Feedback &feedback;
+  Feedback &feedback;
 
   // parameters for turn_degrees
   double degrees;

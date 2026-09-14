@@ -76,8 +76,7 @@ class COBSSerialDevice {
   private:
     vex::mutex serial_access_mut;
     int32_t port;
-    // Compiler sends -Wunused-private-field warning if [[maybe_unused]] isn't present
-    [[maybe_unused]] int32_t baud;
+    int32_t baud;
 
     // Buffer to hold data about to be written
     Packet writing_buffer;

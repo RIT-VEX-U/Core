@@ -53,7 +53,7 @@ public:
 
 private:
   double x_initial_;
-  [[maybe_unused]] double x_target_;
+  double x_target_;
   double v_max_;
   double v_peak_;
   double accel_;
