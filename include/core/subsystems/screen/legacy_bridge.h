@@ -23,7 +23,7 @@ public:
             }
 
             Page *front_page = this->pages[this->index];
-            std::optional<Vertex2d> pressing;
+            std::optional<Point2d> pressing;
 
             if((pressing = ScreenController::get_press_pos()).has_value()) {
                 this->x_press = pressing->x();

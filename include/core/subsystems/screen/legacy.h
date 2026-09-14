@@ -1,6 +1,5 @@
 #pragma once
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/subsystems/screen/screen_controller.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/graph_drawer.h"

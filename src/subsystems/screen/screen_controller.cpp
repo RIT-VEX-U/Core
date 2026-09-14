@@ -43,13 +43,13 @@ uint64_t last_frame_time;
 uint64_t current_frame_time;
 
 /// Stores the latest pressed location on the brain screen.
-Vertex2d curr_touch_pos;
+Point2d curr_touch_pos;
 
 /// Stores the previous pressed location on the brain screen.
-Vertex2d last_touch_pos;
+Point2d last_touch_pos;
 
 /// Stores the first pressed location of the current action on the brain screen.
-Vertex2d first_touch_pos;
+Point2d first_touch_pos;
 
 /// The primary callback of the ScreenController task
 int screen_task_func() {
@@ -58,9 +58,9 @@ int screen_task_func() {
     vexTouchUserCallbackSet([](V5_TouchEvent te, int32_t x, int32_t y) {
         if(te == kTouchEventPressAuto && controller_flags.bits.screen_touch) {
             last_touch_pos = curr_touch_pos;
-            curr_touch_pos = Vertex2d(x, y);
+            curr_touch_pos = Point2d(x, y);
         } else if(te == kTouchEventPress) {
-            first_touch_pos = last_touch_pos = curr_touch_pos = Vertex2d(x, y);
+            first_touch_pos = last_touch_pos = curr_touch_pos = Point2d(x, y);
             controller_flags.bits.screen_touch = 1;
         } else { // kTouchEventRelease
             controller_flags.bits.screen_touch = 0;
@@ -171,17 +171,17 @@ bool is_running() {
     return was_initialized() && !controller_flags.bits.paused && !controller_flags.bits.turned_off;
 }
 
-std::optional<Vertex2d> get_press_pos() {
+std::optional<Point2d> get_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return curr_touch_pos;
     return std::nullopt;
 }
 
-std::optional<Vertex2d> get_last_press_pos() {
+std::optional<Point2d> get_last_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return last_touch_pos;
     return std::nullopt;
 }
 
-std::optional<Vertex2d> get_first_press_pos() {
+std::optional<Point2d> get_first_press_pos() {
     if(is_running() && controller_flags.bits.screen_touch) return first_touch_pos;
     return std::nullopt;
 }
