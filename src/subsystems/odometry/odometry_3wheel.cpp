@@ -96,7 +96,7 @@ Pose2d Odometry3Wheel::calculate_new_pos(
 
     // Inverse arclength formula for arc distance driven -> robot angle
     double delta_angle_rad = (rside_dist - lside_dist) / cfg.wheelbase_dist;
-    double delta_angle_deg = rad2deg(delta_angle_rad);
+    // double delta_angle_deg = rad2deg(delta_angle_rad);
 
     // Distance along the robot's local Y axis (forward/backward)
     double dist_local_y = (lside_dist + rside_dist) / 2.0;

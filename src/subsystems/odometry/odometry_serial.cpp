@@ -35,8 +35,8 @@
 OdometrySerial::OdometrySerial(
   bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate
 )
-    : OdometryBase(is_async), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
-      pose_offset(Pose2d(0, 0, 0)), _port(port) {
+    : OdometryBase(is_async), _port(port), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
+    pose_offset(Pose2d(0, 0, 0)) {
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
     send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
@@ -119,8 +119,8 @@ Pose2d OdometrySerial::update() {
     cobs_encoded_size = 29;
     packet_size = 28;
 
-    uint8_t cobs_encoded[cobs_encoded_size];
-    uint8_t decoded_packet[packet_size];
+    uint8_t cobs_encoded[29]; // 29 instead of cobs_encoded_size to stop note from compiler
+    uint8_t decoded_packet[28]; // 28 instead of packet_size to stop note from compiler
 
     int packet_length = receive_cobs_packet(_port, cobs_encoded, cobs_encoded_size);
     Pose2d updated_pose(0, 0, 0);

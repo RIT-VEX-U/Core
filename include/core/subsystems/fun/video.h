@@ -1,4 +1,4 @@
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "pl_mpeg.h"
 #include <string>
 
@@ -8,7 +8,7 @@ void set_video(const std::string &filename);
 void video_restart();
 // plays the video set by set_video()
 // because of memory constraints we're limited to one video at a time
-class VideoPlayer : public screen::Page {
+class VideoPlayer : public LegacyScreen::Page {
   public:
     VideoPlayer();
     void update(bool was_pressed, int x, int y) override;

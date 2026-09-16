@@ -1,5 +1,5 @@
 #pragma once
-#include "core/subsystems/screen.h"
+#include "core/subsystems/screen/legacy.h"
 #include "core/subsystems/tank_drive.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/feedforward.h"
@@ -88,7 +88,7 @@ class MotionController : public Feedback {
      */
     motion_t get_motion() const;
 
-    screen::Page *Page();
+    LegacyScreen::Page *Page();
 
     /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.
