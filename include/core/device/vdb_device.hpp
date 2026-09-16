@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <deque>
 #include <functional>
+#include <iterator>
 #include <tuple>
 #include <span>
 
@@ -29,21 +30,12 @@ class Device : public COBSSerialDevice {
    * @param baud_rate the baud rate for the debug board to use
    */
   explicit Device(int32_t port, int32_t baud_rate, VDP::Channel<Fields>... channels) : COBSSerialDevice(port, baud_rate), channels_(std::move(channels)...) {
-    std::array<bool, VDP::MAX_CHANNELS> seen;
-    bool unique = true;
-    std::apply([&](const auto&... channel) {
-        ([&] {
-        uint8_t id = channel.get_id();
-        if (seen[id]) {
-          unique = false;
-        }
-        seen[id] = true;
-        }(), ...);
+
+    static_assert(sizeof...(Fields) <= VDP::MAX_CHANNELS, "There can be no more than 256 Channels sent to a VDB Device");
+    size_t next_id = 0;
+    std::apply([&](auto&... channel) {
+      (channel.set_id(static_cast<VDP::ChannelID>(next_id++)), ...);
     }, channels_);
-    if (!unique) {
-      printf("VDB ERROR: Duplicate channel IDs\n");
-      std::abort();
-    }
     serial_task = vex::task(Device::serial_thread, (void*)this, vex::thread::threadPriorityHigh);
   }
 
@@ -117,9 +109,7 @@ class Device : public COBSSerialDevice {
       if (self.poll_incoming_data_once()) {
         Packet decoded = {};
         decoded = self.get_last_decoded_packet();
-        if (self.callback) {
-          self.callback(decoded);
-        }
+        self.apply_packet(decoded);
         did_something = true;
       }
       if (!did_something) {
@@ -129,7 +119,23 @@ class Device : public COBSSerialDevice {
     return 0;
   }
 
-void Apply_Packet(VDP::Packet in) {
+void send_channel(VDP::ChannelID id) {
+  VDP::Channel to_send = std::get<id>(channels_);
+  std::apply([&](const auto&... channel) {
+    ([&] {
+      if (id == channel.get_id()) {
+        if (channel.acknowledged == true) {
+          this->add_to_queue(channel.serialize(VDP::PacketType::Data));
+        }
+        else {
+          this->add_to_queue(channel.serialize(VDP::PacketType::Schema));
+        }
+      }
+    }(), ...);
+  }, channels_);
+}
+
+void apply_packet(VDP::Packet in) {
   const VDP::PacketValidity status = VDP::validate_packet(in);
 
   if (status == VDP::PacketValidity::BadChecksum) {
@@ -156,6 +162,7 @@ void Apply_Packet(VDP::Packet in) {
       }, channels_);
       break;
     }
+    // mark channel as acknowledged, dont do anything if data packet
     case VDP::PacketFunction::Acknowledge:
       if (header.type == VDP::PacketType::Schema) {
         VDP::ChannelID acked_id = in[1];
@@ -168,9 +175,15 @@ void Apply_Packet(VDP::Packet in) {
           }, channels_);
       }
       break;
-      // either mark channel as acknowledged and start sending data for it or do nothing
+      // send out ack packet when empty
     case VDP::PacketFunction::Holding:
-      // get ready to recieve data once we run out of data to send
+      if (this->outbound_packets.empty()) {
+        VDP::Packet out;
+        out.push_back(VDP::make_header_byte({.type = VDP::PacketType::Schema, .func = VDP::PacketFunction::Acknowledge}));
+        VDP::Packet checksum = VDP::checksum_pac(out);
+        out.insert(out.end(), checksum.begin(), checksum.end());
+        this->add_to_queue(out);
+      }
       break;
   }
 }
@@ -183,6 +196,8 @@ void Apply_Packet(VDP::Packet in) {
   std::deque<VDP::Packet> outbound_packets{};
   vex::mutex outbound_mutex;
   std::tuple<VDP::Channel<Fields>...> channels_;
+
+  bool waiting_to_recieve = false;
   /**
    * @brief Packets that have been read from the wire and split up but that are
    * still COBS encoded

@@ -2,11 +2,13 @@
 #include <bit>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <tuple>
 #include <type_traits>
 #include <utility>
 #include <vector>
+#include <span>
 
 #include "vex.h"
 
@@ -57,9 +59,12 @@ enum class TypeId : uint8_t {
   UNKNOWN = 34,
 };
 
+/**
+ * @return a Type Ids value as a string
+ */
 std::string to_string(TypeId t);
 
-/// Record proto
+/// Recprd proto
 template <typename... Fields>
 class Record;
 
@@ -67,7 +72,7 @@ class Record;
 template <typename T>
 class Field;
 
-/// TypeIdMap proto
+// TypeIdMap proto
 template <typename T>
 struct TypeIdMap;
 
@@ -138,7 +143,17 @@ struct TypeIdMap<int64_t> {
   static constexpr TypeId value = TypeId::Int64;
 };
 
-/// fixed point template
+/**
+ * Since our build system makes int32_t an alias for long, we convert regular ints to in32_ts
+ */
+template <typename T>
+  requires std::is_same_v<T, int>
+struct TypeIdMap<T> {
+  static_assert(sizeof(T) == sizeof(int32_t), "VDP requires a 32-bit int");
+  static constexpr TypeId value = TypeId::Int32;
+};
+
+/// Template for fixed point types
 template <TypeId FixedPointType, typename Storage>
 struct FixedPoint {
   static constexpr TypeId type = FixedPointType;
@@ -146,7 +161,7 @@ struct FixedPoint {
   Storage raw_value;
 };
 
-/// fixed point aliases
+/// Aliases for fixed point types
 
 using Q3_4 = FixedPoint<TypeId::Q3_4, int8_t>;
 using Q4_4 = FixedPoint<TypeId::Q4_4, uint8_t>;
@@ -173,20 +188,21 @@ using Q8_24 = FixedPoint<TypeId::Q8_24, int32_t>;
 using Q31_32 = FixedPoint<TypeId::Q31_32, int64_t>;
 using Q32_32 = FixedPoint<TypeId::Q32_32, uint64_t>;
 
+/// Maps fixed points to their Type Ids
 template <TypeId Id, typename Storage>
 struct TypeIdMap<FixedPoint<Id, Storage>> {
   static constexpr TypeId value = Id;
 };
 
-/// primary template to check if a type has an associated id
+/// Primary template to check if a type has an associated id
 template <typename T, typename = void>
 struct HasTypeId : std::false_type {};
 
-/// actual check for if a type has an associated id
+/// Actual check for if a type has an associated id
 template <typename T>
 struct HasTypeId<T, std::void_t<decltype(TypeIdMap<T>::value)>> : std::true_type {};
 
-/// check for if a template is a field type
+/// Check for if a held field type is a Field
 template <typename T>
 struct IsField : std::false_type {};
 
@@ -201,13 +217,14 @@ struct TypeIdMap<std::tuple<Fields...>> {
   static constexpr TypeId value = TypeId::Record;
 };
 
+/// Check for if a held field type is a fixed point type
 template <typename T>
 struct IsFixedPoint : std::false_type {};
 
 template <TypeId Id, typename Storage>
 struct IsFixedPoint<FixedPoint<Id, Storage>> : std::true_type {};
 
-/**
+/*
  * defines a Field
  * A named value that can be serialized and sent to the debug board.
  */
@@ -217,32 +234,33 @@ class Field {
 
  public:
   /**
-   * Creates a Field
+   * @brief Constructor for a field, a form of data to be sent to the debug board
    * @param name name for the Field
    * @param value value for the Field to hold; its C++ type determines the VDP Type
    */
-  Field(std::string name, T value) : name_(std::move(name)), value_(std::move(value)) {};
+  // The referenced value must outlive this field.
+  Field(std::string name, T& value) : name_(std::move(name)), value_(value) {};
 
   /**
-   * Gets the name of the field
+   * @breif Gets the name of the field
    * @return the field name
    */
   const std::string& get_name() const { return name_; };
 
   /**
-   * Gets the value currently stored by the field
+   * @brief Gets the value currently stored by the field
    * @return the value currently stored by the field
    */
   const T& get_value() const { return value_; }
 
   /**
-   * Gets the type of the field in the form of a TypeId enum
+   * @brief Gets the type of the field in the form of a TypeId enum
    * @return the type id of the field
    */
   const TypeId get_type() const { return TypeIdMap<T>::value; }
 
   /**
-   * serializes the field's schema in the form of a VDP::Packet
+   * @brief serializes the field's schema in the form of a VDP::Packet
    * @return the serialized schema
    */
   VDP::Packet serialize_schema() const {
@@ -255,25 +273,52 @@ class Field {
   }
 
   /**
-   * serializes the field's data in the form of a VDP::Packet
+   * @brief serializes the field's data in the form of a VDP::Packet
    * @return the serialized data
    */
   VDP::Packet serialize_data() const {
-    VDP::Packet out(sizeof(T));
-    std::memcpy(out.data(), &value_, sizeof(T));
-    return out;
+    /// Since strings are not fixed length, we need to use a 0 byte to signal when it has ended
+    if constexpr(std::is_same_v<T, std::string>) {
+      VDP::Packet out(value_.begin(), value_.end());
+      out.push_back(0);
+      return out;
+    }
+    else {
+      VDP::Packet out(sizeof(T));
+      std::memcpy(out.data(), &value_, sizeof(T));
+      return out;
+    }
   }
 
   /**
-   * serializes the field's data in the form of a VDP::Packet
-   * @return the serialized data
+   * @brief deserializes a packet's data and applies it to the field
+   * @return the number of bytes read in the packet
    */
-  void apply_update(VDP::Packet packet_in) {
-    value_ = std::bit_cast<T>(*reinterpret_cast<T*>(packet_in.data()));
+  size_t apply_update(VDP::Packet& packet_in) {
+    if constexpr (std::is_same_v<T, std::string>) {
+      /// if the field holds a string, find the 0 delimiter and and get the string for that length of the packet
+      auto str_end = std::find(packet_in.begin(), packet_in.end(), uint64_t(0));
+
+      auto length = str_end - packet_in.begin();
+
+      mut.lock();
+      value_.assign(packet_in.begin(), str_end);
+      mut.unlock();
+
+      return length + 1;
+    }
+    else {
+      /// if the field is a value that is not of variable size, just copy the data into the field's data
+      mut.lock();
+      std::memcpy(&value_, packet_in.data(), sizeof(T));
+      mut.unlock();
+
+      return sizeof(T);
+    }
   }
 
   /**
-   * formats the field's data as a string
+   * @brief formats the field's data as a string
    * @return a string representation of the field's data
    */
   std::string data_to_string(std::size_t depth = 0) const {
@@ -288,28 +333,31 @@ class Field {
       // if it is a boolean translate it to a true or false string
       return out + (value_ ? "true" : "false");
     } else if constexpr (std::is_integral_v<T>) {
-      // if it is an integral check if it is signed or unsigned,
-      // convert to uint64_t or int64_t accordingly, and get the string
-      // format of that
+      /*
+       * if it is an integral check if it is signed or unsigned,
+       * convert to uint64_t or int64_t accordingly, and get the string
+       * format of that
+       */
       if (std::is_signed_v<T>) {
         return out + std::to_string(static_cast<int64_t>(value_));
       } else {
         return std::to_string(static_cast<uint64_t>(value_));
       }
     } else if constexpr (std::is_floating_point_v<T>) {
-      //if it is a floating point we can just cast it to a string
+      /// if it is a floating point we can just cast it to a string
       return std::to_string(value_);
     } else if constexpr (IsFixedPoint<T>::value) {
-      // if it is a fixed point check if it is signed or unsigned,
-      // cast the raw byte value of the data to an int64_t or uint64_t,
-      // and then get the string format of that
+      /* if it is a fixed point check if it is signed or unsigned,
+       * cast the raw byte value of the data to an int64_t or uint64_t,
+       * and then get the string format of that
+       */
       if constexpr (std::is_signed_v<decltype(value_.raw_value)>) {
         return std::to_string(static_cast<int64_t>(value_.raw_value));
       } else {
         return std::to_string(static_cast<uint64_t>(value_.raw_value));
       }
     } else {
-      //if none of those work then we do not support this type
+      // if none of those work then we do not support this type
       static_assert(std::is_same_v<T, void>, "data_to_string does not support this type");
     }
   }
@@ -326,98 +374,159 @@ class Field {
  protected:
   std::string name_;
   vex::mutex mut;
-  T value_;
+  T& value_;
 };
 
-// deduction guides to convert cstrings into c++ strings and ints into int64_ts
-Field(std::string, const char*) -> Field<std::string>;
-Field(std::string, const int) -> Field<int64_t>;
+/// Preserve the original variable's type when binding a reference.
+template <typename T>
+Field(std::string, T&) -> Field<T>;
 
 /**
  * Defines a record
- * a record is an extension of a Field that contains a tuple of Fields
- * as it's held value
+ * A record owns a tuple of references to existing fields or records.
  */
 template <typename... Fields>
-class Record : public Field<std::tuple<Fields...>> {
-  //checks that each element being input is a Field or a Record 
+class Record {
+  /// checks that each element being input is a Field or a Record
   static_assert((IsField<std::remove_cvref_t<Fields>>::value && ...),
                 "Record elements must all be Field or Record objects");
 
  public:
-  explicit Record(std::string name, Fields... fields)
-      : Field<std::tuple<Fields...>>(std::move(name), std::tuple<Fields...>(std::move(fields)...)) {}
+  /**
+   * @brief Constructs a Record, a field that contains a tuple of other fields
+   * @param name the name for the Record
+   * @param Fields a list of fields for the record to hold
+   */
+  // The referenced fields must outlive this record.
+  explicit Record(std::string name, Fields&... fields)
+      : name_(std::move(name)), value_(fields...) {}
 
+  const std::string& get_name() const { return name_; }
+  TypeId get_type() const { return TypeId::Record; }
+  const auto& get_value() const { return value_; }
+
+  /**
+   * @return the size of the held tuple
+   */
   static constexpr std::size_t size() { return sizeof...(Fields); }
 
   /**
-   * Returns the field at a specified index of the held tuple
+   * @return the field at a specified index of the held tuple
    */
   template <std::size_t I>
   const auto& get() const {
-    return std::get<I>(Field<std::tuple<Fields...>>::get_value);
+    return std::get<I>(value_);
   }
 
-  template <typename Function>
-  void for_each(Function&& function) {
-    std::apply([&](auto&... fields) { (function(fields), ...); }, Field<std::tuple<Fields...>>::get_value);
-  }
-
+  /**
+   * @brief serializes the record's schema in the form of a VDP::Packet
+   * @return the serialized schema
+   */
   VDP::Packet serialize_schema() const {
     static_assert(sizeof...(Fields) <= 255, "A record cannot contain more than 255 fields");
     Packet out;
 
+    // add the type byte
     out.push_back(static_cast<uint8_t>(TypeId::Record));
 
+    // add the name
     out.insert(out.end(), this->get_name().begin(), this->get_name().end());
     out.push_back(0);
 
     out.push_back((static_cast<uint8_t>(size())));
 
+    // use std::apply to loop through the fields in the tuple
     std::apply(
         [&](const auto&... fields) {
           (
               [&] {
+                // add the field's serialized schema to the packet
                 Packet field_schema = fields.serialize_schema();
 
                 out.insert(out.end(), field_schema.begin(), field_schema.end());
               }(),
               ...);
         },
-        Field<std::tuple<Fields...>>::get_value());
+        get_value());
     return out;
   }
 
+  /**
+   * @brief serializes the record's data in the form of a VDP::Packet
+   * @return the serialized data
+   */
+  VDP::Packet serialize_data() const {
+    VDP::Packet out;
+
+    std::apply(
+        [&](const auto&... fields) {
+          (
+              [&] {
+                // add the field's serialized data to the packet
+                Packet field_schema = fields.serialize_data();
+
+                out.insert(out.end(), field_schema.begin(), field_schema.end());
+              }(),
+              ...);
+        },
+        get_value());
+    return out;
+  }
+
+  /**
+   * @breif deserializes a packet of data and applies it to the Record's fields
+   */
+  int apply_update(VDP::Packet in) {
+    std::size_t offset = 0;
+
+    std::apply(
+      [&](auto&... fields) {
+        ([&] {
+          auto read_bytes = fields.apply_update(VDP::Packet(in.begin() + offset, in.end()));
+
+          offset += read_bytes;
+        }(),
+        ...);
+      },
+      get_value());
+    return offset;
+  }
+
+  /**
+   * @brief converts a record's held data to a human readable string
+   * @return a string representation of the record's held data
+   */
   std::string data_to_string(std::size_t depth = 0) const {
     std::string out = std::string(depth * 2, ' ') + this->get_name() + " : {\n";
 
+    /// loop through each field held within the record and add their data strings, increasing the depth
     std::apply([&](const auto&... fields) { ([&] { out += fields.data_to_string(depth + 1) += ",\n"; }(), ...); },
                this->value_);
     out += std::string(depth * 2, ' ') + "}";
     return out;
   }
 
+  /**
+   * @brief converts a record's schema to a human readable string
+   * @return a string representation of the record's schema
+   */
   std::string schema_to_string(std::size_t depth = 0) const {
     std::string out = std::string(depth * 2, ' ') + this->get_name() + " : record {\n";
 
+    /// loop through each field held within the record and add their schema strings, increasing the depth
     std::apply([&](const auto&... fields) { ([&] { out += fields.schema_to_string(depth + 1) + ",\n"; }(), ...); },
                this->value_);
     out += std::string(depth * 2, ' ') + "}";
     return out;
   }
 
-  template <typename... OtherFields>
-  bool schemas_match(const Record<OtherFields...>& other) const {
-    if (size() != other.size() || this->get_name() != other.get_name()) {
-      return false;
-    }
-    return [&]<std::size_t... I>(std::index_sequence<I...>) {
-      return (get<I>().schemas_match(other.template get<I>()) && ...);
-    }(std::index_sequence_for<Fields...>{});
-  }
+ private:
+  std::string name_;
+  std::tuple<Fields&...> value_;
 };
 
+/// deduction guide for Records so that you don't need to use template arguments when creating one
 template <typename... Fields>
-Record(std::string, Fields...) -> Record<Fields...>;
+Record(std::string, Fields&...) -> Record<Fields...>;
 
 }  // namespace VDP

@@ -88,7 +88,10 @@ template <typename T>
   requires IsField<std::remove_cvref_t<T>>::value
 class Channel {
  public:
-  Channel(ChannelID id, T data) : id_(id), data(std::move(data)), acked(false) {}
+  explicit Channel(T data) : id_(0), data(std::move(data)), acked(false) {}
+
+  void set_id(ChannelID id) { id_ = id; }
+
   ChannelID get_id() const {
     return id_;
   };
