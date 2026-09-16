@@ -25,7 +25,7 @@ void RegistryController::take_packet(const Packet &pac) {
     const VDP::PacketValidity status = validate_packet(pac);
 
     if (status == VDP::PacketValidity::BadChecksum) {
-        VDPWarnf("Controller: Bad packet checksum. Skipping", "");
+        VDPWarnf("Controller: Bad packet checksum. Skipping");
         num_bad++;
         return;
     } else if (status == VDP::PacketValidity::TooSmall) {
@@ -33,7 +33,7 @@ void RegistryController::take_packet(const Packet &pac) {
         VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)pac.size());
         return;
     } else if (status != VDP::PacketValidity::Ok) {
-        VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping", "");
+        VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
         return;
     }
     // checks the packet function from the header

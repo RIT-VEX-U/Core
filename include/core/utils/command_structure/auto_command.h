@@ -68,6 +68,8 @@ class AutoCommand {
      */
     double timeout_seconds = default_timeout;
     Condition *true_to_end = nullptr;
+
+    virtual ~AutoCommand() = default;
 };
 
 /**
@@ -77,7 +79,7 @@ class AutoCommand {
 class FunctionCommand : public AutoCommand {
   public:
     FunctionCommand(std::function<bool(void)> f) : f(f) {}
-    bool run() { return f(); }
+    bool run() override { return f(); }
     std::string toString() override { return "Function Command"; }
 
   private:
