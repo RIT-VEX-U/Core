@@ -78,69 +78,96 @@ struct PacketHeader {
   PacketFunction func;
 };
 
+/// creates a header byte from a PacketHeader
 uint8_t make_header_byte(PacketHeader head);
 
+/// creates a PacketHeader from a packet
 PacketHeader decode_header_byte(uint8_t hb);
 
+/// creates a checksum for a packet in the form of a packet
 Packet checksum_pac(VDP::Packet in);
 
+/**
+ * A channel of data to be send to the debug board
+ */
 template <typename T>
   requires IsField<std::remove_cvref_t<T>>::value
 class Channel {
  public:
-  explicit Channel(T data) : id_(0), data(std::move(data)), acked(false) {}
-
-  void set_id(ChannelID id) { id_ = id; }
+  /**
+   * Creates a channel of data to be send to the debug board
+   * @param data a field of data to be send through this channel
+   */
+  explicit Channel(T& data, ChannelID id) : id_(id), data_(data), acked(false) {}
 
   ChannelID get_id() const {
     return id_;
   };
 
-  T& get_data() { return data; }
+  T& get_data() { return data_; }
 
   void acknowledge() { acked = true; }
 
-  bool apply_update(VDP::Packet data_packet) { return data.apply_update(data_packet); }
+  bool is_acknowledged() {return acked;}
 
+  /// applies a recieved packet of data to the data held by the channel
+  bool apply_update(VDP::Packet data_packet) { return data_.apply_update(data_packet); }
+
+  /**
+   * Serializes the channel as a packet to be sent over a wire to the debug board
+   * @param pac_type the type of packet to create, schema or data
+   */
   VDP::Packet serialize(PacketType pac_type) {
     VDP::Packet out;
-    out.push_back((uint8_t)PacketFunction::Send | (uint8_t)PacketType::Schema);
+    /// add the header and channel id to the packet
+    out.push_back((uint8_t)PacketFunction::Send | (uint8_t)pac_type);
     out.push_back((uint8_t)id_);
 
+    /// either serialize the data held by the channel or the schema
     VDP::Packet packet_body; 
     if(pac_type == PacketType::Data) {
-      packet_body = data.serialize_data();
+      packet_body = data_.serialize_data();
     }
     else if(pac_type == PacketType::Schema) {
-      packet_body = data.serialize_schema();
+      packet_body = data_.serialize_schema();
     }
-
     out.insert(out.end(), packet_body.begin(), packet_body.end());
+
+    /// at the checksum to the packet
     VDP::Packet checksum = checksum_pac(out);
     out.insert(out.end(), checksum.begin(), checksum.end());
     return out;
   };
 
+  /**
+   * @breif gets the channel's schema as a string
+   * @return a string representation of the channel's schema
+   */
   std::string schema_to_string() const {
     std::string out = "";
     out += "{\n  id : " + std::to_string(id_) + ",\n";
-    out += data.schema_to_string(1) + "\n}";
+    out += data_.schema_to_string(1) + "\n}";
     return out;
   }
 
+  /**
+   * @breif gets the channel's data as a string
+   * @return a string representation of the channel's data
+   */
   std::string data_to_string() const {
     std::string out = "";
     out += "{\n  id : " + std::to_string(id_) + ",\n";
-    out += data.data_to_string(1) + "\n}";
+    out += data_.data_to_string(1) + "\n}";
     return out;
   }
 
  private:
   ChannelID id_;
-  T data;
+  T data_;
   bool acked;
 };
 
+/// deduction guide so that template arguments are not required when creqting a channel
 template <typename T>
 Channel(ChannelID, T) -> Channel<T>;
 

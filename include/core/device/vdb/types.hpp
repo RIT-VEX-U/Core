@@ -294,7 +294,7 @@ class Field {
    * @brief deserializes a packet's data and applies it to the field
    * @return the number of bytes read in the packet
    */
-  size_t apply_update(VDP::Packet& packet_in) {
+  size_t apply_update(const VDP::Packet& packet_in) {
     if constexpr (std::is_same_v<T, std::string>) {
       /// if the field holds a string, find the 0 delimiter and and get the string for that length of the packet
       auto str_end = std::find(packet_in.begin(), packet_in.end(), uint64_t(0));
@@ -476,14 +476,13 @@ class Record {
   /**
    * @breif deserializes a packet of data and applies it to the Record's fields
    */
-  int apply_update(VDP::Packet in) {
+  size_t apply_update(VDP::Packet in) {
     std::size_t offset = 0;
 
     std::apply(
       [&](auto&... fields) {
         ([&] {
           auto read_bytes = fields.apply_update(VDP::Packet(in.begin() + offset, in.end()));
-
           offset += read_bytes;
         }(),
         ...);

@@ -1,9 +1,7 @@
 #pragma once
-#include <array>
 #include <cstdint>
 #include <deque>
 #include <functional>
-#include <iterator>
 #include <tuple>
 #include <span>
 
@@ -29,16 +27,16 @@ class Device : public COBSSerialDevice {
    * @param port the port the debug board is connected to
    * @param baud_rate the baud rate for the debug board to use
    */
-  explicit Device(int32_t port, int32_t baud_rate, VDP::Channel<Fields>... channels) : COBSSerialDevice(port, baud_rate), channels_(std::move(channels)...) {
+  explicit Device(int32_t port, int32_t baud_rate, VDP::Channel<Fields>&... channels) : COBSSerialDevice(port, baud_rate), channels_(channels...) {
 
     static_assert(sizeof...(Fields) <= VDP::MAX_CHANNELS, "There can be no more than 256 Channels sent to a VDB Device");
-    size_t next_id = 0;
-    std::apply([&](auto&... channel) {
-      (channel.set_id(static_cast<VDP::ChannelID>(next_id++)), ...);
-    }, channels_);
     serial_task = vex::task(Device::serial_thread, (void*)this, vex::thread::threadPriorityHigh);
   }
 
+  /**
+   * adds a packet to the queue of packets to be sent over the wire
+   * @param packet the packet to add to the queue
+   */
   bool add_to_queue(const VDP::Packet& packet) {
     if (packet.empty()) {
       printf("VDP WARNING: Empty Packets are not allowed\n");
@@ -89,23 +87,25 @@ class Device : public COBSSerialDevice {
    * the thread for sending data to the wire
    */
   static int serial_thread(void* vself) {
-    // defines itself within the thread
+    //. defines itself within the thread
     Device& self = *(Device*)vself;
 
-    // serial thread loop
+    /// serial thread loop
     while (true) {
       bool did_something = false;
-      // Lame replacement for blocking IO. We can't just wait and tell the
-      // scheduler to go work on something else while we wait for packets so
-      // instead, if we're getting nothing in and have nothing to send, block
-      // ourselves.
+      /**
+       * Lame replacement for blocking IO. We can't just wait and tell the
+       * scheduler to go work on something else while we wait for packets so
+       * instead, if we're getting nothing in and have nothing to send, block
+       * ourselves.
+       */
 
-      // Writing
+      /// Writing
       SEND_PACKET_STATE send_state = self.write_packet_from_queue();
       if (send_state != NONE_QUEUED) {
         did_something = true;
       }
-      // Reading
+      /// Reading
       if (self.poll_incoming_data_once()) {
         Packet decoded = {};
         decoded = self.get_last_decoded_packet();
@@ -119,12 +119,15 @@ class Device : public COBSSerialDevice {
     return 0;
   }
 
+/**
+ * Send the data held by a channel to the queue of packets to be sent over the wire
+ * @param id the channel id of data to send over the wire
+ */
 void send_channel(VDP::ChannelID id) {
-  VDP::Channel to_send = std::get<id>(channels_);
-  std::apply([&](const auto&... channel) {
+  std::apply([&](auto&... channel) {
     ([&] {
       if (id == channel.get_id()) {
-        if (channel.acknowledged == true) {
+        if (channel.is_acknowledged() == true) {
           this->add_to_queue(channel.serialize(VDP::PacketType::Data));
         }
         else {
@@ -135,9 +138,14 @@ void send_channel(VDP::ChannelID id) {
   }, channels_);
 }
 
+/**
+ * Send the data held by a channel to the queue of packets to be sent over the wire
+ * @param id the channel id of data to send over the wire
+ */
 void apply_packet(VDP::Packet in) {
   const VDP::PacketValidity status = VDP::validate_packet(in);
 
+  /// check if the packet is valid;
   if (status == VDP::PacketValidity::BadChecksum) {
     VDPWarnf("Controller: Bad packet checksum. Skipping");
     return;
@@ -148,15 +156,17 @@ void apply_packet(VDP::Packet in) {
     VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
     return;
   }
+
+  /// decode the header byte and route it accordingly
   VDP::PacketHeader header = VDP::decode_header_byte(in[0]);
   switch (header.func) {
     case VDP::PacketFunction::Send: {
       // decode packet and apply to channel
       VDP::ChannelID id_to_update = in[1];
-      std::apply([&](const auto&... channel) {
+      std::apply([&](auto&... channel) {
         ([&] {
          if (id_to_update == channel.get_id()) {
-          channel.apply_update(std::span(in).subspan(2));
+          channel.apply_update(VDP::Packet(in.begin() + 2, in.end()));
          }
         }(), ...);
       }, channels_);
@@ -166,7 +176,7 @@ void apply_packet(VDP::Packet in) {
     case VDP::PacketFunction::Acknowledge:
       if (header.type == VDP::PacketType::Schema) {
         VDP::ChannelID acked_id = in[1];
-          std::apply([&](const auto&... channel) {
+          std::apply([&](auto&... channel) {
             ([&] {
              if (acked_id == channel.get_id()) {
                 channel.acknowledge();
