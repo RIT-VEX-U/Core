@@ -5,9 +5,11 @@
 #include <limits>
 #include <memory>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/math_util.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
+
+using namespace units::literals;
 
 /**
  * @brief Trajectory constraint that limits acceleration based on available battery voltage and motor capabilities.
@@ -21,23 +23,23 @@ class TankVoltageConstraint : public TrajectoryConstraint {
    * @param maxVoltage Maximum available voltage.
    * @param trackWidth Robot track width (distance between left and right wheels).
    */
-  TankVoltageConstraint(LinearVelocityFeedforward Kv, LinearAccelerationFeedforward Ka, Voltage maxVoltage, Length trackWidth)
-      : m_Kv(Kv),
-        m_Ka(Ka),
-        m_maxVoltage(maxVoltage),
-        m_trackWidth(trackWidth) {}
+  TankVoltageConstraint(LinearVelocityFeedforward Kv, LinearAccelerationFeedforward Ka, Voltage maxVoltage, units::Length trackWidth)
+      : Kv_(Kv),
+        Ka_(Ka),
+        maxVoltage_(maxVoltage),
+        trackWidth_(trackWidth) {}
 
   /**
    * @brief Computes maximum allowed velocity.
    * @param pose 2D position and orientation.
    * @param curvature Path curvature in rad/meter.
    * @param velocity Candidate linear velocity.
-   * @return Constrained Velocity limit.
+   * @return Constrained units::Velocity limit.
    */
-  Velocity max_velocity(
-      const Pose2d& pose, Curvature curvature,
-      Velocity velocity) const override {
-    return Velocity(std::numeric_limits<double>::max());
+  units::Velocity max_velocity(
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity velocity) const override {
+    return units::Velocity(std::numeric_limits<double>::max());
   }
 
   /**
@@ -48,31 +50,31 @@ class TankVoltageConstraint : public TrajectoryConstraint {
    * @return MinMax acceleration bounds struct.
    */
   MinMax min_max_acceleration(
-      const Pose2d& pose, Curvature curvature,
-      Velocity speed) const override {
-    Velocity leftVelocity = (speed - (m_trackWidth / 2 * (speed * curvature / 1_rad)));
-    Velocity rightVelocity = (speed + (m_trackWidth / 2 * (speed * curvature / 1_rad)));
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity speed) const override {
+    units::Velocity leftVelocity = (speed - (trackWidth_ / 2 * (speed * curvature / 1_rad)));
+    units::Velocity rightVelocity = (speed + (trackWidth_ / 2 * (speed * curvature / 1_rad)));
 
-    Velocity maxWheelSpeed = units::max(leftVelocity, rightVelocity);
-    Velocity minWheelSpeed = units::min(leftVelocity, rightVelocity);
+    units::Velocity maxWheelSpeed = units::max(leftVelocity, rightVelocity);
+    units::Velocity minWheelSpeed = units::min(leftVelocity, rightVelocity);
 
-    Acceleration maxWheelAcceleration = (m_maxVoltage - (m_Kv * maxWheelSpeed)) / m_Ka;
-    Acceleration minWheelAcceleration = (-m_maxVoltage - m_Kv * minWheelSpeed) / m_Ka;
+    units::Acceleration maxWheelAcceleration = (maxVoltage_ - (Kv_ * units::maxWheelSpeed)) / Ka_;
+    units::Acceleration minWheelAcceleration = (-maxVoltage_ - Kv_ * units::minWheelSpeed) / Ka_;
 
-    Acceleration maxChassisAcceleration;
-    Acceleration minChassisAcceleration;
+    units::Acceleration maxChassisAcceleration;
+    units::Acceleration minChassisAcceleration;
 
     const double speedVal = speed.inps();
     const double speedSgn = std::abs(speedVal) <= 1e-9 ? 1.0 : (speedVal < 0.0 ? -1.0 : 1.0);
-    const double curvd = abs(curvature / 1_rad).canonical_value();
-    const double twd = m_trackWidth.canonical_value();
+    const double curvd = abs(curvature / 1_rad).internal();
+    const double twd = trackWidth_.internal();
     const double maxDenom = 1.0 + (twd * curvd * speedSgn / 2.0);
     const double minDenom = 1.0 - (twd * curvd * speedSgn / 2.0);
 
     maxChassisAcceleration = maxWheelAcceleration / (std::abs(maxDenom) < 1e-6 ? 1e-6 : maxDenom);
     minChassisAcceleration = minWheelAcceleration / (std::abs(minDenom) < 1e-6 ? 1e-6 : minDenom);
 
-    if (abs(curvature) > 1E-9_radpm && (m_trackWidth / 2.0) > 1_rad / abs(curvature)) {
+    if (abs(curvature) > 1E-9_radpm && (trackWidth_ / 2.0) > 1_rad / abs(curvature)) {
       if (speed > 0_mps && minChassisAcceleration > 0_inps2) {
         minChassisAcceleration = -minChassisAcceleration;
       } else if (speed < 0_mps && maxChassisAcceleration < 0_inps2) {
@@ -92,8 +94,8 @@ class TankVoltageConstraint : public TrajectoryConstraint {
   }
 
  private:
-  LinearVelocityFeedforward m_Kv; ///< Linear velocity feedforward constant
-  LinearAccelerationFeedforward m_Ka; ///< Linear acceleration feedforward constant
-  Voltage m_maxVoltage; ///< Maximum available voltage
-  Length m_trackWidth; ///< Robot track width
+  LinearVelocityFeedforward Kv_; ///< Linear velocity feedforward constant
+  LinearAccelerationFeedforward Ka_; ///< Linear acceleration feedforward constant
+  Voltage maxVoltage_; ///< Maximum available voltage
+  units::Length trackWidth_; ///< Robot track width
 };

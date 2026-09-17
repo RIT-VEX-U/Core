@@ -4,10 +4,12 @@
 #include <utility>
 #include <vector>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/math/spline/hermite_point.h"
 #include "core/utils/trajectory/trajectory.h"
 #include "core/utils/trajectory/trajectory_config.h"
+
+using namespace units::literals;
 
 /**
  * @brief Helper utility class for generating time-parameterized constrained trajectories from waypoints.
@@ -19,7 +21,7 @@ class TrajectoryGenerator {
    * @brief Generates a time-parameterized Trajectory from Hermite waypoints and a TrajectoryConfig.
    * @param waypoints Vector of Hermite boundary waypoints (positions, tangents, second derivatives).
    * @param config Trajectory configuration containing velocity limits, accelerations, direction, and constraints.
-   * @return Time-parameterized Trajectory instance.
+   * @return units::Time-parameterized Trajectory instance.
    */
   static Trajectory generate_trajectory(
       const std::vector<HermitePoint>& waypoints,
@@ -36,7 +38,7 @@ class TrajectoryGenerator {
   /**
    * @brief Splicing helper for On-The-Fly Replanning.
    * Generates a new path starting precisely at current_pose, maintaining the
-   * momentum of current_velocity, and routing to the target_waypoints.
+   * units::momentum of current_velocity, and routing to the target_waypoints.
    * @param current_pose The robot's current instantaneous position and heading.
    * @param current_velocity The robot's current forward speed.
    * @param target_waypoints The remaining destinations.
@@ -44,7 +46,7 @@ class TrajectoryGenerator {
    */
   static Trajectory generate_trajectory(
       const Pose2d& current_pose,
-      Velocity current_velocity,
+      units::Velocity current_velocity,
       const std::vector<Pose2d>& target_waypoints,
       TrajectoryConfig config);
 

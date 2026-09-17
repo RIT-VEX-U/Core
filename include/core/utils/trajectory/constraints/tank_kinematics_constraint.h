@@ -4,8 +4,10 @@
 #include <cmath>
 #include <memory>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
+
+using namespace units::literals;
 
 /**
  * @brief Trajectory constraint that limits velocity based on tank drive kinematics and maximum wheel speed.
@@ -17,27 +19,27 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
    * @param trackWidth Robot track width (distance between left and right wheels).
    * @param maxSpeed Maximum allowed speed of a single wheel.
    */
-  TankKinematicsConstraint(Length trackWidth, Velocity maxSpeed)
-      : m_trackWidth(trackWidth), m_maxSpeed(maxSpeed) {}
+  TankKinematicsConstraint(units::Length trackWidth, units::Velocity maxSpeed)
+      : trackWidth_(trackWidth), maxSpeed_(maxSpeed) {}
 
   /**
    * @brief Computes maximum allowed chassis velocity to keep wheel speeds within limits during turns.
    * @param pose 2D position and orientation.
    * @param curvature Path curvature in rad/meter.
    * @param velocity Candidate linear velocity.
-   * @return Constrained Velocity limit.
+   * @return Constrained units::Velocity limit.
    */
-  Velocity max_velocity(
-      const Pose2d& pose, Curvature curvature,
-      Velocity velocity) const override {
-    Velocity leftVelocity = (velocity - (m_trackWidth / 2 * (velocity * curvature / 1_rad)));
-    Velocity rightVelocity = (velocity + (m_trackWidth / 2 * (velocity * curvature / 1_rad)));
+  units::Velocity max_velocity(
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity velocity) const override {
+    units::Velocity leftVelocity = (velocity - (trackWidth_ / 2 * (velocity * curvature / 1_rad)));
+    units::Velocity rightVelocity = (velocity + (trackWidth_ / 2 * (velocity * curvature / 1_rad)));
 
-    Velocity realMaxSpeed = units::max(abs(leftVelocity), abs(rightVelocity));
+    units::Velocity realMaxSpeed = units::max(abs(leftVelocity), abs(rightVelocity));
 
-    if (realMaxSpeed > m_maxSpeed) {
-      leftVelocity = leftVelocity / realMaxSpeed * m_maxSpeed;
-      rightVelocity = rightVelocity / realMaxSpeed * m_maxSpeed;
+    if (realMaxSpeed > maxSpeed_) {
+      leftVelocity = leftVelocity / realMaxSpeed * maxSpeed_;
+      rightVelocity = rightVelocity / realMaxSpeed * maxSpeed_;
     }
 
     return (leftVelocity + rightVelocity) / 2.0;
@@ -51,8 +53,8 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
    * @return MinMax acceleration bounds struct.
    */
   MinMax min_max_acceleration(
-      const Pose2d& pose, Curvature curvature,
-      Velocity speed) const override {
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity speed) const override {
     return {};
   }
 
@@ -65,6 +67,6 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
   }
 
  private:
-  Length m_trackWidth; ///< Robot track width
-  Velocity m_maxSpeed; ///< Maximum allowed speed of a single wheel
+  units::Length trackWidth_; ///< Robot track width
+  units::Velocity maxSpeed_; ///< Maximum allowed speed of a single wheel
 };

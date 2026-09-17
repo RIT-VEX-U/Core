@@ -5,23 +5,25 @@
 #include <string>
 #include <vector>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math_util.h"
 
+using namespace units::literals;
+
 /**
- * @brief Pair representing 2D Pose and scalar path Curvature.
+ * @brief Pair representing 2D Pose and scalar path units::Curvature.
  */
 struct PoseWithCurvature {
   Pose2d pose;
-  Curvature curvature;
+  units::Curvature curvature;
 };
 
 /**
  * @brief Represents an action event triggered at a specific time along a trajectory.
  */
 struct TrajectoryEvent {
-  Time time;
+  units::Time time;
   std::string name;
 };
 
@@ -37,12 +39,12 @@ class Trajectory {
    * @brief Represents a single discrete state sample along a trajectory.
    */
   struct State {
-    Time t = 0_s;                        ///< Elapsed time from trajectory start
-    Length s = 0_in;                     ///< Distance along trajectory
-    Velocity velocity = 0_inps;          ///< Linear chassis velocity
-    Acceleration acceleration = 0_inps2;  ///< Linear chassis acceleration
+    units::Time t = 0_s;                        ///< Elapsed time from trajectory start
+    units::Length s = 0_in;                     ///< Distance along trajectory
+    units::Velocity velocity = 0_inps;          ///< Linear chassis velocity
+    units::Acceleration acceleration = 0_inps2;  ///< Linear chassis acceleration
     Pose2d pose{0.0, 0.0, 0.0};           ///< 2D robot pose (x, y, theta)
-    Curvature curvature = 0_radpm;       ///< Path curvature at pose
+    units::Curvature curvature = 0_radpm;       ///< Path curvature at pose
 
     /** @brief Default constructor. */
     State() = default;
@@ -55,7 +57,7 @@ class Trajectory {
      * @param pose 2D pose.
      * @param curvature Path curvature.
      */
-    State(Time t, Velocity velocity, Acceleration acceleration, Pose2d pose, Curvature curvature, Length s = 0_in)
+    State(units::Time t, units::Velocity velocity, units::Acceleration acceleration, Pose2d pose, units::Curvature curvature, units::Length s = 0_in)
         : t(t), s(s), velocity(velocity), acceleration(acceleration), pose(pose), curvature(curvature) {}
 
     /** @brief Checks equality between two States. */
@@ -71,20 +73,20 @@ class Trajectory {
      * @return Interpolated State.
      */
     State interpolate(State end_value, double i) const {
-      const Time new_t = 1_s * (t.s() + (end_value.t.s() - t.s()) * i);
-      const Time delta_t = new_t - t;
+      const units::Time new_t = 1_s * (t.internal() + (end_value.t.internal() - t.internal()) * i);
+      const units::Time delta_t = new_t - t;
 
       if (delta_t < 0_s) {
         return end_value.interpolate(*this, 1.0 - i);
       }
 
       const bool reversing = velocity < 0_inps || (abs(velocity) < 1E-9_inps && acceleration < 0_inps2);
-      const Velocity new_v = velocity + (acceleration * delta_t);
-      const Length new_s =
+      const units::Velocity new_v = velocity + (acceleration * delta_t);
+      const units::Length new_s =
         (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) * (reversing ? -1.0 : 1.0);
 
-      const Length distance = Length(end_value.pose.translation().distance(pose.translation()));
-      const double interpolation_frac = distance > 1E-9_in ? (new_s / distance).canonical_value() : i;
+      const units::Length distance = units::Length(end_value.pose.translation().distance(pose.translation()));
+      const double interpolation_frac = distance > 1E-9_in ? (new_s / distance).internal() : i;
 
       Translation2d new_trans(
         pose.x() + (end_value.pose.x() - pose.x()) * interpolation_frac,
@@ -95,8 +97,8 @@ class Trajectory {
       Rotation2d new_rot(start_rot + (end_rot - start_rot) * interpolation_frac);
       Pose2d new_pose(new_trans, new_rot);
 
-      Curvature new_curvature = 1_radpm * (
-        curvature.radpm() + (end_value.curvature.radpm() - curvature.radpm()) * interpolation_frac
+      units::Curvature new_curvature = 1_radpm * (
+        curvature.internal() + (end_value.curvature.internal() - curvature.internal()) * interpolation_frac
       );
 
       return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
@@ -110,44 +112,44 @@ class Trajectory {
    * @brief Constructs a Trajectory from a vector of State samples.
    * @param states Vector of time-parameterized states.
    */
-  explicit Trajectory(std::vector<State> states) : m_states(std::move(states)) {
-    if (!m_states.empty()) {
-      m_total_time = m_states.back().t;
+  explicit Trajectory(std::vector<State> states) : states_(std::move(states)) {
+    if (!states_.empty()) {
+      total_time_ = states_.back().t;
     }
   }
 
   /** @return True if the trajectory contains no state samples. */
-  bool empty() const { return m_states.empty(); }
+  bool empty() const { return states_.empty(); }
 
   /** @return Total duration of the trajectory. */
-  Time total_time() const { return m_total_time; }
+  units::Time total_time() const { return total_time_; }
 
   /** @return Reference to the internal vector of State samples. */
-  const std::vector<State> &states() const { return m_states; }
+  const std::vector<State> &states() const { return states_; }
 
   /** @return Vector of events attached to this trajectory. */
-  const std::vector<TrajectoryEvent>& events() const { return m_events; }
+  const std::vector<TrajectoryEvent>& events() const { return events_; }
 
   /** @brief Attaches a vector of time-parameterized events to the trajectory. */
-  void set_events(std::vector<TrajectoryEvent> events) { m_events = std::move(events); }
+  void set_events(std::vector<TrajectoryEvent> events) { events_ = std::move(events); }
 
   /**
    * @brief Interpolates the time at which a given arc distance is reached.
    * @param s Arc distance along trajectory.
    * @return Interpolated time.
    */
-  Time time_from_distance(Length s) const {
-    if (m_states.empty() || s <= 0_in) return 0_s;
-    if (s >= m_states.back().s) return m_total_time;
+  units::Time time_from_distance(units::Length s) const {
+    if (states_.empty() || s <= 0_in) return 0_s;
+    if (s >= states_.back().s) return total_time_;
     
-    auto it = std::lower_bound(m_states.begin() + 1, m_states.end(), s, 
-      [](const State& st, Length val) { return st.s < val; });
+    auto it = std::lower_bound(states_.begin() + 1, states_.end(), s, 
+      [](const State& st, units::Length val) { return st.s < val; });
       
     const State& s0 = *(it - 1);
     const State& s1 = *it;
     
     if (s1.s == s0.s) return s1.t;
-    double alpha = (s - s0.s).canonical_value() / (s1.s - s0.s).canonical_value();
+    double alpha = (s - s0.s).internal() / (s1.s - s0.s).internal();
     return s0.t + (s1.t - s0.t) * alpha;
   }
 
@@ -156,23 +158,23 @@ class Trajectory {
    * @param t Target timestamp.
    * @return Interpolated State struct.
    */
-  State sample(Time t) const {
-    if (m_states.empty()) {
+  State sample(units::Time t) const {
+    if (states_.empty()) {
       return State{};
     }
 
-    if (t <= m_states.front().t) {
-      return m_states.front();
+    if (t <= states_.front().t) {
+      return states_.front();
     }
-    if (t >= m_total_time) {
-      return m_states.back();
+    if (t >= total_time_) {
+      return states_.back();
     }
 
     auto sample = std::lower_bound(
-      m_states.cbegin() + 1,
-      m_states.cend(),
+      states_.cbegin() + 1,
+      states_.cend(),
       t,
-      [](const State &a, const Time &b) { return a.t < b; });
+      [](const State &a, const units::Time &b) { return a.t < b; });
 
     auto prev_sample = sample - 1;
 
@@ -180,7 +182,7 @@ class Trajectory {
       return *sample;
     }
 
-    return prev_sample->interpolate(*sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)).canonical_value());
+    return prev_sample->interpolate(*sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)).internal());
   }
 
   /**
@@ -189,15 +191,15 @@ class Trajectory {
    * @return Transformed Trajectory.
    */
   Trajectory transform_by(const Transform2d &transform) const {
-    if (m_states.empty()) {
+    if (states_.empty()) {
       return *this;
     }
 
-    auto &first_state = m_states[0];
+    auto &first_state = states_[0];
     auto &first_pose = first_state.pose;
 
     auto new_first_pose = first_pose + transform;
-    auto new_states = m_states;
+    auto new_states = states_;
     new_states[0].pose = new_first_pose;
 
     for (size_t i = 1; i < new_states.size(); ++i) {
@@ -214,7 +216,7 @@ class Trajectory {
    * @return Relative Trajectory.
    */
   Trajectory relative_to(const Pose2d &pose) const {
-    auto new_states = m_states;
+    auto new_states = states_;
     for (auto &state : new_states) {
       state.pose = state.pose.relative_to(pose);
     }
@@ -227,13 +229,13 @@ class Trajectory {
    */
   Trajectory reverse() const {
     std::vector<State> new_states;
-    new_states.reserve(m_states.size());
-    for (auto it = m_states.rbegin(); it != m_states.rend(); ++it) {
+    new_states.reserve(states_.size());
+    for (auto it = states_.rbegin(); it != states_.rend(); ++it) {
       State st = *it;
-      st.t = m_total_time - st.t;
+      st.t = total_time_ - st.t;
       st.velocity = -st.velocity;
       st.curvature = -st.curvature;
-      st.s = m_states.back().s - st.s;
+      st.s = states_.back().s - st.s;
       new_states.push_back(st);
     }
     return Trajectory(new_states);
@@ -245,14 +247,14 @@ class Trajectory {
    * @return Combined Trajectory.
    */
   Trajectory operator+(const Trajectory &other) const {
-    if (m_states.empty()) {
+    if (states_.empty()) {
       return other;
     }
 
-    auto states = m_states;
+    auto states = states_;
     auto other_states = other.states();
     for (auto &other_state : other_states) {
-      other_state.t += m_total_time;
+      other_state.t += total_time_;
     }
 
     states.insert(states.end(), other_states.begin() + 1, other_states.end());
@@ -264,19 +266,19 @@ class Trajectory {
 
   /** @brief Checks equality between two trajectories. */
   bool operator==(const Trajectory &other) const {
-    return m_total_time == other.m_total_time && m_states == other.m_states;
+    return total_time_ == other.total_time_ && states_ == other.states_;
   }
 
  private:
-  std::vector<State> m_states;
-  std::vector<TrajectoryEvent> m_events;
-  Time m_total_time = 0_s;
+  std::vector<State> states_;
+  std::vector<TrajectoryEvent> events_;
+  units::Time total_time_ = 0_s;
 };
 
 /**
  * @brief High-efficiency streaming sampler for real-time control loops.
  *
- * Caches the search index during sequential calls to sample(Time t),
+ * Caches the search index during sequential calls to sample(units::Time t),
  * achieving O(1) step lookup in 100Hz loop cycles.
  */
 class TrajectorySampler {
@@ -290,50 +292,50 @@ class TrajectorySampler {
    * @param trajectory Reference to trajectory to sample.
    */
   explicit TrajectorySampler(const Trajectory &trajectory)
-      : m_trajectory(&trajectory), m_cached_index(0) {}
+      : trajectory_(&trajectory), cached_index_(0) {}
 
   /** @brief Resets cached index back to start. */
-  void reset() { m_cached_index = 0; }
+  void reset() { cached_index_ = 0; }
 
   /**
    * @brief Samples state at timestamp t using cached sequential lookup (O(1)).
    * @param t Target timestamp.
    * @return Interpolated State.
    */
-  Trajectory::State sample(Time t) {
-    if (!m_trajectory || m_trajectory->empty()) {
+  Trajectory::State sample(units::Time t) {
+    if (!trajectory_ || trajectory_->empty()) {
       return Trajectory::State{};
     }
-    const auto &states = m_trajectory->states();
+    const auto &states = trajectory_->states();
     if (t <= states.front().t) {
-      m_cached_index = 0;
+      cached_index_ = 0;
       return states.front();
     }
-    if (t >= m_trajectory->total_time()) {
-      m_cached_index = states.size() - 1;
+    if (t >= trajectory_->total_time()) {
+      cached_index_ = states.size() - 1;
       return states.back();
     }
 
-    while (m_cached_index + 1 < states.size() && states[m_cached_index + 1].t <= t) {
-      m_cached_index++;
+    while (cached_index_ + 1 < states.size() && states[cached_index_ + 1].t <= t) {
+      cached_index_++;
     }
-    while (m_cached_index > 0 && states[m_cached_index].t > t) {
-      m_cached_index--;
+    while (cached_index_ > 0 && states[cached_index_].t > t) {
+      cached_index_--;
     }
 
-    if (m_cached_index + 1 >= states.size()) {
+    if (cached_index_ + 1 >= states.size()) {
       return states.back();
     }
 
-    const auto &prev = states[m_cached_index];
-    const auto &next = states[m_cached_index + 1];
+    const auto &prev = states[cached_index_];
+    const auto &next = states[cached_index_ + 1];
     if (abs(next.t - prev.t) < 1E-9_s) {
       return next;
     }
-    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).canonical_value());
+    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).internal());
   }
 
  private:
-  const Trajectory *m_trajectory = nullptr;
-  size_t m_cached_index = 0;
+  const Trajectory *trajectory_ = nullptr;
+  size_t cached_index_ = 0;
 };
