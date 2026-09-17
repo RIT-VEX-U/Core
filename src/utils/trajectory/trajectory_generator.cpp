@@ -45,7 +45,7 @@ std::vector<PoseWithCurvature> spline_points_from_hermite(
 Trajectory TrajectoryGenerator::generate_trajectory(
     const std::vector<HermitePoint>& waypoints,
     const TrajectoryConfig& config) {
-  std::vector<PoseWithCurvature> points = spline_points_from_hermite(waypoints, config.sample_ds().in(), config.spline_order());
+  std::vector<PoseWithCurvature> points = spline_points_from_hermite(waypoints, config.sample_ds().to(units::in), config.spline_order());
   if (points.empty()) {
     if (config.error_handler()) {
       config.error_handler()("Could not generate spline points.");
@@ -108,7 +108,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
 Trajectory TrajectoryGenerator::generate_trajectory(
     const Pose2d& current_pose,
-    Velocity current_velocity,
+    units::Velocity current_velocity,
     const std::vector<Pose2d>& target_waypoints,
     TrajectoryConfig config) {
   
@@ -127,7 +127,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
     if (i == 0) {
       // Scale tangent speed based on instantaneous velocity!
       // If moving very slow, we still need some minimal tangent bulge to form a spline
-      speed = std::max(current_velocity.canonical_value(), full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2);
+      speed = std::max(current_velocity.internal(), full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2);
     } else if (i < full_waypoints.size() - 1) {
       speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2;
     } else {

@@ -3,8 +3,10 @@
 #include <cmath>
 #include <memory>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
+
+using namespace units::literals;
 
 /**
  * @brief Trajectory constraint that limits maximum velocity to prevent excessive centripetal acceleration.
@@ -15,23 +17,23 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
    * @brief Constructs a CentripetalAccelerationConstraint.
    * @param maxCentripetalAcceleration Maximum allowed centripetal acceleration.
    */
-  explicit CentripetalAccelerationConstraint(Acceleration maxCentripetalAcceleration)
-      : m_maxCentripetalAcceleration(maxCentripetalAcceleration) {}
+  explicit CentripetalAccelerationConstraint(units::Acceleration maxCentripetalAcceleration)
+      : maxCentripetalAcceleration_(maxCentripetalAcceleration) {}
 
   /**
    * @brief Computes maximum allowed velocity based on path curvature and centripetal acceleration limits.
    * @param pose 2D position and orientation.
    * @param curvature Path curvature in rad/meter.
    * @param velocity Candidate linear velocity.
-   * @return Constrained Velocity limit.
+   * @return Constrained units::Velocity limit.
    */
-  Velocity max_velocity(
-      const Pose2d& pose, Curvature curvature,
-      Velocity velocity) const override {
+  units::Velocity max_velocity(
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity velocity) const override {
     if (abs(curvature) < 1e-9_radpm) {
-      return Velocity::from_canonical(std::numeric_limits<double>::max());
+      return units::Velocity(std::numeric_limits<double>::max());
     }
-    return sqrt(m_maxCentripetalAcceleration / abs(curvature / 1_rad));
+    return sqrt(maxCentripetalAcceleration_ / abs(curvature / 1_rad));
   }
 
   /**
@@ -42,8 +44,8 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
    * @return MinMax acceleration bounds struct.
    */
   MinMax min_max_acceleration(
-      const Pose2d& pose, Curvature curvature,
-      Velocity speed) const override {
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity speed) const override {
     return {};
   }
 
@@ -56,5 +58,5 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
   }
 
  private:
-  Acceleration m_maxCentripetalAcceleration; ///< Maximum centripetal acceleration
+  units::Acceleration maxCentripetalAcceleration_; ///< Maximum centripetal acceleration
 };

@@ -3,8 +3,10 @@
 #include <cmath>
 #include <memory>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
+
+using namespace units::literals;
 
 /**
  * @brief Trajectory constraint that enforces a strict upper limit on velocity.
@@ -15,20 +17,20 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
    * @brief Constructs a MaxVelocityConstraint.
    * @param maxVelocity Maximum allowed linear velocity.
    */
-  explicit MaxVelocityConstraint(Velocity maxVelocity)
-      : m_maxVelocity(abs(maxVelocity)) {}
+  explicit MaxVelocityConstraint(units::Velocity maxVelocity)
+      : maxVelocity_(abs(maxVelocity)) {}
 
   /**
    * @brief Computes maximum allowed velocity.
    * @param pose 2D position and orientation.
    * @param curvature Path curvature in rad/meter.
    * @param velocity Candidate linear velocity.
-   * @return Constrained Velocity limit.
+   * @return Constrained units::Velocity limit.
    */
-  Velocity max_velocity(
-      const Pose2d& pose, Curvature curvature,
-      Velocity velocity) const override {
-    return m_maxVelocity;
+  units::Velocity max_velocity(
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity velocity) const override {
+    return maxVelocity_;
   }
 
   /**
@@ -39,8 +41,8 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
    * @return MinMax acceleration bounds struct.
    */
   MinMax min_max_acceleration(
-      const Pose2d& pose, Curvature curvature,
-      Velocity speed) const override {
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity speed) const override {
     return {};
   }
 
@@ -53,5 +55,5 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
   }
 
  private:
-  Velocity m_maxVelocity; ///< Maximum allowed linear velocity
+  units::Velocity maxVelocity_; ///< Maximum allowed linear velocity
 };

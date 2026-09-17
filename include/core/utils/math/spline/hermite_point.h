@@ -1,11 +1,12 @@
 #pragma once
 
+#include "core/utils/units.h"
 #include "core/utils/math/geometry/pose2d.h"
-#include "core/utils/math/geometry/rotation2d.h"
-#include "core/units/units.h"
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+
+using namespace units::literals;
 
 /**
  * @brief Represents a boundary point along a Hermite spline.
@@ -95,7 +96,7 @@ struct HermitePoint {
       Rotation2d accel_heading = Rotation2d(),
       double accel_mag = 0.0) {
         return HermitePoint(
-          Translation2d(x.in(), y.in()),
+          Translation2d(x.to(units::in), y.to(units::in)),
           Translation2d(speed, heading),
           Translation2d(accel_mag, accel_heading));
     }

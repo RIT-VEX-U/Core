@@ -3,8 +3,10 @@
 #include <limits>
 #include <memory>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/math/geometry/pose2d.h"
+
+using namespace units::literals;
 
 /**
  * @brief Interface for defining physical trajectory velocity and acceleration constraints.
@@ -30,7 +32,7 @@ class TrajectoryConstraint {
      * @param minAcceleration Lower acceleration limit.
      * @param maxAcceleration Upper acceleration limit.
      */
-    MinMax(Acceleration minAcceleration, Acceleration maxAcceleration)
+    MinMax(units::Acceleration minAcceleration, units::Acceleration maxAcceleration)
         : minAcceleration(minAcceleration), maxAcceleration(maxAcceleration) {}
 
     /** @brief Default constructor setting unbounded limits [-Inf, +Inf]. */
@@ -38,8 +40,8 @@ class TrajectoryConstraint {
         : minAcceleration(-std::numeric_limits<double>::max()),
           maxAcceleration(std::numeric_limits<double>::max()) {}
 
-    Acceleration minAcceleration{-std::numeric_limits<double>::max()}; ///< Lower acceleration limit
-    Acceleration maxAcceleration{std::numeric_limits<double>::max()};  ///< Upper acceleration limit
+    units::Acceleration minAcceleration{-std::numeric_limits<double>::max()}; ///< Lower acceleration limit
+    units::Acceleration maxAcceleration{std::numeric_limits<double>::max()};  ///< Upper acceleration limit
   };
 
   /**
@@ -47,11 +49,11 @@ class TrajectoryConstraint {
    * @param pose 2D position and orientation.
    * @param curvature Path curvature in rad/meter.
    * @param velocity Candidate linear velocity.
-   * @return Constrained Velocity limit.
+   * @return Constrained units::Velocity limit.
    */
-  virtual Velocity max_velocity(
-      const Pose2d& pose, Curvature curvature,
-      Velocity velocity) const = 0;
+  virtual units::Velocity max_velocity(
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity velocity) const = 0;
 
   /**
    * @brief Computes minimum and maximum allowed linear accelerations at a given pose, curvature, and speed.
@@ -61,8 +63,8 @@ class TrajectoryConstraint {
    * @return MinMax acceleration bounds struct.
    */
   virtual MinMax min_max_acceleration(
-      const Pose2d& pose, Curvature curvature,
-      Velocity speed) const = 0;
+      const Pose2d& pose, units::Curvature curvature,
+      units::Velocity speed) const = 0;
 
   /**
    * @brief Polymorphic deep-copy factory method.

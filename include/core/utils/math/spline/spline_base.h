@@ -3,9 +3,11 @@
 #include <cmath>
 #include <vector>
 
-#include "core/units/units.h"
+#include "core/utils/units.h"
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+
+using namespace units::literals;
 
 /**
  * @brief Evaluated state sample at a specific parameter u or distance s along a spline.
@@ -17,7 +19,7 @@ struct SplineSample {
     Translation2d velocity;     ///< 1D/2D parametric velocity vector (dx/du, dy/du)
     Translation2d acceleration; ///< 1D/2D parametric acceleration vector (d^2x/du^2, d^2y/du^2)
     Rotation2d heading;         ///< Heading angle theta along path
-    Curvature curvature = 0_radpm; ///< Path curvature (rad/meter)
+    units::Curvature curvature = 0_radpm; ///< Path curvature (rad/meter)
 };
 
 /**
@@ -64,9 +66,9 @@ class SplineBase {
     /**
      * @brief Computes path curvature at parameter u.
      * @param u Parameter in range [0, 1].
-     * @return Curvature in rad/meter.
+     * @return units::Curvature in rad/meter.
      */
-    Curvature curvature(double u) const {
+    units::Curvature curvature(double u) const {
         const Translation2d vel = velocity(clamp_u(u));
         const Translation2d acc = acceleration(clamp_u(u));
         const double denom = std::pow((vel.x() * vel.x()) + (vel.y() * vel.y()), 1.5);
@@ -75,9 +77,9 @@ class SplineBase {
         }
 
         // Convert 2D parametric curvature (in rad/inch) to canonical curvature (in rad/meter)
-        constexpr double kInchesPerMeter = Length::from<meter_tag>(1.0).in();
+        constexpr double kInchesPerMeter = (1.0 * units::m).to(units::in);
         const double curvature_rad_per_in = ((vel.x() * acc.y()) - (vel.y() * acc.x())) / denom;
-        return Curvature::from<radians_per_meter_tag>(curvature_rad_per_in / kInchesPerMeter);
+        return (curvature_rad_per_in / kInchesPerMeter) * units::radpm;
     }
 
     /**
