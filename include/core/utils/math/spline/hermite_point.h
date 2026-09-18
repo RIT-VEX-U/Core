@@ -1,10 +1,9 @@
 #pragma once
 
-#include "core/utils/units.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/rotation2d.h"
-#include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/units.h"
 
 using namespace units::literals;
 
@@ -15,9 +14,9 @@ using namespace units::literals;
  * and optional second derivative (acceleration) information.
  */
 struct HermitePoint {
-    Translation2d point;             ///< 2D position coordinates (x, y)
-    Translation2d tangent;           ///< First derivative vector (dx/du, dy/du)
-    Translation2d second_derivative; ///< Second derivative vector (d^2x/du^2, d^2y/du^2)
+    Translation2d point;              ///< 2D position coordinates (x, y)
+    Translation2d tangent;            ///< First derivative vector (dx/du, dy/du)
+    Translation2d second_derivative;  ///< Second derivative vector (d^2x/du^2, d^2y/du^2)
 
     /**
      * @brief Default constructor initializing all vectors to zero.
@@ -31,12 +30,11 @@ struct HermitePoint {
      * @param second_derivative Second derivative vector (default zero).
      */
     HermitePoint(
-      const Translation2d &point,
-      const Translation2d &tangent,
-      const Translation2d &second_derivative = Translation2d())
-        : point(point),
-          tangent(tangent),
-          second_derivative(second_derivative) {}
+            const Translation2d &point,
+            const Translation2d &tangent,
+            const Translation2d &second_derivative = Translation2d()
+    )
+        : point(point), tangent(tangent), second_derivative(second_derivative) {}
 
     /**
      * @brief Constructs a HermitePoint from scalar position and tangent components.
@@ -46,12 +44,11 @@ struct HermitePoint {
      * @param vy Y tangent component.
      */
     HermitePoint(double x, double y, double vx, double vy)
-        : point(x, y),
-          tangent(vx, vy),
-          second_derivative(0.0, 0.0) {}
+        : point(x, y), tangent(vx, vy), second_derivative(0.0, 0.0) {}
 
     /**
-     * @brief Constructs a HermitePoint from scalar position, tangent, and second derivative components.
+     * @brief Constructs a HermitePoint from scalar position, tangent, and second derivative
+     * components.
      * @param x X coordinate.
      * @param y Y coordinate.
      * @param vx X tangent component.
@@ -60,9 +57,7 @@ struct HermitePoint {
      * @param ay Y second derivative component.
      */
     HermitePoint(double x, double y, double vx, double vy, double ax, double ay)
-        : point(x, y),
-          tangent(vx, vy),
-          second_derivative(ax, ay) {}
+        : point(x, y), tangent(vx, vy), second_derivative(ax, ay) {}
 
     /**
      * @brief Factory method constructing HermitePoint from explicit derivative vectors.
@@ -72,9 +67,10 @@ struct HermitePoint {
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_derivatives(
-      const Translation2d &point,
-      const Translation2d &tangent,
-      const Translation2d &second_derivative = Translation2d()) {
+            const Translation2d &point,
+            const Translation2d &tangent,
+            const Translation2d &second_derivative = Translation2d()
+    ) {
         return HermitePoint(point, tangent, second_derivative);
     }
 
@@ -89,20 +85,23 @@ struct HermitePoint {
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_heading(
-      units::Length x,
-      units::Length y,
-      Rotation2d heading,
-      double speed,
-      Rotation2d accel_heading = Rotation2d(),
-      double accel_mag = 0.0) {
+            units::Length x,
+            units::Length y,
+            Rotation2d heading,
+            double speed,
+            Rotation2d accel_heading = Rotation2d(),
+            double accel_mag = 0.0
+    ) {
         return HermitePoint(
-          Translation2d(x.to(units::in), y.to(units::in)),
-          Translation2d(speed, heading),
-          Translation2d(accel_mag, accel_heading));
+                Translation2d(x.to(units::in), y.to(units::in)),
+                Translation2d(speed, heading),
+                Translation2d(accel_mag, accel_heading)
+        );
     }
 
     /**
-     * @brief Factory method constructing HermitePoint from position vector, heading angle, and speed.
+     * @brief Factory method constructing HermitePoint from position vector, heading angle, and
+     * speed.
      * @param point 2D position vector.
      * @param heading Heading angle.
      * @param speed Tangent magnitude.
@@ -111,15 +110,15 @@ struct HermitePoint {
      * @return Constructed HermitePoint instance.
      */
     static HermitePoint from_heading(
-      const Translation2d &point,
-      Rotation2d heading,
-      double speed,
-      Rotation2d accel_heading = Rotation2d(),
-      double accel_mag = 0.0) {
+            const Translation2d &point,
+            Rotation2d heading,
+            double speed,
+            Rotation2d accel_heading = Rotation2d(),
+            double accel_mag = 0.0
+    ) {
         return HermitePoint(
-          point,
-          Translation2d(speed, heading),
-          Translation2d(accel_mag, accel_heading));
+                point, Translation2d(speed, heading), Translation2d(accel_mag, accel_heading)
+        );
     }
 
     /**
@@ -129,14 +128,12 @@ struct HermitePoint {
      * @param accel_mag Second derivative magnitude.
      * @return Constructed HermitePoint instance.
      */
-    static HermitePoint from_pose(
-      const Pose2d &pose,
-      double speed,
-      double accel_mag = 0.0) {
+    static HermitePoint from_pose(const Pose2d &pose, double speed, double accel_mag = 0.0) {
         return HermitePoint(
-          pose.translation(),
-          Translation2d(speed, pose.rotation()),
-          Translation2d(accel_mag, pose.rotation()));
+                pose.translation(),
+                Translation2d(speed, pose.rotation()),
+                Translation2d(accel_mag, pose.rotation())
+        );
     }
 
     /** @return 2D position vector. */

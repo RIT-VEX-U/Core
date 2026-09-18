@@ -3,9 +3,9 @@
 #include <cmath>
 #include <vector>
 
-#include "core/utils/units.h"
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/units.h"
 
 using namespace units::literals;
 
@@ -15,11 +15,11 @@ using namespace units::literals;
 struct SplineSample {
     double u = 0.0;              ///< Spline parameter in range [0, 1]
     double s = 0.0;              ///< Arc length along spline from start in inches
-    Translation2d position;     ///< 2D position (x, y)
-    Translation2d velocity;     ///< 1D/2D parametric velocity vector (dx/du, dy/du)
-    Translation2d acceleration; ///< 1D/2D parametric acceleration vector (d^2x/du^2, d^2y/du^2)
-    Rotation2d heading;         ///< Heading angle theta along path
-    units::Curvature curvature = 0_radpm; ///< Path curvature (rad/meter)
+    Translation2d position;      ///< 2D position (x, y)
+    Translation2d velocity;      ///< 1D/2D parametric velocity vector (dx/du, dy/du)
+    Translation2d acceleration;  ///< 1D/2D parametric acceleration vector (d^2x/du^2, d^2y/du^2)
+    Rotation2d heading;          ///< Heading angle theta along path
+    units::Curvature curvature = 0_radpm;  ///< Path curvature (rad/meter)
 };
 
 /**
@@ -29,7 +29,7 @@ struct SplineSample {
  * and high-accuracy Gauss-Legendre quadrature integration.
  */
 class SplineBase {
-  public:
+   public:
     virtual ~SplineBase() = default;
 
     /**
@@ -119,7 +119,8 @@ class SplineBase {
     }
 
     /**
-     * @brief Samples complete state (position, velocity, acceleration, heading, curvature) at parameter u.
+     * @brief Samples complete state (position, velocity, acceleration, heading, curvature) at
+     * parameter u.
      * @param u Parameter in range [0, 1].
      * @return SplineSample struct.
      */
@@ -188,13 +189,14 @@ class SplineBase {
         return points;
     }
 
-  protected:
+   protected:
     /**
      * @brief Evaluates polynomial P(u) using Horner's method.
      * @note Loop iterates backwards (from highest degree to lowest: coeffs[N-1] down to coeffs[0])
      *       which is the correct iteration order for Horner's method.
      */
-    template <size_t N> static double eval_poly(const std::array<double, N> &coeffs, double u) {
+    template <size_t N>
+    static double eval_poly(const std::array<double, N> &coeffs, double u) {
         double out = 0.0;
         for (size_t i = N; i-- > 0;) {
             out = (out * u) + coeffs[i];
@@ -205,7 +207,8 @@ class SplineBase {
     /**
      * @brief Evaluates first derivative P'(u) using Horner's method.
      */
-    template <size_t N> static double eval_poly_derivative(const std::array<double, N> &coeffs, double u) {
+    template <size_t N>
+    static double eval_poly_derivative(const std::array<double, N> &coeffs, double u) {
         double out = 0.0;
         for (size_t i = N - 1; i-- > 0;) {
             out = (out * u) + (coeffs[i + 1] * static_cast<double>(i + 1));
@@ -216,7 +219,8 @@ class SplineBase {
     /**
      * @brief Evaluates second derivative P''(u) using Horner's method.
      */
-    template <size_t N> static double eval_poly_second_derivative(const std::array<double, N> &coeffs, double u) {
+    template <size_t N>
+    static double eval_poly_second_derivative(const std::array<double, N> &coeffs, double u) {
         double out = 0.0;
         for (size_t i = N - 2; i-- > 0;) {
             out = (out * u) + (coeffs[i + 2] * static_cast<double>((i + 1) * (i + 2)));
@@ -225,22 +229,23 @@ class SplineBase {
     }
 
     /**
-     * @brief Computes high-accuracy arc length over sub-interval [u0, u1] using 5-point Gauss-Legendre quadrature.
+     * @brief Computes high-accuracy arc length over sub-interval [u0, u1] using 5-point
+     * Gauss-Legendre quadrature.
      */
     double integrate_segment_length(double u0, double u1) const {
         constexpr double x[5] = {
-            0.0,
-            -0.5384693101056831,
-             0.5384693101056831,
-            -0.9061798459386640,
-             0.9061798459386640
+                0.0,
+                -0.5384693101056831,
+                0.5384693101056831,
+                -0.9061798459386640,
+                0.9061798459386640
         };
         constexpr double w[5] = {
-            0.5688888888888889,
-            0.4786286704993665,
-            0.4786286704993665,
-            0.2369268850561891,
-            0.2369268850561891
+                0.5688888888888889,
+                0.4786286704993665,
+                0.4786286704993665,
+                0.2369268850561891,
+                0.2369268850561891
         };
 
         const double half_len = (u1 - u0) * 0.5;
@@ -256,7 +261,9 @@ class SplineBase {
     /**
      * @brief Recursively builds the arc table to satisfy a linear interpolation error bound.
      */
-    void build_arc_table_recursive(double u0, double u1, double s0, double segment_length, double max_err) {
+    void build_arc_table_recursive(
+            double u0, double u1, double s0, double segment_length, double max_err
+    ) {
         double mid_u = (u0 + u1) * 0.5;
         double len1 = integrate_segment_length(u0, mid_u);
         double len2 = integrate_segment_length(mid_u, u1);
@@ -277,7 +284,8 @@ class SplineBase {
     }
 
     /**
-     * @brief Builds pre-computed parameter u and arc-length lookup tables using adaptive refinement.
+     * @brief Builds pre-computed parameter u and arc-length lookup tables using adaptive
+     * refinement.
      * @param max_err Maximum allowable interpolation error in inches.
      */
     void build_arc_table(double max_err = 1e-4) {
@@ -310,7 +318,7 @@ class SplineBase {
         return value;
     }
 
-  private:
+   private:
     double s_from_u(double u) const {
         if (us_.empty() || arc_lengths_.empty()) {
             return 0.0;
@@ -346,7 +354,7 @@ class SplineBase {
  */
 template <size_t Order>
 class HermiteSpline : public SplineBase {
-  public:
+   public:
     Translation2d position(double u) const override {
         const double clamped_u = clamp_u(u);
         return Translation2d(eval_poly(x_, clamped_u), eval_poly(y_, clamped_u));
@@ -354,15 +362,20 @@ class HermiteSpline : public SplineBase {
 
     Translation2d velocity(double u) const override {
         const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u));
+        return Translation2d(
+                eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u)
+        );
     }
 
     Translation2d acceleration(double u) const override {
         const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly_second_derivative(x_, clamped_u), eval_poly_second_derivative(y_, clamped_u));
+        return Translation2d(
+                eval_poly_second_derivative(x_, clamped_u),
+                eval_poly_second_derivative(y_, clamped_u)
+        );
     }
 
-  protected:
+   protected:
     std::array<double, Order + 1> x_{};
     std::array<double, Order + 1> y_{};
 };
