@@ -19,9 +19,6 @@ IncludeBlocks: Regroup
 #Pointers
 PointerAlignment: Left
 
-#Commas
-InsertTrailingCommas: Wrapped
-
 #Comments
 SpacesBeforeTrailingComments: 2
 
