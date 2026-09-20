@@ -130,8 +130,7 @@ class TankDrive {
      * @param end_speed    the movement profile will attempt to reach this velocity by its completion
      * @return true when we have reached our target distance
      */
-    bool
-    drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
+    bool drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
     /**
      * Autonomously drive the robot forward a certain distance

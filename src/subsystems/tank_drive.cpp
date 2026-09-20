@@ -638,8 +638,13 @@ bool TankDrive::pure_pursuit(
 
     max_speed = fabs(max_speed);
 
-    double left = clamp(feedback.get(), -max_speed, max_speed);
-    double right = clamp(feedback.get(), -max_speed, max_speed);
+    double drive_output = feedback.get();
+    if(fabs(drive_output) < max_speed && max_speed > 0.001){
+            drive_output /= max_speed;
+    }
+
+    double left = clamp(drive_output, -max_speed, max_speed);
+    double right = clamp(drive_output, -max_speed,max_speed);
 
     left += correction;
     right -= correction;
@@ -670,3 +675,4 @@ bool TankDrive::pure_pursuit(
 bool TankDrive::pure_pursuit(PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed) {
     return pure_pursuit(path, dir, *config.drive_feedback, max_speed, end_speed);
 }
+
