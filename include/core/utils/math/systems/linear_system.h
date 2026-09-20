@@ -34,29 +34,19 @@ class LinearSystem {
      */
     LinearSystem(const MatrixA &A, const MatrixB &B, const MatrixC &C, const MatrixD &D) : m_Ac(A), m_Bc(B), m_C(C), m_D(D) {}
 
-    /**
-     * Returns the continuous system matrix A.
-     */
+    /// Returns the continuous system matrix A.
     MatrixA A() { return m_Ac; }
 
-    /**
-     * Returns the continuous input matrix B.
-     */
+    /// Returns the continuous input matrix B.
     MatrixB B() { return m_Bc; }
 
-    /**
-     * Returns a tuple of A and B after being discretized.
-     */
+    /// Returns a tuple of A and B after being discretized.
     const std::tuple<std::tuple<MatrixA, MatrixB>> &discAB(const double &dt) { return discretize_AB(m_Ac, m_Bc, dt); }
 
-    /**
-     * Returns the output matrix C.
-     */
+    /// Returns the output matrix C.
     MatrixC C() { return m_C; }
 
-    /**
-     * Returns the feedthrough matrix D.
-     */
+    /// Returns the feedthrough matrix D.
     MatrixD D() { return m_D; }
 
     /**

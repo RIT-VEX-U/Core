@@ -29,9 +29,7 @@
  * @date Jan 16 2025
  */
 
-/**
- * Construct a new Odometry Serial Object
- */
+/// Construct a new Odometry Serial Object
 OdometrySerial::OdometrySerial(
   bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate
 )
@@ -42,9 +40,7 @@ OdometrySerial::OdometrySerial(
     send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
 }
 
-/**
- * Send
- */
+/// Send
 void OdometrySerial::send_config(
   const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain
 ) {

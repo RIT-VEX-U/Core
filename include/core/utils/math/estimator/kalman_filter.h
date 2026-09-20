@@ -70,9 +70,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
         reset();
     }
 
-    /**
-     * Returns the covariance matrix P.
-     */
+    /// Returns the covariance matrix P.
     StateMatrix P() const { return P_; }
 
     /**
@@ -82,9 +80,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      */
     void set_P(const StateMatrix &P) { P_ = P; }
 
-    /**
-     * Returns the current state estimate x-hat.
-     */
+    /// Returns the current state estimate x-hat.
     const StateVector &xhat() const { return xhat_; }
 
     /**
@@ -94,9 +90,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      */
     double xhat(int i) const { return xhat_(i); }
 
-    /**
-     * Set the current state estimate x-hat.
-     */
+    /// Set the current state estimate x-hat.
     void set_xhat(const StateVector &xhat) { xhat_ = xhat; }
 
     /**
@@ -106,9 +100,7 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
      */
     void set_xhat(int i, double value) { xhat_(i) = value; }
 
-    /**
-     * Resets the filter.
-     */
+    /// Resets the filter.
     void reset() {
         xhat_.setZero();
         P_.setZero();
@@ -170,28 +162,34 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
       const EVec<ROWS> &y, const InputVector &u, const EMat<ROWS, STATES> &C, const EMat<ROWS, INPUTS> &D,
       const EMat<ROWS, ROWS> &R
     ) {
-        // Compute the innovation covariance
-        //
-        //   Py = CPCᵀ + R
-        //
+        /*
+         * Compute the innovation covariance
+         *
+         *   Py = CPCᵀ + R
+         *
+         */
         EMat<ROWS, ROWS> Py = C * P_ * C.transpose() + R;
-
-        // Compute the optimal Kalamn gain
-        //
-        //   K = (Py \ CPᵀ)ᵀ
-        //
+        /* 
+         * Compute the optimal Kalamn gain
+         *
+         *   K = (Py \ CPᵀ)ᵀ
+         *
+         */
+        
         EMat<STATES, ROWS> K = Py.transpose().ldlt().solve(C * P_.transpose()).transpose();
-
-        // Compute the posterior mean
-        //
-        //   x̂ = x̂ + K(y - (Cx̂ + Du))
-        //
+        /* 
+         * Compute the posterior mean
+         *
+         *   x̂ = x̂ + K(y - (Cx̂ + Du))
+         *
+         */
         xhat_ += K * (y - (C * xhat_ + D * u));
-
-        // Compute the posterior covariance using the Joseph form update equation
-        //
-        // P = (I - KC)P(I - KC)ᵀ + KRKᵀ
-        //
+        /* 
+         * Compute the posterior covariance using the Joseph form update equation
+         *
+         *   P = (I - KC)P(I - KC)ᵀ + KRKᵀ
+         *
+         */
         P_ = (EMat<STATES, STATES>::Identity() - K * C) * P_ * (EMat<STATES, STATES>::Identity() - K * C).transpose() +
              K * R * K.transpose();
     }

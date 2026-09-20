@@ -27,9 +27,7 @@ public:
    */
   virtual double update(double val) = 0;
 
-  /**
-   * @return the last saved result from the feedback controller
-   */
+  /// @return the last saved result from the feedback controller
   virtual double get() = 0;
 
   /**
@@ -40,8 +38,6 @@ public:
    */
   virtual void set_limits(double lower, double upper) = 0;
 
-  /**
-   * @return true if the feedback controller has reached it's setpoint
-   */
+  /// @return true if the feedback controller has reached it's setpoint
   virtual bool is_on_target() = 0;
 };

@@ -7,9 +7,8 @@
 #include <vector>
 
 namespace PurePursuit {
-/**
- * Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
- */
+
+/// Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
 class Path {
   public:
     /**
@@ -19,19 +18,14 @@ class Path {
      */
     Path(std::vector<Translation2d> points, double radius);
 
-    /**
-     * Get the points associated with this Path
-     */
+    
+    /// Get the points associated with this Path
     const std::vector<Translation2d> get_points();
 
-    /**
-     * Get the radius associated with this Path
-     */
+    /// Get the radius associated with this Path
     double get_radius();
 
-    /**
-     * Get whether this path will behave as expected
-     */
+    /// Get whether this path will behave as expected
     bool is_valid();
 
   private:
@@ -69,14 +63,11 @@ struct hermite_point {
  */
 extern std::vector<Translation2d>
 line_circle_intersections(Translation2d center, double r, Translation2d point1, Translation2d point2);
-/**
- * Selects a look ahead from all the intersections in the path.
- */
+
+/// Selects a look ahead from all the intersections in the path.
 extern Translation2d get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_loc, double radius);
 
-/**
- * Injects points in a path without changing the curvature with a certain spacing.
- */
+/// Injects points in a path without changing the curvature with a certain spacing.
 extern std::vector<Translation2d> inject_path(const std::vector<Translation2d> &path, double spacing);
 
 /**

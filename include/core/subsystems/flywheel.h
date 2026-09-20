@@ -35,14 +35,12 @@ public:
    */
   double get_target() const;
 
-  /**
-   * return the velocity of the flywheel
-   */
+  
+  /// return the velocity of the flywheel
   double getRPM() const;
 
-  /**
-   * Returns the motors
-   */
+  
+  /// Returns the motors
   vex::motor_group &get_motors() const;
 
   /**
@@ -60,9 +58,8 @@ public:
    */
   void spin_rpm(double rpm);
 
-  /**
-   * Stops the motors. If manually spinning, this will do nothing just call spin_mainual(0.0) to send 0 volts
-   */
+  
+  /// Stops the motors. If manually spinning, this will do nothing just call spin_mainual(0.0) to send 0 volts
   void stop();
 
   /**
@@ -119,9 +116,8 @@ private:
    * @param value - desired RPM
    */
   void set_target(double value);
-  /**
-   * make a measurement of the current target_rpm of the flywheel motor and return a smoothed version
-   */
+  
+  /// make a measurement of the current target_rpm of the flywheel motor and return a smoothed version
   double measure_RPM();
 
   /**

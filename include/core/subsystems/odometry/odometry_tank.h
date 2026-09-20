@@ -77,9 +77,8 @@ class OdometryTank : public OdometryBase {
     void set_position(const Pose2d &newpos = zero_pos) override;
 
   private:
-    /**
-     * Get information from the input hardware and an existing position, and calculate a new current position
-     */
+    
+    /// Get information from the input hardware and an existing position, and calculate a new current position
     static Pose2d calculate_new_pos(
       robot_specs_t &config, Pose2d &stored_info, double lside_diff, double rside_diff, double angle_deg
     );

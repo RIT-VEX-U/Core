@@ -41,16 +41,19 @@ EMat<STATES, STATES> DARE(
     const Eigen::LLT<EMat<INPUTS, INPUTS>> R_llt = R.llt();
     using StateMatrix = EMat<STATES, STATES>;
 
-    // Implements SDA algorithm on p. 5 of [1] (initial A, G, H are from (4)).
-    //
-    // [1] E. K.-W. Chu, H.-Y. Fan, W.-W. Lin & C.-S. Wang "Structure-Preserving
-    //     Algorithms for Periodic Discrete-Time Algebraic Riccati Equations",
-    //     International Journal of Control, 77:8, 767-788, 2004.
-    //     DOI: 10.1080/00207170410001714988
-
-    // A₀ = A
-    // G₀ = BR⁻¹Bᵀ
-    // H₀ = Q
+    /* 
+     * Implements SDA algorithm on p. 5 of [1] (initial A, G, H are from (4)).
+     *
+     * [1] E. K.-W. Chu, H.-Y. Fan, W.-W. Lin & C.-S. Wang "Structure-Preserving
+     *     Algorithms for Periodic Discrete-Time Algebraic Riccati Equations",
+     *     International Journal of Control, 77:8, 767-788, 2004.
+     *     DOI: 10.1080/00207170410001714988
+     *
+     * A₀ = A
+     * G₀ = BR⁻¹Bᵀ
+     * H₀ = Q
+     */
+    
 
     StateMatrix A_k = A;
     StateMatrix G_k = B * R_llt.solve(B.transpose());
@@ -69,25 +72,29 @@ EMat<STATES, STATES> DARE(
 
         // Solve WV₁ = Aₖ for V₁
         StateMatrix V_1 = W_solver.solve(A_k);
-
-        // Solve V₂Wᵀ = Gₖ for V₂
-        //
-        // We want to put V₂Wᵀ = Gₖ into Ax = b form so we can solve it more
-        // efficiently.
-        //
-        // V₂Wᵀ = Gₖ
-        // (V₂Wᵀ)ᵀ = Gₖᵀ
-        // WV₂ᵀ = Gₖᵀ
-        //
-        // The solution of Ax = b can be found via x = A.solve(b).
-        //
-        // V₂ᵀ = W.solve(Gₖᵀ)
-        // V₂ = W.solve(Gₖᵀ)ᵀ
+        /*
+         * Solve V₂Wᵀ = Gₖ for V₂
+         *
+         * We want to put V₂Wᵀ = Gₖ into Ax = b form so we can solve it more
+         * efficiently.
+         *
+         * V₂Wᵀ = Gₖ
+         * (V₂Wᵀ)ᵀ = Gₖᵀ
+         * WV₂ᵀ = Gₖᵀ
+         *
+         * The solution of Ax = b can be found via x = A.solve(b).
+         *
+         * V₂ᵀ = W.solve(Gₖᵀ)
+         * V₂ = W.solve(Gₖᵀ)ᵀ
+         */
+        
         StateMatrix V_2 = W_solver.solve(G_k.transpose()).transpose();
-
-        // Gₖ₊₁ = Gₖ + AₖV₂Aₖᵀ
-        // Hₖ₊₁ = Hₖ + V₁ᵀHₖAₖ
-        // Aₖ₊₁ = AₖV₁
+        /* 
+         * Gₖ₊₁ = Gₖ + AₖV₂Aₖᵀ
+         * Hₖ₊₁ = Hₖ + V₁ᵀHₖAₖ
+         * Aₖ₊₁ = AₖV₁
+         */
+        
         G_k += A_k * V_2 * A_k.transpose();
         H_k1 = H_k + V_1.transpose() * H_k * A_k;
         A_k *= V_1;

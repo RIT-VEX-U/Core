@@ -1,18 +1,15 @@
 #pragma once
 #include <cstdint>
 #include <cstddef>
-
-/// \brief A class for calculating the CRC32 checksum from arbitrary data.
-/// \sa http://forum.arduino.cc/index.php?topic=91179.0
+/**
+ * \brief A class for calculating the CRC32 checksum from arbitrary data.
+ * \sa http://forum.arduino.cc/index.php?topic=91179.0
+ */
 class CRC32 {
   public:
-    /**
-    * @brief Initialize an empty CRC32 checksum.
-    */
+    /// @brief Initialize an empty CRC32 checksum.
     CRC32();
-    /**
-     * @brief Reset the checksum claculation.
-     */
+    /// @brief Reset the checksum claculation.
     void reset();
     /**
      * @brief Update the current checksum caclulation with the given data.
@@ -39,9 +36,8 @@ class CRC32 {
             update(pData[i]);
         }
     }
-    /**
-     * @return the caclulated checksum.
-     */
+
+    /// @return the caclulated checksum.
     uint32_t finalize() const;
     /**
      * @brief Calculate the checksum of an arbitrary data array.
@@ -57,8 +53,7 @@ class CRC32 {
     }
 
   private:
-  /**
-   * @brief The internal checksum state.
-   */
+  
+  /// @brief The internal checksum state.
     uint32_t _state = ~0L;
 };

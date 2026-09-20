@@ -25,9 +25,7 @@ class Translation2d;
  */
 class Rotation2d {
   public:
-    /**
-     * Default Constructor for Rotation2d
-     */
+    /// Default Constructor for Rotation2d
     constexpr Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {};
     /**
      * Constructs a rotation with the given value in radians.

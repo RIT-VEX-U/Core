@@ -75,10 +75,7 @@ OdometryTank::OdometryTank(
       imu(imu),
       config(config) {}
 
-/**
- * Resets the position and rotational data to the input.
- *
- */
+/// Resets the position and rotational data to the input.
 void OdometryTank::set_position(const Pose2d& newpos) {
   mut.lock();
   rotation_offset =
@@ -110,10 +107,12 @@ Pose2d OdometryTank::update() {
 
   // If the IMU data was passed in, use it for rotational data
   if (imu == NULL || imu->installed() == false) {
-    // Get the difference in distance driven between the two sides
-    // Uses the absolute position of the encoders, so resetting them will result in
-    // a bad angle.
-    // Get the arclength of the turning circle of the robot
+    /* 
+     * Get the difference in distance driven between the two sides
+     * Uses the absolute position of the encoders, so resetting them will result in
+     * a bad angle.
+     * Get the arclength of the turning circle of the robot
+     */
     double distance_diff = (rside_revs - lside_revs) * PI * config.odom_wheel_diam;
 
     // Use the arclength formula to calculate the angle.
@@ -127,9 +126,11 @@ Pose2d OdometryTank::update() {
   // Offset the angle, if we've done a set_position
   angle += rotation_offset;
 
-  // Limit the angle betwen 0 and 360.
-  // fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's
-  // negative.
+  /* 
+   * Limit the angle betwen 0 and 360.
+   * fmod (floating-point modulo) gets it between -359 and +359, so tack on another 360 if it's
+   * negative.
+   */
   angle = fmod(angle, 360.0);
   if (angle < 0) {
     angle += 360;
@@ -181,17 +182,20 @@ Pose2d OdometryTank::calculate_new_pos(
 
   static double stored_lside_revs = lside_revs;
   static double stored_rside_revs = rside_revs;
-
-  // Convert the revolutions into "change in distance", and average the values for a "distance
-  // driven"
+  /* 
+   * Convert the revolutions into "change in distance", and average the values for a "distance
+   * driven"
+   */
   double lside_diff = (lside_revs - stored_lside_revs) * PI * config.odom_wheel_diam;
   double rside_diff = (rside_revs - stored_rside_revs) * PI * config.odom_wheel_diam;
   double dist_driven = (lside_diff + rside_diff) / 2.0;
 
   double angle = angle_deg * PI / 180.0;  // Degrees to radians
-
-  // Create a vector from the change in distance in the current direction of the robot
-  // deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
+  /* 
+   * Create a vector from the change in distance in the current direction of the robot
+   * deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
+   */
+  
   Translation2d chg_point(dist_driven, Rotation2d(angle));
 
   // Create a vector from the current position in reference to X,Y=0,0

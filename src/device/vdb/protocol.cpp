@@ -12,13 +12,11 @@
 
 
 namespace VDP {
-/**
- * @return the channel's id
- */
+
+/// @return the channel's id
 ChannelID Channel::getID() const { return id; }
-/*
- * prints out the packet in individual bytes
- */
+
+// prints out the packet in individual bytes
 void dump_packet_hex(const Packet &pac) {
   int i = 0;
   for (const uint8_t d : pac) {
@@ -100,18 +98,16 @@ Part::~Part() {}
 std::string Part::get_name() const { return name; }
 
 void Part::response() {}
-/**
- *  @return a stringstream of the Part with the format "name: string"
- */
+
+/// @return a stringstream of the Part with the format "name: string"
 std::string Part::pretty_print() const {
     std::stringstream ss;
     this->pprint(ss, 0);
 
     return ss.str();
 }
-/**
- * @return a stringstream of the Part's data with the format "name: value"
- */
+
+/// @return a stringstream of the Part's data with the format "name: value"
 std::string Part::pretty_print_data() const {
     std::stringstream ss;
     this->pprint_data(ss, 0);
@@ -158,24 +154,21 @@ VDP::PacketValidity validate_packet(const VDP::Packet &packet) {
     // if no problems with the packet are found, packet is Ok
     return VDP::PacketValidity::Ok;
 }
-/**
- * @return the current byte the reader is on
- */
+
+/// @return the current byte the reader is on
 uint8_t PacketReader::get_byte() {
     const uint8_t b = pac[read_head];
     read_head++;
     return b;
 }
-/**
- * @return the current type the reader is on
- */
+
+/// @return the current type the reader is on
 Type PacketReader::get_type() {
     const uint8_t val = get_byte();
     return (Type)val;
 }
-/**
- * @return the string the reader is at the start of
- */
+
+/// @return the string the reader is at the start of
 std::string PacketReader::get_string() {
     std::string s;
     // iterates through the string until it reaches a 0 (end of the string)
@@ -194,13 +187,10 @@ std::string PacketReader::get_string() {
  * @param scratch_space the packet for the writer to write to
  */
 PacketWriter::PacketWriter(VDP::Packet &scratch) : sofar(scratch) {}
-/**
- * clears the packet the writer is writing to
- */
+
+/// clears the packet the writer is writing to
 void PacketWriter::clear() { sofar.clear(); }
-/**
- * @return the size of the packet
- */
+/// @return the size of the packet
 size_t PacketWriter::size() { return sofar.size(); }
 /**
  * writes a byte to the end of the packet
@@ -223,9 +213,7 @@ void PacketWriter::write_string(const std::string &str) {
     sofar.push_back(0);
 }
 
-/**
- * @return the packet the writer is writing to
- */
+/// @return the packet the writer is writing to
 const Packet &PacketWriter::get_packet() const { return sofar; }
 
 /**
@@ -325,9 +313,7 @@ void PacketWriter::write_response(std::deque<Channel> &response_queue) {
   write_number<uint32_t>(crc);
 }
 
-/**
- *  deleter for the device, used to delete it when it is no longer needed
- */
+/// deleter for the device, used to delete it when it is no longer needed
 AbstractDevice::~AbstractDevice() {}
 /**
  * creates a decoder to decode a packet
@@ -335,9 +321,7 @@ AbstractDevice::~AbstractDevice() {}
  * @return the Part Pointer for the data from the packet
  */
 PartPtr make_decoder(PacketReader &pac) {
-    /**
-     * gets the type and name of the packet and contstructs a Part pointer from it
-     */
+    /// gets the type and name of the packet and contstructs a Part pointer from it
     const Type t = pac.get_type();
     const std::string name = pac.get_string();
 

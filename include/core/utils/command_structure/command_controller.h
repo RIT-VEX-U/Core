@@ -14,9 +14,10 @@
 
 class CommandController {
   public:
-    /// @brief Create a CommandController with commands pre added. More can be
-    /// added with CommandController::add()
-    /// @param cmds
+    /** @brief Create a CommandController with commands pre added. More can be
+     * added with CommandController::add()
+     * @param cmds
+     */
     CommandController(std::initializer_list<AutoCommand *> cmds) : command_queue(cmds) {}
     /**
      * Adds a command to the queue
@@ -51,10 +52,12 @@ class CommandController {
      */
     void add_delay(int ms);
 
-    /// @brief add_cancel_func specifies that when this func evaluates to true,
-    /// to cancel the command controller
-    /// @param true_if_cancel a function that returns true when we want to
-    /// cancel the command controller
+    /**
+     * @brief add_cancel_func specifies that when this func evaluates to true,
+     * to cancel the command controller
+     * @param true_if_cancel a function that returns true when we want to
+     * cancel the command controller
+     */
     void add_cancel_func(std::function<bool(void)> true_if_cancel);
 
     /**
@@ -63,9 +66,8 @@ class CommandController {
      */
     void run();
 
-    /*
-     * returns the amount of commands in the controller
-     */
+    
+    /// returns the amount of commands in the controller     
     std::string toString();
 
     /**
