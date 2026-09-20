@@ -179,6 +179,18 @@ public:
   }
 
   /**
+   * Resets the position and rotational data to the input off of a Rotation2d.
+   */
+  void set_position(const Rotation2d &newangle) override {
+    mut.lock();
+    angle_offset = newangle.degrees() - (current_pos.rotation().degrees() - angle_offset);
+    mut.unlock();
+
+    OdometryBase::set_position(newangle);
+  }
+
+
+  /**
    * Gets the current position and rotation
    * @return the position that the odometry believes the robot is at
    */
