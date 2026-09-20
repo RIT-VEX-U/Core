@@ -1,4 +1,6 @@
 #include "core/subsystems/tank_drive.h"
+#include <algorithm>
+#include <cmath>
 #include "core/utils/command_structure/drive_commands.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/geometry.h"
@@ -113,6 +115,7 @@ void TankDrive::reset_auto() { func_initialized = false; }
  * Stops rotation of all the motors using their "brake mode"
  */
 void TankDrive::stop() {
+    arcade_throttle = 0.0;
     left_motors.stop();
     right_motors.stop();
 }
@@ -190,12 +193,49 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
  *
  * left_motors and right_motors are in "percent": -1.0 -> 1.0
  */
-void TankDrive::drive_arcade(double forward_back, double left_right, int power, BrakeType bt) {
+void TankDrive::drive_arcade(
+  double forward_back, double left_right, int power, BrakeType bt,
+  double deadband, double slew_rate, bool scale_turn
+) {
+    if (deadband > 0.0 && deadband < 1.0) {
+        double temp_drive = std::clamp(forward_back, -1.0, 1.0);
+        double temp_turn = std::clamp(left_right, -1.0, 1.0);
+
+        double mag_drive = std::abs(temp_drive);
+        double mag_turn = std::abs(temp_turn);
+
+        double mag_drive_scaled = (mag_drive <= deadband) ? 0.0 : (mag_drive - deadband) / (1.0 - deadband);
+        double mag_turn_scaled = (mag_turn <= deadband) ? 0.0 : (mag_turn - deadband) / (1.0 - deadband);
+
+        forward_back = std::copysign(mag_drive_scaled, temp_drive);
+        left_right = std::copysign(mag_turn_scaled, temp_turn);
+    }
+
     forward_back = modify_inputs(forward_back, power);
     left_right = modify_inputs(left_right, power);
+    const bool turn_in_place = scale_turn && forward_back == 0.0 && left_right != 0.0;
+
+    if (turn_in_place) {
+        arcade_throttle = 0.0;
+    } else {
+        if (slew_rate > 0.0) {
+            arcade_throttle += std::clamp(forward_back - arcade_throttle, -slew_rate, slew_rate);
+        } else {
+            arcade_throttle = forward_back;
+        }
+    }
+    forward_back = arcade_throttle;
+    if (scale_turn && !turn_in_place) {
+        left_right *= std::abs(forward_back);
+    }
 
     double left = forward_back + left_right;
     double right = forward_back - left_right;
+    if (scale_turn) {
+        double magnitude = std::max({1.0, std::abs(left), std::abs(right)});
+        left /= magnitude;
+        right /= magnitude;
+    }
 
     drive_tank(left, right, 1, bt);
 }
