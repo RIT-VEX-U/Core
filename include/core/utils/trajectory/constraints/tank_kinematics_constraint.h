@@ -39,7 +39,7 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
         units::Velocity right_velocity =
                 (velocity + (track_width_ / 2 * (velocity * curvature / 1_rad)));
 
-        units::Velocity real_max_speed = units::max(abs(left_velocity), abs(right_velocity));
+        units::Velocity real_max_speed = units::max(units::abs(left_velocity), units::abs(right_velocity));
 
         if (real_max_speed > max_speed_) {
             left_velocity = left_velocity / real_max_speed * max_speed_;

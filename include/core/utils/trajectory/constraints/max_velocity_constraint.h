@@ -17,7 +17,7 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
      * @brief Constructs a MaxVelocityConstraint.
      * @param max_velocity Maximum allowed linear velocity.
      */
-    explicit MaxVelocityConstraint(units::Velocity max_velocity) : max_velocity_(abs(max_velocity)) {}
+    explicit MaxVelocityConstraint(units::Velocity max_velocity) : max_velocity_(units::abs(max_velocity)) {}
 
     /**
      * @brief Computes maximum allowed velocity.
