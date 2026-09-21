@@ -19,18 +19,18 @@ class CubicHermiteSpline : public HermiteSpline<3> {
      * @brief Constructs cubic Hermite spline from start and end HermitePoint structures.
      * @param start Initial endpoint with position and tangent.
      * @param end Final endpoint with position and tangent.
-     * @param du Parameter step size used to build the arc-length lookup table.
+     * @param max_err Maximum allowable interpolation error in inches for the arc-length lookup table.
      */
     CubicHermiteSpline(const HermitePoint &start, const HermitePoint &end, double max_err = 1e-4)
-        : CubicHermiteSpline(start.point, end.point, start.tangent, end.tangent) {}
+        : CubicHermiteSpline(start.point, end.point, start.tangent, end.tangent, max_err) {}
 
     /**
      * @brief Constructs cubic Hermite spline from explicit 2D position and tangent vectors.
-     * @param p0 Start position vector.
-     * @param p1 End position vector.
-     * @param t0 Start tangent vector.
-     * @param t1 End tangent vector.
-     * @param du Parameter step size used to build the arc-length lookup table.
+     * @param start_pos Start position vector.
+     * @param end_pos End position vector.
+     * @param start_tangent Start tangent vector.
+     * @param end_tangent End tangent vector.
+     * @param max_err Maximum allowable interpolation error in inches for the arc-length lookup table.
      */
     CubicHermiteSpline(
             const Translation2d &start_pos,
