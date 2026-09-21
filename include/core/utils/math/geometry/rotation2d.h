@@ -1,338 +1,410 @@
 #pragma once
-#undef __ARM_NEON__
-#undef __ARM_NEON
-#include <Eigen/Dense>
 
-#include "core/utils/math/geometry/translation2d.h"
 #include <cmath>
-#include <iostream>
-#include <vector>
 
-#ifndef PI
-#define PI 3.141592654
-#endif
+#include "cevalm.hpp"
 
-class Translation2d;
+#include "core/utils/math/eigen_interface.h"
+#include "core/utils/units.h"
 
 /**
  * Class representing a rotation in 2d space.
- * Stores theta in radians, as well as cos and sin.
+ * Stores cos and sin, and computes angles based on that.
  *
- * Internally this angle is stored continuously,
- * however there are functions that return wrapped angles:
- * "180" is from [-pi, pi), [-180, 180), [-0.5, 0.5)
- * "360" is from [0, 2pi), [0, 360), [0, 1)
+ * By nature the stored angle is wrapped, but there are functions
+ * that return angles wrapped specifically between e.g. [-180, 180) and [0, 360)
  */
 class Rotation2d {
-  public:
-    /**
-     * Default Constructor for Rotation2d
-     */
-    constexpr Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {};
-    /**
-     * Constructs a rotation with the given value in radians.
-     *
-     * @param radians the value of the rotation in radians.
-     */
-    Rotation2d(const double &radians);
+public:
+  /**
+   * Default Constructor for Rotation2d
+   */
+  constexpr Rotation2d() = default;
 
-    /**
-     * Constructs a rotation given x and y values.
-     * Does not have to be normalized.
-     * The angle from the x axis to the point.
-     *
-     * [theta] = [atan2(y, x)]
-     *
-     * @param x the x value of the point
-     * @param y the y value of the point
-     */
-    Rotation2d(const double &x, const double &y);
+  /**
+   * Constructs a rotation with the given anglea.
+   */
+  constexpr Rotation2d(units::Angle value)
+      : cos_(units::cos(value)), sin_(units::sin(value)) {}
 
-    /**
-     * Constructs a rotation given x and y values in the form of a Translation2d.
-     * Does not have to be normalized.
-     * The angle from the x axis to the point.
-     *
-     * [theta] = [atan2(y, x)]
-     *
-     * @param translation
-     */
-    Rotation2d(const Translation2d &translation);
+  /**
+   * Constructs a rotation with the given angle in radians.
+   */
+  constexpr Rotation2d(double value)
+      : cos_(cevalm::cos(value)), sin_(cevalm::sin(value)) {}
 
-    /**
-     * Returns the radian angle value.
-     *
-     * @return the radian angle value.
-     */
-    double radians() const;
+  /**
+   * Constructs a rotation given x and y values, as the angle from the x axis to
+   * the point.
+   *
+   * [theta] = [atan2(y, x)]
+   *
+   * @param x The x value of the point.
+   * @param y The y value of the point.
+   */
+  constexpr Rotation2d(double x, double y) {
+    double mag = cevalm::hypot(x, y);
+    if (x != 0 || y != 0) {
+      cos_ = x / mag;
+      sin_ = y / mag;
+    } else {
+      cos_ = 1;
+      sin_ = 0;
+    }
+  }
 
-    /**
-     * Returns the degree angle value.
-     *
-     * @return the degree angle value.
-     */
-    double degrees() const;
+  /**
+   * Constructs a rotation given united x and y values, as the angle from the x
+   * axis to the point.
+   *
+   * [theta] = [atan2(y, x)]
+   *
+   * @param x The x value of the point.
+   * @param y The y value of the point.
+   */
+  constexpr Rotation2d(units::Length x, units::Length y)
+      : Rotation2d(x.to(units::inches), y.to(units::inches)) {}
 
-    /**
-     * Returns the revolution angle value.
-     *
-     * @return the revolution angle value.
-     */
-    double revolutions() const;
+  /**
+   * Adds another rotation to this using the rotation matrix.
+   *
+   * [new_cos] = [other.cos, -other.sin][cos]
+   * [new_sin] = [other.sin,  other.cos][sin]
+   * new_value = atan2(new_sin, new_cos)
+   *
+   * @param other The other rotation to add to this rotation.
+   * @return The sum of the two rotations.
+   */
+  constexpr Rotation2d operator+(const Rotation2d &other) const {
+    return Rotation2d(cos_ * other.cos_ - sin_ * other.sin_,
+                      cos_ * other.sin_ + sin_ * other.cos_);
+  }
 
-    /**
-     * Returns the cosine of the angle value.
-     *
-     * @return the cosine of the angle value
-     */
-    double f_cos() const;
+  /**
+   * Subtracts another rotation from this. Also represents getting this rotation
+   * relative to other.
+   *
+   * @param other The other rotation to subtract from this rotation.
+   * @return The Difference between the two rotations.
+   */
+  constexpr Rotation2d operator-(const Rotation2d &other) const {
+    return *this + -other;
+  }
 
-    /**
-     * Returns the sine of the angle value.
-     *
-     * @return the sine of the angle value.
-     */
-    double f_sin() const;
+  /**
+   * Takes the inverse (conjugate) of this rotation.
+   *
+   * @return The inverse of the rotation.
+   */
+  constexpr Rotation2d operator-() const { return Rotation2d(cos_, -sin_); }
 
-    /**
-     * Returns the tangent of the angle value.
-     *
-     * @return the tangent of the angle value.
-     */
-    double f_tan() const;
+  /**
+   * Multiplies this rotation by a scalar.
+   *
+   * @param scalar The scalar value to multiply the rotation by.
+   * @return The rotation multiplied by the scalar.
+   */
+  constexpr Rotation2d operator*(double scalar) const {
+    return Rotation2d(radians() * scalar);
+  }
 
-    /**
-     * Returns the rotation matrix equivalent to this rotation
-     *     [cos, -sin]
-     * R = [sin,  cos]
-     *
-     * @return the rotation matrix equivalent to this rotation
-     */
-    Eigen::Matrix2d rotation_matrix() const;
+  /**
+   * Divides this rotation by a scalar.
+   *
+   * @param scalar the scalar value to divide the rotation by.
+   * @return The rotation divided by the scalar.
+   */
+  constexpr Rotation2d operator/(double scalar) const {
+    return *this * (1.0 / scalar);
+  }
 
-    /**
-     * Returns the radian angle value, wrapped from [-pi, pi).
-     *
-     * @return the radian angle value, wrapped from [-pi, pi)
-     */
-    double wrapped_radians_180() const;
+  /**
+   * Checks whether this and another rotation are equal.
+   *
+   * @param other The other rotation to compare to.
+   * @return true if the sin and cos values are both within 1e-6.
+   */
+  constexpr bool operator==(const Rotation2d &other) const {
+    return cevalm::abs(cos_ - other.cos_) < 1e-6 &&
+           cevalm::abs(sin_ - other.sin_) < 1e-6;
+  }
 
-    /**
-     * Returns the degree angle value, wrapped from [-180, 180).
-     *
-     * @return the degree angle value, wrapped from [-180, 180)
-     */
-    double wrapped_degrees_180() const;
+  /**
+   * Returns a rotation matrix equivalent to this rotation.
+   *
+   * @return The 2x2 rotation matrix.
+   */
+  constexpr EMat<2, 2> rotation_matrix() const {
+    return EMat<2, 2>{{cos_, -sin_}, {sin_, cos_}};
+  }
 
-    /**
-     * Returns the revolution angle value, wrapped from [-0.5, 0.5).
-     *
-     * @return the revolution angle value, wrapped from [-0.5, 0.5)
-     */
-    double wrapped_revolutions_180() const;
+  /**
+   * Returns a united Angle corresponding to this rotation.
+   *
+   * @return The rotation as a units::Angle.
+   */
+  constexpr units::Angle angle() const {
+    return units::Angle(cevalm::atan2(sin_, cos_), units::radians);
+  }
 
-    /**
-     * Returns the radian angle value, wrapped from [0, 2pi).
-     *
-     * @return the radian angle value, wrapped from [0, 2pi)
-     */
-    double wrapped_radians_360() const;
+  /**
+   * Returns the rotation in radians.
+   */
+  constexpr double radians() const { return angle().to(units::radians); }
 
-    /**
-     * Returns the degree angle value, wrapped from [0, 360).
-     *
-     * @return the degree angle value, wrapped from [0, 360)
-     */
-    double wrapped_degrees_360() const;
+  /**
+   * Returns the rotation in degrees.
+   */
+  constexpr double degrees() const { return angle().to(units::degrees); }
 
-    /**
-     * Returns the revolution angle value, wrapped from [0, 1).
-     *
-     * @return the revolution angle value, wrapped from [0, 1)
-     */
-    double wrapped_revolutions_360() const;
+  /**
+   * Returns the rotation in revolutions.
+   */
+  constexpr double revolutions() const {
+    return angle().to(units::revolutions);
+  }
 
-    /**
-     * Adds the values of two rotations using a rotation matrix
-     *
-     * [new_cos] = [other.cos, -other.sin][cos]
-     * [new_sin] = [other.sin,  other.cos][sin]
-     * new_value = atan2(new_sin, new_cos)
-     *
-     * @param other the other rotation to add to this rotation.
-     *
-     * @return the sum of the two rotations.
-     */
-    Rotation2d operator+(const Rotation2d &other) const;
+  /**
+   * Returns the rotation in gradians.
+   */
+  constexpr double gradians() const { return angle().to(units::gradians); }
 
-    /**
-     * Subtracts the values of two rotations.
-     *
-     * @param other the other rotation to subtract from this rotation.
-     *
-     * @return the difference between the two rotations.
-     */
-    Rotation2d operator-(const Rotation2d &other) const;
+  /**
+   * Returns the cosine of the rotation.
+   */
+  constexpr double f_cos() const { return cos_; }
 
-    /**
-     * Takes the inverse of this rotation by flipping it.
-     * Equivalent to adding 180 degrees.
-     *
-     * @return this inverse of the rotation.
-     */
-    Rotation2d operator-() const;
+  /**
+   * Returns the sine of the rotation.
+   */
+  constexpr double f_sin() const { return sin_; }
 
-    /**
-     * Multiplies this rotation by a scalar.
-     *
-     * @param scalar the scalar value to multiply the rotation by.
-     *
-     * @return the rotation multiplied by the scalar.
-     */
-    Rotation2d operator*(const double &scalar) const;
+  /**
+   * Returns the tangent of the rotation.
+   */
+  constexpr double f_tan() const { return sin_ / cos_; }
 
-    /**
-     * Divides this rotation by a scalar.
-     *
-     * @param scalar the scalar value to divide the rotation by.
-     *
-     * @return the rotation divided by the scalar.
-     */
-    Rotation2d operator/(const double &scalar) const;
+  /**
+   * Helper function that converts degrees to radians.
+   *
+   * @param deg angle degrees
+   * @return double angle radians.
+   */
+  static constexpr double deg2rad(double deg) {
+    return deg * (std::numbers::pi / 180.0);
+  }
 
-    /**
-     * Compares two rotations.
-     * Returns true if their values are within 1e-9 radians of each other, to account for floating point error.
-     *
-     * @param other the other rotation to compare to
-     *
-     * @return whether the values of the rotations are within 1e-9 radians of each other
-     */
-    bool operator==(const Rotation2d &other) const;
+  /**
+   * Helper function that converts radians to degrees.
+   *
+   * @param deg angle in radians
+   * @return double angle in degrees.
+   */
+  static constexpr double rad2deg(double rad) {
+    return rad * (180.0 / std::numbers::pi);
+  }
 
-    /**
-     * Sends a rotation to an output stream.
-     * Ex.
-     * std::cout << rotation;
-     *
-     * prints "Rotation2d[rad: (radians), deg: (degrees)]"
-     */
-    friend std::ostream &operator<<(std::ostream &os, const Rotation2d &rotation);
+  /**
+   * Helper function that wraps an angle in degrees from [-180, 180].
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_degrees_180(const double &angle) {
+    if (angle >= -180.0 && angle <= 180.0) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 360.0);
+    if (x > 180.0) {
+      x -= 360.0;
+    } else if (x < -180.0) {
+      x += 360.0;
+    }
+    return x;
+  }
 
-  private:
-    double m_radians;
-    double m_cos;
-    double m_sin;
+  /**
+   * Helper function that wraps an angle in revolutions from [-0.5, 0.5].
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_revolutions_180(const double &angle) {
+    if (angle >= -0.5 && angle <= 0.5) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 1.0);
+    if (x > 0.5) {
+      x -= 1.0;
+    } else if (x < -0.5) {
+      x += 1.0;
+    }
+    return x;
+  }
+
+  /**
+   * Helper function that wraps an angle in gradians from [-200, 200].
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_gradians_180(const double &angle) {
+    if (angle >= -200.0 && angle <= 200.0) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 400.0);
+    if (x > 200.0) {
+      x -= 400.0;
+    } else if (x < -200.0) {
+      x += 400.0;
+    }
+    return x;
+  }
+
+  /**
+   * Helper function that wraps an angle in radians from [-pi, pi].
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_radians_180(const double &angle) {
+    if (angle >= -std::numbers::pi && angle <= std::numbers::pi) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 2 * std::numbers::pi);
+    if (x > std::numbers::pi) {
+      x -= 2 * std::numbers::pi;
+    } else if (x < -std::numbers::pi) {
+      x += 2 * std::numbers::pi;
+    }
+    return x;
+  }
+
+  /**
+   * Helper function that wraps an angle in degrees from [0, 360).
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_degrees_360(const double &angle) {
+    if (angle >= 0.0 && angle < 360.0) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 360.0);
+    if (x < 0.0) {
+      x += 360.0;
+    }
+    return (x >= 360.0) ? 0.0 : x;
+  }
+
+  /**
+   * Helper function that wraps an angle in revolutions from [0, 1).
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_revolutions_360(const double &angle) {
+    if (angle >= 0.0 && angle < 1.0) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 1.0);
+    if (x < 0.0) {
+      x += 1.0;
+    }
+    return (x >= 1.0) ? 0.0 : x;
+  }
+
+  /**
+   * Helper function that wraps an angle in gradians from [0, 400).
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_gradians_360(const double &angle) {
+    if (angle >= 0.0 && angle < 400.0) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 400.0);
+    if (x < 0.0) {
+      x += 400.0;
+    }
+    return (x >= 400.0) ? 0.0 : x;
+  }
+
+  /**
+   * Helper function that wraps an angle in radians from [0, 2pi).
+   *
+   * @param angle The angle to wrap.
+   * @return The wrapped angle.
+   */
+  static constexpr double wrap_radians_360(const double &angle) {
+    if (angle >= 0.0 && angle < 2 * std::numbers::pi) {
+      return angle;
+    }
+    double x = cevalm::fmod(angle, 2 * std::numbers::pi);
+    if (x < 0.0) {
+      x += 2 * std::numbers::pi;
+    }
+    return (x >= 2 * std::numbers::pi) ? 0.0 : x;
+  }
+
+  /**
+   * Returns the value of this rotation in radians from [-pi, pi].
+   */
+  constexpr double wrapped_radians_180() const {
+    return wrap_radians_180(this->radians());
+  }
+
+  /**
+   * Returns the value of this rotation in degrees from [-180, 180].
+   */
+  constexpr double wrapped_degrees_180() const {
+    return wrap_degrees_180(this->degrees());
+  }
+
+  /**
+   * Returns the value of this rotation in revolutions from [-0.5, 0.5].
+   */
+  constexpr double wrapped_revolutions_180() const {
+    return wrap_revolutions_180(this->revolutions());
+  }
+
+  /**
+   * Returns the value of this rotation in gradians from [-200, 200].
+   */
+  constexpr double wrapped_gradians_180() const {
+    return wrap_gradians_180(this->gradians());
+  }
+
+  /**
+   * Returns the value of this rotation in radians from [0, 2pi).
+   */
+  constexpr double wrapped_radians_360() const {
+    return wrap_radians_360(this->radians());
+  }
+
+  /**
+   * Returns the value of this rotation in degrees from [0, 360).
+   */
+  constexpr double wrapped_degrees_360() const {
+    return wrap_degrees_360(this->degrees());
+  }
+
+  /**
+   * Returns the value of this rotation in revolutions from [0, 1).
+   */
+  constexpr double wrapped_revolutions_360() const {
+    return wrap_revolutions_360(this->revolutions());
+  }
+
+  /**
+   * Returns the value of this rotation in gradians from [0, 400).
+   */
+  constexpr double wrapped_gradians_360() const {
+    return wrap_gradians_360(this->gradians());
+  }
+
+private:
+  double cos_ = 1;
+  double sin_ = 0;
 };
-
-// functions that don't belong in the class because they're useful elsewhere
-
-/**
- * Constructs a rotation given radian angle value.
- *
- * @param radians angle in radians.
- */
-Rotation2d from_radians(const double &radians);
-
-/**
- * Constructs a rotation given degree angle value.
- *
- * @param degrees angle in degrees.
- */
-Rotation2d from_degrees(const double &degrees);
-
-/**
- * Constructs a rotation given revolution angle value.
- *
- * @param revolutions angle in revolutions.
- */
-Rotation2d from_revolutions(const double &revolutions);
-
-/**
- * Wraps a radian angle value from [-pi, pi).
- *
- * @param angle the radian angle value to wrap.
- *
- * @return the wrapped radian angle value from [-pi, pi).
- */
-double wrap_radians_180(const double &angle);
-
-/**
- * Wraps a degree angle value from [-180, 180).
- *
- * @param angle the degree angle value to wrap.
- *
- * @return the wrapped degree angle value from [-180, 180).
- */
-double wrap_degrees_180(const double &angle);
-
-/**
- * Wraps a revolution angle vlue from [-0.5, 0.5).
- *
- * @param angle the revolution angle value to wrap.
- *
- * @return the wrapped revolution angle vlue from [-0.5, 0.5).
- */
-double wrap_revolutions_180(const double &angle);
-
-/**
- * Wraps a radian angle value from [0, 2pi).
- *
- * @param angle the radian angle value to wrap.
- *
- * @return the wrapped radian angle value from [0, 2pi).
- */
-double wrap_radians_360(const double &angle);
-
-/**
- * Wraps a degree angle value from [0, 360).
- *
- * @param angle the degree angle value to wrap.
- *
- * @return the wrapped degree angle value from [0, 360).
- */
-double wrap_degrees_360(const double &angle);
-
-/**
- * Wraps a revolution angle value from [0, 1).
- *
- * @param angle the revolution angle value to wrap.
- *
- * @return the wrapped revolution angle value from [0, 1).
- */
-double wrap_revolutions_360(const double &angle);
-
-/**
- * General function for converting degrees to radians
- * @param deg the angle in degrees
- * @return the angle in radians
- */
-double deg2rad(double deg);
-
-/**
- * General function for converting radians to degrees
- * @param r the angle in radians
- * @return the angle in degrees
-
- */
-double rad2deg(double r);
-
-/**
- * Calculates the mean of a list of angle values directly.
- * !! DOES NOT WRAP INPUTS (probably not useful) !!
- *
- * @param list std::vector containing a list of rotations.
- *
- * @return the single rotation mean of the list of rotations.
- */
-Rotation2d unwrapped_mean(const std::vector<Rotation2d> &list);
-
-/**
- * Calculates the mean of a list of angle values directly.
- * !! WRAPS INPUTS !!
- *
- * @param list std::vector containing a list of rotations.
- *
- * @return the single rotation mean of the list of rotations.
- */
-Rotation2d wrapped_mean(const std::vector<Rotation2d> &list);

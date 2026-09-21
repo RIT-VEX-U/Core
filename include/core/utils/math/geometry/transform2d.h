@@ -1,17 +1,12 @@
 #pragma once
-#include <Eigen/Dense>
-
-#include <cmath>
-#include <iostream>
-#include <vector>
 
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/translation2d.h"
-
-class Pose2d;
+#include "core/utils/units.h"
 
 /**
- * Class representing a transformation of a pose2d, or a linear difference between the components of poses.
+ * Class representing a transformation of a pose2d, by rotating a translation into the frame
+ * of the pose2d, then adding the translation, then rotating by theta.
  *
  * Assumes conventional cartesian coordinate system:
  * Looking down at the coordinate plane,
@@ -19,137 +14,109 @@ class Pose2d;
  * +Y is up
  * +Theta is counterclockwise
  */
-class Transform2d {
-  public:
-    /**
-     * Default Constructor for Transform2d
-     */
-    constexpr Transform2d();
+struct Transform2d {
+  /**
+   * Default Constructor for Transform2d
+   */
+  constexpr Transform2d() = default;
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const Translation2d &translation, const Rotation2d &rotation);
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param translation the translational component of the transform.
+   * @param rotation the rotational component of the transform.
+   */
+  constexpr Transform2d(Translation2d translation, Rotation2d rotation)
+      : translation_(translation), rotation_(rotation) {}
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param x the x component of the transform.
-     * @param y the y component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const double &x, const double &y, const Rotation2d &rotation);
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param x the x component of the transform.
+   * @param y the y component of the transform.
+   * @param rotation the rotational component of the transform.
+   */
+  constexpr Transform2d(units::Length x, units::Length y, Rotation2d rotation)
+      : translation_(x, y), rotation_(rotation) {}
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param x the x component of the transform.
-     * @param y the y component of the transform.
-     * @param radians the rotational component of the transform in radians.
-     */
-    Transform2d(const double &x, const double &y, const double &radians);
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param x the x component of the transform.
+   * @param y the y component of the transform.
+   * @param angle the rotational component of the transform.
+   */
+  constexpr Transform2d(units::Length x, units::Length y, units::Angle angle)
+      : translation_(x, y), rotation_(angle) {}
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param radians the rotational component of the transform in radians.
-     */
-    Transform2d(const Translation2d &translation, const double &radians);
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param translation the translational component of the transform.
+   * @param angle the rotational component of the transform.
+   */
+  constexpr Transform2d(Translation2d translation, units::Angle angle)
+      : translation_(translation), rotation_(angle) {}
 
-    /**
-     * Constructs a transform given translation and rotation components given as a vector.
-     *
-     * @param transform_vector vector of the form [x, y, theta]
-     */
-    Transform2d(const Eigen::Vector3d &transform_vector);
+  /**
+   * Constructs a transform given translation and rotation components given as a
+   * vector using the length unit specified, and radians.
+   *
+   * @param transform_vector vector of the form [x, y, theta]
+   * @param unit The length unit to use when assigning the translation.
+   */
+  constexpr Transform2d(const Eigen::Vector3d &transform_vector,
+                        units::Length unit)
+      : translation_({transform_vector(0), transform_vector(1)}, unit),
+        rotation_(transform_vector(2)) {}
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const Pose2d &start, const Pose2d &end);
+  /**
+   * Inverts the transform.
+   *
+   * @return the inverted transform.
+   */
+  constexpr Transform2d inverse() const {
+    return Transform2d(-translation_.rotate_by(-rotation_), -rotation_);
+  }
 
-    /**
-     * Returns the translational component of the transform.
-     *
-     * @return the translational component of the transform.
-     */
-    Translation2d translation() const;
+  /**
+   * Multiplies this transform by a scalar.
+   *
+   * @param scalar the scalar to multiply this transform by.
+   */
+  constexpr Transform2d operator*(double scalar) const {
+      return Transform2d(translation_ * scalar, rotation_ * scalar);
+  }
 
-    /**
-     * Returns the x component of the transform.
-     *
-     * @return the x component of the transform.
-     */
-    double x() const;
+  /**
+   * Divides this transform by a scalar.
+   *
+   * @param scalar the scalar to divide this transform by.
+   */
+  constexpr Transform2d operator/(const double &scalar) const {
+      return Transform2d(translation_ / scalar, rotation_ / scalar);
+  }
 
-    /**
-     * Returns the y component of the transform.
-     *
-     * @return the y component of the transform.
-     */
-    double y() const;
+  /**
+   * Inverts the transform.
+   *
+   * @return the inverted transform.
+   */
+  constexpr Transform2d operator-() const {
+      return inverse();
+  }
 
-    /**
-     * Returns the rotational component of the transform.
-     *
-     * @return the rotational component of the transform.
-     */
-    Rotation2d rotation() const;
+  /**
+   * Compares this to another transform.
+   *
+   * @param other the other transform to compare to.
+   *
+   * @return true if the components are equal.
+   */
+  constexpr bool operator==(const Transform2d &other) const {
+      return (translation_ == other.translation_) && (rotation_ == other.rotation_);
+  }
 
-    /**
-     * Inverts the transform.
-     *
-     * @return the inverted transform.
-     */
-    Transform2d inverse() const;
-
-    /**
-     * Multiplies this transform by a scalar.
-     *
-     * @param scalar the scalar to multiply this transform by.
-     */
-    Transform2d operator*(const double &scalar) const;
-
-    /**
-     * Divides this transform by a scalar.
-     *
-     * @param scalar the scalar to divide this transform by.
-     */
-    Transform2d operator/(const double &scalar) const;
-
-    /**
-     * Inverts the transform.
-     *
-     * @return the inverted transform.
-     */
-    Transform2d operator-() const;
-
-    /**
-     * Compares this to another transform.
-     *
-     * @param other the other transform to compare to.
-     *
-     * @return true if the components are within 1e-9 of each other.
-     */
-    bool operator==(const Transform2d &other) const;
-
-    /**
-     * Sends a transform to an output stream.
-     * Ex.
-     * std::cout << transform;
-     *
-     * prints "Transform2d[dx: (value), dy: (value), drad: (radians), ddeg: (degrees)]"
-     */
-    friend std::ostream &operator<<(std::ostream &os, const Transform2d &transform);
-
-  private:
-    Translation2d m_translation;
-    Rotation2d m_rotation;
+  Translation2d translation_;
+  Rotation2d rotation_;
 };
