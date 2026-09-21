@@ -95,10 +95,14 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
   for (size_t i = 0; i < waypoints.size(); ++i) {
     double speed = 0.0;
-    if (i < waypoints.size() - 1) {
+    if (i == 0) {
       speed = waypoints[i].translation().distance(waypoints[i+1].translation()) * 1.2;
-    } else if (i > 0) {
+    } else if (i == waypoints.size() - 1) {
       speed = waypoints[i].translation().distance(waypoints[i-1].translation()) * 1.2;
+    } else {
+      double d_next = waypoints[i].translation().distance(waypoints[i+1].translation());
+      double d_prev = waypoints[i].translation().distance(waypoints[i-1].translation());
+      speed = (d_next + d_prev) / 2.0 * 1.2;
     }
     hermite_points.push_back(HermitePoint::from_pose(waypoints[i], speed));
   }
@@ -125,13 +129,13 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   for (size_t i = 0; i < full_waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
-      // Scale tangent speed based on instantaneous velocity!
-      // If moving very slow, we still need some minimal tangent bulge to form a spline
-      speed = std::max(current_velocity.internal(), full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2);
-    } else if (i < full_waypoints.size() - 1) {
       speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2;
-    } else {
+    } else if (i == full_waypoints.size() - 1) {
       speed = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()) * 1.2;
+    } else {
+      double d_next = full_waypoints[i].translation().distance(full_waypoints[i+1].translation());
+      double d_prev = full_waypoints[i].translation().distance(full_waypoints[i-1].translation());
+      speed = (d_next + d_prev) / 2.0 * 1.2;
     }
     hermite_points.push_back(HermitePoint::from_pose(full_waypoints[i], speed));
   }
