@@ -33,14 +33,14 @@ class CubicHermiteSpline : public HermiteSpline<3> {
      * @param du Parameter step size used to build the arc-length lookup table.
      */
     CubicHermiteSpline(
-            const Translation2d &p0,
-            const Translation2d &p1,
-            const Translation2d &t0,
-            const Translation2d &t1,
+            const Translation2d &start_pos,
+            const Translation2d &end_pos,
+            const Translation2d &start_tangent,
+            const Translation2d &end_tangent,
             double max_err = 1e-4
     ) {
-        this->x_ = cubic_coeffs(p0.x(), p1.x(), t0.x(), t1.x());
-        this->y_ = cubic_coeffs(p0.y(), p1.y(), t0.y(), t1.y());
+        this->x_ = cubic_coeffs(start_pos.x(), end_pos.x(), start_tangent.x(), end_tangent.x());
+        this->y_ = cubic_coeffs(start_pos.y(), end_pos.y(), start_tangent.y(), end_tangent.y());
         build_arc_table(max_err);
     }
 
@@ -48,12 +48,12 @@ class CubicHermiteSpline : public HermiteSpline<3> {
     /**
      * @brief Computes 1D cubic Hermite polynomial coefficients [c0, c1, c2, c3].
      */
-    static std::array<double, 4> cubic_coeffs(double p0, double p1, double v0, double v1) {
+    static std::array<double, 4> cubic_coeffs(double start_pos, double end_pos, double start_tangent, double end_tangent) {
         return {
-                p0,
-                v0,
-                -3.0 * p0 + 3.0 * p1 - 2.0 * v0 - v1,
-                2.0 * p0 - 2.0 * p1 + v0 + v1,
+                start_pos,
+                start_tangent,
+                -3.0 * start_pos + 3.0 * end_pos - 2.0 * start_tangent - end_tangent,
+                2.0 * start_pos - 2.0 * end_pos + start_tangent + end_tangent,
         };
     }
 };
