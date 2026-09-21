@@ -135,28 +135,6 @@ Pose2d OdometryTank::update() {
     angle += 360;
   }
 
-<<<<<<< HEAD
-    static Pose2d last_pos = current_pos;
-    static double last_speed = 0;
-    static double last_ang_speed = 0;
-    static vex::timer tmr;
-    bool update_vel_accel = tmr.time(vex::sec) > 0.02;
-
-    // This loop runs too fast. Only check at LEAST every 1/10th sec
-    if (update_vel_accel) {
-        // Calculate robot velocity
-        double this_speed = current_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
-        ema.add_entry(this_speed);
-        speed = ema.get_value();
-        // Calculate robot acceleration
-        accel = (speed - last_speed) / tmr.time(vex::sec);
-
-        // Calculate robot angular velocity (deg/sec)
-        ang_speed_deg = smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(vex::sec);
-
-        // Calculate robot angular acceleration (deg/sec^2)
-        ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(vex::sec);
-=======
   current_pos = calculate_new_pos(config, current_pos, lside_revs, rside_revs, angle);
 
   static Pose2d last_pos = current_pos;
@@ -179,7 +157,6 @@ Pose2d OdometryTank::update() {
     ang_speed_deg =
         smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) /
         tmr.time(vex::sec);
->>>>>>> origin
 
     // Calculate robot angular acceleration (deg/sec^2)
     ang_accel_deg = (ang_speed_deg - last_ang_speed) / tmr.time(vex::sec);
@@ -228,9 +205,5 @@ Pose2d OdometryTank::calculate_new_pos(
   stored_lside_revs = lside_revs;
   stored_rside_revs = rside_revs;
 
-<<<<<<< HEAD
-    return new_pos;
-=======
   return new_pos;
->>>>>>> origin
 }

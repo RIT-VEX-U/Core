@@ -162,8 +162,4 @@ class FlywheelPage : public LegacyScreen::Page {
     MovingAverage avg_err;
 };
 
-<<<<<<< HEAD
-screen::Page *Flywheel::Page() const { return new FlywheelPage(*this); }
-=======
 LegacyScreen::Page *Flywheel::Page() const { return new FlywheelPage(*this); }
->>>>>>> origin
