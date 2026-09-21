@@ -17,11 +17,11 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
    public:
     /**
      * @brief Constructs a TankKinematicsConstraint.
-     * @param trackWidth Robot track width (distance between left and right wheels).
-     * @param maxSpeed Maximum allowed speed of a single wheel.
+     * @param track_width Robot track width (distance between left and right wheels).
+     * @param max_speed Maximum allowed speed of a single wheel.
      */
-    TankKinematicsConstraint(units::Length trackWidth, units::Velocity maxSpeed)
-        : trackWidth_(trackWidth), maxSpeed_(maxSpeed) {}
+    TankKinematicsConstraint(units::Length track_width, units::Velocity max_speed)
+        : track_width_(track_width), max_speed_(max_speed) {}
 
     /**
      * @brief Computes maximum allowed chassis velocity to keep wheel speeds within limits during
@@ -34,19 +34,19 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
     units::Velocity max_velocity(
             const Pose2d& pose, units::Curvature curvature, units::Velocity velocity
     ) const override {
-        units::Velocity leftVelocity =
-                (velocity - (trackWidth_ / 2 * (velocity * curvature / 1_rad)));
-        units::Velocity rightVelocity =
-                (velocity + (trackWidth_ / 2 * (velocity * curvature / 1_rad)));
+        units::Velocity left_velocity =
+                (velocity - (track_width_ / 2 * (velocity * curvature / 1_rad)));
+        units::Velocity right_velocity =
+                (velocity + (track_width_ / 2 * (velocity * curvature / 1_rad)));
 
-        units::Velocity realMaxSpeed = units::max(abs(leftVelocity), abs(rightVelocity));
+        units::Velocity real_max_speed = units::max(abs(left_velocity), abs(right_velocity));
 
-        if (realMaxSpeed > maxSpeed_) {
-            leftVelocity = leftVelocity / realMaxSpeed * maxSpeed_;
-            rightVelocity = rightVelocity / realMaxSpeed * maxSpeed_;
+        if (real_max_speed > max_speed_) {
+            left_velocity = left_velocity / real_max_speed * max_speed_;
+            right_velocity = right_velocity / real_max_speed * max_speed_;
         }
 
-        return (leftVelocity + rightVelocity) / 2.0;
+        return (left_velocity + right_velocity) / 2.0;
     }
 
     /**
@@ -71,6 +71,6 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
     }
 
    private:
-    units::Length trackWidth_;  ///< Robot track width
-    units::Velocity maxSpeed_;  ///< Maximum allowed speed of a single wheel
+    units::Length track_width_;  ///< Robot track width
+    units::Velocity max_speed_;  ///< Maximum allowed speed of a single wheel
 };

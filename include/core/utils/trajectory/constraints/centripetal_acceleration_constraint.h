@@ -18,8 +18,8 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
      * @brief Constructs a CentripetalAccelerationConstraint.
      * @param maxCentripetalAcceleration Maximum allowed centripetal acceleration.
      */
-    explicit CentripetalAccelerationConstraint(units::Acceleration maxCentripetalAcceleration)
-        : maxCentripetalAcceleration_(maxCentripetalAcceleration) {}
+    explicit CentripetalAccelerationConstraint(units::Acceleration max_centripetal_acceleration)
+        : max_centripetal_acceleration_(max_centripetal_acceleration) {}
 
     /**
      * @brief Computes maximum allowed velocity based on path curvature and centripetal acceleration
@@ -35,7 +35,7 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
         if (abs(curvature) < 1e-9_radpm) {
             return units::Velocity(std::numeric_limits<double>::max());
         }
-        return sqrt(maxCentripetalAcceleration_ / abs(curvature / 1_rad));
+        return sqrt(max_centripetal_acceleration_ / abs(curvature / 1_rad));
     }
 
     /**
@@ -60,5 +60,5 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
     }
 
    private:
-    units::Acceleration maxCentripetalAcceleration_;  ///< Maximum centripetal acceleration
+    units::Acceleration max_centripetal_acceleration_;  ///< Maximum centripetal acceleration
 };
