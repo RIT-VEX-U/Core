@@ -28,7 +28,8 @@ class QuinticHermiteSpline : public HermiteSpline<5> {
                   start.tangent,
                   end.tangent,
                   start.second_derivative,
-                  end.second_derivative
+                  end.second_derivative,
+                  max_err
           ) {}
 
     /**

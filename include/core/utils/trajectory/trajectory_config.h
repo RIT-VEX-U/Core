@@ -300,11 +300,13 @@ class TrajectoryConfigBuilder {
         return *this;
     }
 
-    /** @brief Builds and returns constructed TrajectoryConfig instance. */
+    /** @brief Adds a distance-triggered event to the trajectory. */
     TrajectoryConfigBuilder &with_event(const std::string &name, units::Length distance) {
         config_.add_event(name, distance);
         return *this;
     }
+
+    /** @brief Builds and returns constructed TrajectoryConfig instance. */
     TrajectoryConfig build() { return std::move(config_); }
 
    private:

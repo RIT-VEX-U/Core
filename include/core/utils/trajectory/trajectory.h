@@ -56,6 +56,7 @@ class Trajectory {
          * @param acceleration Linear acceleration.
          * @param pose 2D pose.
          * @param curvature Path curvature.
+         * @param s Distance along trajectory.
          */
         State(units::Time t,
               units::Velocity velocity,

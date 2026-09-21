@@ -26,7 +26,7 @@ class SplinePath {
      * @brief Constructs a multi-segment path using a custom Spline factory.
      * @param points Boundary waypoints.
      * @param factory Factory closure producing SplineBase segments.
-     * @param du Parameter step size used to build segment arc tables.
+     * @param max_err Maximum allowable interpolation error in inches for the arc-length lookup table.
      * @return Constructed SplinePath instance.
      */
     static SplinePath from_waypoints(
@@ -62,7 +62,7 @@ class SplinePath {
      * @param points Hermite waypoints defining path positions, tangents, and optional second
      * derivatives.
      * @param order Spline order (Cubic or Quintic).
-     * @param du Parameter step size used to build segment arc tables.
+     * @param max_err Maximum allowable interpolation error in inches for the arc-length lookup table.
      * @return Constructed SplinePath instance.
      */
     static SplinePath from_hermite(
