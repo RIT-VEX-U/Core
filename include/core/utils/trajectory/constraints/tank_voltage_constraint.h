@@ -70,18 +70,18 @@ class TankVoltageConstraint : public TrajectoryConstraint {
         units::Acceleration min_chassis_acceleration;
 
         const double speed_val = speed.inps();
-        const double speed_sgn = std::abs(speed_val) <= 1e-9 ? 1.0 : (speed_val < 0.0 ? -1.0 : 1.0);
-        const double curvd = abs(curvature / 1_rad).internal();
+        const double speed_sgn = units::abs(speed_val) <= 1e-9 ? 1.0 : (speed_val < 0.0 ? -1.0 : 1.0);
+        const double curvd = units::abs(curvature / 1_rad).internal();
         const double twd = track_width_.internal();
         const double max_denom = 1.0 + (twd * curvd * speed_sgn / 2.0);
         const double min_denom = 1.0 - (twd * curvd * speed_sgn / 2.0);
 
         max_chassis_acceleration =
-                max_wheel_acceleration / (std::abs(max_denom) < 1e-6 ? 1e-6 : max_denom);
+                max_wheel_acceleration / (units::abs(max_denom) < 1e-6 ? 1e-6 : max_denom);
         min_chassis_acceleration =
-                min_wheel_acceleration / (std::abs(min_denom) < 1e-6 ? 1e-6 : min_denom);
+                min_wheel_acceleration / (units::abs(min_denom) < 1e-6 ? 1e-6 : min_denom);
 
-        if (abs(curvature) > 1E-9_radpm && (track_width_ / 2.0) > 1_rad / abs(curvature)) {
+        if (units::abs(curvature) > 1E-9_radpm && (track_width_ / 2.0) > 1_rad / units::abs(curvature)) {
             if (speed > 0_mps && min_chassis_acceleration > 0_inps2) {
                 min_chassis_acceleration = -min_chassis_acceleration;
             } else if (speed < 0_mps && max_chassis_acceleration < 0_inps2) {

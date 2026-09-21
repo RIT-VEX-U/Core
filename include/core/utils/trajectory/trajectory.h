@@ -93,7 +93,7 @@ class Trajectory {
             }
 
             const bool reversing =
-                    velocity < 0_inps || (abs(velocity) < 1E-9_inps && acceleration < 0_inps2);
+                    velocity < 0_inps || (units::abs(velocity) < 1E-9_inps && acceleration < 0_inps2);
             const units::Velocity new_v = velocity + (acceleration * delta_t);
             const units::Length new_s =
                     (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) *
@@ -200,7 +200,7 @@ class Trajectory {
 
         auto prev_sample = sample - 1;
 
-        if (abs(sample->t - prev_sample->t) < 1E-9_s) {
+        if (units::abs(sample->t - prev_sample->t) < 1E-9_s) {
             return *sample;
         }
 
@@ -354,7 +354,7 @@ class TrajectorySampler {
 
         const auto &prev = states[cached_index_];
         const auto &next = states[cached_index_ + 1];
-        if (abs(next.t - prev.t) < 1E-9_s) {
+        if (units::abs(next.t - prev.t) < 1E-9_s) {
             return next;
         }
         return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).internal());

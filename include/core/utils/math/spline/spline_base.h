@@ -271,8 +271,8 @@ class SplineBase {
         double actual_mid_s = s0 + len1;
         double linear_mid_s = s0 + segment_length * 0.5;
 
-        double integral_err = std::abs((len1 + len2) - segment_length);
-        double interp_err = std::abs(actual_mid_s - linear_mid_s);
+        double integral_err = units::abs((len1 + len2) - segment_length);
+        double interp_err = units::abs(actual_mid_s - linear_mid_s);
 
         if ((integral_err > max_err || interp_err > max_err) && (u1 - u0) > 1e-5) {
             build_arc_table_recursive(u0, mid_u, s0, len1, max_err);
