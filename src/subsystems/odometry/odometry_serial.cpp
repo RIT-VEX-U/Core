@@ -35,8 +35,8 @@
 OdometrySerial::OdometrySerial(
   bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port, int32_t baudrate
 )
-    : OdometryBase(is_async), _port(port), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(Pose2d(0, 0, 0)),
-    pose_offset(Pose2d(0, 0, 0)) {
+    : OdometryBase(is_async), _port(port), calc_vel_acc_on_brain(calc_vel_acc_on_brain), pose(),
+    pose_offset() {
     vexGenericSerialEnable(_port, 0);
     vexGenericSerialBaudrate(_port, baudrate);
     send_config(initial_pose, sensor_offset, calc_vel_acc_on_brain);
@@ -48,16 +48,16 @@ OdometrySerial::OdometrySerial(
 void OdometrySerial::send_config(
   const Pose2d &initial_pose, const Pose2d &sensor_offset, const bool &calc_vel_acc_on_brain
 ) {
-    uint8_t raw[(sizeof(initial_pose)) + sizeof(calc_vel_acc_on_brain)];
+    uint8_t raw[6 * sizeof(float) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
 
-    float initialx = (float)initial_pose.x();
-    float initialy = (float)initial_pose.y();
-    float initialrot = (float)initial_pose.rotation().degrees();
+    float initialx = (float)initial_pose.x().to(units::in);
+    float initialy = (float)initial_pose.y().to(units::in);
+    float initialrot = (float)initial_pose.rotation_.degrees();
 
-    float offsetx = (float)sensor_offset.x();
-    float offsety = (float)sensor_offset.y();
-    float offsetrot = (float)sensor_offset.rotation().degrees();
+    float offsetx = (float)sensor_offset.x().to(units::in);
+    float offsety = (float)sensor_offset.y().to(units::in);
+    float offsetrot = (float)sensor_offset.rotation_.degrees();
 
     memcpy(&raw[0], &initialx, sizeof(float));
     memcpy(&raw[4], &initialy, sizeof(float));
@@ -123,13 +123,14 @@ Pose2d OdometrySerial::update() {
     uint8_t decoded_packet[28]; // 28 instead of packet_size to stop note from compiler
 
     int packet_length = receive_cobs_packet(_port, cobs_encoded, cobs_encoded_size);
-    Pose2d updated_pose(0, 0, 0);
+    Pose2d updated_pose;
 
     if (packet_length == cobs_encoded_size) {
         if (cobs_decode(cobs_encoded, packet_length, decoded_packet) == packet_size) {
             float *floats = (float *)decoded_packet;
 
-            updated_pose = Pose2d(Translation2d(floats[0], floats[1]), from_degrees(floats[2]));
+            updated_pose = Pose2d(units::Length(floats[0], units::in), units::Length(floats[1], units::in),
+                                  Rotation2d(units::Angle(floats[2], units::deg)));
             this->pose = updated_pose;
             this->speed = floats[3];
             this->accel = floats[4];
@@ -137,11 +138,11 @@ Pose2d OdometrySerial::update() {
             this->ang_accel_deg = floats[6];
         } else {
             printf("OdometrySerial: Invalid COBS encoding\n");
-            return {0, 0, 0};
+            return {};
         }
     } else if (packet_length == -1) {
         printf("OdometrySerial: Buffer overflow\n");
-        return {0, 0, 0};
+        return {};
     }
     return pose;
 }

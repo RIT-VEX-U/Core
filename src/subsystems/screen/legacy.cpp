@@ -130,18 +130,18 @@ void OdometryPage::draw(
         path_index %= path_len;
     }
 
-    auto to_px = [](const Translation2d p) -> Translation2d {
-        return {(double)in_to_px(p.x()) + 200, (double)in_to_px(-p.y()) + 240};
+    auto to_px = [](const Translation2d p) -> EVec<2> {
+        return {(double)in_to_px(p.x_.to(units::in)) + 200, (double)in_to_px(-p.y_.to(units::in)) + 240};
     };
 
     auto draw_line = [to_px, &scr](const Translation2d from, const Translation2d to) {
         scr.drawLine((int)to_px(from).x(), (int)to_px(from).y(), (int)to_px(to).x(), (int)to_px(to).y());
     };
 
-    Translation2d pos = pose.translation();
+    Translation2d pos = pose.translation_;
     fflush(stdout);
-    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x(), pose.y());
-    scr.printAt(45, 50, "%.2f deg", pose.rotation().degrees());
+    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x().to(units::in), pose.y().to(units::in));
+    scr.printAt(45, 50, "%.2f deg", pose.rotation_.degrees());
 
     double speed = odom.get_speed();
     scr.printAt(45, 80, "%.2f speed", speed);
@@ -155,7 +155,7 @@ void OdometryPage::draw(
 
     scr.drawImageFromBuffer(buf, 200, 0, buf_size);
 
-    Translation2d pos_px = to_px(pos);
+    EVec<2> pos_px = to_px(pos);
     scr.drawCircle((int)pos_px.x(), (int)pos_px.y(), 3, vex::color::white);
 
     if (do_trail) {
@@ -165,25 +165,26 @@ void OdometryPage::draw(
             Pose2d pose = path[j];
             scr.setPenWidth(2);
             scr.setPenColor(vex::color(255, 255, 80));
-            draw_line(pose.translation(), last_pos.translation());
+            draw_line(pose.translation_, last_pos.translation_);
             last_pos = pose;
         }
     }
     scr.setPenColor(vex::color::white);
-    const Translation2d to_left(-robot_width / 2.0, 0);
-    const Translation2d to_front(0.0, robot_height / 2.0);
+    const Translation2d to_left(units::Length(-robot_width / 2.0, units::in), units::Length{});
+    const Translation2d to_front(units::Length{}, units::Length(robot_height / 2.0, units::in));
 
-    Translation2d front_left(-robot_width / 2, robot_width / 2);
-    Translation2d front_right(robot_width / 2, robot_width / 2);
-    Translation2d back_left(-robot_width / 2, -robot_width / 2);
-    Translation2d back_right(robot_width / 2, -robot_width / 2);
+    Translation2d front_left(units::Length(-robot_width / 2, units::in), units::Length(robot_width / 2, units::in));
+    Translation2d front_right(units::Length(robot_width / 2, units::in), units::Length(robot_width / 2, units::in));
+    Translation2d back_left(units::Length(-robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
+    Translation2d back_right(units::Length(robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
 
-    front_left = pos + front_left.rotate_by(pose.rotation().degrees() - 90);
-    front_right = pos + front_right.rotate_by(pose.rotation().degrees() - 90);
-    back_left = pos + back_left.rotate_by(pose.rotation().degrees() - 90);
-    back_right = pos + back_right.rotate_by(pose.rotation().degrees() - 90);
+    const Rotation2d drawing_rotation = pose.rotation_ - Rotation2d(units::Angle(90, units::deg));
+    front_left = pos + front_left.rotate_by(drawing_rotation);
+    front_right = pos + front_right.rotate_by(drawing_rotation);
+    back_left = pos + back_left.rotate_by(drawing_rotation);
+    back_right = pos + back_right.rotate_by(drawing_rotation);
 
-    const Translation2d front = to_front.rotate_by(pose.rotation().degrees() - 90);
+    const Translation2d front = to_front.rotate_by(drawing_rotation);
 
     draw_line(front_left, front_right);
     draw_line(front_right, back_right);
@@ -204,7 +205,7 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
     if (was_pressed) {
         double dx = x;
         double dy = y;
-        if (rect.contains(Translation2d(dx, dy))) {
+        if (rect.contains(EVec<2>(dx, dy))) {
             double pct = (dx - rect.min.x() - margin) / (rect.dimensions().x() - 2 * margin);
             pct = clamp(pct, 0.0, 1.0);
             value = (low + pct * (high - low));
@@ -319,21 +320,21 @@ InitializerPage* InitializerPage::Next() {
 }
 
 const std::array<Rect, 8> InitializerPage::buttons = {
-    Rect{Translation2d(48,8), Translation2d(236,58)},
-    Rect{Translation2d(244,8), Translation2d(432,58)},
-    Rect{Translation2d(48,66), Translation2d(236,116)},
-    Rect{Translation2d(244,66), Translation2d(432,116)},
-    Rect{Translation2d(48,124), Translation2d(236,174)},
-    Rect{Translation2d(244,124), Translation2d(432,174)},
-    Rect{Translation2d(48,182), Translation2d(236,232)},
-    Rect{Translation2d(244,182), Translation2d(432,232)},
+    Rect{EVec<2>(48,8), EVec<2>(236,58)},
+    Rect{EVec<2>(244,8), EVec<2>(432,58)},
+    Rect{EVec<2>(48,66), EVec<2>(236,116)},
+    Rect{EVec<2>(244,66), EVec<2>(432,116)},
+    Rect{EVec<2>(48,124), EVec<2>(236,174)},
+    Rect{EVec<2>(244,124), EVec<2>(432,174)},
+    Rect{EVec<2>(48,182), EVec<2>(236,232)},
+    Rect{EVec<2>(244,182), EVec<2>(432,232)},
 };
 
 void InitializerPage::update(bool was_pressed, int x, int y) {
     //update uses the InitializerPage's selection_buffer to avoid setting the buffer multiple times
     if(this->selection_buffer != Selector::NO_SELECTION_INDEX || !was_pressed) return;
 
-    const Translation2d pos(x,y);
+    const EVec<2> pos(x,y);
     for(int i = 0; i < 8 && starting_index + i < this->initializer.initialization_count(); i++) {
         if(buttons.at(i).contains(pos)) {
             this->selection_buffer = starting_index + i;

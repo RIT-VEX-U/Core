@@ -43,14 +43,14 @@ Pose2d Odometry3Wheel::update() {
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
         // Calculate robot velocity
-        speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
+        speed_local = updated_pos.translation_.distance(last_pos.translation_).to(units::in) / tmr.time(vex::sec);
 
         // Calculate robot acceleration
         accel_local = (speed_local - last_speed) / tmr.time(vex::sec);
 
         // Calculate robot angular velocity (deg/sec)
         ang_speed_local =
-          smallest_angle(updated_pos.rotation().degrees(), last_pos.rotation().degrees()) / tmr.time(vex::sec);
+          smallest_angle(updated_pos.rotation_.degrees(), last_pos.rotation_.degrees()) / tmr.time(vex::sec);
 
         // Calculate robot angular acceleration (deg/sec^2)
         ang_accel_local = (ang_speed_local - last_ang_speed) / tmr.time(vex::sec);
@@ -87,12 +87,12 @@ Pose2d Odometry3Wheel::update() {
 Pose2d Odometry3Wheel::calculate_new_pos(
   double lside_delta_deg, double rside_delta_deg, double offax_delta_deg, Pose2d old_pos, odometry3wheel_cfg_t cfg
 ) {
-    Pose2d retval(0, 0, 0);
+    Pose2d retval;
 
     // Arclength formula for encoder degrees -> single wheel distance driven
-    double lside_dist = (cfg.wheel_diam / 2.0) * deg2rad(lside_delta_deg);
-    double rside_dist = (cfg.wheel_diam / 2.0) * deg2rad(rside_delta_deg);
-    double offax_dist = (cfg.wheel_diam / 2.0) * deg2rad(offax_delta_deg);
+    double lside_dist = (cfg.wheel_diam / 2.0) * Rotation2d::deg2rad(lside_delta_deg);
+    double rside_dist = (cfg.wheel_diam / 2.0) * Rotation2d::deg2rad(rside_delta_deg);
+    double offax_dist = (cfg.wheel_diam / 2.0) * Rotation2d::deg2rad(offax_delta_deg);
 
     // Inverse arclength formula for arc distance driven -> robot angle
     double delta_angle_rad = (rside_dist - lside_dist) / cfg.wheelbase_dist;
@@ -105,17 +105,17 @@ Pose2d Odometry3Wheel::calculate_new_pos(
     double dist_local_x = offax_dist - (delta_angle_rad * cfg.off_axis_center_dist);
 
     // Change in displacement as a vector, on the local coordinate system (+y = robot fwd)
-    Translation2d local_displacement(dist_local_x, dist_local_y);
+    Translation2d local_displacement(units::Length(dist_local_x, units::in), units::Length(dist_local_y, units::in));
 
     // Rotate the local displacement to match the old robot's rotation
     double dir_delta_from_trans_rad = local_displacement.theta().radians() - (PI / 2.0);
-    double global_dir_rad = wrap_angle_rad(dir_delta_from_trans_rad + old_pos.rotation().radians());
+    double global_dir_rad = wrap_angle_rad(dir_delta_from_trans_rad + old_pos.rotation_.radians());
     Translation2d global_displacement(local_displacement.norm(), Rotation2d(global_dir_rad));
 
     // Tack on the position change to the old position
-    Translation2d new_pos_vec = old_pos.translation() + global_displacement;
+    Translation2d new_pos_vec = old_pos.translation_ + global_displacement;
 
-    retval = Pose2d(new_pos_vec.x(), new_pos_vec.y(), wrap_angle_rad(old_pos.rotation().radians() + delta_angle_rad));
+    retval = Pose2d(new_pos_vec.x_, new_pos_vec.y_, wrap_angle_rad(old_pos.rotation_.radians() + delta_angle_rad));
 
     return retval;
 }
@@ -162,7 +162,7 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
 
     // Wheel diameter is ratio of expected distance / measured distance
     double avg_deg = ((lside_fwd.position(vex::deg) - old_lval) + (rside_fwd.position(vex::deg) - old_rval)) / 2.0;
-    double measured_dist = 0.5 * deg2rad(avg_deg); // Simulate diam=1", radius=1/2"
+    double measured_dist = 0.5 * Rotation2d::deg2rad(avg_deg); // Simulate diam=1", radius=1/2"
     double found_diam = 120.0 / measured_dist;
 
     // Step 3: Reset alignment for turning test
@@ -195,9 +195,9 @@ void Odometry3Wheel::tune(vex::controller &con, TankDrive &drive) {
         vexDelay(20);
     }
 
-    double lside_dist = deg2rad(lside_fwd.position(vex::deg) - old_lval) * (found_diam / 2.0);
-    double rside_dist = deg2rad(rside_fwd.position(vex::deg) - old_rval) * (found_diam / 2.0);
-    double offax_dist = deg2rad(off_axis.position(vex::deg) - old_offax) * (found_diam / 2.0);
+    double lside_dist = Rotation2d::deg2rad(lside_fwd.position(vex::deg) - old_lval) * (found_diam / 2.0);
+    double rside_dist = Rotation2d::deg2rad(rside_fwd.position(vex::deg) - old_rval) * (found_diam / 2.0);
+    double offax_dist = Rotation2d::deg2rad(off_axis.position(vex::deg) - old_offax) * (found_diam / 2.0);
 
     double expected_angle = 10 * (2 * PI);
     double found_wheelbase = fabs(rside_dist - lside_dist) / expected_angle;

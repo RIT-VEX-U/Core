@@ -131,7 +131,7 @@ double estimate_path_length(const std::vector<Translation2d> &points) {
             continue;
         }
 
-        dist += p.distance(last_p);
+        dist += p.distance(last_p).to(units::in);
         last_p = p;
     }
 

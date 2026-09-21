@@ -101,7 +101,7 @@ MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, dou
     // ========== kS Tuning =========
     // Start at 0 and slowly increase the power until the robot starts moving
     double power = 0;
-    while (start_pos.translation().distance(odometry.get_position().translation()) < 0.05) {
+    while (start_pos.translation_.distance(odometry.get_position().translation_) < units::Length(0.05, units::in)) {
         drive.drive_tank(power, power, 1);
         power += 0.001;
         vexDelay(100);

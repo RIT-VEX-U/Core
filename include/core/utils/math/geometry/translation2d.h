@@ -57,8 +57,8 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
       : x_{r * theta.f_cos()}, y_{r * theta.f_sin()} {}
 
   /**
-   * Returns the angle of the translation.
-   * @returns The angle of the translation.
+   * Returns the angle of the vector.
+   * @returns The angle of the vector.
    */
   constexpr Rotation2d theta() const {
     return Rotation2d(x_.internal(), y_.internal());
@@ -86,7 +86,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * Returns a vector of the same angle, but specific magnitude
    * (default 1 base unit)
    *
-   * @returns The normalized translation.
+   * @returns The normalized vector.
    */
   constexpr LinearVector2d normalize(Q magnitude = Q(1.0)) const {
     return LinearVector2d(magnitude, theta());
@@ -184,14 +184,13 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
-   *
    * Returns this vector multiplied by a scalar. The unit result must be a LinearKinematicQuantity
    *
    *
    */
   template <units::IsQuantity S>
     requires LinearKinematicQuantity<units::Multiplied<Q, S>>
-  constexpr units::Multiplied<Q, S> operator*(S scalar) const {
+  constexpr LinearVector2d<units::Multiplied<Q, S>> operator*(S scalar) const {
     return LinearVector2d<units::Multiplied<Q, S>>{x_ * scalar, y_ * scalar};
   }
 
@@ -210,7 +209,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
 
   template <units::IsQuantity S>
     requires LinearKinematicQuantity<units::Divided<Q, S>>
-  constexpr units::Divided<Q, S> operator/(S scalar) const {
+  constexpr LinearVector2d<units::Divided<Q, S>> operator/(S scalar) const {
     return LinearVector2d<units::Divided<Q, S>>{x_ / scalar, y_ / scalar};
   }
 
@@ -220,7 +219,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    *
    * [scalar] = [x][otherx] + [y][othery]
    *
-   * @param other the other translation dot with.
+   * @param other the other vector to dot with.
    * @returns The dot product of this and other.
    */
   constexpr units::Multiplied<Q, Q>
@@ -247,7 +246,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    *
    * @param list std::vector containing a list of vectors.
    *
-   * @return the single vector mean of the list of translation.
+   * @return the single vector mean of the list of vectors.
    */
   static constexpr LinearVector2d
   mean(const std::vector<LinearVector2d> &list) {
