@@ -25,9 +25,9 @@ class TankVoltageConstraint : public TrajectoryConstraint {
      * @param trackWidth Robot track width (distance between left and right wheels).
      */
     TankVoltageConstraint(
-            LinearVelocityFeedforward Kv,
-            LinearAccelerationFeedforward Ka,
-            Voltage max_voltage,
+            units::LinearVelocityFeedforward Kv,
+            units::LinearAccelerationFeedforward Ka,
+            units::Voltage max_voltage,
             units::Length track_width
     )
         : Kv_(Kv), Ka_(Ka), max_voltage_(max_voltage), track_width_(track_width) {}
@@ -62,14 +62,14 @@ class TankVoltageConstraint : public TrajectoryConstraint {
         units::Velocity min_wheel_speed = units::min(left_velocity, right_velocity);
 
         units::Acceleration max_wheel_acceleration =
-                (max_voltage_ - (Kv_ * units::max_wheel_speed)) / Ka_;
+                (max_voltage_ - (Kv_ * max_wheel_speed)) / Ka_;
         units::Acceleration min_wheel_acceleration =
-                (-max_voltage_ - Kv_ * units::min_wheel_speed) / Ka_;
+                (-max_voltage_ - Kv_ * min_wheel_speed) / Ka_;
 
         units::Acceleration max_chassis_acceleration;
         units::Acceleration min_chassis_acceleration;
 
-        const double speed_val = speed.inps();
+        const double speed_val = speed.to(units::inps);
         const double speed_sgn = units::abs(speed_val) <= 1e-9 ? 1.0 : (speed_val < 0.0 ? -1.0 : 1.0);
         const double curvd = units::abs(curvature / 1_rad).internal();
         const double twd = track_width_.internal();
@@ -101,8 +101,8 @@ class TankVoltageConstraint : public TrajectoryConstraint {
     }
 
    private:
-    LinearVelocityFeedforward Kv_;      ///< Linear velocity feedforward constant
-    LinearAccelerationFeedforward Ka_;  ///< Linear acceleration feedforward constant
-    Voltage max_voltage_;                ///< Maximum available voltage
+    units::LinearVelocityFeedforward Kv_;      ///< Linear velocity feedforward constant
+    units::LinearAccelerationFeedforward Ka_;  ///< Linear acceleration feedforward constant
+    units::Voltage max_voltage_;                ///< Maximum available voltage
     units::Length track_width_;          ///< Robot track width
 };
