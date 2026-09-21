@@ -72,12 +72,12 @@ class SplinePath {
     ) {
         return from_waypoints(
                 points,
-                [order](const HermitePoint& p0, const HermitePoint& p1, double step
+                [order](const HermitePoint& start, const HermitePoint& end, double max_err
                 ) -> std::unique_ptr<SplineBase> {
                     if (order == Order::Cubic) {
-                        return std::unique_ptr<SplineBase>(new CubicHermiteSpline(p0, p1, step));
+                        return std::unique_ptr<SplineBase>(new CubicHermiteSpline(start, end, max_err));
                     } else {
-                        return std::unique_ptr<SplineBase>(new QuinticHermiteSpline(p0, p1, step));
+                        return std::unique_ptr<SplineBase>(new QuinticHermiteSpline(start, end, max_err));
                     }
                 },
                 max_err
