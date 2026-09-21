@@ -42,16 +42,6 @@ class TrajectoryParameterizer {
             std::function<void(const char*)> error_handler = nullptr
     );
 
-    /**
-     * @brief Applies an FIR moving average filter to the velocity profile to limit jerk (S-Curve).
-     * @param base The base trapezoidal trajectory.
-     * @param max_acceleration The maximum acceleration limit used in the base trajectory.
-     * @param max_jerk The desired maximum jerk limit.
-     * @return S-Curve filtered Trajectory.
-     */
-    static Trajectory jerk_limit_trajectory(
-            const Trajectory& base, units::Acceleration max_acceleration, units::Jerk max_jerk
-    );
 
    private:
     constexpr static double kEpsilon = 1E-6;

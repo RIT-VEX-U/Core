@@ -211,11 +211,7 @@ class TrajectoryConfig {
     /** @return Spline order used for path generation. */
     SplinePath::Order spline_order() const { return spline_order_; }
 
-    /** @return Maximum jerk limit for S-curve generation. Returns 0_inps3 if disabled. */
-    units::Jerk max_jerk() const { return max_jerk_; }
 
-    /** @brief Sets maximum jerk limit. Set to 0 to disable (pure trapezoidal). */
-    void set_max_jerk(units::Jerk jerk) { max_jerk_ = jerk; }
 
     /** @return Error handler callback. */
     const std::function<void(const char *)> &error_handler() const { return error_handler_; }
@@ -225,7 +221,6 @@ class TrajectoryConfig {
     units::Velocity end_velocity_ = 0_inps;
     units::Velocity max_velocity_;
     units::Acceleration max_acceleration_;
-    units::Jerk max_jerk_ = 0_inps3;
     units::Length sample_ds_ = 0.5_in;
     std::vector<std::unique_ptr<TrajectoryConstraint>> constraints_;
     std::vector<DistanceEvent> events_;
@@ -275,11 +270,7 @@ class TrajectoryConfigBuilder {
         return *this;
     }
 
-    /** @brief Configures jerk limit for S-curve generation. */
-    TrajectoryConfigBuilder &with_max_jerk(units::Jerk max_jerk) {
-        config_.set_max_jerk(max_jerk);
-        return *this;
-    }
+
 
     /** @brief Configures spline order. */
     TrajectoryConfigBuilder &with_spline_order(SplinePath::Order order) {

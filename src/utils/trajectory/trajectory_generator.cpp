@@ -72,11 +72,6 @@ Trajectory TrajectoryGenerator::generate_trajectory(
       config.is_reversed(),
       config.error_handler());
 
-  if (config.max_jerk() > 0_inps3) {
-    traj = TrajectoryParameterizer::jerk_limit_trajectory(
-        traj, config.max_acceleration(), config.max_jerk());
-  }
-
 
   std::vector<TrajectoryEvent> evs;
   for (const auto& ev : config.events()) {
