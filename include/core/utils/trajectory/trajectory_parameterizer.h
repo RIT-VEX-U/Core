@@ -59,9 +59,9 @@ class TrajectoryParameterizer {
     struct ConstrainedState {
         PoseWithCurvature pose = {Pose2d{}, 0_radpm};
         units::Length distance = 0_in;
-        units::Velocity maxVelocity = 0_inps;
-        units::Acceleration minAcceleration = 0_inps2;
-        units::Acceleration maxAcceleration = 0_inps2;
+        units::Velocity max_velocity = 0_inps;
+        units::Acceleration min_acceleration = 0_inps2;
+        units::Acceleration max_acceleration = 0_inps2;
     };
 
     static bool enforce_acceleration_limits(

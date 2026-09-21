@@ -29,20 +29,20 @@ class TrajectoryConstraint {
     struct MinMax {
         /**
          * @brief Constructs MinMax with explicit minimum and maximum acceleration bounds.
-         * @param minAcceleration Lower acceleration limit.
-         * @param maxAcceleration Upper acceleration limit.
+         * @param min_acceleration Lower acceleration limit.
+         * @param max_acceleration Upper acceleration limit.
          */
-        MinMax(units::Acceleration minAcceleration, units::Acceleration maxAcceleration)
-            : minAcceleration(minAcceleration), maxAcceleration(maxAcceleration) {}
+        MinMax(units::Acceleration min_acceleration, units::Acceleration max_acceleration)
+            : min_acceleration(min_acceleration), max_acceleration(max_acceleration) {}
 
         /** @brief Default constructor setting unbounded limits [-Inf, +Inf]. */
         MinMax()
-            : minAcceleration(-std::numeric_limits<double>::max()),
-              maxAcceleration(std::numeric_limits<double>::max()) {}
+            : min_acceleration(-std::numeric_limits<double>::max()),
+              max_acceleration(std::numeric_limits<double>::max()) {}
 
-        units::Acceleration minAcceleration{-std::numeric_limits<double>::max()
+        units::Acceleration min_acceleration{-std::numeric_limits<double>::max()
         };  ///< Lower acceleration limit
-        units::Acceleration maxAcceleration{std::numeric_limits<double>::max()
+        units::Acceleration max_acceleration{std::numeric_limits<double>::max()
         };  ///< Upper acceleration limit
     };
 

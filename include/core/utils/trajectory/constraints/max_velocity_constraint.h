@@ -15,9 +15,9 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
    public:
     /**
      * @brief Constructs a MaxVelocityConstraint.
-     * @param maxVelocity Maximum allowed linear velocity.
+     * @param max_velocity Maximum allowed linear velocity.
      */
-    explicit MaxVelocityConstraint(units::Velocity maxVelocity) : maxVelocity_(abs(maxVelocity)) {}
+    explicit MaxVelocityConstraint(units::Velocity max_velocity) : max_velocity_(abs(max_velocity)) {}
 
     /**
      * @brief Computes maximum allowed velocity.
@@ -29,7 +29,7 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
     units::Velocity max_velocity(
             const Pose2d& pose, units::Curvature curvature, units::Velocity velocity
     ) const override {
-        return maxVelocity_;
+        return max_velocity_;
     }
 
     /**
@@ -54,5 +54,5 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
     }
 
    private:
-    units::Velocity maxVelocity_;  ///< Maximum allowed linear velocity
+    units::Velocity max_velocity_;  ///< Maximum allowed linear velocity
 };
