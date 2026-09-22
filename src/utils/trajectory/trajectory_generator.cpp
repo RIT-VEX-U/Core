@@ -88,6 +88,8 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   std::vector<HermitePoint> hermite_points;
   hermite_points.reserve(waypoints.size());
 
+  const Transform2d flip{Translation2d{}, from_degrees(180)};
+
   for (size_t i = 0; i < waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
@@ -99,7 +101,12 @@ Trajectory TrajectoryGenerator::generate_trajectory(
       double d_prev = waypoints[i].translation().distance(waypoints[i-1].translation());
       speed = (d_next + d_prev) / 2.0 * 1.2;
     }
-    hermite_points.push_back(HermitePoint::from_pose(waypoints[i], speed));
+    
+    Pose2d wp = waypoints[i];
+    if (config.is_reversed()) {
+      wp = wp + flip;
+    }
+    hermite_points.push_back(HermitePoint::from_pose(wp, speed));
   }
 
   return generate_trajectory(hermite_points, config);
@@ -121,6 +128,8 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   std::vector<HermitePoint> hermite_points;
   hermite_points.reserve(full_waypoints.size());
 
+  const Transform2d flip{Translation2d{}, from_degrees(180)};
+
   for (size_t i = 0; i < full_waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
@@ -132,7 +141,12 @@ Trajectory TrajectoryGenerator::generate_trajectory(
       double d_prev = full_waypoints[i].translation().distance(full_waypoints[i-1].translation());
       speed = (d_next + d_prev) / 2.0 * 1.2;
     }
-    hermite_points.push_back(HermitePoint::from_pose(full_waypoints[i], speed));
+    
+    Pose2d wp = full_waypoints[i];
+    if (config.is_reversed()) {
+      wp = wp + flip;
+    }
+    hermite_points.push_back(HermitePoint::from_pose(wp, speed));
   }
 
   // Force the start velocity parameter to match the robot's actual state

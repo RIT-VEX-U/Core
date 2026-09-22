@@ -249,6 +249,74 @@ class Trajectory {
     }
 
     /**
+     * @brief Mirrors the trajectory across a vertical line X = center_x.
+     * @param center_x The X coordinate to mirror across (default 71.25 inches for VRC center).
+     * @return Mirrored Trajectory.
+     */
+    Trajectory mirror_x(units::Length center_x = 71.25_in) const {
+        std::vector<State> new_states;
+        new_states.reserve(states_.size());
+        for (const auto& st : states_) {
+            State new_st = st;
+            double x = st.pose.x();
+            double y = st.pose.y();
+            double theta = st.pose.rotation().radians();
+            
+            double new_x = 2.0 * center_x.to(units::in) - x;
+            new_st.pose = Pose2d(new_x, y, M_PI - theta);
+            new_st.curvature = -st.curvature;
+            new_states.push_back(new_st);
+        }
+        return Trajectory(new_states);
+    }
+
+    /**
+     * @brief Mirrors the trajectory across a horizontal line Y = center_y.
+     * @param center_y The Y coordinate to mirror across (default 71.25 inches for VRC center).
+     * @return Mirrored Trajectory.
+     */
+    Trajectory mirror_y(units::Length center_y = 71.25_in) const {
+        std::vector<State> new_states;
+        new_states.reserve(states_.size());
+        for (const auto& st : states_) {
+            State new_st = st;
+            double x = st.pose.x();
+            double y = st.pose.y();
+            double theta = st.pose.rotation().radians();
+            
+            double new_y = 2.0 * center_y.to(units::in) - y;
+            new_st.pose = Pose2d(x, new_y, -theta);
+            new_st.curvature = -st.curvature;
+            new_states.push_back(new_st);
+        }
+        return Trajectory(new_states);
+    }
+
+    /**
+     * @brief Rotates the trajectory 180 degrees around a center point (Point reflection).
+     * @param center_x The X coordinate of the center point (default 71.25 inches).
+     * @param center_y The Y coordinate of the center point (default 71.25 inches).
+     * @return Rotated Trajectory.
+     */
+    Trajectory rotate_center(units::Length center_x = 71.25_in, units::Length center_y = 71.25_in) const {
+        std::vector<State> new_states;
+        new_states.reserve(states_.size());
+        for (const auto& st : states_) {
+            State new_st = st;
+            double x = st.pose.x();
+            double y = st.pose.y();
+            double theta = st.pose.rotation().radians();
+            
+            double new_x = 2.0 * center_x.to(units::in) - x;
+            double new_y = 2.0 * center_y.to(units::in) - y;
+            new_st.pose = Pose2d(new_x, new_y, theta + M_PI);
+            // Curvature remains unchanged for 180 degree rotation
+            new_states.push_back(new_st);
+        }
+        return Trajectory(new_states);
+    }
+
+    /**
      * @brief Returns a time-reversed version of this trajectory (traces the path from end to
      * start).
      * @return Reversed Trajectory.
