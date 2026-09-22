@@ -17,13 +17,13 @@ public:
      * @param x The x-coordinate of the point
      * @param y The y-coordinate of the point
      */
-    Point2d(const int& x, const int& y);
+    Point2d(int x, int y);
 
     /**
      * Creates a lattice point with the values from the given vector
      * @param vector The vector whose values will be used
      */
-    Point2d(const Eigen::Vector2i &vector);
+    Point2d(Eigen::Vector2i vector);
 
     /**
      * Returns the X coordinate of the point
@@ -34,7 +34,7 @@ public:
     /**
      * Sets the X coordinate of the point
      */
-    void setX(const int& x);
+    void setX(int x);
 
     /**
      * Returns the Y coordinate of the point
@@ -45,7 +45,7 @@ public:
     /**
      * Sets the Y coordinate of the point
      */
-    void setY(const int& y);
+    void setY(int y);
 
     /**
      * Returns the point as an Eigen::Vector2i
@@ -65,7 +65,7 @@ public:
      * Returns the manhattan distance between two points
      * @returns The manhattan distance between two points
      */
-    int manhattan_distance(const Point2d& other) const;
+    int manhattan_distance(Point2d other) const;
 
     /**
      * Returns the manhattan distance away from the origin
@@ -77,7 +77,7 @@ public:
      * Returns the distance (as a continuous number) between two points
      * @returns The distance (as a continuous number) between two points
      */
-    double distance(const Point2d& other) const;
+    double distance(Point2d other) const;
 
     /**
      * Returns the distance (as a continuous number) away from the origin
@@ -90,7 +90,7 @@ public:
      * @param other The other Point2d to compare to
      * @return TRUE if the components of both points are equal, and FALSE if otherwise
      */
-    bool operator==(const Point2d &other) const;
+    bool operator==(Point2d other) const;
 
     /**
      * Returns the sum of two points
@@ -101,7 +101,7 @@ public:
      * @param other The other point to be added
      * @return The sum of the two points
      */
-    Point2d operator+(const Point2d &other) const;
+    Point2d operator+(Point2d other) const;
 
     /**
      * Returns the difference of two points
@@ -112,7 +112,7 @@ public:
      * @param other The point being subtracted from this one
      * @return The difference of the two points
      */
-    Point2d operator-(const Point2d &other) const;
+    Point2d operator-(Point2d other) const;
 
     /**
      * Returns the inverse of the point
@@ -133,7 +133,7 @@ public:
      * @param scalar The scalar to multiply by
      * @return This point multiplied by a scalar
      */
-    Point2d operator*(const int &scalar) const;
+    Point2d operator*(int scalar) const;
 
     /**
      * Returns the dot product of two points
@@ -143,13 +143,13 @@ public:
      * @param other The other point to find the dot product with
      * @return The scalar-valued dot product
      */
-    int operator*(const Point2d &other) const;
+    int operator*(Point2d other) const;
 
     /**
      * Sends a point to an output stream. 
      * Ex:  The code `std::cout << point;` prints "Point2d[x: (value), y: (value)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, const Point2d &point);
+    friend std::ostream &operator<<(std::ostream &os, Point2d point);
 
 private:
     int xcoord, ycoord;

@@ -31,7 +31,7 @@ struct Pose2d {
    * @param translation translational component.
    * @param rotation rotational component.
    */
-  constexpr Pose2d(const Translation2d &translation, const Rotation2d &rotation)
+  constexpr Pose2d(Translation2d translation, Rotation2d rotation)
       : translation_{translation}, rotation_{rotation} {}
 
   /**
@@ -41,7 +41,7 @@ struct Pose2d {
    * @param y y component.
    * @param rotation rotational component.
    */
-  constexpr Pose2d(units::Length x, units::Length y, const Rotation2d &rotation)
+  constexpr Pose2d(units::Length x, units::Length y, Rotation2d rotation)
       : translation_{x, y}, rotation_{rotation} {}
 
   /**
@@ -51,7 +51,7 @@ struct Pose2d {
    * @param y y component.
    * @param radians rotational component in radians.
    */
-  constexpr Pose2d(units::Length x, units::Length y, const double &radians)
+  constexpr Pose2d(units::Length x, units::Length y, double radians)
       : translation_{x, y}, rotation_{radians} {}
 
   /**
@@ -161,7 +161,7 @@ struct Pose2d {
   /**
    * Returns the straight-line distance to a point.
    */
-  constexpr units::Length distance(const Translation2d &point) const {
+  constexpr units::Length distance(Translation2d point) const {
     return translation_.distance(point);
   }
 
@@ -176,7 +176,7 @@ struct Pose2d {
    * Returns the world direction toward a point.
    * Returns this pose's heading if the positions are identical.
    */
-  constexpr Rotation2d bearing_to(const Translation2d &point) const {
+  constexpr Rotation2d bearing_to(Translation2d point) const {
     const auto delta = point - translation_;
     if (delta.x_.internal() == 0 && delta.y_.internal() == 0) {
       return rotation_;
@@ -188,35 +188,35 @@ struct Pose2d {
    * Returns the smallest signed turn toward a point.
    * Returns zero if the positions are identical.
    */
-  constexpr units::Angle angle_to(const Translation2d &point) const {
+  constexpr units::Angle angle_to(Translation2d point) const {
     return (bearing_to(point) - rotation_).angle();
   }
 
   /**
    * Converts a point from this pose's local frame to the world frame.
    */
-  constexpr Translation2d local_to_world(const Translation2d &point) const {
+  constexpr Translation2d local_to_world(Translation2d point) const {
     return translation_ + point.rotate_by(rotation_);
   }
 
   /**
    * Converts a point from the world frame to this pose's local frame.
    */
-  constexpr Translation2d world_to_local(const Translation2d &point) const {
+  constexpr Translation2d world_to_local(Translation2d point) const {
     return (point - translation_).rotate_by(-rotation_);
   }
 
   /**
    * Returns a copy with a new position.
    */
-  constexpr Pose2d with_translation(const Translation2d &translation) const {
+  constexpr Pose2d with_translation(Translation2d translation) const {
     return {translation, rotation_};
   }
 
   /**
    * Returns a copy with a new orientation.
    */
-  constexpr Pose2d with_rotation(const Rotation2d &rotation) const {
+  constexpr Pose2d with_rotation(Rotation2d rotation) const {
     return {translation_, rotation};
   }
 
@@ -242,7 +242,7 @@ struct Pose2d {
    *
    * @return true if each of the components are within 1e-6 of each other (meters and radians).
    */
-  constexpr bool operator==(const Pose2d other) const {
+  constexpr bool operator==(const Pose2d &other) const {
     return (translation_ == other.translation_) &&
            (rotation_ == other.rotation_);
   }
@@ -253,7 +253,7 @@ struct Pose2d {
    *
    * @param scalar the scalar value to multiply by.
    */
-  constexpr Pose2d operator*(const double &scalar) const {
+  constexpr Pose2d operator*(double scalar) const {
     return Pose2d{translation_ * scalar, rotation_ * scalar};
   }
 
@@ -263,7 +263,7 @@ struct Pose2d {
    *
    * @param scalar the scalar value to divide by.
    */
-  constexpr Pose2d operator/(const double &scalar) const {
+  constexpr Pose2d operator/(double scalar) const {
     return *this * (1.0 / scalar);
   }
 

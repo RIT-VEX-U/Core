@@ -72,7 +72,7 @@ public:
    * [new_sin] = [other.sin,  other.cos][sin]
    *
    */
-  constexpr Rotation2d operator+(const Rotation2d &other) const {
+  constexpr Rotation2d operator+(Rotation2d other) const {
     return Rotation2d(cos_ * other.cos_ - sin_ * other.sin_,
                       cos_ * other.sin_ + sin_ * other.cos_);
   }
@@ -81,7 +81,7 @@ public:
    * Subtracts another rotation from this. Also represents getting this rotation
    * relative to other.
    */
-  constexpr Rotation2d operator-(const Rotation2d &other) const {
+  constexpr Rotation2d operator-(Rotation2d other) const {
     return *this + -other;
   }
 
@@ -117,14 +117,14 @@ public:
   /**
    * Adds another rotation to this rotation.
    */
-  constexpr Rotation2d &operator+=(const Rotation2d &other) {
+  constexpr Rotation2d &operator+=(Rotation2d other) {
     return *this = *this + other;
   }
 
   /**
    * Subtracts another rotation from this rotation.
    */
-  constexpr Rotation2d &operator-=(const Rotation2d &other) {
+  constexpr Rotation2d &operator-=(Rotation2d other) {
     return *this = *this - other;
   }
 
@@ -145,7 +145,7 @@ public:
   /**
    * Multiplies a scalar by this rotation.
    */
-  friend constexpr Rotation2d operator*(double scalar, const Rotation2d &rotation) {
+  friend constexpr Rotation2d operator*(double scalar, Rotation2d rotation) {
     return rotation * scalar;
   }
 
@@ -153,7 +153,7 @@ public:
    * Checks the smallest angle between rotations against a tolerance.
    * Defaults to 1e-6 radians.
    */
-  constexpr bool is_near(const Rotation2d &other,
+  constexpr bool is_near(Rotation2d other,
                          units::Angle tolerance = units::Angle(1e-6)) const {
     return units::abs((*this - other).angle()) <= tolerance;
   }
@@ -164,7 +164,7 @@ public:
    * @param other The other rotation to compare to.
    * @return true if the sin and cos values are both within 1e-6.
    */
-  constexpr bool operator==(const Rotation2d &other) const {
+  constexpr bool operator==(Rotation2d other) const {
     return cevalm::abs(cos_ - other.cos_) < 1e-6 &&
            cevalm::abs(sin_ - other.sin_) < 1e-6;
   }
@@ -255,7 +255,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_degrees_180(const double &angle) {
+  static constexpr double wrap_degrees_180(double angle) {
     if (angle >= -180.0 && angle <= 180.0) {
       return angle;
     }
@@ -274,7 +274,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_revolutions_180(const double &angle) {
+  static constexpr double wrap_revolutions_180(double angle) {
     if (angle >= -0.5 && angle <= 0.5) {
       return angle;
     }
@@ -293,7 +293,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_gradians_180(const double &angle) {
+  static constexpr double wrap_gradians_180(double angle) {
     if (angle >= -200.0 && angle <= 200.0) {
       return angle;
     }
@@ -312,7 +312,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_radians_180(const double &angle) {
+  static constexpr double wrap_radians_180(double angle) {
     if (angle >= -std::numbers::pi && angle <= std::numbers::pi) {
       return angle;
     }
@@ -331,7 +331,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_degrees_360(const double &angle) {
+  static constexpr double wrap_degrees_360(double angle) {
     if (angle >= 0.0 && angle < 360.0) {
       return angle;
     }
@@ -348,7 +348,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_revolutions_360(const double &angle) {
+  static constexpr double wrap_revolutions_360(double angle) {
     if (angle >= 0.0 && angle < 1.0) {
       return angle;
     }
@@ -365,7 +365,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_gradians_360(const double &angle) {
+  static constexpr double wrap_gradians_360(double angle) {
     if (angle >= 0.0 && angle < 400.0) {
       return angle;
     }
@@ -382,7 +382,7 @@ public:
    * @param angle The angle to wrap.
    * @return The wrapped angle.
    */
-  static constexpr double wrap_radians_360(const double &angle) {
+  static constexpr double wrap_radians_360(double angle) {
     if (angle >= 0.0 && angle < 2 * std::numbers::pi) {
       return angle;
     }

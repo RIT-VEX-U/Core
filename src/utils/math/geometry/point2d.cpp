@@ -7,13 +7,13 @@
  * @param x The x-coordinate of the point
  * @param y The y-coordinate of the point
  */
-Point2d::Point2d(const int& x, const int& y) : xcoord(x), ycoord(y) {}
+Point2d::Point2d(int x, int y) : xcoord(x), ycoord(y) {}
 
 /**
  * Creates a lattice point with the values from the given vector
  * @param vector The vector whose values will be used
  */
-Point2d::Point2d(const Eigen::Vector2i &vector) : xcoord(vector(0)), ycoord(vector(1)) {}
+Point2d::Point2d(Eigen::Vector2i vector) : xcoord(vector(0)), ycoord(vector(1)) {}
 
 
 /**
@@ -27,7 +27,7 @@ int Point2d::x() const {
 /**
  * Sets the X coordinate of the point
  */
-void Point2d::setX(const int& x) {
+void Point2d::setX(int x) {
     this->xcoord = x;
 }
 
@@ -42,7 +42,7 @@ int Point2d::y() const {
 /**
  * Sets the Y coordinate of the point
  */
-void Point2d::setY(const int& y) {
+void Point2d::setY(int y) {
     this->ycoord = y;
 }
 
@@ -68,7 +68,7 @@ Eigen::Vector2d Point2d::as_vector(Eigen::Vector2d X, Eigen::Vector2d Y) const {
  * Returns the manhattan distance between two points
  * @returns The manhattan distance between two points
  */
-int Point2d::manhattan_distance(const Point2d& other) const {
+int Point2d::manhattan_distance(Point2d other) const {
     return abs(this->xcoord - other.xcoord) + abs(this->ycoord - other.ycoord);
 }
 
@@ -84,7 +84,7 @@ int Point2d::manhattan_norm() const {
  * Returns the distance (as a continuous number) between two points
  * @returns The distance (as a continuous number) between two points
  */
-double Point2d::distance(const Point2d& other) const {
+double Point2d::distance(Point2d other) const {
     return hypot(this->xcoord - other.xcoord, this->ycoord - other.ycoord);
 }
 
@@ -101,7 +101,7 @@ double Point2d::norm() const {
  * @param other The other Point2d to compare to
  * @return TRUE if the components of both points are equal, and FALSE if otherwise
  */
-bool Point2d::operator==(const Point2d &other) const {
+bool Point2d::operator==(Point2d other) const {
     return this->xcoord == other.xcoord && this->ycoord == other.ycoord;
 }
 
@@ -114,7 +114,7 @@ bool Point2d::operator==(const Point2d &other) const {
  * @param other The other point to be added
  * @return The sum of the two points
  */
-Point2d Point2d::operator+(const Point2d &other) const {
+Point2d Point2d::operator+(Point2d other) const {
     return Point2d{this->xcoord + other.xcoord, this->ycoord + other.ycoord};
 }
 
@@ -127,7 +127,7 @@ Point2d Point2d::operator+(const Point2d &other) const {
  * @param other The point being subtracted from this one
  * @return The difference of the two points
  */
-Point2d Point2d::operator-(const Point2d &other) const {
+Point2d Point2d::operator-(Point2d other) const {
     return Point2d{this->xcoord - other.xcoord, this->ycoord - other.ycoord};
 }
 
@@ -152,7 +152,7 @@ Point2d Point2d::operator-() const {
  * @param scalar The scalar to multiply by
  * @return This point multiplied by a scalar
  */
-Point2d Point2d::operator*(const int &scalar) const {
+Point2d Point2d::operator*(int scalar) const {
     return Point2d{scalar * this->xcoord, scalar * this->ycoord};
 }
 
@@ -164,7 +164,7 @@ Point2d Point2d::operator*(const int &scalar) const {
  * @param other The other point to find the dot product with
  * @return The scalar-valued dot product
  */
-int Point2d::operator*(const Point2d &other) const {
+int Point2d::operator*(Point2d other) const {
     return (this->xcoord * other.xcoord) + (this->ycoord * other.ycoord);
 }
 
@@ -172,7 +172,7 @@ int Point2d::operator*(const Point2d &other) const {
  * Sends a point to an output stream. 
  * Ex:  The code `std::cout << point;` prints "Point2d[x: (value), y: (value)]"
  */
-std::ostream &operator<<(std::ostream &os, const Point2d &point) {
+std::ostream &operator<<(std::ostream &os, Point2d point) {
     os << "Point2d[x: " << point.x() << ", y: " << point.y() << "]";
     return os;
 }

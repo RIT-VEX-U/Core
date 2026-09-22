@@ -188,7 +188,7 @@ struct Transform2d {
   /**
    * Divides this transform by a scalar.
    */
-  constexpr Transform2d operator/(const double &scalar) const {
+  constexpr Transform2d operator/(double scalar) const {
       return Transform2d(translation_ / scalar, rotation_ / scalar);
   }
 

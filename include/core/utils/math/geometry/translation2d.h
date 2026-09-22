@@ -65,7 +65,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * @param vector The vector whose values will be used.
    * @param unit The unit to use when assigning x and y (e.g. units::inches)
    */
-  constexpr LinearVector2d(const Eigen::Vector2d &vector, Q unit)
+  constexpr LinearVector2d(Eigen::Vector2d vector, Q unit)
       : x_{vector[0], unit}, y_{vector[1], unit} {}
 
   /**
@@ -126,7 +126,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * Interpolates along a straight line to another vector.
    * Fractions outside [0, 1] return the nearest endpoint.
    */
-  constexpr LinearVector2d interpolate(const LinearVector2d &end, double fraction) const {
+  constexpr LinearVector2d interpolate(LinearVector2d end, double fraction) const {
     if (fraction <= 0) {
       return *this;
     }
@@ -176,7 +176,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * @param other the other vector to add to this.
    * @returns The sum of the two vectors.
    */
-  constexpr LinearVector2d operator+(const LinearVector2d &other) const {
+  constexpr LinearVector2d operator+(LinearVector2d other) const {
     return {x_ + other.x_, y_ + other.y_};
   }
 
@@ -196,14 +196,14 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   /**
    * Adds another vector to this vector.
    */
-  constexpr LinearVector2d &operator+=(const LinearVector2d &other) {
+  constexpr LinearVector2d &operator+=(LinearVector2d other) {
     return *this = *this + other;
   }
 
   /**
    * Subtracts another vector from this vector.
    */
-  constexpr LinearVector2d &operator-=(const LinearVector2d &other) {
+  constexpr LinearVector2d &operator-=(LinearVector2d other) {
     return *this = *this - other;
   }
 
@@ -224,7 +224,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   /**
    * Multiplies a scalar by this vector.
    */
-  friend constexpr LinearVector2d operator*(double scalar, const LinearVector2d &vector) {
+  friend constexpr LinearVector2d operator*(double scalar, LinearVector2d vector) {
     return vector * scalar;
   }
 
@@ -233,7 +233,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    */
   template <units::IsQuantity S>
     requires LinearKinematicQuantity<units::Multiplied<Q, S>>
-  friend constexpr auto operator*(S scalar, const LinearVector2d &vector) {
+  friend constexpr auto operator*(S scalar, LinearVector2d vector) {
     return vector * scalar;
   }
 
@@ -281,7 +281,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * @param scalar the scalar to divide by.
    * @returns This vector divided by a scalar.
    */
-  constexpr LinearVector2d operator/(const double &scalar) const {
+  constexpr LinearVector2d operator/(double scalar) const {
     return {x_ / scalar, y_ / scalar};
   }
 
@@ -302,7 +302,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    */
   template <LinearKinematicQuantity R>
   constexpr units::Multiplied<Q, R>
-  operator*(const LinearVector2d<R> &other) const {
+  operator*(LinearVector2d<R> other) const {
     return dot(other);
   }
 
@@ -310,7 +310,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * Returns the dot product, keeping the resulting units.
    */
   template <LinearKinematicQuantity R>
-  constexpr units::Multiplied<Q, R> dot(const LinearVector2d<R> &other) const {
+  constexpr units::Multiplied<Q, R> dot(LinearVector2d<R> other) const {
     return (x_ * other.x_) + (y_ * other.y_);
   }
 
@@ -318,7 +318,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * Checks the distance between vectors against a tolerance.
    * Defaults to 1um for translations, 1um/s for velocities, and so on.
    */
-  constexpr bool is_near(const LinearVector2d &other, Q tolerance = Q(1e-6)) const {
+  constexpr bool is_near(LinearVector2d other, Q tolerance = Q(1e-6)) const {
     return distance(other) <= tolerance;
   }
 
@@ -331,7 +331,7 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    * @param other the vector to compare to.
    * @returns Whether the two vectors are equal.
    */
-  constexpr bool operator==(const LinearVector2d &other) const {
+  constexpr bool operator==(LinearVector2d other) const {
     return cevalm::abs(x_.internal() - other.x_.internal()) < 1e-6 &&
            cevalm::abs(y_.internal() - other.y_.internal()) < 1e-6;
   }
