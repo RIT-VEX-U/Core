@@ -22,7 +22,7 @@ AutoCommand *TankDrive::DriveToPointCmd(Translation2d pt, vex::directionType dir
 
 AutoCommand *
 TankDrive::DriveToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
-    return new DriveToPointCommand(*this, *drive_default_feedback, Translation2d(x, y), dir, max_speed, end_speed);
+    return new DriveToPointCommand(*this, *drive_default_feedback, Translation2d(units::Length(x, units::in), units::Length(y, units::in)), dir, max_speed, end_speed);
 }
 
 AutoCommand *TankDrive::DriveForwardCmd(double dist, vex::directionType dir, double max_speed, double end_speed) {
@@ -160,7 +160,7 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
         left_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
         right_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
     } else if (bt == BrakeType::Smart) {
-        static Pose2d target_pose(0.0, 0.0, 0.0);
+        static Pose2d target_pose;
 
         zero_vel_pid.set_target(0);
         double vel = odometry->get_speed();
@@ -168,9 +168,9 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
             target_pose = odometry->get_position();
             captured_position = true;
         } else if (captured_position) {
-            double dist_to_target = target_pose.translation().distance(odometry->get_position().translation());
+            double dist_to_target = target_pose.translation().distance(odometry->get_position().translation()).to(units::in);
             if (dist_to_target < 12.0) {
-                drive_to_point(target_pose.x(), target_pose.y(), vex::fwd);
+                drive_to_point(target_pose.x(units::in), target_pose.y(units::in), vex::fwd);
             } else {
                 target_pose = odometry->get_position();
                 reset_auto();
@@ -215,7 +215,7 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power, 
 bool TankDrive::drive_forward(
   double inches, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
-    static Pose2d pos_setpt(0, 0, 0);
+    static Pose2d pos_setpt;
 
     // We can't run the auto drive function without odometry
     if (odometry == NULL) {
@@ -238,7 +238,7 @@ bool TankDrive::drive_forward(
         }
         // Use vector math to get an X and Y
         Translation2d current_pos(cur_pos.x(), cur_pos.y());
-        Translation2d delta_pos(inches, cur_pos.rotation());
+        Translation2d delta_pos(units::Length(inches, units::in), cur_pos.rotation());
         Translation2d setpt_vec = current_pos + delta_pos;
 
         // Save the new X and Y values as a Pose
@@ -246,7 +246,7 @@ bool TankDrive::drive_forward(
     }
 
     // Call the drive_to_point with updated point values
-    return drive_to_point(pos_setpt.x(), pos_setpt.y(), dir, feedback, max_speed, end_speed);
+    return drive_to_point(pos_setpt.x(units::in), pos_setpt.y(units::in), dir, feedback, max_speed, end_speed);
 }
 /**
  * Autonomously drive the robot forward a certain distance
@@ -360,7 +360,7 @@ bool TankDrive::drive_to_point(
 
     if (!func_initialized) {
 
-        double initial_dist = odometry->get_position().translation().distance(Translation2d(x, y));
+        double initial_dist = odometry->get_position().translation().distance(Translation2d(units::Length(x, units::in), units::Length(y, units::in))).to(units::in);
 
         // Reset the control loops
         correction_pid.init(0, 0);
@@ -374,15 +374,15 @@ bool TankDrive::drive_to_point(
 
     // Store the initial position of the robot
     Pose2d current_pos = odometry->get_position();
-    Pose2d end_pos(x, y, 0);
+    Pose2d end_pos(units::Length(x, units::in), units::Length(y, units::in), 0);
 
     // Create a point (and vector) to get the direction
-    Translation2d pos_diff_pt = {x - current_pos.x(), y - current_pos.y()};
+    Translation2d pos_diff_pt = {units::Length(x, units::in) - current_pos.x(), units::Length(y, units::in) - current_pos.y()};
 
     Translation2d the_point(pos_diff_pt);
 
     // Get the distance between 2 points
-    double dist_left = current_pos.translation().distance(end_pos.translation());
+    double dist_left = current_pos.translation().distance(end_pos.translation()).to(units::in);
 
     int sign = 1;
 
@@ -390,7 +390,7 @@ bool TankDrive::drive_to_point(
     // point. If the point is behind that line, and the point is within the
     // robot's radius, use negatives for feedback control.
 
-    double angle_to_point = atan2(y - current_pos.y(), x - current_pos.x()) * 180.0 / PI;
+    double angle_to_point = atan2(y - current_pos.y(units::in), x - current_pos.x(units::in)) * 180.0 / PI;
     double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 
     // Normalize the angle between 0 and 360
@@ -614,15 +614,15 @@ bool TankDrive::pure_pursuit(
     // Robot is facing forwards / backwards, change the bot's angle by 180
     if (dir != vex::directionType::rev) {
         angle_diff =
-          OdometryBase::smallest_angle(robot_pose.rotation().degrees(), rad2deg(atan2(localized.y(), localized.x())));
+          OdometryBase::smallest_angle(robot_pose.rotation().degrees(), Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in))));
     } else {
         angle_diff = OdometryBase::smallest_angle(
-          robot_pose.rotation().degrees() + 180, rad2deg(atan2(localized.y(), localized.x()))
+          robot_pose.rotation().degrees() + 180, Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in)))
         );
     }
 
     // Correct the robot's heading until the last cut-off
-    if (!(is_last_point && robot_pose.translation().distance(last_point) < config.drive_correction_cutoff)) {
+    if (!(is_last_point && robot_pose.translation().distance(last_point).to(units::in) < config.drive_correction_cutoff)) {
         correction_pid.update(angle_diff);
         correction = correction_pid.get();
     } else // Inside cut-off radius, ignore horizontal diffs

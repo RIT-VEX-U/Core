@@ -147,7 +147,7 @@ Pose2d OdometryTank::update() {
   if (update_vel_accel) {
     // Calculate robot velocity
     double this_speed =
-        current_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
+        current_pos.translation().distance(last_pos.translation()).to(units::in) / tmr.time(vex::sec);
     ema.add_entry(this_speed);
     speed = ema.get_value();
     // Calculate robot acceleration
@@ -177,7 +177,7 @@ Pose2d OdometryTank::update() {
 Pose2d OdometryTank::calculate_new_pos(
     robot_specs_t& config, Pose2d& curr_pos, double lside_revs, double rside_revs, double angle_deg
 ) {
-  Pose2d new_pos(0, 0, 0);
+  Pose2d new_pos;
 
   static double stored_lside_revs = lside_revs;
   static double stored_rside_revs = rside_revs;
@@ -192,14 +192,14 @@ Pose2d OdometryTank::calculate_new_pos(
 
   // Create a vector from the change in distance in the current direction of the robot
   // deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
-  Translation2d chg_point(dist_driven, Rotation2d(angle));
+  Translation2d chg_point(units::Length(dist_driven, units::in), Rotation2d(angle));
 
   // Create a vector from the current position in reference to X,Y=0,0
   Translation2d curr_point(curr_pos.x(), curr_pos.y());
 
   // Tack on the "difference" vector to the current vector
   Translation2d new_point = curr_point + chg_point;
-  new_pos = Pose2d(new_point, from_degrees(angle_deg));
+  new_pos = Pose2d(new_point, Rotation2d(units::Angle(angle_deg, units::degrees)));
 
   // Store the left and right encoder values to find the difference in the next iteration
   stored_lside_revs = lside_revs;

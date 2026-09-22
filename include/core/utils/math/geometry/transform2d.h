@@ -1,17 +1,12 @@
 #pragma once
-#include <Eigen/Dense>
-
-#include <cmath>
-#include <iostream>
-#include <vector>
 
 #include "core/utils/math/geometry/rotation2d.h"
 #include "core/utils/math/geometry/translation2d.h"
-
-class Pose2d;
+#include "core/utils/units.h"
 
 /**
- * Class representing a transformation of a pose2d, or a linear difference between the components of poses.
+ * Class representing a transformation of a pose2d, by rotating a translation into the frame
+ * of the pose2d, then adding the translation, then rotating by theta.
  *
  * Assumes conventional cartesian coordinate system:
  * Looking down at the coordinate plane,
@@ -19,137 +14,201 @@ class Pose2d;
  * +Y is up
  * +Theta is counterclockwise
  */
-class Transform2d {
-  public:
-    /**
-     * Default Constructor for Transform2d
-     */
-    constexpr Transform2d();
+struct Transform2d {
+  /**
+   * Default Constructor for Transform2d
+   */
+  constexpr Transform2d() = default;
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const Translation2d &translation, const Rotation2d &rotation);
+  /**
+   * Returns the translation.
+   */
+  constexpr Translation2d translation() const { return translation_; }
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param x the x component of the transform.
-     * @param y the y component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const double &x, const double &y, const Rotation2d &rotation);
+  /**
+   * Returns the rotation.
+   */
+  constexpr Rotation2d rotation() const { return rotation_; }
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param x the x component of the transform.
-     * @param y the y component of the transform.
-     * @param radians the rotational component of the transform in radians.
-     */
-    Transform2d(const double &x, const double &y, const double &radians);
+  /**
+   * Returns the rotation as an angle.
+   */
+  constexpr units::Angle angle() const { return rotation_.angle(); }
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param radians the rotational component of the transform in radians.
-     */
-    Transform2d(const Translation2d &translation, const double &radians);
+  /**
+   * Returns the rotation in the supplied angle unit.
+   */
+  constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
 
-    /**
-     * Constructs a transform given translation and rotation components given as a vector.
-     *
-     * @param transform_vector vector of the form [x, y, theta]
-     */
-    Transform2d(const Eigen::Vector3d &transform_vector);
+  /**
+   * Returns the x component.
+   */
+  constexpr units::Length x() const { return translation_.x(); }
 
-    /**
-     * Constructs a transform given translation and rotation components.
-     *
-     * @param translation the translational component of the transform.
-     * @param rotation the rotational component of the transform.
-     */
-    Transform2d(const Pose2d &start, const Pose2d &end);
+  /**
+   * Returns the y component.
+   */
+  constexpr units::Length y() const { return translation_.y(); }
 
-    /**
-     * Returns the translational component of the transform.
-     *
-     * @return the translational component of the transform.
-     */
-    Translation2d translation() const;
+  /**
+   * Returns x in the supplied length unit.
+   */
+  constexpr double x(units::Length unit) const { return translation_.x(unit); }
 
-    /**
-     * Returns the x component of the transform.
-     *
-     * @return the x component of the transform.
-     */
-    double x() const;
+  /**
+   * Returns y in the supplied length unit.
+   */
+  constexpr double y(units::Length unit) const { return translation_.y(unit); }
 
-    /**
-     * Returns the y component of the transform.
-     *
-     * @return the y component of the transform.
-     */
-    double y() const;
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param translation the translational component of the transform.
+   * @param rotation the rotational component of the transform.
+   */
+  constexpr Transform2d(Translation2d translation, Rotation2d rotation)
+      : translation_(translation), rotation_(rotation) {}
 
-    /**
-     * Returns the rotational component of the transform.
-     *
-     * @return the rotational component of the transform.
-     */
-    Rotation2d rotation() const;
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param x the x component of the transform.
+   * @param y the y component of the transform.
+   * @param rotation the rotational component of the transform.
+   */
+  constexpr Transform2d(units::Length x, units::Length y, Rotation2d rotation)
+      : translation_(x, y), rotation_(rotation) {}
 
-    /**
-     * Inverts the transform.
-     *
-     * @return the inverted transform.
-     */
-    Transform2d inverse() const;
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param x the x component of the transform.
+   * @param y the y component of the transform.
+   * @param angle the rotational component of the transform.
+   */
+  constexpr Transform2d(units::Length x, units::Length y, units::Angle angle)
+      : translation_(x, y), rotation_(angle) {}
 
-    /**
-     * Multiplies this transform by a scalar.
-     *
-     * @param scalar the scalar to multiply this transform by.
-     */
-    Transform2d operator*(const double &scalar) const;
+  /**
+   * Constructs a transform given translation and rotation components.
+   *
+   * @param translation the translational component of the transform.
+   * @param angle the rotational component of the transform.
+   */
+  constexpr Transform2d(Translation2d translation, units::Angle angle)
+      : translation_(translation), rotation_(angle) {}
 
-    /**
-     * Divides this transform by a scalar.
-     *
-     * @param scalar the scalar to divide this transform by.
-     */
-    Transform2d operator/(const double &scalar) const;
+  /**
+   * Constructs a transform given translation and rotation components given as a
+   * vector using the supplied units.
+   *
+   * @param transform_vector vector of the form [x, y, theta]
+   * @param unit The length unit to use when assigning the translation.
+   * @param angle_unit The angle unit, defaults to radians.
+   */
+  constexpr Transform2d(const Eigen::Vector3d &transform_vector,
+                        units::Length unit, units::Angle angle_unit = units::radians)
+      : translation_({transform_vector(0), transform_vector(1)}, unit),
+        rotation_(units::Angle(transform_vector(2), angle_unit)) {}
 
-    /**
-     * Inverts the transform.
-     *
-     * @return the inverted transform.
-     */
-    Transform2d operator-() const;
+  /**
+   * Returns [x, y, theta] in the supplied units. Angles default to radians.
+   *
+   * @param length_unit the unit of length to get the values as
+   * @param angle_unit the unit of angle to get the rotation as, default radians
+   * @return EVec<3> containing the values.
+   */
+  EVec<3> as_vector(units::Length length_unit,
+                    units::Angle angle_unit = units::radians) const {
+    return {translation_.x_.to(length_unit), translation_.y_.to(length_unit),
+            rotation_.angle().to(angle_unit)};
+  }
 
-    /**
-     * Compares this to another transform.
-     *
-     * @param other the other transform to compare to.
-     *
-     * @return true if the components are within 1e-9 of each other.
-     */
-    bool operator==(const Transform2d &other) const;
+  /**
+   * Composes this transform and another transform (second relative to first).
+   */
+  constexpr Transform2d operator+(const Transform2d &other) const {
+    return {translation_ + other.translation_.rotate_by(rotation_),
+            rotation_ + other.rotation_};
+  }
 
-    /**
-     * Sends a transform to an output stream.
-     * Ex.
-     * std::cout << transform;
-     *
-     * prints "Transform2d[dx: (value), dy: (value), drad: (radians), ddeg: (degrees)]"
-     */
-    friend std::ostream &operator<<(std::ostream &os, const Transform2d &transform);
+  /**
+   * Composes this transform and another transform (second relative to first).
+   */
+  constexpr Transform2d &operator+=(const Transform2d &other) {
+    return *this = *this + other;
+  }
 
-  private:
-    Translation2d m_translation;
-    Rotation2d m_rotation;
+  /**
+   * Inverts the transform.
+   */
+  constexpr Transform2d operator-() const {
+      return inverse();
+  }
+
+  /**
+   * Multiplies this transform by a scalar.
+   */
+  constexpr Transform2d operator*(double scalar) const {
+      return Transform2d(translation_ * scalar, rotation_ * scalar);
+  }
+
+  /**
+   * Multiplies a scalar by this transform.
+   */
+  friend constexpr Transform2d operator*(double scalar, const Transform2d &transform) {
+    return transform * scalar;
+  }
+
+  /**
+   * Scales this transform's translation and principal angle.
+   */
+  constexpr Transform2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this transform by a scalar.
+   */
+  constexpr Transform2d operator/(double scalar) const {
+      return Transform2d(translation_ / scalar, rotation_ / scalar);
+  }
+
+  /**
+   * Divides this transform's translation and principal angle.
+   */
+  constexpr Transform2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Compares this to another transform.
+   *
+   * @param other the other transform to compare to.
+   * @return true if the components are equal.
+   */
+  constexpr bool operator==(const Transform2d &other) const {
+      return (translation_ == other.translation_) && (rotation_ == other.rotation_);
+  }
+
+  /**
+   * Checks translation distance and the smallest angle against tolerances.
+   * Defaults to 1um and 1e-6 radians.
+   */
+  constexpr bool is_near(const Transform2d &other,
+                         units::Length distance_tolerance = units::Length(1e-6),
+                         units::Angle angle_tolerance = units::Angle(1e-6)) const {
+    return translation_.is_near(other.translation_, distance_tolerance) &&
+           rotation_.is_near(other.rotation_, angle_tolerance);
+  }
+
+  /**
+   * Inverts the transform.
+   */
+  constexpr Transform2d inverse() const {
+    return Transform2d(-translation_.rotate_by(-rotation_), -rotation_);
+  }
+
+  Translation2d translation_;
+  Rotation2d rotation_;
 };

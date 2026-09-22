@@ -69,8 +69,8 @@ OdometryDataRecord::OdometryDataRecord(std::string name, OdometryBase &odom)
  * sets the data that the Odometry Parts hold
  */
 void OdometryDataRecord::fetch() {
-    X->set_value((float)odom.get_position().x());
-    Y->set_value((float)odom.get_position().y());
+    X->set_value((float)odom.get_position().x(units::in));
+    Y->set_value((float)odom.get_position().y(units::in));
     ROT->set_value((float)odom.get_position().rotation().degrees());
 }
 /**
@@ -85,7 +85,7 @@ OdometryControlRecord::OdometryControlRecord(std::string name, OdometryBase &odo
 /**
  * sets the odometry position to the values from the debug board
  */
-void OdometryControlRecord::response() { odom.set_position({X->get_value(), Y->get_value(), ROT->get_value()}); }
+void OdometryControlRecord::response() { odom.set_position({units::Length(X->get_value(), units::in), units::Length(Y->get_value(), units::in), ROT->get_value()}); }
 
 /**
  * Creates a record that contains a

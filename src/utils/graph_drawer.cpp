@@ -13,9 +13,9 @@ GraphDrawer::GraphDrawer(
     if (colors.size() != num_series) {
         printf("The number of colors does not match the number of series in graph drawer\n");
     }
-    series = std::vector<std::vector<Translation2d>>(num_series);
+    series = std::vector<std::vector<EVec<2>>>(num_series);
     for (size_t i = 0; i < num_series; i++) {
-        series[i] = std::vector<Translation2d>(num_samples, {0.0, 0.0});
+        series[i] = std::vector<EVec<2>>(num_samples, {0.0, 0.0});
     }
 
     if (auto_fit) {
@@ -31,7 +31,7 @@ GraphDrawer::GraphDrawer(
  * add_samples adds a point to the graph, removing one from the back
  * @param sample an x, y coordinate of the next point to graph
  */
-void GraphDrawer::add_samples(std::vector<Translation2d> new_samples) {
+void GraphDrawer::add_samples(std::vector<EVec<2>> new_samples) {
     if (series.size() != new_samples.size()) {
         printf("Mismatch between # of samples given and number of series. %s : %d\n", __FILE__, __LINE__);
     }
@@ -103,15 +103,15 @@ void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int hei
     for (int j = 0; j < series.size(); j++) {
         double x_s = (double)x;
         double y_s = (double)y + (double)height;
-        const std::vector<Translation2d> &samples = series[j];
+        const std::vector<EVec<2>> &samples = series[j];
 
         screen.setPenColor(cols[j]);
         for (int i = sample_index; i < samples.size() + sample_index - 1; i++) {
-            Translation2d p = samples[i % samples.size()];
+            EVec<2> p = samples[i % samples.size()];
             double x_pos = x_s + ((p.x() - earliest_time) / time_range) * (double)width;
             double y_pos = y_s + ((p.y() - lower) / sample_range) * (double)(-height);
 
-            Translation2d p2 = samples[(i + 1) % samples.size()];
+            EVec<2> p2 = samples[(i + 1) % samples.size()];
             double x_pos2 = x_s + ((p2.x() - earliest_time) / time_range) * (double)width;
             double y_pos2 = y_s + ((p2.y() - lower) / sample_range) * (double)(-height);
 

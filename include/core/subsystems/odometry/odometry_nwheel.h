@@ -40,7 +40,7 @@
 
 /**
  * tracking_wheel_cfg_t holds all the specifications for a single tracking wheel
- * The units for x, y, and radius will determine the units of the position estimate
+ * x, y, and radius are expressed in inches.
  */
 typedef struct {
   double x;         /**< x position of the center of the wheel */
@@ -135,7 +135,7 @@ public:
     // This loop runs too fast. Only check at LEAST every 1/10th sec
     if (update_vel_accel) {
       // Calculate robot velocity
-      speed_local = updated_pos.translation().distance(last_pos.translation()) / tmr.time(vex::sec);
+      speed_local = updated_pos.translation().distance(last_pos.translation()).to(units::in) / tmr.time(vex::sec);
 
       // Calculate robot acceleration
       accel_local = (speed_local - last_speed) / tmr.time(vex::sec);
@@ -172,7 +172,7 @@ public:
    */
   void set_position(const Pose2d &newpos) override {
     mut.lock();
-    angle_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - angle_offset);
+    angle_offset = newpos.rotation().radians() - (current_pos.rotation().radians() - angle_offset);
     mut.unlock();
 
     OdometryBase::set_position(newpos);
@@ -201,20 +201,20 @@ private:
     // Mr T = E -> Mr^{+} E = T
     // We take the diagonal of radian_deltas to do a coefficient wise multiplication rather than a dot product
     Eigen::Vector3d pose_delta = transfer_matrix_pseudoinverse * (radian_deltas.asDiagonal() * wheel_radii);
-    Eigen::Vector3d old_pose_vector{old_pose.x(), old_pose.y(), old_pose.rotation().degrees()};
+    Eigen::Vector3d old_pose_vector{old_pose.x(units::in), old_pose.y(units::in), old_pose.rotation().radians()};
     // we achieve better performance by using the imu for rotation directly when possible
     // If an imu is not passed in when constructing, simply use the wheels for rotation
     if (imu != nullptr) {
       pose_delta(2) = angle - old_angle;
     }
-    Pose2d pose_delta2d(pose_delta);
-    Pose2d old_pose_Pose2d(old_pose_vector);
+    Pose2d pose_delta2d(pose_delta, units::in);
+    Pose2d old_pose_Pose2d(old_pose_vector, units::in);
 
-    Pose2d new_pose = old_pose_Pose2d.exp(pose_delta);
+    Pose2d new_pose = old_pose_Pose2d.exp(Twist2d(pose_delta, units::in));
 
     // simply replaces the calculated angle with the imu angle directly
     if (imu != nullptr) {
-      new_pose.setRotationDeg(angle);
+      new_pose = new_pose.with_rotation(Rotation2d(angle));
     }
     return new_pose;
   }
