@@ -18,7 +18,6 @@ class GraphDrawer {
      * @param colors the colors of the series. must be of size num_series
      * @param num_series the number of series to graph
      */
-    
     GraphDrawer(
       int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series = 1
     );

@@ -14,7 +14,8 @@
 
 class CommandController {
   public:
-    /** @brief Create a CommandController with commands pre added. More can be
+    /** 
+     * @brief Create a CommandController with commands pre added. More can be
      * added with CommandController::add()
      * @param cmds
      */

@@ -94,6 +94,7 @@ void ResponsePacketVisitor::VisitUint16(VDP::Uint16 *Uint16_part) {
     Uint16_part->set_value(from_Uint16->get_value());
   }
 }
+
 /// checks if the value if the lowest possible number it can be, if it is skip it otherwise replace our datw with the new number
 void ResponsePacketVisitor::VisitUint8(VDP::Uint8 *Uint8_part) { 
   VDP::Uint8 *from_Uint8 = reinterpret_cast<VDP::Uint8*>(from_part.get());

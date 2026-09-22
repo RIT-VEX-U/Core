@@ -195,7 +195,6 @@ Pose2d OdometryTank::calculate_new_pos(
    * Create a vector from the change in distance in the current direction of the robot
    * deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
    */
-  
   Translation2d chg_point(dist_driven, Rotation2d(angle));
 
   // Create a vector from the current position in reference to X,Y=0,0

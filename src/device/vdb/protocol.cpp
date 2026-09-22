@@ -190,6 +190,7 @@ PacketWriter::PacketWriter(VDP::Packet &scratch) : sofar(scratch) {}
 
 /// clears the packet the writer is writing to
 void PacketWriter::clear() { sofar.clear(); }
+
 /// @return the size of the packet
 size_t PacketWriter::size() { return sofar.size(); }
 /**
@@ -321,6 +322,7 @@ AbstractDevice::~AbstractDevice() {}
  * @return the Part Pointer for the data from the packet
  */
 PartPtr make_decoder(PacketReader &pac) {
+    
     /// gets the type and name of the packet and contstructs a Part pointer from it
     const Type t = pac.get_type();
     const std::string name = pac.get_string();

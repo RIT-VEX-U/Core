@@ -178,6 +178,7 @@ template <typename NumT, Type schemaType> class Number : public Part {
      * @param val the value to store
      */
     void set_value(NumberType val) { this->value = val; }
+    
     /// @return the currently stored number value
     NumberType get_value() { return value; }
     /**

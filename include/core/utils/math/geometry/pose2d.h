@@ -94,6 +94,7 @@ class Pose2d {
      * @return the rotational component.
      */
     Rotation2d rotation() const;
+    
     /// sets the ration value of the rotational component in Radians
     void setRotationRad(double rotRad);
 

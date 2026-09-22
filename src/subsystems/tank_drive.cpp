@@ -384,8 +384,6 @@ bool TankDrive::drive_to_point(
      * point. If the point is behind that line, and the point is within the
      * robot's radius, use negatives for feedback control.
      */
-    
-
     double angle_to_point = atan2(y - current_pos.y(), x - current_pos.x()) * 180.0 / PI;
     double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 

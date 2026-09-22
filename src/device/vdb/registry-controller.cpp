@@ -63,7 +63,7 @@ void RegistryController::take_packet(const Packet &pac) {
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
 
-        /// read the channel id and then set its acknowledgement boolean to true
+        // read the channel id and then set its acknowledgement boolean to true
         const ChannelID id = reader.get_number<ChannelID>();
         if (id >= channels.size()) {
             printf("VDB-Controller: Recieved ack for unknown channel %d\n", id);
