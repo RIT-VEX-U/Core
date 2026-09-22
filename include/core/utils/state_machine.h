@@ -45,9 +45,8 @@ public:
    */
   class MaybeMessage {
   public:
-    /**
-     * @brief Empty message - when theres no message
-     */
+
+    /// @brief Empty message - when theres no message
     MaybeMessage() : exists(false) {}
     /**
      * @brief Create a maybemessage with a message
@@ -90,9 +89,10 @@ public:
     // virtual destructor cuz c++
     virtual ~State() {}
   };
-
-  // Data that gets passed to the runner thread. Don't worry too much about
-  // this
+  /**
+   * Data that gets passed to the runner thread. Don't worry too much about
+   * this
+   */
   using thread_data = std::pair<State *, StateMachine *>;
 
   /**

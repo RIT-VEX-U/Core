@@ -32,8 +32,10 @@ Record::Record(std::string name, std::vector<PartPtr> parts) : Part(std::move(na
  * @param reader
  */
 Record::Record(std::string name, PacketReader &reader) : Part(std::move(name)), fields() {
-    // Name and type already read, only need to read number of fields before child
-    // data shows up
+    /* 
+     * Name and type already read, only need to read number of fields before child
+     * data shows up
+     */
     const uint32_t size = reader.get_number<SizeT>();
     fields.reserve(size);
     for (size_t i = 0; i < size; i++) {
@@ -57,9 +59,7 @@ PartPtr Record::clone(){
     cloned_record->set_fields(cloned_fields);
     return cloned_record;
 }
-/**
- * sets the values of each Part the Record contains
- */
+/// sets the values of each Part the Record contains
 void Record::fetch() {
     for (auto &field : fields) {
         field->fetch();
@@ -140,22 +140,19 @@ void Record::pprint_data(std::stringstream &ss, size_t indent) const {
  */
 String::String(std::string field_name, std::function<std::string()> fetcher)
     : Part(std::move(field_name)), fetcher(std::move(fetcher)) {}
-/**
- * used to assign the string new data, runs the fetch function
- */
+
+/// used to assign the string new data, runs the fetch function
 void String::fetch() { value = fetcher(); }
-/**
- * function to run when receiving to this part
- */
+
+/// function to run when receiving to this part
 void String::response() {}
 /**
  * sets the string part's value to the string given
  * @param new_value the string to set the value to
  */
 void String::set_value(std::string new_value) { value = std::move(new_value); }
-/**
- * @return the currently stored string
- */
+
+/// @return the currently stored string
 std::string String::get_value() { return value; }
 
 PartPtr String::clone() {

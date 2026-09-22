@@ -4,9 +4,8 @@
 #include "vex.h"
 #include <deque>
 
-/**
- * Defines a COBS Serial Device to transmit VDB data through
- */
+
+/// Defines a COBS Serial Device to transmit VDB data through
 namespace VDB {
 class Device : public VDP::AbstractDevice, public COBSSerialDevice {
   public:
@@ -47,14 +46,12 @@ class Device : public VDP::AbstractDevice, public COBSSerialDevice {
      * until it finds a full COBS packet
      */
     WirePacket inbound_buffer;
-    /**
-     * the thread for decoding data from the wire
-     */
+    
+    /// the thread for decoding data from the wire
     static int decode_thread(void *self);
 
-    /**
-     * the thread for sending data to the wire
-     */
+    
+    /// the thread for sending data to the wire
     static int serial_thread(void *self);
 
     bool write_packet_if_avail();

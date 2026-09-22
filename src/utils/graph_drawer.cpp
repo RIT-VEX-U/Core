@@ -1,11 +1,13 @@
 #include "core/utils/graph_drawer.h"
+/**
+ * @brief Creates a graph drawer with the specified number of series (each series is a separate line)
+ * @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
+ * @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+ * @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
+ * @param colors the colors of the series. must be of size num_series
+ * @param num_series the number of series to graph
+ */
 
-/// @brief Creates a graph drawer with the specified number of series (each series is a separate line)
-/// @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
-/// @param lower_bound the bottom of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
-/// @param upper_bound the top of the window when displaying (if upper_bound = lower_bound, auto calculate bounds)
-/// @param colors the colors of the series. must be of size num_series
-/// @param num_series the number of series to graph
 GraphDrawer::GraphDrawer(
   int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series
 )
@@ -75,10 +77,11 @@ void GraphDrawer::draw(vex::brain::lcd &screen, int x, int y, int width, int hei
     if (cols.size() != series.size()) {
         printf("The number of colors does not match the number of series in graph drawer\n");
     }
-
-    // sample_index is next write slot, new is the one before
-    // so gotta wrap here, and new is unsigned cause size t
-    // sample_index - 1 is SIZE_MAX on wrap
+    /* 
+     * sample_index is next write slot, new is the one before
+     * so gotta wrap here, and new is unsigned cause size t
+     * sample_index - 1 is SIZE_MAX on wrap
+     */
     size_t newest_index = (sample_index == 0) ? series[0].size() - 1 : (size_t)(sample_index - 1);
 
     double earliest_time = series[0][sample_index].x();

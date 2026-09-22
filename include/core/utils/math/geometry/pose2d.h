@@ -23,9 +23,7 @@
  */
 class Pose2d {
   public:
-    /**
-     * Default Constructor for Pose2d
-     */
+    /// Default Constructor for Pose2d
     constexpr Pose2d() : m_translation(Translation2d()), m_rotation(Rotation2d()) {}
 
     /**
@@ -96,14 +94,11 @@ class Pose2d {
      * @return the rotational component.
      */
     Rotation2d rotation() const;
-    /**
-     * sets the ration value of the rotational component in Radians
-     */
+    
+    /// sets the ration value of the rotational component in Radians
     void setRotationRad(double rotRad);
 
-    /**
-     * sets the ration value of the rotational component in Degrees
-     */
+    /// sets the ration value of the rotational component in Degrees
     void setRotationDeg(double rotDeg);
 
     /**

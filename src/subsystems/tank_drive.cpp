@@ -104,22 +104,16 @@ AutoCommand *TankDrive::DriveTankCmd(double left, double right) {
     return new DriveTankCommand(*this, left, right);
 }
 
-/**
- * Reset the initialization for autonomous drive functions
- */
+/// Reset the initialization for autonomous drive functions
 void TankDrive::reset_auto() { func_initialized = false; }
 
-/**
- * Stops rotation of all the motors using their "brake mode"
- */
+/// Stops rotation of all the motors using their "brake mode"
 void TankDrive::stop() {
     left_motors.stop();
     right_motors.stop();
 }
 
-/**
- * Returns the Robot position as a Pose2d
- */
+/// Returns the Robot position as a Pose2d
 Pose2d TankDrive::get_position() { return this->odometry->get_position(); }
 
 void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
@@ -385,11 +379,11 @@ bool TankDrive::drive_to_point(
     double dist_left = current_pos.translation().distance(end_pos.translation());
 
     int sign = 1;
-
-    // Make an imaginary perpendicualar line to that between the bot and the
-    // point. If the point is behind that line, and the point is within the
-    // robot's radius, use negatives for feedback control.
-
+    /* 
+     * Make an imaginary perpendicualar line to that between the bot and the
+     * point. If the point is behind that line, and the point is within the
+     * robot's radius, use negatives for feedback control.
+     */
     double angle_to_point = atan2(y - current_pos.y(), x - current_pos.x()) * 180.0 / PI;
     double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 
@@ -409,13 +403,16 @@ bool TankDrive::drive_to_point(
     }
 
     if (fabs(dist_left) < config.drive_correction_cutoff) {
-        // When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
-        // so we always "reach" the point without having to do a lateral translation
+        /* 
+         * When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
+         * so we always "reach" the point without having to do a lateral translation
+         */
         dist_left *= fabs(cos(angle * PI / 180.0));
     }
-
-    // Get the heading difference between where we are and where we want to be
-    // Optimize that heading so we don't turn clockwise all the time
+    /* 
+     * Get the heading difference between where we are and where we want to be
+     * Optimize that heading so we don't turn clockwise all the time
+     */
     double heading = the_point.theta().wrapped_degrees_360();
     double delta_heading = 0;
 
@@ -521,8 +518,10 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
         func_initialized = true;
     }
 
-    // Get the difference between the new heading and the current, and decide
-    // whether to turn left or right.
+    /*  
+     * Get the difference between the new heading and the current, and decide
+     * whether to turn left or right.
+     */
     double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rotation().degrees(), heading_deg);
     feedback.update(-delta_heading);
 

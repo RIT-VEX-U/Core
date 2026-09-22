@@ -11,7 +11,7 @@
 /// Creates a purely-functional Initialization, with a blank name and 1 for its metadata
 #define FUNC_INIT(func) Initialization{"", func, 1}
 
-// Creates an Initialization with a set-able metadata for weighted operations
+/// Creates an Initialization with a set-able metadata for weighted operations
 #define WEIGHTED_INIT(func, weight) Initialization{"", func, weight}
 
 /// Creates an Initialization whose metadata allows it to appear RED when using InitializerScreen
@@ -23,9 +23,8 @@
 /// Creates an Initialization whose metadata allows it to appear GRAY when using InitializerScreen
 #define NEUTRAL_INIT(name, func) Initialization{name, func, ClrGray}
 
-/**
- * Initialization is a helper structure of the Initializer class used to group an initialization function with relevant metadata.
- */
+
+/// Initialization is a helper structure of the Initializer class used to group an initialization function with relevant metadata.
 struct Initialization {
     const std::string name;           /// The name of the Initialization
     const std::function<void()> init; /// The function that executes when this Initialization is selected
@@ -33,9 +32,8 @@ struct Initialization {
 };
 
 
-/**
- * A namespace containing predefined selector functions and wrappers that can be passed to an Initializer.
- */
+
+/// A namespace containing predefined selector functions and wrappers that can be passed to an Initializer.
 namespace Selector {
     
 /// The type of an Initializer's Selector function
@@ -189,13 +187,16 @@ inline std::function<selector_t> weighted_potentiometer(vex::pot& potentiometer,
 }; // namespace Selector
 
 
+
 /**
- * Initializer is a utility that allows one program to call different robot initializations depending on a selection function, effectively reducing the amount of program slots that need to be redownloaded when making modifications to the entire code.
- */
+ * Initializer is a utility that allows one program to call different robot initializations depending on a selection function, 
+ * effectively reducing the amount of program slots that need to be redownloaded when making modifications to the entire code.
+ */ 
 class Initializer {
 public:
     /**
-     * Shorthand for constructing an Initializer that bypasses selection and simply calls the provided callback function during initialization. Ideally, this constructor will never be used, but is included to allow quick, simple changes to programs without forcing extra changes or unnecessary syntax.
+     * Shorthand for constructing an Initializer that bypasses selection and simply calls the provided callback function during initialization. 
+     * Ideally, this constructor will never be used, but is included to allow quick, simple changes to programs without forcing extra changes or unnecessary syntax.
      * @param initialize        The callback function used to initialize the robot
      */
     Initializer(std::function<void()> initialize);
@@ -210,9 +211,8 @@ public:
     Initializer(std::vector<Initialization> initializations, std::function<Selector::selector_t> selector,
                 std::function<void()> pre_init = nullptr, std::function<void()> post_init = nullptr);
 
-    /**
-     * Initializes the robot
-     */
+    
+    /// Initializes the robot
     void initialize();
 
     /**

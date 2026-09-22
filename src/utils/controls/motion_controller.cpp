@@ -45,9 +45,7 @@ double MotionController::update(double sensor_val) {
     return out;
 }
 
-/**
- * @return the last saved result from the feedback controller
- */
+/// @return the last saved result from the feedback controller
 double MotionController::get() { return out; }
 
 /**
@@ -69,9 +67,7 @@ bool MotionController::is_on_target() {
   return (tmr.time(vex::timeUnits::sec) > profile.total_time()) && pid.is_on_target();
 }
 
-/**
- * @return The current postion, velocity and acceleration setpoints
- */
+/// @return The current postion, velocity and acceleration setpoints
 motion_t MotionController::get_motion() const { return cur_motion; }
 
 /**

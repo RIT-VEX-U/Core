@@ -58,9 +58,7 @@ double PIDFF::update(double val, double vel_setpt, double a_setpt) {
     return out;
 }
 
-/**
- * @return the last saved result from the feedback controller
- */
+/// @return the last saved result from the feedback controller
 double PIDFF::get() { return out; }
 
 /**
@@ -75,9 +73,7 @@ void PIDFF::set_limits(double lower, double upper) {
     lower_lim = lower;
 }
 
-/**
- * @return true if the feedback controller has reached it's setpoint
- */
+/// @return true if the feedback controller has reached it's setpoint
 bool PIDFF::is_on_target() { return pid.is_on_target(); }
 
 void PIDFF::reset() { pid.reset(); }

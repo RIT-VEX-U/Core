@@ -71,9 +71,8 @@ class RegistryController {
     // Our channels (us -> them)
     
     ChannelID next_channel_id = 0;
-    /**
-     * what the bot does when it recieves a broadcast packet to the board
-     */
+    
+    /// what the bot does when it recieves a broadcast packet to the board
     CallbackFn on_broadcast = [&](VDP::Channel chan) {
         std::string schema_str = chan.data->pretty_print();
         printf(
@@ -83,7 +82,7 @@ class RegistryController {
           int(chan.getID()), schema_str.c_str()
         );
     };
-    /**
+    /*
      * what the bot does when it receives a data packet from the board
      * essentially moves what they give us -> what we have and then updates the parts by calling response
      */

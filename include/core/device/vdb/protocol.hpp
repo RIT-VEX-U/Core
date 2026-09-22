@@ -42,7 +42,6 @@ constexpr size_t MAX_CHANNELS = 256;
 
 class Part;
 // Shared Part Pointer to delete an object that has no pointer pointing to it
-//
 using PartPtr = std::shared_ptr<Part>;
 // Packet of bytes stored in a vector of 8 bit unsigned integers
 using Packet = std::vector<uint8_t>;
@@ -59,9 +58,8 @@ class Channel {
      */
     explicit Channel(PartPtr data) : data(data) {}
     PartPtr data;
-    /*
-     * @return The Channel ID from 0 - 256
-     */
+
+    /// @return The Channel ID from 0 - 256
     ChannelID getID() const;
 
   private:
@@ -78,15 +76,13 @@ class Channel {
     // std::vector
 };
 
-/**
- * Prints out a packet of data
- */
+
+/// Prints out a packet of data
 void dump_packet_hex(const Packet &pac);
 void dump_packet_8bit(const Packet &pac);
 
-/**
- * defines what byte value correspondes to what packet type or packet function
- */
+
+/// defines what byte value correspondes to what packet type or packet function
 enum class PacketType : uint8_t {
   Broadcast = 0b00000000,
   Data = 0b10000000
@@ -112,9 +108,8 @@ enum PacketValidity : uint8_t {
     TooSmall,
 };
 PacketValidity validate_packet(const VDP::Packet &packet);
-/**
- * defines what byte value is what type in a packet
- */
+
+/// defines what byte value is what type in a packet
 enum class Type : uint8_t {
     Record = 0,
     String = 1,
@@ -168,17 +163,14 @@ class Part {
      * i.e after it has been sent to the debug board
      */
     virtual ~Part();
-    /**
-     *  @return a string of the Part with the format "name: string"
-     */
+
+    /// @return a string of the Part with the format "name: string"
     std::string pretty_print() const;
-    /**
-     * @return a string of the Part's data with the format "name: value"
-     */
+
+    /// @return a string of the Part's data with the format "name: value"
     std::string pretty_print_data() const;
-    /*
-     * sets the data the part contains, meant to be overrided
-     */
+    
+    /// sets the data the part contains, meant to be overrided
     virtual void fetch() = 0;
 
     virtual void response();
@@ -226,9 +218,8 @@ class Part {
 
     std::string name;
 };
-/*
- * Defines a PacketReader, it reads packets
- */
+
+/// Defines a PacketReader, it reads packets
 class PacketReader {
   public:
     /**
@@ -242,30 +233,27 @@ class PacketReader {
      * @param start the start location for the reader to start reading from
      */
     PacketReader(Packet pac, size_t start);
-    /**
-     * @return the current byte the reader is on
-     */
+
+    /// @return the current byte the reader is on
     uint8_t get_byte();
-    /**
-     * @return the type of the current byte the reader is on
-     */
+
+    /// @return the type of the current byte the reader is on
     Type get_type();
-    /**
-     * @return a string of bytes the reader is reading until the next 0 byte (end of the Packet)
-     */
+
+    /// @return a string of bytes the reader is reading until the next 0 byte (end of the Packet)
     std::string get_string();
 
-    /**
-     * @return the value stored by a Number Part
-     */
+    /// @return the value stored by a Number Part
     template <typename Number> Number get_number() {
         // ensures that the function is only used on numbers
         static_assert(
           std::is_floating_point<Number>::value || std::is_integral<Number>::value,
           "This function should only be used on numbers"
         );
-        // checks that the size of the number its trying to read combined with its location
-        // doesnt put it past the packet size
+        /* 
+         * checks that the size of the number its trying to read combined with its location
+         * doesnt put it past the packet size
+         */
         if (read_head + sizeof(Number) > pac.size()) {
             printf(
               "%s:%d: Reading a number[%d] at position %d would read past "
@@ -276,8 +264,10 @@ class PacketReader {
             return 0;
         }
         Number value = 0;
-        // copies the the number at the reader head to the Number's stored value and
-        // adds the size of the number to the read head so it moves on to the next set of bits
+        /* 
+         * copies the the number at the reader head to the Number's stored value and
+         * adds the size of the number to the read head so it moves on to the next set of bits
+         */
         std::memcpy(&value, &pac[read_head], sizeof(Number));
         read_head += sizeof(Number);
         return value;
@@ -287,9 +277,8 @@ class PacketReader {
     Packet pac;
     size_t read_head;
 };
-/**
- * Defines a PacketWriter, it writes packets
- */
+
+/// Defines a PacketWriter, it writes packets
 class PacketWriter {
   public:
     /**
@@ -297,13 +286,11 @@ class PacketWriter {
      * @param scratch_space the packet for the writer to write to
      */
     explicit PacketWriter(Packet &scratch_space);
-    /**
-     * clears the packet the writer is writing to
-     */
+    
+    /// clears the packet the writer is writing to
     void clear();
-    /**
-     * @return the size of the packet
-     */
+
+    /// @return the size of the packet
     size_t size();
     /**
      * writes a byte to the end of the packet
@@ -345,13 +332,11 @@ class PacketWriter {
      * @param chan the Channel to write the data from
      */
     void write_request();
-    /**
-     * @return the packet the writer is writing to
-     */
+
+    /// @return the packet the writer is writing to
     const Packet &get_packet() const;
-    /**
-     * writes a number to the end of the packet
-     */
+    
+    /// writes a number to the end of the packet
     template <typename Number> void write_number(const Number &num) {
         std::array<uint8_t, sizeof(Number)> bytes;
         std::memcpy(&bytes, &num, sizeof(Number));
@@ -363,9 +348,8 @@ class PacketWriter {
   private:
     Packet &sofar;
 };
-/**
- * defines a generic device to trasmit packets through
- */
+
+/// defines a generic device to trasmit packets through
 class AbstractDevice {
   public:
     /** Sends a packet over some transmission medium
@@ -381,9 +365,7 @@ class AbstractDevice {
      * me when my ex-wife
      */
     virtual void register_receive_callback(std::function<void(const VDP::Packet &packet)> callback) = 0;
-    /**
-     *  deleter for the device, used to delete it when it is no longer needed
-     */
+    /// deleter for the device, used to delete it when it is no longer needed
     virtual ~AbstractDevice();
 };
 /**

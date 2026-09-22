@@ -51,10 +51,12 @@ template <int STATES, int INPUTS> class LinearPlantInversionFeedforward {
      * @param next_r The next reference state.
      */
     EVec<INPUTS> calculate(const EVec<STATES> &r, const EVec<STATES> &next_r) {
-        // ẋ = Ax + Bu
-        // Bu = ẋ - Ax
-        // u = B \ (ẋ - Ax)
-        // u = B \ (next_r - Br)
+        /*
+         * ẋ = Ax + Bu
+         * Bu = ẋ - Ax
+         * u = B \ (ẋ - Ax)
+         * u = B \ (next_r - Br)
+         */
         uff_ = Bd_.householderQr().solve(next_r - (Ad_ * r));
         r_ = next_r;
 
@@ -84,11 +86,12 @@ template <int STATES, int INPUTS> class LinearPlantInversionFeedforward {
      */
     EVec<INPUTS> calculate(const EVec<STATES> &r, const EVec<STATES> &next_r, const double &dt) {
         auto [Ad, Bd] = discretize_AB(A_, B_, dt);
-
-        // ẋ = Ax + Bu
-        // Bu = ẋ - Ax
-        // u = B \ (ẋ - Ax)
-        // u = B \ (next_r - Br)
+        /*
+         * ẋ = Ax + Bu
+         * Bu = ẋ - Ax
+         * u = B \ (ẋ - Ax)
+         * u = B \ (next_r - Br)
+         */
         uff_ = Bd.householderQr().solve(next_r - (Ad * r));
         r_ = next_r;
 
@@ -117,9 +120,7 @@ template <int STATES, int INPUTS> class LinearPlantInversionFeedforward {
         uff_.setZero();
     }
 
-    /**
-     * Resets the reference to all zeros, and the feedforward to zero.
-     */
+    /// Resets the reference to all zeros, and the feedforward to zero.
     void reset() {
         r_.setZero();
         uff_.setZero();

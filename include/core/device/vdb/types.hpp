@@ -2,7 +2,7 @@
 #include "core/device/vdb/protocol.hpp"
 #include <string>
 namespace VDP {
-/**
+/*
  * Defines a Part that contains another Part
  * essentially an array of parts that is formatted so that it can be sent to the debug board
  */
@@ -47,9 +47,8 @@ class Record : public Part {
 
     std::vector<PartPtr> get_fields() const;
 
-    /**
-     * sets the values of each Part the Record contains
-     */
+    
+    /// sets the values of each Part the Record contains
     void fetch() override;
 
     void response() override;
@@ -77,9 +76,8 @@ class Record : public Part {
 
     std::vector<PartPtr> fields;
 };
-/**
- * A string type conveyed as a part
- */
+
+/// A string type conveyed as a part
 class String : public Part {
     friend PacketReader;
     friend PacketWriter;
@@ -92,14 +90,12 @@ class String : public Part {
      * @param fetcher the fetch function to use when running fetch()
      */
     explicit String(std::string name, FetchFunc fetcher = []() { return "no value"; });
-    /**
-     * function to run when fetching this part, runs the fetch function
-     */
+    
+    /// function to run when fetching this part, runs the fetch function
     void fetch() override;
 
-    /**
-     * function to run when receiving to this part
-     */
+    
+    /// function to run when receiving to this part
     void response() override;
 
     /**
@@ -108,9 +104,7 @@ class String : public Part {
      */
     void set_value(std::string new_value);
 
-    /**
-     * @return the currently stored string
-     */
+    /// @return the currently stored string
     std::string get_value();
 
     PartPtr clone() override;
@@ -145,11 +139,11 @@ class String : public Part {
     std::string value;
 };
 
-// Template to reduce boiler plate for Schema wrappers for simple types
-// Fixed size, numeric types  such as uin8_t, uint32, float, double
-/**
- * A number conveyed as a part
+/*
+ * Template to reduce boiler plate for Schema wrappers for simple types
+ * Fixed size, numeric types  such as uin8_t, uint32, float, double
  */
+/// A number conveyed as a part
 template <typename NumT, Type schemaType> class Number : public Part {
     friend PacketReader;
     friend PacketWriter;
@@ -164,30 +158,28 @@ template <typename NumT, Type schemaType> class Number : public Part {
       "Number type this is instantiated with must be floating point "
       "or integral"
     );
+    
+    /// Function to run when fetching this number
+    using FetchFunc = std::function<NumberType()>; 
     /**
-     * Function to run when fetching this number
-     */
-    using FetchFunc = std::function<NumberType()>; /**
-                                                    * creates a number with a name and fetcher
-                                                    * @param field name for the number part
-                                                    * @param fetcher the function to run when fetching this number
-                                                    */
+      * creates a number with a name and fetcher
+      * @param field name for the number part
+      * @param fetcher the function to run when fetching this number
+      */
     explicit Number(
       std::string field_name, FetchFunc fetcher = []() { return (NumberType)0; }
     )
         : Part(field_name), fetcher(fetcher) {}
-    /**
-     * sets the value of the number stored to the value returned by its fetcher
-     */
+    
+    /// sets the value of the number stored to the value returned by its fetcher
     void fetch() override { value = fetcher(); }
     /**
      * sets the value of the number stored
      * @param val the value to store
      */
     void set_value(NumberType val) { this->value = val; }
-    /**
-     * @return the currently stored number value
-     */
+    
+    /// @return the currently stored number value
     NumberType get_value() { return value; }
     /**
      * prints the Number with the format "[indent]name: schema_string"
@@ -207,8 +199,8 @@ template <typename NumT, Type schemaType> class Number : public Part {
         add_indents(ss, indent);
         ss << name << ":\t";
         if (sizeof(NumberType) == 1) {
-            ss << (int)value; // Otherwise, stringstream interprets uint8 as char and
-                              // prints a char
+          // Otherwise, stringstream interprets uint8 as char and prints a char
+           ss << (int)value; 
         } else {
             ss << value;
         }
@@ -330,9 +322,8 @@ public:
   void Visit(Visitor *) override;
   PartPtr clone() override;
 };
-/**
- * A class for broadly visiting a part and doing some action based on the type of part
- */
+
+/// A class for broadly visiting a part and doing some action based on the type of part
 class Visitor {
 public:
   virtual ~Visitor() {}
@@ -354,9 +345,8 @@ public:
   virtual void VisitInt32(Int32 *) = 0;
   virtual void VisitInt64(Int64 *) = 0;
 };
-/**
- * A class for broadly visiting a part and doing some action based on the upcast type of the part
- */
+
+/// A class for broadly visiting a part and doing some action based on the upcast type of the part
 class UpcastNumbersVisitor : public Visitor {
 public:
   virtual void VisitAnyFloat(const std::string &name, double value,

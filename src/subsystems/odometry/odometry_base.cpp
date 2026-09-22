@@ -38,9 +38,7 @@ int OdometryBase::background_task(void *ptr) {
  */
 void OdometryBase::end_async() { this->end_task = true; }
 
-/**
- * Gets the current position and rotation
- */
+/// Gets the current position and rotation
 Pose2d OdometryBase::get_position(void) {
     mut.lock();
 
@@ -52,9 +50,7 @@ Pose2d OdometryBase::get_position(void) {
     return out;
 }
 
-/**
- * Sets the current position of the robot
- */
+/// Sets the current position of the robot
 void OdometryBase::set_position(const Pose2d &newpos) {
     mut.lock();
 

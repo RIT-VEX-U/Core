@@ -3,9 +3,8 @@
 #include <deque>
 
 namespace VDP {
-/**
- * defines a device registry for sending data or listening to data over a device
- */
+
+/// defines a device registry for sending data or listening to data over a device
 template <typename MutexType> class RegistryListener {
 public:
   int num_bad = 0;
@@ -184,8 +183,10 @@ public:
              (int)id);
       return false;
     }
-    // if it has been acknowledged write the channel's data to a packet and send
-    // it to the device
+    /* 
+     * if it has been acknowledged write the channel's data to a packet and send
+     * it to the device
+     */
     VDP::Packet scratch;
     PacketWriter writ{scratch};
 
@@ -213,9 +214,10 @@ private:
   std::vector<Channel> channels;
   ChannelID next_channel_id = 0;
   std::deque<Channel> chans_to_send;
-
-  // The channels we know about from the other side
-  // (them -> us)
+  /* 
+   * The channels we know about from the other side
+   * (them -> us)
+   */
   std::deque<Channel> channel_response_queue;
 
   MutexType response_queue_mutex;
