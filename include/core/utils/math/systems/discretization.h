@@ -21,10 +21,8 @@ template <int STATES, int INPUTS>
 std::tuple<EMat<STATES, STATES>, EMat<STATES, INPUTS>> discretize_AB(EMat<STATES, STATES> Ac, EMat<STATES, INPUTS> Bc, const double &dt) {
     /* 
      * Form the intermediate matrix M
-     *
      *       [A B]
      *   M = [0 0]
-     *
      */
     EMat<STATES + INPUTS, STATES + INPUTS> M;
     M.template block<STATES, STATES>(0, 0) = Ac;
@@ -32,10 +30,8 @@ std::tuple<EMat<STATES, STATES>, EMat<STATES, INPUTS>> discretize_AB(EMat<STATES
     M.template block<INPUTS, STATES + INPUTS>(STATES, 0).setZero();
 
     /* 
-     *
      *  M * T   [Ad Bd]
      * e      = [0   I]
-     *
      */
     EMat<STATES + INPUTS, STATES + INPUTS> phi = (M * dt).exp();
 

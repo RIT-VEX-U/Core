@@ -52,7 +52,6 @@ public:
    * @param level the level to write. DEBUG, NOTICE, WARNING, ERROR, CRITICAL, TIME
    * @param s the string to write
    */
-  
   void Logln(LogLevel level, const std::string &s);
 
   /**

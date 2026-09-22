@@ -92,7 +92,6 @@ template <int STATES, int INPUTS> class LinearPlantInversionFeedforward {
          * u = B \ (ẋ - Ax)
          * u = B \ (next_r - Br)
          */
-        
         uff_ = Bd.householderQr().solve(next_r - (Ad * r));
         r_ = next_r;
 
