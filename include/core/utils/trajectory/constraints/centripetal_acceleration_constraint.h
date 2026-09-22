@@ -16,7 +16,7 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
    public:
     /**
      * @brief Constructs a CentripetalAccelerationConstraint.
-     * @param maxCentripetalAcceleration Maximum allowed centripetal acceleration.
+     * @param max_centripetal_acceleration Maximum allowed centripetal acceleration.
      */
     explicit CentripetalAccelerationConstraint(units::Acceleration max_centripetal_acceleration)
         : max_centripetal_acceleration_(max_centripetal_acceleration) {}

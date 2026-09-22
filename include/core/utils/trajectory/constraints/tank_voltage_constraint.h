@@ -21,8 +21,8 @@ class TankVoltageConstraint : public TrajectoryConstraint {
      * @brief Constructs a TankVoltageConstraint.
      * @param Kv Linear velocity feedforward constant.
      * @param Ka Linear acceleration feedforward constant.
-     * @param maxVoltage Maximum available voltage.
-     * @param trackWidth Robot track width (distance between left and right wheels).
+     * @param max_voltage Maximum available voltage.
+     * @param track_width Robot track width (distance between left and right wheels).
      */
     TankVoltageConstraint(
             units::LinearVelocityFeedforward Kv,
