@@ -40,7 +40,7 @@ DriveForwardCommand::DriveForwardCommand(
  */
 bool DriveForwardCommand::run() { return drive_sys.drive_forward(inches, dir, feedback, max_speed, end_speed); }
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string DriveForwardCommand::toString() {
     std::string returnStr = "Driving ";
     switch (dir) {
@@ -131,7 +131,7 @@ DriveToPointCommand::DriveToPointCommand(
 
 bool DriveToPointCommand::run() { return drive_sys.drive_to_point(x, y, dir, feedback, max_speed, end_speed); }
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string DriveToPointCommand::toString() {
     std::string returnStr = "Driving ";
     returnStr.append((dir == vex::directionType::fwd) ? "forwards at " : "reverse at ");
@@ -177,7 +177,7 @@ bool TurnToPointCommand::run() {
     return drive_sys.turn_to_heading(heading, max_speed, end_speed);
 }
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string TurnToPointCommand::toString() {
 
     std::string returnStr = "Turning ";
@@ -239,7 +239,7 @@ PurePursuitCommand::PurePursuitCommand(
 /// Direct call to TankDrive::pure_pursuit
 bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedback, max_speed, end_speed); }
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string PurePursuitCommand::toString() {
     std::string returnStr = "Driving through ";
     std::vector<Translation2d> thePoints = path.get_points();
@@ -263,7 +263,7 @@ void PurePursuitCommand::on_timeout() {
  */
 DriveStopCommand::DriveStopCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string DriveStopCommand::toString() { return "Stopping the drive"; }
 
 void DriveStopCommand::on_timeout() { drive_sys.reset_auto(); }
@@ -286,7 +286,7 @@ bool DriveStopCommand::run() {
  */
 OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odom(odom), newpos(newpos) {}
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string OdomSetPosition::toString() {
     return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) +
            ", ROT: " + double_to_string(newpos.rotation().degrees());

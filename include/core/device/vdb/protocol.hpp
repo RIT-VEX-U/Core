@@ -219,7 +219,7 @@ class Part {
     std::string name;
 };
 
-// Defines a PacketReader, it reads packets
+/// Defines a PacketReader, it reads packets
 class PacketReader {
   public:
     /**
@@ -236,8 +236,10 @@ class PacketReader {
 
     /// @return the current byte the reader is on
     uint8_t get_byte();
+
     /// @return the type of the current byte the reader is on
     Type get_type();
+
     /// @return a string of bytes the reader is reading until the next 0 byte (end of the Packet)
     std::string get_string();
 
@@ -276,7 +278,7 @@ class PacketReader {
     size_t read_head;
 };
 
-// Defines a PacketWriter, it writes packets
+/// Defines a PacketWriter, it writes packets
 class PacketWriter {
   public:
     /**
@@ -287,6 +289,7 @@ class PacketWriter {
     
     /// clears the packet the writer is writing to
     void clear();
+
     /// @return the size of the packet
     size_t size();
     /**
@@ -329,6 +332,7 @@ class PacketWriter {
      * @param chan the Channel to write the data from
      */
     void write_request();
+
     /// @return the packet the writer is writing to
     const Packet &get_packet() const;
     

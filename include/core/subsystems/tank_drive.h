@@ -227,7 +227,6 @@ class TankDrive {
      */
     bool turn_to_heading(double heading_deg, double max_speed = 1, double end_speed = 0);
 
-    
     /// Reset the initialization for autonomous drive functions
     void reset_auto();
 

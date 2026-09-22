@@ -53,8 +53,6 @@ EMat<STATES, STATES> DARE(
      * G₀ = BR⁻¹Bᵀ
      * H₀ = Q
      */
-    
-
     StateMatrix A_k = A;
     StateMatrix G_k = B * R_llt.solve(B.transpose());
     StateMatrix H_k;
@@ -87,14 +85,12 @@ EMat<STATES, STATES> DARE(
          * V₂ᵀ = W.solve(Gₖᵀ)
          * V₂ = W.solve(Gₖᵀ)ᵀ
          */
-        
         StateMatrix V_2 = W_solver.solve(G_k.transpose()).transpose();
         /* 
          * Gₖ₊₁ = Gₖ + AₖV₂Aₖᵀ
          * Hₖ₊₁ = Hₖ + V₁ᵀHₖAₖ
          * Aₖ₊₁ = AₖV₁
          */
-        
         G_k += A_k * V_2 * A_k.transpose();
         H_k1 = H_k + V_1.transpose() * H_k * A_k;
         A_k *= V_1;

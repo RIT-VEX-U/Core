@@ -12,7 +12,6 @@
  * EVec<DIM>
  * EMAT<ROWS, COLS>
  */
-
 template <int DIM>
 using EVec = Eigen::Vector<double, DIM>;
 

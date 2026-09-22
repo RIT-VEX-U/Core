@@ -167,7 +167,6 @@ public:
     return current_pos;
   }
 
-  
   /// Resets the position and rotational data to the input.
   void set_position(const Pose2d &newpos) override {
     mut.lock();

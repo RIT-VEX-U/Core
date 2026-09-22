@@ -35,11 +35,9 @@ public:
    */
   double get_target() const;
 
-  
   /// return the velocity of the flywheel
   double getRPM() const;
 
-  
   /// Returns the motors
   vex::motor_group &get_motors() const;
 

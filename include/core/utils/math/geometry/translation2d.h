@@ -22,7 +22,6 @@ class Translation2d {
   public:
     /// Default Constructor for Translation2d
     constexpr Translation2d() : m_x(0), m_y(0) {}
-    
     /**
      * Constructs a Translation2d with the given x and y values.
      *

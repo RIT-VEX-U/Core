@@ -86,7 +86,6 @@ class RegistryController {
      * what the bot does when it receives a data packet from the board
      * essentially moves what they give us -> what we have and then updates the parts by calling response
      */
-    
     CallbackFn on_data = [&](VDP::Channel new_data) {
         ResponsePacketVisitor RV(new_data.data);
         PartPtr original_data = channels[new_data.id].data;

@@ -43,7 +43,7 @@ public:
    */
   bool run() override;
 
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
   
   /// Cleans up drive system if we time out before finishing
@@ -79,8 +79,7 @@ public:
    */
   bool run() override;
 
-  
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
   
   /// Cleans up drive system if we time out before finishing
@@ -117,14 +116,12 @@ public:
    */
   bool run() override;
 
-  
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
 private:
   // drive system to run the function on
   TankDrive &drive_sys;
 
-  
   /// Cleans up drive system if we time out before finishing
   void on_timeout() override;
 
@@ -147,8 +144,7 @@ class TurnToPointCommand: public AutoCommand{
 
     bool run() override;
 
-    
-    // Returns a string describing the commands functionality
+    /// Returns a string describing the commands functionality
     std::string toString() override;
 
   private:
@@ -179,11 +175,9 @@ public:
    */
   bool run() override;
 
-  
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
 
-  
   /// Cleans up drive system if we time out before finishing
   void on_timeout() override;
 
@@ -216,11 +210,10 @@ public:
   PurePursuitCommand(TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, vex::directionType dir,
                      double max_speed = 1, double end_speed = 0);
 
-  
   /// Direct call to TankDrive::pure_pursuit
   bool run() override;
 
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
 
   /// Reset the drive system when it times out
@@ -250,7 +243,7 @@ public:
    */
   bool run() override;
 
-  // Returns a string describing the commands functionality
+  /// Returns a string describing the commands functionality
   std::string toString() override;
   
   void on_timeout() override;
@@ -281,7 +274,8 @@ public:
    * @returns true when execution is complete, false otherwise
    */
   bool run() override;
-  // Returns a string describing the commands functionality
+  
+  /// Returns a string describing the commands functionality
   std::string toString() override;
 private:
   // drive system with an odometry config

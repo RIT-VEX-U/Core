@@ -111,15 +111,12 @@ class OdometryBase {
 
     inline static constexpr Pose2d zero_pos = Pose2d();
 
-    
     /// handle to the vex task that is running the odometry code
     vex::task *handle;
 
-    
     /// Mutex to control multithreading
     vex::mutex mut;
 
-    
     /// Current position of the robot in terms of x,y,rotation
     Pose2d current_pos;
 

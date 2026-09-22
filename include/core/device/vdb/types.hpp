@@ -77,8 +77,7 @@ class Record : public Part {
     std::vector<PartPtr> fields;
 };
 
-// A string type conveyed as a part
-
+/// A string type conveyed as a part
 class String : public Part {
     friend PacketReader;
     friend PacketWriter;
@@ -144,8 +143,7 @@ class String : public Part {
  * Template to reduce boiler plate for Schema wrappers for simple types
  * Fixed size, numeric types  such as uin8_t, uint32, float, double
  */
-
-// A number conveyed as a part
+/// A number conveyed as a part
 template <typename NumT, Type schemaType> class Number : public Part {
     friend PacketReader;
     friend PacketWriter;

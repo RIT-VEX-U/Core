@@ -16,7 +16,7 @@ namespace VDP {
 /// @return the channel's id
 ChannelID Channel::getID() const { return id; }
 
-// prints out the packet in individual bytes
+/// prints out the packet in individual bytes
 void dump_packet_hex(const Packet &pac) {
   int i = 0;
   for (const uint8_t d : pac) {

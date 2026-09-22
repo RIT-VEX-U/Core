@@ -175,7 +175,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class KalmanFilter {
          *   K = (Py \ CPᵀ)ᵀ
          *
          */
-        
         EMat<STATES, ROWS> K = Py.transpose().ldlt().solve(C * P_.transpose()).transpose();
         /* 
          * Compute the posterior mean

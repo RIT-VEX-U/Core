@@ -217,7 +217,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
          *
          * equation (17)
          */
-        
         EMat<STATES, NUM_SIGMAS> sigmas = pts_.square_root_sigma_points(xhat_, S_);
 
         /* 
@@ -230,7 +229,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
          *
          * equation (18)
          */
-       
         for (int i = 0; i < NUM_SIGMAS; ++i) {
             StateVector x = sigmas.template block<STATES, 1>(0, i);
             sigmas_F_.template block<STATES, 1>(0, i) = integrator_(f_, x, u, dt);
@@ -241,7 +239,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
          *
          * equations (18) (19) and (20)
          */
-        
         auto [xhat, S] = square_root_ut<STATES, STATES>(
           sigmas_F_, pts_.Wm(), pts_.Wc(), mean_func_X_, residual_func_X_,
           Q.template triangularView<Eigen::Lower>()
@@ -374,7 +371,6 @@ template <int STATES, int INPUTS, int OUTPUTS> class UnscentedKalmanFilter {
          *
          * equation (26)
          */
-        
         EMat<STATES, ROWS> Pxy;
         Pxy.setZero();
         for (int i = 0; i < NUM_SIGMAS; ++i) {
@@ -487,7 +483,6 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
      *
      * the part of equations (20) and (24) within the "qr{}"
      */
-    
     EMat<COV_DIM, NUM_SIGMAS - 1 + COV_DIM> S_bar;
     for (int i = 0; i < NUM_SIGMAS - 1; i++) {
         S_bar.template block<COV_DIM, 1>(0, i) =
@@ -508,7 +503,6 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
      *
      * equations (20) and (24)
      */
-    
     EMat<COV_DIM, COV_DIM> S = S_bar.transpose()
                                  .householderQr()
                                  .matrixQR()
@@ -521,7 +515,6 @@ std::tuple<EVec<COV_DIM>, EMat<COV_DIM, COV_DIM>> square_root_ut(
      *
      * equations (21) and (25)
      */
-    
     Eigen::internal::llt_inplace<double, Eigen::Lower>::rankUpdate(
       S, residual_func(sigmas.template block<COV_DIM, 1>(0, 0), x), Wc[0]
     );
