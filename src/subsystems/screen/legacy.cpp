@@ -131,17 +131,17 @@ void OdometryPage::draw(
     }
 
     auto to_px = [](const Translation2d p) -> EVec<2> {
-        return {(double)in_to_px(p.x_.to(units::in)) + 200, (double)in_to_px(-p.y_.to(units::in)) + 240};
+        return {(double)in_to_px(p.x(units::in)) + 200, (double)in_to_px(-p.y(units::in)) + 240};
     };
 
     auto draw_line = [to_px, &scr](const Translation2d from, const Translation2d to) {
         scr.drawLine((int)to_px(from).x(), (int)to_px(from).y(), (int)to_px(to).x(), (int)to_px(to).y());
     };
 
-    Translation2d pos = pose.translation_;
+    Translation2d pos = pose.translation();
     fflush(stdout);
-    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x().to(units::in), pose.y().to(units::in));
-    scr.printAt(45, 50, "%.2f deg", pose.rotation_.degrees());
+    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x(units::in), pose.y(units::in));
+    scr.printAt(45, 50, "%.2f deg", pose.rotation().degrees());
 
     double speed = odom.get_speed();
     scr.printAt(45, 80, "%.2f speed", speed);
@@ -165,7 +165,7 @@ void OdometryPage::draw(
             Pose2d pose = path[j];
             scr.setPenWidth(2);
             scr.setPenColor(vex::color(255, 255, 80));
-            draw_line(pose.translation_, last_pos.translation_);
+            draw_line(pose.translation(), last_pos.translation());
             last_pos = pose;
         }
     }
@@ -178,7 +178,7 @@ void OdometryPage::draw(
     Translation2d back_left(units::Length(-robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
     Translation2d back_right(units::Length(robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
 
-    const Rotation2d drawing_rotation = pose.rotation_ - Rotation2d(units::Angle(90, units::deg));
+    const Rotation2d drawing_rotation = pose.rotation() - Rotation2d(units::Angle(90, units::deg));
     front_left = pos + front_left.rotate_by(drawing_rotation);
     front_right = pos + front_right.rotate_by(drawing_rotation);
     back_left = pos + back_left.rotate_by(drawing_rotation);

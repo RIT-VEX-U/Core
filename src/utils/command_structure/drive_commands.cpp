@@ -125,10 +125,10 @@ DriveToPointCommand::DriveToPointCommand(
   TankDrive &drive_sys, Feedback &feedback, Translation2d translation, vex::directionType dir, double max_speed,
   double end_speed
 )
-    : drive_sys(drive_sys), feedback(feedback), x(translation.x_.to(units::in)), y(translation.y_.to(units::in)), dir(dir), max_speed(max_speed),
+    : drive_sys(drive_sys), feedback(feedback), x(translation.x(units::in)), y(translation.y(units::in)), dir(dir), max_speed(max_speed),
       end_speed(end_speed) {
-    x = translation.x_.to(units::in);
-    y = translation.y_.to(units::in);
+    x = translation.x(units::in);
+    y = translation.y(units::in);
 }
 
 /**
@@ -168,17 +168,17 @@ TurnToPointCommand::TurnToPointCommand(
 TurnToPointCommand::TurnToPointCommand(
   TankDrive &drive_sys, Translation2d translation, vex::directionType dir, double max_speed, double end_speed
 )
-    : drive_sys(drive_sys), x(translation.x_.to(units::in)), y(translation.y_.to(units::in)), dir(dir), max_speed(max_speed),
+    : drive_sys(drive_sys), x(translation.x(units::in)), y(translation.y(units::in)), dir(dir), max_speed(max_speed),
       end_speed(end_speed) {
-    x = translation.x_.to(units::in);
-    y = translation.y_.to(units::in);
+    x = translation.x(units::in);
+    y = translation.y(units::in);
 }
 
 bool TurnToPointCommand::run() {
     if (!func_initialized) {
         Pose2d pose = drive_sys.get_position();
-        double dy = y - pose.y().to(units::in);
-        double dx = x - pose.x().to(units::in);
+        double dy = y - pose.y(units::in);
+        double dx = x - pose.x(units::in);
         heading = Rotation2d::rad2deg(atan2(dy, dx));
         if (dir != vex::directionType::fwd) {
             heading += 180.0;
@@ -267,7 +267,7 @@ std::string PurePursuitCommand::toString() {
     std::vector<Translation2d> thePoints = path.get_points();
     for (int i = 0; i < thePoints.size(); i++) {
         returnStr.append("(");
-        returnStr.append(double_to_string(thePoints.at(i).x_.to(units::in)) + ", " + double_to_string(thePoints.at(i).y_.to(units::in)) + ") \n");
+        returnStr.append(double_to_string(thePoints.at(i).x(units::in)) + ", " + double_to_string(thePoints.at(i).y(units::in)) + ") \n");
     }
     returnStr.append(" at " + double_to_string(max_speed * 100) + "% speed");
     return returnStr;
@@ -316,8 +316,8 @@ OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odo
  * Returns a string describing the commands functionality
  */
 std::string OdomSetPosition::toString() {
-    return "Setting position to X: " + double_to_string(newpos.x().to(units::in)) + ", Y: " + double_to_string(newpos.y().to(units::in)) +
-           ", ROT: " + double_to_string(newpos.rotation_.degrees());
+    return "Setting position to X: " + double_to_string(newpos.x(units::in)) + ", Y: " + double_to_string(newpos.y(units::in)) +
+           ", ROT: " + double_to_string(newpos.rotation().degrees());
 }
 
 bool OdomSetPosition::run() {

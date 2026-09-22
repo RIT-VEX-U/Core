@@ -1,101 +1,73 @@
 #include "core/subsystems/tank_drive.h"
-
 #include "core/utils/command_structure/drive_commands.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
-TankDrive::TankDrive(
-        vex::motor_group& left_motors, vex::motor_group& right_motors, robot_specs_t& config,
-        OdometryBase* odom
-)
-    : left_motors(left_motors),
-      right_motors(right_motors),
-      odometry(odom),
-      correction_pid(config.correction_pid),
+TankDrive::TankDrive(vex::motor_group &left_motors, vex::motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
+    : left_motors(left_motors), right_motors(right_motors), odometry(odom), correction_pid(config.correction_pid),
       config(config) {
     drive_default_feedback = config.drive_feedback;
     turn_default_feedback = config.turn_feedback;
 }
 
-AutoCommand* TankDrive::DriveToPointCmd(
-        Feedback& fb, Translation2d pt, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *
+TankDrive::DriveToPointCmd(Feedback &fb, Translation2d pt, vex::directionType dir, double max_speed, double end_speed) {
     return new DriveToPointCommand(*this, fb, pt, dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::DriveToPointCmd(
-        Translation2d pt, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::DriveToPointCmd(Translation2d pt, vex::directionType dir, double max_speed, double end_speed) {
     return new DriveToPointCommand(*this, *drive_default_feedback, pt, dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::DriveToPointCmd(
-        double x, double y, vex::directionType dir, double max_speed, double end_speed
-) {
-    return new DriveToPointCommand(
-            *this, *drive_default_feedback,
-            Translation2d(units::Length(x, units::in), units::Length(y, units::in)), dir, max_speed,
-            end_speed
-    );
+AutoCommand *
+TankDrive::DriveToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
+    return new DriveToPointCommand(*this, *drive_default_feedback, Translation2d(units::Length(x, units::in), units::Length(y, units::in)), dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::DriveForwardCmd(
-        double dist, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::DriveForwardCmd(double dist, vex::directionType dir, double max_speed, double end_speed) {
     return new DriveForwardCommand(*this, *drive_default_feedback, dist, dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::DriveForwardCmd(
-        Feedback& fb, double dist, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *
+TankDrive::DriveForwardCmd(Feedback &fb, double dist, vex::directionType dir, double max_speed, double end_speed) {
     return new DriveForwardCommand(*this, fb, dist, dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::TurnToHeadingCmd(double heading, double max_speed, double end_speed) {
+AutoCommand *TankDrive::TurnToHeadingCmd(double heading, double max_speed, double end_speed) {
     return new TurnToHeadingCommand(*this, *turn_default_feedback, heading, max_speed, end_speed);
 }
-AutoCommand* TankDrive::TurnToHeadingCmd(
-        Feedback& fb, double heading, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::TurnToHeadingCmd(Feedback &fb, double heading, double max_speed, double end_speed) {
     return new TurnToHeadingCommand(*this, fb, heading, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::TurnToPointCmd(
-        Translation2d point, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *
+TankDrive::TurnToPointCmd(Translation2d point, vex::directionType dir, double max_speed, double end_speed) {
     return new TurnToPointCommand(*this, point, dir, max_speed, end_speed);
 }
-AutoCommand* TankDrive::TurnToPointCmd(
-        double x, double y, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::TurnToPointCmd(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
     return new TurnToPointCommand(*this, x, y, dir, max_speed, end_speed);
 }
 
-AutoCommand* TankDrive::TurnDegreesCmd(double degrees, double max_speed, double end_speed) {
+AutoCommand *TankDrive::TurnDegreesCmd(double degrees, double max_speed, double end_speed) {
     return new TurnDegreesCommand(*this, *turn_default_feedback, degrees, max_speed, end_speed);
 }
-AutoCommand* TankDrive::TurnDegreesCmd(
-        Feedback& fb, double degrees, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::TurnDegreesCmd(Feedback &fb, double degrees, double max_speed, double end_speed) {
     return new TurnDegreesCommand(*this, fb, degrees, max_speed, end_speed);
 }
-AutoCommand* TankDrive::PurePursuitCmd(
-        PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed
-) {
+AutoCommand *TankDrive::PurePursuitCmd(PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed) {
     return new PurePursuitCommand(*this, *drive_default_feedback, path, dir, max_speed, end_speed);
 }
-AutoCommand* TankDrive::PurePursuitCmd(
-        Feedback& feedback, PurePursuit::Path path, vex::directionType dir, double max_speed,
-        double end_speed
+AutoCommand *TankDrive::PurePursuitCmd(
+  Feedback &feedback, PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed
 ) {
     return new PurePursuitCommand(*this, feedback, path, dir, max_speed, end_speed);
 }
 
-Condition* TankDrive::DriveStalledCondition(double stall_time) {
+Condition *TankDrive::DriveStalledCondition(double stall_time) {
     class DriveStalledCondition : public Condition {
-       public:
-        DriveStalledCondition(TankDrive& td, double stall_time) : td(td), stalled_for(stall_time) {}
+      public:
+        DriveStalledCondition(TankDrive &td, double stall_time) : td(td), stalled_for(stall_time) {}
         bool test() override {
             if (!func_initialized) {
                 stopped_timer.reset();
@@ -106,28 +78,26 @@ Condition* TankDrive::DriveStalledCondition(double stall_time) {
             }
             return stopped_timer.value() > stalled_for;
         }
-        TankDrive& td;
+        TankDrive &td;
         vex::timer stopped_timer;
         double stalled_for = 10.0;
         bool func_initialized = false;
     };
     return new DriveStalledCondition(*this, stall_time);
 }
-AutoCommand* TankDrive::DriveTankCmd(double left, double right) {
+AutoCommand *TankDrive::DriveTankCmd(double left, double right) {
     class DriveTankCommand : public AutoCommand {
-       public:
-        DriveTankCommand(TankDrive& td, double left, double right)
-            : td(td), left(left), right(right) {}
+      public:
+        DriveTankCommand(TankDrive &td, double left, double right) : td(td), left(left), right(right) {}
         bool run() override {
             td.drive_tank(left, right);
             return false;
         }
         std::string toString() override {
-            return "Driving Tank with left: " + double_to_string(left) +
-                   " right: " + double_to_string(right);
+            return "Driving Tank with left: " + double_to_string(left) + " right: " + double_to_string(right);
         }
         void on_timeout() override { td.stop(); }
-        TankDrive& td;
+        TankDrive &td;
         double left = 0;
         double right = 0;
     };
@@ -166,11 +136,11 @@ bool captured_position = false;
 bool was_breaking = false;
 
 void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
+
     left = modify_inputs(left, power);
     right = modify_inputs(right, power);
     double brake_threshold = 0.05;
-    bool should_brake = (bt != BrakeType::None) && fabs(left) < brake_threshold &&
-                        fabs(right) < brake_threshold;
+    bool should_brake = (bt != BrakeType::None) && fabs(left) < brake_threshold && fabs(right) < brake_threshold;
 
     if (!should_brake) {
         drive_tank_raw(left, right);
@@ -185,8 +155,7 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
 
     if (bt == BrakeType::ZeroVelocity) {
         zero_vel_pid.set_target(0);
-        double vel = left_motors.velocity(vex::velocityUnits::pct) +
-                     right_motors.velocity(vex::velocityUnits::pct);
+        double vel = left_motors.velocity(vex::velocityUnits::pct) + right_motors.velocity(vex::velocityUnits::pct);
         double outp = zero_vel_pid.update(vel);
         left_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
         right_motors.spin(vex::directionType::fwd, outp, vex::voltageUnits::volt);
@@ -199,13 +168,9 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
             target_pose = odometry->get_position();
             captured_position = true;
         } else if (captured_position) {
-            double dist_to_target =
-                    target_pose.translation_.distance(odometry->get_position().translation_)
-                            .to(units::in);
+            double dist_to_target = target_pose.translation().distance(odometry->get_position().translation()).to(units::in);
             if (dist_to_target < 12.0) {
-                drive_to_point(
-                        target_pose.x().to(units::in), target_pose.y().to(units::in), vex::fwd
-                );
+                drive_to_point(target_pose.x(units::in), target_pose.y(units::in), vex::fwd);
             } else {
                 target_pose = odometry->get_position();
                 reset_auto();
@@ -242,15 +207,13 @@ void TankDrive::drive_arcade(double forward_back, double left_right, int power, 
  * Returns whether or not the robot has reached it's destination.
  * @param inches     the distance to drive forward
  * @param dir        the direction we want to travel forward and backward
- * @param feedback   the custom feedback controller we will use to travel. controls the rate at
- * which we accelerate and drive.
- * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full
- * power
+ * @param feedback   the custom feedback controller we will use to travel. controls the rate at which we accelerate and
+ * drive.
+ * @param max_speed  the maximum percentage of robot speed at which the robot will travel. 1 = full power
  * @param end_speed  the movement profile will attempt to reach this velocity by its completion
  */
 bool TankDrive::drive_forward(
-        double inches, vex::directionType dir, Feedback& feedback, double max_speed,
-        double end_speed
+  double inches, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
     static Pose2d pos_setpt;
 
@@ -275,18 +238,15 @@ bool TankDrive::drive_forward(
         }
         // Use vector math to get an X and Y
         Translation2d current_pos(cur_pos.x(), cur_pos.y());
-        Translation2d delta_pos(units::Length(inches, units::in), cur_pos.rotation_);
+        Translation2d delta_pos(units::Length(inches, units::in), cur_pos.rotation());
         Translation2d setpt_vec = current_pos + delta_pos;
 
         // Save the new X and Y values as a Pose
-        pos_setpt = Pose2d(setpt_vec, pos_setpt.rotation_);
+        pos_setpt = Pose2d(setpt_vec.x(), setpt_vec.y(), pos_setpt.rotation());
     }
 
     // Call the drive_to_point with updated point values
-    return drive_to_point(
-            pos_setpt.x().to(units::in), pos_setpt.y().to(units::in), dir, feedback, max_speed,
-            end_speed
-    );
+    return drive_to_point(pos_setpt.x(units::in), pos_setpt.y(units::in), dir, feedback, max_speed, end_speed);
 }
 /**
  * Autonomously drive the robot forward a certain distance
@@ -301,9 +261,7 @@ bool TankDrive::drive_forward(
  * by its completion
  * @return true if we have finished driving to our point
  */
-bool TankDrive::drive_forward(
-        double inches, vex::directionType dir, double max_speed, double end_speed
-) {
+bool TankDrive::drive_forward(double inches, vex::directionType dir, double max_speed, double end_speed) {
     if (drive_default_feedback != NULL) {
         return drive_forward(inches, dir, *drive_default_feedback, max_speed, end_speed);
     }
@@ -330,9 +288,7 @@ bool TankDrive::drive_forward(
  * by its completion
  * @return true if we have turned our target number of degrees
  */
-bool TankDrive::turn_degrees(
-        double degrees, Feedback& feedback, double max_speed, double end_speed
-) {
+bool TankDrive::turn_degrees(double degrees, Feedback &feedback, double max_speed, double end_speed) {
     // We can't run the auto drive function without odometry
     if (odometry == NULL) {
         fprintf(stderr, "Odometry is NULL. Unable to run turn_degrees()\n");
@@ -344,7 +300,7 @@ bool TankDrive::turn_degrees(
 
     // On the first run of the funciton, reset the gyro position and PID
     if (!func_initialized) {
-        double start_heading = odometry->get_position().rotation_.degrees();
+        double start_heading = odometry->get_position().rotation().degrees();
         target_heading = start_heading + degrees;
     }
 
@@ -393,8 +349,7 @@ bool TankDrive::turn_degrees(double degrees, double max_speed, double end_speed)
  * @return true if we have reached our target point
  */
 bool TankDrive::drive_to_point(
-        double x, double y, vex::directionType dir, Feedback& feedback, double max_speed,
-        double end_speed
+  double x, double y, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
     // We can't run the auto drive function without odometry
     if (odometry == NULL) {
@@ -404,13 +359,8 @@ bool TankDrive::drive_to_point(
     }
 
     if (!func_initialized) {
-        double initial_dist =
-                odometry->get_position()
-                        .translation_
-                        .distance(Translation2d(
-                                units::Length(x, units::in), units::Length(y, units::in)
-                        ))
-                        .to(units::in);
+
+        double initial_dist = odometry->get_position().translation().distance(Translation2d(units::Length(x, units::in), units::Length(y, units::in))).to(units::in);
 
         // Reset the control loops
         correction_pid.init(0, 0);
@@ -432,7 +382,7 @@ bool TankDrive::drive_to_point(
     Translation2d the_point(pos_diff_pt);
 
     // Get the distance between 2 points
-    double dist_left = current_pos.translation_.distance(end_pos.translation_).to(units::in);
+    double dist_left = current_pos.translation().distance(end_pos.translation()).to(units::in);
 
     int sign = 1;
 
@@ -440,8 +390,8 @@ bool TankDrive::drive_to_point(
     // point. If the point is behind that line, and the point is within the
     // robot's radius, use negatives for feedback control.
 
-    double angle_to_point = units::atan2(units::Length(y, units::in) - current_pos.y(), units::Length(x, units::in) - current_pos.x()).to(units::deg);
-    double angle = fmod(current_pos.rotation_.degrees() - angle_to_point, 360.0);
+    double angle_to_point = atan2(y - current_pos.y(units::in), x - current_pos.x(units::in)) * 180.0 / PI;
+    double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 
     // Normalize the angle between 0 and 360
     if (angle > 360) {
@@ -459,8 +409,8 @@ bool TankDrive::drive_to_point(
     }
 
     if (fabs(dist_left) < config.drive_correction_cutoff) {
-        // When inside the robot's cutoff radius, report the distance to the point along the robot's
-        // forward axis, so we always "reach" the point without having to do a lateral translation
+        // When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
+        // so we always "reach" the point without having to do a lateral translation
         dist_left *= fabs(cos(angle * PI / 180.0));
     }
 
@@ -471,10 +421,9 @@ bool TankDrive::drive_to_point(
 
     // Going backwards "flips" the robot's current heading
     if (dir == vex::directionType::fwd) {
-        delta_heading = OdometryBase::smallest_angle(current_pos.rotation_.degrees(), heading);
+        delta_heading = OdometryBase::smallest_angle(current_pos.rotation().degrees(), heading);
     } else {
-        delta_heading =
-                OdometryBase::smallest_angle(current_pos.rotation_.degrees() - 180, heading);
+        delta_heading = OdometryBase::smallest_angle(current_pos.rotation().degrees() - 180, heading);
     }
 
     // Update the PID controllers with new information
@@ -532,9 +481,7 @@ bool TankDrive::drive_to_point(
  * its completion
  * @return true if we have reached our target point
  */
-bool TankDrive::drive_to_point(
-        double x, double y, vex::directionType dir, double max_speed, double end_speed
-) {
+bool TankDrive::drive_to_point(double x, double y, vex::directionType dir, double max_speed, double end_speed) {
     if (drive_default_feedback != NULL) {
         return this->drive_to_point(x, y, dir, *drive_default_feedback, max_speed, end_speed);
     }
@@ -558,9 +505,7 @@ bool TankDrive::drive_to_point(
  * its completion
  * @return true if we have reached our target heading
  */
-bool TankDrive::turn_to_heading(
-        double heading_deg, Feedback& feedback, double max_speed, double end_speed
-) {
+bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double max_speed, double end_speed) {
     // We can't run the auto drive function without odometry
     if (odometry == NULL) {
         fprintf(stderr, "Odometry is NULL. Unable to run drive_forward()\n");
@@ -569,9 +514,7 @@ bool TankDrive::turn_to_heading(
     }
 
     if (!func_initialized) {
-        double initial_delta = OdometryBase::smallest_angle(
-                odometry->get_position().rotation_.degrees(), heading_deg
-        );
+        double initial_delta = OdometryBase::smallest_angle(odometry->get_position().rotation().degrees(), heading_deg);
         feedback.init(-initial_delta, 0);
         feedback.set_limits(-fabs(max_speed), fabs(max_speed));
 
@@ -580,9 +523,7 @@ bool TankDrive::turn_to_heading(
 
     // Get the difference between the new heading and the current, and decide
     // whether to turn left or right.
-    double delta_heading = OdometryBase::smallest_angle(
-            odometry->get_position().rotation_.degrees(), heading_deg
-    );
+    double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rotation().degrees(), heading_deg);
     feedback.update(-delta_heading);
 
     fflush(stdout);
@@ -627,9 +568,7 @@ bool TankDrive::turn_to_heading(double heading_deg, double max_speed, double end
  * @return input^power accounting for any sign issues that would arise with this
  * naive solution
  */
-double TankDrive::modify_inputs(double input, int power) {
-    return sign(input) * pow(std::abs(input), power);
-}
+double TankDrive::modify_inputs(double input, int power) { return sign(input) * pow(std::abs(input), power); }
 
 /**
  * Drive the robot autonomously using a pure-pursuit algorithm - Input path with
@@ -643,14 +582,11 @@ double TankDrive::modify_inputs(double input, int power) {
  * @return True when the path is complete
  */
 bool TankDrive::pure_pursuit(
-        PurePursuit::Path path, vex::directionType dir, Feedback& feedback, double max_speed,
-        double end_speed
+  PurePursuit::Path path, vex::directionType dir, Feedback &feedback, double max_speed, double end_speed
 ) {
     std::vector<Translation2d> points = path.get_points();
     if (!path.is_valid()) {
-        printf(
-                "WARNING: Unexpected pure pursuit path - some segments intersect or are too close\n"
-        );
+        printf("WARNING: Unexpected pure pursuit path - some segments intersect or are too close\n");
     }
     Pose2d robot_pose = odometry->get_position();
 
@@ -665,35 +601,31 @@ bool TankDrive::pure_pursuit(
         func_initialized = true;
     }
 
-    Translation2d lookahead =
-            PurePursuit::get_lookahead(points, odometry->get_position(), path.get_radius());
-    Translation2d localized = lookahead - robot_pose.translation_;
+    Translation2d lookahead = PurePursuit::get_lookahead(points, odometry->get_position(), path.get_radius());
+    Translation2d localized = lookahead - robot_pose.translation();
 
     Translation2d last_point = points[points.size() - 1];
     bool is_last_point = (lookahead == last_point);
 
     double correction = 0;
-    double dist_remaining =
-            PurePursuit::estimate_remaining_dist(points, robot_pose, path.get_radius());
+    double dist_remaining = PurePursuit::estimate_remaining_dist(points, robot_pose, path.get_radius());
     double angle_diff = 0;
 
     // Robot is facing forwards / backwards, change the bot's angle by 180
     if (dir != vex::directionType::rev) {
-        angle_diff = OdometryBase::smallest_angle(
-                robot_pose.rotation_.degrees(), units::atan2(localized.y_, localized.x_).to(units::deg)
-        );
+        angle_diff =
+          OdometryBase::smallest_angle(robot_pose.rotation().degrees(), Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in))));
     } else {
         angle_diff = OdometryBase::smallest_angle(
-                robot_pose.rotation_.degrees() + 180, units::atan2(localized.y_, localized.x_).to(units::deg)
+          robot_pose.rotation().degrees() + 180, Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in)))
         );
     }
 
     // Correct the robot's heading until the last cut-off
-    if (!(is_last_point &&
-          robot_pose.translation_.distance(last_point) < units::Length(config.drive_correction_cutoff, units::in))) {
+    if (!(is_last_point && robot_pose.translation().distance(last_point).to(units::in) < config.drive_correction_cutoff)) {
         correction_pid.update(angle_diff);
         correction = correction_pid.get();
-    } else  // Inside cut-off radius, ignore horizontal diffs
+    } else // Inside cut-off radius, ignore horizontal diffs
     {
         dist_remaining *= cos(angle_diff * (PI / 180.0));
     }
@@ -735,8 +667,6 @@ bool TankDrive::pure_pursuit(
  * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
  * @return True when the path is complete
  */
-bool TankDrive::pure_pursuit(
-        PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed
-) {
+bool TankDrive::pure_pursuit(PurePursuit::Path path, vex::directionType dir, double max_speed, double end_speed) {
     return pure_pursuit(path, dir, *config.drive_feedback, max_speed, end_speed);
 }

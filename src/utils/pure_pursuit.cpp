@@ -24,15 +24,15 @@ PurePursuit::Path::Path(std::vector<Translation2d> points, double radius) {
             for (double t1 = 0; t1 <= 1; t1 += radius / segment_i_dist) {
                 Translation2d p1;
                 p1 = Translation2d(
-                  (points[i].x_ + t1 * (points[i + 1].x_ - points[i].x_)),
-                  (points[i].y_ + t1 * (points[i + 1].y_ - points[i].y_))
+                  (points[i].x() + t1 * (points[i + 1].x() - points[i].x())),
+                  (points[i].y() + t1 * (points[i + 1].y() - points[i].y()))
                 );
 
                 for (double t2 = 0; t2 <= 1; t2 += radius / segment_j_dist) {
                     Translation2d p2;
                     p2 = Translation2d(
-                      (points[j].x_ + t2 * (points[j + 1].x_ - points[j].x_)),
-                      (points[j].y_ + t2 * (points[j + 1].y_ - points[j].y_))
+                      (points[j].x() + t2 * (points[j + 1].x() - points[j].x())),
+                      (points[j].y() + t2 * (points[j + 1].y() - points[j].y()))
                     );
 
                     if (p1.distance(p2) < units::Length(radius, units::in)) {
@@ -73,21 +73,18 @@ PurePursuit::line_circle_intersections(Translation2d center, double r, Translati
     point1 = point1 - center;
     point2 = point2 - center;
 
-    const auto p1 = point1.as_vector(units::in);
-    const auto p2 = point2.as_vector(units::in);
-
     double x1, x2, y1, y2;
     // Handling an infinite slope using mx+b and x^2 + y^2 = r^2
-    if (p1.x() - p2.x() == 0) {
-        x1 = p1.x();
+    if (point1.x(units::in) - point2.x(units::in) == 0) {
+        x1 = point1.x(units::in);
         y1 = sqrt(pow(r, 2) - pow(x1, 2));
-        x2 = p1.x();
+        x2 = point1.x(units::in);
         y2 = -sqrt(pow(r, 2) - pow(x2, 2));
     }
     // Non-infinite slope using mx+b and x^2 + y^2 = r^2
     else {
-        double m = (p1.y() - p2.y()) / (p1.x() - p2.x());
-        double b = p1.y() - (m * p1.x());
+        double m = (point1.y(units::in) - point2.y(units::in)) / (point1.x(units::in) - point2.x(units::in));
+        double b = point1.y(units::in) - (m * point1.x(units::in));
 
         x1 = ((-m * b) + sqrt(pow(r, 2) + (pow(m, 2) * pow(r, 2)) - pow(b, 2))) / (1 + pow(m, 2));
         y1 = m * x1 + b;
@@ -97,14 +94,14 @@ PurePursuit::line_circle_intersections(Translation2d center, double r, Translati
 
     // The equations used define an infinitely long line, so we check if the detected intersection falls on the line
     // segment.
-    if (x1 >= fmin(p1.x(), p2.x()) && x1 <= fmax(p1.x(), p2.x()) &&
-        y1 >= fmin(p1.y(), p2.y()) && y1 <= fmax(p1.y(), p2.y())) {
-        intersections.push_back(Translation2d(units::Length(x1, units::in) + center.x_, units::Length(y1, units::in) + center.y_));
+    if (x1 >= fmin(point1.x(units::in), point2.x(units::in)) && x1 <= fmax(point1.x(units::in), point2.x(units::in)) &&
+        y1 >= fmin(point1.y(units::in), point2.y(units::in)) && y1 <= fmax(point1.y(units::in), point2.y(units::in))) {
+        intersections.push_back(Translation2d(units::Length(x1, units::in) + center.x(), units::Length(y1, units::in) + center.y()));
     }
 
-    if (x2 >= fmin(p1.x(), p2.x()) && x2 <= fmax(p1.x(), p2.x()) &&
-        y2 >= fmin(p1.y(), p2.y()) && y2 <= fmax(p1.y(), p2.y())) {
-        intersections.push_back(Translation2d(units::Length(x2, units::in) + center.x_, units::Length(y2, units::in) + center.y_));
+    if (x2 >= fmin(point1.x(units::in), point2.x(units::in)) && x2 <= fmax(point1.x(units::in), point2.x(units::in)) &&
+        y2 >= fmin(point1.y(units::in), point2.y(units::in)) && y2 <= fmax(point1.y(units::in), point2.y(units::in))) {
+        intersections.push_back(Translation2d(units::Length(x2, units::in) + center.x(), units::Length(y2, units::in) + center.y()));
     }
 
     return intersections;
@@ -118,7 +115,7 @@ PurePursuit::get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_
     // Default: the end of the path
     Translation2d target = path.back();
 
-    if (target.distance(robot_loc.translation_) <= units::Length(radius, units::in)) {
+    if (target.distance(robot_loc.translation()) <= units::Length(radius, units::in)) {
         return target;
     }
 
@@ -128,7 +125,7 @@ PurePursuit::get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_
         Translation2d end = path[i + 1];
 
         std::vector<Translation2d> intersections =
-          PurePursuit::line_circle_intersections(robot_loc.translation_, radius, start, end);
+          PurePursuit::line_circle_intersections(robot_loc.translation(), radius, start, end);
         // Choose the intersection that is closest to the end of the line segment
         // This prioritizes the closest intersection to the end of the path
         for (Translation2d intersection : intersections) {
@@ -197,8 +194,8 @@ PurePursuit::inject_path(const std::vector<Translation2d> &path, double spacing)
             Translation2d y_i_saved = y_i;
 
             y_i = Translation2d(
-              (y_i.x_ + weight_data * (x_i.x_ - y_i.x_) + weight_smooth * (y_next.x_ + y_prev.x_ - (2 * y_i.x_))),
-              (y_i.y_ + weight_data * (x_i.y_ - y_i.y_) + weight_smooth * (y_next.y_ + y_prev.y_ - (2 * y_i.y_)))
+              (y_i.x() + weight_data * (x_i.x() - y_i.x()) + weight_smooth * (y_next.x() + y_prev.x() - (2 * y_i.x()))),
+              (y_i.y() + weight_data * (x_i.y() - y_i.y()) + weight_smooth * (y_next.y() + y_prev.y() - (2 * y_i.y())))
             );
             new_path[i] = y_i;
 
@@ -223,9 +220,9 @@ PurePursuit::smooth_path_hermite(const std::vector<hermite_point> &path, double 
         for (int t = 0; t < steps; t++) {
             // Storing the start and end points and slopes at those points as Translation2ds.
             Translation2d tmp = path[i].getPoint();
-            Translation2d p1 = Translation2d(tmp.x_, tmp.y_);
+            Translation2d p1 = Translation2d(tmp.x(), tmp.y());
             tmp = path[i + 1].getPoint();
-            Translation2d p2 = Translation2d(tmp.x_, tmp.y_);
+            Translation2d p2 = Translation2d(tmp.x(), tmp.y());
             Translation2d t1 = path[i].getTangent();
             Translation2d t2 = path[i + 1].getTangent();
 
@@ -262,7 +259,7 @@ double PurePursuit::estimate_remaining_dist(const std::vector<Translation2d> &pa
     Translation2d lookahead_pt = PurePursuit::get_lookahead(path, robot_pose, radius);
 
     if (lookahead_pt == path[path.size() - 1]) {
-        return robot_pose.translation_.distance(lookahead_pt).to(units::in);
+        return robot_pose.translation().distance(lookahead_pt).to(units::in);
     }
 
     double dist = 0;
@@ -270,12 +267,12 @@ double PurePursuit::estimate_remaining_dist(const std::vector<Translation2d> &pa
     // Run through the path backwards, adding distances
     for (int i = path.size() - 1; i >= 0; i--) {
         // Test if the robot is between the two points
-        auto pts = PurePursuit::line_circle_intersections(robot_pose.translation_, radius, path[i - 1], path[i]);
+        auto pts = PurePursuit::line_circle_intersections(robot_pose.translation(), radius, path[i - 1], path[i]);
 
         // There is an intersection? Robot is between the points so add the distance
         // from the bot to the next point and end.
         if (!pts.empty()) {
-            dist += robot_pose.translation_.distance(path[i]).to(units::in);
+            dist += robot_pose.translation().distance(path[i]).to(units::in);
             return dist;
         }
 

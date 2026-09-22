@@ -51,13 +51,13 @@ void OdometrySerial::send_config(
     uint8_t raw[6 * sizeof(float) + sizeof(calc_vel_acc_on_brain)];
     uint8_t cobs_encoded[sizeof(raw) + 1];
 
-    float initialx = (float)initial_pose.x().to(units::in);
-    float initialy = (float)initial_pose.y().to(units::in);
-    float initialrot = (float)initial_pose.rotation_.degrees();
+    float initialx = (float)initial_pose.x(units::in);
+    float initialy = (float)initial_pose.y(units::in);
+    float initialrot = (float)initial_pose.rotation().degrees();
 
-    float offsetx = (float)sensor_offset.x().to(units::in);
-    float offsety = (float)sensor_offset.y().to(units::in);
-    float offsetrot = (float)sensor_offset.rotation_.degrees();
+    float offsetx = (float)sensor_offset.x(units::in);
+    float offsety = (float)sensor_offset.y(units::in);
+    float offsetrot = (float)sensor_offset.rotation().degrees();
 
     memcpy(&raw[0], &initialx, sizeof(float));
     memcpy(&raw[4], &initialy, sizeof(float));

@@ -82,7 +82,7 @@ OdometryTank::OdometryTank(
 void OdometryTank::set_position(const Pose2d& newpos) {
   mut.lock();
   rotation_offset =
-      newpos.rotation_.degrees() - (current_pos.rotation_.degrees() - rotation_offset);
+      newpos.rotation().degrees() - (current_pos.rotation().degrees() - rotation_offset);
   mut.unlock();
 
   OdometryBase::set_position(newpos);
@@ -147,7 +147,7 @@ Pose2d OdometryTank::update() {
   if (update_vel_accel) {
     // Calculate robot velocity
     double this_speed =
-        current_pos.translation_.distance(last_pos.translation_).to(units::in) / tmr.time(vex::sec);
+        current_pos.translation().distance(last_pos.translation()).to(units::in) / tmr.time(vex::sec);
     ema.add_entry(this_speed);
     speed = ema.get_value();
     // Calculate robot acceleration
@@ -155,7 +155,7 @@ Pose2d OdometryTank::update() {
 
     // Calculate robot angular velocity (deg/sec)
     ang_speed_deg =
-        smallest_angle(current_pos.rotation_.degrees(), last_pos.rotation_.degrees()) /
+        smallest_angle(current_pos.rotation().degrees(), last_pos.rotation().degrees()) /
         tmr.time(vex::sec);
 
     // Calculate robot angular acceleration (deg/sec^2)

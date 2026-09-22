@@ -56,16 +56,65 @@ struct Pose2d {
 
   /**
    * Constructs a pose with given translation and rotation components in a vector,
-   * with a supplied unit for length, and angle in radians.
+   * using the supplied units.
    *
    * @param pose_vector vector of the form [x, y, theta].
    * @param length_unit unit of length to use.
+   * @param angle_unit unit of angle to use, defaults to radians.
    */
   constexpr Pose2d(const Eigen::Vector3d &pose_vector,
-                   units::Length length_unit)
+                   units::Length length_unit, units::Angle angle_unit = units::radians)
       : translation_{units::Length(pose_vector[0], length_unit),
                      units::Length(pose_vector[1], length_unit)},
-        rotation_{pose_vector[2]} {}
+        rotation_{units::Angle(pose_vector[2], angle_unit)} {}
+
+  /**
+   * Returns [x, y, theta] in the supplied units. Angles default to radians.
+   */
+  EVec<3> as_vector(units::Length length_unit,
+                    units::Angle angle_unit = units::radians) const {
+    return {translation_.x_.to(length_unit), translation_.y_.to(length_unit),
+            rotation_.angle().to(angle_unit)};
+  }
+
+  /**
+   * Checks translation distance and the smallest angle against tolerances.
+   * Defaults to 1um and 1e-6 radians.
+   */
+  constexpr bool is_near(const Pose2d &other,
+                         units::Length distance_tolerance = units::Length(1e-6),
+                         units::Angle angle_tolerance = units::Angle(1e-6)) const {
+    return translation_.is_near(other.translation_, distance_tolerance) &&
+           rotation_.is_near(other.rotation_, angle_tolerance);
+  }
+
+  /**
+   * Scales this pose's translation and principal angle.
+   */
+  constexpr Pose2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this pose's translation and principal angle.
+   */
+  constexpr Pose2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Multiplies a scalar by this pose.
+   */
+  friend constexpr Pose2d operator*(double scalar, const Pose2d &pose) {
+    return pose * scalar;
+  }
+
+  /**
+   * Applies a transform to this pose in its local frame.
+   */
+  constexpr Pose2d &operator+=(const Transform2d &transform) {
+    return *this = *this + transform;
+  }
 
   /**
    * Returns the x value of the translational component.
@@ -78,6 +127,113 @@ struct Pose2d {
    * @return the y value of the translational component.
    */
   constexpr units::Length y() const { return translation_.y_; }
+
+  /**
+   * Returns x in the supplied length unit.
+   */
+  constexpr double x(units::Length unit) const { return translation_.x(unit); }
+
+  /**
+   * Returns y in the supplied length unit.
+   */
+  constexpr double y(units::Length unit) const { return translation_.y(unit); }
+
+  /**
+   * Returns the position.
+   */
+  constexpr Translation2d translation() const { return translation_; }
+
+  /**
+   * Returns the orientation.
+   */
+  constexpr Rotation2d rotation() const { return rotation_; }
+
+  /**
+   * Returns the heading as an angle.
+   */
+  constexpr units::Angle angle() const { return rotation_.angle(); }
+
+  /**
+   * Returns the heading in the supplied angle unit.
+   */
+  constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
+
+  /**
+   * Returns the straight-line distance to a point.
+   */
+  constexpr units::Length distance(const Translation2d &point) const {
+    return translation_.distance(point);
+  }
+
+  /**
+   * Returns the straight-line distance to another pose, ignoring its heading.
+   */
+  constexpr units::Length distance(const Pose2d &other) const {
+    return distance(other.translation_);
+  }
+
+  /**
+   * Returns the world direction toward a point.
+   * Returns this pose's heading if the positions are identical.
+   */
+  constexpr Rotation2d bearing_to(const Translation2d &point) const {
+    const auto delta = point - translation_;
+    if (delta.x_.internal() == 0 && delta.y_.internal() == 0) {
+      return rotation_;
+    }
+    return delta.theta();
+  }
+
+  /**
+   * Returns the smallest signed turn toward a point.
+   * Returns zero if the positions are identical.
+   */
+  constexpr units::Angle angle_to(const Translation2d &point) const {
+    return (bearing_to(point) - rotation_).angle();
+  }
+
+  /**
+   * Converts a point from this pose's local frame to the world frame.
+   */
+  constexpr Translation2d local_to_world(const Translation2d &point) const {
+    return translation_ + point.rotate_by(rotation_);
+  }
+
+  /**
+   * Converts a point from the world frame to this pose's local frame.
+   */
+  constexpr Translation2d world_to_local(const Translation2d &point) const {
+    return (point - translation_).rotate_by(-rotation_);
+  }
+
+  /**
+   * Returns a copy with a new position.
+   */
+  constexpr Pose2d with_translation(const Translation2d &translation) const {
+    return {translation, rotation_};
+  }
+
+  /**
+   * Returns a copy with a new orientation.
+   */
+  constexpr Pose2d with_rotation(const Rotation2d &rotation) const {
+    return {translation_, rotation};
+  }
+
+  /**
+   * Interpolates position along a straight line and heading along the shortest turn.
+   * Fractions outside [0, 1] return the nearest endpoint.
+   */
+  constexpr Pose2d interpolate(const Pose2d &end, double fraction) const {
+    if (fraction <= 0) {
+      return *this;
+    }
+    if (fraction >= 1) {
+      return end;
+    }
+    return {translation_ + (end.translation_ - translation_) * fraction,
+            rotation_ + (end.rotation_ - rotation_) * fraction};
+  }
 
   /**
    * Compares this to another pose.

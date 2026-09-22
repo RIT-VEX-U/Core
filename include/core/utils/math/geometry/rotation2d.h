@@ -22,7 +22,7 @@ public:
   constexpr Rotation2d() = default;
 
   /**
-   * Constructs a rotation with the given anglea.
+   * Constructs a rotation with the given units::Angle.
    */
   constexpr Rotation2d(units::Angle value)
       : cos_(units::cos(value)), sin_(units::sin(value)) {}
@@ -70,10 +70,7 @@ public:
    *
    * [new_cos] = [other.cos, -other.sin][cos]
    * [new_sin] = [other.sin,  other.cos][sin]
-   * new_value = atan2(new_sin, new_cos)
    *
-   * @param other The other rotation to add to this rotation.
-   * @return The sum of the two rotations.
    */
   constexpr Rotation2d operator+(const Rotation2d &other) const {
     return Rotation2d(cos_ * other.cos_ - sin_ * other.sin_,
@@ -83,9 +80,6 @@ public:
   /**
    * Subtracts another rotation from this. Also represents getting this rotation
    * relative to other.
-   *
-   * @param other The other rotation to subtract from this rotation.
-   * @return The Difference between the two rotations.
    */
   constexpr Rotation2d operator-(const Rotation2d &other) const {
     return *this + -other;
@@ -93,16 +87,21 @@ public:
 
   /**
    * Takes the inverse (conjugate) of this rotation.
-   *
-   * @return The inverse of the rotation.
    */
   constexpr Rotation2d operator-() const { return Rotation2d(cos_, -sin_); }
 
   /**
+   * Returns the rotation that undoes this rotation, the same as unary minus.
+   */
+  constexpr Rotation2d inverse() const { return -*this; }
+
+  /**
+   * Returns the heading facing the opposite direction, a half turn away.
+   */
+  constexpr Rotation2d opposite() const { return Rotation2d(-cos_, -sin_); }
+
+  /**
    * Multiplies this rotation by a scalar.
-   *
-   * @param scalar The scalar value to multiply the rotation by.
-   * @return The rotation multiplied by the scalar.
    */
   constexpr Rotation2d operator*(double scalar) const {
     return Rotation2d(radians() * scalar);
@@ -110,12 +109,53 @@ public:
 
   /**
    * Divides this rotation by a scalar.
-   *
-   * @param scalar the scalar value to divide the rotation by.
-   * @return The rotation divided by the scalar.
    */
   constexpr Rotation2d operator/(double scalar) const {
     return *this * (1.0 / scalar);
+  }
+
+  /**
+   * Adds another rotation to this rotation.
+   */
+  constexpr Rotation2d &operator+=(const Rotation2d &other) {
+    return *this = *this + other;
+  }
+
+  /**
+   * Subtracts another rotation from this rotation.
+   */
+  constexpr Rotation2d &operator-=(const Rotation2d &other) {
+    return *this = *this - other;
+  }
+
+  /**
+   * Scales this rotation's principal angle.
+   */
+  constexpr Rotation2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this rotation's principal angle.
+   */
+  constexpr Rotation2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Multiplies a scalar by this rotation.
+   */
+  friend constexpr Rotation2d operator*(double scalar, const Rotation2d &rotation) {
+    return rotation * scalar;
+  }
+
+  /**
+   * Checks the smallest angle between rotations against a tolerance.
+   * Defaults to 1e-6 radians.
+   */
+  constexpr bool is_near(const Rotation2d &other,
+                         units::Angle tolerance = units::Angle(1e-6)) const {
+    return units::abs((*this - other).angle()) <= tolerance;
   }
 
   /**
@@ -146,6 +186,11 @@ public:
   constexpr units::Angle angle() const {
     return units::Angle(cevalm::atan2(sin_, cos_), units::radians);
   }
+
+  /**
+   * Returns the angle in the supplied unit.
+   */
+  constexpr double angle(units::Angle unit) const { return angle().to(unit); }
 
   /**
    * Returns the rotation in radians.

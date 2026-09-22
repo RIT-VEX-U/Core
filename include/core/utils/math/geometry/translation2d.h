@@ -41,6 +41,26 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   constexpr LinearVector2d(Q x, Q y) : x_{x}, y_{y} {}
 
   /**
+   * Returns the x component.
+   */
+  constexpr Q x() const { return x_; }
+
+  /**
+   * Returns the y component.
+   */
+  constexpr Q y() const { return y_; }
+
+  /**
+   * Returns x in the supplied unit.
+   */
+  constexpr double x(Q unit) const { return x_.to(unit); }
+
+  /**
+   * Returns y in the supplied unit.
+   */
+  constexpr double y(Q unit) const { return y_.to(unit); }
+
+  /**
    * Constructs a vector with the values from the given Eigen::Vector.
    * @param vector The vector whose values will be used.
    * @param unit The unit to use when assigning x and y (e.g. units::inches)
@@ -103,6 +123,20 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
+   * Interpolates along a straight line to another vector.
+   * Fractions outside [0, 1] return the nearest endpoint.
+   */
+  constexpr LinearVector2d interpolate(const LinearVector2d &end, double fraction) const {
+    if (fraction <= 0) {
+      return *this;
+    }
+    if (fraction >= 1) {
+      return end;
+    }
+    return *this + (end - *this) * fraction;
+  }
+
+  /**
    * Rotates this vector around the origin by the provided rotation.
    *
    * Equivalent to multiplying a vector by a rotation matrix:
@@ -157,6 +191,50 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    */
   constexpr LinearVector2d operator-(LinearVector2d other) const {
     return {x_ - other.x_, y_ - other.y_};
+  }
+
+  /**
+   * Adds another vector to this vector.
+   */
+  constexpr LinearVector2d &operator+=(const LinearVector2d &other) {
+    return *this = *this + other;
+  }
+
+  /**
+   * Subtracts another vector from this vector.
+   */
+  constexpr LinearVector2d &operator-=(const LinearVector2d &other) {
+    return *this = *this - other;
+  }
+
+  /**
+   * Scales this vector without changing its units.
+   */
+  constexpr LinearVector2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this vector without changing its units.
+   */
+  constexpr LinearVector2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Multiplies a scalar by this vector.
+   */
+  friend constexpr LinearVector2d operator*(double scalar, const LinearVector2d &vector) {
+    return vector * scalar;
+  }
+
+  /**
+   * Multiplies a quantity by this vector, keeping the resulting units.
+   */
+  template <units::IsQuantity S>
+    requires LinearKinematicQuantity<units::Multiplied<Q, S>>
+  friend constexpr auto operator*(S scalar, const LinearVector2d &vector) {
+    return vector * scalar;
   }
 
   /**
@@ -215,16 +293,33 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
 
   /**
    * Returns the dot product of two vectors.
-   * Note that the unit for this is Q*Q, not double.
+   * The result has the product of the two component units.
    *
    * [scalar] = [x][otherx] + [y][othery]
    *
    * @param other the other vector to dot with.
    * @returns The dot product of this and other.
    */
-  constexpr units::Multiplied<Q, Q>
-  operator*(const LinearVector2d &other) const {
+  template <LinearKinematicQuantity R>
+  constexpr units::Multiplied<Q, R>
+  operator*(const LinearVector2d<R> &other) const {
+    return dot(other);
+  }
+
+  /**
+   * Returns the dot product, keeping the resulting units.
+   */
+  template <LinearKinematicQuantity R>
+  constexpr units::Multiplied<Q, R> dot(const LinearVector2d<R> &other) const {
     return (x_ * other.x_) + (y_ * other.y_);
+  }
+
+  /**
+   * Checks the distance between vectors against a tolerance.
+   * Defaults to 1um for translations, 1um/s for velocities, and so on.
+   */
+  constexpr bool is_near(const LinearVector2d &other, Q tolerance = Q(1e-6)) const {
+    return distance(other) <= tolerance;
   }
 
   /**

@@ -24,6 +24,36 @@ struct Twist2d {
     constexpr Twist2d() : dx_(0), dy_(0), dtheta_(0) {}
 
     /**
+     * Returns the x displacement.
+     */
+    constexpr units::Length dx() const { return dx_; }
+
+    /**
+     * Returns the y displacement.
+     */
+    constexpr units::Length dy() const { return dy_; }
+
+    /**
+     * Returns the angular displacement without wrapping.
+     */
+    constexpr units::Angle dtheta() const { return dtheta_; }
+
+    /**
+     * Returns the x displacement in the supplied unit.
+     */
+    constexpr double dx(units::Length unit) const { return dx_.to(unit); }
+
+    /**
+     * Returns the y displacement in the supplied unit.
+     */
+    constexpr double dy(units::Length unit) const { return dy_.to(unit); }
+
+    /**
+     * Returns the angular displacement in the supplied unit without wrapping.
+     */
+    constexpr double dtheta(units::Angle unit) const { return dtheta_.to(unit); }
+
+    /**
      * Constructs a twist with given translation and angle deltas.
      * @param dx the linear dx component.
      * @param dy the linear dy component.
@@ -35,11 +65,16 @@ struct Twist2d {
      * Constructs a twist with given translation and angle deltas.
      * @param twist_vector vector of the form [dx, dy, dtheta]
      * @param length_unit unit for dx and dy.
+     * @param angle_unit unit for dtheta, defaults to radians.
      */
-    constexpr Twist2d(const Eigen::Vector3d &twist_vector, units::Length length_unit)
+    constexpr Twist2d(const Eigen::Vector3d &twist_vector, units::Length length_unit,
+                      units::Angle angle_unit = units::radians)
         : dx_{twist_vector[0], length_unit}, dy_{twist_vector[1], length_unit},
-          dtheta_{twist_vector[2]} {}
+          dtheta_{twist_vector[2], angle_unit} {}
 
+    /**
+     * Returns [dx, dy, dtheta] in the supplied units. Angles default to radians.
+     */
     EVec<3> as_vector(units::Length length_unit,
                                        units::Angle angle_unit = units::radians) const {
         return EVec<3>{dx_.to(length_unit), dy_.to(length_unit), dtheta_.to(angle_unit)};
@@ -68,6 +103,38 @@ struct Twist2d {
      */
     constexpr Twist2d operator/(double scalar) const {
         return *this * (1.0 / scalar);
+    }
+
+    /**
+     * Scales this twist without wrapping its angle.
+     */
+    constexpr Twist2d &operator*=(double scalar) {
+        return *this = *this * scalar;
+    }
+
+    /**
+     * Divides this twist without wrapping its angle.
+     */
+    constexpr Twist2d &operator/=(double scalar) {
+        return *this = *this / scalar;
+    }
+
+    /**
+     * Multiplies a scalar by this twist.
+     */
+    friend constexpr Twist2d operator*(double scalar, const Twist2d &twist) {
+        return twist * scalar;
+    }
+
+    /**
+     * Checks linear distance and unwrapped angle difference against tolerances.
+     * Defaults to 1um and 1e-6 radians.
+     */
+    constexpr bool is_near(const Twist2d &other,
+                           units::Length distance_tolerance = units::Length(1e-6),
+                           units::Angle angle_tolerance = units::Angle(1e-6)) const {
+        return units::hypot(dx_ - other.dx_, dy_ - other.dy_) <= distance_tolerance &&
+               units::abs(dtheta_ - other.dtheta_) <= angle_tolerance;
     }
 
     units::Length dx_;
