@@ -81,20 +81,25 @@ struct Twist2d {
     }
 
     /**
-     * Checks equality between this and another twist.
-     * @param other the other twist to compare to.
-     * @returns true if all displacements are within 1e-6 of each other (meters and radians).
-     */
-    constexpr bool operator==(const Twist2d &other) const {
-        return cevalm::abs(dx_.internal() - other.dx_.internal()) < 1e-6 && cevalm::abs(dy_.internal() - other.dy_.internal()) < 1e-6 && cevalm::abs(dtheta_.internal() - other.dtheta_.internal()) < 1e-6;
-    }
-
-    /**
      * Multiplies this twist by a scalar.
      * @param scalar the scalar value to multiply by.
      */
     constexpr Twist2d operator*(double scalar) const {
         return Twist2d{dx_ * scalar, dy_ * scalar, dtheta_ * scalar};
+    }
+
+    /**
+     * Multiplies a scalar by this twist.
+     */
+    friend constexpr Twist2d operator*(double scalar, const Twist2d &twist) {
+        return twist * scalar;
+    }
+
+    /**
+     * Scales this twist without wrapping its angle.
+     */
+    constexpr Twist2d &operator*=(double scalar) {
+        return *this = *this * scalar;
     }
 
     /**
@@ -106,13 +111,6 @@ struct Twist2d {
     }
 
     /**
-     * Scales this twist without wrapping its angle.
-     */
-    constexpr Twist2d &operator*=(double scalar) {
-        return *this = *this * scalar;
-    }
-
-    /**
      * Divides this twist without wrapping its angle.
      */
     constexpr Twist2d &operator/=(double scalar) {
@@ -120,10 +118,12 @@ struct Twist2d {
     }
 
     /**
-     * Multiplies a scalar by this twist.
+     * Checks equality between this and another twist.
+     * @param other the other twist to compare to.
+     * @returns true if all displacements are within 1e-6 of each other (meters and radians).
      */
-    friend constexpr Twist2d operator*(double scalar, const Twist2d &twist) {
-        return twist * scalar;
+    constexpr bool operator==(const Twist2d &other) const {
+        return cevalm::abs(dx_.internal() - other.dx_.internal()) < 1e-6 && cevalm::abs(dy_.internal() - other.dy_.internal()) < 1e-6 && cevalm::abs(dtheta_.internal() - other.dtheta_.internal()) < 1e-6;
     }
 
     /**

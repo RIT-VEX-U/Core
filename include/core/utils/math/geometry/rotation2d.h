@@ -78,6 +78,13 @@ public:
   }
 
   /**
+   * Adds another rotation to this rotation.
+   */
+  constexpr Rotation2d &operator+=(Rotation2d other) {
+    return *this = *this + other;
+  }
+
+  /**
    * Subtracts another rotation from this. Also represents getting this rotation
    * relative to other.
    */
@@ -86,9 +93,62 @@ public:
   }
 
   /**
+   * Subtracts another rotation from this rotation.
+   */
+  constexpr Rotation2d &operator-=(Rotation2d other) {
+    return *this = *this - other;
+  }
+
+  /**
    * Takes the inverse (conjugate) of this rotation.
    */
   constexpr Rotation2d operator-() const { return Rotation2d(cos_, -sin_); }
+
+  /**
+   * Multiplies this rotation by a scalar.
+   */
+  constexpr Rotation2d operator*(double scalar) const {
+    return Rotation2d(radians() * scalar);
+  }
+
+  /**
+   * Multiplies a scalar by this rotation.
+   */
+  friend constexpr Rotation2d operator*(double scalar, Rotation2d rotation) {
+    return rotation * scalar;
+  }
+
+  /**
+   * Scales this rotation's principal angle.
+   */
+  constexpr Rotation2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this rotation by a scalar.
+   */
+  constexpr Rotation2d operator/(double scalar) const {
+    return *this * (1.0 / scalar);
+  }
+
+  /**
+   * Divides this rotation's principal angle.
+   */
+  constexpr Rotation2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Checks whether this and another rotation are equal.
+   *
+   * @param other The other rotation to compare to.
+   * @return true if the sin and cos values are both within 1e-6.
+   */
+  constexpr bool operator==(Rotation2d other) const {
+    return cevalm::abs(cos_ - other.cos_) < 1e-6 &&
+           cevalm::abs(sin_ - other.sin_) < 1e-6;
+  }
 
   /**
    * Returns the rotation that undoes this rotation, the same as unary minus.
@@ -101,72 +161,12 @@ public:
   constexpr Rotation2d opposite() const { return Rotation2d(-cos_, -sin_); }
 
   /**
-   * Multiplies this rotation by a scalar.
-   */
-  constexpr Rotation2d operator*(double scalar) const {
-    return Rotation2d(radians() * scalar);
-  }
-
-  /**
-   * Divides this rotation by a scalar.
-   */
-  constexpr Rotation2d operator/(double scalar) const {
-    return *this * (1.0 / scalar);
-  }
-
-  /**
-   * Adds another rotation to this rotation.
-   */
-  constexpr Rotation2d &operator+=(Rotation2d other) {
-    return *this = *this + other;
-  }
-
-  /**
-   * Subtracts another rotation from this rotation.
-   */
-  constexpr Rotation2d &operator-=(Rotation2d other) {
-    return *this = *this - other;
-  }
-
-  /**
-   * Scales this rotation's principal angle.
-   */
-  constexpr Rotation2d &operator*=(double scalar) {
-    return *this = *this * scalar;
-  }
-
-  /**
-   * Divides this rotation's principal angle.
-   */
-  constexpr Rotation2d &operator/=(double scalar) {
-    return *this = *this / scalar;
-  }
-
-  /**
-   * Multiplies a scalar by this rotation.
-   */
-  friend constexpr Rotation2d operator*(double scalar, Rotation2d rotation) {
-    return rotation * scalar;
-  }
-
-  /**
    * Checks the smallest angle between rotations against a tolerance.
    * Defaults to 1e-6 radians.
    */
   constexpr bool is_near(Rotation2d other,
                          units::Angle tolerance = units::Angle(1e-6)) const {
     return units::abs((*this - other).angle()) <= tolerance;
-  }
-
-  /**
-   * Checks whether this and another rotation are equal.
-   *
-   * @param other The other rotation to compare to.
-   * @return true if the sin and cos values are both within 1e-6.
-   */
-  constexpr bool operator==(Rotation2d other) const {
-    return cevalm::abs(cos_ - other.cos_) < 1e-6 &&
-           cevalm::abs(sin_ - other.sin_) < 1e-6;
   }
 
   /**

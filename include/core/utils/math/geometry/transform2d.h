@@ -140,10 +140,38 @@ struct Transform2d {
   }
 
   /**
+   * Inverts the transform.
+   */
+  constexpr Transform2d operator-() const {
+      return inverse();
+  }
+
+  /**
+   * Multiplies this transform by a scalar.
+   */
+  constexpr Transform2d operator*(double scalar) const {
+      return Transform2d(translation_ * scalar, rotation_ * scalar);
+  }
+
+  /**
+   * Multiplies a scalar by this transform.
+   */
+  friend constexpr Transform2d operator*(double scalar, const Transform2d &transform) {
+    return transform * scalar;
+  }
+
+  /**
    * Scales this transform's translation and principal angle.
    */
   constexpr Transform2d &operator*=(double scalar) {
     return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this transform by a scalar.
+   */
+  constexpr Transform2d operator/(double scalar) const {
+      return Transform2d(translation_ / scalar, rotation_ / scalar);
   }
 
   /**
@@ -154,10 +182,13 @@ struct Transform2d {
   }
 
   /**
-   * Multiplies a scalar by this transform.
+   * Compares this to another transform.
+   *
+   * @param other the other transform to compare to.
+   * @return true if the components are equal.
    */
-  friend constexpr Transform2d operator*(double scalar, const Transform2d &transform) {
-    return transform * scalar;
+  constexpr bool operator==(const Transform2d &other) const {
+      return (translation_ == other.translation_) && (rotation_ == other.rotation_);
   }
 
   /**
@@ -176,37 +207,6 @@ struct Transform2d {
    */
   constexpr Transform2d inverse() const {
     return Transform2d(-translation_.rotate_by(-rotation_), -rotation_);
-  }
-
-  /**
-   * Multiplies this transform by a scalar.
-   */
-  constexpr Transform2d operator*(double scalar) const {
-      return Transform2d(translation_ * scalar, rotation_ * scalar);
-  }
-
-  /**
-   * Divides this transform by a scalar.
-   */
-  constexpr Transform2d operator/(double scalar) const {
-      return Transform2d(translation_ / scalar, rotation_ / scalar);
-  }
-
-  /**
-   * Inverts the transform.
-   */
-  constexpr Transform2d operator-() const {
-      return inverse();
-  }
-
-  /**
-   * Compares this to another transform.
-   *
-   * @param other the other transform to compare to.
-   * @return true if the components are equal.
-   */
-  constexpr bool operator==(const Transform2d &other) const {
-      return (translation_ == other.translation_) && (rotation_ == other.rotation_);
   }
 
   Translation2d translation_;

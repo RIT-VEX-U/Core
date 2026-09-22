@@ -181,6 +181,13 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
+   * Adds another vector to this vector.
+   */
+  constexpr LinearVector2d &operator+=(LinearVector2d other) {
+    return *this = *this + other;
+  }
+
+  /**
    * Returns the difference of two vectors.
    *
    * [x] = [x] - [otherx]
@@ -194,47 +201,10 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
-   * Adds another vector to this vector.
-   */
-  constexpr LinearVector2d &operator+=(LinearVector2d other) {
-    return *this = *this + other;
-  }
-
-  /**
    * Subtracts another vector from this vector.
    */
   constexpr LinearVector2d &operator-=(LinearVector2d other) {
     return *this = *this - other;
-  }
-
-  /**
-   * Scales this vector without changing its units.
-   */
-  constexpr LinearVector2d &operator*=(double scalar) {
-    return *this = *this * scalar;
-  }
-
-  /**
-   * Divides this vector without changing its units.
-   */
-  constexpr LinearVector2d &operator/=(double scalar) {
-    return *this = *this / scalar;
-  }
-
-  /**
-   * Multiplies a scalar by this vector.
-   */
-  friend constexpr LinearVector2d operator*(double scalar, LinearVector2d vector) {
-    return vector * scalar;
-  }
-
-  /**
-   * Multiplies a quantity by this vector, keeping the resulting units.
-   */
-  template <units::IsQuantity S>
-    requires LinearKinematicQuantity<units::Multiplied<Q, S>>
-  friend constexpr auto operator*(S scalar, LinearVector2d vector) {
-    return vector * scalar;
   }
 
   /**
@@ -273,6 +243,44 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
+   * Returns the dot product of two vectors.
+   * The result has the product of the two component units.
+   *
+   * [scalar] = [x][otherx] + [y][othery]
+   *
+   * @param other the other vector to dot with.
+   * @returns The dot product of this and other.
+   */
+  template <LinearKinematicQuantity R>
+  constexpr units::Multiplied<Q, R>
+  operator*(LinearVector2d<R> other) const {
+    return dot(other);
+  }
+
+  /**
+   * Multiplies a scalar by this vector.
+   */
+  friend constexpr LinearVector2d operator*(double scalar, LinearVector2d vector) {
+    return vector * scalar;
+  }
+
+  /**
+   * Multiplies a quantity by this vector, keeping the resulting units.
+   */
+  template <units::IsQuantity S>
+    requires LinearKinematicQuantity<units::Multiplied<Q, S>>
+  friend constexpr auto operator*(S scalar, LinearVector2d vector) {
+    return vector * scalar;
+  }
+
+  /**
+   * Scales this vector without changing its units.
+   */
+  constexpr LinearVector2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
    * Returns this vector divided by a scalar.
    *
    * [x] = [x] / [scalar]
@@ -292,18 +300,24 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
   }
 
   /**
-   * Returns the dot product of two vectors.
-   * The result has the product of the two component units.
-   *
-   * [scalar] = [x][otherx] + [y][othery]
-   *
-   * @param other the other vector to dot with.
-   * @returns The dot product of this and other.
+   * Divides this vector without changing its units.
    */
-  template <LinearKinematicQuantity R>
-  constexpr units::Multiplied<Q, R>
-  operator*(LinearVector2d<R> other) const {
-    return dot(other);
+  constexpr LinearVector2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Compares two vectors.
+   * Returns true if their components are each within 1e-6, to account for
+   * floating point error. This uses the internal base unit, which for length
+   * based units is meters, so 1um epsilon, or 1um/s, etc.
+   *
+   * @param other the vector to compare to.
+   * @returns Whether the two vectors are equal.
+   */
+  constexpr bool operator==(LinearVector2d other) const {
+    return cevalm::abs(x_.internal() - other.x_.internal()) < 1e-6 &&
+           cevalm::abs(y_.internal() - other.y_.internal()) < 1e-6;
   }
 
   /**
@@ -320,20 +334,6 @@ template <LinearKinematicQuantity Q> struct LinearVector2d {
    */
   constexpr bool is_near(LinearVector2d other, Q tolerance = Q(1e-6)) const {
     return distance(other) <= tolerance;
-  }
-
-  /**
-   * Compares two vectors.
-   * Returns true if their components are each within 1e-6, to account for
-   * floating point error. This uses the internal base unit, which for length
-   * based units is meters, so 1um epsilon, or 1um/s, etc.
-   *
-   * @param other the vector to compare to.
-   * @returns Whether the two vectors are equal.
-   */
-  constexpr bool operator==(LinearVector2d other) const {
-    return cevalm::abs(x_.internal() - other.x_.internal()) < 1e-6 &&
-           cevalm::abs(y_.internal() - other.y_.internal()) < 1e-6;
   }
 
   /**

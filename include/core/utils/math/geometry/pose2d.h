@@ -89,17 +89,42 @@ struct Pose2d {
   }
 
   /**
-   * Scales this pose's translation and principal angle.
+   * Adds a transform to this pose.
+   * Transforms the pose in the pose's frame.
+   *
+   * @param transform the change in pose.
    */
-  constexpr Pose2d &operator*=(double scalar) {
-    return *this = *this * scalar;
+  constexpr Pose2d operator+(const Transform2d &transform) const {
+    return Pose2d{translation_ + (transform.translation_.rotate_by(rotation_)),
+                  transform.rotation_ + rotation_};
   }
 
   /**
-   * Divides this pose's translation and principal angle.
+   * Applies a transform to this pose in its local frame.
    */
-  constexpr Pose2d &operator/=(double scalar) {
-    return *this = *this / scalar;
+  constexpr Pose2d &operator+=(const Transform2d &transform) {
+    return *this = *this + transform;
+  }
+
+  /**
+   * Subtracts one pose from another to find the transform between them.
+   *
+   * @param other the pose to subtract.
+   */
+  constexpr Transform2d operator-(const Pose2d &other) const {
+    return Transform2d{
+        (translation_ - other.translation_).rotate_by(-other.rotation_),
+        rotation_ - other.rotation_};
+  }
+
+  /**
+   * Multiplies this pose by a scalar.
+   * Simply multiplies each component.
+   *
+   * @param scalar the scalar value to multiply by.
+   */
+  constexpr Pose2d operator*(double scalar) const {
+    return Pose2d{translation_ * scalar, rotation_ * scalar};
   }
 
   /**
@@ -110,10 +135,39 @@ struct Pose2d {
   }
 
   /**
-   * Applies a transform to this pose in its local frame.
+   * Scales this pose's translation and principal angle.
    */
-  constexpr Pose2d &operator+=(const Transform2d &transform) {
-    return *this = *this + transform;
+  constexpr Pose2d &operator*=(double scalar) {
+    return *this = *this * scalar;
+  }
+
+  /**
+   * Divides this pose by a scalar.
+   * Simply divides each component.
+   *
+   * @param scalar the scalar value to divide by.
+   */
+  constexpr Pose2d operator/(double scalar) const {
+    return *this * (1.0 / scalar);
+  }
+
+  /**
+   * Divides this pose's translation and principal angle.
+   */
+  constexpr Pose2d &operator/=(double scalar) {
+    return *this = *this / scalar;
+  }
+
+  /**
+   * Compares this to another pose.
+   *
+   * @param other the other pose to compare to.
+   *
+   * @return true if each of the components are within 1e-6 of each other (meters and radians).
+   */
+  constexpr bool operator==(const Pose2d &other) const {
+    return (translation_ == other.translation_) &&
+           (rotation_ == other.rotation_);
   }
 
   /**
@@ -233,60 +287,6 @@ struct Pose2d {
     }
     return {translation_ + (end.translation_ - translation_) * fraction,
             rotation_ + (end.rotation_ - rotation_) * fraction};
-  }
-
-  /**
-   * Compares this to another pose.
-   *
-   * @param other the other pose to compare to.
-   *
-   * @return true if each of the components are within 1e-6 of each other (meters and radians).
-   */
-  constexpr bool operator==(const Pose2d &other) const {
-    return (translation_ == other.translation_) &&
-           (rotation_ == other.rotation_);
-  }
-
-  /**
-   * Multiplies this pose by a scalar.
-   * Simply multiplies each component.
-   *
-   * @param scalar the scalar value to multiply by.
-   */
-  constexpr Pose2d operator*(double scalar) const {
-    return Pose2d{translation_ * scalar, rotation_ * scalar};
-  }
-
-  /**
-   * Divides this pose by a scalar.
-   * Simply divides each component.
-   *
-   * @param scalar the scalar value to divide by.
-   */
-  constexpr Pose2d operator/(double scalar) const {
-    return *this * (1.0 / scalar);
-  }
-
-  /**
-   * Adds a transform to this pose.
-   * Transforms the pose in the pose's frame.
-   *
-   * @param transform the change in pose.
-   */
-  constexpr Pose2d operator+(const Transform2d &transform) const {
-    return Pose2d{translation_ + (transform.translation_.rotate_by(rotation_)),
-                  transform.rotation_ + rotation_};
-  }
-
-  /**
-   * Subtracts one pose from another to find the transform between them.
-   *
-   * @param other the pose to subtract.
-   */
-  constexpr Transform2d operator-(const Pose2d &other) const {
-    return Transform2d{
-        (translation_ - other.translation_).rotate_by(-other.rotation_),
-        rotation_ - other.rotation_};
   }
 
   /**
