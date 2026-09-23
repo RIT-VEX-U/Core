@@ -4,7 +4,9 @@
 /**
  * Create the PID object
  */
-PID::PID(pid_config_t &config) : config(config) { pid_timer.reset(); }
+PID::PID(double kp, double ki, double kd, double deadband, double on_target_time, PID::ERROR_TYPE error_method)
+	: kp(kp), ki(ki), kd(kd), deadband(deadband), on_target_time(on_target_time), error_method(error_method)
+{ pid_timer.reset(); }
 
 void PID::init(double start_pt, double set_pt) {
     set_target(set_pt);
@@ -41,13 +43,13 @@ double PID::update(double sensor_val, double v_setpt) {
     // Avoid a divide by zero error
     double d_term = 0;
     if (time_delta != 0.0) {
-        d_term = config.d * (((get_error() - last_error) / time_delta) - v_setpt);
+        d_term = kd * (((get_error() - last_error) / time_delta) - v_setpt);
     } else if (last_time != 0.0) {
         printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
     }
 
     // P and D terms
-    out = (config.p * get_error()) + d_term;
+    out = (kp * get_error()) + d_term;
 
     bool limits_exist = lower_limit != 0 || upper_limit != 0;
 
@@ -58,7 +60,7 @@ double PID::update(double sensor_val, double v_setpt) {
     }
 
     // I term
-    out += config.i * accum_error;
+    out += ki * accum_error;
 
     last_time = pid_timer.systemHighResolution() / 1000000.0;
     last_error = get_error();
@@ -95,7 +97,7 @@ double PID::get() { return out; }
  * Get the delta between the current sensor data and the target
  */
 double PID::get_error() {
-    if (config.error_method == ERROR_TYPE::ANGULAR) {
+    if (error_method == ERROR_TYPE::ANGULAR) {
         return OdometryBase::smallest_angle(target, sensor_val);
     }
     return target - sensor_val;
@@ -127,14 +129,14 @@ void PID::set_limits(double lower, double upper) {
  * seconds
  */
 bool PID::is_on_target() {
-    if (fabs(get_error()) < config.deadband) {
+    if (fabs(get_error()) < deadband) {
         if (target_vel != 0) {
             return true;
         }
         if (is_checking_on_target == false) {
             on_target_last_time = pid_timer.value();
             is_checking_on_target = true;
-        } else if (pid_timer.value() - on_target_last_time > config.on_target_time) {
+        } else if (pid_timer.value() - on_target_last_time > on_target_time) {
             return true;
         }
     } else {

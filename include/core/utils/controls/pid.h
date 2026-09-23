@@ -28,32 +28,23 @@ class PID : public Feedback {
         LINEAR,
         ANGULAR // assumes degrees
     };
-    /**
-     * pid_config_t holds the configuration parameters for a pid controller
-     * In addtion to the constant of proportional, integral and derivative, these
-     * parameters include:
-     * - deadband -
-     * - on_target_time - for how long do we have to be at the target to stop
-     * As well, pid_config_t holds an error type which determines whether errors
-     * should be calculated as if the sensor position is a measure of distance or
-     * an angle
-     */
-    struct pid_config_t {
-        double p;                ///< proportional coeffecient p * error()
-        double i;                ///< integral coeffecient i * integral(error)
-        double d;                ///< derivitave coeffecient d * derivative(error)
-        double deadband;         ///< at what threshold are we close enough to be finished
-        double on_target_time;   ///< the time in seconds that we have to be on target
-                                 ///< for to say we are officially at the target
-        ERROR_TYPE error_method; ///< Linear or angular. wheter to do error as a
-                                 ///< simple subtraction or to wrap
-    };
+
+    double kp, ki, kd, deadband, on_target_time;
+    ERROR_TYPE error_method;
 
     /**
      * Create the PID object
-     * @param config the configuration data for this controller
+     * @param kp: Coefficient double p. Direct error to voltage.
+     * @param ki: Coefficient double i. Integral of error to voltage. Helps get the motor "unstuck" if P
+     *            is not enough to drive the motor.
+     * @param kd: Coefficient double d. Derivative of error to voltage. Helps prevent overshooting.
+     * @param deadband: Double. Acceptable margin of error.
+     * @param on_target_time: Double. How long the reading must be within the deadband to consider robot
+     *                        "aligned."
+     * @param error_method: ERROR_TYPE struct. Can be either LINEAR or ANGULAR. Determines how we want the PID
+     *                      to enact, on position or rotation for example.
      */
-    PID(pid_config_t &config);
+    PID(double kp, double ki, double kd, double deadband, double on_target_time, ERROR_TYPE error_method = PID::LINEAR);
 
     /**
      * Inherited from Feedback for interoperability.
@@ -126,14 +117,12 @@ class PID : public Feedback {
     /**
      * Get the delta between the current sensor data and the target
      * @return the error calculated. how it is calculated depends on error_method
-     * specified in pid_config_t
      */
     double get_error();
 
     /**
      * Get the output calculated from the P, I, D and Error values
      * @return the output calculated from the pid controller
-     * specified in pid_config_t
      */
     double get_output();
 
@@ -148,9 +137,6 @@ class PID : public Feedback {
      * @param target the sensor reading we would like to achieve
      */
     void set_target(double target);
-
-    pid_config_t &config; ///< configuration struct for this controller. see pid_config_t
-                          ///< for information about what this contains
 
   private:
     double last_error = 0;  ///< the error measured on the last iteration of update()

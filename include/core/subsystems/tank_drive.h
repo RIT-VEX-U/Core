@@ -130,8 +130,7 @@ class TankDrive {
      * @param end_speed    the movement profile will attempt to reach this velocity by its completion
      * @return true when we have reached our target distance
      */
-    bool
-    drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
+    bool drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
     /**
      * Autonomously drive the robot forward a certain distance
@@ -289,7 +288,7 @@ class TankDrive {
     OdometryBase *odometry; ///< odometry system to track position and rotation.
                             ///< necessary for autonomous driving
 
-    PID correction_pid;                      ///< PID controller used to drive in as straight a line
+    Feedback *correction_pid;                      ///< PID controller used to drive in as straight a line
                                              ///< as possible
     Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
     Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified

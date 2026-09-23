@@ -107,12 +107,12 @@ PIDDataRecord::PIDDataRecord(std::string name, PID &pid)
  * sets the data that the PID Parts hold to be sent to the board
  */
 void PIDDataRecord::fetch() {
-    P->set_value((float)pid.config.p);
-    I->set_value((float)pid.config.i);
-    D->set_value((float)pid.config.d);
+    P->set_value((float)pid.kp);
+    I->set_value((float)pid.ki);
+    D->set_value((float)pid.kd);
     ERROR->set_value((float)pid.get_error());
     OUTPUT->set_value((float)pid.get_output());
-    if (pid.config.error_method == PID::ANGULAR) {
+    if (pid.error_method == PID::ANGULAR) {
         TYPE->set_value("Angular");
     } else {
         TYPE->set_value("Linear");
@@ -129,9 +129,9 @@ PIDControlRecord::PIDControlRecord(std::string name, PID &pid)
      * sets the PID values to the values from the board
      */
 void PIDControlRecord::response() {
-    pid.config.p = P->get_value();
-    pid.config.i = I->get_value();
-    pid.config.d = D->get_value();
+    pid.kp = P->get_value();
+    pid.ki = I->get_value();
+    pid.kd = D->get_value();
 }
 /**
  * Defines a record for testing purposes, currently tests a float and int64
