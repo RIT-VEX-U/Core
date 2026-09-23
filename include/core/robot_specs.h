@@ -22,6 +22,5 @@ typedef struct {
 
   Feedback *drive_feedback;         ///< the default feedback for autonomous driving
   Feedback *turn_feedback;          ///< the defualt feedback for autonomous turning
-  PID::pid_config_t correction_pid; ///< the pid controller to keep the robot driving in as straight a line as possible
-
+  Feedback *correction_feedback;    ///< the pid that houses all needed values
 } robot_specs_t;

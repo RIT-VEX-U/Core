@@ -264,11 +264,10 @@ class PIDPage : public Page {
 
   private:
     /// @brief reset d
-    void zero_d_f() { cfg.d = 0; }
+    void zero_d_f() { pid.kd = 0; }
     /// @brief reset i
-    void zero_i_f() { cfg.i = 0; }
+    void zero_i_f() { pid.ki = 0; }
 
-    PID::pid_config_t &cfg;
     PID &pid;
     const std::string name;
     std::function<void(void)> onchange;
@@ -309,13 +308,13 @@ class InitializerPage : public Page {
       return Selector::timeout(selector, seconds*1000000, fallback, cancel);
     }
 
-    /// @brief When using a selector function wrapper that may cancel or otherwise cause the InitializerPage's selector to fail, call this 
+    /// @brief When using a selector function wrapper that may cancel or otherwise cause the InitializerPage's selector to fail, call this
     /// @param selected The value selected that ended up being selected.
     static void cancel(size_t selected);
 
     /// @brief The default selected index if a cancelation occured during selection
     static const size_t DEFAULT_CANCELATION_INDEX = Selector::NO_SELECTION_INDEX - 1;
-  
+
   private:
     /// @brief The buffer that stores the selection of any InitializerPage
     inline static size_t selection_buffer = Selector::NO_SELECTION_INDEX;
