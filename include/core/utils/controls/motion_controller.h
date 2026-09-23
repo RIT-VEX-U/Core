@@ -34,7 +34,7 @@ class MotionController : public Feedback {
     typedef struct {
         double max_v;                    ///< the maximum velocity the robot can drive
         double accel;                    ///< the most acceleration the robot can do
-        PID pid;       /// the internal PID controller, houses parameters
+        PID pid;
         FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal
     } m_profile_cfg_t;
 

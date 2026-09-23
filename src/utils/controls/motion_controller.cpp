@@ -8,7 +8,7 @@
  * @param config The definition of how the robot is able to move
  *    max_v Maximum velocity the movement is capable of
  *    accel Acceleration / deceleration of the movement
- *    pid A PID to pass to the object. Houses kP, kI, and kD.
+ *    pid A PID to pass to the object.
  *    ff_cfg Definitions of kS, kV, and kA
  */
 MotionController::MotionController(m_profile_cfg_t &config)

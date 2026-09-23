@@ -34,12 +34,12 @@ class PID : public Feedback {
 
     /**
      * Create the PID object
-     * @param kp: Constant double p. Direct error to voltage.
-     * @param ki: Constant double i. Integral of error to voltage. Helps get the motor "unstuck" if P
+     * @param kp: Coefficient double p. Direct error to voltage.
+     * @param ki: Coefficient double i. Integral of error to voltage. Helps get the motor "unstuck" if P
      *            is not enough to drive the motor.
-     * @param kd: Constant double d. Derivative of error to voltage. Helps prevent overshooting.
-     * @param deadband: Constant double. Acceptable margin of error.
-     * @param on_target_time: Constant double. How long the reading must be within the deadband to consider robot
+     * @param kd: Coefficient double d. Derivative of error to voltage. Helps prevent overshooting.
+     * @param deadband: Double. Acceptable margin of error.
+     * @param on_target_time: Double. How long the reading must be within the deadband to consider robot
      *                        "aligned."
      * @param error_method: ERROR_TYPE struct. Can be either LINEAR or ANGULAR. Determines how we want the PID
      *                      to enact, on position or rotation for example.
@@ -117,14 +117,12 @@ class PID : public Feedback {
     /**
      * Get the delta between the current sensor data and the target
      * @return the error calculated. how it is calculated depends on error_method
-     * specified in pid error_method
      */
     double get_error();
 
     /**
      * Get the output calculated from the P, I, D and Error values
      * @return the output calculated from the pid controller
-     * specified in pid kp, ki, and kd
      */
     double get_output();
 

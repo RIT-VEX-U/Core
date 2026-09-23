@@ -22,5 +22,5 @@ typedef struct {
 
   Feedback *drive_feedback;         ///< the default feedback for autonomous driving
   Feedback *turn_feedback;          ///< the defualt feedback for autonomous turning
-  Feedback *correction_feedback;    ///< the pid that houses all needed values
+  Feedback *correction_feedback;    ///< the feedback that houses all needed values
 } robot_specs_t;
