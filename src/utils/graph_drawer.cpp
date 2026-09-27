@@ -1,4 +1,5 @@
 #include "core/utils/graph_drawer.h"
+
 /**
  * @brief Creates a graph drawer with the specified number of series (each series is a separate line)
  * @param num_samples the number of samples to graph at a time (40 will graph the last 40 data points)
@@ -7,7 +8,6 @@
  * @param colors the colors of the series. must be of size num_series
  * @param num_series the number of series to graph
  */
-
 GraphDrawer::GraphDrawer(
   int num_samples, double lower_bound, double upper_bound, std::vector<vex::color> colors, size_t num_series
 )

@@ -210,7 +210,7 @@ TurnToHeadingCommand::TurnToHeadingCommand(
  */
 bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg, feedback, max_speed, end_speed); }
 
-// Returns a string describing the commands functionality
+/// Returns a string describing the commands functionality
 std::string TurnToHeadingCommand::toString() {
     return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed * 100) +
            "% speed";

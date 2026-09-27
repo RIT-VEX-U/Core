@@ -2,7 +2,7 @@
 #include "core/device/vdb/protocol.hpp"
 #include <string>
 namespace VDP {
-/*
+/**
  * Defines a Part that contains another Part
  * essentially an array of parts that is formatted so that it can be sent to the debug board
  */
@@ -161,6 +161,7 @@ template <typename NumT, Type schemaType> class Number : public Part {
     
     /// Function to run when fetching this number
     using FetchFunc = std::function<NumberType()>; 
+    
     /**
       * creates a number with a name and fetcher
       * @param field name for the number part
