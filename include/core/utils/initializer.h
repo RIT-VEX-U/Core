@@ -1,9 +1,9 @@
 #pragma once
 
+#include "vex/vex.h"
 #include <functional>
 #include <string>
 #include <vector>
-#include "vex.h"
 
 /// Creates an Initialization
 #define INIT(name, func, meta) Initialization{name, func, meta}

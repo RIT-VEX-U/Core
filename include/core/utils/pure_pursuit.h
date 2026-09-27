@@ -1,9 +1,9 @@
 #pragma once
 
+#include "vex/vex.h"
 #include "core/utils/geometry.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
-#include "vex.h"
 #include <vector>
 
 namespace PurePursuit {

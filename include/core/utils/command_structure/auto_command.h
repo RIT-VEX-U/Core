@@ -6,8 +6,8 @@
 
 #pragma once
 
+#include "vex/vex.h"
 #include "core/utils/formatting.h"
-#include "vex.h"
 #include <atomic>
 #include <functional>
 #include <queue>

@@ -4,13 +4,13 @@
 #define PI 3.141592654
 #endif
 
+#include "vex/vex.h"
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/pure_pursuit.h"
-#include "vex.h"
 #include <vector>
 
 /**

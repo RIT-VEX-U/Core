@@ -1,4 +1,5 @@
 #pragma once
+#include "vex/vex.h"
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
@@ -6,7 +7,6 @@
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
 #include "core/utils/initializer.h"
-#include "vex.h"
 #include <cassert>
 #include <functional>
 #include <map>
