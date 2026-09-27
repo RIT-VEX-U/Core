@@ -324,3 +324,16 @@ bool OdomSetPosition::run() {
     odom.set_position(newpos);
     return true;
 }
+
+PrintPositionCommand::PrintPositionCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
+
+bool PrintPositionCommand::run() {
+    std::cout << "Current position: X: " + double_to_string(drive_sys.get_position().x()) + ", Y: " + double_to_string(drive_sys.get_position().y()) +
+               ", ROT: " + double_to_string(drive_sys.get_position().rotation().degrees()) << std::endl;
+    return true;
+}
+
+std::string PrintPositionCommand::toString() {
+    return  "Current position: X: " + double_to_string(drive_sys.get_position().x()) + ", Y: " + double_to_string(drive_sys.get_position().y()) +
+               ", ROT: " + double_to_string(drive_sys.get_position().rotation().degrees());
+}

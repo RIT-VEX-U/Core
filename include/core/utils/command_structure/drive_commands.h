@@ -310,3 +310,16 @@ private:
   OdometryBase &odom;
   Pose2d newpos;
 };
+
+
+class PrintPositionCommand : public AutoCommand { 
+public:
+  PrintPositionCommand(TankDrive &drive_sys);
+
+  bool run() override;
+  std::string toString() override;
+  void on_timeout() override;
+
+private:
+ TankDrive &drive_sys;
+};

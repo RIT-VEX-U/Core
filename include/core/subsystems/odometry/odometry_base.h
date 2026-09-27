@@ -49,6 +49,7 @@ class OdometryBase {
      */
     virtual void set_position(const Pose2d &newpos = zero_pos);
     AutoCommand *SetPositionCmd(const Pose2d &newpos = zero_pos);
+
     /**
      * Update the current position on the field based on the sensors
      * @return the location that the robot is at after the odometry does its calculations
