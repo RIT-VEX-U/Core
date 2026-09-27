@@ -38,7 +38,9 @@ int OdometryBase::background_task(void *ptr) {
  */
 void OdometryBase::end_async() { this->end_task = true; }
 
-/// Gets the current position and rotation
+/**
+ * Gets the current position and rotation
+ */
 Pose2d OdometryBase::get_position(void) {
     mut.lock();
 
@@ -50,7 +52,9 @@ Pose2d OdometryBase::get_position(void) {
     return out;
 }
 
-/// Sets the current position of the robot
+/**
+ * Sets the current position of the robot
+ */
 void OdometryBase::set_position(const Pose2d &newpos) {
     mut.lock();
 
@@ -117,4 +121,24 @@ double OdometryBase::get_angular_accel_deg() {
     mut.unlock();
 
     return retval;
+}
+//Creating the linear acceleration vector
+double OdometryBase:: get_linear_velocity_vector(){
+    mut.lock();
+    double current_speed = speed;
+    double heading_rad = current.pos.rotation().degrees() * (M_PI)/180;
+    mut.unlock();
+
+    double accel_x = current_speed * std::cos(heading_rad);
+    double accel_y = current_speed * std::sin(heading_rad);
+    return {accel_x, accel_y}
+}
+//Creating the rotational acceleration vector
+double OdometryBase:: get_rotational_accel_vector(){
+    mut.lock();
+    double current_speed = speed;
+    double heading_rad = current.pos.rotation().degrees() *PI;
+
+
+    mut.unlock();
 }
