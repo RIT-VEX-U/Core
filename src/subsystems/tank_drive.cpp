@@ -104,6 +104,13 @@ AutoCommand *TankDrive::DriveTankCmd(double left, double right) {
     return new DriveTankCommand(*this, left, right);
 }
 
+AutoCommand *TankDrive::PrintPositionCmd(TankDrive &drive_sys) {
+
+    return new PrintPositionCommand(drive_sys);
+}
+
+
+
 /**
  * Reset the initialization for autonomous drive functions
  */
