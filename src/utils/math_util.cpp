@@ -53,10 +53,10 @@ double wrap_angle_rad(double input) {
 
     return angle;
 }
-/*
-Calculates the average of a vector of doubles
-@param values   the list of values for which the average is taken
-*/
+/**
+ * Calculates the average of a vector of doubles
+ * @param values   the list of values for which the average is taken
+ */
 double mean(std::vector<double> const &values) {
     double total = 0;
     for (int i = 0; i < values.size(); i++) {
@@ -65,12 +65,12 @@ double mean(std::vector<double> const &values) {
     return total / (double)values.size();
 }
 
-/*
-Calculates the variance of  a set of numbers (needed for linear regression)
-https://en.wikipedia.org/wiki/Variance
-@param values   the values for which the covariance is taken
-@param mean     the average of values
-*/
+/**
+ * Calculates the variance of  a set of numbers (needed for linear regression)
+ * https://en.wikipedia.org/wiki/Variance
+ * @param values   the values for which the covariance is taken
+ * @param mean     the average of values
+ */
 double variance(std::vector<double> const &values, double mean) {
     double total = 0.0;
     for (int i = 0; i < values.size(); i++) {
@@ -79,15 +79,15 @@ double variance(std::vector<double> const &values, double mean) {
     return total / (values.size() - 1);
 }
 
-/*
-Calculates the covariance of a set of points (needed for linear regression)
-(refactor to accept to sets of values not a set of points)
-https://en.wikipedia.org/wiki/Covariance
-
-@param points   the points for which the covariance is taken
-@param meanx    the mean value of all x coordinates in points
-@param meany    the mean value of all y coordinates in points
-*/
+/**
+ * Calculates the covariance of a set of points (needed for linear regression)
+ * (refactor to accept to sets of values not a set of points)
+ * https://en.wikipedia.org/wiki/Covariance
+ *
+ * @param points   the points for which the covariance is taken
+ * @param meanx    the mean value of all x coordinates in points
+ * @param meany    the mean value of all y coordinates in points
+ */
 double covariance(std::vector<std::pair<double, double>> const &points, double meanx, double meany) {
     double covar = 0.0;
     for (int i = 0; i < points.size(); i++) {
@@ -96,14 +96,16 @@ double covariance(std::vector<std::pair<double, double>> const &points, double m
     return covar;
 }
 
-/*
+/**
  * Calculates the slope and y intercept of the line of best fit for the data
  * @param points the points for the data
  * @return slope, y intercept. y = m(x)+b. std::pair<m, b>
  */
 std::pair<double, double> calculate_linear_regression(std::vector<std::pair<double, double>> const &points) {
-    // Purely for convenience and the ability to reuse mean() and variance() - can be easily rewritten to avoid
-    // allocating these if the code is repeatedly called
+    /* 
+     * Purely for convenience and the ability to reuse mean() and variance() - can be easily rewritten to avoid
+     * allocating these if the code is repeatedly called
+     */
     std::vector<double> xs(points.size(), 0.0);
     std::vector<double> ys(points.size(), 0.0);
     for (int i = 0; i < points.size(); i++) {

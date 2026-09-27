@@ -118,9 +118,7 @@ class PID : public Feedback {
      */
     bool is_on_target() override;
 
-    /**
-     * Reset the PID loop by resetting time since 0 and accumulated error.
-     */
+    /// Reset the PID loop by resetting time since 0 and accumulated error.
     void reset();
 
     /**

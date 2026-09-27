@@ -10,13 +10,11 @@ namespace VDB {
  * @param ms the ms to delay for
  */
 void delay_ms(uint32_t ms) { vexDelay(ms); }
-/**
- * @return the time in ms of the bot since startup
- */
+
+/// @return the time in ms of the bot since startup
 uint32_t time_ms() { return vexSystemTimeGet(); }
-/**
- * the thread for sending data to the wire
- */
+
+/// the thread for sending data to the wire
 int Device::serial_thread(void *vself) {
     // defines itself within the thread
     Device &self = *(Device *)vself;
@@ -27,10 +25,13 @@ int Device::serial_thread(void *vself) {
     // loop for the thread
     while (true) {
         bool did_something = false;
-        // Lame replacement for blocking IO. We can't just wait and tell the
-        // scheduler to go work on something else while we wait for packets so
-        // instead, if we're getting nothing in and have nothing to send, block
-        // ourselves.
+        /* 
+         * Lame replacement for blocking IO. We can't just wait and tell the
+         * scheduler to go work on something else while we wait for packets so
+         * instead, if we're getting nothing in and have nothing to send, block
+         * ourselves.
+         */
+        
 
         // Writing
         if (self.write_packet_if_avail()) {
@@ -66,9 +67,7 @@ bool Device::send_packet(const VDP::Packet &packet) {
     return true;
 }
 
-/**
- * writes a packet to the device as soon as it is available
- */
+/// writes a packet to the device as soon as it is available
 bool Device::write_packet_if_avail() {
     // packet to write to the device
     WirePacket outbound_packet = {};

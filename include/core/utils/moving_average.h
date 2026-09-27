@@ -27,20 +27,20 @@ public:
  */
 class MovingAverage : public Filter {
 public:
-  /*
+  /** 
    * Create a moving average calculator with 0 as the default value
    *
    * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
    */
   MovingAverage(int buffer_size);
-  /*
+  /**
    * Create a moving average calculator with a specified default value
    * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
    * @param starting_value The value that the average will be before any data is added
    */
   MovingAverage(int buffer_size, double starting_value);
 
-  /*
+  /**
    * Add a reading to the buffer
    * Before:
    * [ 1 1 2 2 3 3] => 2
@@ -86,20 +86,20 @@ private:
  */
 class ExponentialMovingAverage : public Filter {
 public:
-  /*
+  /**
    * Create a moving average calculator with 0 as the default value
    *
    * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
    */
   ExponentialMovingAverage(int buffer_size);
-  /*
+  /**
    * Create a moving average calculator with a specified default value
    * @param buffer_size    The size of the buffer. The number of samples that constitute a valid reading
    * @param starting_value The value that the average will be before any data is added
    */
   ExponentialMovingAverage(int buffer_size, double starting_value);
 
-  /*
+  /**
    * Add a reading to the buffer
    * Before:
    * [ 1 1 2 2 3 3] => 2

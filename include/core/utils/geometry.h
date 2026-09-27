@@ -2,10 +2,8 @@
 #include "core/utils/math/geometry/transform2d.h"
 #include <cmath>
 
-/**
- *  Describes a Rectangle with a minimum and maximum point
- */
 
+///  Describes a Rectangle with a minimum and maximum point
 struct Rect {
     Translation2d min;
     Translation2d max;

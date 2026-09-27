@@ -17,9 +17,7 @@
  */
 class Twist2d {
   public:
-    /**
-     * Default Constructor for Twist2d
-     */
+    /// Default Constructor for Twist2d
     constexpr Twist2d();
 
     /**

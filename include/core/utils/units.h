@@ -40,9 +40,8 @@ public:
                         Luminosity, Moles>;
   static constexpr bool is_dimensionless = std::is_same_v<Self, Quantity<>>;
 
-  /**
-   * Default to value of 0.
-   */
+  
+  /// Default to value of 0.
   explicit constexpr Quantity() : value(0) {}
 
   /**
@@ -102,9 +101,8 @@ public:
    */
   constexpr double to(Self unit) const { return value / unit.value; }
 
-  /**
-   * Adds another quantity's value to this.
-   */
+  
+  /// Adds another quantity's value to this.
   constexpr Self &operator+=(Self other) {
     value += other.value;
     return *this;
@@ -121,9 +119,8 @@ public:
     return *this;
   }
 
-  /**
-   * Subtracts another quantity's value from this.
-   */
+  
+  /// Subtracts another quantity's value from this.
   constexpr Self &operator-=(Self other) {
     value -= other.value;
     return *this;
@@ -140,17 +137,13 @@ public:
     return *this;
   }
 
-  /**
-   * Multiplies this quantity by a scalar
-   */
+  /// Multiplies this quantity by a scalar
   constexpr Self &operator*=(double scalar) {
     value *= scalar;
     return *this;
   }
 
-  /**
-   * Divides this quantity by a scalar
-   */
+  /// Divides this quantity by a scalar
   constexpr Self &operator/=(double divisor) {
     value /= divisor;
     return *this;
@@ -168,14 +161,10 @@ public:
   }
 };
 
-/**
- * Number is just dimensionless
- */
+/// Number is just dimensionless
 using Number = Quantity<>;
 
-/**
- * quantity checker. Used by the is_quantity concept
- */
+/// quantity checker. Used by the is_quantity concept
 template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
           typename Time = std::ratio<0>, typename Current = std::ratio<0>,
           typename Angle = std::ratio<0>, typename Temperature = std::ratio<0>,
@@ -183,9 +172,7 @@ template <typename Mass = std::ratio<0>, typename Length = std::ratio<0>,
 void quantity_checker(Quantity<Mass, Length, Time, Current, Angle, Temperature,
                                Luminosity, Moles>) {}
 
-/**
- * Used to require a Quantity be passed in a template (instead of typename Q)
- */
+/// Used to require a Quantity be passed in a template (instead of typename Q)
 template <typename Q>
 concept IsQuantity = requires(Q q) { quantity_checker(q); };
 
@@ -197,17 +184,13 @@ template <IsQuantity Q> constexpr Q from(double value, Q unit) {
   return Q(value * unit.internal());
 }
 
-/**
- * Isomorphic concept checks whether dimensions are the same between quantities
- */
+/// Isomorphic concept checks whether dimensions are the same between quantities
 template <typename Q, typename... Quantities>
 concept Isomorphic = ((std::convertible_to<Q, Quantities> &&
                        std::convertible_to<Quantities, Q>) &&
                       ...);
 
-/**
- * Multiplying quantities adds their dimensions
- */
+/// Multiplying quantities adds their dimensions
 template <IsQuantity Q1, IsQuantity Q2>
 using Multiplied =
     Quantity<std::ratio_add<typename Q1::mass, typename Q2::mass>,
@@ -219,9 +202,7 @@ using Multiplied =
              std::ratio_add<typename Q1::luminosity, typename Q2::luminosity>,
              std::ratio_add<typename Q1::moles, typename Q2::moles>>;
 
-/**
- * Dividing quantities subtracts their dimensions
- */
+/// Dividing quantities subtracts their dimensions
 template <IsQuantity Q1, IsQuantity Q2>
 using Divided = Quantity<
     std::ratio_subtract<typename Q1::mass, typename Q2::mass>,
@@ -233,9 +214,7 @@ using Divided = Quantity<
     std::ratio_subtract<typename Q1::luminosity, typename Q2::luminosity>,
     std::ratio_subtract<typename Q1::moles, typename Q2::moles>>;
 
-/**
- * Exponentiating a quantity multiplies its dimensions by the power
- */
+/// Exponentiating a quantity multiplies its dimensions by the power
 template <IsQuantity Q, typename factor>
 using Exponentiated =
     Quantity<std::ratio_multiply<typename Q::mass, factor>,
@@ -247,9 +226,7 @@ using Exponentiated =
              std::ratio_multiply<typename Q::luminosity, factor>,
              std::ratio_multiply<typename Q::moles, factor>>;
 
-/**
- * Rooting a quantity divides its dimensions by the root
- */
+/// Rooting a quantity divides its dimensions by the root
 template <IsQuantity Q, typename quotient>
 using Rooted = Quantity<std::ratio_divide<typename Q::mass, quotient>,
                         std::ratio_divide<typename Q::length, quotient>,
@@ -262,9 +239,7 @@ using Rooted = Quantity<std::ratio_divide<typename Q::mass, quotient>,
 
 template <IsQuantity Q> constexpr Q operator+(Q rhs) { return rhs; }
 
-/**
- * Add two isomorphic quantities
- */
+/// Add two isomorphic quantities
 template <IsQuantity Q, IsQuantity R>
 constexpr Q operator+(Q lhs, R rhs)
   requires Isomorphic<Q, R>
@@ -272,16 +247,12 @@ constexpr Q operator+(Q lhs, R rhs)
   return Q(lhs.internal() + rhs.internal());
 }
 
-/**
- * Negate a quantity
- */
+/// Negate a quantity
 template <IsQuantity Q> constexpr Q operator-(Q rhs) {
   return Q(-rhs.internal());
 }
 
-/**
- * Subtract two isomorphic quantities
- */
+/// Subtract two isomorphic quantities
 template <IsQuantity Q, IsQuantity R>
 constexpr Q operator-(Q lhs, R rhs)
   requires Isomorphic<Q, R>
@@ -289,61 +260,47 @@ constexpr Q operator-(Q lhs, R rhs)
   return Q(lhs.internal() - rhs.internal());
 }
 
-/**
- * Multiply a Quantity by a Number
- */
+/// Multiply a Quantity by a Number
 template <IsQuantity Q>
   requires(!std::is_same_v<Q, Number>)
 constexpr Q operator*(Q quantity, Number multiple) {
   return Q(quantity.internal() * multiple.internal());
 }
 
-/**
- * Multiply a Quantity by a Number
- */
+/// Multiply a Quantity by a Number
 template <IsQuantity Q>
   requires(!std::is_same_v<Q, Number>)
 constexpr Q operator*(Number multiple, Q quantity) {
   return Q(quantity.internal() * multiple.internal());
 }
 
-/**
- * Divide a Quantity by a Number
- */
+/// Divide a Quantity by a Number
 template <IsQuantity Q>
   requires(!std::is_same_v<Q, Number>)
 constexpr Q operator/(Q quantity, Number divisor) {
   return Q(quantity.internal() / divisor.internal());
 }
 
-/**
- * Divide a Number by a Quantity
- */
+/// Divide a Number by a Quantity
 template <IsQuantity Q>
   requires(!std::is_same_v<Q, Number>)
 constexpr auto operator/(Number enumerator, Q divisor) {
   return Divided<Number, Q>(enumerator.internal() / divisor.internal());
 }
 
-/**
- * Multiply two Quantities
- */
+/// Multiply two Quantities
 template <IsQuantity Q1, IsQuantity Q2>
 constexpr auto operator*(Q1 lhs, Q2 rhs) {
   return Multiplied<Q1, Q2>(lhs.internal() * rhs.internal());
 }
 
-/**
- * Divide two Quantities
- */
+/// Divide two Quantities
 template <IsQuantity Q1, IsQuantity Q2>
 constexpr auto operator/(Q1 lhs, Q2 rhs) {
   return Divided<Q1, Q2>(lhs.internal() / rhs.internal());
 }
 
-/**
- * Check whether two Quantities are equal
- */
+/// Check whether two Quantities are equal
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator==(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -351,9 +308,7 @@ constexpr bool operator==(const Q &lhs, const R &rhs)
   return (lhs.internal() == rhs.internal());
 }
 
-/**
- * Check whether two Quantities are not equal
- */
+/// Check whether two Quantities are not equal
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator!=(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -361,9 +316,7 @@ constexpr bool operator!=(const Q &lhs, const R &rhs)
   return (lhs.internal() != rhs.internal());
 }
 
-/**
- * Check whether a Quantity is less than or equal to another
- */
+/// Check whether a Quantity is less than or equal to another
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator<=(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -371,9 +324,7 @@ constexpr bool operator<=(const Q &lhs, const R &rhs)
   return (lhs.internal() <= rhs.internal());
 }
 
-/**
- * Check whether a Quantity is greater than or equal to another
- */
+/// Check whether a Quantity is greater than or equal to another
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator>=(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -381,9 +332,7 @@ constexpr bool operator>=(const Q &lhs, const R &rhs)
   return (lhs.internal() >= rhs.internal());
 }
 
-/**
- * Check whether a Quantity is less than another
- */
+/// Check whether a Quantity is less than another
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator<(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -391,9 +340,7 @@ constexpr bool operator<(const Q &lhs, const R &rhs)
   return (lhs.internal() < rhs.internal());
 }
 
-/**
- * Check whether a Quantity is greater than another
- */
+/// Check whether a Quantity is greater than another
 template <IsQuantity Q, IsQuantity R>
 constexpr bool operator>(const Q &lhs, const R &rhs)
   requires Isomorphic<Q, R>
@@ -1009,9 +956,7 @@ constexpr auto round(const T &lhs, const U &rhs) {
   }
 }
 
-/**
- * Only allows nonzero length, time, angle for the next two functions
- */
+/// Only allows nonzero length, time, angle for the next two functions
 template <typename Q>
 concept KinematicQuantity =
     IsQuantity<Q> && std::ratio_equal_v<typename Q::mass, std::ratio<0>> &&

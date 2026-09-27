@@ -62,9 +62,8 @@ void RegistryController::take_packet(const Packet &pac) {
     } else if (header.func == VDP::PacketFunction::Acknowledge) {
         // if the packet is an acknowledgement packet
         PacketReader reader(pac, 1);
-        /**
-         * read the channel id and then set its acknowledgement boolean to true
-         */
+
+        // read the channel id and then set its acknowledgement boolean to true
         const ChannelID id = reader.get_number<ChannelID>();
         if (id >= channels.size()) {
             printf("VDB-Controller: Recieved ack for unknown channel %d\n", id);
@@ -180,8 +179,10 @@ bool RegistryController::negotiate() {
                 );
                 break;
             } else {
-                // if the channel was not acknowledged add one to the failed acknowledgements counter and set acked_all
-                // to false then move on to the next channel
+                /*
+                 * if the channel was not acknowledged add one to the failed acknowledgements counter and set acked_all
+                 * to false then move on to the next channel
+                 */
                 VDPWarnf("Controller: ack for chan id:%02x expired after %d msec", chan.id, (int)ack_ms);
                 failed_acks++;
                 if (j == BROADCAST_TRIES_PER - 1) {

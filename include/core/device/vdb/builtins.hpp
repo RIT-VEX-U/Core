@@ -7,9 +7,8 @@
 #include "vex.h"
 #include <string>
 namespace VDP {
-/**
- * Defines a record that holds a timestamp and data
- */
+
+/// Defines a record that holds a timestamp and data
 class TimestampedRecord : public Record {
   public:
     /**
@@ -20,18 +19,16 @@ class TimestampedRecord : public Record {
      * @param data the data to put into the record
      */
     TimestampedRecord(std::string name, Part *data);
-    /**
-     * sets the data that the Timestamp Parts hold
-     */
+    
+    /// sets the data that the Timestamp Parts hold
     void fetch();
 
   private:
     std::shared_ptr<Float> timestamp;
     PartPtr data;
 };
-/**
- * Defines a record that holds motor values
- */
+
+/// Defines a record that holds motor values
 class MotorDataRecord : public Record {
   public:
     /**
@@ -45,9 +42,8 @@ class MotorDataRecord : public Record {
      * @param mot the motor to get data from
      */
     MotorDataRecord(std::string name, vex::motor &mot);
-    /**
-     * sets the data that the Motor Parts hold
-     */
+    
+    /// sets the data that the Motor Parts hold
     void fetch() override;
 
   private:
@@ -59,9 +55,8 @@ class MotorDataRecord : public Record {
     std::shared_ptr<Float> voltage;
     std::shared_ptr<Float> current;
 };
-/**
- * Defines a record that holds odometry values to be sent to the board
- */
+
+/// Defines a record that holds odometry values to be sent to the board
 class OdometryDataRecord : public Record {
   public:
     /**
@@ -73,9 +68,8 @@ class OdometryDataRecord : public Record {
      * @param odom the odometry to get data from
      */
     OdometryDataRecord(std::string name, OdometryBase &odom);
-    /**
-     * sets the data that the Odometry Parts hold
-     */
+    
+    /// sets the data that the Odometry Parts hold
     void fetch() override;
 
   private:
@@ -86,9 +80,8 @@ class OdometryDataRecord : public Record {
     std::shared_ptr<Float> ROT;
 };
 
-/**
- * Defines a record sets odometry values from the board
- */
+
+/// Defines a record sets odometry values from the board
 class OdometryControlRecord : public Record {
   public:
     /**
@@ -97,9 +90,8 @@ class OdometryControlRecord : public Record {
      * @param odom the odometry to get data from
      */
     OdometryControlRecord(std::string name, OdometryBase &odom);
-    /**
-     * sets the odom position to the values from the board
-     */
+    
+    /// sets the odom position to the values from the board
     void response() override;
 
   private:
@@ -110,9 +102,8 @@ class OdometryControlRecord : public Record {
     std::shared_ptr<Float> ROT;
 };
 
-/**
- * Defines a record that holds pid values to be sent to the board
- */
+
+/// Defines a record that holds pid values to be sent to the board
 class PIDDataRecord : public Record {
   public:
     /**
@@ -127,9 +118,8 @@ class PIDDataRecord : public Record {
      * @param pid the pid to get data from
      */
     PIDDataRecord(std::string name, PID &pid);
-    /**
-     * sets the data that the PID Parts hold
-     */
+    
+    /// sets the data that the PID Parts hold
     void fetch() override;
 
   private:
@@ -142,9 +132,8 @@ class PIDDataRecord : public Record {
     std::shared_ptr<Float> OUTPUT;
     std::shared_ptr<String> TYPE;
 };
-/**
- * Defines a record for setting pid values from the board
- */
+
+/// Defines a record for setting pid values from the board
 class PIDControlRecord : public Record {
   public:
     /**
@@ -153,9 +142,8 @@ class PIDControlRecord : public Record {
      * @param pid the pid to get data from
      */
     PIDControlRecord(std::string name, PID &pid);
-    /**
-     * sets the PID values to the values from the board
-     */
+    
+    /// sets the PID values to the values from the board
     void response() override;
 
   private:
@@ -166,14 +154,12 @@ class PIDControlRecord : public Record {
     std::shared_ptr<Float> D;
 };
 
-/**
- * Defines a record for testing purposes, currently tests a float and int64
- */
+
+/// Defines a record for testing purposes, currently tests a float and int64
 class TestRecord : public Record {
   public:
-    /**
-     * Defines a record for testing purposes, currently tests a float and int64
-=    */
+    
+    /// Defines a record for testing purposes, currently tests a float and int64
     TestRecord(std::string name, double test_float, int64_t test_int64);
     void response() override;
     void fetch() override;

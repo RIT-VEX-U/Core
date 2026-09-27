@@ -19,9 +19,7 @@ Initializer::Initializer(   std::vector<Initialization> initializations, std::fu
                             std::function<void()> pre_init, std::function<void()> post_init )
  : selector(selector), initialization_list(initializations), pre_init(pre_init), post_init(post_init) {}
 
-/**
- * Initializes the robot
- */
+/// Initializes the robot
 void Initializer::initialize() {
     if(this->pre_init) this->pre_init();
 
