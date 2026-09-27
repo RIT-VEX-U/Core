@@ -124,7 +124,7 @@ double OdometryBase::get_angular_accel_deg() {
     return retval;
 }
 //Creating the linear acceleration vector
-Translation2d OdometryBase:: get_linear_velocity_vector(){
+Translation2d OdometryBase::get_linear_velocity_vector(){
     mut.lock();
     double current_speed = speed;
     double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
@@ -132,24 +132,24 @@ Translation2d OdometryBase:: get_linear_velocity_vector(){
 
     double velocity_x = current_speed * std::cos(heading_rad);
     double velocity_y = current_speed * std::sin(heading_rad);
-    return {velocity_x, velocity_y}
+    return {velocity_x, velocity_y};
 }
 
 /// Calculating the rotational velocity vector
-Pose2d OdemetryBase:: get_rotational_velocity_vector(){
+Pose2d OdemetryBase::get_rotational_velocity_vector(){
     // Obtatining the current angular speed and heading
     mut.lock();
     double current_ang_speed = ang_speed_deg;
-    double vx
-    double vy
-    vx,vy = get_linear_velocity_vector()
+    //double vx
+    //double vy
+    //vx,vy = get_linear_velocity_vector()
     mut.unlock();
 
-    return {vx, vy, current_ang_speed}
+    //return {vx, vy, current_ang_speed};
 }
 
 ///Creating the rotational acceleration vector
-Pose2d OdometryBase:: get_rotational_accel_vector(){
+Pose2d OdometryBase::get_rotational_accel_vector(){
     mut.lock();
     double current_speed = speed;
     double heading_rad = current_pos.rotation().degrees() *PI;

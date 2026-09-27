@@ -2,6 +2,7 @@
 
 // These are required for Eigen to compile
 // https://www.vexforum.com/t/eigen-integration-issue/61474/5
+#include "core/utils/math/geometry/translation2d.h"
 #undef __ARM_NEON__
 #undef __ARM_NEON
 #include <Eigen/Dense>
@@ -108,6 +109,30 @@ class OdometryBase {
      * @return the angular acceleration at which we are turning (deg/s^2)
      */
     double get_angular_accel_deg();
+
+    /**
+     * Get the current vector components of the linear velocity
+     * @return the x,y components of the linear velocity vector as a Translation2d
+     */
+    Translation2d get_linear_velocity_vector();
+
+    /**
+     * Get the current vector components of the linear acceleration
+     * @return the x,y componenets of the linear acceleration vector as a Translation2d
+     */
+    Translation2d get_linear_accel_vector();
+
+    /**
+     * Get the current vector compoenents of the rotational velocity vector
+     * @return the x,y,z components of the rotational velocity vector as a Pose2d
+     */
+    Pose2d get_rotational_velocity_vector();
+
+    /** 
+     * Get the current vector componenets of the rotational acceleration vector
+     * @return the x,y,z componenets of the rot accel vector as a Pose2d
+     */
+    Pose2d get_rotational_accel_vector();
 
     inline static constexpr Pose2d zero_pos = Pose2d();
 
