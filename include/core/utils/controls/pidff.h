@@ -44,9 +44,7 @@ class PIDFF : public Feedback {
      */
     double update(double val, double vel_setpt, double a_setpt = 0);
 
-    /**
-     * @return the last saved result from the feedback controller
-     */
+    /// @return the last saved result from the feedback controller
     double get() override;
 
     /**
@@ -58,9 +56,7 @@ class PIDFF : public Feedback {
      */
     void set_limits(double lower, double upper) override;
 
-    /**
-     * @return true if the feedback controller has reached it's setpoint
-     */
+    /// @return true if the feedback controller has reached it's setpoint
     bool is_on_target() override;
 
     void reset();

@@ -59,9 +59,10 @@ public:
 
     is_async = true;
     setpoint = 0;
-
-    // Create a background task that is constantly updating the lift PID, if requested.
-    // Set once, and forget.
+    /*
+     * Create a background task that is constantly updating the lift PID, if requested.
+     * Set once, and forget.
+     */
     vex::task t(
         [](void *ptr) {
           Lift &lift = *((Lift *)ptr);
@@ -216,9 +217,7 @@ public:
     return (lift_pid.get_target() == this->setpoint) && lift_pid.is_on_target();
   }
 
-  /**
-   * @return The current setpoint for the lift
-   */
+  /// @return The current setpoint for the lift
   double get_setpoint() { return this->setpoint; }
 
   /**
@@ -263,9 +262,7 @@ public:
     lift_motors.stop();
   }
 
-  /**
-   * @return whether or not the background thread is running the lift
-   */
+  /// @return whether or not the background thread is running the lift
   bool get_async() { return is_async; }
 
   /**

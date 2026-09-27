@@ -41,9 +41,8 @@ class AutoCommand {
     virtual bool run() { return true; }
 
     virtual std::string toString() { return "AutoCommand"; }
-    /**
-     * What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
-     */
+    
+    /// What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
     virtual void on_timeout() {}
     AutoCommand *withTimeout(double t_seconds) {
         if (this->timeout_seconds < 0) {
@@ -85,13 +84,14 @@ class FunctionCommand : public AutoCommand {
   private:
     std::function<bool(void)> f;
 };
-
-// Times tested 3
-// Test 1 -> false
-// Test 2 -> false
-// Test 3 -> true
-// Returns false until the Nth time that it is called
-// This is pretty much only good for implementing RepeatUntil
+/*
+ * Times tested 3
+ * Test 1 -> false
+ * Test 2 -> false
+ * Test 3 -> true
+ * Returns false until the Nth time that it is called
+ * This is pretty much only good for implementing RepeatUntil
+ */
 class TimesTestedCondition : public Condition {
   public:
     TimesTestedCondition(size_t N) : max(N) {}
@@ -122,8 +122,10 @@ class FunctionCondition : public Condition {
     std::function<void(void)> timeout;
 };
 
-/// @brief IfTimePassed tests based on time since the command controller was constructed. Returns true if elapsed time >
-/// time_s
+/**
+ * @brief IfTimePassed tests based on time since the command controller was constructed. Returns true if elapsed time >
+ * time_s
+ */
 class IfTimePassed : public Condition {
   public:
     IfTimePassed(double time_s);
@@ -145,11 +147,11 @@ class WaitUntilCondition : public AutoCommand {
     Condition *cond;
 };
 
-/// @brief InOrder runs its commands sequentially then continues.
-/// How to handle timeout in this case. Automatically set it to sum of commands timouts?
 
-/// @brief InOrder runs its commands sequentially then continues.
-/// How to handle timeout in this case. Automatically set it to sum of commands timouts?
+/**
+ * @brief InOrder runs its commands sequentially then continues.
+ * How to handle timeout in this case. Automatically set it to sum of commands timouts?
+ */
 class InOrder : public AutoCommand {
   public:
     InOrder(const InOrder &other) = default;
@@ -165,8 +167,10 @@ class InOrder : public AutoCommand {
     vex::timer tmr;
 };
 
-/// @brief  Parallel runs multiple commands in parallel and waits for all to finish before continuing.
-/// if none finish before this command's timeout, it will call on_timeout on all children continue
+/**
+ * @brief  Parallel runs multiple commands in parallel and waits for all to finish before continuing.
+ * if none finish before this command's timeout, it will call on_timeout on all children continue
+ */
 class Parallel : public AutoCommand {
   public:
     Parallel(std::initializer_list<AutoCommand *> cmds);
@@ -178,10 +182,11 @@ class Parallel : public AutoCommand {
     std::vector<AutoCommand *> cmds;
     std::vector<vex::task *> runners;
 };
-
-/// @brief Branch chooses from multiple options at runtime. the function decider returns an index into the choices
-/// vector If you wish to make no choice and skip this section, return NO_CHOICE; any choice that is out of bounds set
-/// to NO_CHOICE
+/**
+ * @brief Branch chooses from multiple options at runtime. the function decider returns an index into the choices
+ * vector If you wish to make no choice and skip this section, return NO_CHOICE; any choice that is out of bounds set
+ * to NO_CHOICE
+ */
 class Branch : public AutoCommand {
   public:
     Branch(Condition *cond, AutoCommand *false_choice, AutoCommand *true_choice);
@@ -199,9 +204,11 @@ class Branch : public AutoCommand {
     vex::timer tmr;
 };
 
-/// @brief Async runs a command asynchronously
-/// will simply let it go and never look back
-/// THIS HAS A VERY NICHE USE CASE. THINK ABOUT IF YOU REALLY NEED IT
+/**
+ * @brief Async runs a command asynchronously
+ * @details will simply let it go and never look back
+ * @note THIS HAS A VERY NICHE USE CASE. THINK ABOUT IF YOU REALLY NEED IT
+ */
 class Async : public AutoCommand {
   public:
     Async(AutoCommand *cmd) : cmd(cmd) {}
@@ -214,13 +221,17 @@ class Async : public AutoCommand {
 
 class RepeatUntil : public AutoCommand {
   public:
-    /// @brief RepeatUntil that runs a fixed number of times
-    /// @param cmds the cmds to repeat
-    /// @param repeats the number of repeats to do
+    /**
+     * @brief RepeatUntil that runs a fixed number of times
+     * @param cmds the cmds to repeat
+     * @param repeats the number of repeats to do
+     */
     RepeatUntil(InOrder cmds, size_t repeats);
-    /// @brief RepeatUntil the condition
-    /// @param cmds the cmds to run
-    /// @param true_to_end we will repeat until true_or_end.test() returns true
+    /**
+     * @brief RepeatUntil the condition
+     * @param cmds the cmds to run
+     * @param true_to_end we will repeat until true_or_end.test() returns true
+     */
     RepeatUntil(InOrder cmds, Condition *true_to_end);
     bool run() override;
     std::string toString() override;

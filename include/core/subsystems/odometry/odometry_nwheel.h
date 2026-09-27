@@ -167,9 +167,7 @@ public:
     return current_pos;
   }
 
-  /**
-   * Resets the position and rotational data to the input.
-   */
+  /// Resets the position and rotational data to the input.
   void set_position(const Pose2d &newpos) override {
     mut.lock();
     angle_offset = newpos.rotation().degrees() - (current_pos.rotation().degrees() - angle_offset);
