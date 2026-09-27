@@ -186,8 +186,6 @@ inline std::function<selector_t> weighted_potentiometer(vex::pot& potentiometer,
 
 }; // namespace Selector
 
-
-
 /**
  * Initializer is a utility that allows one program to call different robot initializations depending on a selection function, 
  * effectively reducing the amount of program slots that need to be redownloaded when making modifications to the entire code.
