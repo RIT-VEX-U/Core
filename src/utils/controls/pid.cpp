@@ -1,9 +1,7 @@
 #include "core/utils/controls/pid.h"
 #include "core/subsystems/odometry/odometry_base.h"
 
-/**
- * Create the PID object
- */
+/// Create the PID object
 PID::PID(pid_config_t &config) : config(config) { pid_timer.reset(); }
 
 void PID::init(double start_pt, double set_pt) {
@@ -50,9 +48,10 @@ double PID::update(double sensor_val, double v_setpt) {
     out = (config.p * get_error()) + d_term;
 
     bool limits_exist = lower_limit != 0 || upper_limit != 0;
-
-    // Only add to the accumulated error if the output is not saturated
-    // aka "Integral Clamping" anti-windup technique
+    /* 
+     * Only add to the accumulated error if the output is not saturated
+     * aka "Integral Clamping" anti-windup technique
+     */
     if (!limits_exist || (limits_exist && (out < upper_limit && out > lower_limit))) {
         accum_error += time_delta * get_error();
     }
@@ -72,9 +71,7 @@ double PID::update(double sensor_val, double v_setpt) {
 
 double PID::get_sensor_val() const { return sensor_val; }
 
-/**
- * Reset the PID loop by resetting time since 0 and accumulated error.
- */
+/// Reset the PID loop by resetting time since 0 and accumulated error.
 void PID::reset() {
     pid_timer.reset();
 
@@ -86,14 +83,10 @@ void PID::reset() {
     on_target_last_time = 0;
 }
 
-/**
- * Gets the current PID out value, from when update() was last run
- */
+/// Gets the current PID out value, from when update() was last run
 double PID::get() { return out; }
 
-/**
- * Get the delta between the current sensor data and the target
- */
+/// Get the delta between the current sensor data and the target
 double PID::get_error() {
     if (config.error_method == ERROR_TYPE::ANGULAR) {
         return OdometryBase::smallest_angle(target, sensor_val);
@@ -101,16 +94,12 @@ double PID::get_error() {
     return target - sensor_val;
 }
 
-/**
- * Get the delta between the current sensor data and the target
- */
+/// Get the delta between the current sensor data and the target
 double PID::get_output() { return out; }
 
 double PID::get_target() const { return target; }
 
-/**
- * Set the target for the PID loop, where the robot is trying to end up
- */
+/// Set the target for the PID loop, where the robot is trying to end up
 void PID::set_target(double target) { this->target = target; }
 
 /**
