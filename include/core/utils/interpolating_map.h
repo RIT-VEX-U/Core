@@ -58,9 +58,8 @@ template <typename KEY, typename VALUE> class InterpolatingMap {
         return delta * upper->second + (1.0 - delta) * lower->second;
     }
 
-    /**
-     * Clears the contents of the map.
-     */
+    
+    /// Clears the contents of the map.
     void clear() { map_.clear(); }
 
   private:

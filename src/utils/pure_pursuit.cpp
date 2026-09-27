@@ -45,19 +45,13 @@ PurePursuit::Path::Path(std::vector<Translation2d> points, double radius) {
     }
 }
 
-/**
- * Get the points associated with this Path
- */
+/// Get the points associated with this Path
 const std::vector<Translation2d> PurePursuit::Path::get_points() { return this->points; }
 
-/**
- * Get the radius associated with this Path
- */
+/// Get the radius associated with this Path
 double PurePursuit::Path::get_radius() { return this->radius; }
 
-/**
- * Get whether this path will behave as expected
- */
+/// Get whether this path will behave as expected
 bool PurePursuit::Path::is_valid() { return this->valid; }
 
 /**
@@ -107,9 +101,7 @@ PurePursuit::line_circle_intersections(Translation2d center, double r, Translati
     return intersections;
 }
 
-/**
- * Selects a look ahead from all the intersections in the path.
- */
+/// Selects a look ahead from all the intersections in the path.
 [[maybe_unused]] Translation2d
 PurePursuit::get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_loc, double radius) {
     // Default: the end of the path
@@ -138,9 +130,7 @@ PurePursuit::get_lookahead(const std::vector<Translation2d> &path, Pose2d robot_
     return target;
 }
 
-/**
- Injects points in a path without changing the curvature with a certain spacing.
-*/
+/// Injects points in a path without changing the curvature with a certain spacing.
 [[maybe_unused]] std::vector<Translation2d>
 PurePursuit::inject_path(const std::vector<Translation2d> &path, double spacing) {
     std::vector<Translation2d> new_path;
@@ -268,16 +258,18 @@ double PurePursuit::estimate_remaining_dist(const std::vector<Translation2d> &pa
     for (int i = path.size() - 1; i >= 0; i--) {
         // Test if the robot is between the two points
         auto pts = PurePursuit::line_circle_intersections(robot_pose.translation(), radius, path[i - 1], path[i]);
-
-        // There is an intersection? Robot is between the points so add the distance
-        // from the bot to the next point and end.
+        /* 
+         * There is an intersection? Robot is between the points so add the distance
+         * from the bot to the next point and end.
+         */
         if (!pts.empty()) {
             dist += robot_pose.translation().distance(path[i]);
             return dist;
         }
-
-        // No intersections? Add the distance between the two points and move backwards
-        // in the path until we find the robot, or run out of points.
+        /* 
+         * No intersections? Add the distance between the two points and move backwards
+         * in the path until we find the robot, or run out of points.
+         */
         dist += path[i - 1].distance(path[i]);
     }
 

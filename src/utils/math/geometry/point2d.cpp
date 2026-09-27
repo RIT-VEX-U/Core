@@ -24,9 +24,7 @@ int Point2d::x() const {
     return this->xcoord;
 }
 
-/**
- * Sets the X coordinate of the point
- */
+/// Sets the X coordinate of the point
 void Point2d::setX(const int& x) {
     this->xcoord = x;
 }
@@ -39,9 +37,7 @@ int Point2d::y() const {
     return this->ycoord;
 }
 
-/**
- * Sets the Y coordinate of the point
- */
+/// Sets the Y coordinate of the point
 void Point2d::setY(const int& y) {
     this->ycoord = y;
 }
