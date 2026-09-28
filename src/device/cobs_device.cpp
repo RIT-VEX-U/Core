@@ -1,11 +1,13 @@
 #include "core/device/cobs_device.h"
 
+#include <v5_apiuser.h>
+
 COBSSerialDevice::COBSSerialDevice(int32_t port, int32_t baud) : port(port), baud(baud) {
     vexGenericSerialEnable(port, 0);
     vexGenericSerialBaudrate(port, baud);
 }
 
-void COBSSerialDevice::hexdump(const uint8_t *data, size_t len) {
+void COBSSerialDevice::hexdump(const uint8_t* data, size_t len) {
     for (size_t i = 0; i < len; i++) {
         printf("%02x ", data[i]);
         if ((i % 16 == 0 && i != 0) || (i == len - 1)) {
@@ -17,14 +19,14 @@ void COBSSerialDevice::hexdump(const uint8_t *data, size_t len) {
 
 COBSSerialDevice::Packet COBSSerialDevice::get_last_decoded_packet() { return last_decoded_packet; }
 
-int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size, bool leading_delimeter) {
+int COBSSerialDevice::send_cobs_packet_blocking(
+        const uint8_t* data, size_t size, bool leading_delimeter
+) {
     serial_access_mut.lock();
 
     writing_buffer.resize(size);
     std::copy(data, data + size, writing_buffer.begin());
     COBSSerialDevice::cobs_encode(writing_buffer, encoded_write, leading_delimeter);
-    // printf("send: ");
-    // hexdump(encoded_write.data(), encoded_write.size());
 
     size_t write_head = 0;
     int32_t num_free = vexGenericSerialWriteFree(port);
@@ -41,7 +43,8 @@ int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t *data, size_t size
         if (num_to_transmit > num_free) {
             num_to_transmit = num_free;
         }
-        int32_t sent = vexGenericSerialTransmit(port, encoded_write.data() + write_head, num_to_transmit);
+        int32_t sent =
+                vexGenericSerialTransmit(port, encoded_write.data() + write_head, num_to_transmit);
         if (sent != num_to_transmit) {
             // error on port
 
@@ -88,7 +91,9 @@ bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
         return false;
     }
 }
-int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_size, uint32_t timeout_us) {
+int COBSSerialDevice::receive_cobs_packet_blocking(
+        uint8_t* data, size_t max_size, uint32_t timeout_us
+) {
     serial_access_mut.lock();
     size_t start_time = vexSystemHighResTimeGet();
     while (true) {
@@ -117,13 +122,13 @@ int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t *data, size_t max_siz
     return last_decoded_packet.size();
 }
 
-void COBSSerialDevice::cobs_encode(const Packet &in, WirePacket &out, bool add_start_delimeter) {
+void COBSSerialDevice::cobs_encode(const Packet& in, WirePacket& out, bool add_start_delimeter) {
     out.clear();
     if (in.size() == 0) {
         return;
     }
     size_t output_size = in.size() + (in.size() / 254) + 1;
-    output_size += 1 + (add_start_delimeter ? 1 : 0); // delimeter bytes
+    output_size += 1 + (add_start_delimeter ? 1 : 0);  // delimeter bytes
     out.resize(output_size);
 
     size_t output_code_head = 0;
@@ -164,7 +169,7 @@ void COBSSerialDevice::cobs_encode(const Packet &in, WirePacket &out, bool add_s
     out.resize(output_head);
 }
 
-void COBSSerialDevice::cobs_decode(const WirePacket &in, Packet &out) {
+void COBSSerialDevice::cobs_decode(const WirePacket& in, Packet& out) {
     out.clear();
     if (in.size() == 0) {
         return;

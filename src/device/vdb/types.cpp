@@ -1,6 +1,10 @@
 #include "core/device/vdb/types.hpp"
 
 namespace VDP {
+
+/**
+ * @return a Type Ids value as a string
+ */
 std::string to_string(TypeId t) {
     switch (t) {
         case TypeId::Record:
@@ -82,6 +86,9 @@ std::string to_string(TypeId t) {
     return "<<UNKNOWN TYPE>>";
 }
 
+/**
+ * @return the Type Id given a string
+ */
 TypeId parse_type(std::string str) {
     if (str == "record") return TypeId::Record;
     if (str == "string") return TypeId::String;

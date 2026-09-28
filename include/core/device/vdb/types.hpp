@@ -15,7 +15,7 @@
 namespace VDP {
 using Packet = std::vector<uint8_t>;
 
-/// Type Ids
+/// Each type of data we can send to the debig board has a uint8_t value associated with it
 enum class TypeId : uint8_t {
     Record = 0,
     Boolean = 1,
@@ -60,9 +60,14 @@ enum class TypeId : uint8_t {
 };
 
 /**
- * @return a Type Ids value as a string
+ * @return a Type Id as a string
  */
 std::string to_string(TypeId t);
+
+/**
+ * @return the Type Id given a string
+ */
+TypeId parse_type(std::string str);
 
 /// Recprd proto
 template <typename... Fields>
@@ -144,7 +149,7 @@ struct TypeIdMap<int64_t> {
 };
 
 /**
- * Since our build system makes int32_t an alias for long, we convert regular ints to in32_ts
+ * Since our build system makes int32_t an alias for long, we convert regular ints to int32_ts
  */
 template <typename T>
     requires std::is_same_v<T, int>
@@ -238,11 +243,10 @@ class Field {
      * @param name name for the Field
      * @param value value for the Field to hold; its C++ type determines the VDP Type
      */
-    // The referenced value must outlive this field.
     Field(std::string name, T& value) : name_(std::move(name)), value_(value) {};
 
     /**
-     * @breif Gets the name of the field
+     * @brief Gets the name of the field
      * @return the field name
      */
     const std::string& get_name() const { return name_; };
@@ -277,7 +281,7 @@ class Field {
      * @return the serialized data
      */
     VDP::Packet serialize_data() const {
-        /// Since strings are not fixed length, we need to use a 0 byte to signal when it has ended
+        // Since strings are not fixed length, we need to use a 0 byte to signal when it has ended
         if constexpr (std::is_same_v<T, std::string>) {
             VDP::Packet out(value_.begin(), value_.end());
             out.push_back(0);
@@ -295,8 +299,8 @@ class Field {
      */
     size_t apply_update(const VDP::Packet& packet_in) {
         if constexpr (std::is_same_v<T, std::string>) {
-            /// if the field holds a string, find the 0 delimiter and and get the string for that
-            /// length of the packet
+            // if the field holds a string, find the 0 delimiter and and get the string for that
+            // length of the packet
             auto str_end = std::find(packet_in.begin(), packet_in.end(), uint64_t(0));
 
             auto length = str_end - packet_in.begin();
@@ -307,8 +311,8 @@ class Field {
 
             return length + 1;
         } else {
-            /// if the field is a value that is not of variable size, just copy the data into the
-            /// field's data
+            // if the field is a value that is not of variable size, just copy the data into the
+            // field's data
             mut.lock();
             std::memcpy(&value_, packet_in.data(), sizeof(T));
             mut.unlock();
@@ -344,7 +348,7 @@ class Field {
                 return std::to_string(static_cast<uint64_t>(value_));
             }
         } else if constexpr (std::is_floating_point_v<T>) {
-            /// if it is a floating point we can just cast it to a string
+            // if it is a floating point we can just cast it to a string
             return std::to_string(value_);
         } else if constexpr (IsFixedPoint<T>::value) {
             /* if it is a fixed point check if it is signed or unsigned,
@@ -386,7 +390,7 @@ Field(std::string, T&) -> Field<T>;
  */
 template <typename... Fields>
 class Record {
-    /// checks that each element being input is a Field or a Record
+    // checks that each element being input is a Field or a Record
     static_assert(
             (IsField<std::remove_cvref_t<Fields>>::value && ...),
             "Record elements must all be Field or Record objects"
@@ -398,12 +402,22 @@ class Record {
      * @param name the name for the Record
      * @param Fields a list of fields for the record to hold
      */
-    // The referenced fields must outlive this record.
     explicit Record(std::string name, Fields&... fields)
         : name_(std::move(name)), value_(fields...) {}
 
+    /**
+     * @return the name of the record
+     */
     const std::string& get_name() const { return name_; }
+
+    /**
+     * @return the type id of the record
+     */
     TypeId get_type() const { return TypeId::Record; }
+
+    /**
+     * @return the value stored by the record
+     */
     const auto& get_value() const { return value_; }
 
     /**
@@ -505,8 +519,10 @@ class Record {
     std::string data_to_string(std::size_t depth = 0) const {
         std::string out = std::string(depth * 2, ' ') + this->get_name() + " : {\n";
 
-        /// loop through each field held within the record and add their data strings, increasing
-        /// the depth
+        /*
+         * loop through each field held within the record and add their data strings, increasing
+         * the depth
+         */
         std::apply(
                 [&](const auto&... fields) {
                     ([&] { out += fields.data_to_string(depth + 1) += ",\n"; }(), ...);
@@ -524,8 +540,10 @@ class Record {
     std::string schema_to_string(std::size_t depth = 0) const {
         std::string out = std::string(depth * 2, ' ') + this->get_name() + " : record {\n";
 
-        /// loop through each field held within the record and add their schema strings, increasing
-        /// the depth
+        /*
+         * loop through each field held within the record and add their schema strings, increasing
+         * the depth
+         */
         std::apply(
                 [&](const auto&... fields) {
                     ([&] { out += fields.schema_to_string(depth + 1) + ",\n"; }(), ...);

@@ -15,6 +15,12 @@
 #include "core/device/vdb/types.hpp"
 
 namespace VDP {
+
+/**
+ * checks the validity of a packet
+ * @param packet the packet to checksum
+ * @return the type of validity of the packet
+ */
 VDP::PacketValidity validate_packet(const VDP::Packet& packet) {
     VDPTracef("Validating packet of size %d", (int)packet.size());
 
@@ -42,6 +48,11 @@ VDP::PacketValidity validate_packet(const VDP::Packet& packet) {
     return VDP::PacketValidity::Ok;
 }
 
+/**
+ * creates a checksum for a packet
+ * @param in the packet to create a checksum for
+ * @return the checksum in packet form
+ */
 VDP::Packet checksum_pac(VDP::Packet in) {
     VDP::Packet out;
     uint32_t checksum = CRC32::calculate(in.data(), in.size());
@@ -52,11 +63,13 @@ VDP::Packet checksum_pac(VDP::Packet in) {
     return out;
 }
 
+/// creates a header byte from a PacketHeader
 uint8_t make_header_byte(PacketHeader head) { return (uint8_t)head.type | (uint8_t)head.func; }
 
+/// creates a PacketHeader from a packet
 PacketHeader decode_header_byte(uint8_t header_byte) {
-    const PacketType pt = (PacketType)(header_byte & 0b11111110);
-    const PacketFunction func = (PacketFunction)(header_byte & 0b00000001);
+    const PacketType pt = (PacketType)(header_byte & 0b00000001);
+    const PacketFunction func = (PacketFunction)(header_byte & 0b11111110);
 
     return {pt, func};
 }

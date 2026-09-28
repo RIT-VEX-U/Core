@@ -76,11 +76,6 @@ class Device : public COBSSerialDevice {
         if (outbound_packet.size() == 0) {
             return NONE_QUEUED;
         }
-        printf("writing packet: ");
-        for (uint8_t byte : outbound_packet) {
-            printf("%x", byte);
-        }
-        printf("\n");
 
         int sent = send_cobs_packet_blocking(outbound_packet.data(), outbound_packet.size());
 
@@ -219,7 +214,21 @@ class Device : public COBSSerialDevice {
                 break;
                 // send out ack packet when empty
             case VDP::PacketFunction::Holding:
-                if (this->outbound_packets.empty()) {
+                if (header.type == VDP::PacketType::Schema) {
+                    VDP::ChannelID acked_id = in[1];
+                    std::apply(
+                            [&](auto&... channel) {
+                                (
+                                        [&] {
+                                            if (acked_id == channel.get_id()) {
+                                                channel.unacknowledge();
+                                            }
+                                        }(),
+                                        ...);
+                            },
+                            channels_
+                    );
+                } else if (this->outbound_packets.empty()) {
                     VDP::Packet out;
                     out.push_back(
                             VDP::make_header_byte(
