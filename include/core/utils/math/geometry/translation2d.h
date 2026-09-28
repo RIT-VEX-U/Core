@@ -328,7 +328,7 @@ struct LinearVector2d {
         Q sumx;
         Q sumy;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (size_t i = 0; i < list.size(); i++) {
             sumx += list.at(i).x_;
             sumy += list.at(i).y_;
         }

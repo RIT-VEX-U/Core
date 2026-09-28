@@ -404,7 +404,7 @@ struct Pose2d {
         double sum_sin = 0;
         double sum_cos = 0;
 
-        for (int i = 0; i < list.size(); i++) {
+        for (size_t i = 0; i < list.size(); i++) {
             sumx += list.at(i).x();
             sumy += list.at(i).y();
 
