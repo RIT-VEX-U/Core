@@ -1,6 +1,6 @@
-#include <cmath>
 #include "core/utils/math/geometry/point2d.h"
 
+#include <cmath>
 
 /**
  * Creates a lattice point at the coordinate (x,y)
@@ -15,44 +15,29 @@ Point2d::Point2d(int x, int y) : xcoord(x), ycoord(y) {}
  */
 Point2d::Point2d(Eigen::Vector2i vector) : xcoord(vector(0)), ycoord(vector(1)) {}
 
-
 /**
  * Returns the X coordinate of the point
  * @returns The X coordinate of the point
  */
-int Point2d::x() const {
-    return this->xcoord;
-}
+int Point2d::x() const { return this->xcoord; }
 
-/**
- * Sets the X coordinate of the point
- */
-void Point2d::setX(int x) {
-    this->xcoord = x;
-}
+/// Sets the X coordinate of the point
+void Point2d::setX(int x) { this->xcoord = x; }
 
 /**
  * Returns the Y coordinate of the point
  * @returns The Y coordinate of the point
  */
-int Point2d::y() const {
-    return this->ycoord;
-}
+int Point2d::y() const { return this->ycoord; }
 
-/**
- * Sets the Y coordinate of the point
- */
-void Point2d::setY(int y) {
-    this->ycoord = y;
-}
+/// Sets the Y coordinate of the point
+void Point2d::setY(int y) { this->ycoord = y; }
 
 /**
  * Returns the vector as an Eigen::Vector2i
  * @returns Eigen::Vector2i with the same values as the point
  */
-Eigen::Vector2i Point2d::as_vector() const {
-    return Eigen::Vector2i(this->xcoord, this->ycoord);
-}
+Eigen::Vector2i Point2d::as_vector() const { return Eigen::Vector2i(this->xcoord, this->ycoord); }
 
 /**
  * Returns a vector in the canonical basis corresponding to the point in the basis of X and Y
@@ -61,7 +46,9 @@ Eigen::Vector2i Point2d::as_vector() const {
  * @returns The point as a linear combination of the X and Y vectors
  */
 Eigen::Vector2d Point2d::as_vector(Eigen::Vector2d X, Eigen::Vector2d Y) const {
-    return Eigen::Vector2d(this->xcoord * X(0) + this->ycoord * Y(0), this->xcoord * X(1) + this->ycoord * Y(1));
+    return Eigen::Vector2d(
+            this->xcoord * X(0) + this->ycoord * Y(0), this->xcoord * X(1) + this->ycoord * Y(1)
+    );
 }
 
 /**
@@ -76,9 +63,7 @@ int Point2d::manhattan_distance(Point2d other) const {
  * Returns the manhattan distance away from the origin
  * @returns The manhattan norm of the point
  */
-int Point2d::manhattan_norm() const {
-    return abs(this->xcoord) + abs(this->ycoord);
-}
+int Point2d::manhattan_norm() const { return abs(this->xcoord) + abs(this->ycoord); }
 
 /**
  * Returns the distance (as a continuous number) between two points
@@ -92,9 +77,7 @@ double Point2d::distance(Point2d other) const {
  * Returns the distance (as a continuous number) away from the origin
  * @returns The norm (as a continuous number) of the point
  */
-double Point2d::norm() const {
-    return hypot(this->xcoord, this->ycoord);
-}
+double Point2d::norm() const { return hypot(this->xcoord, this->ycoord); }
 
 /**
  * Compares two points
@@ -139,9 +122,7 @@ Point2d Point2d::operator-(Point2d other) const {
  *
  * @return The inverse of the point
  */
-Point2d Point2d::operator-() const {
-    return Point2d{-this->xcoord, -this->ycoord};
-}
+Point2d Point2d::operator-() const { return Point2d{-this->xcoord, -this->ycoord}; }
 
 /**
  * Returns this point multiplied by a scalar
@@ -169,10 +150,10 @@ int Point2d::operator*(Point2d other) const {
 }
 
 /**
- * Sends a point to an output stream. 
+ * Sends a point to an output stream.
  * Ex:  The code `std::cout << point;` prints "Point2d[x: (value), y: (value)]"
  */
-std::ostream &operator<<(std::ostream &os, Point2d point) {
+std::ostream& operator<<(std::ostream& os, Point2d point) {
     os << "Point2d[x: " << point.x() << ", y: " << point.y() << "]";
     return os;
 }

@@ -2,14 +2,10 @@
 
 #include <Eigen/Dense>
 
-/**
- * Class representing a lattice point
- */
+/// Class representing a lattice point
 class Point2d {
-public:
-    /**
-     * Default constructor for Point2d creating a lattice point at the origin
-     */
+   public:
+    /// Default constructor for Point2d creating a lattice point at the origin
     constexpr Point2d() : xcoord(0), ycoord(0) {}
 
     /**
@@ -31,9 +27,7 @@ public:
      */
     int x() const;
 
-    /**
-     * Sets the X coordinate of the point
-     */
+    /// Sets the X coordinate of the point
     void setX(int x);
 
     /**
@@ -42,9 +36,7 @@ public:
      */
     int y() const;
 
-    /**
-     * Sets the Y coordinate of the point
-     */
+    /// Sets the Y coordinate of the point
     void setY(int y);
 
     /**
@@ -146,11 +138,11 @@ public:
     int operator*(Point2d other) const;
 
     /**
-     * Sends a point to an output stream. 
+     * Sends a point to an output stream.
      * Ex:  The code `std::cout << point;` prints "Point2d[x: (value), y: (value)]"
      */
-    friend std::ostream &operator<<(std::ostream &os, Point2d point);
+    friend std::ostream& operator<<(std::ostream& os, Point2d point);
 
-private:
+   private:
     int xcoord, ycoord;
 };

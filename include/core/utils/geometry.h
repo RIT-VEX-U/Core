@@ -1,11 +1,10 @@
 #pragma once
-#include "core/utils/math/eigen_interface.h"
+
 #include <cmath>
 
-/**
- *  Describes a screen rectangle with minimum and maximum pixel coordinates.
- */
+#include "core/utils/math/eigen_interface.h"
 
+///  Describes a Rectangle with a minimum and maximum point
 struct Rect {
     EVec<2> min;
     EVec<2> max;

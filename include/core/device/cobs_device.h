@@ -68,9 +68,11 @@ class COBSSerialDevice {
      */
     bool poll_incoming_data_once();
 
-    /// @brief  process one byte at a time
-    /// @param byte the incoming byte
-    /// @return true if a packet was decoded
+    /**
+     * @brief  process one byte at a time
+     * @param byte the incoming byte
+     * @return true if a packet was decoded
+     */
     bool handle_incoming_byte(uint8_t byte);
 
   private:
