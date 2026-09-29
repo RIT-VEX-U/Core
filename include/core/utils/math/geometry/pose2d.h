@@ -160,12 +160,10 @@ struct Pose2d {
     }
 
     /**
-     * Finds the pose equivalent to this pose relative to another arbitrary pose
-     * rather than the origin.
+     * Finds this pose in the frame of another pose rather than the origin.
      *
-     * @param other the pose representing the new origin.
-     *
-     * @return this pose relative to another pose.
+     * @param other new origin.
+     * @return this pose relative to other.
      */
     constexpr Pose2d relative_to(const Pose2d& other) const {
         Transform2d transform = *this - other;
@@ -175,10 +173,9 @@ struct Pose2d {
     /**
      * Adds a transform to this pose.
      * Rotates the transform's translation into the pose's frame,
-     * adds the translation component, then adds the rotation component.
+     * then adds the translation and rotation.
      *
      * @param transform the change in pose.
-     *
      * @return the pose after being transformed.
      */
     constexpr Pose2d transform_by(const Transform2d& transform) const {
@@ -186,6 +183,18 @@ struct Pose2d {
                 translation_ + (transform.translation_.rotate_by(rotation_)),
                 rotation_ + transform.rotation_
         };
+    }
+
+    /**
+     * Checks translation distance and the smallest angle against tolerances.
+     * Defaults to 1um and 1e-6 radians.
+     */
+    constexpr bool is_near(
+            const Pose2d& other, units::Length distance_tolerance = units::Length(1e-6),
+            units::Angle angle_tolerance = units::Angle(1e-6)
+    ) const {
+        return translation_.is_near(other.translation_, distance_tolerance) &&
+               rotation_.is_near(other.rotation_, angle_tolerance);
     }
 
     /**
@@ -236,9 +245,6 @@ struct Pose2d {
      *
      * Determines the twist required to go from this pose to the given end pose.
      *
-     * Returns the principal angular displacement; full turns cannot be
-     * recovered from pose orientations alone.
-     *
      * @param end_pose the end pose to find the mapping to.
      * @return the twist required to go from this pose to the given end
      */
@@ -288,18 +294,6 @@ struct Pose2d {
     /// Checks exact equality between this and another pose.
     constexpr bool operator==(const Pose2d& other) const {
         return (translation_ == other.translation_) && (rotation_ == other.rotation_);
-    }
-
-    /**
-     * Checks translation distance and the smallest angle against tolerances.
-     * Defaults to 1um and 1e-6 radians.
-     */
-    constexpr bool is_near(
-            const Pose2d& other, units::Length distance_tolerance = units::Length(1e-6),
-            units::Angle angle_tolerance = units::Angle(1e-6)
-    ) const {
-        return translation_.is_near(other.translation_, distance_tolerance) &&
-               rotation_.is_near(other.rotation_, angle_tolerance);
     }
 
     /**
