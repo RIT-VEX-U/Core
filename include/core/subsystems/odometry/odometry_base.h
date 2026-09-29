@@ -117,10 +117,22 @@ class OdometryBase {
     Translation2d get_linear_velocity_vector();
 
     /**
+     * Set the vector components of the linear velocity
+     * @param newLinVel the new linear velocity that the odemetry will believe the bot to have
+     */
+    virtual void set_linear_velocity_vector(const Translation2d &newLinVel);
+
+    /**
      * Get the current vector components of the linear acceleration
      * @return the x,y componenets of the linear acceleration vector as a Translation2d
      */
     Translation2d get_linear_accel_vector();
+
+    /**
+     * Set the vector components of the linear acceleration
+     * @param newLinAcc the new linear acceleration that the odemetry will believe the bot to have
+     */
+    virtual void set_linear_acceleration_vector(const Translation2d &newLinAcc);
 
     /**
      * Get the current vector compoenents of the rotational velocity vector
@@ -128,11 +140,23 @@ class OdometryBase {
      */
     Pose2d get_rotational_velocity_vector();
 
+    /**
+     * Set the vector components of the rotational velocity
+     * @param newRotVel the new rotational velocity that the odemetry will believe the bot to have
+     */
+    virtual void set_rotational_velocity_vector(const Pose2d &newRotVel);
+
     /** 
      * Get the current vector componenets of the rotational acceleration vector
      * @return the x,y,z componenets of the rot accel vector as a Pose2d
      */
     Pose2d get_rotational_accel_vector();
+
+    /**
+     * Set the vector components of the rotational acceleration
+     * @param newRotAcc the new rotational acceleration that the odemetry will believe the bot to have
+     */
+    virtual void set_rotational_accel_vector(const Pose2d &newRotAcc);
 
     inline static constexpr Pose2d zero_pos = Pose2d();
 

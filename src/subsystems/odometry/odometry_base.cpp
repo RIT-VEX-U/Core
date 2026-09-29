@@ -123,7 +123,12 @@ double OdometryBase::get_angular_accel_deg() {
 
     return retval;
 }
-//Creating the linear acceleration vector
+
+/**
+ * Calculates the current linear velocity vector of the bot
+ *
+ * @return the current linear velocity vector as a Translation2d
+ */
 Translation2d OdometryBase::get_linear_velocity_vector(){
     mut.lock();
     double current_speed = speed;
@@ -135,25 +140,46 @@ Translation2d OdometryBase::get_linear_velocity_vector(){
     return {velocity_x, velocity_y};
 }
 
-/// Calculating the rotational velocity vector
-Pose2d OdemetryBase::get_rotational_velocity_vector(){
-    // Obtatining the current angular speed and heading
+/**
+ * Calculates the current linear acceleration vector of the bot
+ *
+ * @return the current linear acceleration vector as a Translation2d
+ */
+Translation2d OdemetryBase::get_linear_accel_vector(){
     mut.lock();
-    double current_ang_speed = ang_speed_deg;
-    //double vx
-    //double vy
-    //vx,vy = get_linear_velocity_vector()
+    double current_accel = accel;
+    double heading = current_pos.rotation().degrees() * (M_PI)/180;
     mut.unlock();
 
-    //return {vx, vy, current_ang_speed};
+    double accel_x = current_accel * std::cos(heading);
+    double accel_y = current_accel * std::sin(heading);
+    return {accel_x,accel_y};
 }
 
-///Creating the rotational acceleration vector
+/**
+ * Calculates the current rotational velocity vector 
+ * 
+ * @return the current rotational velocity vector as a Pose2d
+ */
+Pose2d OdemetryBase::get_rotational_velocity_vector(){
+    // Obtatining the current angular speed and translation
+    mut.lock();
+    double current_ang_speed = ang_speed_deg;
+    Translation2d translation = get_linear_velocity_vector();
+    mut.unlock();
+
+    return {translation, current_ang_speed};
+}
+
+/**
+ * Calculates the current rotational acceleration vector 
+ * 
+ * @return the current rotational velocity accleration as a Pose2d
+ */
 Pose2d OdometryBase::get_rotational_accel_vector(){
     mut.lock();
-    double current_speed = speed;
-    double heading_rad = current_pos.rotation().degrees() *PI;
-
-
+    double current_ang_accel = ang_accel_deg;
     mut.unlock();
+    Translation2d translation = get_linear_accel_vector();
+    return {translation,current_ang_accel};
 }
