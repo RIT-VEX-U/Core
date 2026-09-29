@@ -17,7 +17,7 @@ concept LinearKinematicQuantity =
 
 /**
  * Class representing a 2d vector. Depending on unit this could be
- * a Translation2d, Velocity2d, Acceleration2d, or Jerk2d.
+ * a Translation2d, Velocity2d, Acceleration2d, Jerk2d, or other
  *
  * Assumes conventional cartesian coordinate system:
  * Looking down at the coordinate plane,
@@ -27,44 +27,23 @@ concept LinearKinematicQuantity =
  */
 template <LinearKinematicQuantity Q>
 struct LinearVector2d {
+    Q x_;
+    Q y_;
+
     /// Default Constructor for LinearVector2d valued (0, 0)
     constexpr LinearVector2d() : x_{0}, y_{0} {}
 
     /**
      * Constructs a vector with the given x and y values.
+     *
      * @param x The x component of the vector.
      * @param y The y component of the vector.
      */
     constexpr LinearVector2d(Q x, Q y) : x_{x}, y_{y} {}
 
     /**
-     * Returns the x component.
-     */
-    constexpr Q x() const { return x_; }
-
-    /**
-     * Returns the y component.
-     */
-    constexpr Q y() const { return y_; }
-
-    /**
-     * Returns x in the supplied unit.
-     */
-    constexpr double x(Q unit) const { return x_.to(unit); }
-
-    /// Returns y in the supplied unit.
-    constexpr double y(Q unit) const { return y_.to(unit); }
-
-    /**
-     * Constructs a vector with the values from the given Eigen::Vector.
-     * @param vector The vector whose values will be used.
-     * @param unit The unit to use when assigning x and y (e.g. units::inches)
-     */
-    constexpr LinearVector2d(Eigen::Vector2d vector, Q unit)
-        : x_{vector[0], unit}, y_{vector[1], unit} {}
-
-    /**
      * Constructs a vector given polar coordinates of the form (r, theta).
+     *
      * @param r The magnitude of the vector.
      * @param theta The angle of the vector.
      */
@@ -72,43 +51,52 @@ struct LinearVector2d {
         : x_{r * theta.f_cos()}, y_{r * theta.f_sin()} {}
 
     /**
-     * Returns the angle of the vector.
-     * @returns The angle of the vector.
+     * Constructs a vector with the values from the given Eigen::Vector.
+     *
+     * @param vector The vector whose values will be used.
+     * @param unit The unit to use when assigning x and y (e.g. units::inches)
      */
+    constexpr LinearVector2d(Eigen::Vector2d vector, Q unit)
+        : x_{vector[0], unit}, y_{vector[1], unit} {}
+
+    /// Returns the x component.
+    constexpr Q x() const { return x_; }
+
+    /// Returns the y component.
+    constexpr Q y() const { return y_; }
+
+    /// Returns x in the supplied unit.
+    constexpr double x(Q unit) const { return x_.to(unit); }
+
+    /// Returns y in the supplied unit.
+    constexpr double y(Q unit) const { return y_.to(unit); }
+
+    /// Returns the angle of the vector from the x axis.
     constexpr Rotation2d theta() const { return Rotation2d(x_.internal(), y_.internal()); }
 
     /**
      * Returns the vector as an Eigen::Vector2d.
      *
      * @param unit The unit to get the x and y components as (e.g. units::inches)
-     *
      * @returns Eigen::Vector2d with the same values as the vector.
      */
     constexpr Eigen::Vector2d as_vector(Q unit) const { return EVec<2>{x_.to(unit), y_.to(unit)}; }
 
-    /**
-     * Returns the norm/magnitude of the vector.
-     *
-     * @returns the norm of the vector.
-     */
+    /// Returns the norm of the vector.
     constexpr Q norm() const { return units::hypot(x_, y_); }
 
     /**
      * Returns a vector of the same angle, but specific magnitude
      * (default 1 base unit)
      *
+     * @param magnitude magnitude of the vector (default 1 base unit).
      * @returns The normalized vector.
      */
     constexpr LinearVector2d normalize(Q magnitude = Q(1.0)) const {
         return LinearVector2d(magnitude, theta());
     }
 
-    /**
-     * Returns the distance between two vectors.
-     * (mostly useful for Translation2d)
-     *
-     * @returns The distance between two vectors.
-     */
+    /// Returns the distance between two vectors.
     constexpr Q distance(LinearVector2d other) const {
         return units::hypot(x_ - other.x_, y_ - other.y_);
     }
@@ -116,6 +104,10 @@ struct LinearVector2d {
     /**
      * Interpolates along a straight line to another vector.
      * Fractions outside [0, 1] return the nearest endpoint.
+     *
+     * @param end endpoint
+     * @param fraction percent of the way between the points
+     * @return interpolated vector
      */
     constexpr LinearVector2d interpolate(LinearVector2d end, double fraction) const {
         if (fraction <= 0) {
@@ -158,72 +150,75 @@ struct LinearVector2d {
     }
 
     /**
-     * Returns the sum of two vectors.
-     *
-     * [x] = [x] + [otherx];
-     * [y] = [y] + [othery];
-     *
-     * @param other the other vector to add to this.
-     * @returns The sum of the two vectors.
-     */
-    constexpr LinearVector2d operator+(LinearVector2d other) const {
-        return {x_ + other.x_, y_ + other.y_};
-    }
-
-    /**
-     * Adds another vector to this vector.
-     */
-    constexpr LinearVector2d& operator+=(LinearVector2d other) { return *this = *this + other; }
-
-    /**
-     * Returns the difference of two vectors.
-     *
-     * [x] = [x] - [otherx]
-     * [y] = [y] - [othery]
-     *
-     * @param other the vector to subtract from this.
-     * @returns The difference of the two vectors.
-     */
-    constexpr LinearVector2d operator-(LinearVector2d other) const {
-        return {x_ - other.x_, y_ - other.y_};
-    }
-
-    /**
-     * Subtracts another vector from this vector.
-     */
-    constexpr LinearVector2d& operator-=(LinearVector2d other) { return *this = *this - other; }
-
-    /**
-     * Returns the inverse of this vector.
-     * Equivalent to flipping the vector across the origin.
-     *
+     * Returns the inverse of this vector, or mirrors it across the origin.
      * [x] = [-x]
      * [y] = [-y]
      *
      * @returns The inverse of this vector.
      */
-    constexpr LinearVector2d operator-() const { return {-x_, -y_}; }
+    constexpr LinearVector2d inverse() const { return LinearVector2d(-x_, -y_); }
 
     /**
-     * Returns this vector multiplied by a scalar.
+     * Returns the dot product of two vectors.
+     * The result has the product of the two component units.
      *
-     * [x] = [x] * [scalar]
-     * [y] = [y] * [scalar]
+     * [scalar] = [x][otherx] + [y][othery]
      *
-     * @param scalar the scalar to multiply by.
-     * @returns This vector multiplied by a scalar.
+     * @param other the other vector to dot with.
+     * @returns The dot product of this and other.
      */
+    constexpr units::Multiplied<Q, Q> dot(LinearVector2d other) const {
+        return (x_ * other.x_) + (y_ * other.y_);
+    }
+
+    /// Adds another vector to this vector component wise.
+    constexpr LinearVector2d operator+(LinearVector2d other) const {
+        return {x_ + other.x_, y_ + other.y_};
+    }
+
+    /// Adds another vector to this vector component wise.
+    constexpr LinearVector2d& operator+=(LinearVector2d other) { return *this = *this + other; }
+
+    /// Subtracts another vector from this vector component wise.
+    constexpr LinearVector2d operator-(LinearVector2d other) const {
+        return {x_ - other.x_, y_ - other.y_};
+    }
+
+    /// Subtracts another vector from this vector component wise.
+    constexpr LinearVector2d& operator-=(LinearVector2d other) { return *this = *this - other; }
+
+    /// Inverts this vector (flipped across origin).
+    constexpr LinearVector2d operator-() const { return inverse(); }
+
+    /// Multiplies this vector by a scalar.
     constexpr LinearVector2d operator*(double scalar) const { return {x_ * scalar, y_ * scalar}; }
 
+    /// Multiplies a scalar by this vector.
+    friend constexpr LinearVector2d operator*(double scalar, LinearVector2d vector) {
+        return vector * scalar;
+    }
+
+    /// Multiplies this vector by a scalar.
+    constexpr LinearVector2d& operator*=(double scalar) { return *this = *this * scalar; }
+
     /**
-     * Returns this vector multiplied by a scalar. The unit result must be a LinearKinematicQuantity
-     *
-     *
+     * Multiplies this vector by a scalar with a unit of time.
+     * e.g. Velocity2d * Time = Translation2d
      */
     template <units::IsQuantity S>
         requires LinearKinematicQuantity<units::Multiplied<Q, S>>
     constexpr LinearVector2d<units::Multiplied<Q, S>> operator*(S scalar) const {
         return LinearVector2d<units::Multiplied<Q, S>>{x_ * scalar, y_ * scalar};
+    }
+
+    /**
+     * Multiplies a scalar with a unit of time by this vector.
+     * e.g. Time * Velocity2d = Translation2d
+     */
+    template <units::IsQuantity S>
+        requires LinearKinematicQuantity<units::Multiplied<Q, S>>
+    friend constexpr auto operator*(S scalar, LinearVector2d vector) {
+        return vector * scalar;
     }
 
     /**
@@ -235,41 +230,9 @@ struct LinearVector2d {
      * @param other the other vector to dot with.
      * @returns The dot product of this and other.
      */
-    template <LinearKinematicQuantity R>
-    constexpr units::Multiplied<Q, R> operator*(LinearVector2d<R> other) const {
-        return dot(other);
-    }
+    constexpr units::Multiplied<Q, Q> operator*(LinearVector2d other) const { return dot(other); }
 
-    /**
-     * Multiplies a scalar by this vector.
-     */
-    friend constexpr LinearVector2d operator*(double scalar, LinearVector2d vector) {
-        return vector * scalar;
-    }
-
-    /**
-     * Multiplies a quantity by this vector, keeping the resulting units.
-     */
-    template <units::IsQuantity S>
-        requires LinearKinematicQuantity<units::Multiplied<Q, S>>
-    friend constexpr auto operator*(S scalar, LinearVector2d vector) {
-        return vector * scalar;
-    }
-
-    /**
-     * Scales this vector without changing its units.
-     */
-    constexpr LinearVector2d& operator*=(double scalar) { return *this = *this * scalar; }
-
-    /**
-     * Returns this vector divided by a scalar.
-     *
-     * [x] = [x] / [scalar]
-     * [y] = [y] / [scalar]
-     *
-     * @param scalar the scalar to divide by.
-     * @returns This vector divided by a scalar.
-     */
+    /// Divides this vector by a scalar.
     constexpr LinearVector2d operator/(double scalar) const { return {x_ / scalar, y_ / scalar}; }
 
     template <units::IsQuantity S>
@@ -278,36 +241,18 @@ struct LinearVector2d {
         return LinearVector2d<units::Divided<Q, S>>{x_ / scalar, y_ / scalar};
     }
 
-    /**
-     * Divides this vector without changing its units.
-     */
+    /// Divides this vector by a scalar.
     constexpr LinearVector2d& operator/=(double scalar) { return *this = *this / scalar; }
 
-    /**
-     * Compares two vectors.
-     * Returns true if their components are each within 1e-6, to account for
-     * floating point error. This uses the internal base unit, which for length
-     * based units is meters, so 1um epsilon, or 1um/s, etc.
-     *
-     * @param other the vector to compare to.
-     * @returns Whether the two vectors are equal.
-     */
+    /// Checks exact equality between this and another vector.
     constexpr bool operator==(LinearVector2d other) const {
         return cevalm::abs(x_.internal() - other.x_.internal()) < 1e-6 &&
                cevalm::abs(y_.internal() - other.y_.internal()) < 1e-6;
     }
 
     /**
-     * Returns the dot product, keeping the resulting units.
-     */
-    template <LinearKinematicQuantity R>
-    constexpr units::Multiplied<Q, R> dot(LinearVector2d<R> other) const {
-        return (x_ * other.x_) + (y_ * other.y_);
-    }
-
-    /**
      * Checks the distance between vectors against a tolerance.
-     * Defaults to 1um for translations, 1um/s for velocities, and so on.
+     * Defaults to 1um for translations, 1um/s for velocities, etc.
      */
     constexpr bool is_near(LinearVector2d other, Q tolerance = Q(1e-6)) const {
         return distance(other) <= tolerance;
@@ -317,7 +262,6 @@ struct LinearVector2d {
      * Calculates the mean of a list of vectors.
      *
      * @param list std::vector containing a list of vectors.
-     *
      * @return the single vector mean of the list of vectors.
      */
     static constexpr LinearVector2d mean(const std::vector<LinearVector2d>& list) {
@@ -328,19 +272,20 @@ struct LinearVector2d {
         Q sumx;
         Q sumy;
 
-        for (size_t i = 0; i < list.size(); i++) {
-            sumx += list.at(i).x_;
-            sumy += list.at(i).y_;
+        for (LinearVector2d& vec : list) {
+            sumx += vec.x_;
+            sumy += vec.y_;
         }
 
         return LinearVector2d(sumx / list.size(), sumy / list.size());
     }
-
-    Q x_;
-    Q y_;
 };
 
+/// Translation2d is a 2d length vector
 using Translation2d = LinearVector2d<units::Length>;
+/// Velocity2d is a 2d velocity vector
 using Velocity2d = LinearVector2d<units::Velocity>;
+/// Acceleration2d is a 2d acceleration vector
 using Acceleration2d = LinearVector2d<units::Acceleration>;
+/// Jerk2d is a 2d jerk vector
 using Jerk2d = LinearVector2d<units::Jerk>;

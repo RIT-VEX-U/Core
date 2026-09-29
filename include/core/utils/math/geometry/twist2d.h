@@ -18,41 +18,16 @@
  * +Theta is counterclockwise
  */
 struct Twist2d {
+    units::Length dx_;
+    units::Length dy_;
+    units::Angle dtheta_;
+
     /// Default Constructor for Twist2d
     constexpr Twist2d() : dx_(0), dy_(0), dtheta_(0) {}
 
     /**
-     * Returns the x displacement.
-     */
-    constexpr units::Length dx() const { return dx_; }
-
-    /**
-     * Returns the y displacement.
-     */
-    constexpr units::Length dy() const { return dy_; }
-
-    /**
-     * Returns the angular displacement without wrapping.
-     */
-    constexpr units::Angle dtheta() const { return dtheta_; }
-
-    /**
-     * Returns the x displacement in the supplied unit.
-     */
-    constexpr double dx(units::Length unit) const { return dx_.to(unit); }
-
-    /**
-     * Returns the y displacement in the supplied unit.
-     */
-    constexpr double dy(units::Length unit) const { return dy_.to(unit); }
-
-    /**
-     * Returns the angular displacement in the supplied unit without wrapping.
-     */
-    constexpr double dtheta(units::Angle unit) const { return dtheta_.to(unit); }
-
-    /**
      * Constructs a twist with given translation and angle deltas.
+     *
      * @param dx the linear dx component.
      * @param dy the linear dy component.
      * @param dtheta the angular dtheta component.
@@ -62,6 +37,7 @@ struct Twist2d {
 
     /**
      * Constructs a twist with given translation and angle deltas.
+     *
      * @param twist_vector vector of the form [dx, dy, dtheta]
      * @param length_unit unit for dx and dy.
      * @param angle_unit unit for dtheta, defaults to radians.
@@ -74,53 +50,57 @@ struct Twist2d {
           dy_{twist_vector[1], length_unit},
           dtheta_{twist_vector[2], angle_unit} {}
 
+    /// Returns the x displacement.
+    constexpr units::Length dx() const { return dx_; }
+
+    /// Returns the y displacement.
+    constexpr units::Length dy() const { return dy_; }
+
+    /// Returns the Angle displacement
+    constexpr units::Angle dtheta() const { return dtheta_; }
+
+    /// Returns the x displacement in the supplied unit.
+    constexpr double dx(units::Length unit) const { return dx_.to(unit); }
+
+    /// Returns the y displacement in the supplied unit.
+    constexpr double dy(units::Length unit) const { return dy_.to(unit); }
+
+    /// Returns the angle displacement in the supplied unit.
+    constexpr double dtheta(units::Angle unit) const { return dtheta_.to(unit); }
+
     /**
      * Returns [dx, dy, dtheta] in the supplied units. Angles default to radians.
+     *
+     * @param length_unit the unit of length to get the values as
+     * @param angle_unit the unit of angle to get the rotation as, default radians
+     * @return EVec<3> containing the values.
      */
     EVec<3> as_vector(units::Length length_unit, units::Angle angle_unit = units::radians) const {
         return EVec<3>{dx_.to(length_unit), dy_.to(length_unit), dtheta_.to(angle_unit)};
     }
 
-    /**
-     * Multiplies this twist by a scalar.
-     * @param scalar the scalar value to multiply by.
-     */
+    /// Multiplies this twist by a scalar.
     constexpr Twist2d operator*(double scalar) const {
         return Twist2d{dx_ * scalar, dy_ * scalar, dtheta_ * scalar};
     }
 
-    /**
-     * Multiplies a scalar by this twist.
-     */
+    /// Multiplies a scalar by this twist.
     friend constexpr Twist2d operator*(double scalar, const Twist2d& twist) {
         return twist * scalar;
     }
 
-    /**
-     * Scales this twist without wrapping its angle.
-     */
+    /// Multiplies this twist by a scalar.
     constexpr Twist2d& operator*=(double scalar) { return *this = *this * scalar; }
 
-    /**
-     * Divides this twist by a scalar.
-     * @param scalar the scalar value to divide by.
-     */
+    /// Divides this twist by a scalar.
     constexpr Twist2d operator/(double scalar) const { return *this * (1.0 / scalar); }
 
-    /**
-     * Divides this twist without wrapping its angle.
-     */
+    /// Divides this twist by a scalar.
     constexpr Twist2d& operator/=(double scalar) { return *this = *this / scalar; }
 
-    /**
-     * Checks equality between this and another twist.
-     * @param other the other twist to compare to.
-     * @returns true if all displacements are within 1e-6 of each other (meters and radians).
-     */
+    /// Checks exact equality between this and another twist.
     constexpr bool operator==(const Twist2d& other) const {
-        return cevalm::abs(dx_.internal() - other.dx_.internal()) < 1e-6 &&
-               cevalm::abs(dy_.internal() - other.dy_.internal()) < 1e-6 &&
-               cevalm::abs(dtheta_.internal() - other.dtheta_.internal()) < 1e-6;
+        return dx_ == other.dx_ && dy_ == other.dy_ && dtheta_ == other.dtheta_;
     }
 
     /**
@@ -134,8 +114,4 @@ struct Twist2d {
         return units::hypot(dx_ - other.dx_, dy_ - other.dy_) <= distance_tolerance &&
                units::abs(dtheta_ - other.dtheta_) <= angle_tolerance;
     }
-
-    units::Length dx_;
-    units::Length dy_;
-    units::Angle dtheta_;
 };
