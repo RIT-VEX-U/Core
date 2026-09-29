@@ -1,49 +1,46 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include "cevalm.hpp"
 
 /// Class representing a lattice point
-class Point2d {
-   public:
+struct Point2d {
     /// Default constructor for Point2d creating a lattice point at the origin
-    constexpr Point2d() : xcoord(0), ycoord(0) {}
+    constexpr Point2d() : x_(0), y_(0) {}
 
     /**
      * Creates a lattice point at the coordinate (x,y)
      * @param x The x-coordinate of the point
      * @param y The y-coordinate of the point
      */
-    Point2d(int x, int y);
+    constexpr Point2d(int x, int y) : x_(x), y_(y) {}
 
     /**
      * Creates a lattice point with the values from the given vector
      * @param vector The vector whose values will be used
      */
-    Point2d(Eigen::Vector2i vector);
+    constexpr Point2d(Eigen::Vector2i vector)
+     : x_(vector(0)), y_(vector(1)) {}
 
     /**
      * Returns the X coordinate of the point
      * @returns The X coordinate of the point
      */
-    int x() const;
-
-    /// Sets the X coordinate of the point
-    void setX(int x);
+    constexpr int x() const { return x_; }
 
     /**
      * Returns the Y coordinate of the point
      * @returns The Y coordinate of the point
      */
-    int y() const;
-
-    /// Sets the Y coordinate of the point
-    void setY(int y);
+    constexpr int y() const { return y_; }
 
     /**
      * Returns the point as an Eigen::Vector2i
      * @returns Eigen::Vector2i with the same values as the point
      */
-    Eigen::Vector2i as_vector() const;
+    constexpr Eigen::Vector2i as_vector() const {
+        return Eigen::Vector2i(x_, y_);
+    }
 
     /**
      * Returns a vector in the canonical basis corresponding to the point in the basis of X and Y
@@ -51,38 +48,57 @@ class Point2d {
      * @param Y The vector corresponding to <0, 1> in the basis of X and Y
      * @returns The point as a linear combination of the X and Y vectors
      */
-    Eigen::Vector2d as_vector(Eigen::Vector2d X, Eigen::Vector2d Y) const;
+    constexpr Eigen::Vector2d as_vector(Eigen::Vector2d X, Eigen::Vector2d Y) const {
+        return Eigen::Vector2d(
+                x_ * X(0) + y_ * Y(0),
+                x_ * X(1) + y_ * Y(1)
+        );
+    }
 
     /**
      * Returns the manhattan distance between two points
      * @returns The manhattan distance between two points
      */
-    int manhattan_distance(Point2d other) const;
+    constexpr int manhattan_distance(Point2d other) const {
+        if consteval { return cevalm::abs(x_ - other.x_) + cevalm::abs(y_ - other.y_); }
+        else { return abs(x_ - other.x_) + abs(y_ - other.y_); }
+    }
 
     /**
      * Returns the manhattan distance away from the origin
      * @returns The manhattan norm of the point
      */
-    int manhattan_norm() const;
+    constexpr int manhattan_norm() const {
+        if consteval { return cevalm::abs(x_) + cevalm::abs(y_); }
+        else { return abs(x_) + abs(y_); }
+    }
 
     /**
      * Returns the distance (as a continuous number) between two points
      * @returns The distance (as a continuous number) between two points
      */
-    double distance(Point2d other) const;
+    constexpr double distance(Point2d other) const {
+        if consteval { return cevalm::hypot(x_ - other.x_, y_ - other.y_); }
+        else { return hypot(x_ - other.x_, y_ - other.y_); }
+    }
 
     /**
      * Returns the distance (as a continuous number) away from the origin
      * @returns The norm (as a continuous number) of the point
      */
-    double norm() const;
+    constexpr double norm() const {
+        if consteval { return cevalm::hypot(x_, y_); }
+        else { return hypot(x_, y_); }
+    }
 
     /**
      * Compares two points
      * @param other The other Point2d to compare to
      * @return TRUE if the components of both points are equal, and FALSE if otherwise
      */
-    bool operator==(Point2d other) const;
+    constexpr bool operator==(Point2d other) const {
+        return x_ == other.x_ && y_ == other.y_;
+    }
 
     /**
      * Returns the sum of two points
@@ -93,7 +109,12 @@ class Point2d {
      * @param other The other point to be added
      * @return The sum of the two points
      */
-    Point2d operator+(Point2d other) const;
+    constexpr Point2d operator+(Point2d other) const {
+        return Point2d{x_ + other.x_, y_ + other.y_};
+    }
+
+    /// Adds another point to this point
+    constexpr Point2d& operator+=(Point2d other) { return *this = *this + other; }
 
     /**
      * Returns the difference of two points
@@ -104,7 +125,12 @@ class Point2d {
      * @param other The point being subtracted from this one
      * @return The difference of the two points
      */
-    Point2d operator-(Point2d other) const;
+    constexpr Point2d operator-(Point2d other) const {
+        return Point2d{x_ - other.x_, y_ - other.y_};
+    }
+
+    /// Subtracts another point from this point
+    constexpr Point2d& operator-=(Point2d other) { return *this = *this - other; }
 
     /**
      * Returns the inverse of the point
@@ -114,7 +140,7 @@ class Point2d {
      *
      * @return The inverse of the point
      */
-    Point2d operator-() const;
+    constexpr Point2d operator-() const { return Point2d{-x_, -y_}; }
 
     /**
      * Returns this point multiplied by a scalar
@@ -125,7 +151,15 @@ class Point2d {
      * @param scalar The scalar to multiply by
      * @return This point multiplied by a scalar
      */
-    Point2d operator*(int scalar) const;
+    constexpr Point2d operator*(int scalar) const {
+        return Point2d{x_ * scalar, y_ * scalar};
+    }
+
+    /// Multiplies this point by a scalar
+    constexpr Point2d& operator*=(int scalar) { return *this = *this * scalar; }
+
+    /// Scales the point
+    friend constexpr Point2d operator*(int scalar, Point2d point) { return point * scalar; }
 
     /**
      * Returns the dot product of two points
@@ -135,14 +169,10 @@ class Point2d {
      * @param other The other point to find the dot product with
      * @return The scalar-valued dot product
      */
-    int operator*(Point2d other) const;
-
-    /**
-     * Sends a point to an output stream.
-     * Ex:  The code `std::cout << point;` prints "Point2d[x: (value), y: (value)]"
-     */
-    friend std::ostream& operator<<(std::ostream& os, Point2d point);
+    constexpr int operator*(Point2d other) const {
+        return (x_ * other.x_) + (y_ * other.y_);
+    }
 
    private:
-    int xcoord, ycoord;
+    int x_, y_;
 };
