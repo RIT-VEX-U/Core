@@ -38,9 +38,7 @@ struct Point2d {
      * Returns the point as an Eigen::Vector2i
      * @returns Eigen::Vector2i with the same values as the point
      */
-    constexpr Eigen::Vector2i as_vector() const {
-        return Eigen::Vector2i(x_, y_);
-    }
+    constexpr Eigen::Vector2i as_vector() const { return Eigen::Vector2i(x_, y_); }
 
     /**
      * Returns a vector in the canonical basis corresponding to the point in the basis of X and Y
@@ -60,45 +58,33 @@ struct Point2d {
      * @returns The manhattan distance between two points
      */
     constexpr int manhattan_distance(Point2d other) const {
-        if consteval { return cevalm::abs(x_ - other.x_) + cevalm::abs(y_ - other.y_); }
-        else { return abs(x_ - other.x_) + abs(y_ - other.y_); }
+        return cevalm::abs(x_ - other.x_) + cevalm::abs(y_ - other.y_);
     }
 
     /**
      * Returns the manhattan distance away from the origin
      * @returns The manhattan norm of the point
      */
-    constexpr int manhattan_norm() const {
-        if consteval { return cevalm::abs(x_) + cevalm::abs(y_); }
-        else { return abs(x_) + abs(y_); }
-    }
+    constexpr int manhattan_norm() const { return cevalm::abs(x_) + cevalm::abs(y_); }
 
     /**
      * Returns the distance (as a continuous number) between two points
      * @returns The distance (as a continuous number) between two points
      */
-    constexpr double distance(Point2d other) const {
-        if consteval { return cevalm::hypot(x_ - other.x_, y_ - other.y_); }
-        else { return hypot(x_ - other.x_, y_ - other.y_); }
-    }
+    constexpr double distance(Point2d other) const { return cevalm::hypot(x_ - other.x_, y_ - other.y_);  }
 
     /**
      * Returns the distance (as a continuous number) away from the origin
      * @returns The norm (as a continuous number) of the point
      */
-    constexpr double norm() const {
-        if consteval { return cevalm::hypot(x_, y_); }
-        else { return hypot(x_, y_); }
-    }
+    constexpr double norm() const { return cevalm::hypot(x_, y_); }
 
     /**
      * Compares two points
      * @param other The other Point2d to compare to
      * @return TRUE if the components of both points are equal, and FALSE if otherwise
      */
-    constexpr bool operator==(Point2d other) const {
-        return x_ == other.x_ && y_ == other.y_;
-    }
+    constexpr bool operator==(Point2d other) const { return x_ == other.x_ && y_ == other.y_; }
 
     /**
      * Returns the sum of two points
@@ -109,9 +95,7 @@ struct Point2d {
      * @param other The other point to be added
      * @return The sum of the two points
      */
-    constexpr Point2d operator+(Point2d other) const {
-        return Point2d{x_ + other.x_, y_ + other.y_};
-    }
+    constexpr Point2d operator+(Point2d other) const { return Point2d{x_ + other.x_, y_ + other.y_}; }
 
     /// Adds another point to this point
     constexpr Point2d& operator+=(Point2d other) { return *this = *this + other; }
@@ -125,12 +109,20 @@ struct Point2d {
      * @param other The point being subtracted from this one
      * @return The difference of the two points
      */
-    constexpr Point2d operator-(Point2d other) const {
-        return Point2d{x_ - other.x_, y_ - other.y_};
-    }
+    constexpr Point2d operator-(Point2d other) const { return Point2d{x_ - other.x_, y_ - other.y_}; }
 
     /// Subtracts another point from this point
     constexpr Point2d& operator-=(Point2d other) { return *this = *this - other; }
+
+    /**
+     * Computes the inverse of the point
+     *
+     * [x] = -[x]
+     * [y] = -[y]
+     *
+     * @return The inverse of the point
+     */
+    constexpr Point2d operator-() const { return inverse(); }
 
     /**
      * Returns the inverse of the point
@@ -140,7 +132,7 @@ struct Point2d {
      *
      * @return The inverse of the point
      */
-    constexpr Point2d operator-() const { return Point2d{-x_, -y_}; }
+    constexpr Point2d inverse() const { return Point2d{-x_, -y_};; }
 
     /**
      * Returns this point multiplied by a scalar
@@ -151,15 +143,23 @@ struct Point2d {
      * @param scalar The scalar to multiply by
      * @return This point multiplied by a scalar
      */
-    constexpr Point2d operator*(int scalar) const {
-        return Point2d{x_ * scalar, y_ * scalar};
-    }
+    constexpr Point2d operator*(int scalar) const { return Point2d{x_ * scalar, y_ * scalar}; }
 
     /// Multiplies this point by a scalar
     constexpr Point2d& operator*=(int scalar) { return *this = *this * scalar; }
 
     /// Scales the point
     friend constexpr Point2d operator*(int scalar, Point2d point) { return point * scalar; }
+
+    /**
+     * Computes the dot product of two points
+     *
+     * [scalar] = [x][otherx] + [y][othery]
+     *
+     * @param other The other point to find the dot product with
+     * @return The scalar-valued dot product
+     */
+    constexpr int operator*(Point2d other) const { return dot(other); }
 
     /**
      * Returns the dot product of two points
@@ -169,9 +169,7 @@ struct Point2d {
      * @param other The other point to find the dot product with
      * @return The scalar-valued dot product
      */
-    constexpr int operator*(Point2d other) const {
-        return (x_ * other.x_) + (y_ * other.y_);
-    }
+    constexpr int dot(Point2d other) const { return (x_ * other.x_) + (y_ * other.y_); }
 
    private:
     int x_, y_;
