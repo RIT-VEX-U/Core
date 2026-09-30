@@ -151,9 +151,7 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
     if (should_brake && !was_breaking) {
         captured_position = false;
     }
-    /**
-     * Set default values for a PID.
-     */
+    /// Set default values for a PID.
     static PID zero_vel_pid = PID(0.005, 0.0, 0.0005, 0.5, 0.1, PID::LINEAR);
 
     if (bt == BrakeType::ZeroVelocity) {
