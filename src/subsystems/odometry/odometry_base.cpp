@@ -145,7 +145,7 @@ Translation2d OdometryBase::get_current_lin_velocity(){
  *
  * @return the current linear acceleration vector as a Translation2d
  */
-Translation2d OdemetryBase::get_current_lin_accel(){
+Translation2d OdometryBase::get_current_lin_accel(){
     mut.lock();
     double current_accel = accel;
     double heading = current_pos.rotation().degrees() * (M_PI)/180;
@@ -161,7 +161,7 @@ Translation2d OdemetryBase::get_current_lin_accel(){
  * 
  * @return the current rotational velocity vector as a Pose2d
  */
-Pose2d OdemetryBase::get_current_rot_velocity(){
+Pose2d OdometryBase::get_current_rot_velocity(){
     // Obtatining the current angular speed and translation
     mut.lock();
     double current_ang_speed = ang_speed_deg;
