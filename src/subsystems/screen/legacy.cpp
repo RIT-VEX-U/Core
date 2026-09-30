@@ -267,10 +267,10 @@ void ButtonWidget::draw(
 }
 
 PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
-    : cfg(pid.config), pid(pid), name(name), onchange(onchange),
-      p_slider(cfg.p, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
-      i_slider(cfg.i, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
-      d_slider(cfg.d, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
+    : pid(pid), name(name), onchange(onchange),
+      p_slider(pid.kp, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
+      i_slider(pid.ki, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
+      d_slider(pid.kd, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
       zero_i([this]() { zero_i_f(); }, Rect{{180, 80}, {220, 120}}, "0"),
       zero_d([this]() { zero_d_f(); }, Rect{{180, 140}, {220, 180}}, "0"), graph(40, 0, 0, {vex::red, vex::green}, 2) {}
 
@@ -376,7 +376,7 @@ void InitializerPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]
             scr.drawRectangle(40, 0, 400, 240);
 
             scr.printAt(45, 20, false, "ERROR: Unable to run selected");
-            scr.printAt(45, 45, false, "       initialization%s", 
+            scr.printAt(45, 45, false, "       initialization%s",
                 (this->initializer.selected_index() == DEFAULT_CANCELATION_INDEX) ? " (likely canceled)" : "");
             scr.printAt(45, 95, false, "DEBUG LOG:");
             scr.printAt(45, 120, false, "       selection = %u", this->initializer.selected_index());
