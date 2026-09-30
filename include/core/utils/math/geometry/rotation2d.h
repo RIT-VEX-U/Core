@@ -25,9 +25,7 @@ class Translation2d;
  */
 class Rotation2d {
   public:
-    /**
-     * Default Constructor for Rotation2d
-     */
+    /// Default Constructor for Rotation2d
     constexpr Rotation2d() : m_radians(0), m_cos(1), m_sin(0) {};
     /**
      * Constructs a rotation with the given value in radians.
@@ -226,7 +224,6 @@ class Rotation2d {
 };
 
 // functions that don't belong in the class because they're useful elsewhere
-
 /**
  * Constructs a rotation given radian angle value.
  *
@@ -313,7 +310,6 @@ double deg2rad(double deg);
  * General function for converting radians to degrees
  * @param r the angle in radians
  * @return the angle in degrees
-
  */
 double rad2deg(double r);
 

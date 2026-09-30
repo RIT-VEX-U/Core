@@ -94,14 +94,10 @@ class TankDrive {
     Condition* DriveStalledCondition(double stall_time);
     AutoCommand* DriveTankCmd(double left, double right);
 
-    /**
-     * Stops rotation of all the motors using their "brake mode"
-     */
+    /// Stops rotation of all the motors using their "brake mode"
     void stop();
 
-    /**
-     * Returns the Robot position as a Pose2d
-     */
+    /// Returns the Robot position as a Pose2d
     Pose2d get_position();
 
     /**
@@ -276,9 +272,7 @@ class TankDrive {
      */
     bool turn_to_heading(double heading_deg, double max_speed = 1, double end_speed = 0);
 
-    /**
-     * Reset the initialization for autonomous drive functions
-     */
+    /// Reset the initialization for autonomous drive functions
     void reset_auto();
 
     /**
@@ -338,10 +332,10 @@ class TankDrive {
     OdometryBase* odometry;  ///< odometry system to track position and rotation.
                              ///< necessary for autonomous driving
 
-    PID correction_pid;  ///< PID controller used to drive in as straight a line
-                         ///< as possible
-    Feedback* drive_default_feedback = NULL;  ///< feedback to use to drive if none is specified
-    Feedback* turn_default_feedback = NULL;   ///< feedback to use to turn if none is specified
+    Feedback *correction_pid;                      ///< PID controller used to drive in as straight a line
+                                             ///< as possible
+    Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
+    Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified
 
     robot_specs_t& config;  ///< configuration holding physical dimensions of the robot. see
                             ///< robot_specs_t for more information

@@ -4,10 +4,12 @@
 #include <cmath>
 
 #include "core/utils/command_structure/drive_commands.h"
+#include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
+<<<<<<< HEAD
 TankDrive::TankDrive(
         vex::motor_group& left_motors, vex::motor_group& right_motors, robot_specs_t& config,
         OdometryBase* odom
@@ -16,6 +18,10 @@ TankDrive::TankDrive(
       right_motors(right_motors),
       odometry(odom),
       correction_pid(config.correction_pid),
+=======
+TankDrive::TankDrive(vex::motor_group &left_motors, vex::motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
+    : left_motors(left_motors), right_motors(right_motors), odometry(odom), correction_pid(config.correction_feedback),
+>>>>>>> origin
       config(config) {
     drive_default_feedback = config.drive_feedback;
     turn_default_feedback = config.turn_feedback;
@@ -135,23 +141,17 @@ AutoCommand* TankDrive::DriveTankCmd(double left, double right) {
     return new DriveTankCommand(*this, left, right);
 }
 
-/**
- * Reset the initialization for autonomous drive functions
- */
+/// Reset the initialization for autonomous drive functions
 void TankDrive::reset_auto() { func_initialized = false; }
 
-/**
- * Stops rotation of all the motors using their "brake mode"
- */
+/// Stops rotation of all the motors using their "brake mode"
 void TankDrive::stop() {
     arcade_throttle = 0.0;
     left_motors.stop();
     right_motors.stop();
 }
 
-/**
- * Returns the Robot position as a Pose2d
- */
+/// Returns the Robot position as a Pose2d
 Pose2d TankDrive::get_position() { return this->odometry->get_position(); }
 
 void TankDrive::drive_tank_raw(double left_norm, double right_norm) {
@@ -182,8 +182,8 @@ void TankDrive::drive_tank(double left, double right, int power, BrakeType bt) {
     if (should_brake && !was_breaking) {
         captured_position = false;
     }
-    static PID::pid_config_t zero_vel_cfg = {.p = 0.005, .d = 0.0005};
-    static PID zero_vel_pid = PID(zero_vel_cfg);
+    /// Set default values for a PID.
+    static PID zero_vel_pid = PID(0.005, 0.0, 0.0005, 0.5, 0.1, PID::LINEAR);
 
     if (bt == BrakeType::ZeroVelocity) {
         zero_vel_pid.set_target(0);
@@ -451,10 +451,10 @@ bool TankDrive::drive_to_point(
         double initial_dist = odometry->get_position().translation().distance(Translation2d(x, y));
 
         // Reset the control loops
-        correction_pid.init(0, 0);
+        correction_pid->init(0, 0);
         feedback.init(-initial_dist, 0);
 
-        correction_pid.set_limits(-1, 1);
+        correction_pid->set_limits(-1, 1);
         feedback.set_limits(-1, 1);
 
         func_initialized = true;
@@ -473,11 +473,11 @@ bool TankDrive::drive_to_point(
     double dist_left = current_pos.translation().distance(end_pos.translation());
 
     int sign = 1;
-
-    // Make an imaginary perpendicualar line to that between the bot and the
-    // point. If the point is behind that line, and the point is within the
-    // robot's radius, use negatives for feedback control.
-
+    /* 
+     * Make an imaginary perpendicualar line to that between the bot and the
+     * point. If the point is behind that line, and the point is within the
+     * robot's radius, use negatives for feedback control.
+     */
     double angle_to_point = atan2(y - current_pos.y(), x - current_pos.x()) * 180.0 / PI;
     double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 
@@ -497,13 +497,21 @@ bool TankDrive::drive_to_point(
     }
 
     if (fabs(dist_left) < config.drive_correction_cutoff) {
+<<<<<<< HEAD
         // When inside the robot's cutoff radius, report the distance to the point along the robot's
         // forward axis, so we always "reach" the point without having to do a lateral translation
+=======
+        /* 
+         * When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
+         * so we always "reach" the point without having to do a lateral translation
+         */
+>>>>>>> origin
         dist_left *= fabs(cos(angle * PI / 180.0));
     }
-
-    // Get the heading difference between where we are and where we want to be
-    // Optimize that heading so we don't turn clockwise all the time
+    /* 
+     * Get the heading difference between where we are and where we want to be
+     * Optimize that heading so we don't turn clockwise all the time
+     */
     double heading = the_point.theta().wrapped_degrees_360();
     double delta_heading = 0;
 
@@ -516,13 +524,13 @@ bool TankDrive::drive_to_point(
     }
 
     // Update the PID controllers with new information
-    correction_pid.update(delta_heading);
+    correction_pid->update(delta_heading);
     feedback.update(sign * -1 * dist_left);
 
     // Disable correction when we're close enough to the point
     double correction = 0;
     if (is_pure_pursuit || fabs(dist_left) > config.drive_correction_cutoff) {
-        correction = correction_pid.get();
+        correction = correction_pid->get();
     }
 
     // Reverse the drive_pid output if we're going backwards
@@ -616,16 +624,25 @@ bool TankDrive::turn_to_heading(
         func_initialized = true;
     }
 
+<<<<<<< HEAD
     // Get the difference between the new heading and the current, and decide
     // whether to turn left or right.
     double delta_heading = OdometryBase::smallest_angle(
             odometry->get_position().rotation().degrees(), heading_deg
     );
+=======
+    /*  
+     * Get the difference between the new heading and the current, and decide
+     * whether to turn left or right.
+     */
+    double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rotation().degrees(), heading_deg);
+>>>>>>> origin
     feedback.update(-delta_heading);
 
     fflush(stdout);
 
     drive_tank(-feedback.get(), feedback.get());
+
 
     // When the robot has reached it's angle, return true.
     if (feedback.is_on_target()) {
@@ -727,11 +744,18 @@ bool TankDrive::pure_pursuit(
     }
 
     // Correct the robot's heading until the last cut-off
+<<<<<<< HEAD
     if (!(is_last_point &&
           robot_pose.translation().distance(last_point) < config.drive_correction_cutoff)) {
         correction_pid.update(angle_diff);
         correction = correction_pid.get();
     } else  // Inside cut-off radius, ignore horizontal diffs
+=======
+    if (!(is_last_point && robot_pose.translation().distance(last_point) < config.drive_correction_cutoff)) {
+        correction_pid->update(angle_diff);
+        correction = correction_pid->get();
+    } else // Inside cut-off radius, ignore horizontal diffs
+>>>>>>> origin
     {
         dist_remaining *= cos(angle_diff * (PI / 180.0));
     }
@@ -744,8 +768,13 @@ bool TankDrive::pure_pursuit(
 
     max_speed = fabs(max_speed);
 
-    double left = clamp(feedback.get(), -max_speed, max_speed);
-    double right = clamp(feedback.get(), -max_speed, max_speed);
+    double drive_output = feedback.get();
+    if(fabs(drive_output) < max_speed && max_speed > 0.001){
+            drive_output /= max_speed;
+    }
+
+    double left = clamp(drive_output, -max_speed, max_speed);
+    double right = clamp(drive_output, -max_speed,max_speed);
 
     left += correction;
     right -= correction;
@@ -778,3 +807,4 @@ bool TankDrive::pure_pursuit(
 ) {
     return pure_pursuit(path, dir, *config.drive_feedback, max_speed, end_speed);
 }
+
