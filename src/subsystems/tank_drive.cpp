@@ -6,7 +6,6 @@
 #include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
-
 TankDrive::TankDrive(
         vex::motor_group& left_motors, vex::motor_group& right_motors, robot_specs_t& config,
         OdometryBase* odom
