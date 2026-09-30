@@ -135,10 +135,13 @@ class TankDrive {
      * @param deadband bottom (this percent) of stick motion is ignored, rescaling the rest
      * to retain full range
      * @param slew_rate limits throttle change per function call
-     * @param scale_turn if true scales steering by throttle except when turning in place.
+     * @param scale_turn if true scales steering by throttle when above 10% throttle, blending between
+     * no scaling and full scaling below 10% throttle.
+     *
+     * @param scale_turn
      */
     void drive_arcade(
-            double forward_back, double left_right, int power = 1, BrakeType bt = BrakeType::None,
+            double forward_back, double left_right, int power = 1, int turn_power = 1, BrakeType bt = BrakeType::None,
             double deadband = 0.0, double slew_rate = 0.0, bool scale_turn = false
     );
 
