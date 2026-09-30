@@ -114,49 +114,25 @@ class OdometryBase {
      * Get the current vector components of the linear velocity
      * @return the x,y components of the linear velocity vector as a Translation2d
      */
-    Translation2d get_linear_velocity_vector();
-
-    /**
-     * Set the vector components of the linear velocity
-     * @param newLinVel the new linear velocity that the odemetry will believe the bot to have
-     */
-    virtual void set_linear_velocity_vector(const Translation2d &newLinVel);
+    Translation2d get_current_lin_velocity();
 
     /**
      * Get the current vector components of the linear acceleration
      * @return the x,y componenets of the linear acceleration vector as a Translation2d
      */
-    Translation2d get_linear_accel_vector();
-
-    /**
-     * Set the vector components of the linear acceleration
-     * @param newLinAcc the new linear acceleration that the odemetry will believe the bot to have
-     */
-    virtual void set_linear_acceleration_vector(const Translation2d &newLinAcc);
+    Translation2d get_current_lin_accel();
 
     /**
      * Get the current vector compoenents of the rotational velocity vector
      * @return the x,y,z components of the rotational velocity vector as a Pose2d
      */
-    Pose2d get_rotational_velocity_vector();
-
-    /**
-     * Set the vector components of the rotational velocity
-     * @param newRotVel the new rotational velocity that the odemetry will believe the bot to have
-     */
-    virtual void set_rotational_velocity_vector(const Pose2d &newRotVel);
+    Pose2d get_current_rot_velocity();
 
     /** 
      * Get the current vector componenets of the rotational acceleration vector
      * @return the x,y,z componenets of the rot accel vector as a Pose2d
      */
-    Pose2d get_rotational_accel_vector();
-
-    /**
-     * Set the vector components of the rotational acceleration
-     * @param newRotAcc the new rotational acceleration that the odemetry will believe the bot to have
-     */
-    virtual void set_rotational_accel_vector(const Pose2d &newRotAcc);
+    Pose2d get_current_rot_accel();
 
     inline static constexpr Pose2d zero_pos = Pose2d();
 
