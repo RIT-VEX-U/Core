@@ -1,4 +1,5 @@
 #include "core/subsystems/odometry/odometry_base.h"
+#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Construct a new Odometry Base object
@@ -38,7 +39,9 @@ int OdometryBase::background_task(void *ptr) {
  */
 void OdometryBase::end_async() { this->end_task = true; }
 
-/// Gets the current position and rotation
+/**
+ * Gets the current position and rotation
+ */
 Pose2d OdometryBase::get_position(void) {
     mut.lock();
 
@@ -50,7 +53,9 @@ Pose2d OdometryBase::get_position(void) {
     return out;
 }
 
-/// Sets the current position of the robot
+/**
+ * Sets the current position of the robot
+ */
 void OdometryBase::set_position(const Pose2d &newpos) {
     mut.lock();
 
@@ -117,4 +122,64 @@ double OdometryBase::get_angular_accel_deg() {
     mut.unlock();
 
     return retval;
+}
+
+/**
+ * Calculates the current linear velocity vector of the bot
+ *
+ * @return the current linear velocity vector as a Translation2d
+ */
+Translation2d OdometryBase::get_current_lin_velocity(){
+    mut.lock();
+    double current_speed = speed;
+    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
+    mut.unlock();
+
+    double velocity_x = current_speed * std::cos(heading_rad);
+    double velocity_y = current_speed * std::sin(heading_rad);
+    return {velocity_x, velocity_y};
+}
+
+/**
+ * Calculates the current linear acceleration vector of the bot
+ *
+ * @return the current linear acceleration vector as a Translation2d
+ */
+Translation2d OdometryBase::get_current_lin_accel(){
+    mut.lock();
+    double current_accel = accel;
+    double heading = current_pos.rotation().degrees() * (M_PI)/180;
+    mut.unlock();
+
+    double accel_x = current_accel * std::cos(heading);
+    double accel_y = current_accel * std::sin(heading);
+    return {accel_x,accel_y};
+}
+
+/**
+ * Calculates the current rotational velocity vector 
+ * 
+ * @return the current rotational velocity vector as a Pose2d
+ */
+Pose2d OdometryBase::get_current_rot_velocity(){
+    // Obtatining the current angular speed and translation
+    mut.lock();
+    double current_ang_speed = ang_speed_deg;
+    Translation2d translation = get_current_lin_velocity();
+    mut.unlock();
+
+    return {translation, current_ang_speed};
+}
+
+/**
+ * Calculates the current rotational acceleration vector 
+ * 
+ * @return the current rotational velocity accleration as a Pose2d
+ */
+Pose2d OdometryBase::get_current_rot_accel(){
+    mut.lock();
+    double current_ang_accel = ang_accel_deg;
+    mut.unlock();
+    Translation2d translation = get_current_lin_accel();
+    return {translation,current_ang_accel};
 }
