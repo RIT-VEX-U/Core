@@ -29,17 +29,22 @@ class PID : public Feedback {
         ANGULAR // assumes degrees
     };
 
-    /**
-     * p: Coefficient. p * error()
-     * i: Coefficient. i * integral(error)
-     * d: Coefficient. d * derivative(error)
-     * deadband: What threshold counts as finished / on target?
-     * on_target_time: How long we need to be on target to be
-     * considered "on target".
-     * error_method: LINEAR or ANGULAR. Determines whether error
-     * is performed as simple subtraction or wrapping.
-     */
-    double kp, ki, kd, deadband, on_target_time;
+    /// Proportional coeffecient; p * error()
+    double kp;
+
+    /// Integral coefficient; i * integral(error)
+    double ki;
+
+    /// Derivative coefficient; d * derivative(error)
+    double kd;
+
+    /// A deadband that determines the threshold for what counts as finished
+    double deadband;
+
+    /// The time, in seconds, that we have to be in the threshold in order to be considered on target.
+    double on_target_time;
+
+    /// Determines whether error is performed as a simple subtraction (LINEAR) or wrapping (ANGULAR).
     ERROR_TYPE error_method;
 
     /**
@@ -119,9 +124,7 @@ class PID : public Feedback {
      */
     bool is_on_target() override;
 
-    /**
-     * Reset the PID loop by resetting time since 0 and accumulated error.
-     */
+    /// Reset the PID loop by resetting time since 0 and accumulated error.
     void reset();
 
     /**

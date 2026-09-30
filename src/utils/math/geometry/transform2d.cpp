@@ -8,9 +8,7 @@
 #include "core/utils/math/geometry/transform2d.h"
 #include "core/utils/math/geometry/translation2d.h"
 
-/**
- * Default Constructor for Transform2d
- */
+/// Default Constructor for Transform2d
 constexpr Transform2d::Transform2d() : m_translation(Translation2d()), m_rotation(Rotation2d()) {}
 
 /**

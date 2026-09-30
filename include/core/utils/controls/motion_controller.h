@@ -63,9 +63,7 @@ class MotionController : public Feedback {
      */
     double update(double sensor_val) override;
 
-    /**
-     * @return the last saved result from the feedback controller
-     */
+    /// @return the last saved result from the feedback controller
     double get() override;
 
     /**
@@ -83,9 +81,7 @@ class MotionController : public Feedback {
      */
     bool is_on_target() override;
 
-    /**
-     * @return The current postion, velocity and acceleration setpoints
-     */
+    /// @return The current postion, velocity and acceleration setpoints
     motion_t get_motion() const;
 
     LegacyScreen::Page *Page();

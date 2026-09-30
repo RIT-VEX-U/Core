@@ -20,10 +20,7 @@ class Rotation2d;
  */
 class Translation2d {
   public:
-    /**
-     * Default Constructor for Translation2d
-     */
-
+    /// Default Constructor for Translation2d
     constexpr Translation2d() : m_x(0), m_y(0) {}
     /**
      * Constructs a Translation2d with the given x and y values.
@@ -55,9 +52,7 @@ class Translation2d {
      */
     double x() const;
 
-    /**
-     * Sets the x value of the translation.
-     */
+    /// Sets the x value of the translation.
     void setX(double x);
 
     /**
@@ -67,9 +62,7 @@ class Translation2d {
      */
     double y() const;
 
-    /**
-     * Sets the y value of the translation.
-     */
+    /// Sets the y value of the translation.
     void setY(double y);
 
     /**

@@ -2,14 +2,11 @@
 
 #include <Eigen/Dense>
 
-/**
- * Class representing a lattice point
- */
+
+/// Class representing a lattice point
 class Point2d {
 public:
-    /**
-     * Default constructor for Point2d creating a lattice point at the origin
-     */
+    /// Default constructor for Point2d creating a lattice point at the origin
     constexpr Point2d() : xcoord(0), ycoord(0) {}
 
     /**
@@ -42,9 +39,7 @@ public:
      */
     int y() const;
 
-    /**
-     * Sets the Y coordinate of the point
-     */
+    /// Sets the Y coordinate of the point
     void setY(const int& y);
 
     /**
