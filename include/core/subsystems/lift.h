@@ -23,12 +23,13 @@ public:
    * includes:
    * - maximum speeds for the system
    * - softstops to stop the lift from hitting the hard stops too hard
+   * - PID associated with the lift
    */
   struct lift_cfg_t {
     double up_speed, down_speed;
     double softstop_up, softstop_down;
 
-    PID::pid_config_t lift_pid_cfg;
+    PID lift_pid;
   };
 
   /**
