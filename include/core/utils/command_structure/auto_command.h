@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "core/utils/formatting.h"
 #include "vex.h"
 #include <atomic>
 #include <functional>
@@ -41,7 +40,7 @@ class AutoCommand {
     virtual bool run() { return true; }
 
     virtual std::string toString() { return "AutoCommand"; }
-    
+
     /// What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
     virtual void on_timeout() {}
     AutoCommand *withTimeout(double t_seconds) {

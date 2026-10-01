@@ -27,7 +27,7 @@ class DelayCommand : public AutoCommand {
         return true;
     }
 
-    std::string toString() override { return "Delaying for " + double_to_string(ms) + "ms"; }
+    std::string toString() override { return "Delaying for " + std::to_string(ms) + "ms"; }
 
   private:
     // amount of milliseconds to wait

@@ -81,7 +81,7 @@ void CommandController::run() {
         command_queue.pop();
         command_timed_out = false;
 
-        /* 
+        /*
          * printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count,
          * next_cmd->timeout_seconds, tmr.time(vex::seconds)); fflush(stdout);
          */
@@ -99,8 +99,8 @@ void CommandController::run() {
             if (!doTimeout) {
                 continue;
             }
-            
-            /* 
+
+            /*
              * If we do want to check for timeout, check and end the command if
              * we should
              */
@@ -125,7 +125,7 @@ void CommandController::run() {
 }
 
 std::string CommandController::toString() {
-    return "Command controller with " + double_to_string(command_queue.size()) + " commands";
+    return "Command controller with " + std::to_string(command_queue.size()) + " commands";
 };
 
 bool CommandController::last_command_timed_out() { return command_timed_out; }

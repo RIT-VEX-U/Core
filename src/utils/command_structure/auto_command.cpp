@@ -1,5 +1,4 @@
 #include "core/utils/command_structure/auto_command.h"
-
 class OrCondition : public Condition {
   public:
     OrCondition(Condition *A, Condition *B) : A(A), B(B) {}
@@ -81,7 +80,7 @@ bool InOrder::run() {
     return false;
 }
 
-std::string InOrder::toString() { return "Running Inorder with length: " + int_to_string(cmds.size()); }
+std::string InOrder::toString() { return "Running Inorder with length: " + std::to_string(cmds.size()); }
 
 void InOrder::on_timeout() {
     if (current_command != nullptr) {
@@ -147,7 +146,7 @@ bool Parallel::run() {
     return all_finished;
 }
 
-std::string Parallel::toString() { return double_to_string(runners.size()) + " commands running in parallel"; }
+std::string Parallel::toString() { return std::to_string(runners.size()) + " commands running in parallel"; }
 
 void Parallel::on_timeout() {
     for (int i = 0; i < runners.size(); i++) {

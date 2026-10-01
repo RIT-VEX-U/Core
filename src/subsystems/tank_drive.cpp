@@ -95,7 +95,7 @@ AutoCommand *TankDrive::DriveTankCmd(double left, double right) {
             return false;
         }
         std::string toString() override {
-            return "Driving Tank with left: " + double_to_string(left) + " right: " + double_to_string(right);
+            return "Driving Tank with left: " + std::to_string(left) + " right: " + std::to_string(right);
         }
         void on_timeout() override { td.stop(); }
         TankDrive &td;
@@ -380,7 +380,7 @@ bool TankDrive::drive_to_point(
     double dist_left = current_pos.translation().distance(end_pos.translation());
 
     int sign = 1;
-    /* 
+    /*
      * Make an imaginary perpendicualar line to that between the bot and the
      * point. If the point is behind that line, and the point is within the
      * robot's radius, use negatives for feedback control.
@@ -404,13 +404,13 @@ bool TankDrive::drive_to_point(
     }
 
     if (fabs(dist_left) < config.drive_correction_cutoff) {
-        /* 
+        /*
          * When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
          * so we always "reach" the point without having to do a lateral translation
          */
         dist_left *= fabs(cos(angle * PI / 180.0));
     }
-    /* 
+    /*
      * Get the heading difference between where we are and where we want to be
      * Optimize that heading so we don't turn clockwise all the time
      */
@@ -519,7 +519,7 @@ bool TankDrive::turn_to_heading(double heading_deg, Feedback &feedback, double m
         func_initialized = true;
     }
 
-    /*  
+    /*
      * Get the difference between the new heading and the current, and decide
      * whether to turn left or right.
      */
