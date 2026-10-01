@@ -1,7 +1,6 @@
 #pragma once
 #include <sys/types.h>
 #include <v5_api.h>
-#include <vex_thread.h>
 
 #include <array>
 #include <bit>
@@ -152,11 +151,13 @@ class Channel {
      * @return wether or not the update was successful
      */
     bool apply_update(VDP::Packet data_packet) {
+        printf("applying update, packet size so far %d\n", data_packet.size());
+
         uint8_t time_bytes[4] = {
                 data_packet.at(0), data_packet.at(1), data_packet.at(2), data_packet.at(3)
         };
         std::memcpy(&last_recieved, time_bytes, sizeof(uint32_t));
-        return data_.apply_update(VDP::Packet(data_packet.begin(), data_packet.begin() + 4));
+        return data_.apply_update({data_packet.begin() + 4, data_packet.end()});
     }
 
     /**

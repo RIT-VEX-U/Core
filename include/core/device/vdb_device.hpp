@@ -157,6 +157,9 @@ class Device : public COBSSerialDevice {
      */
     void apply_packet(VDP::Packet in) {
         const VDP::PacketValidity status = VDP::validate_packet(in);
+        printf("got packet: ");
+        hexdump(in.data(), in.size());
+        printf("size: %d\n", in.size());
 
         /// check if the packet is valid;
         if (status == VDP::PacketValidity::BadChecksum) {
@@ -183,6 +186,7 @@ class Device : public COBSSerialDevice {
                             (
                                     [&] {
                                         if (id_to_update == channel.get_id()) {
+                                            printf("applying update to channel %d\n", id_to_update);
                                             channel.apply_update(
                                                     VDP::Packet(in.begin() + 2, in.end())
                                             );
@@ -192,6 +196,17 @@ class Device : public COBSSerialDevice {
                         },
                         channels_
                 );
+                // acknowledge packet
+                VDP::Packet data_ack;
+                data_ack.push_back(
+                        VDP::make_header_byte(
+                                {VDP::PacketType::Data, VDP::PacketFunction::Acknowledge}
+                        )
+                );
+                data_ack.push_back(id_to_update);
+                VDP::Packet checksum = VDP::checksum_pac(data_ack);
+                data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
+                add_to_queue(data_ack);
                 break;
             }
             // mark channel as acknowledged, dont do anything if data packet

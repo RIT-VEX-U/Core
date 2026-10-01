@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "vex.h"
-
 namespace VDP {
 using Packet = std::vector<uint8_t>;
 
@@ -297,7 +295,9 @@ class Field {
      * @brief deserializes a packet's data and applies it to the field
      * @return the number of bytes read in the packet
      */
-    size_t apply_update(const VDP::Packet& packet_in) {
+    size_t apply_update(const VDP::Packet packet_in) {
+        printf("applying update to field %s\n", name_.c_str());
+        printf("packet size %d, type size %d\n", packet_in.size(), sizeof(T));
         if constexpr (std::is_same_v<T, std::string>) {
             // if the field holds a string, find the 0 delimiter and and get the string for that
             // length of the packet
@@ -305,17 +305,15 @@ class Field {
 
             auto length = str_end - packet_in.begin();
 
-            mut.lock();
             value_.assign(packet_in.begin(), str_end);
-            mut.unlock();
 
             return length + 1;
         } else {
-            // if the field is a value that is not of variable size, just copy the data into the
-            // field's data
-            mut.lock();
+            /*
+             * if the field is a value that is not of variable size, just copy the data into the
+             * field's data
+             */
             std::memcpy(&value_, packet_in.data(), sizeof(T));
-            mut.unlock();
 
             return sizeof(T);
         }
@@ -376,7 +374,6 @@ class Field {
 
    protected:
     std::string name_;
-    vex::mutex mut;
     T& value_;
 };
 
@@ -495,6 +492,7 @@ class Record {
      */
     size_t apply_update(VDP::Packet in) {
         std::size_t offset = 0;
+        printf("applying update to record %s, packet size so far: %d\n", name_.c_str(), in.size());
 
         std::apply(
                 [&](auto&... fields) {
