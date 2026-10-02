@@ -13,7 +13,7 @@ TankDrive::TankDrive(
     : left_motors(left_motors),
       right_motors(right_motors),
       odometry(odom),
-      correction_pid(config.correction_pid),
+      correction_feedback(config.correction_feedback),
       config(config) {
     drive_default_feedback = config.drive_feedback;
     turn_default_feedback = config.turn_feedback;
@@ -405,10 +405,10 @@ bool TankDrive::drive_to_point(
                         .to(units::in);
 
         // Reset the control loops
-        correction_pid->init(0, 0);
+        correction_feedback->init(0, 0);
         feedback.init(-initial_dist, 0);
 
-        correction_pid->set_limits(-1, 1);
+        correction_feedback->set_limits(-1, 1);
         feedback.set_limits(-1, 1);
 
         func_initialized = true;
@@ -478,13 +478,13 @@ bool TankDrive::drive_to_point(
     }
 
     // Update the PID controllers with new information
-    correction_pid->update(delta_heading);
+    correction_feedback->update(delta_heading);
     feedback.update(sign * -1 * dist_left);
 
     // Disable correction when we're close enough to the point
     double correction = 0;
     if (is_pure_pursuit || fabs(dist_left) > config.drive_correction_cutoff) {
-        correction = correction_pid->get();
+        correction = correction_feedback->get();
     }
 
     // Reverse the drive_pid output if we're going backwards
@@ -591,7 +591,6 @@ bool TankDrive::turn_to_heading(
 
     drive_tank(-feedback.get(), feedback.get());
 
-
     // When the robot has reached it's angle, return true.
     if (feedback.is_on_target()) {
         func_initialized = false;
@@ -696,8 +695,8 @@ bool TankDrive::pure_pursuit(
     // Correct the robot's heading until the last cut-off
     if (!(is_last_point && robot_pose.translation().distance(last_point).to(units::in) <
                                    config.drive_correction_cutoff)) {
-        correction_pid.update(angle_diff);
-        correction = correction_pid.get();
+        correction_feedback->update(angle_diff);
+        correction = correction_feedback->get();
     } else  // Inside cut-off radius, ignore horizontal diffs
     {
         dist_remaining *= cos(angle_diff * (PI / 180.0));
@@ -712,12 +711,12 @@ bool TankDrive::pure_pursuit(
     max_speed = fabs(max_speed);
 
     double drive_output = feedback.get();
-    if(fabs(drive_output) < max_speed && max_speed > 0.001){
-            drive_output /= max_speed;
+    if (fabs(drive_output) < max_speed && max_speed > 0.001) {
+        drive_output /= max_speed;
     }
 
     double left = clamp(drive_output, -max_speed, max_speed);
-    double right = clamp(drive_output, -max_speed,max_speed);
+    double right = clamp(drive_output, -max_speed, max_speed);
 
     left += correction;
     right -= correction;
@@ -750,4 +749,3 @@ bool TankDrive::pure_pursuit(
 ) {
     return pure_pursuit(path, dir, *config.drive_feedback, max_speed, end_speed);
 }
-
