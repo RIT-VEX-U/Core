@@ -51,7 +51,7 @@ class Rotation2d {
     }
 
     /**
-     * Constructs a rotation given united x and y values, as the angle from the x
+     * Constructs a rotation given x and y values, as the angle from the x
      * axis to the point.
      *
      * [theta] = [atan2(y, x)]
