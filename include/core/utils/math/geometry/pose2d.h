@@ -24,7 +24,6 @@ class Pose2d {
     Rotation2d rotation_;
 
    public:
-
     /// Default Constructor for Pose2d
     constexpr Pose2d() : translation_{Translation2d()}, rotation_{Rotation2d()} {}
 
@@ -259,11 +258,14 @@ class Pose2d {
         if (cevalm::abs(cos_minus_one) < 1e-9) {
             half_theta_by_tan_of_half_dtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
         } else {
-            half_theta_by_tan_of_half_dtheta = -(half_dtheta * transform.rotation().f_sin()) / cos_minus_one;
+            half_theta_by_tan_of_half_dtheta =
+                    -(half_dtheta * transform.rotation().f_sin()) / cos_minus_one;
         }
 
         const Translation2d translation_part =
-                transform.translation().rotate_by({half_theta_by_tan_of_half_dtheta, -half_dtheta}) *
+                transform.translation().rotate_by(
+                        {half_theta_by_tan_of_half_dtheta, -half_dtheta}
+                ) *
                 cevalm::hypot(half_theta_by_tan_of_half_dtheta, half_dtheta);
 
         return Twist2d{
@@ -288,12 +290,12 @@ class Pose2d {
         double sum_sin = 0;
         double sum_cos = 0;
 
-        for (size_t i = 0; i < list.size(); i++) {
-            sumx += list.at(i).x();
-            sumy += list.at(i).y();
+        for (Pose2d pose : list) {
+            sumx += pose.x();
+            sumy += pose.y();
 
-            sum_sin += list.at(i).rotation_.f_sin();
-            sum_cos += list.at(i).rotation_.f_cos();
+            sum_sin += pose.rotation_.f_sin();
+            sum_cos += pose.rotation_.f_cos();
         }
 
         return Pose2d{
