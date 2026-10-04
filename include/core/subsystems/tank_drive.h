@@ -71,14 +71,10 @@ class TankDrive {
     Condition *DriveStalledCondition(double stall_time);
     AutoCommand *DriveTankCmd(double left, double right);
 
-    /**
-     * Stops rotation of all the motors using their "brake mode"
-     */
+    /// Stops rotation of all the motors using their "brake mode"
     void stop();
 
-    /**
-     * Returns the Robot position as a Pose2d
-     */
+    /// Returns the Robot position as a Pose2d
     Pose2d get_position();
 
     /**
@@ -125,8 +121,7 @@ class TankDrive {
      * @param end_speed    the movement profile will attempt to reach this velocity by its completion
      * @return true when we have reached our target distance
      */
-    bool
-    drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
+    bool drive_forward(double inches, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0);
 
     /**
      * Autonomously drive the robot forward a certain distance
@@ -226,9 +221,7 @@ class TankDrive {
      */
     bool turn_to_heading(double heading_deg, double max_speed = 1, double end_speed = 0);
 
-    /**
-     * Reset the initialization for autonomous drive functions
-     */
+    /// Reset the initialization for autonomous drive functions
     void reset_auto();
 
     /**
@@ -243,6 +236,61 @@ class TankDrive {
      */
     static double modify_inputs(double input, int power = 2);
 
+<<<<<<< HEAD
     
     
+=======
+    /**
+     * Drive the robot autonomously using a pure-pursuit algorithm - Input path
+     * with a set of waypoints - the robot will attempt to follow the points
+     * while cutting corners (radius) to save time (compared to stop / turn /
+     * start)
+     *
+     * @param path The list of coordinates to follow, in order
+     * @param dir Run the bot forwards or backwards
+     * @param feedback The feedback controller determining speed
+     * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+     * @param end_speed the movement profile will attempt to reach this velocity
+     * by its completion
+     * @return True when the path is complete
+     */
+    bool pure_pursuit(
+      PurePursuit::Path path, vex::directionType dir, Feedback &feedback, double max_speed = 1, double end_speed = 0
+    );
+
+    /**
+     * Drive the robot autonomously using a pure-pursuit algorithm - Input path
+     * with a set of waypoints - the robot will attempt to follow the points
+     * while cutting corners (radius) to save time (compared to stop / turn /
+     * start)
+     *
+     * Use the default drive feedback
+     *
+     * @param path The list of coordinates to follow, in order
+     * @param dir Run the bot forwards or backwards
+     * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
+     * @param end_speed the movement profile will attempt to reach this velocity
+     * by its completion
+     * @return True when the path is complete
+     */
+  private:
+    bool pure_pursuit(PurePursuit::Path path, vex::directionType dir, double max_speed = 1, double end_speed = 0);
+    vex::motor_group &left_motors;  ///< left drive motors
+    vex::motor_group &right_motors; ///< right drive motors
+
+    OdometryBase *odometry; ///< odometry system to track position and rotation.
+                            ///< necessary for autonomous driving
+
+    Feedback *correction_pid;                      ///< PID controller used to drive in as straight a line
+                                             ///< as possible
+    Feedback *drive_default_feedback = NULL; ///< feedback to use to drive if none is specified
+    Feedback *turn_default_feedback = NULL;  ///< feedback to use to turn if none is specified
+
+    robot_specs_t
+      &config; ///< configuration holding physical dimensions of the robot. see robot_specs_t for more information
+
+    bool func_initialized = false; ///< used to control initialization of autonomous driving. (you only wan't to set the
+                                   ///< target once, not every iteration that you're driving)
+    bool is_pure_pursuit = false;  ///< true if we are driving with a pure pursuit system
+>>>>>>> main
 };

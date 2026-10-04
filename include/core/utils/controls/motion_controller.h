@@ -34,7 +34,7 @@ class MotionController : public Feedback {
     typedef struct {
         double max_v;                    ///< the maximum velocity the robot can drive
         double accel;                    ///< the most acceleration the robot can do
-        PID::pid_config_t pid_cfg;       ///< configuration parameters for the internal PID controller
+        PID pid;
         FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal
     } m_profile_cfg_t;
 
@@ -63,9 +63,7 @@ class MotionController : public Feedback {
      */
     double update(double sensor_val) override;
 
-    /**
-     * @return the last saved result from the feedback controller
-     */
+    /// @return the last saved result from the feedback controller
     double get() override;
 
     /**
@@ -83,9 +81,7 @@ class MotionController : public Feedback {
      */
     bool is_on_target() override;
 
-    /**
-     * @return The current postion, velocity and acceleration setpoints
-     */
+    /// @return The current postion, velocity and acceleration setpoints
     motion_t get_motion() const;
 
     LegacyScreen::Page *Page();

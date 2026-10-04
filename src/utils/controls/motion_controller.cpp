@@ -8,12 +8,13 @@
  * @param config The definition of how the robot is able to move
  *    max_v Maximum velocity the movement is capable of
  *    accel Acceleration / deceleration of the movement
- *    pid_cfg Definitions of kP, kI, and kD
+ *    pid A PID to pass to the object.
  *    ff_cfg Definitions of kS, kV, and kA
  */
 MotionController::MotionController(m_profile_cfg_t &config)
-    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
-
+    : config(config), pid(config.pid.kp, config.pid.ki, config.pid.kd, config.pid.deadband,
+    config.pid.on_target_time, config.pid.error_method),
+    ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
 /**
  * @brief Initialize the motion profile for a new movement
  * This will also reset the PID and profile timers.
@@ -45,9 +46,7 @@ double MotionController::update(double sensor_val) {
     return out;
 }
 
-/**
- * @return the last saved result from the feedback controller
- */
+/// @return the last saved result from the feedback controller
 double MotionController::get() { return out; }
 
 /**
@@ -69,9 +68,7 @@ bool MotionController::is_on_target() {
   return (tmr.time(vex::timeUnits::sec) > profile.total_time()) && pid.is_on_target();
 }
 
-/**
- * @return The current postion, velocity and acceleration setpoints
- */
+/// @return The current postion, velocity and acceleration setpoints
 motion_t MotionController::get_motion() const { return cur_motion; }
 
 /**

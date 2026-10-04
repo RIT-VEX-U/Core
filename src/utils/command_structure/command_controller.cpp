@@ -81,9 +81,10 @@ void CommandController::run() {
         command_queue.pop();
         command_timed_out = false;
 
-        // printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count,
-        // next_cmd->timeout_seconds, tmr.time(vex::seconds)); fflush(stdout);
-
+        /* 
+         * printf("Beginning Command %d : timeout = %.2f : at time = %.1f seconds\n", command_count,
+         * next_cmd->timeout_seconds, tmr.time(vex::seconds)); fflush(stdout);
+         */
         vex::timer timeout_timer;
         timeout_timer.reset();
         bool doTimeout = next_cmd->timeout_seconds > 0.0;
@@ -98,9 +99,11 @@ void CommandController::run() {
             if (!doTimeout) {
                 continue;
             }
-
-            // If we do want to check for timeout, check and end the command if
-            // we should
+            
+            /* 
+             * If we do want to check for timeout, check and end the command if
+             * we should
+             */
             double cmd_elapsed_sec = ((double)timeout_timer.time()) / 1000.0;
             if (cmd_elapsed_sec > next_cmd->timeout_seconds || should_cancel()) {
                 next_cmd->on_timeout();

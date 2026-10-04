@@ -1,10 +1,10 @@
 #include "core/utils/controls/pid.h"
 #include "core/subsystems/odometry/odometry_base.h"
 
-/**
- * Create the PID object
- */
-PID::PID(pid_config_t &config) : config(config) { pid_timer.reset(); }
+/// Create the PID object
+PID::PID(double kp, double ki, double kd, double deadband, double on_target_time, PID::ERROR_TYPE error_method)
+	: kp(kp), ki(ki), kd(kd), deadband(deadband), on_target_time(on_target_time), error_method(error_method)
+{ pid_timer.reset(); }
 
 void PID::init(double start_pt, double set_pt) {
     set_target(set_pt);
@@ -41,24 +41,25 @@ double PID::update(double sensor_val, double v_setpt) {
     // Avoid a divide by zero error
     double d_term = 0;
     if (time_delta != 0.0) {
-        d_term = config.d * (((get_error() - last_error) / time_delta) - v_setpt);
+        d_term = kd * (((get_error() - last_error) / time_delta) - v_setpt);
     } else if (last_time != 0.0) {
         printf("(pid.cpp): Warning - running PID without a delay is just a P loop!\n");
     }
 
     // P and D terms
-    out = (config.p * get_error()) + d_term;
+    out = (kp * get_error()) + d_term;
 
     bool limits_exist = lower_limit != 0 || upper_limit != 0;
-
-    // Only add to the accumulated error if the output is not saturated
-    // aka "Integral Clamping" anti-windup technique
+    /* 
+     * Only add to the accumulated error if the output is not saturated
+     * aka "Integral Clamping" anti-windup technique
+     */
     if (!limits_exist || (limits_exist && (out < upper_limit && out > lower_limit))) {
         accum_error += time_delta * get_error();
     }
 
     // I term
-    out += config.i * accum_error;
+    out += ki * accum_error;
 
     last_time = pid_timer.systemHighResolution() / 1000000.0;
     last_error = get_error();
@@ -72,9 +73,7 @@ double PID::update(double sensor_val, double v_setpt) {
 
 double PID::get_sensor_val() const { return sensor_val; }
 
-/**
- * Reset the PID loop by resetting time since 0 and accumulated error.
- */
+/// Reset the PID loop by resetting time since 0 and accumulated error.
 void PID::reset() {
     pid_timer.reset();
 
@@ -86,31 +85,23 @@ void PID::reset() {
     on_target_last_time = 0;
 }
 
-/**
- * Gets the current PID out value, from when update() was last run
- */
+/// Gets the current PID out value, from when update() was last run
 double PID::get() { return out; }
 
-/**
- * Get the delta between the current sensor data and the target
- */
+/// Get the delta between the current sensor data and the target
 double PID::get_error() {
-    if (config.error_method == ERROR_TYPE::ANGULAR) {
+    if (error_method == ERROR_TYPE::ANGULAR) {
         return OdometryBase::smallest_angle(target, sensor_val);
     }
     return target - sensor_val;
 }
 
-/**
- * Get the delta between the current sensor data and the target
- */
+/// Get the delta between the current sensor data and the target
 double PID::get_output() { return out; }
 
 double PID::get_target() const { return target; }
 
-/**
- * Set the target for the PID loop, where the robot is trying to end up
- */
+/// Set the target for the PID loop, where the robot is trying to end up
 void PID::set_target(double target) { this->target = target; }
 
 /**
@@ -127,14 +118,14 @@ void PID::set_limits(double lower, double upper) {
  * seconds
  */
 bool PID::is_on_target() {
-    if (fabs(get_error()) < config.deadband) {
+    if (fabs(get_error()) < deadband) {
         if (target_vel != 0) {
             return true;
         }
         if (is_checking_on_target == false) {
             on_target_last_time = pid_timer.value();
             is_checking_on_target = true;
-        } else if (pid_timer.value() - on_target_last_time > config.on_target_time) {
+        } else if (pid_timer.value() - on_target_last_time > on_target_time) {
             return true;
         }
     } else {

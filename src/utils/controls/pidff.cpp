@@ -1,7 +1,7 @@
 #include "core/utils/controls/pidff.h"
 #include "core/utils/math_util.h"
 
-PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg) : pid(pid_cfg), ff_cfg(ff_cfg), ff(ff_cfg) {
+PIDFF::PIDFF(PID pid, FeedForward::ff_config_t &ff_cfg) : pid(pid), ff_cfg(ff_cfg), ff(ff_cfg) {
     out = 0;
     lower_lim = 0;
     upper_lim = 0;
@@ -58,9 +58,7 @@ double PIDFF::update(double val, double vel_setpt, double a_setpt) {
     return out;
 }
 
-/**
- * @return the last saved result from the feedback controller
- */
+/// @return the last saved result from the feedback controller
 double PIDFF::get() { return out; }
 
 /**
@@ -75,9 +73,7 @@ void PIDFF::set_limits(double lower, double upper) {
     lower_lim = lower;
 }
 
-/**
- * @return true if the feedback controller has reached it's setpoint
- */
+/// @return true if the feedback controller has reached it's setpoint
 bool PIDFF::is_on_target() { return pid.is_on_target(); }
 
 void PIDFF::reset() { pid.reset(); }
