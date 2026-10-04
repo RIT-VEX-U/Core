@@ -19,7 +19,7 @@
 #pragma once
 
 #include "core/subsystems/tank_drive.h"
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 #include "core/utils/geometry.h"
 #include "vex.h"
 #include "core/utils/math/geometry/pose2d.h"

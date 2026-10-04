@@ -1,4 +1,4 @@
-#include "core/utils/initializer.h"
+#include "core/competition/initializer.h"
 
 
 /**
