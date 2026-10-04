@@ -18,7 +18,8 @@
  * +Y is up
  * +Theta is counterclockwise
  */
-struct Pose2d {
+class Pose2d {
+   private:
     Translation2d translation_;
     Rotation2d rotation_;
 
@@ -78,41 +79,71 @@ struct Pose2d {
                 rotation_.angle().to(angle_unit)};
     }
 
-    /// Returns the x value of the translation.
+    /// @returns the x value of the translation.
     constexpr units::Length x() const { return translation_.x_; }
 
-    /// Returns the y value of the translation.
+    /// @returns the y value of the translation.
     constexpr units::Length y() const { return translation_.y_; }
 
-    /// Returns x in the supplied length unit.
-    constexpr double x(units::Length unit) const { return translation_.x(unit); }
+    /// Sets the x value of the translation.
+    constexpr void x(units::Length val) const { translation_.x(val); }
 
-    /// Returns y in the supplied length unit.
-    constexpr double y(units::Length unit) const { return translation_.y(unit); }
+    /// Sets the y value of the translation.
+    constexpr void y(units::Length val) const { translation_.y(val); }
 
-    /// Returns the translation.
+    /// @returns the translation.
     constexpr Translation2d translation() const { return translation_; }
 
-    /// Returns the orientation.
+    /// Sets the translation.
+    constexpr void translation(Translation2d val) { translation_ = val; }
+
+    /// @returns the rotation.
     constexpr Rotation2d rotation() const { return rotation_; }
 
-    /// Returns the heading as an angle.
+    /// Sets the rotation.
+    constexpr void rotation(Rotation2d val) { rotation_ = val; }
+
+    /// @retuns the heading as an angle.
     constexpr units::Angle angle() const { return rotation_.angle(); }
 
-    /// Returns the heading in the supplied angle unit.
-    constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
+    /// Sets the rotation as an angle.
+    constexpr void angle(units::Angle val) { rotation_.angle(val); }
 
-    /// Returns the distance from the pose to another point.
+    /// Adds a transform to this pose by rotating it into the pose frame then adding.
+    constexpr Pose2d operator+(const Transform2d& transform) const {
+        return Pose2d{
+                translation_ + (transform.translation_.rotate_by(rotation_)),
+                transform.rotation_ + rotation_
+        };
+    }
+
+    /// Adds a transform to this pose by rotating it into the pose frame then adding.
+    constexpr Pose2d& operator+=(const Transform2d& transform) { return *this = *this + transform; }
+
+    /// Subtracts another pose from this to find the transform between them.
+    constexpr Transform2d operator-(const Pose2d& other) const {
+        return Transform2d{
+                (translation_ - other.translation_).rotate_by(-other.rotation_),
+                rotation_ - other.rotation_
+        };
+    }
+
+    /// Checks exact equality between this and another pose.
+    constexpr bool operator==(const Pose2d& other) const {
+        return (translation_ == other.translation_) && (rotation_ == other.rotation_);
+    }
+
+    /// @returns the distance from the pose to another point.
     constexpr units::Length distance(Translation2d point) const {
         return translation_.distance(point);
     }
 
-    /// Returns the distance from this to another pose, ignoring rotation.
+    /// @returns the distance from this to another pose, ignoring rotation.
     constexpr units::Length distance(const Pose2d& other) const {
         return distance(other.translation_);
     }
 
-    /// Returns the bearing from this to another point.
+    /// @returns the bearing from this to another point in the world frame.
     constexpr Rotation2d bearing_to(Translation2d point) const {
         const auto delta = point - translation_;
         if (delta.x_.internal() == 0 && delta.y_.internal() == 0) {
@@ -121,7 +152,7 @@ struct Pose2d {
         return delta.theta();
     }
 
-    /// Returns the smallest angle to another point.
+    /// @returns the smallest angle to another point in the local frame.
     constexpr units::Angle angle_to(Translation2d point) const {
         return (bearing_to(point) - rotation_).angle();
     }
@@ -134,29 +165,6 @@ struct Pose2d {
     /// Converts a point from the world frame to this pose's local frame.
     constexpr Translation2d world_to_local(Translation2d point) const {
         return (point - translation_).rotate_by(-rotation_);
-    }
-
-    /// Returns a copy with a new position.
-    constexpr Pose2d with_translation(Translation2d translation) const {
-        return {translation, rotation_};
-    }
-
-    /// Returns a copy with a new orientation.
-    constexpr Pose2d with_rotation(Rotation2d rotation) const { return {translation_, rotation}; }
-
-    /**
-     * Interpolates position along a straight line and heading along the shortest turn.
-     * Fractions outside [0, 1] return the nearest endpoint.
-     */
-    constexpr Pose2d interpolate(const Pose2d& end, double fraction) const {
-        if (fraction <= 0) {
-            return *this;
-        }
-        if (fraction >= 1) {
-            return end;
-        }
-        return {translation_ + (end.translation_ - translation_) * fraction,
-                rotation_ + (end.rotation_ - rotation_) * fraction};
     }
 
     /**
@@ -183,6 +191,23 @@ struct Pose2d {
                 translation_ + (transform.translation_.rotate_by(rotation_)),
                 rotation_ + transform.rotation_
         };
+    }
+
+    /**
+     * Interpolates position along a straight line and heading along the shortest turn.
+     * Fractions outside [0, 1] return the nearest endpoint.
+     *
+     * Does NOT move along an arc like a Twist, it's a straight line.
+     */
+    constexpr Pose2d interpolate(const Pose2d& end, double fraction) const {
+        if (fraction <= 0) {
+            return *this;
+        }
+        if (fraction >= 1) {
+            return end;
+        }
+        return {translation_ + (end.translation_ - translation_) * fraction,
+                rotation_ + (end.rotation_ - rotation_) * fraction};
     }
 
     /**
@@ -248,52 +273,27 @@ struct Pose2d {
      * @param end_pose the end pose to find the mapping to.
      * @return the twist required to go from this pose to the given end
      */
-    constexpr Twist2d log(const Pose2d& end_pose) const {
-        const Pose2d transform = end_pose.relative_to(*this);
+    constexpr Twist2d log(const Transform2d& transform) const {
         const double dtheta = transform.rotation_.radians();
-        const double halfDtheta = dtheta / 2.0;
+        const double half_dtheta = dtheta / 2.0;
 
-        const double cosMinusOne = transform.rotation_.f_cos() - 1;
+        const double cos_minus_one = transform.rotation_.f_cos() - 1;
 
-        double halfThetaByTanOfHalfDtheta;
+        double half_theta_by_tan_of_half_dtheta;
 
-        if (cevalm::abs(cosMinusOne) < 1e-9) {
-            halfThetaByTanOfHalfDtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
+        if (cevalm::abs(cos_minus_one) < 1e-9) {
+            half_theta_by_tan_of_half_dtheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta;
         } else {
-            halfThetaByTanOfHalfDtheta = -(halfDtheta * transform.rotation_.f_sin()) / cosMinusOne;
+            half_theta_by_tan_of_half_dtheta = -(half_dtheta * transform.rotation_.f_sin()) / cos_minus_one;
         }
 
-        const Translation2d translationPart =
-                transform.translation_.rotate_by({halfThetaByTanOfHalfDtheta, -halfDtheta}) *
-                cevalm::hypot(halfThetaByTanOfHalfDtheta, halfDtheta);
+        const Translation2d translation_part =
+                transform.translation_.rotate_by({half_theta_by_tan_of_half_dtheta, -half_dtheta}) *
+                cevalm::hypot(half_theta_by_tan_of_half_dtheta, half_dtheta);
 
         return Twist2d{
-                translationPart.x_, translationPart.y_, units::Angle(dtheta, units::radians)
+                translation_part.x_, translation_part.y_, units::Angle(dtheta, units::radians)
         };
-    }
-
-    /// Adds a transform to this pose by rotating it into the pose frame then adding.
-    constexpr Pose2d operator+(const Transform2d& transform) const {
-        return Pose2d{
-                translation_ + (transform.translation_.rotate_by(rotation_)),
-                transform.rotation_ + rotation_
-        };
-    }
-
-    /// Adds a transform to this pose by rotating it into the pose frame then adding.
-    constexpr Pose2d& operator+=(const Transform2d& transform) { return *this = *this + transform; }
-
-    /// Subtracts another pose from this to find the transform between them.
-    constexpr Transform2d operator-(const Pose2d& other) const {
-        return Transform2d{
-                (translation_ - other.translation_).rotate_by(-other.rotation_),
-                rotation_ - other.rotation_
-        };
-    }
-
-    /// Checks exact equality between this and another pose.
-    constexpr bool operator==(const Pose2d& other) const {
-        return (translation_ == other.translation_) && (rotation_ == other.rotation_);
     }
 
     /**
