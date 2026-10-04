@@ -13,7 +13,7 @@ TankDrive::TankDrive(
     : left_motors(left_motors),
       right_motors(right_motors),
       odometry(odom),
-      correction_feedback(config.correction_feedback),
+      correction_pid(config.correction_feedback),
       config(config) {
     drive_default_feedback = config.drive_feedback;
     turn_default_feedback = config.turn_feedback;
@@ -124,8 +124,8 @@ AutoCommand* TankDrive::DriveTankCmd(double left, double right) {
             return false;
         }
         std::string toString() override {
-            return "Driving Tank with left: " + double_to_string(left) +
-                   " right: " + double_to_string(right);
+            return "Driving Tank with left: " + std::to_string(left) +
+                   " right: " + std::to_string(right);
         }
         void on_timeout() override { td.stop(); }
         TankDrive& td;
@@ -398,17 +398,16 @@ bool TankDrive::drive_to_point(
     if (!func_initialized) {
         double initial_dist =
                 odometry->get_position()
-                        .translation()
                         .distance(Translation2d(
                                 units::Length(x, units::in), units::Length(y, units::in)
                         ))
                         .to(units::in);
 
         // Reset the control loops
-        correction_feedback->init(0, 0);
+        correction_pid->init(0, 0);
         feedback.init(-initial_dist, 0);
 
-        correction_feedback->set_limits(-1, 1);
+        correction_pid->set_limits(-1, 1);
         feedback.set_limits(-1, 1);
 
         func_initialized = true;
@@ -478,13 +477,13 @@ bool TankDrive::drive_to_point(
     }
 
     // Update the PID controllers with new information
-    correction_feedback->update(delta_heading);
+    correction_pid->update(delta_heading);
     feedback.update(sign * -1 * dist_left);
 
     // Disable correction when we're close enough to the point
     double correction = 0;
     if (is_pure_pursuit || fabs(dist_left) > config.drive_correction_cutoff) {
-        correction = correction_feedback->get();
+        correction = correction_pid->get();
     }
 
     // Reverse the drive_pid output if we're going backwards
@@ -683,20 +682,20 @@ bool TankDrive::pure_pursuit(
     if (dir != vex::directionType::rev) {
         angle_diff = OdometryBase::smallest_angle(
                 robot_pose.rotation().degrees(),
-                Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in)))
+                localized.theta().degrees()
         );
     } else {
         angle_diff = OdometryBase::smallest_angle(
                 robot_pose.rotation().degrees() + 180,
-                Rotation2d::rad2deg(atan2(localized.y(units::in), localized.x(units::in)))
+                localized.theta().degrees()
         );
     }
 
     // Correct the robot's heading until the last cut-off
-    if (!(is_last_point && robot_pose.translation().distance(last_point).to(units::in) <
-                                   config.drive_correction_cutoff)) {
-        correction_feedback->update(angle_diff);
-        correction = correction_feedback->get();
+    if (!(is_last_point &&
+          robot_pose.translation().distance(last_point).to(units::in) < config.drive_correction_cutoff)) {
+        correction_pid->update(angle_diff);
+        correction = correction_pid->get();
     } else  // Inside cut-off radius, ignore horizontal diffs
     {
         dist_remaining *= cos(angle_diff * (PI / 180.0));
