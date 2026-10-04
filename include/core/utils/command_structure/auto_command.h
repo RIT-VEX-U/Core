@@ -38,24 +38,14 @@ class AutoCommand {
      * Overridden by child classes
      * @returns true when the command is finished, false otherwise
      */
-    virtual bool run() { return true; }
+    virtual bool run();
 
-    virtual std::string toString() { return "AutoCommand"; }
+    virtual std::string toString();
     
     /// What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
     virtual void on_timeout() {}
-    AutoCommand *withTimeout(double t_seconds) {
-        if (this->timeout_seconds < 0) {
-            // should never be timed out
-            return this;
-        }
-        this->timeout_seconds = t_seconds;
-        return this;
-    }
-    AutoCommand *withCancelCondition(Condition *true_to_end) {
-        this->true_to_end = true_to_end;
-        return this;
-    }
+    AutoCommand *withTimeout(double t_seconds);
+    AutoCommand *withCancelCondition(Condition *true_to_end);
     /**
      * How long to run until we cancel this command.
      * If the command is cancelled, on_timeout() is called to allow any cleanup from the function.

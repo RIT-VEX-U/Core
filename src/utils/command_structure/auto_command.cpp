@@ -33,6 +33,29 @@ Condition *Condition::Or(Condition *b) { return new OrCondition(this, b); }
 
 Condition *Condition::And(Condition *b) { return new AndCondition(this, b); }
 
+/**
+ * Executes the command
+ * Overridden by child classes
+ * @returns true when the command is finished, false otherwise
+ */
+bool AutoCommand::run() { return true; }
+
+std::string AutoCommand::toString() { return "AutoCommand"; }
+
+AutoCommand *AutoCommand::withTimeout(double t_seconds) {
+    if (this->timeout_seconds < 0) {
+        // should never be timed out
+        return this;
+    }
+    this->timeout_seconds = t_seconds;
+    return this;
+}
+
+AutoCommand *AutoCommand::withCancelCondition(Condition *true_to_end) {
+    this->true_to_end = true_to_end;
+    return this;
+}
+
 bool FunctionCondition::test() { return cond(); }
 IfTimePassed::IfTimePassed(double time_s) : time_s(time_s), tmr() {}
 bool IfTimePassed::test() { return tmr.value() > time_s; }
