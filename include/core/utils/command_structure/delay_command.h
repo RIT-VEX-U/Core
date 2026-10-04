@@ -10,7 +10,7 @@
 #include "core/utils/command_structure/auto_command.h"
 
 class DelayCommand : public AutoCommand {
-  public:
+   public:
     /**
      * Construct a delay command
      * @param ms the number of milliseconds to delay for
@@ -27,9 +27,9 @@ class DelayCommand : public AutoCommand {
         return true;
     }
 
-    std::string toString() override { return "Delaying for " + double_to_string(ms) + "ms"; }
+    std::string toString() override { return "Delaying for " + std::to_string(ms) + "ms"; }
 
-  private:
+   private:
     // amount of milliseconds to wait
     int ms;
 };
