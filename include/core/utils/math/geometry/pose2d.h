@@ -73,12 +73,6 @@ class Pose2d {
           },
           rotation_{units::Angle(pose_vector[2], angle_unit)} {}
 
-    /// Returns [x, y, theta] in the supplied units. Angles default to radians.
-    EVec<3> as_vector(units::Length length_unit, units::Angle angle_unit = units::radians) const {
-        return {translation_.x_.to(length_unit), translation_.y_.to(length_unit),
-                rotation_.angle().to(angle_unit)};
-    }
-
     /// @returns the x value of the translation.
     constexpr units::Length x() const { return translation_.x_; }
 
@@ -108,6 +102,12 @@ class Pose2d {
 
     /// Sets the rotation as an angle.
     constexpr void angle(units::Angle val) { rotation_.angle(val); }
+
+    /// Returns [x, y, theta] in the supplied units. Angles default to radians.
+    EVec<3> as_vector(units::Length length_unit, units::Angle angle_unit = units::radians) const {
+        return {translation_.x_.to(length_unit), translation_.y_.to(length_unit),
+                rotation_.angle().to(angle_unit)};
+    }
 
     /// Adds a transform to this pose by rotating it into the pose frame then adding.
     constexpr Pose2d operator+(const Transform2d& transform) const {
