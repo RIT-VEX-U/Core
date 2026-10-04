@@ -114,25 +114,25 @@ class OdometryBase {
      * Get the current vector components of the linear velocity
      * @return the x,y components of the linear velocity vector as a Translation2d
      */
-    Translation2d get_current_lin_velocity();
+    Translation2d get_lin_velocity();
 
     /**
      * Get the current vector components of the linear acceleration
      * @return the x,y componenets of the linear acceleration vector as a Translation2d
      */
-    Translation2d get_current_lin_accel();
+    Translation2d get_lin_accel();
 
     /**
      * Get the current vector compoenents of the rotational velocity vector
      * @return the x,y,z components of the rotational velocity vector as a Pose2d
      */
-    Pose2d get_current_rot_velocity();
+    Pose2d get_rot_velocity();
 
     /** 
      * Get the current vector componenets of the rotational acceleration vector
      * @return the x,y,z componenets of the rot accel vector as a Pose2d
      */
-    Pose2d get_current_rot_accel();
+    Pose2d get_rot_accel();
 
     inline static constexpr Pose2d zero_pos = Pose2d();
 

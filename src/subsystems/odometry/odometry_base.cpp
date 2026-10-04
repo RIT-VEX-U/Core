@@ -39,9 +39,7 @@ int OdometryBase::background_task(void *ptr) {
  */
 void OdometryBase::end_async() { this->end_task = true; }
 
-/**
- * Gets the current position and rotation
- */
+/// Gets the current position and rotation
 Pose2d OdometryBase::get_position(void) {
     mut.lock();
 
@@ -53,9 +51,7 @@ Pose2d OdometryBase::get_position(void) {
     return out;
 }
 
-/**
- * Sets the current position of the robot
- */
+/// Sets the current position of the robot
 void OdometryBase::set_position(const Pose2d &newpos) {
     mut.lock();
 
@@ -129,7 +125,7 @@ double OdometryBase::get_angular_accel_deg() {
  *
  * @return the current linear velocity vector as a Translation2d
  */
-Translation2d OdometryBase::get_current_lin_velocity(){
+Translation2d OdometryBase::get_lin_velocity(){
     mut.lock();
     double current_speed = speed;
     double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
@@ -145,7 +141,7 @@ Translation2d OdometryBase::get_current_lin_velocity(){
  *
  * @return the current linear acceleration vector as a Translation2d
  */
-Translation2d OdometryBase::get_current_lin_accel(){
+Translation2d OdometryBase::get_lin_accel(){
     mut.lock();
     double current_accel = accel;
     double heading = current_pos.rotation().degrees() * (M_PI)/180;
@@ -161,11 +157,11 @@ Translation2d OdometryBase::get_current_lin_accel(){
  * 
  * @return the current rotational velocity vector as a Pose2d
  */
-Pose2d OdometryBase::get_current_rot_velocity(){
+Pose2d OdometryBase::get_rot_velocity(){
     // Obtatining the current angular speed and translation
     mut.lock();
     double current_ang_speed = ang_speed_deg;
-    Translation2d translation = get_current_lin_velocity();
+    Translation2d translation = get_lin_velocity();
     mut.unlock();
 
     return {translation, current_ang_speed};
@@ -176,10 +172,10 @@ Pose2d OdometryBase::get_current_rot_velocity(){
  * 
  * @return the current rotational velocity accleration as a Pose2d
  */
-Pose2d OdometryBase::get_current_rot_accel(){
+Pose2d OdometryBase::get_rot_accel(){
     mut.lock();
     double current_ang_accel = ang_accel_deg;
     mut.unlock();
-    Translation2d translation = get_current_lin_accel();
+    Translation2d translation = get_lin_accel();
     return {translation,current_ang_accel};
 }
