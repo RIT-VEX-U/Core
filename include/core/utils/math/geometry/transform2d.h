@@ -14,10 +14,12 @@
  * +Y is up
  * +Theta is counterclockwise
  */
-struct Transform2d {
+class Transform2d {
+   private:
     Translation2d translation_;
     Rotation2d rotation_;
 
+   public:
     /// Default Constructor for Transform2d
     constexpr Transform2d() = default;
 
@@ -74,29 +76,44 @@ struct Transform2d {
         : translation_({transform_vector(0), transform_vector(1)}, unit),
           rotation_(units::Angle(transform_vector(2), angle_unit)) {}
 
-    /// Returns the translation.
-    constexpr Translation2d translation() const { return translation_; }
-
-    /// Returns the rotation.
-    constexpr Rotation2d rotation() const { return rotation_; }
-
-    /// Returns the rotation as an Angle
-    constexpr units::Angle angle() const { return rotation_.angle(); }
-
-    /// Returns the rotation in the supplied angle unit.
-    constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
-
-    /// Returns the x component
+    /// @returns the x component
     constexpr units::Length x() const { return translation_.x(); }
 
-    /// Returns the y component
-    constexpr units::Length y() const { return translation_.y(); }
-
-    /// Returns x in the supplied length unit.
+    /// @returns x in the supplied length unit.
     constexpr double x(units::Length unit) const { return translation_.x(unit); }
 
-    /// Returns y in the supplied length unit.
+    /// Sets the x component.
+    constexpr void set_x(units::Length val) { translation_.set_x(val); }
+
+    /// @returns the y component
+    constexpr units::Length y() const { return translation_.y(); }
+
+    /// @returns y in the supplied length unit.
     constexpr double y(units::Length unit) const { return translation_.y(unit); }
+
+    /// Sets the y component.
+    constexpr void set_y(units::Length val) { translation_.set_y(val); }
+
+    /// @returns the translation.
+    constexpr Translation2d translation() const { return translation_; }
+
+    /// Sets the translation.
+    constexpr void set_translation(Translation2d val) { translation_ = val; }
+
+    /// @returns the rotation.
+    constexpr Rotation2d rotation() const { return rotation_; }
+
+    /// Sets the rotation.
+    constexpr void set_rotation(Rotation2d val) { rotation_ = val; }
+
+    /// @returns the rotation as an Angle
+    constexpr units::Angle angle() const { return rotation_.angle(); }
+
+    /// @returns the angle in the supplied unit.
+    constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
+
+    /// Sets the rotation as an angle.
+    constexpr void set_angle(units::Angle val) { rotation_ = Rotation2d(val); }
 
     /**
      * Returns [x, y, theta] in the supplied units. Angles default to radians.
@@ -106,20 +123,8 @@ struct Transform2d {
      * @return EVec<3> containing the values.
      */
     EVec<3> as_vector(units::Length length_unit, units::Angle angle_unit = units::radians) const {
-        return {translation_.x_.to(length_unit), translation_.y_.to(length_unit),
+        return {translation_.x().to(length_unit), translation_.y().to(length_unit),
                 rotation_.angle().to(angle_unit)};
-    }
-
-    /**
-     * Checks translation distance and the smallest angle against tolerances.
-     * Defaults to 1um and 1e-6 radians.
-     */
-    constexpr bool is_near(
-            const Transform2d& other, units::Length distance_tolerance = units::Length(1e-6),
-            units::Angle angle_tolerance = units::Angle(1e-6)
-    ) const {
-        return translation_.is_near(other.translation_, distance_tolerance) &&
-               rotation_.is_near(other.rotation_, angle_tolerance);
     }
 
     /// Inverts this transform
@@ -135,6 +140,9 @@ struct Transform2d {
 
     /// Composes this transform and another transform.
     constexpr Transform2d& operator+=(const Transform2d& other) { return *this = *this + other; }
+
+    /// Inverts this transform.
+    constexpr Transform2d operator-() const { return inverse(); }
 
     /// Multiplies this transform by a scalar.
     constexpr Transform2d operator*(double scalar) const {
@@ -157,11 +165,20 @@ struct Transform2d {
     /// Divides this transform by a scalar.
     constexpr Transform2d& operator/=(double scalar) { return *this = *this / scalar; }
 
-    /// Inverts this transform.
-    constexpr Transform2d operator-() const { return inverse(); }
-
     /// Checks exact equality between this and another transform.
     constexpr bool operator==(const Transform2d& other) const {
         return (translation_ == other.translation_) && (rotation_ == other.rotation_);
+    }
+
+    /**
+     * Checks translation distance and the smallest angle against tolerances.
+     * Defaults to 1um and 1e-6 radians.
+     */
+    constexpr bool is_near(
+            const Transform2d& other, units::Length distance_tolerance = units::Length(1e-6),
+            units::Angle angle_tolerance = units::Angle(1e-6)
+    ) const {
+        return translation_.is_near(other.translation_, distance_tolerance) &&
+               rotation_.is_near(other.rotation_, angle_tolerance);
     }
 };

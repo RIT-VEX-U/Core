@@ -97,14 +97,32 @@ class Rotation2d {
     /// Flips this rotation across the origin.
     constexpr Rotation2d opposite() const { return Rotation2d(-cos_, -sin_); }
 
-    /// Compares two angles with a default tolerance of 1e-6 radians.
-    constexpr bool is_near(Rotation2d other, units::Angle tolerance = units::Angle(1e-6)) const {
-        return units::abs((*this - other).angle()) <= tolerance;
-    }
-
     /// @returns the rotation matrix corresponding to this rotation.
     constexpr EMat<2, 2> rotation_matrix() const { return EMat<2, 2>{{cos_, -sin_}, {sin_, cos_}}; }
 
+    /// @returns the value of this rotation in radians from [-pi, pi].
+    constexpr double wrapped_radians_180() const { return wrap_radians_180(radians()); }
+
+    /// @returns the value of this rotation in degrees from [-180, 180].
+    constexpr double wrapped_degrees_180() const { return wrap_degrees_180(degrees()); }
+
+    /// @returns the value of this rotation in revolutions from [-0.5, 0.5].
+    constexpr double wrapped_revolutions_180() const { return wrap_revolutions_180(revolutions()); }
+
+    /// @returns the value of this rotation in gradians from [-200, 200].
+    constexpr double wrapped_gradians_180() const { return wrap_gradians_180(gradians()); }
+
+    /// @returns the value of this rotation in radians from [0, 2pi).
+    constexpr double wrapped_radians_360() const { return wrap_radians_360(radians()); }
+
+    /// @returns the value of this rotation in degrees from [0, 360).
+    constexpr double wrapped_degrees_360() const { return wrap_degrees_360(degrees()); }
+
+    /// @returns the value of this rotation in revolutions from [0, 1).
+    constexpr double wrapped_revolutions_360() const { return wrap_revolutions_360(revolutions()); }
+
+    /// @returns the value of this rotation in gradians from [0, 400).
+    constexpr double wrapped_gradians_360() const { return wrap_gradians_360(gradians()); }
 
     /// Adds another rotation to this rotation
     constexpr Rotation2d operator+(Rotation2d other) const {
@@ -145,6 +163,11 @@ class Rotation2d {
     /// Checks exact equality between this rotation and another rotation.
     constexpr bool operator==(Rotation2d other) const {
         return cos_ == other.cos_ && sin_ == other.sin_;
+    }
+
+    /// Compares two angles with a default tolerance of 1e-6 radians.
+    constexpr bool is_near(Rotation2d other, units::Angle tolerance = units::Angle(1e-6)) const {
+        return units::abs((*this - other).angle()) <= tolerance;
     }
 
     /**
@@ -306,28 +329,4 @@ class Rotation2d {
         }
         return (x >= 400.0) ? 0.0 : x;
     }
-
-    /// Returns the value of this rotation in radians from [-pi, pi].
-    constexpr double wrapped_radians_180() const { return wrap_radians_180(radians()); }
-
-    /// Returns the value of this rotation in degrees from [-180, 180].
-    constexpr double wrapped_degrees_180() const { return wrap_degrees_180(degrees()); }
-
-    /// Returns the value of this rotation in revolutions from [-0.5, 0.5].
-    constexpr double wrapped_revolutions_180() const { return wrap_revolutions_180(revolutions()); }
-
-    /// Returns the value of this rotation in gradians from [-200, 200].
-    constexpr double wrapped_gradians_180() const { return wrap_gradians_180(gradians()); }
-
-    /// Returns the value of this rotation in radians from [0, 2pi).
-    constexpr double wrapped_radians_360() const { return wrap_radians_360(radians()); }
-
-    /// Returns the value of this rotation in degrees from [0, 360).
-    constexpr double wrapped_degrees_360() const { return wrap_degrees_360(degrees()); }
-
-    /// Returns the value of this rotation in revolutions from [0, 1).
-    constexpr double wrapped_revolutions_360() const { return wrap_revolutions_360(revolutions()); }
-
-    /// Returns the value of this rotation in gradians from [0, 400).
-    constexpr double wrapped_gradians_360() const { return wrap_gradians_360(gradians()); }
 };

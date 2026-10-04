@@ -212,7 +212,7 @@ private:
 
     // simply replaces the calculated angle with the imu angle directly
     if (imu != nullptr) {
-      new_pose = new_pose.with_rotation(Rotation2d(angle));
+      new_pose.set_rotation(Rotation2d(angle));
     }
     return new_pose;
   }

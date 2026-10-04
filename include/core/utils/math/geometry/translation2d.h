@@ -26,10 +26,12 @@ concept LinearKinematicQuantity =
  * +Theta is counterclockwise
  */
 template <LinearKinematicQuantity Q>
-struct LinearVector2d {
+class LinearVector2d {
+   private:
     Q x_;
     Q y_;
 
+   public:
     /// Default Constructor for LinearVector2d valued (0, 0)
     constexpr LinearVector2d() : x_{0}, y_{0} {}
 
@@ -59,19 +61,25 @@ struct LinearVector2d {
     constexpr LinearVector2d(Eigen::Vector2d vector, Q unit)
         : x_{vector[0], unit}, y_{vector[1], unit} {}
 
-    /// Returns the x component.
+    /// @returns the x component.
     constexpr Q x() const { return x_; }
 
-    /// Returns the y component.
-    constexpr Q y() const { return y_; }
-
-    /// Returns x in the supplied unit.
+    /// @returns x in the supplied unit.
     constexpr double x(Q unit) const { return x_.to(unit); }
 
-    /// Returns y in the supplied unit.
+    /// Sets the x component.
+    constexpr void set_x(Q val) { x_ = val; }
+
+    /// @returns the y component.
+    constexpr Q y() const { return y_; }
+
+    /// @returns y in the supplied unit.
     constexpr double y(Q unit) const { return y_.to(unit); }
 
-    /// Returns the angle of the vector from the x axis.
+    /// Sets the y component.
+    constexpr void set_y(Q val) { y_ = val; }
+
+    /// @returns the angle of the vector from the x axis.
     constexpr Rotation2d theta() const { return Rotation2d(x_.internal(), y_.internal()); }
 
     /**
@@ -82,7 +90,7 @@ struct LinearVector2d {
      */
     constexpr Eigen::Vector2d as_vector(Q unit) const { return EVec<2>{x_.to(unit), y_.to(unit)}; }
 
-    /// Returns the norm of the vector.
+    /// @returns the norm of the vector.
     constexpr Q norm() const { return units::hypot(x_, y_); }
 
     /**
@@ -96,7 +104,7 @@ struct LinearVector2d {
         return LinearVector2d(magnitude, theta());
     }
 
-    /// Returns the distance between two vectors.
+    /// @returns the distance between two vectors.
     constexpr Q distance(LinearVector2d other) const {
         return units::hypot(x_ - other.x_, y_ - other.y_);
     }
@@ -198,9 +206,6 @@ struct LinearVector2d {
         return vector * scalar;
     }
 
-    /// Multiplies this vector by a scalar.
-    constexpr LinearVector2d& operator*=(double scalar) { return *this = *this * scalar; }
-
     /**
      * Multiplies this vector by a scalar with a unit of time.
      * e.g. Velocity2d * Time = Translation2d
@@ -231,6 +236,9 @@ struct LinearVector2d {
      * @returns The dot product of this and other.
      */
     constexpr units::Multiplied<Q, Q> operator*(LinearVector2d other) const { return dot(other); }
+
+    /// Multiplies this vector by a scalar.
+    constexpr LinearVector2d& operator*=(double scalar) { return *this = *this * scalar; }
 
     /// Divides this vector by a scalar.
     constexpr LinearVector2d operator/(double scalar) const { return {x_ / scalar, y_ / scalar}; }

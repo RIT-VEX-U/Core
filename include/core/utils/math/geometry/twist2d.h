@@ -17,11 +17,13 @@
  * +Y is up
  * +Theta is counterclockwise
  */
-struct Twist2d {
+class Twist2d {
+   private:
     units::Length dx_;
     units::Length dy_;
     units::Angle dtheta_;
 
+   public:
     /// Default Constructor for Twist2d
     constexpr Twist2d() : dx_(0), dy_(0), dtheta_(0) {}
 
@@ -50,23 +52,32 @@ struct Twist2d {
           dy_{twist_vector[1], length_unit},
           dtheta_{twist_vector[2], angle_unit} {}
 
-    /// Returns the x displacement.
+    /// @returns the x displacement.
     constexpr units::Length dx() const { return dx_; }
 
-    /// Returns the y displacement.
-    constexpr units::Length dy() const { return dy_; }
-
-    /// Returns the Angle displacement
-    constexpr units::Angle dtheta() const { return dtheta_; }
-
-    /// Returns the x displacement in the supplied unit.
+    /// @returns the x displacement in the supplied unit.
     constexpr double dx(units::Length unit) const { return dx_.to(unit); }
 
-    /// Returns the y displacement in the supplied unit.
+    /// Sets the x displacement.
+    constexpr void set_dx(units::Length val) { dx_ = val; }
+
+    /// @returns the y displacement.
+    constexpr units::Length dy() const { return dy_; }
+
+    /// @returns the y displacement in the supplied unit.
     constexpr double dy(units::Length unit) const { return dy_.to(unit); }
 
-    /// Returns the angle displacement in the supplied unit.
+    /// Sets the y displacement.
+    constexpr void set_dy(units::Length val) { dy_ = val; }
+
+    /// @returns the Angle displacement
+    constexpr units::Angle dtheta() const { return dtheta_; }
+
+    /// @returns the angle displacement in the supplied unit.
     constexpr double dtheta(units::Angle unit) const { return dtheta_.to(unit); }
+
+    /// Sets the angle displacement.
+    constexpr void set_dtheta(units::Angle val) { dtheta_ = val; }
 
     /**
      * Returns [dx, dy, dtheta] in the supplied units. Angles default to radians.
