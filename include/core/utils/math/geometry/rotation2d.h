@@ -62,10 +62,39 @@ class Rotation2d {
     constexpr Rotation2d(units::Length x, units::Length y)
         : Rotation2d(x.to(units::inches), y.to(units::inches)) {}
 
+    /// @returns an Angle equal to this rotation.
+    constexpr units::Angle angle() const {
+        return units::Angle(cevalm::atan2(sin_, cos_), units::radians);
+    }
+
+    /// @returns the angle in the supplied unit.
+    constexpr double angle(units::Angle unit) const { return angle().to(unit); }
+
+    /// @returns the rotation in radians.
+    constexpr double radians() const { return angle().to(units::radians); }
+
+    /// @returns the rotation in degrees.
+    constexpr double degrees() const { return angle().to(units::degrees); }
+
+    /// @returns the rotation in revolutions.
+    constexpr double revolutions() const { return angle().to(units::revolutions); }
+
+    /// @returns the rotation in gradians.
+    constexpr double gradians() const { return angle().to(units::gradians); }
+
+    /// @returns the cosine of the rotation.
+    constexpr double f_cos() const { return cos_; }
+
+    /// @returns the sine of the rotation.
+    constexpr double f_sin() const { return sin_; }
+
+    /// @returns the tangent of the rotation.
+    constexpr double f_tan() const { return sin_ / cos_; }
+
     /// Inverts this rotation (conjugate).
     constexpr Rotation2d inverse() const { return Rotation2d(cos_, -sin_); }
 
-    /// Returns the opposite angle, flipping across origin.
+    /// Flips this rotation across the origin.
     constexpr Rotation2d opposite() const { return Rotation2d(-cos_, -sin_); }
 
     /// Compares two angles with a default tolerance of 1e-6 radians.
@@ -73,37 +102,9 @@ class Rotation2d {
         return units::abs((*this - other).angle()) <= tolerance;
     }
 
-    /// Returns the rotation matrix corresponding to this rotation.
+    /// @returns the rotation matrix corresponding to this rotation.
     constexpr EMat<2, 2> rotation_matrix() const { return EMat<2, 2>{{cos_, -sin_}, {sin_, cos_}}; }
 
-    /// Returns an Angle equal to this rotation.
-    constexpr units::Angle angle() const {
-        return units::Angle(cevalm::atan2(sin_, cos_), units::radians);
-    }
-
-    /// Returns the angle in the supplied unit.
-    constexpr double angle(units::Angle unit) const { return angle().to(unit); }
-
-    /// Returns the rotation in radians.
-    constexpr double radians() const { return angle().to(units::radians); }
-
-    /// Returns the rotation in degrees.
-    constexpr double degrees() const { return angle().to(units::degrees); }
-
-    /// Returns the rotation in revolutions.
-    constexpr double revolutions() const { return angle().to(units::revolutions); }
-
-    /// Returns the rotation in gradians.
-    constexpr double gradians() const { return angle().to(units::gradians); }
-
-    /// Returns the cosine of the rotation.
-    constexpr double f_cos() const { return cos_; }
-
-    /// Returns the sine of the rotation.
-    constexpr double f_sin() const { return sin_; }
-
-    /// Returns the tangent of the rotation.
-    constexpr double f_tan() const { return sin_ / cos_; }
 
     /// Adds another rotation to this rotation
     constexpr Rotation2d operator+(Rotation2d other) const {
