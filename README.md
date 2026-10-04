@@ -44,7 +44,6 @@ Utilities (See [Wiki/Utilites](https://github.com/RIT-VEX-U/Core/wiki/3-%7C-Util
 - PID controller
 - FeedForward controller
 - Trapezoidal motion profile controller
-- Pure Pursuit
 - Generic auto program builder
 - Auto program UI selector
 - Mathematical classes (Vector2D, Moving Average)
