@@ -52,7 +52,7 @@ std::string DriveForwardCommand::toString() {
     default:
         break;
     }
-    returnStr.append(double_to_string(inches) + " inches at " + double_to_string(max_speed * 100) + "% speed");
+    returnStr.append(std::to_string(inches) + " inches at " + std::to_string(max_speed * 100) + "% speed");
     return returnStr;
 }
 
@@ -82,7 +82,7 @@ bool TurnDegreesCommand::run() { return drive_sys.turn_degrees(degrees, max_spee
 
 /// Returns a string describing the commands functionality
 std::string TurnDegreesCommand::toString() {
-    return "Turning " + double_to_string(degrees) + " degrees at " + double_to_string(max_speed * 100) + "% speed";
+    return "Turning " + std::to_string(degrees) + " degrees at " + std::to_string(max_speed * 100) + "% speed";
 }
 
 /// reset the drive system if we timeout
@@ -136,7 +136,7 @@ std::string DriveToPointCommand::toString() {
     std::string returnStr = "Driving ";
     returnStr.append((dir == vex::directionType::fwd) ? "forwards at " : "reverse at ");
     returnStr.append(
-      " to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed * 100) +
+      " to (" + std::to_string(x) + ", " + std::to_string(y) + ") at " + std::to_string(max_speed * 100) +
       "% speed"
     );
     return returnStr;
@@ -183,7 +183,7 @@ std::string TurnToPointCommand::toString() {
     std::string returnStr = "Turning ";
     returnStr.append((dir == vex::directionType::fwd) ? "towards " : "away from ");
     returnStr.append(
-      " to (" + double_to_string(x) + ", " + double_to_string(y) + ") at " + double_to_string(max_speed * 100) +
+      " to (" + std::to_string(x) + ", " + std::to_string(y) + ") at " + std::to_string(max_speed * 100) +
       "% speed"
     );
     return returnStr;
@@ -212,7 +212,7 @@ bool TurnToHeadingCommand::run() { return drive_sys.turn_to_heading(heading_deg,
 
 /// Returns a string describing the commands functionality
 std::string TurnToHeadingCommand::toString() {
-    return "Turning to heading: " + double_to_string(heading_deg) + " degrees at " + double_to_string(max_speed * 100) +
+    return "Turning to heading: " + std::to_string(heading_deg) + " degrees at " + std::to_string(max_speed * 100) +
            "% speed";
 }
 
@@ -255,8 +255,8 @@ OdomSetPosition::OdomSetPosition(OdometryBase &odom, const Pose2d &newpos) : odo
 
 /// Returns a string describing the commands functionality
 std::string OdomSetPosition::toString() {
-    return "Setting position to X: " + double_to_string(newpos.x()) + ", Y: " + double_to_string(newpos.y()) +
-           ", ROT: " + double_to_string(newpos.rotation().degrees());
+    return "Setting position to X: " + std::to_string(newpos.x()) + ", Y: " + std::to_string(newpos.y()) +
+           ", ROT: " + std::to_string(newpos.rotation().degrees());
 }
 
 bool OdomSetPosition::run() {
