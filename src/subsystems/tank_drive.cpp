@@ -9,19 +9,8 @@
 #include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
-<<<<<<< HEAD
-TankDrive::TankDrive(
-        vex::motor_group& left_motors, vex::motor_group& right_motors, robot_specs_t& config,
-        OdometryBase* odom
-)
-    : left_motors(left_motors),
-      right_motors(right_motors),
-      odometry(odom),
-      correction_pid(config.correction_pid),
-=======
 TankDrive::TankDrive(vex::motor_group &left_motors, vex::motor_group &right_motors, robot_specs_t &config, OdometryBase *odom)
     : left_motors(left_motors), right_motors(right_motors), odometry(odom), correction_pid(config.correction_feedback),
->>>>>>> origin
       config(config) {
     drive_default_feedback = config.drive_feedback;
     turn_default_feedback = config.turn_feedback;
@@ -473,7 +462,7 @@ bool TankDrive::drive_to_point(
     double dist_left = current_pos.translation().distance(end_pos.translation());
 
     int sign = 1;
-    /* 
+    /*
      * Make an imaginary perpendicualar line to that between the bot and the
      * point. If the point is behind that line, and the point is within the
      * robot's radius, use negatives for feedback control.
@@ -497,18 +486,13 @@ bool TankDrive::drive_to_point(
     }
 
     if (fabs(dist_left) < config.drive_correction_cutoff) {
-<<<<<<< HEAD
-        // When inside the robot's cutoff radius, report the distance to the point along the robot's
-        // forward axis, so we always "reach" the point without having to do a lateral translation
-=======
-        /* 
+        /*
          * When inside the robot's cutoff radius, report the distance to the point along the robot's forward axis,
          * so we always "reach" the point without having to do a lateral translation
          */
->>>>>>> origin
         dist_left *= fabs(cos(angle * PI / 180.0));
     }
-    /* 
+    /*
      * Get the heading difference between where we are and where we want to be
      * Optimize that heading so we don't turn clockwise all the time
      */
@@ -624,19 +608,11 @@ bool TankDrive::turn_to_heading(
         func_initialized = true;
     }
 
-<<<<<<< HEAD
-    // Get the difference between the new heading and the current, and decide
-    // whether to turn left or right.
-    double delta_heading = OdometryBase::smallest_angle(
-            odometry->get_position().rotation().degrees(), heading_deg
-    );
-=======
-    /*  
+    /*
      * Get the difference between the new heading and the current, and decide
      * whether to turn left or right.
      */
     double delta_heading = OdometryBase::smallest_angle(odometry->get_position().rotation().degrees(), heading_deg);
->>>>>>> origin
     feedback.update(-delta_heading);
 
     fflush(stdout);
@@ -744,18 +720,10 @@ bool TankDrive::pure_pursuit(
     }
 
     // Correct the robot's heading until the last cut-off
-<<<<<<< HEAD
-    if (!(is_last_point &&
-          robot_pose.translation().distance(last_point) < config.drive_correction_cutoff)) {
-        correction_pid.update(angle_diff);
-        correction = correction_pid.get();
-    } else  // Inside cut-off radius, ignore horizontal diffs
-=======
     if (!(is_last_point && robot_pose.translation().distance(last_point) < config.drive_correction_cutoff)) {
         correction_pid->update(angle_diff);
         correction = correction_pid->get();
     } else // Inside cut-off radius, ignore horizontal diffs
->>>>>>> origin
     {
         dist_remaining *= cos(angle_diff * (PI / 180.0));
     }
