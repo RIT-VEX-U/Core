@@ -3,7 +3,6 @@
 #include "core/utils/command_structure/drive_commands.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
-#include "core/utils/geometry.h"
 #include "core/utils/math_util.h"
 
 TankDrive::TankDrive(

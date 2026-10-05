@@ -14,7 +14,7 @@
 MotionController::MotionController(m_profile_cfg_t &config)
     : config(config), pid(config.pid.kp, config.pid.ki, config.pid.kd, config.pid.deadband,
     config.pid.on_target_time, config.pid.error_method),
-    ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
+    ff(config.ff), profile(0, 0, config.max_v, config.accel, config.accel) {}
 /**
  * @brief Initialize the motion profile for a new movement
  * This will also reset the PID and profile timers.
@@ -89,9 +89,9 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t
+FeedForward
 MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct, double duration) {
-    FeedForward::ff_config_t out = {};
+    FeedForward out = {0, 0, 0, 0};
 
     Pose2d start_pos = odometry.get_position();
 
