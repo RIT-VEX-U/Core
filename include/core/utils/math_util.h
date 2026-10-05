@@ -4,7 +4,6 @@
 #include "Eigen/Dense"
 #include "core/utils/math/geometry/translation2d.h"
 #include "math.h"
-#include "vex.h"
 
 /**
  * Constrain the input between a minimum and a maximum value

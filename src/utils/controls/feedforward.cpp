@@ -1,14 +1,17 @@
 #include "core/utils/controls/feedforward.h"
 
+#include "core/utils/math_util.h"
 
 /**
  * Creates a FeedForward object.
  * @param Ks Coefficient to overcome static friction: the point at which the motor *starts* to move.
  * @param Kv Veclocity coefficient: the power required to keep the mechanism in motion.
  * @param Ka kA - Acceleration coefficient: the power required to change the mechanism's speed.
- * @param Kg kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay
+ * @param Kg kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity
+ * and stay
  */
-FeedForward::FeedForward(const double &kS, const double &kV, const double &kA, const double &kG) : kS(kS), kV(kV), kA(kA), kG(kG) {}
+FeedForward::FeedForward(const double& kS, const double& kV, const double& kA, const double& kG)
+    : kS(kS), kV(kV), kA(kA), kG(kG) {}
 
 /**
  * @brief Perform the feedforward calculation

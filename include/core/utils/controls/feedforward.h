@@ -1,11 +1,5 @@
 #pragma once
 
-#include "core/utils/math_util.h"
-#include "core/utils/moving_average.h"
-#include "vex.h"
-#include <math.h>
-#include <vector>
-
 /**
  * FeedForward
  *
@@ -27,25 +21,27 @@
  * @date 6/13/2022
  */
 class FeedForward {
-  public:
-    
+   public:
     // Instance variables for the feedforward constants
-    double kS; /**< Coefficient to overcome static friction: the point at which the motor *starts* to move.*/
-    double kV; /**< Veclocity coefficient: the power required to keep the mechanism in motion. Multiplied by the
-                      requested velocity.*/
-    double kA; /**< kA - Acceleration coefficient: the power required to change the mechanism's speed. Multiplied by
-                      the requested acceleration.*/
-    double kG; /**< kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay
-                      at steady state.*/
-    
+    double kS; /**< Coefficient to overcome static friction: the point at which the motor *starts*
+                  to move.*/
+    double kV; /**< Veclocity coefficient: the power required to keep the mechanism in motion.
+                  Multiplied by the requested velocity.*/
+    double kA; /**< kA - Acceleration coefficient: the power required to change the mechanism's
+                  speed. Multiplied by the requested acceleration.*/
+    double kG; /**< kG - Gravity coefficient: only needed for lifts. The power required to overcome
+                  gravity and stay at steady state.*/
+
     /**
      * Creates a FeedForward object.
-     * @param Ks Coefficient to overcome static friction: the point at which the motor *starts* to move.
+     * @param Ks Coefficient to overcome static friction: the point at which the motor *starts* to
+     * move.
      * @param Kv Veclocity coefficient: the power required to keep the mechanism in motion.
      * @param Ka kA - Acceleration coefficient: the power required to change the mechanism's speed.
-     * @param Kg kG - Gravity coefficient: only needed for lifts. The power required to overcome gravity and stay
+     * @param Kg kG - Gravity coefficient: only needed for lifts. The power required to overcome
+     * gravity and stay
      */
-    FeedForward(const double &kS, const double &kV, const double &kA, const double &kG);
+    FeedForward(const double& kS, const double& kV, const double& kA, const double& kG);
 
     /**
      * @brief Perform the feedforward calculation
@@ -59,6 +55,5 @@ class FeedForward {
      */
     double calculate(double v, double a, double pid_ref = 0.0);
 
-  private:
-    
+   private:
 };
