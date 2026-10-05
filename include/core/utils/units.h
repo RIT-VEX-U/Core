@@ -448,6 +448,7 @@ NEW_UNIT_LITERAL(Length, miles, mi, ft * 5280)
 /// Tile is the measured length of a vex field tile in real life
 NEW_UNIT_LITERAL(Length, tiles, tile, in * 23.75)
 NEW_UNIT_LITERAL(Length, football_fields, football_field, yd * 100)
+NEW_UNIT_LITERAL(Length, big_macs, big_mac, 9 * cm)
 
 NEW_UNIT(Area, square_meters, m2, 0, 2, 0, 0, 0, 0, 0, 0)
 NEW_UNIT_LITERAL(Area, square_yards, yd2, yd * yd)
