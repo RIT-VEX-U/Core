@@ -5,7 +5,7 @@
 
 class PIDFF : public Feedback {
   public:
-    PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg);
+    PIDFF(PID pid, FeedForward ff);
 
     /**
      * Initialize the feedback controller for a movement
@@ -64,8 +64,6 @@ class PIDFF : public Feedback {
     PID pid;
 
   private:
-    FeedForward::ff_config_t &ff_cfg;
-
     FeedForward ff;
 
     double out;

@@ -1,7 +1,7 @@
 #include "core/utils/controls/pidff.h"
 #include "core/utils/math_util.h"
 
-PIDFF::PIDFF(PID::pid_config_t &pid_cfg, FeedForward::ff_config_t &ff_cfg) : pid(pid_cfg), ff_cfg(ff_cfg), ff(ff_cfg) {
+PIDFF::PIDFF(PID pid, FeedForward ff) : pid(pid), ff(ff) {
     out = 0;
     lower_lim = 0;
     upper_lim = 0;
@@ -26,7 +26,7 @@ void PIDFF::set_target(double set_pt) { pid.set_target(set_pt); }
  */
 double PIDFF::update(double val) {
     double pid_out = pid.update(val);
-    double ff_out = ff_cfg.kG + (ff_cfg.kS * sign(pid_out));
+    double ff_out = ff.kG + (ff.kS * sign(pid_out));
     out = pid_out + ff_out;
     if (lower_lim != upper_lim) {
         out = clamp(out, lower_lim, upper_lim);
