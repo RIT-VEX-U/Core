@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "core/utils/geometry.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
 #include "vex.h"

@@ -205,7 +205,7 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
     if (was_pressed) {
         double dx = x;
         double dy = y;
-        if (rect.contains(EVec<2>(dx, dy))) {
+        if (rect.contains(Point2d(dx, dy))) {
             double pct = (dx - rect.min.x() - margin) / (rect.dimensions().x() - 2 * margin);
             pct = clamp(pct, 0.0, 1.0);
             value = (low + pct * (high - low));
@@ -247,7 +247,7 @@ void SliderWidget::draw(
 }
 
 bool ButtonWidget::update(bool was_pressed, int x, int y) {
-    if (was_pressed && !was_pressed_last && rect.contains({(double)x, (double)y})) {
+    if (was_pressed && !was_pressed_last && rect.contains({x, y})) {
         onpress();
         was_pressed_last = was_pressed;
         return true;
@@ -320,21 +320,21 @@ InitializerPage* InitializerPage::Next() {
 }
 
 const std::array<Rect, 8> InitializerPage::buttons = {
-    Rect{EVec<2>(48,8), EVec<2>(236,58)},
-    Rect{EVec<2>(244,8), EVec<2>(432,58)},
-    Rect{EVec<2>(48,66), EVec<2>(236,116)},
-    Rect{EVec<2>(244,66), EVec<2>(432,116)},
-    Rect{EVec<2>(48,124), EVec<2>(236,174)},
-    Rect{EVec<2>(244,124), EVec<2>(432,174)},
-    Rect{EVec<2>(48,182), EVec<2>(236,232)},
-    Rect{EVec<2>(244,182), EVec<2>(432,232)},
+    Rect{Point2d(48,8), Point2d(236,58)},
+    Rect{Point2d(244,8), Point2d(432,58)},
+    Rect{Point2d(48,66), Point2d(236,116)},
+    Rect{Point2d(244,66), Point2d(432,116)},
+    Rect{Point2d(48,124), Point2d(236,174)},
+    Rect{Point2d(244,124), Point2d(432,174)},
+    Rect{Point2d(48,182), Point2d(236,232)},
+    Rect{Point2d(244,182), Point2d(432,232)},
 };
 
 void InitializerPage::update(bool was_pressed, int x, int y) {
     //update uses the InitializerPage's selection_buffer to avoid setting the buffer multiple times
     if(this->selection_buffer != Selector::NO_SELECTION_INDEX || !was_pressed) return;
 
-    const EVec<2> pos(x,y);
+    const Point2d pos(x,y);
     for(int i = 0; i < 8 && starting_index + i < this->initializer.initialization_count(); i++) {
         if(buttons.at(i).contains(pos)) {
             this->selection_buffer = starting_index + i;
