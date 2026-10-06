@@ -7,7 +7,10 @@
 
 namespace PurePursuit {
 
-/// Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
+/**
+ * Wrapper for a vector of points, checking if any of the points are too close for pure pursuit
+ * Distance values assume inches.
+ */
 class Path {
    public:
     /**
@@ -52,9 +55,13 @@ struct hermite_point {
     double dir;
     double mag;
 
-    Translation2d getPoint() const { return Translation2d(x, y); }
+    Translation2d getPoint() const {
+        return Translation2d(units::Length(x, units::in), units::Length(y, units::in));
+    }
 
-    Translation2d getTangent() const { return Translation2d(mag, Rotation2d(dir)); }
+    Translation2d getTangent() const {
+        return Translation2d(units::Length(mag, units::in), Rotation2d(dir));
+    }
 };
 
 /**

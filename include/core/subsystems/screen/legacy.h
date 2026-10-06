@@ -8,7 +8,7 @@
 #include "core/utils/graph_drawer.h"
 #include "core/utils/initializer.h"
 #include "core/utils/math/geometry/pose2d.h"
-#include "core/utils/math/geometry/translation2d.h"
+#include "core/utils/math/geometry/point2d.h"
 #include "core/utils/initializer.h"
 
 #include <cassert>
@@ -20,21 +20,20 @@ namespace LegacyScreen {
 
 ///  Describes a Rectangle with a minimum and maximum point
 struct Rect {
-    Translation2d min;
-    Translation2d max;
-    static Rect from_min_and_size(Translation2d min, Translation2d size) {
-        return {min, min + size};
-    }
-    Translation2d dimensions() const { return max - min; }
-    Translation2d center() const { return (min + max) / 2; }
+    Point2d min;
+    Point2d max;
+    static Rect from_min_and_size(Point2d min, Point2d size) { return {min, min + size}; }
+    Point2d dimensions() const { return max - min; }
+    Point2d center() const { return Point2d{(min + max).x() / 2, (min + max).y() / 2}; }
     double width() const { return max.x() - min.x(); }
     double height() const { return max.y() - min.y(); }
-    bool contains(Translation2d p) const {
+    bool contains(Point2d p) const {
         bool xin = p.x() > min.x() && p.x() < max.x();
         bool yin = p.y() > min.y() && p.y() < max.y();
         return xin && yin;
     }
 };
+
 /// @brief Widget that does something when you tap it. The function is only called once when you
 /// first tap it
 class ButtonWidget {
