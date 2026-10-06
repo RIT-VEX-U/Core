@@ -62,33 +62,33 @@ class Rotation2d {
     constexpr Rotation2d(units::Length x, units::Length y)
         : Rotation2d(x.to(units::inches), y.to(units::inches)) {}
 
-    /// @returns an Angle equal to this rotation.
+    /// Gets an Angle equal to this rotation.
     constexpr units::Angle angle() const {
         return units::Angle(cevalm::atan2(sin_, cos_), units::radians);
     }
 
-    /// @returns the angle in the supplied unit.
+    /// Gets the angle in the supplied unit.
     constexpr double angle(units::Angle unit) const { return angle().to(unit); }
 
-    /// @returns the rotation in radians.
+    /// Gets the rotation in radians.
     constexpr double radians() const { return angle().to(units::radians); }
 
-    /// @returns the rotation in degrees.
+    /// Gets the rotation in degrees.
     constexpr double degrees() const { return angle().to(units::degrees); }
 
-    /// @returns the rotation in revolutions.
+    /// Gets the rotation in revolutions.
     constexpr double revolutions() const { return angle().to(units::revolutions); }
 
-    /// @returns the rotation in gradians.
+    /// Gets the rotation in gradians.
     constexpr double gradians() const { return angle().to(units::gradians); }
 
-    /// @returns the cosine of the rotation.
+    /// Gets the cosine of the rotation.
     constexpr double f_cos() const { return cos_; }
 
-    /// @returns the sine of the rotation.
+    /// Gets the sine of the rotation.
     constexpr double f_sin() const { return sin_; }
 
-    /// @returns the tangent of the rotation.
+    /// Gets the tangent of the rotation.
     constexpr double f_tan() const { return sin_ / cos_; }
 
     /// Inverts this rotation (conjugate).
@@ -97,31 +97,31 @@ class Rotation2d {
     /// Flips this rotation across the origin.
     constexpr Rotation2d opposite() const { return Rotation2d(-cos_, -sin_); }
 
-    /// @returns the rotation matrix corresponding to this rotation.
+    /// Gets the rotation matrix corresponding to this rotation.
     constexpr EMat<2, 2> rotation_matrix() const { return EMat<2, 2>{{cos_, -sin_}, {sin_, cos_}}; }
 
-    /// @returns the value of this rotation in radians from [-pi, pi].
+    /// Gets the value of this rotation in radians from [-pi, pi].
     constexpr double wrapped_radians_180() const { return wrap_radians_180(radians()); }
 
-    /// @returns the value of this rotation in degrees from [-180, 180].
+    /// Gets the value of this rotation in degrees from [-180, 180].
     constexpr double wrapped_degrees_180() const { return wrap_degrees_180(degrees()); }
 
-    /// @returns the value of this rotation in revolutions from [-0.5, 0.5].
+    /// Gets the value of this rotation in revolutions from [-0.5, 0.5].
     constexpr double wrapped_revolutions_180() const { return wrap_revolutions_180(revolutions()); }
 
-    /// @returns the value of this rotation in gradians from [-200, 200].
+    /// Gets the value of this rotation in gradians from [-200, 200].
     constexpr double wrapped_gradians_180() const { return wrap_gradians_180(gradians()); }
 
-    /// @returns the value of this rotation in radians from [0, 2pi).
+    /// Gets the value of this rotation in radians from [0, 2pi).
     constexpr double wrapped_radians_360() const { return wrap_radians_360(radians()); }
 
-    /// @returns the value of this rotation in degrees from [0, 360).
+    /// Gets the value of this rotation in degrees from [0, 360).
     constexpr double wrapped_degrees_360() const { return wrap_degrees_360(degrees()); }
 
-    /// @returns the value of this rotation in revolutions from [0, 1).
+    /// Gets the value of this rotation in revolutions from [0, 1).
     constexpr double wrapped_revolutions_360() const { return wrap_revolutions_360(revolutions()); }
 
-    /// @returns the value of this rotation in gradians from [0, 400).
+    /// Gets the value of this rotation in gradians from [0, 400).
     constexpr double wrapped_gradians_360() const { return wrap_gradians_360(gradians()); }
 
     /// Adds another rotation to this rotation

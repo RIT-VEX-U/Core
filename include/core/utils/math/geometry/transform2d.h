@@ -76,40 +76,40 @@ class Transform2d {
         : translation_({transform_vector(0), transform_vector(1)}, unit),
           rotation_(units::Angle(transform_vector(2), angle_unit)) {}
 
-    /// @returns the x component
+    /// Gets the x component
     constexpr units::Length x() const { return translation_.x(); }
 
-    /// @returns x in the supplied length unit.
+    /// Gets x in the supplied length unit.
     constexpr double x(units::Length unit) const { return translation_.x(unit); }
 
     /// Sets the x component.
     constexpr void set_x(units::Length val) { translation_.set_x(val); }
 
-    /// @returns the y component
+    /// Gets the y component
     constexpr units::Length y() const { return translation_.y(); }
 
-    /// @returns y in the supplied length unit.
+    /// Gets y in the supplied length unit.
     constexpr double y(units::Length unit) const { return translation_.y(unit); }
 
     /// Sets the y component.
     constexpr void set_y(units::Length val) { translation_.set_y(val); }
 
-    /// @returns the translation.
+    /// Gets the translation.
     constexpr Translation2d translation() const { return translation_; }
 
     /// Sets the translation.
     constexpr void set_translation(Translation2d val) { translation_ = val; }
 
-    /// @returns the rotation.
+    /// Gets the rotation.
     constexpr Rotation2d rotation() const { return rotation_; }
 
     /// Sets the rotation.
     constexpr void set_rotation(Rotation2d val) { rotation_ = val; }
 
-    /// @returns the rotation as an Angle
+    /// Gets the rotation as an Angle
     constexpr units::Angle angle() const { return rotation_.angle(); }
 
-    /// @returns the angle in the supplied unit.
+    /// Gets the angle in the supplied unit.
     constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
 
     /// Sets the rotation as an angle.

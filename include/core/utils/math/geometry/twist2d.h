@@ -52,28 +52,28 @@ class Twist2d {
           dy_{twist_vector[1], length_unit},
           dtheta_{twist_vector[2], angle_unit} {}
 
-    /// @returns the x displacement.
+    /// Gets the x displacement.
     constexpr units::Length dx() const { return dx_; }
 
-    /// @returns the x displacement in the supplied unit.
+    /// Gets the x displacement in the supplied unit.
     constexpr double dx(units::Length unit) const { return dx_.to(unit); }
 
     /// Sets the x displacement.
     constexpr void set_dx(units::Length val) { dx_ = val; }
 
-    /// @returns the y displacement.
+    /// Gets the y displacement.
     constexpr units::Length dy() const { return dy_; }
 
-    /// @returns the y displacement in the supplied unit.
+    /// Gets the y displacement in the supplied unit.
     constexpr double dy(units::Length unit) const { return dy_.to(unit); }
 
     /// Sets the y displacement.
     constexpr void set_dy(units::Length val) { dy_ = val; }
 
-    /// @returns the Angle displacement
+    /// Gets the Angle displacement
     constexpr units::Angle dtheta() const { return dtheta_; }
 
-    /// @returns the angle displacement in the supplied unit.
+    /// Gets the angle displacement in the supplied unit.
     constexpr double dtheta(units::Angle unit) const { return dtheta_.to(unit); }
 
     /// Sets the angle displacement.

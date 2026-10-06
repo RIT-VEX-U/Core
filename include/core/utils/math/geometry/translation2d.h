@@ -61,25 +61,25 @@ class LinearVector2d {
     constexpr LinearVector2d(Eigen::Vector2d vector, Q unit)
         : x_{vector[0], unit}, y_{vector[1], unit} {}
 
-    /// @returns the x component.
+    /// Gets the x component.
     constexpr Q x() const { return x_; }
 
-    /// @returns x in the supplied unit.
+    /// Gets x in the supplied unit.
     constexpr double x(Q unit) const { return x_.to(unit); }
 
     /// Sets the x component.
     constexpr void set_x(Q val) { x_ = val; }
 
-    /// @returns the y component.
+    /// Gets the y component.
     constexpr Q y() const { return y_; }
 
-    /// @returns y in the supplied unit.
+    /// Gets y in the supplied unit.
     constexpr double y(Q unit) const { return y_.to(unit); }
 
     /// Sets the y component.
     constexpr void set_y(Q val) { y_ = val; }
 
-    /// @returns the angle of the vector from the x axis.
+    /// Gets the angle of the vector from the x axis.
     constexpr Rotation2d theta() const { return Rotation2d(x_.internal(), y_.internal()); }
 
     /**
@@ -90,7 +90,7 @@ class LinearVector2d {
      */
     constexpr Eigen::Vector2d as_vector(Q unit) const { return EVec<2>{x_.to(unit), y_.to(unit)}; }
 
-    /// @returns the norm of the vector.
+    /// Gets the norm of the vector.
     constexpr Q norm() const { return units::hypot(x_, y_); }
 
     /**
@@ -104,7 +104,7 @@ class LinearVector2d {
         return LinearVector2d(magnitude, theta());
     }
 
-    /// @returns the distance between two vectors.
+    /// Gets the distance between two vectors.
     constexpr Q distance(LinearVector2d other) const {
         return units::hypot(x_ - other.x_, y_ - other.y_);
     }

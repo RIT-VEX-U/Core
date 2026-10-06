@@ -74,62 +74,62 @@ class Pose2d {
           },
           rotation_{units::Angle(pose_vector[2], angle_unit)} {}
 
-    /// @returns the x value of the translation.
+    /// Gets the x value of the translation.
     constexpr units::Length x() const { return translation_.x(); }
 
-    /// @returns x in the supplied length unit.
+    /// Gets x in the supplied length unit.
     constexpr double x(units::Length unit) const { return translation_.x(unit); }
 
     /// Sets the x value of the translation.
     constexpr void set_x(units::Length val) { translation_.set_x(val); }
 
-    /// @returns the y value of the translation.
+    /// Gets the y value of the translation.
     constexpr units::Length y() const { return translation_.y(); }
 
-    /// @returns y in the supplied length unit.
+    /// Gets y in the supplied length unit.
     constexpr double y(units::Length unit) const { return translation_.y(unit); }
 
     /// Sets the y value of the translation.
     constexpr void set_y(units::Length val) { translation_.set_y(val); }
 
-    /// @returns the translation.
+    /// Gets the translation.
     constexpr Translation2d translation() const { return translation_; }
 
     /// Sets the translation.
     constexpr void set_translation(Translation2d val) { translation_ = val; }
 
-    /// @returns the rotation.
+    /// Gets the rotation.
     constexpr Rotation2d rotation() const { return rotation_; }
 
     /// Sets the rotation.
     constexpr void set_rotation(Rotation2d val) { rotation_ = val; }
 
-    /// @returns the heading as an angle.
+    /// Gets the heading as an angle.
     constexpr units::Angle angle() const { return rotation_.angle(); }
 
-    /// @returns the angle in the supplied unit.
+    /// Gets the angle in the supplied unit.
     constexpr double angle(units::Angle unit) const { return rotation_.angle(unit); }
 
     /// Sets the rotation as an angle.
     constexpr void set_angle(units::Angle val) { rotation_ = Rotation2d(val); }
 
-    /// @returns [x, y, theta] in the supplied units. Angles default to radians.
+    /// Gets [x, y, theta] in the supplied units. Angles default to radians.
     EVec<3> as_vector(units::Length length_unit, units::Angle angle_unit = units::radians) const {
         return {translation_.x().to(length_unit), translation_.y().to(length_unit),
                 rotation_.angle().to(angle_unit)};
     }
 
-    /// @returns the distance from the pose to another point.
+    /// Calculates the distance from the pose to another point.
     constexpr units::Length distance(Translation2d point) const {
         return translation_.distance(point);
     }
 
-    /// @returns the distance from this to another pose, ignoring rotation.
+    /// Calculates the distance from this to another pose, ignoring rotation.
     constexpr units::Length distance(const Pose2d& other) const {
         return distance(other.translation_);
     }
 
-    /// @returns the bearing from this to another point in the world frame.
+    /// Calculates the bearing from this to another point in the world frame.
     constexpr Rotation2d bearing_to(Translation2d point) const {
         const auto delta = point - translation_;
         if (delta.x().internal() == 0 && delta.y().internal() == 0) {
@@ -138,7 +138,7 @@ class Pose2d {
         return delta.theta();
     }
 
-    /// @returns the smallest angle to another point in the local frame.
+    /// Calculates the smallest angle to another point in the local frame.
     constexpr units::Angle angle_to(Translation2d point) const {
         return (bearing_to(point) - rotation_).angle();
     }

@@ -26,23 +26,23 @@ class Point2d {
     constexpr Point2d(Eigen::Vector2i vector)
      : x_(vector(0)), y_(vector(1)) {}
 
-    /// @returns the X coordinate of the point.
+    /// Gets the X coordinate of the point.
     constexpr int x() const { return x_; }
 
     /// Sets the x coordinate.
     constexpr void set_x(int val) { x_ = val; }
 
-    /// @returns the Y coordinate of the point.
+    /// Gets the Y coordinate of the point.
     constexpr int y() const { return y_; }
 
     /// Sets the y coordinate.
     constexpr void set_y(int val) { y_ = val; }
 
-    /// @returns the point as an Eigen::Vector2i.
+    /// Gets the point as an Eigen::Vector2i.
     constexpr Eigen::Vector2i as_vector() const { return Eigen::Vector2i(x_, y_); }
 
     /**
-     * Returns a vector in the canonical basis corresponding to the point in the basis of X and Y
+     * Gets a vector in the canonical basis corresponding to the point in the basis of X and Y
      * @param X The vector corresponding to <1, 0> in the basis of X and Y
      * @param Y The vector corresponding to <0, 1> in the basis of X and Y
      * @returns The point as a linear combination of the X and Y vectors
@@ -54,18 +54,18 @@ class Point2d {
         );
     }
 
-    /// @returns the manhattan distance between two points.
+    /// Calculates the manhattan distance between two points.
     constexpr int manhattan_distance(Point2d other) const {
         return cevalm::abs(x_ - other.x_) + cevalm::abs(y_ - other.y_);
     }
 
-    /// @returns the manhattan distance away from the origin.
+    /// Calculates the manhattan distance away from the origin.
     constexpr int manhattan_norm() const { return cevalm::abs(x_) + cevalm::abs(y_); }
 
-    /// @returns the distance (as a continuous number) between two points.
+    /// Calculates the distance (as a continuous number) between two points.
     constexpr double distance(Point2d other) const { return cevalm::hypot(x_ - other.x_, y_ - other.y_);  }
 
-    /// @returns the distance (as a continuous number) away from the origin.
+    /// Calculates the distance (as a continuous number) away from the origin.
     constexpr double norm() const { return cevalm::hypot(x_, y_); }
 
     /**
