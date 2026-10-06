@@ -34,8 +34,8 @@ class MotionController : public Feedback {
     typedef struct {
         double max_v;                    ///< the maximum velocity the robot can drive
         double accel;                    ///< the most acceleration the robot can do
-        PID::pid_config_t pid_cfg;       ///< configuration parameters for the internal PID controller
-        FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal
+        PID pid;
+        FeedForward ff; ///< configuration parameters for the internal
     } m_profile_cfg_t;
 
     /**
@@ -104,7 +104,7 @@ class MotionController : public Feedback {
      * @param duration Amount of time the robot should be moving for the test
      * @return A tuned feedforward object
      */
-    static FeedForward::ff_config_t
+    static FeedForward
     tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct = 0.6, double duration = 2);
 
   private:

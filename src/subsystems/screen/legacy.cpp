@@ -130,8 +130,8 @@ void OdometryPage::draw(
         path_index %= path_len;
     }
 
-    auto to_px = [](const Translation2d p) -> Translation2d {
-        return {(double)in_to_px(p.x()) + 200, (double)in_to_px(-p.y()) + 240};
+    auto to_px = [](const Translation2d p) -> EVec<2> {
+        return {(double)in_to_px(p.x(units::in)) + 200, (double)in_to_px(-p.y(units::in)) + 240};
     };
 
     auto draw_line = [to_px, &scr](const Translation2d from, const Translation2d to) {
@@ -140,7 +140,7 @@ void OdometryPage::draw(
 
     Translation2d pos = pose.translation();
     fflush(stdout);
-    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x(), pose.y());
+    scr.printAt(45, 30, "(%.2f, %.2f)", pose.x(units::in), pose.y(units::in));
     scr.printAt(45, 50, "%.2f deg", pose.rotation().degrees());
 
     double speed = odom.get_speed();
@@ -155,7 +155,7 @@ void OdometryPage::draw(
 
     scr.drawImageFromBuffer(buf, 200, 0, buf_size);
 
-    Translation2d pos_px = to_px(pos);
+    EVec<2> pos_px = to_px(pos);
     scr.drawCircle((int)pos_px.x(), (int)pos_px.y(), 3, vex::color::white);
 
     if (do_trail) {
@@ -170,20 +170,21 @@ void OdometryPage::draw(
         }
     }
     scr.setPenColor(vex::color::white);
-    const Translation2d to_left(-robot_width / 2.0, 0);
-    const Translation2d to_front(0.0, robot_height / 2.0);
+    const Translation2d to_left(units::Length(-robot_width / 2.0, units::in), units::Length{});
+    const Translation2d to_front(units::Length{}, units::Length(robot_height / 2.0, units::in));
 
-    Translation2d front_left(-robot_width / 2, robot_width / 2);
-    Translation2d front_right(robot_width / 2, robot_width / 2);
-    Translation2d back_left(-robot_width / 2, -robot_width / 2);
-    Translation2d back_right(robot_width / 2, -robot_width / 2);
+    Translation2d front_left(units::Length(-robot_width / 2, units::in), units::Length(robot_width / 2, units::in));
+    Translation2d front_right(units::Length(robot_width / 2, units::in), units::Length(robot_width / 2, units::in));
+    Translation2d back_left(units::Length(-robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
+    Translation2d back_right(units::Length(robot_width / 2, units::in), units::Length(-robot_width / 2, units::in));
 
-    front_left = pos + front_left.rotate_by(pose.rotation().degrees() - 90);
-    front_right = pos + front_right.rotate_by(pose.rotation().degrees() - 90);
-    back_left = pos + back_left.rotate_by(pose.rotation().degrees() - 90);
-    back_right = pos + back_right.rotate_by(pose.rotation().degrees() - 90);
+    const Rotation2d drawing_rotation = pose.rotation() - Rotation2d(units::Angle(90, units::deg));
+    front_left = pos + front_left.rotate_by(drawing_rotation);
+    front_right = pos + front_right.rotate_by(drawing_rotation);
+    back_left = pos + back_left.rotate_by(drawing_rotation);
+    back_right = pos + back_right.rotate_by(drawing_rotation);
 
-    const Translation2d front = to_front.rotate_by(pose.rotation().degrees() - 90);
+    const Translation2d front = to_front.rotate_by(drawing_rotation);
 
     draw_line(front_left, front_right);
     draw_line(front_right, back_right);
@@ -204,7 +205,7 @@ bool SliderWidget::update(bool was_pressed, int x, int y) {
     if (was_pressed) {
         double dx = x;
         double dy = y;
-        if (rect.contains(Translation2d(dx, dy))) {
+        if (rect.contains(Point2d(dx, dy))) {
             double pct = (dx - rect.min.x() - margin) / (rect.dimensions().x() - 2 * margin);
             pct = clamp(pct, 0.0, 1.0);
             value = (low + pct * (high - low));
@@ -246,7 +247,7 @@ void SliderWidget::draw(
 }
 
 bool ButtonWidget::update(bool was_pressed, int x, int y) {
-    if (was_pressed && !was_pressed_last && rect.contains({(double)x, (double)y})) {
+    if (was_pressed && !was_pressed_last && rect.contains({x, y})) {
         onpress();
         was_pressed_last = was_pressed;
         return true;
@@ -267,10 +268,10 @@ void ButtonWidget::draw(
 }
 
 PIDPage::PIDPage(PID &pid, std::string name, std::function<void(void)> onchange)
-    : cfg(pid.config), pid(pid), name(name), onchange(onchange),
-      p_slider(cfg.p, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
-      i_slider(cfg.i, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
-      d_slider(cfg.d, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
+    : pid(pid), name(name), onchange(onchange),
+      p_slider(pid.kp, 0.0, 0.5, Rect{{60, 20}, {210, 60}}, "P"),
+      i_slider(pid.ki, 0.0, 0.05, Rect{{60, 80}, {180, 120}}, "I"),
+      d_slider(pid.kd, 0.0, 0.05, Rect{{60, 140}, {180, 180}}, "D"),
       zero_i([this]() { zero_i_f(); }, Rect{{180, 80}, {220, 120}}, "0"),
       zero_d([this]() { zero_d_f(); }, Rect{{180, 140}, {220, 180}}, "0"), graph(40, 0, 0, {vex::red, vex::green}, 2) {}
 
@@ -319,21 +320,21 @@ InitializerPage* InitializerPage::Next() {
 }
 
 const std::array<Rect, 8> InitializerPage::buttons = {
-    Rect{Translation2d(48,8), Translation2d(236,58)},
-    Rect{Translation2d(244,8), Translation2d(432,58)},
-    Rect{Translation2d(48,66), Translation2d(236,116)},
-    Rect{Translation2d(244,66), Translation2d(432,116)},
-    Rect{Translation2d(48,124), Translation2d(236,174)},
-    Rect{Translation2d(244,124), Translation2d(432,174)},
-    Rect{Translation2d(48,182), Translation2d(236,232)},
-    Rect{Translation2d(244,182), Translation2d(432,232)},
+    Rect{Point2d(48,8), Point2d(236,58)},
+    Rect{Point2d(244,8), Point2d(432,58)},
+    Rect{Point2d(48,66), Point2d(236,116)},
+    Rect{Point2d(244,66), Point2d(432,116)},
+    Rect{Point2d(48,124), Point2d(236,174)},
+    Rect{Point2d(244,124), Point2d(432,174)},
+    Rect{Point2d(48,182), Point2d(236,232)},
+    Rect{Point2d(244,182), Point2d(432,232)},
 };
 
 void InitializerPage::update(bool was_pressed, int x, int y) {
     //update uses the InitializerPage's selection_buffer to avoid setting the buffer multiple times
     if(this->selection_buffer != Selector::NO_SELECTION_INDEX || !was_pressed) return;
 
-    const Translation2d pos(x,y);
+    const Point2d pos(x,y);
     for(int i = 0; i < 8 && starting_index + i < this->initializer.initialization_count(); i++) {
         if(buttons.at(i).contains(pos)) {
             this->selection_buffer = starting_index + i;
@@ -376,7 +377,7 @@ void InitializerPage::draw(vex::brain::lcd &scr, bool first_draw [[maybe_unused]
             scr.drawRectangle(40, 0, 400, 240);
 
             scr.printAt(45, 20, false, "ERROR: Unable to run selected");
-            scr.printAt(45, 45, false, "       initialization%s", 
+            scr.printAt(45, 45, false, "       initialization%s",
                 (this->initializer.selected_index() == DEFAULT_CANCELATION_INDEX) ? " (likely canceled)" : "");
             scr.printAt(45, 95, false, "DEBUG LOG:");
             scr.printAt(45, 120, false, "       selection = %u", this->initializer.selected_index());

@@ -8,12 +8,13 @@
  * @param config The definition of how the robot is able to move
  *    max_v Maximum velocity the movement is capable of
  *    accel Acceleration / deceleration of the movement
- *    pid_cfg Definitions of kP, kI, and kD
+ *    pid A PID to pass to the object.
  *    ff_cfg Definitions of kS, kV, and kA
  */
 MotionController::MotionController(m_profile_cfg_t &config)
-    : config(config), pid(config.pid_cfg), ff(config.ff_cfg), profile(0, 0, config.max_v, config.accel, config.accel) {}
-
+    : config(config), pid(config.pid.kp, config.pid.ki, config.pid.kd, config.pid.deadband,
+    config.pid.on_target_time, config.pid.error_method),
+    ff(config.ff), profile(0, 0, config.max_v, config.accel, config.accel) {}
 /**
  * @brief Initialize the motion profile for a new movement
  * This will also reset the PID and profile timers.
@@ -88,16 +89,16 @@ motion_t MotionController::get_motion() const { return cur_motion; }
  * @param duration Amount of time the robot should be moving for the test
  * @return A tuned feedforward object
  */
-FeedForward::ff_config_t
+FeedForward
 MotionController::tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct, double duration) {
-    FeedForward::ff_config_t out = {};
+    FeedForward out = {0, 0, 0, 0};
 
     Pose2d start_pos = odometry.get_position();
 
     // ========== kS Tuning =========
     // Start at 0 and slowly increase the power until the robot starts moving
     double power = 0;
-    while (start_pos.translation().distance(odometry.get_position().translation()) < 0.05) {
+    while (start_pos.translation().distance(odometry.get_position().translation()) < units::Length(0.05, units::in)) {
         drive.drive_tank(power, power, 1);
         power += 0.001;
         vexDelay(100);
