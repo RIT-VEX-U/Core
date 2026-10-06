@@ -16,7 +16,7 @@
  *      - set_position
  */
 
-#include "core/utils/command_structure/drive_commands.h"
+#include "core/competition/command_structure/drive_commands.h"
 
 // ==== DRIVING ====
 

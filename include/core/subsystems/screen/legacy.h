@@ -5,7 +5,7 @@
 #include "core/utils/graph_drawer.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/translation2d.h"
-#include "core/utils/initializer.h"
+#include "core/competition/initializer.h"
 #include "vex.h"
 #include <cassert>
 #include <functional>

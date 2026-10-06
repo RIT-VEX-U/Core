@@ -7,7 +7,7 @@
 #include <Eigen/Dense>
 
 #include "core/robot_specs.h"
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 #include "core/utils/geometry.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "vex.h"
