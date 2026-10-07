@@ -11,7 +11,7 @@
 #include <queue>
 #include <vector>
 
-#include "vex.h"
+#include "vex/vex.h"
 
 /**
  * A Condition is a function that returns true or false
@@ -202,15 +202,7 @@ class Branch : public AutoCommand {
  * @details will simply let it go and never look back
  * @note THIS HAS A VERY NICHE USE CASE. THINK ABOUT IF YOU REALLY NEED IT
  */
-class Async : public AutoCommand {
-   public:
-    Async(AutoCommand* cmd) : cmd(cmd) {}
-    bool run() override;
-    std::string toString() override;
-
-   private:
-    AutoCommand* cmd = nullptr;
-};
+class Async : public AutoCommand {};
 
 class RepeatUntil : public AutoCommand {
    public:
