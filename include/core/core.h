@@ -3,20 +3,6 @@
 // Base package
 #include "core/robot_specs.h"
 
-// Math package
-#include "core/math/estimator/kalman_filter.h"
-#include "core/math/estimator/unscented_kalman_filter.h"
-#include "core/math/geometry/point2d.h"
-#include "core/math/geometry/pose2d.h"
-#include "core/math/geometry/rotation2d.h"
-#include "core/math/geometry/transform2d.h"
-#include "core/math/geometry/translation2d.h"
-#include "core/math/geometry/twist2d.h"
-#include "core/math/numerical/numerical_integration.h"
-#include "core/math/systems/dare_solver.h"
-#include "core/math/systems/discretization.h"
-#include "core/math/systems/linear_system.h"
-
 // Competition package
 #include "core/competition/command_structure/auto_command.h"
 #include "core/competition/command_structure/command_controller.h"
@@ -33,6 +19,20 @@
 #include "core/device/vdb/types.hpp"
 #include "core/device/vdb/visitor.hpp"
 #include "core/device/wrapper_device.hpp"
+
+// Math package
+#include "core/math/estimator/kalman_filter.h"
+#include "core/math/estimator/unscented_kalman_filter.h"
+#include "core/math/geometry/point2d.h"
+#include "core/math/geometry/pose2d.h"
+#include "core/math/geometry/rotation2d.h"
+#include "core/math/geometry/transform2d.h"
+#include "core/math/geometry/translation2d.h"
+#include "core/math/geometry/twist2d.h"
+#include "core/math/numerical/numerical_integration.h"
+#include "core/math/systems/dare_solver.h"
+#include "core/math/systems/discretization.h"
+#include "core/math/systems/linear_system.h"
 
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
