@@ -123,9 +123,9 @@ double OdometryBase::get_angular_accel_deg() {
 /**
  * Calculates the current linear velocity vector of the bot
  *
- * @return the current linear velocity vector as a Translation2d
+ * @return the current linear velocity vector as a Velocity2d
  */
-Translation2d OdometryBase::get_lin_velocity(){
+Velocity2d OdometryBase::get_lin_velocity(){
     mut.lock();
     double current_speed = speed;
     double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
@@ -133,15 +133,16 @@ Translation2d OdometryBase::get_lin_velocity(){
 
     double velocity_x = current_speed * std::cos(heading_rad);
     double velocity_y = current_speed * std::sin(heading_rad);
-    return {velocity_x, velocity_y};
+    Velocity2d velocity = {units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps)};
+    return velocity;
 }
 
 /**
  * Calculates the current linear acceleration vector of the bot
  *
- * @return the current linear acceleration vector as a Translation2d
+ * @return the current linear acceleration vector as a Acceleration2d
  */
-Translation2d OdometryBase::get_lin_accel(){
+Acceleration2d OdometryBase::get_lin_accel(){
     mut.lock();
     double current_accel = accel;
     double heading = current_pos.rotation().degrees() * (M_PI)/180;
@@ -149,7 +150,9 @@ Translation2d OdometryBase::get_lin_accel(){
 
     double accel_x = current_accel * std::cos(heading);
     double accel_y = current_accel * std::sin(heading);
-    return {accel_x,accel_y};
+    
+    Acceleration2d accel = {units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2)};
+    return accel;
 }
 
 /**
@@ -161,9 +164,9 @@ Pose2d OdometryBase::get_rot_velocity(){
     // Obtatining the current angular speed and translation
     mut.lock();
     double current_ang_speed = ang_speed_deg;
-    Translation2d translation = get_lin_velocity();
+    Velocity2d translation = get_lin_velocity();
     mut.unlock();
-
+    Pose2d rot_velocity = {translation, current_ang_speed};
     return {translation, current_ang_speed};
 }
 
