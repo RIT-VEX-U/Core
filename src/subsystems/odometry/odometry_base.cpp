@@ -164,10 +164,13 @@ Pose2d OdometryBase::get_rot_velocity(){
     // Obtatining the current angular speed and translation
     mut.lock();
     double current_ang_speed = ang_speed_deg;
-    Velocity2d translation = get_lin_velocity();
+    double current_speed = speed;
+    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
+    double velocity_x = current_speed * std::cos(heading_rad);
+    double velocity_y = current_speed * std::sin(heading_rad);
     mut.unlock();
-    Pose2d rot_velocity = {translation, current_ang_speed};
-    return {translation, current_ang_speed};
+    Pose2d rot_velocity = {units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), current_ang_speed};
+    return rot_velocity;
 }
 
 /**
@@ -178,7 +181,11 @@ Pose2d OdometryBase::get_rot_velocity(){
 Pose2d OdometryBase::get_rot_accel(){
     mut.lock();
     double current_ang_accel = ang_accel_deg;
+    double current_accel = accel;
+    double heading = current_pos.rotation().degrees() * (M_PI)/180;
+    double accel_x = current_accel * std::cos(heading);
+    double accel_y = current_accel * std::sin(heading);
     mut.unlock();
-    Translation2d translation = get_lin_accel();
-    return {translation,current_ang_accel};
+    Pose2d rot_accel = {units::Length(accel_x, units::in), units::Length(accel_y, units::in), current_ang_accel};
+    return rot_accel;
 }
