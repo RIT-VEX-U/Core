@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 
 class DelayCommand : public AutoCommand {
    public:

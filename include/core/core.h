@@ -25,11 +25,14 @@
 #include "core/subsystems/screen/screen_controller.h"
 #include "core/subsystems/tank_drive.h"
 
+// Competition package
+#include "core/competition/command_structure/auto_command.h"
+#include "core/competition/command_structure/command_controller.h"
+#include "core/competition/command_structure/delay_command.h"
+#include "core/competition/command_structure/drive_commands.h"
+#include "core/competition/initializer.h"
+
 // Utils package
-#include "core/utils/command_structure/auto_command.h"
-#include "core/utils/command_structure/command_controller.h"
-#include "core/utils/command_structure/delay_command.h"
-#include "core/utils/command_structure/drive_commands.h"
 #include "core/utils/controls/bang_bang.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/feedforward.h"
@@ -40,7 +43,6 @@
 #include "core/utils/controls/state_space/linear_quadratic_regulator.h"
 #include "core/utils/controls/trapezoid_profile.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/initializer.h"
 #include "core/utils/interpolating_map.h"
 #include "core/utils/logger.h"
 #include "core/utils/math/estimator/kalman_filter.h"
