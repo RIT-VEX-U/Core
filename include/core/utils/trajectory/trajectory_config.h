@@ -62,6 +62,21 @@ class TrajectoryConfig {
     }
 
     /**
+     * @brief Constructs TrajectoryConfig with kinematics model constraint.
+     * @param max_velocity Max velocity limit.
+     * @param max_acceleration Max acceleration limit.
+     * @param kinematics Differential drive kinematics model.
+     */
+    TrajectoryConfig(
+            units::Velocity max_velocity,
+            units::Acceleration max_acceleration,
+            const DifferentialDriveKinematics &kinematics
+    )
+        : TrajectoryConfig(max_velocity, max_acceleration) {
+        set_kinematics(kinematics);
+    }
+
+    /**
      * @brief Constructs TrajectoryConfig with start/end boundary velocities.
      * @param max_velocity Max velocity limit.
      * @param max_acceleration Max acceleration limit.
@@ -96,6 +111,21 @@ class TrajectoryConfig {
         set_track_width(track_width);
     }
 
+    /**
+     * @brief Constructs TrajectoryConfig with full parameters and kinematics model.
+     */
+    TrajectoryConfig(
+            units::Velocity max_velocity,
+            units::Acceleration max_acceleration,
+            units::Velocity start_velocity,
+            units::Velocity end_velocity,
+            bool reversed,
+            const DifferentialDriveKinematics &kinematics
+    )
+        : TrajectoryConfig(max_velocity, max_acceleration, start_velocity, end_velocity, reversed) {
+        set_kinematics(kinematics);
+    }
+
     /** @brief Polymorphic deep-copy constructor. */
     TrajectoryConfig(const TrajectoryConfig &other)
         : start_velocity_(other.start_velocity_),
@@ -104,14 +134,15 @@ class TrajectoryConfig {
           max_acceleration_(other.max_acceleration_),
           sample_ds_(other.sample_ds_),
           events_(other.events_),
-          reversed_(other.reversed_) {
+          reversed_(other.reversed_),
+          spline_order_(other.spline_order_),
+          error_handler_(other.error_handler_) {
         constraints_.reserve(other.constraints_.size());
-        for (const auto &c : other.constraints_) {
+        for (const std::unique_ptr<TrajectoryConstraint> &c : other.constraints_) {
             if (c) {
                 constraints_.push_back(c->clone());
             }
         }
-        events_ = other.events_;
     }
 
     /** @brief Polymorphic deep-copy assignment operator. */
@@ -123,14 +154,16 @@ class TrajectoryConfig {
             max_acceleration_ = other.max_acceleration_;
             sample_ds_ = other.sample_ds_;
             reversed_ = other.reversed_;
+            spline_order_ = other.spline_order_;
+            error_handler_ = other.error_handler_;
+            events_ = other.events_;
             constraints_.clear();
             constraints_.reserve(other.constraints_.size());
-            for (const auto &c : other.constraints_) {
+            for (const std::unique_ptr<TrajectoryConstraint> &c : other.constraints_) {
                 if (c) {
                     constraints_.push_back(c->clone());
                 }
             }
-            events_ = other.events_;
         }
         return *this;
     }
@@ -179,9 +212,48 @@ class TrajectoryConfig {
         );
     }
 
-    /** @brief Adds a TankKinematicsConstraint using track width and max velocity. */
+    /** @brief Adds a TankKinematicsConstraint using track width and explicit wheel limits. */
+    void set_track_width(
+            units::Length track_width,
+            units::Velocity max_wheel_speed,
+            units::Acceleration max_wheel_acceleration
+    ) {
+        add_constraint(TankKinematicsConstraint(track_width, max_wheel_speed, max_wheel_acceleration));
+    }
+
+    /** @brief Adds a TankKinematicsConstraint using track width and explicit max wheel speed limit. */
+    void set_track_width(
+            units::Length track_width,
+            units::Velocity max_wheel_speed
+    ) {
+        add_constraint(TankKinematicsConstraint(track_width, max_wheel_speed));
+    }
+
+    /** @brief Adds a TankKinematicsConstraint using track width and config max velocity. */
     void set_track_width(units::Length track_width) {
         add_constraint(TankKinematicsConstraint(track_width, max_velocity_));
+    }
+
+    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and explicit limits. */
+    void set_kinematics(
+            const DifferentialDriveKinematics &kinematics,
+            units::Velocity max_wheel_speed,
+            units::Acceleration max_wheel_acceleration
+    ) {
+        add_constraint(TankKinematicsConstraint(kinematics, max_wheel_speed, max_wheel_acceleration));
+    }
+
+    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and explicit max wheel speed limit. */
+    void set_kinematics(
+            const DifferentialDriveKinematics &kinematics,
+            units::Velocity max_wheel_speed
+    ) {
+        add_constraint(TankKinematicsConstraint(kinematics, max_wheel_speed));
+    }
+
+    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and config max velocity. */
+    void set_kinematics(const DifferentialDriveKinematics &kinematics) {
+        add_constraint(TankKinematicsConstraint(kinematics, max_velocity_));
     }
 
     /** @return Initial trajectory velocity. */
@@ -264,9 +336,53 @@ class TrajectoryConfigBuilder {
         return *this;
     }
 
+    /** @brief Configures drivetrain track width kinematics constraint with explicit limits. */
+    TrajectoryConfigBuilder &with_track_width(
+            units::Length track_width,
+            units::Velocity max_wheel_speed,
+            units::Acceleration max_wheel_acceleration
+    ) {
+        config_.set_track_width(track_width, max_wheel_speed, max_wheel_acceleration);
+        return *this;
+    }
+
+    /** @brief Configures drivetrain track width kinematics constraint with explicit wheel speed. */
+    TrajectoryConfigBuilder &with_track_width(
+            units::Length track_width,
+            units::Velocity max_wheel_speed
+    ) {
+        config_.set_track_width(track_width, max_wheel_speed);
+        return *this;
+    }
+
     /** @brief Configures drivetrain track width kinematics constraint. */
     TrajectoryConfigBuilder &with_track_width(units::Length track_width) {
         config_.set_track_width(track_width);
+        return *this;
+    }
+
+    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and explicit limits. */
+    TrajectoryConfigBuilder &with_kinematics(
+            const DifferentialDriveKinematics &kinematics,
+            units::Velocity max_wheel_speed,
+            units::Acceleration max_wheel_acceleration
+    ) {
+        config_.set_kinematics(kinematics, max_wheel_speed, max_wheel_acceleration);
+        return *this;
+    }
+
+    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and explicit wheel speed. */
+    TrajectoryConfigBuilder &with_kinematics(
+            const DifferentialDriveKinematics &kinematics,
+            units::Velocity max_wheel_speed
+    ) {
+        config_.set_kinematics(kinematics, max_wheel_speed);
+        return *this;
+    }
+
+    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and default limits. */
+    TrajectoryConfigBuilder &with_kinematics(const DifferentialDriveKinematics &kinematics) {
+        config_.set_kinematics(kinematics);
         return *this;
     }
 

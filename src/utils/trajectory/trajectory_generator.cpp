@@ -57,7 +57,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
   if (config.is_reversed()) {
     const Transform2d flip{Translation2d{}, from_degrees(180)};
-    for (auto& point : points) {
+    for (PoseWithCurvature& point : points) {
       point = {point.pose + flip, -point.curvature};
     }
   }
@@ -74,7 +74,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
 
   std::vector<TrajectoryEvent> evs;
-  for (const auto& ev : config.events()) {
+  for (const DistanceEvent& ev : config.events()) {
     evs.push_back({traj.time_from_distance(ev.distance), ev.name});
   }
   traj.set_events(std::move(evs));
@@ -121,7 +121,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   std::vector<Pose2d> full_waypoints;
   full_waypoints.reserve(target_waypoints.size() + 1);
   full_waypoints.push_back(current_pose);
-  for (const auto& wp : target_waypoints) {
+  for (const Pose2d& wp : target_waypoints) {
     full_waypoints.push_back(wp);
   }
 
