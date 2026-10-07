@@ -4,16 +4,12 @@
 #define PI 3.141592654
 #endif
 
-#include "vex/vex.h"
-
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/pid.h"
-#include "core/utils/pure_pursuit.h"
-
-#include <vector>
+#include "vex.h"
 
 /**
  * TankDrive is a class to run a tank drive system.
@@ -84,16 +80,8 @@ class TankDrive {
             Feedback& fb, double degrees, double max_speed = 1.0, double end_speed = 0.0
     );
 
-    AutoCommand* PurePursuitCmd(
-            PurePursuit::Path path, vex::directionType dir, double max_speed = 1,
-            double end_speed = 0
-    );
-    AutoCommand* PurePursuitCmd(
-            Feedback& feedback, PurePursuit::Path path, vex::directionType dir,
-            double max_speed = 1, double end_speed = 0
-    );
-    Condition* DriveStalledCondition(double stall_time);
-    AutoCommand* DriveTankCmd(double left, double right);
+    Condition *DriveStalledCondition(double stall_time);
+    AutoCommand *DriveTankCmd(double left, double right);
 
     /// Stops rotation of all the motors using their "brake mode"
     void stop();
@@ -294,31 +282,7 @@ class TankDrive {
      * by its completion
      * @return True when the path is complete
      */
-    bool pure_pursuit(
-            PurePursuit::Path path, vex::directionType dir, Feedback& feedback,
-            double max_speed = 1, double end_speed = 0
-    );
-
-    /**
-     * Drive the robot autonomously using a pure-pursuit algorithm - Input path
-     * with a set of waypoints - the robot will attempt to follow the points
-     * while cutting corners (radius) to save time (compared to stop / turn /
-     * start)
-     *
-     * Use the default drive feedback
-     *
-     * @param path The list of coordinates to follow, in order
-     * @param dir Run the bot forwards or backwards
-     * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-     * @param end_speed the movement profile will attempt to reach this velocity
-     * by its completion
-     * @return True when the path is complete
-     */
    private:
-    bool pure_pursuit(
-            PurePursuit::Path path, vex::directionType dir, double max_speed = 1,
-            double end_speed = 0
-    );
     vex::motor_group& left_motors;   ///< left drive motors
     vex::motor_group& right_motors;  ///< right drive motors
 
@@ -336,5 +300,4 @@ class TankDrive {
     bool func_initialized =
             false;  ///< used to control initialization of autonomous driving. (you only wan't to
                     ///< set the target once, not every iteration that you're driving)
-    bool is_pure_pursuit = false;  ///< true if we are driving with a pure pursuit system
 };

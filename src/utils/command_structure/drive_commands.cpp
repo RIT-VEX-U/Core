@@ -222,40 +222,7 @@ void TurnToHeadingCommand::on_timeout() {
     drive_sys.reset_auto();
 }
 
-/**
- * Construct a Pure Pursuit AutoCommand
- *
- * @param path The list of coordinates to follow, in order
- * @param dir Run the bot forwards or backwards
- * @param feedback The feedback controller determining speed
- * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
- */
-PurePursuitCommand::PurePursuitCommand(
-  TankDrive &drive_sys, Feedback &feedback, PurePursuit::Path path, vex::directionType dir, double max_speed,
-  double end_speed
-)
-    : drive_sys(drive_sys), path(path), dir(dir), feedback(feedback), max_speed(max_speed), end_speed(end_speed) {}
 
-/// Direct call to TankDrive::pure_pursuit
-bool PurePursuitCommand::run() { return drive_sys.pure_pursuit(path, dir, feedback, max_speed, end_speed); }
-
-/// Returns a string describing the commands functionality
-std::string PurePursuitCommand::toString() {
-    std::string returnStr = "Driving through ";
-    std::vector<Translation2d> thePoints = path.get_points();
-    for (int i = 0; i < thePoints.size(); i++) {
-        returnStr.append("(");
-        returnStr.append(std::to_string(thePoints.at(i).x().to(units::in)) + ", " + std::to_string(thePoints.at(i).y().to(units::in)) + ") \n");
-    }
-    returnStr.append(" at " + std::to_string(max_speed * 100) + "% speed");
-    return returnStr;
-}
-
-/// Reset the drive system when it times out
-void PurePursuitCommand::on_timeout() {
-    drive_sys.stop();
-    drive_sys.reset_auto();
-}
 
 /**
  * Construct a DriveStop Command
