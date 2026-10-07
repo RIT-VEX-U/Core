@@ -1,5 +1,31 @@
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
+class OrCondition : public Condition {
+   public:
+    OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
+    bool test() override {
+        bool a = A->test();
+        bool b = B->test();
+        return a | b;
+    }
 
+   private:
+    Condition* A;
+    Condition* B;
+};
+
+class AndCondition : public Condition {
+   public:
+    AndCondition(Condition* A, Condition* B) : A(A), B(B) {}
+    bool test() override {
+        bool a = A->test();
+        bool b = B->test();
+        return a & b;
+    }
+
+   private:
+    Condition* A;
+    Condition* B;
+};
 std::string Condition::toString() { return "Condition"; }
 
 Condition* Condition::Or(Condition* b) { return new OrCondition(this, b); }

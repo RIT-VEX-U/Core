@@ -1,6 +1,6 @@
 #include "core/subsystems/tank_drive.h"
 
-#include "core/utils/command_structure/drive_commands.h"
+#include "core/competition/command_structure/drive_commands.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/math_util.h"
