@@ -202,7 +202,15 @@ class Branch : public AutoCommand {
  * @details will simply let it go and never look back
  * @note THIS HAS A VERY NICHE USE CASE. THINK ABOUT IF YOU REALLY NEED IT
  */
-class Async : public AutoCommand {};
+class Async : public AutoCommand {
+   public:
+    Async(AutoCommand* cmd);
+    bool run() override;
+    std::string toString() override;
+
+   private:
+    AutoCommand* cmd = nullptr;
+};
 
 class RepeatUntil : public AutoCommand {
    public:

@@ -258,20 +258,7 @@ void Branch::on_timeout() {
     chosen = false;
 }
 
-/**
- * @brief Async runs a command asynchronously
- * @details will simply let it go and never look back
- * @note THIS HAS A VERY NICHE USE CASE. THINK ABOUT IF YOU REALLY NEED IT
- */
-class Async : public AutoCommand {
-   public:
-    Async(AutoCommand* cmd) : cmd(cmd) {}
-    bool run() override;
-    std::string toString() override;
 
-   private:
-    AutoCommand* cmd = nullptr;
-};
 
 static int async_runner(void* arg) {
     AutoCommand* cmd = (AutoCommand*)arg;
@@ -297,6 +284,9 @@ static int async_runner(void* arg) {
 
     return 0;
 }
+
+Async::Async(AutoCommand* cmd) : cmd(cmd) {};
+
 bool Async::run() {
     vex::task* t = new vex::task(async_runner, (void*)cmd);
     (void)t;
