@@ -1,9 +1,9 @@
 #pragma once
+#include "vex/vex.h"
 #include "core/device/vdb/protocol.hpp"
-#include "vex.h"
-#include <functional>
 #include "core/device/vdb/visitor.hpp"
 #include "core/device/vdb/builtins.hpp"
+#include <functional>
 
 namespace VDP {
 class RegistryController {

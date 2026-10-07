@@ -5,7 +5,6 @@
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/trapezoid_profile.h"
-#include "vex.h"
 
 /**
  * Motion Controller class
