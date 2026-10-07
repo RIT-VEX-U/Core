@@ -8,7 +8,7 @@
 
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/pure_pursuit.h"
