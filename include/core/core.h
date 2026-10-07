@@ -13,8 +13,8 @@
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/flywheel.h"
-#include "core/subsystems/fun/pl_mpeg.h"
-#include "core/subsystems/fun/video.h"
+#include "core/screen/pl_mpeg.h"
+#include "core/screen/video.h"
 #include "core/subsystems/lift.h"
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/subsystems/odometry/odometry_nwheel.h"
