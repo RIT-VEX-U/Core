@@ -30,6 +30,26 @@ class Condition {
     virtual std::string toString();
 };
 
+class OrCondition : public Condition {
+   public:
+    OrCondition(Condition* A, Condition* B);
+    bool test() override;
+
+   private:
+    Condition* A;
+    Condition* B;
+};
+
+class AndCondition : public Condition {
+   public:
+    AndCondition(Condition* A, Condition* B);
+    bool test() override;
+
+   private:
+    Condition* A;
+    Condition* B;
+};
+
 class AutoCommand {
    public:
     static constexpr double default_timeout = 10.0;
@@ -43,7 +63,7 @@ class AutoCommand {
     virtual std::string toString();
     
     /// What to do if we timeout instead of finishing. timeout is specified by the timeout seconds in the constructor
-    virtual void on_timeout() {}
+    virtual void on_timeout();
     AutoCommand *withTimeout(double t_seconds);
     AutoCommand *withCancelCondition(Condition *true_to_end);
     /**
@@ -69,9 +89,9 @@ class AutoCommand {
  */
 class FunctionCommand : public AutoCommand {
    public:
-    FunctionCommand(std::function<bool(void)> f) : f(f) {}
-    bool run() override { return f(); }
-    std::string toString() override { return "Function Command"; }
+    FunctionCommand(std::function<bool(void)> f);
+    bool run() override;
+    std::string toString() override;
 
    private:
     std::function<bool(void)> f;
@@ -86,14 +106,8 @@ class FunctionCommand : public AutoCommand {
  */
 class TimesTestedCondition : public Condition {
    public:
-    TimesTestedCondition(size_t N) : max(N) {}
-    bool test() override {
-        count++;
-        if (count >= max) {
-            return true;
-        }
-        return false;
-    }
+    TimesTestedCondition(size_t N);
+    bool test() override;
 
    private:
     size_t count = 0;
@@ -104,10 +118,7 @@ class TimesTestedCondition : public Condition {
 /// evaluated at runtime
 class FunctionCondition : public Condition {
    public:
-    FunctionCondition(
-            std::function<bool()> cond, std::function<void(void)> timeout = []() {}
-    )
-        : cond(cond), timeout(timeout) {}
+    FunctionCondition(std::function<bool()> cond, std::function<void(void)> timeout = []() {});
     bool test() override;
 
    private:
@@ -132,9 +143,9 @@ class IfTimePassed : public Condition {
 /// @brief Waits until the condition is true
 class WaitUntilCondition : public AutoCommand {
    public:
-    WaitUntilCondition(Condition* cond) : cond(cond) {}
-    bool run() override { return cond->test(); }
-    std::string toString() override { return "waiting until " + cond->toString(); }
+    WaitUntilCondition(Condition* cond);
+    bool run() override;
+    std::string toString() override;
 
    private:
     Condition* cond;
