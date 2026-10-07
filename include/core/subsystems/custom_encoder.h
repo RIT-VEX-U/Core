@@ -1,5 +1,6 @@
 #pragma once
 #include "vex.h"
+#include "core/utils/units.h"
 
 /**
  * A wrapper class for the vex encoder that allows the use of 3rd party
@@ -21,35 +22,35 @@ public:
    * @param val the numerical value of the angle we are setting to
    * @param units the unit of val
    */
-  void setRotation(double val, vex::rotationUnits units);
+  void setRotation(double val, units::angle_unit units);
 
   /**
    * sets the stored position of the encoder. Any further movements will be from this value
    * @param val the numerical value of the position we are setting to
    * @param units the unit of val
    */
-  void setPosition(double val, vex::rotationUnits units);
+  void setPosition(double val, units::angle_unit units);
 
   /**
    * get the rotation that the encoder is at
    * @param units the unit we want the return value to be in
    * @return the rotation of the encoder in the units specified
    */
-  double rotation(vex::rotationUnits units);
+  double rotation(units::angle_unit units);
 
   /**
    * get the position that the encoder is at
    * @param units the unit we want the return value to be in
    * @return the position of the encoder in the units specified
    */
-  double position(vex::rotationUnits units);
+  double position(units::angle_unit units);
 
   /**
    * get the velocity that the encoder is moving at
    * @param units the unit we want the return value to be in
    * @return the velocity of the encoder in the units specified
    */
-  double velocity(vex::velocityUnits units);
+  double velocity(units::angular_velocity_unit units);
 
 private:
   double tick_scalar;
