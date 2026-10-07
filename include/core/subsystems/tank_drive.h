@@ -4,8 +4,6 @@
 #define PI 3.141592654
 #endif
 
-#include <vector>
-
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/utils/command_structure/auto_command.h"

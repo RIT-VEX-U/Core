@@ -1,5 +1,5 @@
 #pragma once
-#include "vex.h"
+#include "vex/vex.h"
 
 /**
  * A wrapper class for the vex encoder that allows the use of 3rd party

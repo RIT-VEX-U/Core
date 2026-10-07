@@ -1,11 +1,11 @@
 #pragma once
+#include "vex/vex.h"
 #include "core/subsystems/screen/legacy.h"
 #include "core/subsystems/tank_drive.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/trapezoid_profile.h"
-#include "vex.h"
 
 /**
  * Motion Controller class
@@ -35,7 +35,7 @@ class MotionController : public Feedback {
         double max_v;                    ///< the maximum velocity the robot can drive
         double accel;                    ///< the most acceleration the robot can do
         PID pid;
-        FeedForward::ff_config_t ff_cfg; ///< configuration parameters for the internal
+        FeedForward ff; ///< configuration parameters for the internal
     } m_profile_cfg_t;
 
     /**
@@ -104,7 +104,7 @@ class MotionController : public Feedback {
      * @param duration Amount of time the robot should be moving for the test
      * @return A tuned feedforward object
      */
-    static FeedForward::ff_config_t
+    static FeedForward
     tune_feedforward(TankDrive &drive, OdometryTank &odometry, double pct = 0.6, double duration = 2);
 
   private:
