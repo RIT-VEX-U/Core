@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vex.h"
+#include "vex/vex.h"
 #include <cstdarg>
 #include <cstdio>
 #include <string>
