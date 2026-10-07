@@ -5,8 +5,11 @@
 #include <string>
 #include <vector>
 
+#include "core/utils/kinematics/differential_drive_kinematics.h"
+#include "core/utils/kinematics/differential_drive_wheel_velocities.h"
 #include "core/utils/math/geometry/pose2d.h"
-#include "core/utils/math_util.h"
+#include "core/utils/kinematics/chassis_accelerations.h"
+#include "core/utils/kinematics/chassis_velocities.h"
 #include "core/utils/units.h"
 
 using namespace units::literals;
@@ -121,6 +124,22 @@ class Trajectory {
 
             return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
         }
+
+        ChassisVelocities chassis_velocities() const {
+            return ChassisVelocities(velocity, 0_inps, velocity * curvature);
+        }
+
+        ChassisAccelerations chassis_accelerations() const {
+            return ChassisAccelerations(acceleration, 0_inps2, acceleration * curvature);
+        }
+
+        DifferentialDriveWheelVelocities to_wheel_velocities(const DifferentialDriveKinematics& kin) const {
+            return kin.to_wheel_velocities(chassis_velocities());
+        }
+
+        DifferentialDriveWheelAccelerations to_wheel_accelerations(const DifferentialDriveKinematics& kin) const {
+            return kin.to_wheel_accelerations(chassis_accelerations());
+        }
     };
 
     /** @brief Default constructor. */
@@ -160,7 +179,7 @@ class Trajectory {
         if (states_.empty() || s <= 0_in) return 0_s;
         if (s >= states_.back().s) return total_time_;
 
-        auto it = std::lower_bound(
+        std::vector<State>::const_iterator it = std::lower_bound(
                 states_.begin() + 1,
                 states_.end(),
                 s,
@@ -192,14 +211,14 @@ class Trajectory {
             return states_.back();
         }
 
-        auto sample = std::lower_bound(
+        std::vector<State>::const_iterator sample = std::lower_bound(
                 states_.cbegin() + 1,
                 states_.cend(),
                 t,
                 [](const State &a, const units::Time &b) { return a.t < b; }
         );
 
-        auto prev_sample = sample - 1;
+        std::vector<State>::const_iterator prev_sample = sample - 1;
 
         if (units::abs(sample->t - prev_sample->t) < 1E-9_s) {
             return *sample;
@@ -220,15 +239,15 @@ class Trajectory {
             return *this;
         }
 
-        auto &first_state = states_[0];
-        auto &first_pose = first_state.pose;
+        const State &first_state = states_[0];
+        const Pose2d &first_pose = first_state.pose;
 
-        auto new_first_pose = first_pose + transform;
-        auto new_states = states_;
+        Pose2d new_first_pose = first_pose + transform;
+        std::vector<State> new_states = states_;
         new_states[0].pose = new_first_pose;
 
         for (size_t i = 1; i < new_states.size(); ++i) {
-            auto &state = new_states[i];
+            State &state = new_states[i];
             state.pose = new_first_pose + (state.pose - first_pose);
         }
 
@@ -241,8 +260,8 @@ class Trajectory {
      * @return Relative Trajectory.
      */
     Trajectory relative_to(const Pose2d &pose) const {
-        auto new_states = states_;
-        for (auto &state : new_states) {
+        std::vector<State> new_states = states_;
+        for (State &state : new_states) {
             state.pose = state.pose.relative_to(pose);
         }
         return Trajectory(new_states);
@@ -256,7 +275,7 @@ class Trajectory {
     Trajectory mirror_x(units::Length center_x = 71.25_in) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
-        for (const auto& st : states_) {
+        for (const State &st : states_) {
             State new_st = st;
             double x = st.pose.x();
             double y = st.pose.y();
@@ -278,7 +297,7 @@ class Trajectory {
     Trajectory mirror_y(units::Length center_y = 71.25_in) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
-        for (const auto& st : states_) {
+        for (const State &st : states_) {
             State new_st = st;
             double x = st.pose.x();
             double y = st.pose.y();
@@ -301,7 +320,7 @@ class Trajectory {
     Trajectory rotate_center(units::Length center_x = 71.25_in, units::Length center_y = 71.25_in) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
-        for (const auto& st : states_) {
+        for (const State &st : states_) {
             State new_st = st;
             double x = st.pose.x();
             double y = st.pose.y();
@@ -324,7 +343,7 @@ class Trajectory {
     Trajectory reverse() const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
-        for (auto it = states_.rbegin(); it != states_.rend(); ++it) {
+        for (std::vector<State>::const_reverse_iterator it = states_.rbegin(); it != states_.rend(); ++it) {
             State st = *it;
             st.t = total_time_ - st.t;
             st.velocity = -st.velocity;
@@ -345,9 +364,9 @@ class Trajectory {
             return other;
         }
 
-        auto states = states_;
-        auto other_states = other.states();
-        for (auto &other_state : other_states) {
+        std::vector<State> states = states_;
+        std::vector<State> other_states = other.states();
+        for (State &other_state : other_states) {
             other_state.t += total_time_;
         }
 
@@ -400,7 +419,7 @@ class TrajectorySampler {
         if (!trajectory_ || trajectory_->empty()) {
             return Trajectory::State{};
         }
-        const auto &states = trajectory_->states();
+        const std::vector<Trajectory::State> &states = trajectory_->states();
         if (t <= states.front().t) {
             cached_index_ = 0;
             return states.front();
@@ -421,8 +440,8 @@ class TrajectorySampler {
             return states.back();
         }
 
-        const auto &prev = states[cached_index_];
-        const auto &next = states[cached_index_ + 1];
+        const Trajectory::State &prev = states[cached_index_];
+        const Trajectory::State &next = states[cached_index_ + 1];
         if (units::abs(next.t - prev.t) < 1E-9_s) {
             return next;
         }
