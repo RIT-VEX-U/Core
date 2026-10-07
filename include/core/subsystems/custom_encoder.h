@@ -1,6 +1,10 @@
 #pragma once
+<<<<<<< HEAD
 
 #include "core/utils/units.h"
+=======
+#include "vex/vex.h"
+>>>>>>> ac3c750 (Header and Documentation Repackage (#193))
 
 /**
  * A wrapper class for the vex encoder that allows the use of 3rd party

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "vex/vex.h"
 #include "core/utils/controls/pid.h"
-#include "vex.h"
 #include <atomic>
 #include <iostream>
 #include <map>

@@ -1,4 +1,5 @@
-#include "vex.h"
+#pragma once
+#include "vex/vex.h"
 /*
 PL_MPEG - MPEG1 Video decoder, MP2 Audio decoder, MPEG-PS demuxer
 

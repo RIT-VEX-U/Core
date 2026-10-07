@@ -1,7 +1,7 @@
 #pragma once
+#include "vex/vex.h"
 #include "core/device/cobs_device.h"
 #include "core/device/vdb/protocol.hpp"
-#include "vex.h"
 #include <deque>
 
 
