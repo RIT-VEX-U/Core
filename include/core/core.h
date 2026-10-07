@@ -20,9 +20,9 @@
 #include "core/subsystems/odometry/odometry_nwheel.h"
 #include "core/subsystems/odometry/odometry_serial.h"
 #include "core/subsystems/odometry/odometry_tank.h"
-#include "core/subsystems/screen/legacy.h"
-#include "core/subsystems/screen/legacy_bridge.h"
-#include "core/subsystems/screen/screen_controller.h"
+#include "core/screen/legacy.h"
+#include "core/screen/legacy_bridge.h"
+#include "core/screen/screen_controller.h"
 #include "core/subsystems/tank_drive.h"
 
 // Utils package
