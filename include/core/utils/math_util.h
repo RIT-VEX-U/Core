@@ -1,9 +1,11 @@
 #pragma once
-#include <vector>
 
+#include "vex/vex.h"
 #include "Eigen/Dense"
-#include "core/utils/math/geometry/translation2d.h"
 #include "math.h"
+#include "core/utils/math/geometry/translation2d.h"
+
+#include <vector>
 
 /**
  * Constrain the input between a minimum and a maximum value

@@ -7,10 +7,10 @@
 #undef __ARM_NEON
 #include <Eigen/Dense>
 
+#include "vex/vex.h"
 #include "core/robot_specs.h"
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/math/geometry/pose2d.h"
-#include "vex.h"
 
 #ifndef PI
 #define PI 3.141592654

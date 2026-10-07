@@ -1,8 +1,6 @@
 #pragma once
-#include <cassert>
-#include <functional>
-#include <map>
-#include <vector>
+
+#include "vex/vex.h"
 
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/utils/controls/pid.h"
@@ -11,7 +9,12 @@
 #include "core/utils/initializer.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/math/geometry/point2d.h"
-#include "vex.h"
+#include "core/utils/initializer.h"
+
+#include <cassert>
+#include <functional>
+#include <map>
+#include <vector>
 
 namespace LegacyScreen {
 
