@@ -1,192 +1,192 @@
 #pragma once
+
 #include <cassert>
 #include <functional>
 #include <map>
 #include <vector>
 
+#include "core/competition/initializer.h"
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/initializer.h"
+#include "core/utils/math/geometry/point2d.h"
 #include "core/utils/math/geometry/pose2d.h"
-#include "core/utils/math/geometry/translation2d.h"
-#include "vex.h"
+#include "vex/vex.h"
 
 namespace LegacyScreen {
 
 ///  Describes a Rectangle with a minimum and maximum point
 struct Rect {
-    Translation2d min;
-    Translation2d max;
-    static Rect from_min_and_size(Translation2d min, Translation2d size) {
-        return {min, min + size};
-    }
-    Translation2d dimensions() const { return max - min; }
-    Translation2d center() const { return (min + max) / 2; }
-    double width() const { return max.x() - min.x(); }
-    double height() const { return max.y() - min.y(); }
-    bool contains(Translation2d p) const {
-        bool xin = p.x() > min.x() && p.x() < max.x();
-        bool yin = p.y() > min.y() && p.y() < max.y();
-        return xin && yin;
-    }
+  Point2d min;
+  Point2d max;
+  static Rect from_min_and_size(Point2d min, Point2d size) { return {min, min + size}; }
+  Point2d dimensions() const { return max - min; }
+  Point2d center() const { return Point2d{(min + max).x() / 2, (min + max).y() / 2}; }
+  double width() const { return max.x() - min.x(); }
+  double height() const { return max.y() - min.y(); }
+  bool contains(Point2d p) const {
+    bool xin = p.x() > min.x() && p.x() < max.x();
+    bool yin = p.y() > min.y() && p.y() < max.y();
+    return xin && yin;
+  }
 };
+
 /// @brief Widget that does something when you tap it. The function is only called once when you
 /// first tap it
 class ButtonWidget {
-   public:
-    /// @brief Create a Button widget
-    /// @param onpress the function to be called when the button is tapped
-    /// @param rect the area the button should take up on the screen
-    /// @param name the label put on the button
-    ButtonWidget(std::function<void(void)> onpress, Rect rect, std::string name)
-        : onpress(onpress), rect(rect), name(name) {}
-    /// @brief Create a Button widget
-    /// @param onpress the function to be called when the button is tapped
-    /// @param rect the area the button should take up on the screen
-    /// @param name the label put on the button
-    ButtonWidget(void (*onpress)(), Rect rect, std::string name)
-        : onpress(onpress), rect(rect), name(name) {}
+ public:
+  /// @brief Create a Button widget
+  /// @param onpress the function to be called when the button is tapped
+  /// @param rect the area the button should take up on the screen
+  /// @param name the label put on the button
+  ButtonWidget(std::function<void(void)> onpress, Rect rect, std::string name)
+      : onpress(onpress), rect(rect), name(name) {}
+  /// @brief Create a Button widget
+  /// @param onpress the function to be called when the button is tapped
+  /// @param rect the area the button should take up on the screen
+  /// @param name the label put on the button
+  ButtonWidget(void (*onpress)(), Rect rect, std::string name)
+      : onpress(onpress), rect(rect), name(name) {}
 
-    /// @brief responds to user input
-    /// @param was_pressed if the screen is pressed
-    /// @param x x position if the screen was pressed
-    /// @param y y position if the screen was pressed
-    /// @return true if the button was pressed
-    bool update(bool was_pressed, int x, int y);
-    /// @brief draws the button to the screen
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number);
+  /// @brief responds to user input
+  /// @param was_pressed if the screen is pressed
+  /// @param x x position if the screen was pressed
+  /// @param y y position if the screen was pressed
+  /// @return true if the button was pressed
+  bool update(bool was_pressed, int x, int y);
+  /// @brief draws the button to the screen
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number);
 
-   private:
-    std::function<void(void)> onpress;
-    Rect rect;
-    std::string name = "";
-    bool was_pressed_last = false;
+ private:
+  std::function<void(void)> onpress;
+  Rect rect;
+  std::string name = "";
+  bool was_pressed_last = false;
 };
 
 /// @brief Widget that updates a double value. Updates by reference so watch out for race conditions
 /// cuz the screen stuff lives on another thread
 class SliderWidget {
-   public:
-    /// @brief Creates a slider widget
-    /// @param val reference to the value to modify
-    /// @param low minimum value to go to
-    /// @param high maximum value to go to
-    /// @param rect rect to draw it
-    /// @param name name of the value
-    SliderWidget(double& val, double low, double high, Rect rect, std::string name)
-        : value(val), low(low), high(high), rect(rect), name(name) {}
+ public:
+  /// @brief Creates a slider widget
+  /// @param val reference to the value to modify
+  /// @param low minimum value to go to
+  /// @param high maximum value to go to
+  /// @param rect rect to draw it
+  /// @param name name of the value
+  SliderWidget(double& val, double low, double high, Rect rect, std::string name)
+      : value(val), low(low), high(high), rect(rect), name(name) {}
 
-    /// @brief responds to user input
-    /// @param was_pressed if the screen is pressed
-    /// @param x x position if the screen was pressed
-    /// @param y y position if the screen was pressed
-    /// @return true if the value updated
-    bool update(bool was_pressed, int x, int y);
-    /// @brief @ref Page::draws the slide to the screen
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number);
+  /// @brief responds to user input
+  /// @param was_pressed if the screen is pressed
+  /// @param x x position if the screen was pressed
+  /// @param y y position if the screen was pressed
+  /// @return true if the value updated
+  bool update(bool was_pressed, int x, int y);
+  /// @brief @ref Page::draws the slide to the screen
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number);
 
-   private:
-    double& value;
+ private:
+  double& value;
 
-    double low;
-    double high;
+  double low;
+  double high;
 
-    Rect rect;
-    std::string name = "";
+  Rect rect;
+  std::string name = "";
 };
 
 struct WidgetConfig;
 
 struct SliderConfig {
-    double& val;
-    double low;
-    double high;
+  double& val;
+  double low;
+  double high;
 };
 struct ButtonConfig {
-    std::function<void()> onclick;
+  std::function<void()> onclick;
 };
 struct CheckboxConfig {
-    std::function<void(bool)> onupdate;
+  std::function<void(bool)> onupdate;
 };
 struct LabelConfig {
-    std::string label;
+  std::string label;
 };
 
 struct TextConfig {
-    std::function<std::string()> text;
+  std::function<std::string()> text;
 };
 struct SizedWidget {
-    int size;
-    WidgetConfig& widget;
+  int size;
+  WidgetConfig& widget;
 };
 struct WidgetConfig {
-    enum Type {
-        Col,
-        Row,
-        Slider,
-        Button,
-        Checkbox,
-        Label,
-        Text,
-        Graph,
-    };
-    Type type;
-    union {
-        std::vector<SizedWidget> widgets;
-        SliderConfig slider;
-        ButtonConfig button;
-        CheckboxConfig checkbox;
-        LabelConfig label;
-        TextConfig text;
-        GraphDrawer* graph;
-    } config;
+  enum Type {
+    Col,
+    Row,
+    Slider,
+    Button,
+    Checkbox,
+    Label,
+    Text,
+    Graph,
+  };
+  Type type;
+  union {
+    std::vector<SizedWidget> widgets;
+    SliderConfig slider;
+    ButtonConfig button;
+    CheckboxConfig checkbox;
+    LabelConfig label;
+    TextConfig text;
+    GraphDrawer* graph;
+  } config;
 };
 
 class Page;
 /// @brief Page describes one part of the screen slideshow
 class Page {
-   public:
-    virtual ~Page() = default;
-    /**
-     * @brief collect data, respond to screen input, do fast things (runs at
-     * 50hz even if you're not focused on this Page (only drawn page gets
-     * touch updates))
-     * @param was_pressed true if the screen has been pressed
-     * @param x x position of screen press (if the screen was pressed)
-     * @param y y position of screen press (if the screen was pressed)
-     */
-    virtual void update(bool was_pressed, int x, int y);
-    /**
-     * @brief draw stored data to the screen (runs at 10 hz and only runs if
-     * this page is in front)
-     * @param first_draw true if we just switched to this page
-     * @param frame_number frame of drawing we are on (basically an animation
-     * tick)
-     */
-    virtual void draw(vex::brain::lcd& screen, bool first_draw, unsigned int frame_number);
+ public:
+  virtual ~Page() = default;
+  /**
+   * @brief collect data, respond to screen input, do fast things (runs at
+   * 50hz even if you're not focused on this Page (only drawn page gets
+   * touch updates))
+   * @param was_pressed true if the screen has been pressed
+   * @param x x position of screen press (if the screen was pressed)
+   * @param y y position of screen press (if the screen was pressed)
+   */
+  virtual void update(bool was_pressed, int x, int y);
+  /**
+   * @brief draw stored data to the screen (runs at 10 hz and only runs if
+   * this page is in front)
+   * @param first_draw true if we just switched to this page
+   * @param frame_number frame of drawing we are on (basically an animation
+   * tick)
+   */
+  virtual void draw(vex::brain::lcd& screen, bool first_draw, unsigned int frame_number);
 };
 
 struct ScreenRect {
-    uint32_t x1;
-    uint32_t y1;
-    uint32_t x2;
-    uint32_t y2;
+  uint32_t x1;
+  uint32_t y1;
+  uint32_t x2;
+  uint32_t y2;
 };
 void draw_widget(WidgetConfig& widget, ScreenRect rect);
 
 class WidgetPage : public Page {
-   public:
-    WidgetPage(WidgetConfig& cfg) : base_widget(cfg) {}
-    void update(bool was_pressed, int x, int y) override;
+ public:
+  WidgetPage(WidgetConfig& cfg) : base_widget(cfg) {}
+  void update(bool was_pressed, int x, int y) override;
 
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override {
-        draw_widget(base_widget, {.x1 = 20, .y1 = 0, .x2 = 440, .y2 = 240});
-    }
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override {
+    draw_widget(base_widget, {.x1 = 20, .y1 = 0, .x2 = 440, .y2 = 240});
+  }
 
-   private:
-    WidgetConfig& base_widget;
+ private:
+  WidgetConfig& base_widget;
 };
 
 /// @brief  type of function needed for update
@@ -197,26 +197,26 @@ using draw_func_t = std::function<void(vex::brain::lcd& screen, bool, unsigned i
 
 /// @brief Draws motor stats and battery stats to the screen
 class StatsPage : public Page {
-   public:
-    /// @brief Creates a stats page
-    /// @param motors a map of string to motor that we want to draw on this page
-    StatsPage(std::map<std::string, vex::motor&> motors);
-    /// @brief @see Page#update
-    void update(bool was_pressed, int x, int y) override;
-    /// @brief @see Page#draw
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
+ public:
+  /// @brief Creates a stats page
+  /// @param motors a map of string to motor that we want to draw on this page
+  StatsPage(std::map<std::string, vex::motor&> motors);
+  /// @brief @see Page#update
+  void update(bool was_pressed, int x, int y) override;
+  /// @brief @see Page#draw
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
 
-   private:
-    void draw_motor_stats(
-            const std::string& name, vex::motor& mot, unsigned int frame, int x, int y,
-            vex::brain::lcd& scr
-    );
+ private:
+  void draw_motor_stats(
+      const std::string& name, vex::motor& mot, unsigned int frame, int x, int y,
+      vex::brain::lcd& scr
+  );
 
-    std::map<std::string, vex::motor&> motors;
-    static const int y_start = 0;
-    static const int per_column = 4;
-    static const int row_height = 20;
-    static const int row_width = 200;
+  std::map<std::string, vex::motor&> motors;
+  static const int y_start = 0;
+  static const int per_column = 4;
+  static const int row_height = 20;
+  static const int row_width = 200;
 };
 
 /**
@@ -224,138 +224,138 @@ class StatsPage : public Page {
  * on)
  */
 class OdometryPage : public Page {
-   public:
-    /// @brief Create an odometry trail. Make sure odometry is initilized before now
-    /// @param odom the odometry system to monitor
-    /// @param robot_width the width (side to side) of the robot in inches. Used for visualization
-    /// @param robot_height the robot_height (front to back) of the robot in inches. Used for
-    /// visualization
-    /// @param do_trail whether or not to calculate and draw the trail. Drawing and storing takes a
-    /// very *slight* extra amount of processing power
-    OdometryPage(OdometryBase& odom, double robot_width, double robot_height, bool do_trail);
-    /// @brief @see Page#update
-    void update(bool was_pressed, int x, int y) override;
-    /// @brief @see Page#draw
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
+ public:
+  /// @brief Create an odometry trail. Make sure odometry is initilized before now
+  /// @param odom the odometry system to monitor
+  /// @param robot_width the width (side to side) of the robot in inches. Used for visualization
+  /// @param robot_height the robot_height (front to back) of the robot in inches. Used for
+  /// visualization
+  /// @param do_trail whether or not to calculate and draw the trail. Drawing and storing takes a
+  /// very *slight* extra amount of processing power
+  OdometryPage(OdometryBase& odom, double robot_width, double robot_height, bool do_trail);
+  /// @brief @see Page#update
+  void update(bool was_pressed, int x, int y) override;
+  /// @brief @see Page#draw
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
 
-   private:
-    static const int path_len = 40;
-    static constexpr char const* field_filename = "vex_field_240p.png";
+ private:
+  static const int path_len = 40;
+  static constexpr char const* field_filename = "vex_field_240p.png";
 
-    OdometryBase& odom;
-    double robot_width;
-    double robot_height;
-    uint8_t* buf = nullptr;
-    int buf_size = 0;
-    Pose2d path[path_len];
-    int path_index = 0;
-    bool do_trail;
-    GraphDrawer velocity_graph;
+  OdometryBase& odom;
+  double robot_width;
+  double robot_height;
+  uint8_t* buf = nullptr;
+  int buf_size = 0;
+  Pose2d path[path_len];
+  int path_index = 0;
+  bool do_trail;
+  GraphDrawer velocity_graph;
 };
 
 /// @brief Simple page that stores no internal data. the draw and update functions use only global
 /// data rather than storing anything
 class FunctionPage : public Page {
-   public:
-    /// @brief Creates a function page
-    /// @param update_f the function called every tick to respond to user input or do data
-    /// collection
-    /// @param draw_t the function called to draw to the screen
-    FunctionPage(update_func_t update_f, draw_func_t draw_t);
-    /// @brief @see Page#update
-    void update(bool was_pressed, int x, int y) override;
-    /// @brief @see Page#draw
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
+ public:
+  /// @brief Creates a function page
+  /// @param update_f the function called every tick to respond to user input or do data
+  /// collection
+  /// @param draw_t the function called to draw to the screen
+  FunctionPage(update_func_t update_f, draw_func_t draw_t);
+  /// @brief @see Page#update
+  void update(bool was_pressed, int x, int y) override;
+  /// @brief @see Page#draw
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
 
-   private:
-    update_func_t update_f;
-    draw_func_t draw_f;
+ private:
+  update_func_t update_f;
+  draw_func_t draw_f;
 };
 
 /// @brief PIDPage provides a way to tune a pid controller on the screen
 class PIDPage : public Page {
-   public:
-    /// @brief Create a PIDPage
-    /// @param pid the pid controller we're changing
-    /// @param name a name to recognize this pid controller if we've got multiple pid screens
-    /// @param onchange a function that is called when a tuning parameter is changed. If you need to
-    /// update stuff on that change register a handler here
-    PIDPage(PID& pid, std::string name, std::function<void(void)> onchange = []() {});
-    PIDPage(PIDFF& pidff, std::string name, std::function<void(void)> onchange = []() {});
+ public:
+  /// @brief Create a PIDPage
+  /// @param pid the pid controller we're changing
+  /// @param name a name to recognize this pid controller if we've got multiple pid screens
+  /// @param onchange a function that is called when a tuning parameter is changed. If you need to
+  /// update stuff on that change register a handler here
+  PIDPage(PID& pid, std::string name, std::function<void(void)> onchange = []() {});
+  PIDPage(PIDFF& pidff, std::string name, std::function<void(void)> onchange = []() {});
 
-    /// @brief @see Page#update
-    void update(bool was_pressed, int x, int y) override;
-    /// @brief @see Page#draw
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
+  /// @brief @see Page#update
+  void update(bool was_pressed, int x, int y) override;
+  /// @brief @see Page#draw
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
 
-   private:
-    /// @brief reset d
-    void zero_d_f() { pid.kd = 0; }
-    /// @brief reset i
-    void zero_i_f() { pid.ki = 0; }
+ private:
+  /// @brief reset d
+  void zero_d_f() { pid.kd = 0; }
+  /// @brief reset i
+  void zero_i_f() { pid.ki = 0; }
 
-    PID& pid;
-    const std::string name;
-    std::function<void(void)> onchange;
+  PID& pid;
+  const std::string name;
+  std::function<void(void)> onchange;
 
-    SliderWidget p_slider;
-    SliderWidget i_slider;
-    SliderWidget d_slider;
-    ButtonWidget zero_i;
-    ButtonWidget zero_d;
+  SliderWidget p_slider;
+  SliderWidget i_slider;
+  SliderWidget d_slider;
+  ButtonWidget zero_i;
+  ButtonWidget zero_d;
 
-    GraphDrawer graph;
+  GraphDrawer graph;
 };
 
 /// @brief InitializerPage provides a way to Select a desired Initialization on the Screen
 class InitializerPage : public Page {
-   public:
-    /// @brief Creates an InitializerPage
-    /// @param initializer The initializer object for which this page provides a GUI of
-    /// @param starting_index The first Initialization to be rendered on the page (note that 8
-    /// Initializations are rendered per page)
-    InitializerPage(const Initializer& initializer, size_t starting_index = 0);
+ public:
+  /// @brief Creates an InitializerPage
+  /// @param initializer The initializer object for which this page provides a GUI of
+  /// @param starting_index The first Initialization to be rendered on the page (note that 8
+  /// Initializations are rendered per page)
+  InitializerPage(const Initializer& initializer, size_t starting_index = 0);
 
-    /// @brief @see Page#update
-    void update(bool was_pressed, int x, int y) override;
-    /// @brief @see Page#draw
-    void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
+  /// @brief @see Page#update
+  void update(bool was_pressed, int x, int y) override;
+  /// @brief @see Page#draw
+  void draw(vex::brain::lcd&, bool first_draw, unsigned int frame_number) override;
 
-    /// @brief Creates an InitializerPage that renders the following Initializations from the last.
-    static InitializerPage* Next();
+  /// @brief Creates an InitializerPage that renders the following Initializations from the last.
+  static InitializerPage* Next();
 
-    /// @brief When using InitializerPage to select an Initialization, use this as the raw selector
-    /// function.
-    static size_t selector();
+  /// @brief When using InitializerPage to select an Initialization, use this as the raw selector
+  /// function.
+  static size_t selector();
 
-    /// @brief When using InitializerPage wrapped by a timeout, call this to generate the desired
-    /// selector function
-    /// @param seconds The amount of seconds after which the selector function will timeout
-    /// @param fallback The value which ends up being selected should the selector function timeout
-    /// @return A selector function wrapped in a Selector::timeout
-    inline static std::function<Selector::selector_t> timed_selector(
-            unsigned int seconds, size_t fallback = DEFAULT_CANCELATION_INDEX
-    ) {
-        return Selector::timeout(selector, seconds * 1000000, fallback, cancel);
-    }
+  /// @brief When using InitializerPage wrapped by a timeout, call this to generate the desired
+  /// selector function
+  /// @param seconds The amount of seconds after which the selector function will timeout
+  /// @param fallback The value which ends up being selected should the selector function timeout
+  /// @return A selector function wrapped in a Selector::timeout
+  inline static std::function<Selector::selector_t> timed_selector(
+      unsigned int seconds, size_t fallback = DEFAULT_CANCELATION_INDEX
+  ) {
+    return Selector::timeout(selector, seconds * 1000000, fallback, cancel);
+  }
 
-    /// @brief When using a selector function wrapper that may cancel or otherwise cause the
-    /// InitializerPage's selector to fail, call this
-    /// @param selected The value selected that ended up being selected.
-    static void cancel(size_t selected);
+  /// @brief When using a selector function wrapper that may cancel or otherwise cause the
+  /// InitializerPage's selector to fail, call this
+  /// @param selected The value selected that ended up being selected.
+  static void cancel(size_t selected);
 
-    /// @brief The default selected index if a cancelation occured during selection
-    static const size_t DEFAULT_CANCELATION_INDEX = Selector::NO_SELECTION_INDEX - 1;
+  /// @brief The default selected index if a cancelation occured during selection
+  static const size_t DEFAULT_CANCELATION_INDEX = Selector::NO_SELECTION_INDEX - 1;
 
-   private:
-    /// @brief The buffer that stores the selection of any InitializerPage
-    inline static size_t selection_buffer = Selector::NO_SELECTION_INDEX;
+ private:
+  /// @brief The buffer that stores the selection of any InitializerPage
+  inline static size_t selection_buffer = Selector::NO_SELECTION_INDEX;
 
-    const Initializer& initializer;
-    const size_t starting_index;
-    inline static InitializerPage* latest_page = nullptr;
+  const Initializer& initializer;
+  const size_t starting_index;
+  inline static InitializerPage* latest_page = nullptr;
 
-    const static std::array<Rect, 8> buttons;
+  const static std::array<Rect, 8> buttons;
 };
 
 }  // namespace LegacyScreen

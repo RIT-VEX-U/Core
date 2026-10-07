@@ -1,14 +1,15 @@
 #pragma once
 
-#include <atomic>
+#include "vex/vex.h"
 
 #include "core/robot_specs.h"
 #include "core/subsystems/screen/legacy.h"
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/moving_average.h"
-#include "vex.h"
+
+#include <atomic>
 
 /**
  * a Flywheel class that handles all control of a high inertia spinning disk
