@@ -1,7 +1,7 @@
 #pragma once
 
+#include "vex/vex.h"
 #include "core/utils/controls/feedback_base.h"
-#include "vex.h"
 #include <cmath>
 
 /**

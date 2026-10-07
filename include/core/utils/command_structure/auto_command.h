@@ -6,12 +6,12 @@
 
 #pragma once
 
+#include "vex/vex.h"
+
 #include <atomic>
 #include <functional>
 #include <queue>
 #include <vector>
-
-#include "vex/vex.h"
 
 /**
  * A Condition is a function that returns true or false

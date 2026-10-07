@@ -1,7 +1,9 @@
 #pragma once
 
+#include "vex/vex.h"
+#include "core/utils/math/geometry/translation2d.h"
 #include "core/utils/math/eigen_interface.h"
-#include "vex.h"
+
 #include <cmath>
 #include <stdio.h>
 #include <string>

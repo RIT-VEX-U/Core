@@ -1,5 +1,11 @@
 #pragma once
 
+#include "vex/vex.h"
+#include "core/utils/math_util.h"
+#include "core/utils/moving_average.h"
+#include <math.h>
+#include <vector>
+
 /**
  * FeedForward
  *
