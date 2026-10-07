@@ -5,11 +5,9 @@
  *    milliseconds before continuing execution of the autonomous route
  */
 
-#pragma once
+#include "core/competition/command_structure/delay_command.h"
 
-#include "core/utils/command_structure/auto_command.h"
-#include "core/utils/command_structure/delay_command.h"
-
+#include "core/competition/command_structure/auto_command.h"
 
 /**
  * Construct a delay command
@@ -23,9 +21,8 @@ DelayCommand::DelayCommand(int ms) : ms(ms) {}
  * @returns true when complete
  */
 bool DelayCommand::run() {
-    vexDelay(ms);
-    return true;
+  vexDelay(ms);
+  return true;
 }
 
 std::string DelayCommand::toString() { return "Delaying for " + std::to_string(ms) + "ms"; }
-

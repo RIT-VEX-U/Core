@@ -1,4 +1,4 @@
-#include "core/utils/command_structure/auto_command.h"
+#include "core/competition/command_structure/auto_command.h"
 class OrCondition : public Condition {
    public:
     OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
