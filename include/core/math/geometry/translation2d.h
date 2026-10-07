@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "cevalm.hpp"
-#include "core/utils/math/eigen_interface.h"
-#include "core/utils/math/geometry/rotation2d.h"
+#include "core/math/eigen_interface.h"
+#include "core/math/geometry/rotation2d.h"
 #include "core/utils/units.h"
 
 class Rotation2d;

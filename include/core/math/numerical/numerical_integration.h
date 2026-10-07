@@ -1,6 +1,6 @@
 #pragma once
 
-#include <../vendor/eigen/Eigen/Dense>
+#include <Eigen/Dense>
 
 #include <functional>
 

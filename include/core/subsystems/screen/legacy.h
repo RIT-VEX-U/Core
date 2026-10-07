@@ -10,8 +10,8 @@
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/math/geometry/point2d.h"
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/point2d.h"
+#include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
 
 namespace LegacyScreen {

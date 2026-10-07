@@ -3,10 +3,10 @@
 #include <vector>
 
 #include "cevalm.hpp"
-#include "core/utils/math/geometry/rotation2d.h"
-#include "core/utils/math/geometry/transform2d.h"
-#include "core/utils/math/geometry/translation2d.h"
-#include "core/utils/math/geometry/twist2d.h"
+#include "core/math/geometry/rotation2d.h"
+#include "core/math/geometry/transform2d.h"
+#include "core/math/geometry/translation2d.h"
+#include "core/math/geometry/twist2d.h"
 #include "core/utils/units.h"
 
 /**

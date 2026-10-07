@@ -3,7 +3,7 @@
 #include "vex/vex.h"
 #include "Eigen/Dense"
 #include "math.h"
-#include "core/utils/math/geometry/translation2d.h"
+#include "core/math/geometry/translation2d.h"
 
 #include <vector>
 

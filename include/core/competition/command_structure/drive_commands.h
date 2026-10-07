@@ -20,7 +20,7 @@
 
 #include "core/competition/command_structure/auto_command.h"
 #include "core/subsystems/tank_drive.h"
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
 
 // ==== DRIVING ====

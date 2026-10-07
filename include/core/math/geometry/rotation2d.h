@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "cevalm.hpp"
-#include "core/utils/math/eigen_interface.h"
+#include "core/math/eigen_interface.h"
 #include "core/utils/units.h"
 
 /**

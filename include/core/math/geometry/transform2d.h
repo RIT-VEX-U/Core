@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/utils/math/geometry/rotation2d.h"
-#include "core/utils/math/geometry/translation2d.h"
+#include "core/math/geometry/rotation2d.h"
+#include "core/math/geometry/translation2d.h"
 #include "core/utils/units.h"
 
 /**
