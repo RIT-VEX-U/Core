@@ -10,19 +10,21 @@
 #include "core/device/vdb/visitor.hpp"
 #include "core/device/wrapper_device.hpp"
 
+// Screen package
+#include "core/screen/legacy_bridge.h"
+#include "core/screen/legacy.h"
+#include "core/screen/pl_mpeg.h"
+#include "core/screen/screen_controller.h"
+#include "core/screen/video.h"
+
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/flywheel.h"
-#include "core/screen/pl_mpeg.h"
-#include "core/screen/video.h"
 #include "core/subsystems/lift.h"
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/subsystems/odometry/odometry_nwheel.h"
 #include "core/subsystems/odometry/odometry_serial.h"
 #include "core/subsystems/odometry/odometry_tank.h"
-#include "core/screen/legacy.h"
-#include "core/screen/legacy_bridge.h"
-#include "core/screen/screen_controller.h"
 #include "core/subsystems/tank_drive.h"
 
 // Competition package
