@@ -32,9 +32,73 @@ Condition* Condition::Or(Condition* b) { return new OrCondition(this, b); }
 
 Condition* Condition::And(Condition* b) { return new AndCondition(this, b); }
 
+OrCondition::OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
+bool OrCondition::test() {
+    bool a = A->test();
+    bool b = B->test();
+    return a | b;
+}
+
+AndCondition::AndCondition(Condition* A, Condition* B) : A(A), B(B) {}
+bool AndCondition::test() {
+    bool a = A->test();
+    bool b = B->test();
+    return a & b;
+}
+
+/**
+ * Executes the command
+ * Overridden by child classes
+ * @returns true when the command is finished, false otherwise
+ */
+bool AutoCommand::run() { return true; }
+
+std::string AutoCommand::toString() { return "AutoCommand"; }
+
+void AutoCommand::on_timeout() {}
+
+AutoCommand *AutoCommand::withTimeout(double t_seconds) {
+    if (this->timeout_seconds < 0) {
+        // should never be timed out
+        return this;
+    }
+    this->timeout_seconds = t_seconds;
+    return this;
+}
+
+AutoCommand *AutoCommand::withCancelCondition(Condition *true_to_end) {
+    this->true_to_end = true_to_end;
+    return this;
+}
+
+// FunctionCommand Definitions
+FunctionCommand::FunctionCommand(std::function<bool(void)> f) : f(f) {}
+bool FunctionCommand::run() { return f(); }
+std::string FunctionCommand::toString() { return "Function Command"; }
+
+// TimesTestedCondition Definitions
+TimesTestedCondition::TimesTestedCondition(size_t N) : max(N) {}
+bool TimesTestedCondition::test() {
+        count++;
+        if (count >= max) {
+            return true;
+        }
+        return false;
+    }
+
+// FunctionCondition Definitions
+FunctionCondition::FunctionCondition(
+            std::function<bool()> cond, std::function<void(void)> timeout
+    )
+        : cond(cond), timeout(timeout) {}
 bool FunctionCondition::test() { return cond(); }
+
 IfTimePassed::IfTimePassed(double time_s) : time_s(time_s), tmr() {}
 bool IfTimePassed::test() { return tmr.value() > time_s; }
+
+WaitUntilCondition::WaitUntilCondition(Condition* cond) : cond(cond) {}
+bool WaitUntilCondition::run() { return cond->test(); }
+std::string WaitUntilCondition::toString() { return "waiting until " + cond->toString(); }
 
 InOrder::InOrder(std::queue<AutoCommand*> cmds) : cmds(cmds) {
     timeout_seconds = -1.0;  // never timeout unless with_timeout is explicitly called
@@ -235,6 +299,8 @@ void Branch::on_timeout() {
     chosen = false;
 }
 
+
+
 static int async_runner(void* arg) {
     AutoCommand* cmd = (AutoCommand*)arg;
     vex::timer tmr;
@@ -259,6 +325,9 @@ static int async_runner(void* arg) {
 
     return 0;
 }
+
+Async::Async(AutoCommand* cmd) : cmd(cmd) {};
+
 bool Async::run() {
     vex::task* t = new vex::task(async_runner, (void*)cmd);
     (void)t;
