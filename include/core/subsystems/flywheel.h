@@ -3,7 +3,7 @@
 #include "vex/vex.h"
 
 #include "core/robot_specs.h"
-#include "core/subsystems/screen/legacy.h"
+#include "core/screen/legacy.h"
 #include "core/competition/command_structure/auto_command.h"
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"

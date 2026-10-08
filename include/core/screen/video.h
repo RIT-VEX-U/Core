@@ -1,5 +1,4 @@
-#pragma once
-#include "core/subsystems/screen/legacy.h"
+#include "core/screen/legacy.h"
 #include "pl_mpeg.h"
 #include <string>
 
