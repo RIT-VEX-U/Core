@@ -44,7 +44,7 @@ struct HermitePoint {
      * @param vy Y tangent component.
      */
     HermitePoint(double x, double y, double vx, double vy)
-        : point(x, y), tangent(vx, vy), second_derivative(0.0, 0.0) {}
+        : point(x * 1_in, y * 1_in), tangent(vx * 1_in, vy * 1_in), second_derivative(0_in, 0_in) {}
 
     /**
      * @brief Constructs a HermitePoint from scalar position, tangent, and second derivative
@@ -57,7 +57,7 @@ struct HermitePoint {
      * @param ay Y second derivative component.
      */
     HermitePoint(double x, double y, double vx, double vy, double ax, double ay)
-        : point(x, y), tangent(vx, vy), second_derivative(ax, ay) {}
+        : point(x * 1_in, y * 1_in), tangent(vx * 1_in, vy * 1_in), second_derivative(ax * 1_in, ay * 1_in) {}
 
     /**
      * @brief Factory method constructing HermitePoint from explicit derivative vectors.
@@ -93,9 +93,9 @@ struct HermitePoint {
             double accel_mag = 0.0
     ) {
         return HermitePoint(
-                Translation2d(x.to(units::in), y.to(units::in)),
-                Translation2d(speed, heading),
-                Translation2d(accel_mag, accel_heading)
+                Translation2d(x, y),
+                Translation2d(speed * 1_in, heading),
+                Translation2d(accel_mag * 1_in, accel_heading)
         );
     }
 
@@ -117,7 +117,7 @@ struct HermitePoint {
             double accel_mag = 0.0
     ) {
         return HermitePoint(
-                point, Translation2d(speed, heading), Translation2d(accel_mag, accel_heading)
+                point, Translation2d(speed * 1_in, heading), Translation2d(accel_mag * 1_in, accel_heading)
         );
     }
 
@@ -131,8 +131,8 @@ struct HermitePoint {
     static HermitePoint from_pose(const Pose2d &pose, double speed, double accel_mag = 0.0) {
         return HermitePoint(
                 pose.translation(),
-                Translation2d(speed, pose.rotation()),
-                Translation2d(accel_mag, pose.rotation())
+                Translation2d(speed * 1_in, pose.rotation()),
+                Translation2d(accel_mag * 1_in, pose.rotation())
         );
     }
 

@@ -60,7 +60,7 @@ class SplineBase {
      */
     Rotation2d heading(double u) const {
         const Translation2d vel = velocity(clamp_u(u));
-        return vel.norm() > 1e-9 ? vel.theta() : Rotation2d();
+        return vel.norm().to(units::in) > 1e-9 ? vel.theta() : Rotation2d();
     }
 
     /**
@@ -71,14 +71,18 @@ class SplineBase {
     units::Curvature curvature(double u) const {
         const Translation2d vel = velocity(clamp_u(u));
         const Translation2d acc = acceleration(clamp_u(u));
-        const double denom = std::pow((vel.x() * vel.x()) + (vel.y() * vel.y()), 1.5);
+        const double vx = vel.x(units::in);
+        const double vy = vel.y(units::in);
+        const double ax = acc.x(units::in);
+        const double ay = acc.y(units::in);
+        const double denom = std::pow((vx * vx) + (vy * vy), 1.5);
         if (denom < 1e-9) {
             return 0_radpm;
         }
 
         // Convert 2D parametric curvature (in rad/inch) to canonical curvature (in rad/meter)
         constexpr double kInchesPerMeter = (1.0 * units::m).to(units::in);
-        const double curvature_rad_per_in = ((vel.x() * acc.y()) - (vel.y() * acc.x())) / denom;
+        const double curvature_rad_per_in = ((vx * ay) - (vy * ax)) / denom;
         return (curvature_rad_per_in / kInchesPerMeter) * units::radpm;
     }
 
@@ -253,7 +257,7 @@ class SplineBase {
         double sum = 0.0;
         for (int i = 0; i < 5; ++i) {
             const double u = mid + (half_len * x[i]);
-            sum += w[i] * velocity(u).norm();
+            sum += w[i] * velocity(u).norm().to(units::in);
         }
         return half_len * sum;
     }
@@ -357,21 +361,21 @@ class HermiteSpline : public SplineBase {
    public:
     Translation2d position(double u) const override {
         const double clamped_u = clamp_u(u);
-        return Translation2d(eval_poly(x_, clamped_u), eval_poly(y_, clamped_u));
+        return Translation2d(eval_poly(x_, clamped_u) * 1_in, eval_poly(y_, clamped_u) * 1_in);
     }
 
     Translation2d velocity(double u) const override {
         const double clamped_u = clamp_u(u);
         return Translation2d(
-                eval_poly_derivative(x_, clamped_u), eval_poly_derivative(y_, clamped_u)
+                eval_poly_derivative(x_, clamped_u) * 1_in, eval_poly_derivative(y_, clamped_u) * 1_in
         );
     }
 
     Translation2d acceleration(double u) const override {
         const double clamped_u = clamp_u(u);
         return Translation2d(
-                eval_poly_second_derivative(x_, clamped_u),
-                eval_poly_second_derivative(y_, clamped_u)
+                eval_poly_second_derivative(x_, clamped_u) * 1_in,
+                eval_poly_second_derivative(y_, clamped_u) * 1_in
         );
     }
 

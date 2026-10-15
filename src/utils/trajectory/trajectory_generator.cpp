@@ -56,7 +56,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   }
 
   if (config.is_reversed()) {
-    const Transform2d flip{Translation2d{}, from_degrees(180)};
+    const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
     for (PoseWithCurvature& point : points) {
       point = {point.pose + flip, -point.curvature};
     }
@@ -88,17 +88,17 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   std::vector<HermitePoint> hermite_points;
   hermite_points.reserve(waypoints.size());
 
-  const Transform2d flip{Translation2d{}, from_degrees(180)};
+  const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
 
   for (size_t i = 0; i < waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
-      speed = waypoints[i].translation().distance(waypoints[i+1].translation()) * 1.2;
+      speed = waypoints[i].translation().distance(waypoints[i+1].translation()).to(units::in) * 1.2;
     } else if (i == waypoints.size() - 1) {
-      speed = waypoints[i].translation().distance(waypoints[i-1].translation()) * 1.2;
+      speed = waypoints[i].translation().distance(waypoints[i-1].translation()).to(units::in) * 1.2;
     } else {
-      double d_next = waypoints[i].translation().distance(waypoints[i+1].translation());
-      double d_prev = waypoints[i].translation().distance(waypoints[i-1].translation());
+      double d_next = waypoints[i].translation().distance(waypoints[i+1].translation()).to(units::in);
+      double d_prev = waypoints[i].translation().distance(waypoints[i-1].translation()).to(units::in);
       speed = (d_next + d_prev) / 2.0 * 1.2;
     }
     
@@ -128,17 +128,17 @@ Trajectory TrajectoryGenerator::generate_trajectory(
   std::vector<HermitePoint> hermite_points;
   hermite_points.reserve(full_waypoints.size());
 
-  const Transform2d flip{Translation2d{}, from_degrees(180)};
+  const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
 
   for (size_t i = 0; i < full_waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
-      speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()) * 1.2;
+      speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()).to(units::in) * 1.2;
     } else if (i == full_waypoints.size() - 1) {
-      speed = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()) * 1.2;
+      speed = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()).to(units::in) * 1.2;
     } else {
-      double d_next = full_waypoints[i].translation().distance(full_waypoints[i+1].translation());
-      double d_prev = full_waypoints[i].translation().distance(full_waypoints[i-1].translation());
+      double d_next = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()).to(units::in);
+      double d_prev = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()).to(units::in);
       speed = (d_next + d_prev) / 2.0 * 1.2;
     }
     

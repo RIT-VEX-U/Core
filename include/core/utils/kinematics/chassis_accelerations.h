@@ -30,13 +30,8 @@ struct ChassisAccelerations {
      * @return Robot-relative ChassisAccelerations.
      */
     ChassisAccelerations to_robot_relative(const Rotation2d& robotAngle) const {
-        Translation2d rotated = Translation2d(ax.to(units::inps2), ay.to(units::inps2))
-                                    .rotate_by(Rotation2d(-robotAngle.radians()));
-        return ChassisAccelerations(
-            rotated.x() * units::inps2,
-            rotated.y() * units::inps2,
-            alpha
-        );
+        Acceleration2d rotated = Acceleration2d(ax, ay).rotate_by(-robotAngle);
+        return ChassisAccelerations(rotated.x(), rotated.y(), alpha);
     }
 
     /**
@@ -45,13 +40,8 @@ struct ChassisAccelerations {
      * @return Field-relative ChassisAccelerations.
      */
     ChassisAccelerations to_field_relative(const Rotation2d& robotAngle) const {
-        Translation2d rotated = Translation2d(ax.to(units::inps2), ay.to(units::inps2))
-                                    .rotate_by(robotAngle);
-        return ChassisAccelerations(
-            rotated.x() * units::inps2,
-            rotated.y() * units::inps2,
-            alpha
-        );
+        Acceleration2d rotated = Acceleration2d(ax, ay).rotate_by(robotAngle);
+        return ChassisAccelerations(rotated.x(), rotated.y(), alpha);
     }
 
     // Operator overloads

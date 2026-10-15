@@ -46,7 +46,7 @@ class Trajectory {
         units::Length s = 0_in;                      ///< Distance along trajectory
         units::Velocity velocity = 0_inps;           ///< Linear chassis velocity
         units::Acceleration acceleration = 0_inps2;  ///< Linear chassis acceleration
-        Pose2d pose{0.0, 0.0, 0.0};                  ///< 2D robot pose (x, y, theta)
+        Pose2d pose{};                               ///< 2D robot pose (x, y, theta)
         units::Curvature curvature = 0_radpm;        ///< Path curvature at pose
 
         /** @brief Default constructor. */
@@ -103,19 +103,11 @@ class Trajectory {
                     (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) *
                     (reversing ? -1.0 : 1.0);
 
-            const units::Length distance =
-                    units::Length(end_value.pose.translation().distance(pose.translation()));
+            const units::Length distance = end_value.pose.translation().distance(pose.translation());
             const double interpolation_frac =
                     distance > 1E-9_in ? (new_s / distance).internal() : i;
 
-            Translation2d new_trans(
-                    pose.x() + (end_value.pose.x() - pose.x()) * interpolation_frac,
-                    pose.y() + (end_value.pose.y() - pose.y()) * interpolation_frac
-            );
-            double start_rot = pose.rotation().radians();
-            double end_rot = end_value.pose.rotation().radians();
-            Rotation2d new_rot(start_rot + (end_rot - start_rot) * interpolation_frac);
-            Pose2d new_pose(new_trans, new_rot);
+            Pose2d new_pose = pose.interpolate(end_value.pose, interpolation_frac);
 
             units::Curvature new_curvature =
                     1_radpm *
@@ -277,12 +269,12 @@ class Trajectory {
         new_states.reserve(states_.size());
         for (const State &st : states_) {
             State new_st = st;
-            double x = st.pose.x();
-            double y = st.pose.y();
+            units::Length x = st.pose.x();
+            units::Length y = st.pose.y();
             double theta = st.pose.rotation().radians();
             
-            double new_x = 2.0 * center_x.to(units::in) - x;
-            new_st.pose = Pose2d(new_x, y, M_PI - theta);
+            units::Length new_x = 2.0 * center_x - x;
+            new_st.pose = Pose2d(new_x, y, Rotation2d(std::numbers::pi - theta));
             new_st.curvature = -st.curvature;
             new_states.push_back(new_st);
         }
@@ -299,12 +291,11 @@ class Trajectory {
         new_states.reserve(states_.size());
         for (const State &st : states_) {
             State new_st = st;
-            double x = st.pose.x();
-            double y = st.pose.y();
-            double theta = st.pose.rotation().radians();
+            units::Length x = st.pose.x();
+            units::Length y = st.pose.y();
             
-            double new_y = 2.0 * center_y.to(units::in) - y;
-            new_st.pose = Pose2d(x, new_y, -theta);
+            units::Length new_y = 2.0 * center_y - y;
+            new_st.pose = Pose2d(x, new_y, -st.pose.rotation());
             new_st.curvature = -st.curvature;
             new_states.push_back(new_st);
         }
@@ -322,13 +313,13 @@ class Trajectory {
         new_states.reserve(states_.size());
         for (const State &st : states_) {
             State new_st = st;
-            double x = st.pose.x();
-            double y = st.pose.y();
+            units::Length x = st.pose.x();
+            units::Length y = st.pose.y();
             double theta = st.pose.rotation().radians();
             
-            double new_x = 2.0 * center_x.to(units::in) - x;
-            double new_y = 2.0 * center_y.to(units::in) - y;
-            new_st.pose = Pose2d(new_x, new_y, theta + M_PI);
+            units::Length new_x = 2.0 * center_x - x;
+            units::Length new_y = 2.0 * center_y - y;
+            new_st.pose = Pose2d(new_x, new_y, Rotation2d(theta + std::numbers::pi));
             // Curvature remains unchanged for 180 degree rotation
             new_states.push_back(new_st);
         }

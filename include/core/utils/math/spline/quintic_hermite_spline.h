@@ -52,8 +52,8 @@ class QuinticHermiteSpline : public HermiteSpline<5> {
             const Translation2d &end_accel,
             double max_err = 1e-4
     ) {
-        this->x_ = quintic_coeffs(start_pos.x(), end_pos.x(), start_tangent.x(), end_tangent.x(), start_accel.x(), end_accel.x());
-        this->y_ = quintic_coeffs(start_pos.y(), end_pos.y(), start_tangent.y(), end_tangent.y(), start_accel.y(), end_accel.y());
+        this->x_ = quintic_coeffs(start_pos.x(units::in), end_pos.x(units::in), start_tangent.x(units::in), end_tangent.x(units::in), start_accel.x(units::in), end_accel.x(units::in));
+        this->y_ = quintic_coeffs(start_pos.y(units::in), end_pos.y(units::in), start_tangent.y(units::in), end_tangent.y(units::in), start_accel.y(units::in), end_accel.y(units::in));
         build_arc_table(max_err);
     }
 

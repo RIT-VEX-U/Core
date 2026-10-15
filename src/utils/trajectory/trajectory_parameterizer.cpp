@@ -36,8 +36,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     auto& constrainedState = constrainedStates[i];
     constrainedState.pose = points[i];
 
-    units::Length ds = units::in * (constrainedState.pose.pose.translation().distance(
-        predecessor.pose.pose.translation()));
+    units::Length ds = constrainedState.pose.pose.translation().distance(
+        predecessor.pose.pose.translation());
     constrainedState.distance = ds + predecessor.distance;
 
     while (true) {

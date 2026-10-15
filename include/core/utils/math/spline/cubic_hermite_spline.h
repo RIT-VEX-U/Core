@@ -39,8 +39,8 @@ class CubicHermiteSpline : public HermiteSpline<3> {
             const Translation2d &end_tangent,
             double max_err = 1e-4
     ) {
-        this->x_ = cubic_coeffs(start_pos.x(), end_pos.x(), start_tangent.x(), end_tangent.x());
-        this->y_ = cubic_coeffs(start_pos.y(), end_pos.y(), start_tangent.y(), end_tangent.y());
+        this->x_ = cubic_coeffs(start_pos.x(units::in), end_pos.x(units::in), start_tangent.x(units::in), end_tangent.x(units::in));
+        this->y_ = cubic_coeffs(start_pos.y(units::in), end_pos.y(units::in), start_tangent.y(units::in), end_tangent.y(units::in));
         build_arc_table(max_err);
     }
 

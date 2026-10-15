@@ -32,13 +32,8 @@ struct ChassisVelocities {
      * @return Robot-relative ChassisVelocities.
      */
     ChassisVelocities to_robot_relative(const Rotation2d& robotAngle) const {
-        Translation2d rotated = Translation2d(vx.to(units::inps), vy.to(units::inps))
-                                    .rotate_by(Rotation2d(-robotAngle.radians()));
-        return ChassisVelocities(
-            rotated.x() * units::inps,
-            rotated.y() * units::inps,
-            omega
-        );
+        Velocity2d rotated = Velocity2d(vx, vy).rotate_by(-robotAngle);
+        return ChassisVelocities(rotated.x(), rotated.y(), omega);
     }
 
     /**
@@ -47,13 +42,8 @@ struct ChassisVelocities {
      * @return Field-relative ChassisVelocities.
      */
     ChassisVelocities to_field_relative(const Rotation2d& robotAngle) const {
-        Translation2d rotated = Translation2d(vx.to(units::inps), vy.to(units::inps))
-                                    .rotate_by(robotAngle);
-        return ChassisVelocities(
-            rotated.x() * units::inps,
-            rotated.y() * units::inps,
-            omega
-        );
+        Velocity2d rotated = Velocity2d(vx, vy).rotate_by(robotAngle);
+        return ChassisVelocities(rotated.x(), rotated.y(), omega);
     }
 
     /**
@@ -69,20 +59,17 @@ struct ChassisVelocities {
     ChassisVelocities discretize(units::Time dt) const {
         // Construct the desired pose after a timestep, relative to the current pose
         // with decoupled translation and rotation
-        Pose2d desired_pose(
-            vx.to(units::inps) * dt.to(units::s),
-            vy.to(units::inps) * dt.to(units::s),
-            omega.to(units::radps) * dt.to(units::s)
-        );
+        Pose2d desired_pose(vx * dt, vy * dt, Rotation2d(omega * dt));
 
         // Calculate the constant-curvature path (Twist2d) to get there
-        Twist2d twist = Pose2d(0.0, 0.0, 0.0).log(desired_pose);
+        Transform2d transform = desired_pose - Pose2d{};
+        Twist2d twist = Pose2d{}.log(transform);
 
         // Turn the deltas back into average velocities over the timestep
         return ChassisVelocities(
-            (twist.dx() / dt.to(units::s)) * units::inps,
-            (twist.dy() / dt.to(units::s)) * units::inps,
-            (twist.dtheta() / dt.to(units::s)) * units::radps
+            twist.dx() / dt,
+            twist.dy() / dt,
+            twist.dtheta() / dt
         );
     }
 
