@@ -133,7 +133,7 @@ class Device : public COBSSerialDevice {
           (
               [&] {
                 if (id == channel.get_id()) {
-                  if (channel.is_acknowledged() == true) {
+                  if (channel.acked) {
                     this->add_to_queue(channel.serialize(VDP::PacketType::Data));
                   } else {
                     this->add_to_queue(channel.serialize(VDP::PacketType::Schema));
@@ -152,9 +152,6 @@ class Device : public COBSSerialDevice {
    */
   void apply_packet(VDP::Packet in) {
     const VDP::PacketValidity status = VDP::validate_packet(in);
-    printf("got packet: ");
-    hexdump(in.data(), in.size());
-    printf("size: %d\n", in.size());
 
     /// check if the packet is valid;
     if (status == VDP::PacketValidity::BadChecksum) {
@@ -172,30 +169,47 @@ class Device : public COBSSerialDevice {
     VDP::PacketHeader header = VDP::decode_header_byte(in[0]);
     switch (header.func) {
       case VDP::PacketFunction::Send: {
-        // decode packet and apply to channel
-        VDP::ChannelID id_to_update = in[1];
-        std::apply(
-            [&](auto&... channel) {
-              (
-                  [&] {
-                    if (id_to_update == channel.get_id()) {
-                      printf("applying update to channel %d\n", id_to_update);
-                      channel.apply_update(VDP::Packet(in.begin() + 2, in.end()));
-                    }
-                  }(),
-                  ...);
-            },
-            channels_
-        );
-        // acknowledge packet
-        VDP::Packet data_ack;
-        data_ack.push_back(
-            VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge})
-        );
-        data_ack.push_back(id_to_update);
-        VDP::Packet checksum = VDP::checksum_pac(data_ack);
-        data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
-        add_to_queue(data_ack);
+        if (header.type == VDP::PacketType::Data) {
+          // decode packet and apply to channel
+          VDP::ChannelID id_to_update = in[1];
+          std::apply(
+              [&](auto&... channel) {
+                (
+                    [&] {
+                      if (id_to_update == channel.get_id()) {
+                        channel.apply_update(VDP::PacketSpan(in).subspan(2));
+                      }
+                    }(),
+                    ...);
+              },
+              channels_
+          );
+          // acknowledge packet
+          VDP::Packet data_ack;
+          data_ack.push_back(
+              VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge})
+          );
+          data_ack.push_back(id_to_update);
+          VDP::Packet checksum = VDP::checksum_pac(data_ack);
+          data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
+          add_to_queue(data_ack);
+          break;
+
+        } else if (header.type == VDP::PacketType::Schema) {
+          VDP::ChannelID acked_id = in[1];
+          std::apply(
+              [&](auto&... channel) {
+                (
+                    [&] {
+                      if (acked_id == channel.get_id()) {
+                        channel.acked = false;
+                      }
+                    }(),
+                    ...);
+              },
+              channels_
+          );
+        }
         break;
       }
       // mark channel as acknowledged, dont do anything if data packet
@@ -207,7 +221,7 @@ class Device : public COBSSerialDevice {
                 (
                     [&] {
                       if (acked_id == channel.get_id()) {
-                        channel.acknowledge();
+                        channel.acked = true;
                       }
                     }(),
                     ...);
@@ -218,21 +232,7 @@ class Device : public COBSSerialDevice {
         break;
         // send out ack packet when empty
       case VDP::PacketFunction::Holding:
-        if (header.type == VDP::PacketType::Schema) {
-          VDP::ChannelID acked_id = in[1];
-          std::apply(
-              [&](auto&... channel) {
-                (
-                    [&] {
-                      if (acked_id == channel.get_id()) {
-                        channel.unacknowledge();
-                      }
-                    }(),
-                    ...);
-              },
-              channels_
-          );
-        } else if (this->outbound_packets.empty()) {
+        if (this->outbound_packets.empty()) {
           VDP::Packet out;
           out.push_back(
               VDP::make_header_byte(
