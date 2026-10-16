@@ -71,19 +71,13 @@ class SplineBase {
     units::Curvature curvature(double u) const {
         const Translation2d vel = velocity(clamp_u(u));
         const Translation2d acc = acceleration(clamp_u(u));
-        const double vx = vel.x(units::in);
-        const double vy = vel.y(units::in);
-        const double ax = acc.x(units::in);
-        const double ay = acc.y(units::in);
-        const double denom = std::pow((vx * vx) + (vy * vy), 1.5);
-        if (denom < 1e-9) {
+        const units::Length speed = vel.norm();
+        if (speed < 1e-4_in) {
             return 0_radpm;
         }
 
-        // Convert 2D parametric curvature (in rad/inch) to canonical curvature (in rad/meter)
-        constexpr double kInchesPerMeter = (1.0 * units::m).to(units::in);
-        const double curvature_rad_per_in = ((vx * ay) - (vy * ax)) / denom;
-        return (curvature_rad_per_in / kInchesPerMeter) * units::radpm;
+        const units::Area cross_product = (vel.x() * acc.y()) - (vel.y() * acc.x());
+        return (cross_product * 1_rad) / units::cube(speed);
     }
 
     /**
@@ -130,15 +124,15 @@ class SplineBase {
      */
     SplineSample sample(double u) const {
         const double clamped_u = clamp_u(u);
-        SplineSample out;
-        out.u = clamped_u;
-        out.s = s_from_u(clamped_u);
-        out.position = position(clamped_u);
-        out.velocity = velocity(clamped_u);
-        out.acceleration = acceleration(clamped_u);
-        out.heading = heading(clamped_u);
-        out.curvature = curvature(clamped_u);
-        return out;
+        return SplineSample{
+                .u = clamped_u,
+                .s = s_from_u(clamped_u),
+                .position = position(clamped_u),
+                .velocity = velocity(clamped_u),
+                .acceleration = acceleration(clamped_u),
+                .heading = heading(clamped_u),
+                .curvature = curvature(clamped_u),
+        };
     }
 
     /**
