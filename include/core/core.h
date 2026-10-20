@@ -11,8 +11,8 @@
 #include "core/device/wrapper_device.hpp"
 
 // Screen package
-#include "core/screen/legacy.h"
 #include "core/screen/legacy_bridge.h"
+#include "core/screen/legacy.h"
 #include "core/screen/pl_mpeg.h"
 #include "core/screen/screen_controller.h"
 #include "core/screen/video.h"
