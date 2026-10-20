@@ -18,6 +18,7 @@ class COBSSerialDevice {
    * @param baud the baud rate to run the port at (i.e. 115200)
    */
   COBSSerialDevice(int32_t port, int32_t baud);
+
   /**
    * Send a packet of data to the wire. This function takes care of the encoding and sending
    * Blocks until the entire packet is written
@@ -30,6 +31,7 @@ class COBSSerialDevice {
    * encoding overhead)
    */
   int send_cobs_packet_blocking(const uint8_t* data, size_t size, bool leading_delimeter = false);
+
   /**
    * Recieve a packet from the wire
    * this function polls the port for incoming data and returns when a valid COBS packet has been
@@ -50,18 +52,21 @@ class COBSSerialDevice {
    * start delimeter may help recover the system if the previous packet failed to completely send.
    */
   static void cobs_encode(const Packet& in, WirePacket& out, bool add_start_delimeter = false);
+
   /**
    * Decode a cobs encoded packet
    * @param[in] in the packet recieved from the wire (without delimeters)
    * @param[out] out the buffer to write the data into
    */
   static void cobs_decode(const WirePacket& in, Packet& out);
+
   /**
    * print hex data to the console
    * prints as 16 columns
    */
   static void hexdump(const uint8_t* data, size_t len);
 
+  /// Gets the last packet decoded by the device
   Packet get_last_decoded_packet();
 
  protected:

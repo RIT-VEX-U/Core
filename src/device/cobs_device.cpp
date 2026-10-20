@@ -4,23 +4,27 @@
 
 #include <cstdint>
 
+/**
+ * Create a serial device that communicates with 0-delimeted COBS encoded packets
+ * @param port the vex::PORTXX that the device was created on
+ * @param baud the baud rate to run the port at (i.e. 115200)
+ */
 COBSSerialDevice::COBSSerialDevice(int32_t port, int32_t baud) : port(port), baud(baud) {
   vexGenericSerialEnable(port, 0);
   vexGenericSerialBaudrate(port, baud);
 }
 
-void COBSSerialDevice::hexdump(const uint8_t* data, size_t len) {
-  for (size_t i = 0; i < len; i++) {
-    printf("%02x ", data[i]);
-    if ((i % 16 == 0 && i != 0) || (i == len - 1)) {
-      printf("\n");
-    }
-  }
-  fflush(stdout);
-}
-
-COBSSerialDevice::Packet COBSSerialDevice::get_last_decoded_packet() { return last_decoded_packet; }
-
+/**
+ * Send a packet of data to the wire. This function takes care of the encoding and sending
+ * Blocks until the entire packet is written
+ * NOTE: there is no flow control THAT NEEDS TO BE DONE ON YOUR END
+ * @param data the data to encode then write
+ * @param size the size of the data to write
+ * @param leading_delimeter True to add a leading delimeter to the packet. This may help the
+ * packet deliver uncorrupted if the previous packet failed to send completely
+ * @return the number of bytes written (this will generally be > the size passed in due to
+ * encoding overhead)
+ */
 int COBSSerialDevice::send_cobs_packet_blocking(
     const uint8_t* data, size_t size, bool leading_delimeter
 ) {
@@ -60,39 +64,17 @@ int COBSSerialDevice::send_cobs_packet_blocking(
 
   return write_head;
 }
-bool COBSSerialDevice::poll_incoming_data_once() {
-  while (true) {
-    int toRead = vexGenericSerialReceiveAvail(port);
-    if (toRead <= 0) {
-      return false;
-    }
-    int i = vexGenericSerialReadChar(port);
-    if (i < 0) {
-      return false;
-    }
-    bool finished = handle_incoming_byte((uint8_t)i);
-    if (finished) {
-      return finished;
-    }
-  }
-  return false;
-}
 
-bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
-  if (b == 0) {
-    if (incoming_wire_packet.size() == 0) {
-      // got delimeter but had no packet, just reading delimeters
-      return false;
-    } else {
-      cobs_decode(incoming_wire_packet, last_decoded_packet);
-      incoming_wire_packet.clear();
-      return true;
-    }
-  } else {
-    incoming_wire_packet.push_back(b);
-    return false;
-  }
-}
+/**
+ * Recieve a packet from the wire
+ * this function polls the port for incoming data and returns when a valid COBS packet has been
+ * delivered
+ * @param buffer the buffer to write the decoded data into
+ * @param max_size the maximum amount of data to read into buffer (buffer size)
+ * @param timeout_us if nothing is received for this many us, return -2. The default value of 0
+ * will never timeout
+ * @return the number of bytes received or <0 if an error (-1 general error, -2 timeout)
+ */
 int COBSSerialDevice::receive_cobs_packet_blocking(
     uint8_t* data, size_t max_size, uint32_t timeout_us
 ) {
@@ -124,6 +106,13 @@ int COBSSerialDevice::receive_cobs_packet_blocking(
   return last_decoded_packet.size();
 }
 
+/**
+ * Encode a packet using consistent overhead byte stuffing
+ * @param[in] in the data to send
+ * @param[out] out the buffer to write the packet into
+ * @param add_start_delimeter whether or not to add a leading delimeter to the packet. Adding a
+ * start delimeter may help recover the system if the previous packet failed to completely send.
+ */
 void COBSSerialDevice::cobs_encode(const Packet& in, WirePacket& out, bool add_start_delimeter) {
   out.clear();
   if (in.size() == 0) {
@@ -171,6 +160,11 @@ void COBSSerialDevice::cobs_encode(const Packet& in, WirePacket& out, bool add_s
   out.resize(output_head);
 }
 
+/**
+ * Decode a cobs encoded packet
+ * @param[in] in the packet recieved from the wire (without delimeters)
+ * @param[out] out the buffer to write the data into
+ */
 void COBSSerialDevice::cobs_decode(const WirePacket& in, Packet& out) {
   out.clear();
   if (in.size() == 0) {
@@ -202,4 +196,65 @@ void COBSSerialDevice::cobs_decode(const WirePacket& in, Packet& out) {
   out.resize(write_head);
 
   return;
+}
+
+/**
+ * print hex data to the console
+ * prints as 16 columns
+ */
+void COBSSerialDevice::hexdump(const uint8_t* data, size_t len) {
+  for (size_t i = 0; i < len; i++) {
+    printf("%02x ", data[i]);
+    if ((i % 16 == 0 && i != 0) || (i == len - 1)) {
+      printf("\n");
+    }
+  }
+  fflush(stdout);
+}
+
+/// Gets the last packet decoded by the device
+COBSSerialDevice::Packet COBSSerialDevice::get_last_decoded_packet() { return last_decoded_packet; }
+
+/**
+ * Poll port for incoming data
+ * @return true if a packet was decoded in the most recent poll, false if no new packet is
+ * available
+ */
+bool COBSSerialDevice::poll_incoming_data_once() {
+  while (true) {
+    int toRead = vexGenericSerialReceiveAvail(port);
+    if (toRead <= 0) {
+      return false;
+    }
+    int i = vexGenericSerialReadChar(port);
+    if (i < 0) {
+      return false;
+    }
+    bool finished = handle_incoming_byte((uint8_t)i);
+    if (finished) {
+      return finished;
+    }
+  }
+  return false;
+}
+
+/**
+ * @brief  process one byte at a time
+ * @param byte the incoming byte
+ * @return true if a packet was decoded
+ */
+bool COBSSerialDevice::handle_incoming_byte(uint8_t b) {
+  if (b == 0) {
+    if (incoming_wire_packet.size() == 0) {
+      // got delimeter but had no packet, just reading delimeters
+      return false;
+    } else {
+      cobs_decode(incoming_wire_packet, last_decoded_packet);
+      incoming_wire_packet.clear();
+      return true;
+    }
+  } else {
+    incoming_wire_packet.push_back(b);
+    return false;
+  }
 }

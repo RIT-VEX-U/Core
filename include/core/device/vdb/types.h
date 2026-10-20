@@ -58,16 +58,6 @@ enum class TypeId : uint8_t {
   UNKNOWN = 34,
 };
 
-/**
- * Gets Type Id as a string
- */
-std::string to_string(TypeId t);
-
-/**
- * Gets the Type Id given a string
- */
-TypeId parse_type(std::string str);
-
 /// Recprd proto
 template <typename... Fields>
 class Record;
@@ -81,7 +71,6 @@ template <typename T>
 struct TypeIdMap;
 
 /// Maps each type -> TypeId
-
 template <typename... Fields>
 struct TypeIdMap<Record<Fields...>> {
   static constexpr TypeId value = TypeId::Record;
@@ -228,8 +217,11 @@ struct IsFixedPoint : std::false_type {};
 template <TypeId Id, typename Storage>
 struct IsFixedPoint<FixedPoint<Id, Storage>> : std::true_type {};
 
+/// Gets Type Id as a string
+std::string to_string(TypeId t);
+
 /*
- * defines a Field
+ * Defines a Field
  * A named value that can be serialized and sent to the debug board.
  */
 template <typename T>
@@ -244,26 +236,17 @@ class Field {
    */
   Field(std::string name, T& value) : name_(std::move(name)), value_(value) {};
 
-  /**
-   * @brief Gets the name of the field
-   * @return the field name
-   */
+  /// Gets the name of the field
   const std::string& get_name() const { return name_; };
 
-  /**
-   * @brief Gets the value currently stored by the field
-   * @return the value currently stored by the field
-   */
+  /// Gets the value currently stored by the field
   const T& get_value() const { return value_; }
 
-  /**
-   * @brief Gets the type of the field in the form of a TypeId enum
-   * @return the type id of the field
-   */
+  /// Gets the type of the field in the form of a TypeId enum
   const TypeId get_type() const { return TypeIdMap<T>::value; }
 
   /**
-   * @brief serializes the field's schema in the form of a VDP::Packet
+   * @brief Serializes the field's schema in the form of a VDP::Packet
    * @return the serialized schema
    */
   VDP::Packet serialize_schema() const {
@@ -276,7 +259,7 @@ class Field {
   }
 
   /**
-   * @brief serializes the field's data in the form of a VDP::Packet
+   * @brief Serializes the field's data in the form of a VDP::Packet
    * @return the serialized data
    */
   VDP::Packet serialize_data() const {
@@ -293,7 +276,7 @@ class Field {
   }
 
   /**
-   * @brief deserializes a packet's data and applies it to the field
+   * @brief Deserializes a packet's data and applies it to the field
    * @return the number of bytes read in the packet
    */
   size_t apply_update(const VDP::PacketSpan packet_in) {
@@ -318,10 +301,7 @@ class Field {
     }
   }
 
-  /**
-   * @brief formats the field's data as a string
-   * @return a string representation of the field's data
-   */
+  /// Gets the field's data as a string
   std::string data_to_string(std::size_t depth = 0) const {
     // add the name and a specified number of indents to the string
     std::string out = std::string(depth * 2, ' ') + name_ + " : ";
@@ -363,10 +343,7 @@ class Field {
     }
   }
 
-  /**
-   * formats the field's schema as a string
-   * @return the string representation of the field's schema
-   */
+  /// Gets the field's schema as a string
   std::string schema_to_string(std::size_t depth = 0) const {
     return std::string(depth * 2, ' ') + name_ + " : " + VDP::to_string(get_type());
   }
@@ -401,38 +378,25 @@ class Record {
   explicit Record(std::string name, Fields&... fields)
       : name_(std::move(name)), value_(fields...) {}
 
-  /**
-   * @return the name of the record
-   */
+  /// Gets the name of the record
   const std::string& get_name() const { return name_; }
 
-  /**
-   * @return the type id of the record
-   */
+  /// Gets the TypeId of the record
   TypeId get_type() const { return TypeId::Record; }
 
-  /**
-   * @return the value stored by the record
-   */
+  /// Gets the value stored by the record
   const auto& get_value() const { return value_; }
 
-  /**
-   * @return the size of the held tuple
-   */
+  /// Getsthe size of the held tuple
   static constexpr std::size_t size() { return sizeof...(Fields); }
 
-  /**
-   * @return the field at a specified index of the held tuple
-   */
+  /// Gets the field at a specified index of the held tuple
   template <std::size_t I>
   const auto& get() const {
     return std::get<I>(value_);
   }
 
-  /**
-   * @brief serializes the record's schema in the form of a VDP::Packet
-   * @return the serialized schema
-   */
+  /// Serializes the record's schema in the form of a VDP::Packet
   VDP::Packet serialize_schema() const {
     static_assert(sizeof...(Fields) <= 255, "A record cannot contain more than 255 fields");
     Packet out;
@@ -464,7 +428,7 @@ class Record {
   }
 
   /**
-   * @brief serializes the record's data in the form of a VDP::Packet
+   * @brief Serializes the record's data in the form of a VDP::Packet
    * @return the serialized data
    */
   VDP::Packet serialize_data() const {
@@ -486,9 +450,7 @@ class Record {
     return out;
   }
 
-  /**
-   * @breif deserializes a packet of data and applies it to the Record's fields
-   */
+  /// Deserializes a packet of data and applies it to the Record's fields
   size_t apply_update(VDP::PacketSpan pac_in) {
     std::size_t offset = 0;
 
@@ -507,7 +469,7 @@ class Record {
   }
 
   /**
-   * @brief converts a record's held data to a human readable string
+   * @brief Converts a record's held data to a human readable string
    * @return a string representation of the record's held data
    */
   std::string data_to_string(std::size_t depth = 0) const {

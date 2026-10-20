@@ -2,17 +2,13 @@
 #include <sys/types.h>
 #include <v5_api.h>
 
-#include <array>
-#include <bit>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
 #include <string>
-#include <utility>
 #include <vector>
 
-#include "crc32.hpp"
-#include "types.hpp"
+#include "types.h"
 
 namespace VDB {
 uint32_t time_ms();
@@ -44,26 +40,6 @@ void delay_ms(uint32_t ms);
 namespace VDP {
 constexpr size_t MAX_CHANNELS = 256;
 
-enum PacketValidity : uint8_t {
-  Ok,
-  BadChecksum,
-  TooSmall,
-};
-
-/**
- * checks the validity of a packet
- * @param packet the packet to checksum
- * @return the type of validity of the packet
- */
-VDP::PacketValidity validate_packet(const VDP::Packet& packet);
-
-/**
- * creates a checksum for a packet
- * @param in the packet to create a checksum for
- * @return the checksum in packet form
- */
-VDP::Packet checksum_pac(VDP::Packet in);
-
 using Packet = std::vector<uint8_t>;
 
 using PacketSpan = std::span<const uint8_t>;
@@ -90,7 +66,18 @@ enum class PacketType : uint8_t {
 enum class PacketFunction : uint8_t {
   Send = 0b00000010,
   Acknowledge = 0b00000100,
-  Holding = 0b00000110,
+};
+
+/**
+ * PacketValidities can be
+ * Ok, packet successfully validated
+ * BadChecksum, packet's chceksum does not match recreated checksum
+ * TooSmall, packet is too small to be a real packet
+ */
+enum PacketValidity : uint8_t {
+  Ok,
+  BadChecksum,
+  TooSmall,
 };
 
 /// A packet header is byte that combines a packet function and packet type
@@ -99,10 +86,24 @@ struct PacketHeader {
   PacketFunction func;
 };
 
-/// creates a header byte from a PacketHeader
+/**
+ * @brief Checks the validity of a packet
+ * @param packet the packet to checksum
+ * @return the type of validity of the packet
+ */
+VDP::PacketValidity validate_packet(const VDP::Packet& packet);
+
+/**
+ * @brief Creates a checksum for a packet
+ * @param in the packet to create a checksum for
+ * @return the checksum in packet form
+ */
+VDP::Packet checksum_pac(VDP::Packet in);
+
+/// Creates a header byte from a PacketHeader
 uint8_t make_header_byte(PacketHeader head);
 
-/// creates a PacketHeader from a packet
+/// Creates a PacketHeader from a packet
 PacketHeader decode_header_byte(uint8_t hb);
 
 /// creates a checksum for a packet in the form of a packet
@@ -116,23 +117,23 @@ template <typename T>
 class Channel {
  public:
   /**
-   * @brief Constructs a channel of data to be send to the debug board
+   * @brief Constructs a channel of data to be sent to the debug board
    * @param data a field of data to be send through this channel
    */
   explicit Channel(T& data, ChannelID id) : id_(id), data_(data), acked(false), last_recieved(0) {}
 
   /**
-   * @return the channel id
+   * Gets the channel's id
    */
   ChannelID get_id() const { return id_; };
 
   /**
-   * @return the data stored inside the channel
+   * Gets the data stored inside the channel
    */
   T& get_data() { return data_; }
 
   /**
-   * @brief applies an update from a recieved packet of data to the data held by the channel
+   * @brief Applies an update from a recieved packet of data to the data held by the channel
    * @param data_packet the recieved packet of data
    * @return wether or not the update was successful
    */
@@ -142,7 +143,7 @@ class Channel {
   }
 
   /**
-   * Serializes the channel as a packet to be sent over a wire to the debug board
+   * @brief Serializes the channel as a packet to be sent over a wire to the debug board
    * @param pac_type the type of packet to create, schema or data
    */
   VDP::Packet serialize(PacketType pac_type) {
@@ -151,7 +152,7 @@ class Channel {
     out.push_back((uint8_t)PacketFunction::Send | (uint8_t)pac_type);
     out.push_back((uint8_t)id_);
 
-    // either serialize the data held by the channel or the schema
+    // either serialize the data held by the channel or the channel schema
     VDP::Packet packet_body(sizeof(uint32_t));
     if (pac_type == PacketType::Data) {
       // add the timestamp to the packet
@@ -177,8 +178,7 @@ class Channel {
   };
 
   /**
-   * @brief gets the channel's schema as a string
-   * @return a string representation of the channel's schema
+   * Gets the channel's schema as a string
    */
   std::string schema_to_string() const {
     std::string out = "";
@@ -188,8 +188,7 @@ class Channel {
   }
 
   /**
-   * @brief gets the channel's data as a string
-   * @return a string representation of the channel's data
+   * Gets the channel's data as a string
    */
   std::string data_to_string() const {
     std::string out = "";

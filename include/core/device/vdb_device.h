@@ -3,12 +3,10 @@
 #include <cstdio>
 #include <deque>
 #include <functional>
-#include <span>
 #include <tuple>
 
 #include "core/device/cobs_device.h"
-#include "core/device/vdb/protocol.hpp"
-#include "vex/vex.h"
+#include "core/device/vdb/protocol.h"
 
 /**
  * Defines a COBS Serial Device to transmit VDB data through
@@ -24,7 +22,7 @@ class Device : public COBSSerialDevice {
   enum SEND_PACKET_STATE { SUCCESS, NONE_QUEUED, ERROR };
 
   /**
-   * creates a COBS Serial device for VDB data at a specified port with a specified baud rate
+   * @brief Creates a COBS Serial device for VDB data at a specified port with a specified baud rate
    * @param port the port the debug board is connected to
    * @param baud_rate the baud rate for the debug board to use
    */
@@ -38,7 +36,7 @@ class Device : public COBSSerialDevice {
   }
 
   /**
-   * adds a packet to the queue of packets to be sent over the wire
+   * @brief Adds a packet to the queue of packets to be sent over the wire
    * @param packet the packet to add to the queue
    */
   bool add_to_queue(const VDP::Packet& packet) {
@@ -57,7 +55,7 @@ class Device : public COBSSerialDevice {
   }
 
   /**
-   * writes a packet to the device as soon as it is available
+   * Writes a packet to the device as soon as it is available
    */
   SEND_PACKET_STATE write_packet_from_queue() {
     // packet to write to the device
@@ -88,7 +86,7 @@ class Device : public COBSSerialDevice {
   }
 
   /**
-   * the thread for sending data to the wire
+   * The thread for sending data to the wire
    */
   static int serial_thread(void* vself) {
     //. defines itself within the thread
@@ -124,7 +122,7 @@ class Device : public COBSSerialDevice {
   }
 
   /**
-   * Send the data held by a channel to the queue of packets to be sent over the wire
+   * @brief Send the data held by a channel to the queue of packets to be sent over the wire
    * @param id the channel id of data to send over the wire
    */
   void send_channel(VDP::ChannelID id) {
@@ -147,7 +145,7 @@ class Device : public COBSSerialDevice {
   }
 
   /**
-   * Send the data held by a channel to the queue of packets to be sent over the wire
+   * @brief Send the data held by a channel to the queue of packets to be sent over the wire
    * @param id the channel id of data to send over the wire
    */
   void apply_packet(VDP::Packet in) {
