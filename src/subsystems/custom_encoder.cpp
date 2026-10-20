@@ -9,29 +9,6 @@ CustomEncoder::CustomEncoder(vex::triport::port& port, double ticks_per_rev) : s
   tick_scalar = 360 / (ticks_per_rev * 4);
 }
 
-<<<<<<< HEAD
-void CustomEncoder::setRotation(double val, units::angle_unit units) { super::setRotation(val / tick_scalar, units); }
-
-void CustomEncoder::setPosition(double val, units::angle_unit units) { super::setPosition(val / tick_scalar, units); }
-
-double CustomEncoder::rotation(units::angle_unit units) {
-    if (units != units::angle_unit::raw) {
-        return super::rotation(units) * tick_scalar;
-    }
-
-    return super::rotation(units);
-}
-
-double CustomEncoder::position(units::angle_unit units) {
-    if (units != units::angle_unit::raw) {
-        return super::position(units) * tick_scalar;
-    }
-
-    return super::position(units);
-}
-
-double CustomEncoder::velocity(units::velocity_unit units) { return super::velocity(units) * tick_scalar; }
-=======
 void CustomEncoder::setRotation(units::Angle val) {
   super::setRotation(val.to(units::degrees) / tick_scalar, vex::rotationUnits::deg);
 }
@@ -53,4 +30,3 @@ units::AngularVelocity CustomEncoder::velocity() {
       super::velocity(vex::velocityUnits::dps) * tick_scalar, units::degrees_per_second
   );
 }
->>>>>>> f673d53 (fixed up units usage)
