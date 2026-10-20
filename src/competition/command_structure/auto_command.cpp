@@ -1,31 +1,5 @@
 #include "core/competition/command_structure/auto_command.h"
-class OrCondition : public Condition {
-   public:
-    OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
-    bool test() override {
-        bool a = A->test();
-        bool b = B->test();
-        return a | b;
-    }
 
-   private:
-    Condition* A;
-    Condition* B;
-};
-
-class AndCondition : public Condition {
-   public:
-    AndCondition(Condition* A, Condition* B) : A(A), B(B) {}
-    bool test() override {
-        bool a = A->test();
-        bool b = B->test();
-        return a & b;
-    }
-
-   private:
-    Condition* A;
-    Condition* B;
-};
 std::string Condition::toString() { return "Condition"; }
 
 Condition* Condition::Or(Condition* b) { return new OrCondition(this, b); }
@@ -73,11 +47,14 @@ AutoCommand *AutoCommand::withCancelCondition(Condition *true_to_end) {
 
 // FunctionCommand Definitions
 FunctionCommand::FunctionCommand(std::function<bool(void)> f) : f(f) {}
+
 bool FunctionCommand::run() { return f(); }
+
 std::string FunctionCommand::toString() { return "Function Command"; }
 
 // TimesTestedCondition Definitions
 TimesTestedCondition::TimesTestedCondition(size_t N) : max(N) {}
+
 bool TimesTestedCondition::test() {
         count++;
         if (count >= max) {
@@ -91,18 +68,26 @@ FunctionCondition::FunctionCondition(
             std::function<bool()> cond, std::function<void(void)> timeout
     )
         : cond(cond), timeout(timeout) {}
+
 bool FunctionCondition::test() { return cond(); }
 
+// IfTimePassed Definitions
 IfTimePassed::IfTimePassed(double time_s) : time_s(time_s), tmr() {}
+
 bool IfTimePassed::test() { return tmr.value() > time_s; }
 
+// WaitUntilCondition Definitions
 WaitUntilCondition::WaitUntilCondition(Condition* cond) : cond(cond) {}
+
 bool WaitUntilCondition::run() { return cond->test(); }
+
 std::string WaitUntilCondition::toString() { return "waiting until " + cond->toString(); }
 
+// InOrder Definitions
 InOrder::InOrder(std::queue<AutoCommand*> cmds) : cmds(cmds) {
     timeout_seconds = -1.0;  // never timeout unless with_timeout is explicitly called
 }
+
 InOrder::InOrder(std::initializer_list<AutoCommand*> cmds) : cmds(cmds) { timeout_seconds = -1.0; }
 
 bool InOrder::run() {
@@ -298,8 +283,6 @@ void Branch::on_timeout() {
     }
     chosen = false;
 }
-
-
 
 static int async_runner(void* arg) {
     AutoCommand* cmd = (AutoCommand*)arg;
