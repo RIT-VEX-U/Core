@@ -2,10 +2,10 @@
 
 // Device package
 #include "core/device/cobs_device.h"
-#include "core/device/vdb/crc32.hpp"
-#include "core/device/vdb/protocol.hpp"
-#include "core/device/vdb/types.hpp"
-#include "core/device/vdb_device.hpp"
+#include "core/device/vdb/crc32.h"
+#include "core/device/vdb/protocol.h"
+#include "core/device/vdb/types.h"
+#include "core/device/vdb_device.h"
 
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"

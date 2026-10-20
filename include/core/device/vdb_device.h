@@ -228,20 +228,6 @@ class Device : public COBSSerialDevice {
           );
         }
         break;
-        // send out ack packet when empty
-      case VDP::PacketFunction::Holding:
-        if (this->outbound_packets.empty()) {
-          VDP::Packet out;
-          out.push_back(
-              VDP::make_header_byte(
-                  {.type = VDP::PacketType::Schema, .func = VDP::PacketFunction::Acknowledge}
-              )
-          );
-          VDP::Packet checksum = VDP::checksum_pac(out);
-          out.insert(out.end(), checksum.begin(), checksum.end());
-          this->add_to_queue(out);
-        }
-        break;
     }
   }
 
