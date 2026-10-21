@@ -1,5 +1,4 @@
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math/geometry/translation2d.h"
 
 /**
  * Construct a new Odometry Base object
@@ -7,9 +6,9 @@
  * @param is_async True to run constantly in the background, false to call update() manually
  */
 OdometryBase::OdometryBase(bool is_async) : current_pos(this->zero_pos) {
-    if (is_async) {
-        handle = new vex::task(background_task, (void *)this);
-    }
+  if (is_async) {
+    handle = new vex::task(background_task, (void*)this);
+  }
 }
 
 /**
@@ -19,17 +18,17 @@ OdometryBase::OdometryBase(bool is_async) : current_pos(this->zero_pos) {
  * @param ptr Pointer to OdometryBase object
  * @return Required integer return code. Unused.
  */
-int OdometryBase::background_task(void *ptr) {
-    OdometryBase &obj = *((OdometryBase *)ptr);
-    vexDelay(1000);
-    while (!obj.end_task) {
-        obj.mut.lock();
-        obj.update();
-        obj.mut.unlock();
-        vexDelay(5);
-    }
+int OdometryBase::background_task(void* ptr) {
+  OdometryBase& obj = *((OdometryBase*)ptr);
+  vexDelay(1000);
+  while (!obj.end_task) {
+    obj.mut.lock();
+    obj.update();
+    obj.mut.unlock();
+    vexDelay(5);
+  }
 
-    return 0;
+  return 0;
 }
 
 /**
@@ -41,30 +40,30 @@ void OdometryBase::end_async() { this->end_task = true; }
 
 /// Gets the current position and rotation
 Pose2d OdometryBase::get_position(void) {
-    mut.lock();
+  mut.lock();
 
-    // Create a new struct to pass-by-value
-    Pose2d out = current_pos;
+  // Create a new struct to pass-by-value
+  Pose2d out = current_pos;
 
-    mut.unlock();
+  mut.unlock();
 
-    return out;
+  return out;
 }
 
 /// Sets the current position of the robot
-void OdometryBase::set_position(const Pose2d &newpos) {
-    mut.lock();
+void OdometryBase::set_position(const Pose2d& newpos) {
+  mut.lock();
 
-    current_pos = newpos;
+  current_pos = newpos;
 
-    mut.unlock();
+  mut.unlock();
 }
 
-AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
-    return new FunctionCommand([&]() {
-        set_position(newpos);
-        return true;
-    });
+AutoCommand* OdometryBase::SetPositionCmd(const Pose2d& newpos) {
+  return new FunctionCommand([&]() {
+    set_position(newpos);
+    return true;
+  });
 }
 
 /**
@@ -73,51 +72,51 @@ AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
  * turning left or right, respectively.
  */
 double OdometryBase::smallest_angle(double start_deg, double end_deg) {
-    double retval;
-    // get the difference between 0 and 360
-    retval = fmod(end_deg - start_deg, 360.0);
-    if (retval < 0) {
-        retval += 360.0;
-    }
+  double retval;
+  // get the difference between 0 and 360
+  retval = fmod(end_deg - start_deg, 360.0);
+  if (retval < 0) {
+    retval += 360.0;
+  }
 
-    // Get the closest angle, now between -180 (turn left) and +180 (turn right)
-    if (retval > 180) {
-        retval -= 360;
-    }
+  // Get the closest angle, now between -180 (turn left) and +180 (turn right)
+  if (retval > 180) {
+    retval -= 360;
+  }
 
-    return retval;
+  return retval;
 }
 
 double OdometryBase::get_speed() {
-    mut.lock();
-    double retval = speed;
-    mut.unlock();
+  mut.lock();
+  double retval = speed;
+  mut.unlock();
 
-    return retval;
+  return retval;
 }
 
 double OdometryBase::get_accel() {
-    mut.lock();
-    double retval = accel;
-    mut.unlock();
+  mut.lock();
+  double retval = accel;
+  mut.unlock();
 
-    return retval;
+  return retval;
 }
 
 double OdometryBase::get_angular_speed_deg() {
-    mut.lock();
-    double retval = ang_speed_deg;
-    mut.unlock();
+  mut.lock();
+  double retval = ang_speed_deg;
+  mut.unlock();
 
-    return retval;
+  return retval;
 }
 
 double OdometryBase::get_angular_accel_deg() {
-    mut.lock();
-    double retval = ang_accel_deg;
-    mut.unlock();
+  mut.lock();
+  double retval = ang_accel_deg;
+  mut.unlock();
 
-    return retval;
+  return retval;
 }
 
 /**
@@ -125,16 +124,18 @@ double OdometryBase::get_angular_accel_deg() {
  *
  * @return the current linear velocity vector as a Velocity2d
  */
-Velocity2d OdometryBase::get_lin_velocity(){
-    mut.lock();
-    double current_speed = speed;
-    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
-    mut.unlock();
+Velocity2d OdometryBase::get_lin_velocity() {
+  mut.lock();
+  double current_speed = speed;
+  double heading_rad = current_pos.rotation().degrees() * (M_PI) / 180;
+  mut.unlock();
 
-    double velocity_x = current_speed * std::cos(heading_rad);
-    double velocity_y = current_speed * std::sin(heading_rad);
-    Velocity2d velocity = {units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps)};
-    return velocity;
+  double velocity_x = current_speed * std::cos(heading_rad);
+  double velocity_y = current_speed * std::sin(heading_rad);
+  Velocity2d velocity = {
+      units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps)
+  };
+  return velocity;
 }
 
 /**
@@ -142,50 +143,56 @@ Velocity2d OdometryBase::get_lin_velocity(){
  *
  * @return the current linear acceleration vector as a Acceleration2d
  */
-Acceleration2d OdometryBase::get_lin_accel(){
-    mut.lock();
-    double current_accel = accel;
-    double heading = current_pos.rotation().degrees() * (M_PI)/180;
-    mut.unlock();
+Acceleration2d OdometryBase::get_lin_accel() {
+  mut.lock();
+  double current_accel = accel;
+  double heading = current_pos.rotation().degrees() * (M_PI) / 180;
+  mut.unlock();
 
-    double accel_x = current_accel * std::cos(heading);
-    double accel_y = current_accel * std::sin(heading);
-    
-    Acceleration2d accel = {units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2)};
-    return accel;
+  double accel_x = current_accel * std::cos(heading);
+  double accel_y = current_accel * std::sin(heading);
+
+  Acceleration2d accel = {
+      units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2)
+  };
+  return accel;
 }
 
 /**
- * Calculates the current rotational velocity vector 
- * 
+ * Calculates the current rotational velocity vector
+ *
  * @return the current rotational velocity vector as a Pose2d
  */
-Pose2d OdometryBase::get_rot_velocity(){
-    // Obtatining the current angular speed and translation
-    mut.lock();
-    double current_ang_speed = ang_speed_deg;
-    double current_speed = speed;
-    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
-    double velocity_x = current_speed * std::cos(heading_rad);
-    double velocity_y = current_speed * std::sin(heading_rad);
-    mut.unlock();
-    Pose2d rot_velocity = {units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), current_ang_speed};
-    return rot_velocity;
+Pose2d OdometryBase::get_rot_velocity() {
+  // Obtatining the current angular speed and translation
+  mut.lock();
+  double current_ang_speed = ang_speed_deg;
+  double current_speed = speed;
+  double heading_rad = current_pos.rotation().degrees() * (M_PI) / 180;
+  double velocity_x = current_speed * std::cos(heading_rad);
+  double velocity_y = current_speed * std::sin(heading_rad);
+  mut.unlock();
+  Pose2d rot_velocity = {
+      units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), current_ang_speed
+  };
+  return rot_velocity;
 }
 
 /**
- * Calculates the current rotational acceleration vector 
- * 
+ * Calculates the current rotational acceleration vector
+ *
  * @return the current rotational velocity accleration as a Pose2d
  */
-Pose2d OdometryBase::get_rot_accel(){
-    mut.lock();
-    double current_ang_accel = ang_accel_deg;
-    double current_accel = accel;
-    double heading = current_pos.rotation().degrees() * (M_PI)/180;
-    double accel_x = current_accel * std::cos(heading);
-    double accel_y = current_accel * std::sin(heading);
-    mut.unlock();
-    Pose2d rot_accel = {units::Length(accel_x, units::in), units::Length(accel_y, units::in), current_ang_accel};
-    return rot_accel;
+Pose2d OdometryBase::get_rot_accel() {
+  mut.lock();
+  double current_ang_accel = ang_accel_deg;
+  double current_accel = accel;
+  double heading = current_pos.rotation().degrees() * (M_PI) / 180;
+  double accel_x = current_accel * std::cos(heading);
+  double accel_y = current_accel * std::sin(heading);
+  mut.unlock();
+  Pose2d rot_accel = {
+      units::Length(accel_x, units::in), units::Length(accel_y, units::in), current_ang_accel
+  };
+  return rot_accel;
 }
