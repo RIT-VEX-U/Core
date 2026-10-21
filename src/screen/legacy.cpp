@@ -1,4 +1,4 @@
-#include "core/subsystems/screen/legacy.h"
+#include "core/screen/legacy.h"
 #include "core/utils/math_util.h"
 namespace LegacyScreen {
 void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
