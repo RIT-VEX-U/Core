@@ -124,14 +124,14 @@ double OdometryBase::get_angular_accel_deg() {
  *
  * @return the current linear velocity vector as a Velocity2d
  */
-Velocity2d OdometryBase::get_lin_velocity(){
-    mut.lock();
-    double current_speed = speed;
-    double heading_rad = current_pos.rotation().radians();
-    mut.unlock();
+Velocity2d OdometryBase::get_lin_velocity() {
+  mut.lock();
+  double current_speed = speed;
+  Rotation2d heading_rad = current_pos.rotation();
+  mut.unlock();
 
-  double velocity_x = current_speed * std::cos(heading_rad);
-  double velocity_y = current_speed * std::sin(heading_rad);
+  double velocity_x = current_speed * heading_rad.f_cos();
+  double velocity_y = current_speed * heading_rad.f_sin();
   Velocity2d velocity = {
       units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps)
   };
@@ -143,14 +143,14 @@ Velocity2d OdometryBase::get_lin_velocity(){
  *
  * @return the current linear acceleration vector as a Acceleration2d
  */
-Acceleration2d OdometryBase::get_lin_accel(){
-    mut.lock();
-    double current_accel = accel;
-    double heading = current_pos.rotation().radians();
-    mut.unlock();
+Acceleration2d OdometryBase::get_lin_accel() {
+  mut.lock();
+  double current_accel = accel;
+  Rotation2d heading = current_pos.rotation();
+  mut.unlock();
 
-  double accel_x = current_accel * std::cos(heading);
-  double accel_y = current_accel * std::sin(heading);
+  double accel_x = current_accel * heading.f_cos();
+  double accel_y = current_accel * heading.f_sin();
 
   Acceleration2d accel = {
       units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2)
@@ -163,15 +163,18 @@ Acceleration2d OdometryBase::get_lin_accel(){
  *
  * @return the current rotational velocity vector as a Pose2d
  */
-Pose2d OdometryBase::get_rot_velocity(){
-    // Obtatining the current angular speed and translation
-    mut.lock();
-    double heading_rad = current_pos.rotation().radians();
-    double velocity_x = speed * std::cos(heading_rad);
-    double velocity_y = speed * std::sin(heading_rad);
-    mut.unlock();
-    Pose2d rot_velocity(units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), Rotation2d::deg2rad(ang_speed_deg));
-    return rot_velocity;
+Pose2d OdometryBase::get_rot_velocity() {
+  // Obtatining the current angular speed and translation
+  mut.lock();
+  Rotation2d heading_rad = current_pos.rotation();
+  double velocity_x = speed * heading_rad.f_cos();
+  double velocity_y = speed * heading_rad.f_sin();
+  mut.unlock();
+  Pose2d rot_velocity(
+      units::Length(velocity_x, units::in), units::Length(velocity_y, units::in),
+      Rotation2d::deg2rad(ang_speed_deg)
+  );
+  return rot_velocity;
 }
 
 /**
@@ -179,12 +182,15 @@ Pose2d OdometryBase::get_rot_velocity(){
  *
  * @return the current rotational velocity accleration as a Pose2d
  */
-Pose2d OdometryBase::get_rot_accel(){
-    mut.lock();
-    double heading = current_pos.rotation().radians();
-    double accel_x = accel * std::cos(heading);
-    double accel_y = accel * std::sin(heading);
-    mut.unlock();
-    Pose2d rot_accel = {units::Length(accel_x, units::in), units::Length(accel_y, units::in), Rotation2d::deg2rad(ang_accel_deg)};
-    return rot_accel;
+Pose2d OdometryBase::get_rot_accel() {
+  mut.lock();
+  Rotation2d heading = current_pos.rotation();
+  double accel_x = accel * heading.f_cos();
+  double accel_y = accel * heading.f_sin();
+  mut.unlock();
+  Pose2d rot_accel = {
+      units::Length(accel_x, units::in), units::Length(accel_y, units::in),
+      Rotation2d::deg2rad(ang_accel_deg)
+  };
+  return rot_accel;
 }
