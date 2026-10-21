@@ -9,7 +9,7 @@
 #include "core/utils/command_structure/auto_command.h"
 #include "core/utils/controls/feedback_base.h"
 #include "core/utils/controls/pid.h"
-#include "vex.h"
+#include "vex/vex.h"
 
 /**
  * TankDrive is a class to run a tank drive system.
