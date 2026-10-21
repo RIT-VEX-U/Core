@@ -128,7 +128,7 @@ double OdometryBase::get_angular_accel_deg() {
 Velocity2d OdometryBase::get_lin_velocity(){
     mut.lock();
     double current_speed = speed;
-    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
+    double heading_rad = current_pos.rotation().radians();
     mut.unlock();
 
     double velocity_x = current_speed * std::cos(heading_rad);
@@ -145,7 +145,7 @@ Velocity2d OdometryBase::get_lin_velocity(){
 Acceleration2d OdometryBase::get_lin_accel(){
     mut.lock();
     double current_accel = accel;
-    double heading = current_pos.rotation().degrees() * (M_PI)/180;
+    double heading = current_pos.rotation().radians();
     mut.unlock();
 
     double accel_x = current_accel * std::cos(heading);
@@ -163,13 +163,11 @@ Acceleration2d OdometryBase::get_lin_accel(){
 Pose2d OdometryBase::get_rot_velocity(){
     // Obtatining the current angular speed and translation
     mut.lock();
-    double current_ang_speed = ang_speed_deg;
-    double current_speed = speed;
-    double heading_rad = current_pos.rotation().degrees() * (M_PI)/180;
-    double velocity_x = current_speed * std::cos(heading_rad);
-    double velocity_y = current_speed * std::sin(heading_rad);
+    double heading_rad = current_pos.rotation().radians();
+    double velocity_x = speed * std::cos(heading_rad);
+    double velocity_y = speed * std::sin(heading_rad);
     mut.unlock();
-    Pose2d rot_velocity = {units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), current_ang_speed};
+    Pose2d rot_velocity(units::Length(velocity_x, units::in), units::Length(velocity_y, units::in), Rotation2d::deg2rad(ang_speed_deg));
     return rot_velocity;
 }
 
@@ -180,12 +178,10 @@ Pose2d OdometryBase::get_rot_velocity(){
  */
 Pose2d OdometryBase::get_rot_accel(){
     mut.lock();
-    double current_ang_accel = ang_accel_deg;
-    double current_accel = accel;
-    double heading = current_pos.rotation().degrees() * (M_PI)/180;
-    double accel_x = current_accel * std::cos(heading);
-    double accel_y = current_accel * std::sin(heading);
+    double heading = current_pos.rotation().radians();
+    double accel_x = accel * std::cos(heading);
+    double accel_y = accel * std::sin(heading);
     mut.unlock();
-    Pose2d rot_accel = {units::Length(accel_x, units::in), units::Length(accel_y, units::in), current_ang_accel};
+    Pose2d rot_accel = {units::Length(accel_x, units::in), units::Length(accel_y, units::in), Rotation2d::deg2rad(ang_accel_deg)};
     return rot_accel;
 }
