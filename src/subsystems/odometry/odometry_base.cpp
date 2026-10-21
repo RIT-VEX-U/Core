@@ -170,6 +170,7 @@ Pose2d OdometryBase::get_rot_velocity() {
   double velocity_x = speed * heading_rad.f_cos();
   double velocity_y = speed * heading_rad.f_sin();
   mut.unlock();
+  
   Pose2d rot_velocity(
       units::Length(velocity_x, units::in), units::Length(velocity_y, units::in),
       Rotation2d::deg2rad(ang_speed_deg)
@@ -188,6 +189,7 @@ Pose2d OdometryBase::get_rot_accel() {
   double accel_x = accel * heading.f_cos();
   double accel_y = accel * heading.f_sin();
   mut.unlock();
+
   Pose2d rot_accel = {
       units::Length(accel_x, units::in), units::Length(accel_y, units::in),
       Rotation2d::deg2rad(ang_accel_deg)
