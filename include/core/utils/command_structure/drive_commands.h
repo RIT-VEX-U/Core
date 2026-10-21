@@ -209,8 +209,6 @@ class TurnToHeadingCommand : public AutoCommand {
 };
 
 /**
-<<<<<<< HEAD
-=======
  * Autocommand wrapper class for pure pursuit function in the TankDrive class
  */
 class PurePursuitCommand : public AutoCommand {
@@ -247,7 +245,6 @@ class PurePursuitCommand : public AutoCommand {
 };
 
 /**
->>>>>>> main
  * AutoCommand wrapper class for the stop() function in the
  * TankDrive class
  */
