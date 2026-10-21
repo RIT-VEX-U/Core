@@ -8,16 +8,12 @@ Condition* Condition::And(Condition* b) { return new AndCondition(this, b); }
 
 OrCondition::OrCondition(Condition* A, Condition* B) : A(A), B(B) {}
 bool OrCondition::test() {
-    bool a = A->test();
-    bool b = B->test();
-    return a | b;
+    return A->test() || B->test();
 }
 
 AndCondition::AndCondition(Condition* A, Condition* B) : A(A), B(B) {}
 bool AndCondition::test() {
-    bool a = A->test();
-    bool b = B->test();
-    return a & b;
+    return A->test() && B->test();
 }
 
 /**
@@ -309,7 +305,7 @@ static int async_runner(void* arg) {
     return 0;
 }
 
-Async::Async(AutoCommand* cmd) : cmd(cmd) {};
+Async::Async(AutoCommand* cmd) : cmd(cmd) {}
 
 bool Async::run() {
     vex::task* t = new vex::task(async_runner, (void*)cmd);
