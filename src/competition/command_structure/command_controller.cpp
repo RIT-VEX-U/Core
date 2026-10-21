@@ -13,6 +13,13 @@
 #include "core/competition/command_structure/delay_command.h"
 
 /**
+     * @brief Create a CommandController with commands pre added. More can be
+     * added with CommandController::add()
+     * @param cmds
+     */
+    CommandController::CommandController(std::initializer_list<AutoCommand*> cmds) : command_queue(cmds) {}
+
+/**
  * Adds a command to the queue
  * @param cmd the AutoCommand we want to add to our list
  * @param timeout_seconds the number of seconds we will let the command run for.

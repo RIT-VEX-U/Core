@@ -15,19 +15,16 @@ class DelayCommand : public AutoCommand {
      * Construct a delay command
      * @param ms the number of milliseconds to delay for
      */
-    DelayCommand(int ms) : ms(ms) {}
+    DelayCommand(int ms);
 
     /**
      * Delays for the amount of milliseconds stored in the command
      * Overrides run from AutoCommand
      * @returns true when complete
      */
-    bool run() override {
-        vexDelay(ms);
-        return true;
-    }
+    bool run() override;
 
-    std::string toString() override { return "Delaying for " + std::to_string(ms) + "ms"; }
+    std::string toString() override;
 
    private:
     // amount of milliseconds to wait
