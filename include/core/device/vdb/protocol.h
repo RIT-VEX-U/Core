@@ -98,7 +98,7 @@ class Channel {
    * @param data a field of data to be send through this channel
    * @param id a byte designating the channel
    */
-  explicit Channel(T& data, ChannelID id) : id_(id), data_(data), last_recieved_(0) {}
+  explicit Channel(T& data, ChannelID id) : id_(id), data_(data), last_received_(0) {}
 
   /**
    * Gets the channel's id
@@ -116,7 +116,7 @@ class Channel {
    * @return wether or not the update was successful
    */
   bool apply_update(VDP::PacketSpan data_packet) {
-    std::memcpy(&last_recieved_, data_packet.subspan(0, 4).data(), sizeof(uint32_t));
+    std::memcpy(&last_received_, data_packet.subspan(0, 4).data(), sizeof(uint32_t));
     return data_.apply_update(data_packet.subspan(4));
   }
 
@@ -181,7 +181,7 @@ class Channel {
  private:
   ChannelID id_;
   T data_;
-  uint32_t last_recieved_;
+  uint32_t last_received_;
 };
 
 /// deduction guide so that template arguments are not required when creating a channel

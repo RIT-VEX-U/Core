@@ -25,9 +25,8 @@ COBSSerialDevice::COBSSerialDevice(int32_t port, int32_t baud) : port(port), bau
  * @return the number of bytes written (this will generally be > the size passed in due to
  * encoding overhead)
  */
-int COBSSerialDevice::send_cobs_packet_blocking(
-    const uint8_t* data, size_t size, bool leading_delimeter
-) {
+int COBSSerialDevice::send_cobs_packet_blocking(const uint8_t* data, size_t size,
+                                                bool leading_delimeter) {
   serial_access_mut.lock();
 
   writing_buffer.resize(size);
@@ -66,7 +65,7 @@ int COBSSerialDevice::send_cobs_packet_blocking(
 }
 
 /**
- * Recieve a packet from the wire
+ * Receive a packet from the wire
  * this function polls the port for incoming data and returns when a valid COBS packet has been
  * delivered
  * @param buffer the buffer to write the decoded data into
@@ -75,9 +74,8 @@ int COBSSerialDevice::send_cobs_packet_blocking(
  * will never timeout
  * @return the number of bytes received or <0 if an error (-1 general error, -2 timeout)
  */
-int COBSSerialDevice::receive_cobs_packet_blocking(
-    uint8_t* data, size_t max_size, uint32_t timeout_us
-) {
+int COBSSerialDevice::receive_cobs_packet_blocking(uint8_t* data, size_t max_size,
+                                                   uint32_t timeout_us) {
   serial_access_mut.lock();
   size_t start_time = vexSystemHighResTimeGet();
   while (true) {
@@ -162,7 +160,7 @@ void COBSSerialDevice::cobs_encode(const Packet& in, WirePacket& out, bool add_s
 
 /**
  * Decode a cobs encoded packet
- * @param[in] in the packet recieved from the wire (without delimeters)
+ * @param[in] in the packet received from the wire (without delimeters)
  * @param[out] out the buffer to write the data into
  */
 void COBSSerialDevice::cobs_decode(const WirePacket& in, Packet& out) {

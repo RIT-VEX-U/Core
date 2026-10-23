@@ -233,7 +233,7 @@ class Device : public COBSSerialDevice {
   vex::mutex outbound_mutex;
   std::tuple<VDP::Channel<Fields>...> channels_;
 
-  bool waiting_to_recieve = false;
+  bool waiting_to_receive = false;
   /**
    * @brief Packets that have been read from the wire and split up but that are
    * still COBS encoded

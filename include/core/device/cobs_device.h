@@ -33,7 +33,7 @@ class COBSSerialDevice {
   int send_cobs_packet_blocking(const uint8_t* data, size_t size, bool leading_delimeter = false);
 
   /**
-   * Recieve a packet from the wire
+   * Receive a packet from the wire
    * this function polls the port for incoming data and returns when a valid COBS packet has been
    * delivered
    * @param buffer the buffer to write the decoded data into
@@ -55,7 +55,7 @@ class COBSSerialDevice {
 
   /**
    * Decode a cobs encoded packet
-   * @param[in] in the packet recieved from the wire (without delimeters)
+   * @param[in] in the packet received from the wire (without delimeters)
    * @param[out] out the buffer to write the data into
    */
   static void cobs_decode(const WirePacket& in, Packet& out);
