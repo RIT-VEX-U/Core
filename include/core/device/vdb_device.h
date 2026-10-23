@@ -28,10 +28,8 @@ class Device : public COBSSerialDevice {
    */
   explicit Device(int32_t port, int32_t baud_rate, VDP::Channel<Fields>&... channels)
       : COBSSerialDevice(port, baud_rate), channels_(channels...) {
-    static_assert(
-        sizeof...(Fields) <= VDP::MAX_CHANNELS,
-        "There can be no more than 256 Channels sent to a VDB Device"
-    );
+    static_assert(sizeof...(Fields) <= VDP::MAX_CHANNELS,
+                  "There can be no more than 256 Channels sent to a VDB Device");
     serial_task = vex::task(Device::serial_thread, (void*)this, vex::thread::threadPriorityHigh);
   }
 
@@ -89,25 +87,25 @@ class Device : public COBSSerialDevice {
    * The thread for sending data to the wire
    */
   static int serial_thread(void* vself) {
-    //. defines itself within the thread
+    // defines itself within the thread
     Device& self = *(Device*)vself;
 
-    /// serial thread loop
+    // serial thread loop
     while (true) {
       bool did_something = false;
-      /**
+      /*
        * Lame replacement for blocking IO. We can't just wait and tell the
        * scheduler to go work on something else while we wait for packets so
        * instead, if we're getting nothing in and have nothing to send, block
        * ourselves.
        */
 
-      /// Writing
+      // Writing
       SEND_PACKET_STATE send_state = self.write_packet_from_queue();
       if (send_state != NONE_QUEUED) {
         did_something = true;
       }
-      /// Reading
+      // Reading
       if (self.poll_incoming_data_once()) {
         Packet decoded = {};
         decoded = self.get_last_decoded_packet();
@@ -140,8 +138,7 @@ class Device : public COBSSerialDevice {
               }(),
               ...);
         },
-        channels_
-    );
+        channels_);
   }
 
   /**
@@ -180,13 +177,11 @@ class Device : public COBSSerialDevice {
                     }(),
                     ...);
               },
-              channels_
-          );
+              channels_);
           // acknowledge packet
           VDP::Packet data_ack;
           data_ack.push_back(
-              VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge})
-          );
+              VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge}));
           data_ack.push_back(id_to_update);
           VDP::Packet checksum = VDP::checksum_pac(data_ack);
           data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
@@ -205,8 +200,7 @@ class Device : public COBSSerialDevice {
                     }(),
                     ...);
               },
-              channels_
-          );
+              channels_);
         }
         break;
       }
@@ -224,8 +218,7 @@ class Device : public COBSSerialDevice {
                     }(),
                     ...);
               },
-              channels_
-          );
+              channels_);
         }
         break;
     }

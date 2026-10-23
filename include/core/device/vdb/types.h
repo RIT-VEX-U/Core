@@ -58,7 +58,7 @@ enum class TypeId : uint8_t {
   UNKNOWN = 34,
 };
 
-/// Recprd proto
+/// Record proto
 template <typename... Fields>
 class Record;
 
@@ -204,6 +204,7 @@ struct IsField<Field<T>> : std::true_type {};
 
 template <typename... Fields>
 struct IsField<Record<Fields...>> : std::true_type {};
+
 template <typename... Fields>
   requires(IsField<std::remove_cvref_t<Fields>>::value && ...)
 struct TypeIdMap<std::tuple<Fields...>> {
@@ -364,10 +365,8 @@ Field(std::string, T&) -> Field<T>;
 template <typename... Fields>
 class Record {
   // checks that each element being input is a Field or a Record
-  static_assert(
-      (IsField<std::remove_cvref_t<Fields>>::value && ...),
-      "Record elements must all be Field or Record objects"
-  );
+  static_assert((IsField<std::remove_cvref_t<Fields>>::value && ...),
+                "Record elements must all be Field or Record objects");
 
  public:
   /**
@@ -422,8 +421,7 @@ class Record {
               }(),
               ...);
         },
-        get_value()
-    );
+        get_value());
     return out;
   }
 
@@ -445,8 +443,7 @@ class Record {
               }(),
               ...);
         },
-        get_value()
-    );
+        get_value());
     return out;
   }
 
@@ -463,8 +460,7 @@ class Record {
               }(),
               ...);
         },
-        get_value()
-    );
+        get_value());
     return offset;
   }
 
@@ -483,8 +479,7 @@ class Record {
         [&](const auto&... fields) {
           ([&] { out += fields.data_to_string(depth + 1) += ",\n"; }(), ...);
         },
-        this->value_
-    );
+        this->value_);
     out += std::string(depth * 2, ' ') + "}";
     return out;
   }
@@ -504,8 +499,7 @@ class Record {
         [&](const auto&... fields) {
           ([&] { out += fields.schema_to_string(depth + 1) + ",\n"; }(), ...);
         },
-        this->value_
-    );
+        this->value_);
     out += std::string(depth * 2, ' ') + "}";
     return out;
   }

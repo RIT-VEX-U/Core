@@ -15,34 +15,12 @@ uint32_t time_ms();
 void delay_ms(uint32_t ms);
 }  // namespace VDB
 
-// #define VDPTRACE
-#define VDPDEBUG
-#define VDPWARN
-
-#ifdef VDPWARN
 #define VDPWarnf(fmt, ...) printf("WARN: " fmt "\n", ##__VA_ARGS__)
-#else
-#define VDPWarnf(...)
-#endif
-
-#ifdef VDPDEBUG
 #define VDPDebugf(fmt, ...) printf("DEBUG: " fmt "\n", ##__VA_ARGS__)
-#else
-#define VDPDebugf(...)
-#endif
-
-#ifdef VDPTRACE
 #define VDPTracef(fmt, ...) printf("TRACE: " fmt "\n", ##__VA_ARGS__)
-#else
-#define VDPTracef(...)
-#endif
 
 namespace VDP {
 constexpr size_t MAX_CHANNELS = 256;
-
-using Packet = std::vector<uint8_t>;
-
-using PacketSpan = std::span<const uint8_t>;
 
 /// channel ids are in the form of a byte
 using ChannelID = uint8_t;
@@ -61,7 +39,6 @@ enum class PacketType : uint8_t {
  * Packet Functions are either
  * Send, just sending information to the board
  * Acknowledge, acknoledging a specific channel of data
- * Holding, the debug board has data it is waiting to send to the brain
  */
 enum class PacketFunction : uint8_t {
   Send = 0b00000010,
@@ -119,8 +96,9 @@ class Channel {
   /**
    * @brief Constructs a channel of data to be sent to the debug board
    * @param data a field of data to be send through this channel
+   * @param id a byte designating the channel
    */
-  explicit Channel(T& data, ChannelID id) : id_(id), data_(data), acked(false), last_recieved(0) {}
+  explicit Channel(T& data, ChannelID id) : id_(id), data_(data), last_recieved_(0) {}
 
   /**
    * Gets the channel's id
@@ -133,12 +111,12 @@ class Channel {
   T& get_data() { return data_; }
 
   /**
-   * @brief Applies an update from a recieved packet of data to the data held by the channel
-   * @param data_packet the recieved packet of data
+   * @brief Applies an update from a received packet of data to the data held by the channel
+   * @param data_packet the received packet of data
    * @return wether or not the update was successful
    */
   bool apply_update(VDP::PacketSpan data_packet) {
-    std::memcpy(&last_recieved, data_packet.subspan(0, 4).data(), sizeof(uint32_t));
+    std::memcpy(&last_recieved_, data_packet.subspan(0, 4).data(), sizeof(uint32_t));
     return data_.apply_update(data_packet.subspan(4));
   }
 
@@ -193,20 +171,20 @@ class Channel {
   std::string data_to_string() const {
     std::string out = "";
     out += "{\n  id : " + std::to_string(id_) + ",\n";
-    out += "  last recieved: " + std::to_string(id_) + ",\n";
+    out += "  last received: " + std::to_string(id_) + ",\n";
     out += data_.data_to_string(1) + "\n}";
     return out;
   }
 
-  bool acked;
+  bool acked = false;
 
  private:
   ChannelID id_;
   T data_;
-  uint32_t last_recieved;
+  uint32_t last_recieved_;
 };
 
-/// deduction guide so that template arguments are not required when creqting a channel
+/// deduction guide so that template arguments are not required when creating a channel
 template <typename T>
 Channel(ChannelID, T) -> Channel<T>;
 
