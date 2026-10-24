@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <string>
@@ -70,7 +71,7 @@ class TrajectoryConfig {
     TrajectoryConfig(
             units::Velocity max_velocity,
             units::Acceleration max_acceleration,
-            const DifferentialDriveKinematics &kinematics
+            const TankKinematics &kinematics
     )
         : TrajectoryConfig(max_velocity, max_acceleration) {
         set_kinematics(kinematics);
@@ -120,7 +121,7 @@ class TrajectoryConfig {
             units::Velocity start_velocity,
             units::Velocity end_velocity,
             bool reversed,
-            const DifferentialDriveKinematics &kinematics
+            const TankKinematics &kinematics
     )
         : TrajectoryConfig(max_velocity, max_acceleration, start_velocity, end_velocity, reversed) {
         set_kinematics(kinematics);
@@ -170,13 +171,15 @@ class TrajectoryConfig {
 
     /** @brief Move constructor. */
     TrajectoryConfig(TrajectoryConfig &&) = default;
+
     /** @brief Move assignment. */
     TrajectoryConfig &operator=(TrajectoryConfig &&) = default;
 
-    /** @brief Sets initial trajectory velocity. */
+    /** @brief Adds an event triggered at a distance along the trajectory. */
     void add_event(const std::string &name, units::Length distance) {
         events_.push_back({distance, name});
     }
+
     void set_start_velocity(units::Velocity start_velocity) { start_velocity_ = start_velocity; }
 
     /** @brief Sets final trajectory velocity. */
@@ -234,25 +237,25 @@ class TrajectoryConfig {
         add_constraint(TankKinematicsConstraint(track_width, max_velocity_));
     }
 
-    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and explicit limits. */
+    /** @brief Adds a TankKinematicsConstraint using TankKinematics and explicit limits. */
     void set_kinematics(
-            const DifferentialDriveKinematics &kinematics,
+            const TankKinematics &kinematics,
             units::Velocity max_wheel_speed,
             units::Acceleration max_wheel_acceleration
     ) {
         add_constraint(TankKinematicsConstraint(kinematics, max_wheel_speed, max_wheel_acceleration));
     }
 
-    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and explicit max wheel speed limit. */
+    /** @brief Adds a TankKinematicsConstraint using TankKinematics and explicit max wheel speed limit. */
     void set_kinematics(
-            const DifferentialDriveKinematics &kinematics,
+            const TankKinematics &kinematics,
             units::Velocity max_wheel_speed
     ) {
         add_constraint(TankKinematicsConstraint(kinematics, max_wheel_speed));
     }
 
-    /** @brief Adds a TankKinematicsConstraint using DifferentialDriveKinematics and config max velocity. */
-    void set_kinematics(const DifferentialDriveKinematics &kinematics) {
+    /** @brief Adds a TankKinematicsConstraint using TankKinematics and config max velocity. */
+    void set_kinematics(const TankKinematics &kinematics) {
         add_constraint(TankKinematicsConstraint(kinematics, max_velocity_));
     }
 
@@ -275,6 +278,7 @@ class TrajectoryConfig {
     const std::vector<std::unique_ptr<TrajectoryConstraint>> &constraints() const {
         return constraints_;
     }
+
     const std::vector<DistanceEvent> &events() const { return events_; }
 
     /** @return True if trajectory is driven in reverse. */
@@ -298,7 +302,9 @@ class TrajectoryConfig {
     std::vector<DistanceEvent> events_;
     bool reversed_ = false;
     SplinePath::Order spline_order_ = SplinePath::Order::Quintic;
-    std::function<void(const char *)> error_handler_;
+    std::function<void(const char *)> error_handler_ = [](const char *message) {
+        std::fprintf(stderr, "%s\n", message);
+    };
 };
 
 /**
@@ -361,9 +367,9 @@ class TrajectoryConfigBuilder {
         return *this;
     }
 
-    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and explicit limits. */
+    /** @brief Configures drivetrain kinematics constraint using TankKinematics and explicit limits. */
     TrajectoryConfigBuilder &with_kinematics(
-            const DifferentialDriveKinematics &kinematics,
+            const TankKinematics &kinematics,
             units::Velocity max_wheel_speed,
             units::Acceleration max_wheel_acceleration
     ) {
@@ -371,17 +377,17 @@ class TrajectoryConfigBuilder {
         return *this;
     }
 
-    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and explicit wheel speed. */
+    /** @brief Configures drivetrain kinematics constraint using TankKinematics and explicit wheel speed. */
     TrajectoryConfigBuilder &with_kinematics(
-            const DifferentialDriveKinematics &kinematics,
+            const TankKinematics &kinematics,
             units::Velocity max_wheel_speed
     ) {
         config_.set_kinematics(kinematics, max_wheel_speed);
         return *this;
     }
 
-    /** @brief Configures drivetrain kinematics constraint using DifferentialDriveKinematics and default limits. */
-    TrajectoryConfigBuilder &with_kinematics(const DifferentialDriveKinematics &kinematics) {
+    /** @brief Configures drivetrain kinematics constraint using TankKinematics and default limits. */
+    TrajectoryConfigBuilder &with_kinematics(const TankKinematics &kinematics) {
         config_.set_kinematics(kinematics);
         return *this;
     }

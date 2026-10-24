@@ -70,7 +70,7 @@ class TrajectoryConstraint {
     ) const = 0;
 
     /**
-     * @brief Polymorphic deep-copy factory method.
+     * @brief Creates an independent copy of this constraint.
      * @return Unique pointer to cloned TrajectoryConstraint instance.
      */
     virtual std::unique_ptr<TrajectoryConstraint> clone() const = 0;

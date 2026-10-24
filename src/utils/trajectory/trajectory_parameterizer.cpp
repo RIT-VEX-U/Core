@@ -17,9 +17,9 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     return Trajectory{};
   }
 
-  const units::Length kEpsilonLength = kEpsilon * units::in;
-  const units::Acceleration kAccelTolerance = 1E-6 * units::inps2;
-  const units::Velocity kVelocityTolerance = 1E-6 * units::inps;
+  const units::Length kEpsilonLength = units::Length(kEpsilon, units::in);
+  const units::Acceleration kAccelTolerance = units::Acceleration(kEpsilon, units::inps2);
+  const units::Velocity kVelocityTolerance = units::Velocity(kEpsilon, units::inps);
 
   std::vector<ConstrainedState> constrainedStates(points.size());
 
@@ -91,8 +91,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
   successor.min_acceleration = -max_acceleration;
   successor.max_acceleration = max_acceleration;
 
-  for (int i = static_cast<int>(points.size()) - 1; i >= 0; --i) {
-    auto& constrainedState = constrainedStates[static_cast<size_t>(i)];
+  for (size_t i = points.size(); i > 0; --i) {
+    auto& constrainedState = constrainedStates[i - 1];
     units::Length ds = constrainedState.distance - successor.distance;
 
     while (true) {
@@ -153,12 +153,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
         dt = ds / v;
       } else {
         if (abs(ds) > kEpsilonLength) {
-          if (error_handler) {
             error_handler("TrajectoryParameterizer: time parameterization failed.");
-          } else {
-            std::fprintf(stderr, "TrajectoryParameterizer: time parameterization failed.\n");
-          }
-          return Trajectory{};
+            return Trajectory{};
         }
       }
     }
@@ -191,13 +187,7 @@ bool TrajectoryParameterizer::enforce_acceleration_limits(
         state->pose.pose, state->pose.curvature, state->max_velocity * factor);
 
     if (minMaxAccel.min_acceleration > minMaxAccel.max_acceleration) {
-      if (error_handler) {
-        error_handler("TrajectoryParameterizer: infeasible trajectory constraint.");
-      } else {
-        std::fprintf(
-            stderr,
-            "TrajectoryParameterizer: infeasible trajectory constraint.\n");
-      }
+      error_handler("TrajectoryParameterizer: infeasible trajectory constraint.");
       return false;
     }
 
@@ -212,5 +202,3 @@ bool TrajectoryParameterizer::enforce_acceleration_limits(
 
   return true;
 }
-
-

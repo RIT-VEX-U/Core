@@ -46,7 +46,7 @@ class MaxVelocityConstraint : public TrajectoryConstraint {
     }
 
     /**
-     * @brief Polymorphic deep-copy factory method.
+     * @brief Creates an independent copy of this constraint.
      * @return Unique pointer to cloned MaxVelocityConstraint instance.
      */
     std::unique_ptr<TrajectoryConstraint> clone() const override {

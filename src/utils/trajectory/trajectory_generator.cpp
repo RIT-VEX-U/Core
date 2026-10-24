@@ -1,7 +1,6 @@
 #include "core/utils/trajectory/trajectory_generator.h"
 
 #include <algorithm>
-#include <cstdio>
 #include <utility>
 #include <vector>
 
@@ -47,11 +46,7 @@ Trajectory TrajectoryGenerator::generate_trajectory(
     const TrajectoryConfig& config) {
   std::vector<PoseWithCurvature> points = spline_points_from_hermite(waypoints, config.sample_ds().to(units::in), config.spline_order());
   if (points.empty()) {
-    if (config.error_handler()) {
-      config.error_handler()("Could not generate spline points.");
-    } else {
-      std::fprintf(stderr, "TrajectoryGenerator error: Could not generate spline points.\n");
-    }
+    config.error_handler()("TrajectoryGenerator: Could not generate spline points.");
     return kDoNothingTrajectory;
   }
 
@@ -84,26 +79,28 @@ Trajectory TrajectoryGenerator::generate_trajectory(
 
 Trajectory TrajectoryGenerator::generate_trajectory(
     const std::vector<Pose2d>& waypoints,
-    const TrajectoryConfig& config) {
+    const TrajectoryConfig& config,
+    double tangent_scale) {
   std::vector<HermitePoint> hermite_points;
   hermite_points.reserve(waypoints.size());
-
-  const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
 
   for (size_t i = 0; i < waypoints.size(); ++i) {
     double speed = 0.0;
     if (i == 0) {
-      speed = waypoints[i].translation().distance(waypoints[i+1].translation()).to(units::in) * 1.2;
+      speed = waypoints[i].translation().distance(waypoints[i+1].translation()).to(units::in) *
+              tangent_scale;
     } else if (i == waypoints.size() - 1) {
-      speed = waypoints[i].translation().distance(waypoints[i-1].translation()).to(units::in) * 1.2;
+      speed = waypoints[i].translation().distance(waypoints[i-1].translation()).to(units::in) *
+              tangent_scale;
     } else {
       double d_next = waypoints[i].translation().distance(waypoints[i+1].translation()).to(units::in);
       double d_prev = waypoints[i].translation().distance(waypoints[i-1].translation()).to(units::in);
-      speed = (d_next + d_prev) / 2.0 * 1.2;
+      speed = (d_next + d_prev) / 2.0 * tangent_scale;
     }
     
     Pose2d wp = waypoints[i];
     if (config.is_reversed()) {
+      const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
       wp = wp + flip;
     }
     hermite_points.push_back(HermitePoint::from_pose(wp, speed));
@@ -116,8 +113,9 @@ Trajectory TrajectoryGenerator::generate_trajectory(
     const Pose2d& current_pose,
     units::Velocity current_velocity,
     const std::vector<Pose2d>& target_waypoints,
-    TrajectoryConfig config) {
-  
+    TrajectoryConfig config,
+    double tangent_scale) {
+
   std::vector<Pose2d> full_waypoints;
   full_waypoints.reserve(target_waypoints.size() + 1);
   full_waypoints.push_back(current_pose);
@@ -125,32 +123,6 @@ Trajectory TrajectoryGenerator::generate_trajectory(
     full_waypoints.push_back(wp);
   }
 
-  std::vector<HermitePoint> hermite_points;
-  hermite_points.reserve(full_waypoints.size());
-
-  const Transform2d flip{Translation2d{}, Rotation2d(180_deg)};
-
-  for (size_t i = 0; i < full_waypoints.size(); ++i) {
-    double speed = 0.0;
-    if (i == 0) {
-      speed = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()).to(units::in) * 1.2;
-    } else if (i == full_waypoints.size() - 1) {
-      speed = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()).to(units::in) * 1.2;
-    } else {
-      double d_next = full_waypoints[i].translation().distance(full_waypoints[i+1].translation()).to(units::in);
-      double d_prev = full_waypoints[i].translation().distance(full_waypoints[i-1].translation()).to(units::in);
-      speed = (d_next + d_prev) / 2.0 * 1.2;
-    }
-    
-    Pose2d wp = full_waypoints[i];
-    if (config.is_reversed()) {
-      wp = wp + flip;
-    }
-    hermite_points.push_back(HermitePoint::from_pose(wp, speed));
-  }
-
-  // Force the start velocity parameter to match the robot's actual state
   config.set_start_velocity(current_velocity);
-
-  return generate_trajectory(hermite_points, config);
+  return generate_trajectory(full_waypoints, config, tangent_scale);
 }

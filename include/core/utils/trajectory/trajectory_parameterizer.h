@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdio>
 #include <functional>
 #include <memory>
 #include <utility>
@@ -39,7 +40,9 @@ class TrajectoryParameterizer {
             units::Velocity max_velocity,
             units::Acceleration max_acceleration,
             bool reversed,
-            std::function<void(const char*)> error_handler = nullptr
+            std::function<void(const char*)> error_handler = [](const char* message) {
+                std::fprintf(stderr, "%s\n", message);
+            }
     );
 
 

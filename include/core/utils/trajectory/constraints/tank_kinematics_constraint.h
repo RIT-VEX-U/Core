@@ -4,7 +4,7 @@
 #include <cmath>
 #include <memory>
 
-#include "core/utils/kinematics/differential_drive_kinematics.h"
+#include "core/utils/kinematics/tank_kinematics.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
 #include "core/utils/units.h"
 
@@ -30,13 +30,13 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
         : kinematics_(track_width), max_speed_(max_speed), max_acceleration_(max_acceleration) {}
 
     /**
-     * @brief Constructs a TankKinematicsConstraint from DifferentialDriveKinematics.
+     * @brief Constructs a TankKinematicsConstraint from TankKinematics.
      * @param kinematics Differential drive kinematics model.
      * @param max_speed Maximum allowed speed of a single wheel.
      * @param max_acceleration Maximum allowed acceleration of a single wheel.
      */
     TankKinematicsConstraint(
-            const DifferentialDriveKinematics& kinematics,
+            const TankKinematics& kinematics,
             units::Velocity max_speed,
             units::Acceleration max_acceleration = 10000_inps2
     )
@@ -56,7 +56,7 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
         units::AngularVelocity omega = velocity * curvature;
         ChassisVelocities chassis_speeds{velocity, 0_inps, omega};
         
-        DifferentialDriveWheelVelocities wheel_speeds = kinematics_.to_wheel_velocities(chassis_speeds);
+        TankWheelVelocities wheel_speeds = kinematics_.to_wheel_velocities(chassis_speeds);
 
         units::Velocity real_max_speed = units::max(units::abs(wheel_speeds.left), units::abs(wheel_speeds.right));
 
@@ -102,7 +102,7 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
     }
 
     /**
-     * @brief Polymorphic deep-copy factory method.
+     * @brief Creates an independent copy of this constraint.
      * @return Unique pointer to cloned TankKinematicsConstraint instance.
      */
     std::unique_ptr<TrajectoryConstraint> clone() const override {
@@ -110,7 +110,7 @@ class TankKinematicsConstraint : public TrajectoryConstraint {
     }
 
    private:
-    DifferentialDriveKinematics kinematics_;  ///< Kinematics for tank drive
+    TankKinematics kinematics_;  ///< Kinematics for tank drive
     units::Velocity max_speed_;               ///< Maximum allowed speed of a single wheel
     units::Acceleration max_acceleration_;    ///< Maximum allowed acceleration of a single wheel
 };

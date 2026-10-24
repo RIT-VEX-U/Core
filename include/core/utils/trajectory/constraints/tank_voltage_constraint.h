@@ -5,7 +5,7 @@
 #include <limits>
 #include <memory>
 
-#include "core/utils/kinematics/differential_drive_kinematics.h"
+#include "core/utils/kinematics/tank_kinematics.h"
 #include "core/utils/trajectory/constraints/trajectory_constraint.h"
 #include "core/utils/units.h"
 
@@ -33,17 +33,17 @@ class TankVoltageConstraint : public TrajectoryConstraint {
         : Kv_(Kv), Ka_(Ka), max_voltage_(max_voltage), kinematics_(track_width) {}
 
     /**
-     * @brief Constructs a TankVoltageConstraint from DifferentialDriveKinematics.
+     * @brief Constructs a TankVoltageConstraint from TankKinematics.
      * @param Kv Linear velocity feedforward constant.
      * @param Ka Linear acceleration feedforward constant.
      * @param max_voltage Maximum available voltage.
-     * @param kinematics Kinematics model for differential drive.
+     * @param kinematics Kinematics model for tank drive.
      */
     TankVoltageConstraint(
             units::LinearVelocityFeedforward Kv,
             units::LinearAccelerationFeedforward Ka,
             units::Voltage max_voltage,
-            const DifferentialDriveKinematics& kinematics
+            const TankKinematics& kinematics
     )
         : Kv_(Kv), Ka_(Ka), max_voltage_(max_voltage), kinematics_(kinematics) {}
 
@@ -72,7 +72,7 @@ class TankVoltageConstraint : public TrajectoryConstraint {
     ) const override {
         units::AngularVelocity omega = speed * curvature;
         ChassisVelocities chassis_speeds(speed, 0_inps, omega);
-        DifferentialDriveWheelVelocities wheel_speeds = kinematics_.to_wheel_velocities(chassis_speeds);
+        TankWheelVelocities wheel_speeds = kinematics_.to_wheel_velocities(chassis_speeds);
 
         units::Velocity max_wheel_speed = units::max(wheel_speeds.left, wheel_speeds.right);
         units::Velocity min_wheel_speed = units::min(wheel_speeds.left, wheel_speeds.right);
@@ -85,25 +85,30 @@ class TankVoltageConstraint : public TrajectoryConstraint {
         units::Acceleration max_chassis_acceleration;
         units::Acceleration min_chassis_acceleration;
 
-        const double curvd = std::abs(curvature.to(units::radpm));
-        const double twd = kinematics_.track_width.to(units::m);
+        const units::Number curvature_term =
+                (kinematics_.track_width * units::abs(curvature)) / 1_rad;
 
         if (units::abs(speed) <= 1e-9_mps) {
-            const double denom = 1.0 + (twd * curvd / 2.0);
+            const units::Number denom = 1.0 + (curvature_term / 2.0);
             max_chassis_acceleration =
-                    max_wheel_acceleration / (std::abs(denom) < 1e-6 ? 1e-6 : denom);
+                    max_wheel_acceleration /
+                    (units::abs(denom) < 1e-6 ? units::Number(1e-6) : denom);
             min_chassis_acceleration =
-                    min_wheel_acceleration / (std::abs(denom) < 1e-6 ? 1e-6 : denom);
+                    min_wheel_acceleration /
+                    (units::abs(denom) < 1e-6 ? units::Number(1e-6) : denom);
         } else {
-            const double speed_val = speed.to(units::inps);
-            const double speed_sgn = speed_val < 0.0 ? -1.0 : 1.0;
-            const double max_denom = 1.0 + (twd * curvd * speed_sgn / 2.0);
-            const double min_denom = 1.0 - (twd * curvd * speed_sgn / 2.0);
+            const units::Number speed_sgn = units::sgn(speed);
+            const units::Number max_denom =
+                    1.0 + (curvature_term * speed_sgn / 2.0);
+            const units::Number min_denom =
+                    1.0 - (curvature_term * speed_sgn / 2.0);
 
             max_chassis_acceleration =
-                    max_wheel_acceleration / (std::abs(max_denom) < 1e-6 ? 1e-6 : max_denom);
+                    max_wheel_acceleration /
+                    (units::abs(max_denom) < 1e-6 ? units::Number(1e-6) : max_denom);
             min_chassis_acceleration =
-                    min_wheel_acceleration / (std::abs(min_denom) < 1e-6 ? 1e-6 : min_denom);
+                    min_wheel_acceleration /
+                    (units::abs(min_denom) < 1e-6 ? units::Number(1e-6) : min_denom);
         }
 
         if (units::abs(curvature) > 1E-9_radpm && (kinematics_.track_width / 2.0) > 1_rad / units::abs(curvature)) {
@@ -118,7 +123,7 @@ class TankVoltageConstraint : public TrajectoryConstraint {
     }
 
     /**
-     * @brief Polymorphic deep-copy factory method.
+     * @brief Creates an independent copy of this constraint.
      * @return Unique pointer to cloned TankVoltageConstraint instance.
      */
     std::unique_ptr<TrajectoryConstraint> clone() const override {
@@ -129,5 +134,5 @@ class TankVoltageConstraint : public TrajectoryConstraint {
     units::LinearVelocityFeedforward Kv_;      ///< Linear velocity feedforward constant
     units::LinearAccelerationFeedforward Ka_;  ///< Linear acceleration feedforward constant
     units::Voltage max_voltage_;               ///< Maximum available voltage
-    DifferentialDriveKinematics kinematics_;   ///< Differential drive kinematics model
+    TankKinematics kinematics_;   ///< Tank drive kinematics model
 };

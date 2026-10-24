@@ -35,7 +35,7 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
         if (units::abs(curvature) < 1e-9_radpm) {
             return units::Velocity(std::numeric_limits<double>::max());
         }
-        return sqrt(max_centripetal_acceleration_ /units::abs(curvature / 1_rad));
+        return sqrt(max_centripetal_acceleration_ / units::abs(curvature / 1_rad));
     }
 
     /**
@@ -52,7 +52,7 @@ class CentripetalAccelerationConstraint : public TrajectoryConstraint {
     }
 
     /**
-     * @brief Polymorphic deep-copy factory method.
+     * @brief Creates an independent copy of this constraint.
      * @return Unique pointer to cloned CentripetalAccelerationConstraint instance.
      */
     std::unique_ptr<TrajectoryConstraint> clone() const override {

@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "core/utils/kinematics/differential_drive_kinematics.h"
-#include "core/utils/kinematics/differential_drive_wheel_velocities.h"
+#include "core/utils/kinematics/tank_kinematics.h"
+#include "core/utils/kinematics/tank_wheel_velocities.h"
 #include "core/utils/math/geometry/pose2d.h"
 #include "core/utils/kinematics/chassis_accelerations.h"
 #include "core/utils/kinematics/chassis_velocities.h"
@@ -88,8 +88,11 @@ class Trajectory {
          * @return Interpolated State.
          */
         State interpolate(State end_value, double i) const {
-            const units::Time new_t =
-                    1_s * (t.internal() + (end_value.t.internal() - t.internal()) * i);
+                const units::Time new_t =
+                        units::Time(
+                                t.to(units::s) +
+                                (end_value.t.to(units::s) - t.to(units::s)) * i,
+                                units::s);
             const units::Time delta_t = new_t - t;
 
             if (delta_t < 0_s) {
@@ -109,10 +112,13 @@ class Trajectory {
 
             Pose2d new_pose = pose.interpolate(end_value.pose, interpolation_frac);
 
-            units::Curvature new_curvature =
-                    1_radpm *
-                    (curvature.internal() +
-                     (end_value.curvature.internal() - curvature.internal()) * interpolation_frac);
+                const units::Curvature new_curvature =
+                    units::Curvature(
+                            curvature.to(units::radpm) +
+                            (end_value.curvature.to(units::radpm) -
+                             curvature.to(units::radpm)) *
+                            interpolation_frac,
+                            units::radpm);
 
             return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
         }
@@ -125,11 +131,11 @@ class Trajectory {
             return ChassisAccelerations(acceleration, 0_inps2, acceleration * curvature);
         }
 
-        DifferentialDriveWheelVelocities to_wheel_velocities(const DifferentialDriveKinematics& kin) const {
+        TankWheelVelocities to_wheel_velocities(const TankKinematics& kin) const {
             return kin.to_wheel_velocities(chassis_velocities());
         }
 
-        DifferentialDriveWheelAccelerations to_wheel_accelerations(const DifferentialDriveKinematics& kin) const {
+        TankWheelAccelerations to_wheel_accelerations(const TankKinematics& kin) const {
             return kin.to_wheel_accelerations(chassis_accelerations());
         }
     };
@@ -222,31 +228,6 @@ class Trajectory {
     }
 
     /**
-     * @brief Transforms all poses in the trajectory by a 2D affine transform.
-     * @param transform Rigid 2D transformation.
-     * @return Transformed Trajectory.
-     */
-    Trajectory transform_by(const Transform2d &transform) const {
-        if (states_.empty()) {
-            return *this;
-        }
-
-        const State &first_state = states_[0];
-        const Pose2d &first_pose = first_state.pose;
-
-        Pose2d new_first_pose = first_pose + transform;
-        std::vector<State> new_states = states_;
-        new_states[0].pose = new_first_pose;
-
-        for (size_t i = 1; i < new_states.size(); ++i) {
-            State &state = new_states[i];
-            state.pose = new_first_pose + (state.pose - first_pose);
-        }
-
-        return Trajectory(new_states);
-    }
-
-    /**
      * @brief Expresses all poses in the trajectory relative to a reference pose.
      * @param pose Reference origin pose.
      * @return Relative Trajectory.
@@ -260,42 +241,23 @@ class Trajectory {
     }
 
     /**
-     * @brief Mirrors the trajectory across a vertical line X = center_x.
-     * @param center_x The X coordinate to mirror across (default 71.25 inches for VRC center).
+     * @brief Mirrors the trajectory across the line represented by a pose.
+     *
+     * The pose translation is any point on the mirror line, and the pose rotation
+     * is the direction of the line.
+     *
+     * @param line_pose A point and direction defining the mirror line.
      * @return Mirrored Trajectory.
      */
-    Trajectory mirror_x(units::Length center_x = 71.25_in) const {
+    Trajectory mirror(const Pose2d &line_pose) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
         for (const State &st : states_) {
             State new_st = st;
-            units::Length x = st.pose.x();
-            units::Length y = st.pose.y();
-            double theta = st.pose.rotation().radians();
-            
-            units::Length new_x = 2.0 * center_x - x;
-            new_st.pose = Pose2d(new_x, y, Rotation2d(std::numbers::pi - theta));
-            new_st.curvature = -st.curvature;
-            new_states.push_back(new_st);
-        }
-        return Trajectory(new_states);
-    }
-
-    /**
-     * @brief Mirrors the trajectory across a horizontal line Y = center_y.
-     * @param center_y The Y coordinate to mirror across (default 71.25 inches for VRC center).
-     * @return Mirrored Trajectory.
-     */
-    Trajectory mirror_y(units::Length center_y = 71.25_in) const {
-        std::vector<State> new_states;
-        new_states.reserve(states_.size());
-        for (const State &st : states_) {
-            State new_st = st;
-            units::Length x = st.pose.x();
-            units::Length y = st.pose.y();
-            
-            units::Length new_y = 2.0 * center_y - y;
-            new_st.pose = Pose2d(x, new_y, -st.pose.rotation());
+            const Pose2d local_pose = st.pose.relative_to(line_pose);
+            const Pose2d reflected_local_pose(
+                    local_pose.x(), -local_pose.y(), -local_pose.rotation());
+            new_st.pose = line_pose.transform_by(reflected_local_pose - Pose2d{});
             new_st.curvature = -st.curvature;
             new_states.push_back(new_st);
         }
@@ -304,22 +266,18 @@ class Trajectory {
 
     /**
      * @brief Rotates the trajectory 180 degrees around a center point (Point reflection).
-     * @param center_x The X coordinate of the center point (default 71.25 inches).
-     * @param center_y The Y coordinate of the center point (default 71.25 inches).
+     * @param center The center point (default 71.25 inches from each field edge).
      * @return Rotated Trajectory.
      */
-    Trajectory rotate_center(units::Length center_x = 71.25_in, units::Length center_y = 71.25_in) const {
+    Trajectory rotate_center(
+            Translation2d center = Translation2d(71.25_in, 71.25_in)
+    ) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
         for (const State &st : states_) {
             State new_st = st;
-            units::Length x = st.pose.x();
-            units::Length y = st.pose.y();
-            double theta = st.pose.rotation().radians();
-            
-            units::Length new_x = 2.0 * center_x - x;
-            units::Length new_y = 2.0 * center_y - y;
-            new_st.pose = Pose2d(new_x, new_y, Rotation2d(theta + std::numbers::pi));
+            const Translation2d new_translation = 2.0 * center - st.pose.translation();
+            new_st.pose = Pose2d(new_translation, st.pose.rotation().opposite());
             // Curvature remains unchanged for 180 degree rotation
             new_states.push_back(new_st);
         }
