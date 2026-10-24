@@ -266,11 +266,11 @@ class Trajectory {
 
     /**
      * @brief Rotates the trajectory 180 degrees around a center point (Point reflection).
-     * @param center The center point (default 71.25 inches from each field edge).
+     * @param center The center point (default 3 tiles from each field edge).
      * @return Rotated Trajectory.
      */
     Trajectory rotate_center(
-            Translation2d center = Translation2d(71.25_in, 71.25_in)
+            Translation2d center = Translation2d(3_tiles, 3_tiles)
     ) const {
         std::vector<State> new_states;
         new_states.reserve(states_.size());
