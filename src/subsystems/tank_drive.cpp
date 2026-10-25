@@ -1,8 +1,8 @@
 #include "core/subsystems/tank_drive.h"
 
 #include "core/competition/command_structure/drive_commands.h"
-#include "core/utils/controls/pid.h"
-#include "core/utils/controls/pidff.h"
+#include "core/math/controls/pid.h"
+#include "core/math/controls/pidff.h"
 #include "core/math/util.h"
 
 TankDrive::TankDrive(

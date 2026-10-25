@@ -1,4 +1,4 @@
-#include "core/utils/controls/bang_bang.h"
+#include "core/math/controls/bang_bang.h"
 #include <cmath>
 
 BangBang::BangBang(double threshhold, double low, double high)

@@ -5,8 +5,8 @@
 #include "core/robot_specs.h"
 #include "core/subsystems/screen/legacy.h"
 #include "core/competition/command_structure/auto_command.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/pid.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/controls/pid.h"
 #include "core/math/moving_average.h"
 
 #include <atomic>

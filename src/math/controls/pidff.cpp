@@ -1,4 +1,4 @@
-#include "core/utils/controls/pidff.h"
+#include "core/math/controls/pidff.h"
 #include "core/math/util.h"
 
 PIDFF::PIDFF(PID pid, FeedForward ff) : pid(pid), ff(ff) {

@@ -2,10 +2,10 @@
 #include "vex/vex.h"
 #include "core/subsystems/screen/legacy.h"
 #include "core/subsystems/tank_drive.h"
-#include "core/utils/controls/feedback_base.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/pid.h"
-#include "core/utils/controls/trapezoid_profile.h"
+#include "core/math/controls/feedback_base.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/controls/pid.h"
+#include "core/math/controls/trapezoid_profile.h"
 
 /**
  * Motion Controller class

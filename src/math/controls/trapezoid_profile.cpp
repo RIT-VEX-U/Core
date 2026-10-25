@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "core/utils/controls/trapezoid_profile.h"
+#include "core/math/controls/trapezoid_profile.h"
 
 /**
  * Constructs a TrapezoidProfile.

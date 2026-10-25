@@ -7,8 +7,8 @@
 
 #include "core/competition/initializer.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/controls/pid.h"
-#include "core/utils/controls/pidff.h"
+#include "core/math/controls/pid.h"
+#include "core/math/controls/pidff.h"
 #include "core/utils/graph_drawer.h"
 #include "core/math/geometry/point2d.h"
 #include "core/math/geometry/pose2d.h"

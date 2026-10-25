@@ -9,8 +9,8 @@
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/competition/command_structure/auto_command.h"
-#include "core/utils/controls/feedback_base.h"
-#include "core/utils/controls/pid.h"
+#include "core/math/controls/feedback_base.h"
+#include "core/math/controls/pid.h"
 #include "core/utils/pure_pursuit.h"
 
 #include <vector>

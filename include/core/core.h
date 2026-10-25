@@ -21,6 +21,15 @@
 #include "core/device/wrapper_device.hpp"
 
 // Math package
+#include "core/math/controls/bang_bang.h"
+#include "core/math/controls/feedback_base.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/controls/motion_controller.h"
+#include "core/math/controls/pid.h"
+#include "core/math/controls/pidff.h"
+#include "core/math/controls/state_space/linear_plant_inversion_feedforward.h"
+#include "core/math/controls/state_space/linear_quadratic_regulator.h"
+#include "core/math/controls/trapezoid_profile.h"
 #include "core/math/estimator/kalman_filter.h"
 #include "core/math/estimator/unscented_kalman_filter.h"
 #include "core/math/geometry/point2d.h"
@@ -53,15 +62,6 @@
 #include "core/subsystems/tank_drive.h"
 
 // Utils package
-#include "core/utils/controls/bang_bang.h"
-#include "core/utils/controls/feedback_base.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/motion_controller.h"
-#include "core/utils/controls/pid.h"
-#include "core/utils/controls/pidff.h"
-#include "core/utils/controls/state_space/linear_plant_inversion_feedforward.h"
-#include "core/utils/controls/state_space/linear_quadratic_regulator.h"
-#include "core/utils/controls/trapezoid_profile.h"
 #include "core/utils/graph_drawer.h"
 #include "core/utils/interpolating_map.h"
 #include "core/utils/logger.h"
