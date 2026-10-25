@@ -7,19 +7,21 @@
 #include "core/device/vdb/types.h"
 #include "core/device/vdb_device.h"
 
+// Screen package
+#include "core/screen/legacy_bridge.h"
+#include "core/screen/legacy.h"
+#include "core/screen/pl_mpeg.h"
+#include "core/screen/screen_controller.h"
+#include "core/screen/video.h"
+
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/flywheel.h"
-#include "core/subsystems/fun/pl_mpeg.h"
-#include "core/subsystems/fun/video.h"
 #include "core/subsystems/lift.h"
 #include "core/subsystems/odometry/odometry_base.h"
 #include "core/subsystems/odometry/odometry_nwheel.h"
 #include "core/subsystems/odometry/odometry_serial.h"
 #include "core/subsystems/odometry/odometry_tank.h"
-#include "core/subsystems/screen/legacy.h"
-#include "core/subsystems/screen/legacy_bridge.h"
-#include "core/subsystems/screen/screen_controller.h"
 #include "core/subsystems/tank_drive.h"
 
 // Competition package
@@ -56,7 +58,6 @@
 #include "core/utils/math/systems/linear_system.h"
 #include "core/utils/math_util.h"
 #include "core/utils/moving_average.h"
-#include "core/utils/pure_pursuit.h"
 #include "core/utils/state_machine.h"
 #include "core/utils/units.h"
 
