@@ -1,4 +1,4 @@
-#include "core/utils/moving_average.h"
+#include "core/math/moving_average.h"
 #include <cmath>
 #include <vector>
 

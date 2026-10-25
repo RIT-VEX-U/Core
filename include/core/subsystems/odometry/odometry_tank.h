@@ -3,7 +3,7 @@
 #include "core/robot_specs.h"
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/moving_average.h"
+#include "core/math/moving_average.h"
 
 // static int background_task(void *odom_obj);
 /**

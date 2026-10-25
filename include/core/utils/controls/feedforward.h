@@ -2,7 +2,7 @@
 
 #include "vex/vex.h"
 #include "core/math/util.h"
-#include "core/utils/moving_average.h"
+#include "core/math/moving_average.h"
 #include <math.h>
 #include <vector>
 
