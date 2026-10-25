@@ -136,9 +136,7 @@ struct TypeIdMap<int64_t> {
   static constexpr TypeId value = TypeId::Int64;
 };
 
-/**
- * Since our build system makes int32_t an alias for long, we convert regular ints to int32_ts
- */
+/// Since our build system makes int32_t an alias for long, we convert regular ints to int32_ts
 template <typename T>
   requires std::is_same_v<T, int>
 struct TypeIdMap<T> {
@@ -221,10 +219,7 @@ struct IsFixedPoint<FixedPoint<Id, Storage>> : std::true_type {};
 /// Gets Type Id as a string
 std::string to_string(TypeId t);
 
-/*
- * Defines a Field
- * A named value that can be serialized and sent to the debug board.
- */
+/// A field is a named value that can be serialized and sent to the debug board.
 template <typename T>
 class Field {
   static_assert(HasTypeId<T>::value, "Field<T>: T does not have an associated TypeId");
@@ -329,7 +324,8 @@ class Field {
       // if it is a floating point we can just cast it to a string
       return std::to_string(value_);
     } else if constexpr (IsFixedPoint<T>::value) {
-      /* if it is a fixed point check if it is signed or unsigned,
+      /*
+       * if it is a fixed point check if it is signed or unsigned,
        * cast the raw byte value of the data to an int64_t or uint64_t,
        * and then get the string format of that
        */

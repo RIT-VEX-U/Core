@@ -86,9 +86,7 @@ PacketHeader decode_header_byte(uint8_t hb);
 /// creates a checksum for a packet in the form of a packet
 Packet checksum_pac(VDP::Packet in);
 
-/**
- * A channel of data to be send to the debug board
- */
+/// A channel of data to be send to the debug board
 template <typename T>
   requires IsField<std::remove_cvref_t<T>>::value
 class Channel {
@@ -100,14 +98,10 @@ class Channel {
    */
   explicit Channel(T& data, ChannelID id) : id_(id), data_(data), last_received_(0) {}
 
-  /**
-   * Gets the channel's id
-   */
+  /// Gets the channel's id
   ChannelID get_id() const { return id_; };
 
-  /**
-   * Gets the data stored inside the channel
-   */
+  /// Gets the data stored inside the channel
   T& get_data() { return data_; }
 
   /**
@@ -155,9 +149,7 @@ class Channel {
     return out;
   };
 
-  /**
-   * Gets the channel's schema as a string
-   */
+  /// Gets the channel's schema as a string
   std::string schema_to_string() const {
     std::string out = "";
     out += "{\n  id : " + std::to_string(id_) + ",\n";
@@ -165,9 +157,7 @@ class Channel {
     return out;
   }
 
-  /**
-   * Gets the channel's data as a string
-   */
+  /// Gets the channel's data as a string
   std::string data_to_string() const {
     std::string out = "";
     out += "{\n  id : " + std::to_string(id_) + ",\n";

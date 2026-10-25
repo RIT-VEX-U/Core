@@ -52,9 +52,7 @@ class Device : public COBSSerialDevice {
     return true;
   }
 
-  /**
-   * Writes a packet to the device as soon as it is available
-   */
+  /// Writes a packet to the device as soon as it is available
   SEND_PACKET_STATE write_packet_from_queue() {
     // packet to write to the device
     VDP::Packet outbound_packet = {};
@@ -83,9 +81,7 @@ class Device : public COBSSerialDevice {
     }
   }
 
-  /**
-   * The thread for sending data to the wire
-   */
+  /// The thread for sending data to the wire
   static int serial_thread(void* vself) {
     // defines itself within the thread
     Device& self = *(Device*)vself;
