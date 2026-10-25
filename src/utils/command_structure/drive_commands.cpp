@@ -222,8 +222,6 @@ void TurnToHeadingCommand::on_timeout() {
     drive_sys.reset_auto();
 }
 
-
-
 /**
  * Construct a DriveStop Command
  * @param drive_sys the drive system we are commanding
