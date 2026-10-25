@@ -471,7 +471,7 @@ bool TankDrive::drive_to_point(
     // Disable correction when we're close enough to the point
     double correction = 0;
     if (fabs(dist_left) > config.drive_correction_cutoff) {
-        correction = correction_pid.get();
+        correction = correction_pid->get();
     }
 
     // Reverse the drive_pid output if we're going backwards
