@@ -148,7 +148,7 @@ class Device : public COBSSerialDevice {
   void apply_packet(VDP::Packet in) {
     const VDP::PacketValidity status = VDP::validate_packet(in);
 
-    /// check if the packet is valid;
+    // check if the packet is valid;
     if (status == VDP::PacketValidity::BadChecksum) {
       VDPWarnf("Controller: Bad packet checksum. Skipping");
       return;
@@ -160,7 +160,7 @@ class Device : public COBSSerialDevice {
       return;
     }
 
-    /// decode the header byte and route it accordingly
+    // decode the header byte and route it accordingly
     VDP::PacketHeader header = VDP::decode_header_byte(in[0]);
     switch (header.func) {
       case VDP::PacketFunction::Send: {
@@ -246,7 +246,7 @@ class Device : public COBSSerialDevice {
    */
   WirePacket inbound_buffer;
 
-  // Task that deals with the low level writing and reading bytes from the wire
+  /// Task that deals with the low level writing and reading bytes from the wire
   vex::task serial_task;
 
   std::function<void(const VDP::Packet& packet)> callback;
