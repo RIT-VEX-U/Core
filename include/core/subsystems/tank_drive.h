@@ -267,21 +267,7 @@ class TankDrive {
      * powers)
      */
     static double modify_inputs(double input, int power = 2);
-
-    /**
-     * Drive the robot autonomously using a pure-pursuit algorithm - Input path
-     * with a set of waypoints - the robot will attempt to follow the points
-     * while cutting corners (radius) to save time (compared to stop / turn /
-     * start)
-     *
-     * @param path The list of coordinates to follow, in order
-     * @param dir Run the bot forwards or backwards
-     * @param feedback The feedback controller determining speed
-     * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-     * @param end_speed the movement profile will attempt to reach this velocity
-     * by its completion
-     * @return True when the path is complete
-     */
+    
    private:
     vex::motor_group& left_motors;   ///< left drive motors
     vex::motor_group& right_motors;  ///< right drive motors
