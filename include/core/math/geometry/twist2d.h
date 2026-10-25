@@ -2,7 +2,7 @@
 
 #include "cevalm.hpp"
 #include "core/math/eigen_interface.h"
-#include "core/utils/units.h"
+#include "core/math/units.h"
 
 /**
  * Class representing a difference between two poses,

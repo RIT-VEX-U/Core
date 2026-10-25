@@ -33,6 +33,7 @@
 #include "core/math/systems/dare_solver.h"
 #include "core/math/systems/discretization.h"
 #include "core/math/systems/linear_system.h"
+#include "core/math/units.h"
 
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
@@ -66,4 +67,3 @@
 #include "core/utils/moving_average.h"
 #include "core/utils/pure_pursuit.h"
 #include "core/utils/state_machine.h"
-#include "core/utils/units.h"

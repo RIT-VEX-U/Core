@@ -6,7 +6,7 @@
 #include "cevalm.hpp"
 #include "core/math/eigen_interface.h"
 #include "core/math/geometry/rotation2d.h"
-#include "core/utils/units.h"
+#include "core/math/units.h"
 
 class Rotation2d;
 

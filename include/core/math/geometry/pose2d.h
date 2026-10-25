@@ -7,7 +7,7 @@
 #include "core/math/geometry/transform2d.h"
 #include "core/math/geometry/translation2d.h"
 #include "core/math/geometry/twist2d.h"
-#include "core/utils/units.h"
+#include "core/math/units.h"
 
 /**
  * Class representing a pose in 2d space with x, y, and rotational components

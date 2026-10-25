@@ -4,7 +4,7 @@
 
 #include "cevalm.hpp"
 #include "core/math/eigen_interface.h"
-#include "core/utils/units.h"
+#include "core/math/units.h"
 
 /**
  * Class representing a rotation in 2d space.
