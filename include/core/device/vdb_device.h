@@ -28,7 +28,7 @@ class Device : public COBSSerialDevice {
    */
   explicit Device(int32_t port, int32_t baud_rate, VDP::Channel<Fields>&... channels)
       : COBSSerialDevice(port, baud_rate), channels_(channels...) {
-    static_assert(sizeof...(Fields) <= VDP::MAX_CHANNELS,
+    static_assert(sizeof...(channels) <= VDP::MAX_CHANNELS,
                   "There can be no more than 256 Channels sent to a VDB Device");
     serial_task = vex::task(Device::serial_thread, (void*)this, vex::thread::threadPriorityHigh);
   }
@@ -89,12 +89,6 @@ class Device : public COBSSerialDevice {
     // serial thread loop
     while (true) {
       bool did_something = false;
-      /*
-       * Lame replacement for blocking IO. We can't just wait and tell the
-       * scheduler to go work on something else while we wait for packets so
-       * instead, if we're getting nothing in and have nothing to send, block
-       * ourselves.
-       */
 
       // Writing
       SEND_PACKET_STATE send_state = self.write_packet_from_queue();
@@ -145,78 +139,77 @@ class Device : public COBSSerialDevice {
     const VDP::PacketValidity status = VDP::validate_packet(in);
 
     // check if the packet is valid;
-    if (status == VDP::PacketValidity::BadChecksum) {
-      VDPWarnf("Controller: Bad packet checksum. Skipping");
-      return;
-    } else if (status == VDP::PacketValidity::TooSmall) {
-      VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)in.size());
-      return;
-    } else if (status != VDP::PacketValidity::Ok) {
-      VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
-      return;
+    switch (status) {
+      case VDP::PacketValidity::BadChecksum: {
+        VDPWarnf("Controller: Bad packet checksum. Skipping");
+        return;
+      }
+      case VDP::PacketValidity::TooSmall: {
+        VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)in.size());
+        return;
+      }
+      case VDP::PacketValidity::Ok: {
+        VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
+        return;
+      }
     }
 
     // decode the header byte and route it accordingly
     VDP::PacketHeader header = VDP::decode_header_byte(in[0]);
-    switch (header.func) {
-      case VDP::PacketFunction::Send: {
-        if (header.type == VDP::PacketType::Data) {
-          // decode packet and apply to channel
-          VDP::ChannelID id_to_update = in[1];
-          std::apply(
-              [&](auto&... channel) {
-                (
-                    [&] {
-                      if (id_to_update == channel.get_id()) {
-                        channel.apply_update(VDP::PacketSpan(in).subspan(2));
-                      }
-                    }(),
-                    ...);
-              },
-              channels_);
-          // acknowledge packet
-          VDP::Packet data_ack;
-          data_ack.push_back(
-              VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge}));
-          data_ack.push_back(id_to_update);
-          VDP::Packet checksum = VDP::checksum_pac(data_ack);
-          data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
-          add_to_queue(data_ack);
-          break;
+    if (header.func == VDP::PacketFunction::Send) {
+      if (header.type == VDP::PacketType::Data) {
+        // decode packet and apply to channel
+        VDP::ChannelID id_to_update = in[1];
+        std::apply(
+            [&](auto&... channel) {
+              (
+                  [&] {
+                    if (id_to_update == channel.get_id()) {
+                      channel.apply_update(VDP::PacketSpan(in).subspan(2));
+                    }
+                  }(),
+                  ...);
+            },
+            channels_);
+        // acknowledge packet
+        VDP::Packet data_ack;
+        data_ack.push_back(
+            VDP::make_header_byte({VDP::PacketType::Data, VDP::PacketFunction::Acknowledge}));
+        data_ack.push_back(id_to_update);
+        VDP::Packet checksum = VDP::checksum_pac(data_ack);
+        data_ack.insert(data_ack.end(), checksum.begin(), checksum.end());
+        add_to_queue(data_ack);
 
-        } else if (header.type == VDP::PacketType::Schema) {
-          VDP::ChannelID acked_id = in[1];
-          std::apply(
-              [&](auto&... channel) {
-                (
-                    [&] {
-                      if (acked_id == channel.get_id()) {
-                        channel.acked = false;
-                      }
-                    }(),
-                    ...);
-              },
-              channels_);
-        }
-        break;
+      } else if (header.type == VDP::PacketType::Schema) {
+        VDP::ChannelID acked_id = in[1];
+        std::apply(
+            [&](auto&... channel) {
+              (
+                  [&] {
+                    if (acked_id == channel.get_id()) {
+                      channel.acked = false;
+                    }
+                  }(),
+                  ...);
+            },
+            channels_);
       }
+    } else if (header.func == VDP::PacketFunction::Acknowledge) {
       // mark channel as acknowledged, dont do anything if data packet
-      case VDP::PacketFunction::Acknowledge:
-        if (header.type == VDP::PacketType::Schema) {
-          VDP::ChannelID acked_id = in[1];
-          std::apply(
-              [&](auto&... channel) {
-                (
-                    [&] {
-                      if (acked_id == channel.get_id()) {
-                        channel.acked = true;
-                      }
-                    }(),
-                    ...);
-              },
-              channels_);
-        }
-        break;
+      if (header.type == VDP::PacketType::Schema) {
+        VDP::ChannelID acked_id = in[1];
+        std::apply(
+            [&](auto&... channel) {
+              (
+                  [&] {
+                    if (acked_id == channel.get_id()) {
+                      channel.acked = true;
+                    }
+                  }(),
+                  ...);
+            },
+            channels_);
+      }
     }
   }
 

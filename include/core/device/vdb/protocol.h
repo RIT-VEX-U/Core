@@ -86,14 +86,14 @@ PacketHeader decode_header_byte(uint8_t hb);
 /// creates a checksum for a packet in the form of a packet
 Packet checksum_pac(VDP::Packet in);
 
-/// A channel of data to be send to the debug board
+/// A channel of data to be sent to the debug board
 template <typename T>
   requires IsField<std::remove_cvref_t<T>>::value
 class Channel {
  public:
   /**
    * @brief Constructs a channel of data to be sent to the debug board
-   * @param data a field of data to be send through this channel
+   * @param data a field of data to be sent through this channel
    * @param id a byte designating the channel
    */
   explicit Channel(T& data, ChannelID id) : id_(id), data_(data), last_received_(0) {}
@@ -107,7 +107,7 @@ class Channel {
   /**
    * @brief Applies an update from a received packet of data to the data held by the channel
    * @param data_packet the received packet of data
-   * @return wether or not the update was successful
+   * @return whether or not the update was successful
    */
   bool apply_update(VDP::PacketSpan data_packet) {
     std::memcpy(&last_received_, data_packet.subspan(0, 4).data(), sizeof(uint32_t));
@@ -128,12 +128,12 @@ class Channel {
     VDP::Packet packet_body(sizeof(uint32_t));
     if (pac_type == PacketType::Data) {
       // add the timestamp to the packet
-      uint32_t timestamp = vexSystemTimeGet();
+      uint32_t timestamp = vexSystemHighResTimeGet();
 
-      VDP::Packet timestamp_pac(sizeof(uint32_t));
+      VDP::Packet timestamp_pac(sizeof(uint64_t));
 
       // Copy the timestamp into the vector's underlying storage
-      std::memcpy(timestamp_pac.data(), &timestamp, sizeof(uint32_t));
+      std::memcpy(timestamp_pac.data(), &timestamp, sizeof(uint64_t));
 
       out.insert(out.end(), timestamp_pac.begin(), timestamp_pac.end());
 
