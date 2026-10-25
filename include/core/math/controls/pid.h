@@ -2,7 +2,6 @@
 
 #include "vex/vex.h"
 #include "core/math/controls/feedback_base.h"
-#include <cmath>
 
 /**
  * PID Class

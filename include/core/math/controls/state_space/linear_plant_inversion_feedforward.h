@@ -5,8 +5,6 @@
 #include "core/math/systems/linear_system.h"
 #include "core/math/systems/discretization.h"
 
-#include <iostream>
-
 /**
  * This class computes a feedforward control input by inverting the discrete
  * plant dynamics. A continuous linear system is provided, it is then

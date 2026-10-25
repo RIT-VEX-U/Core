@@ -3,7 +3,6 @@
 #include "core/math/eigen_interface.h"
 #include "../vendor/eigen/unsupported/Eigen/MatrixFunctions"
 
-#include <cmath>
 #include <tuple>
 
 /**

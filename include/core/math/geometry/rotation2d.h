@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-
 #include "cevalm.hpp"
 #include "core/math/eigen_interface.h"
 #include "core/math/units.h"
