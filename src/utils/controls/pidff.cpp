@@ -1,5 +1,5 @@
 #include "core/utils/controls/pidff.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 PIDFF::PIDFF(PID pid, FeedForward ff) : pid(pid), ff(ff) {
     out = 0;

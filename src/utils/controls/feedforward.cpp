@@ -1,6 +1,6 @@
 #include "core/utils/controls/feedforward.h"
 
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 /**
  * Creates a FeedForward object.

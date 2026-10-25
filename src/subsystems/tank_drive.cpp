@@ -3,7 +3,7 @@
 #include "core/competition/command_structure/drive_commands.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/controls/pidff.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 TankDrive::TankDrive(
         vex::motor_group& left_motors, vex::motor_group& right_motors, robot_specs_t& config,

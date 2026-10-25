@@ -4,7 +4,7 @@
 #include "core/utils/controls/feedforward.h"
 #include "core/utils/controls/pid.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 /*********************************************************
  *         CONSTRUCTOR, GETTERS, SETTERS

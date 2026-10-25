@@ -2,9 +2,9 @@
 
 #include "vex/vex.h"
 #include "Eigen/Dense"
-#include "math.h"
 #include "core/math/geometry/translation2d.h"
 
+#include <math.h>
 #include <vector>
 
 /**
@@ -14,7 +14,9 @@
  * @param low  the minimum value that will be returned
  * @param high the maximum value that will be returned
  **/
-double clamp(double value, double low, double high);
+inline constexpr double clamp(double value, double low, double high) {
+    return (value < low) ? low : (value > high) ? high : value; 
+}
 
 /**
  * @brief Linearly intERPolate between values
@@ -22,17 +24,19 @@ double clamp(double value, double low, double high);
  * @param b at t = 1, output = b
  * @return a linear mixing of a and b according to t
  */
-double lerp(double a, double b, double t);
+inline constexpr double lerp(double a, double b, double t) {
+    return a * (1.0 - t) + b * t;
+}
+
 /**
  * Returns the sign of a number
  * @param x
  *
  * returns the sign +/-1 of x. 0 if x is 0
  **/
-double sign(double x);
-
-double wrap_angle_deg(double input);
-double wrap_angle_rad(double input);
+inline constexpr double sign(double x) {
+    return (x > 0) - (x < 0);
+}
 
 /**
  * Calculates the variance of  a set of numbers (needed for linear regression)
@@ -63,7 +67,7 @@ double covariance(std::vector<std::pair<double, double>> const& points, double m
  * @return a pair containing the slope and y intercept
  */
 std::pair<double, double> calculate_linear_regression(
-        std::vector<std::pair<double, double>> const& points
+    std::vector<std::pair<double, double>> const& points
 );
 
 double estimate_path_length(const std::vector<Translation2d>& points);

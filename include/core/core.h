@@ -34,6 +34,7 @@
 #include "core/math/systems/discretization.h"
 #include "core/math/systems/linear_system.h"
 #include "core/math/units.h"
+#include "core/math/util.h"
 
 // Subsystems package
 #include "core/subsystems/custom_encoder.h"
@@ -63,7 +64,6 @@
 #include "core/utils/graph_drawer.h"
 #include "core/utils/interpolating_map.h"
 #include "core/utils/logger.h"
-#include "core/utils/math_util.h"
 #include "core/utils/moving_average.h"
 #include "core/utils/pure_pursuit.h"
 #include "core/utils/state_machine.h"

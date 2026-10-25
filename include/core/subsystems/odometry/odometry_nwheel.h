@@ -4,7 +4,7 @@
 
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 /**
  * OdometryNWheel

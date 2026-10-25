@@ -1,5 +1,6 @@
 #include "core/subsystems/screen/legacy.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
+
 namespace LegacyScreen {
 void draw_label(vex::brain::lcd &scr, std::string lbl, ScreenRect rect) {
     uint32_t height = scr.getStringHeight(lbl.c_str());
