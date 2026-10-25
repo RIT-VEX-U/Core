@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef PI
-#define PI 3.141592654
-#endif
-
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/competition/command_structure/auto_command.h"

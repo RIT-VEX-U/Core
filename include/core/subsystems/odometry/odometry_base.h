@@ -11,10 +11,6 @@
 #include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
 
-#ifndef PI
-#define PI 3.141592654
-#endif
-
 /**
  * OdometryBase
  *

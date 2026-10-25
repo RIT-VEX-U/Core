@@ -424,7 +424,7 @@ bool TankDrive::drive_to_point(
      * robot's radius, use negatives for feedback control.
      */
     double angle_to_point =
-            atan2(y - current_pos.y(units::in), x - current_pos.x(units::in)) * 180.0 / PI;
+            atan2(y - current_pos.y(units::in), x - current_pos.x(units::in)) * 180.0 / std::numbers::pi;
     double angle = fmod(current_pos.rotation().degrees() - angle_to_point, 360.0);
 
     // Normalize the angle between 0 and 360
@@ -447,7 +447,7 @@ bool TankDrive::drive_to_point(
          * When inside the robot's cutoff radius, report the distance to the point along the robot's
          * forward axis, so we always "reach" the point without having to do a lateral translation
          */
-        dist_left *= fabs(cos(angle * PI / 180.0));
+        dist_left *= fabs(cos(angle * std::numbers::pi / 180.0));
     }
     /*
      * Get the heading difference between where we are and where we want to be
