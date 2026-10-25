@@ -61,7 +61,6 @@
 #include "core/utils/math/systems/linear_system.h"
 #include "core/utils/math_util.h"
 #include "core/utils/moving_average.h"
-#include "core/utils/pure_pursuit.h"
 #include "core/utils/state_machine.h"
 #include "core/utils/units.h"
 
