@@ -41,8 +41,8 @@ enum class PacketType : uint8_t {
  * Acknowledge, acknoledging a specific channel of data
  */
 enum class PacketFunction : uint8_t {
-  Send = 0b00000010,
-  Acknowledge = 0b00000100,
+  Send = 0b00000000,
+  Acknowledge = 0b00000010,
 };
 
 /**
