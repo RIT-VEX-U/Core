@@ -67,5 +67,3 @@
 #include "core/utils/graph_drawer.h"
 #include "core/utils/interpolating_map.h"
 #include "core/utils/logger.h"
-#include "core/utils/pure_pursuit.h"
-#include "core/utils/state_machine.h"
