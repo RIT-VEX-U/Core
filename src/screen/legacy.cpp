@@ -1,4 +1,4 @@
-#include "core/subsystems/screen/legacy.h"
+#include "core/screen/legacy.h"
 #include "core/math/util.h"
 
 namespace LegacyScreen {

@@ -1,6 +1,6 @@
 #include "vex/vex.h"
 #include "core/subsystems/flywheel.h"
-#include "core/subsystems/screen/legacy.h"
+#include "core/screen/legacy.h"
 #include "core/math/controls/feedforward.h"
 #include "core/math/controls/pid.h"
 #include "core/utils/graph_drawer.h"
