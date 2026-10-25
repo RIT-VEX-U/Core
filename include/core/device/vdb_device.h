@@ -139,19 +139,15 @@ class Device : public COBSSerialDevice {
     const VDP::PacketValidity status = VDP::validate_packet(in);
 
     // check if the packet is valid;
-    switch (status) {
-      case VDP::PacketValidity::BadChecksum: {
-        VDPWarnf("Controller: Bad packet checksum. Skipping");
-        return;
-      }
-      case VDP::PacketValidity::TooSmall: {
-        VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)in.size());
-        return;
-      }
-      case VDP::PacketValidity::Ok: {
-        VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
-        return;
-      }
+    if (status == VDP::PacketValidity::BadChecksum) {
+      VDPWarnf("Controller: Bad packet checksum. Skipping");
+      return;
+    } else if (status == VDP::PacketValidity::TooSmall) {
+      VDPWarnf("Controller: Packet too small to be valid (%d bytes). Skipping", (int)in.size());
+      return;
+    } else if (status != VDP::PacketValidity::Ok) {
+      VDPWarnf("Controller: Unknown validity of packet (BAD). Skipping");
+      return;
     }
 
     // decode the header byte and route it accordingly

@@ -128,7 +128,7 @@ class Channel {
     VDP::Packet packet_body(sizeof(uint32_t));
     if (pac_type == PacketType::Data) {
       // add the timestamp to the packet
-      uint32_t timestamp = vexSystemHighResTimeGet();
+      uint64_t timestamp = vexSystemHighResTimeGet();
 
       VDP::Packet timestamp_pac(sizeof(uint64_t));
 
