@@ -1,10 +1,6 @@
 #include "core/math/util.h"
 #include <vector>
 
-#ifndef PI
-#define PI 3.141592654
-#endif
-
 /**
  * Calculates the average of a vector of doubles
  * @param values   the list of values for which the average is taken
