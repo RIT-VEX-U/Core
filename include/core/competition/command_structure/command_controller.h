@@ -20,7 +20,7 @@ class CommandController {
      * added with CommandController::add()
      * @param cmds
      */
-    CommandController(std::initializer_list<AutoCommand*> cmds) : command_queue(cmds) {}
+    CommandController(std::initializer_list<AutoCommand*> cmds);
     /**
      * Adds a command to the queue
      * @param cmd the AutoCommand we want to add to our list

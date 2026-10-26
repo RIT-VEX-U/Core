@@ -20,7 +20,7 @@
 
 #include "core/competition/command_structure/auto_command.h"
 #include "core/subsystems/tank_drive.h"
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
 
 // ==== DRIVING ====
@@ -204,42 +204,6 @@ class TurnToHeadingCommand : public AutoCommand {
 
   // parameters for turn_to_heading
   double heading_deg;
-  double max_speed;
-  double end_speed;
-};
-
-/**
- * Autocommand wrapper class for pure pursuit function in the TankDrive class
- */
-class PurePursuitCommand : public AutoCommand {
- public:
-  /**
-   * Construct a Pure Pursuit AutoCommand
-   *
-   * @param path The list of coordinates to follow, in order
-   * @param dir Run the bot forwards or backwards
-   * @param feedback The feedback controller determining speed
-   * @param max_speed Limit the speed of the robot (for pid / pidff feedbacks)
-   */
-  PurePursuitCommand(
-      TankDrive& drive_sys, Feedback& feedback, PurePursuit::Path path, vex::directionType dir,
-      double max_speed = 1, double end_speed = 0
-  );
-
-  /// Direct call to TankDrive::pure_pursuit
-  bool run() override;
-
-  /// Returns a string describing the commands functionality
-  std::string toString() override;
-
-  /// Reset the drive system when it times out
-  void on_timeout() override;
-
- private:
-  TankDrive& drive_sys;
-  PurePursuit::Path path;
-  vex::directionType dir;
-  Feedback& feedback;
   double max_speed;
   double end_speed;
 };

@@ -11,10 +11,8 @@
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    vex::motor_group& left_side, vex::motor_group& right_side, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(vex::motor_group& left_side, vex::motor_group& right_side,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(&left_side),
       right_side(&right_side),
@@ -36,10 +34,8 @@ OdometryTank::OdometryTank(
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    CustomEncoder& left_custom_enc, CustomEncoder& right_custom_enc, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(CustomEncoder& left_custom_enc, CustomEncoder& right_custom_enc,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(NULL),
       right_side(NULL),
@@ -61,10 +57,8 @@ OdometryTank::OdometryTank(
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    vex::encoder& left_vex_enc, vex::encoder& right_vex_enc, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(vex::encoder& left_vex_enc, vex::encoder& right_vex_enc,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(NULL),
       right_side(NULL),
@@ -113,10 +107,10 @@ Pose2d OdometryTank::update() {
      * a bad angle.
      * Get the arclength of the turning circle of the robot
      */
-    double distance_diff = (rside_revs - lside_revs) * PI * config.odom_wheel_diam;
+    double distance_diff = (rside_revs - lside_revs) * std::numbers::pi * config.odom_wheel_diam;
 
     // Use the arclength formula to calculate the angle.
-    angle = ((180.0 / PI) * (distance_diff / config.dist_between_wheels));
+    angle = ((180.0 / std::numbers::pi) * (distance_diff / config.dist_between_wheels));
 
   } else {
     // Translate "clockwise positive" to "CCW negative"
@@ -175,9 +169,8 @@ Pose2d OdometryTank::update() {
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-Pose2d OdometryTank::calculate_new_pos(
-    robot_specs_t& config, Pose2d& curr_pos, double lside_revs, double rside_revs, double angle_deg
-) {
+Pose2d OdometryTank::calculate_new_pos(robot_specs_t& config, Pose2d& curr_pos, double lside_revs,
+                                       double rside_revs, double angle_deg) {
   Pose2d new_pos;
 
   static double stored_lside_revs = lside_revs;
@@ -186,11 +179,19 @@ Pose2d OdometryTank::calculate_new_pos(
    * Convert the revolutions into "change in distance", and average the values for a "distance
    * driven"
    */
+<<<<<<< HEAD
   double lside_diff = (lside_revs - stored_lside_revs) * PI * config.odom_wheel_diam;
   double rside_diff = (rside_revs - stored_rside_revs) * PI * config.odom_wheel_diam;
   double dist_driven = (lside_diff + rside_diff) / 2.0;
 
   double angle = angle_deg * PI / 180.0;  // Degrees to radians
+=======
+  double lside_diff = (lside_revs - stored_lside_revs) * std::numbers::pi * config.odom_wheel_diam;
+  double rside_diff = (rside_revs - stored_rside_revs) * std::numbers::pi * config.odom_wheel_diam;
+  double dist_driven = (lside_diff + rside_diff) / 2.0;
+
+  double angle = angle_deg * std::numbers::pi / 180.0;  // Degrees to radians
+>>>>>>> main
   /*
    * Create a vector from the change in distance in the current direction of the robot
    * deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)

@@ -1,9 +1,8 @@
 #pragma once
 
 #include "vex/vex.h"
-#include "core/utils/controls/pid.h"
+#include "core/math/controls/pid.h"
 #include <atomic>
-#include <iostream>
 #include <map>
 #include <vector>
 
