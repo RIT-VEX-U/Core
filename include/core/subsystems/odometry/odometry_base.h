@@ -7,13 +7,8 @@
 #include <Eigen/Dense>
 
 #include "core/competition/command_structure/auto_command.h"
-#include "core/robot_specs.h"
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
-
-#ifndef PI
-#define PI 3.141592654
-#endif
 
 /**
  * OdometryBase

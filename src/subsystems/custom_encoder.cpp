@@ -2,7 +2,7 @@
 
 #include <vex_units.h>
 
-#include "core/utils/units.h"
+#include "core/math/units.h"
 
 CustomEncoder::CustomEncoder(vex::triport::port& port, double ticks_per_rev) : super(port) {
   // bc it's a quadrature encoder, ticks per rev has to be multiplied by 4
