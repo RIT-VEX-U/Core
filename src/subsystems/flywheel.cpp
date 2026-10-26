@@ -1,10 +1,10 @@
 #include "vex/vex.h"
 #include "core/subsystems/flywheel.h"
 #include "core/screen/legacy.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/pid.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/controls/pid.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 /*********************************************************
  *         CONSTRUCTOR, GETTERS, SETTERS

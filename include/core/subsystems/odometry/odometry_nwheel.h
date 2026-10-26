@@ -4,7 +4,7 @@
 
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
 /**
  * OdometryNWheel
@@ -104,7 +104,7 @@ public:
     Eigen::Vector<double, WHEELS> radian_deltas;
 
     for (int i = 0; i < WHEELS; i++) {
-      double angle_rad = encoders[i].position(vex::rev) * M_PI * 2;
+      double angle_rad = encoders[i].position(vex::rev) * std::numbers::pi * 2;
       radian_deltas(i) = angle_rad - old_wheel_angles[i];
 
       old_wheel_angles[i] = angle_rad;
@@ -116,7 +116,7 @@ public:
     if (imu != nullptr) {
       angle = 0;
       // Translate "0 forward and clockwise positive" to "CCW positive and radians"
-      angle = -imu->rotation(vex::rotationUnits::rev) * 2 * M_PI;
+      angle = -imu->rotation(vex::rotationUnits::rev) * 2 * std::numbers::pi;
       // Offset the angle, if we've done a set_position
       angle += angle_offset;
     }

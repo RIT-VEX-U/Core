@@ -7,9 +7,9 @@
 
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/pose2d.h"
 
 /**
  * OdometrySerial

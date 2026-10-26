@@ -2,12 +2,10 @@
 
 #include "vex/vex.h"
 
-#include "core/robot_specs.h"
 #include "core/screen/legacy.h"
 #include "core/competition/command_structure/auto_command.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/pid.h"
-#include "core/utils/moving_average.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/moving_average.h"
 
 #include <atomic>
 

@@ -2,7 +2,7 @@
 
 #include <map>
 
-#include "core/utils/math/eigen_interface.h"
+#include "core/math/eigen_interface.h"
 
 /**
  * This class implements a map of key-value pairs.

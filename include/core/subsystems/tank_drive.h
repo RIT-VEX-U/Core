@@ -1,15 +1,10 @@
 #pragma once
 
-#ifndef PI
-#define PI 3.141592654
-#endif
-
 #include "core/robot_specs.h"
 #include "core/subsystems/odometry/odometry_tank.h"
 #include "core/competition/command_structure/auto_command.h"
-#include "core/utils/controls/feedback_base.h"
-#include "core/utils/controls/pid.h"
-#include "vex/vex.h"
+#include "core/math/controls/feedback_base.h"
+#include "core/math/controls/pid.h"
 
 /**
  * TankDrive is a class to run a tank drive system.
