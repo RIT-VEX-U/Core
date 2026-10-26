@@ -81,8 +81,7 @@ class Trajectory {
      * @return Interpolated State.
      */
     State interpolate(State end_value, double i) const {
-      const units::Time new_t =
-          units::Time(t.to(units::s) + (end_value.t.to(units::s) - t.to(units::s)) * i, units::s);
+      const units::Time new_t = t + (end_value.t - t) * i;
       const units::Time delta_t = new_t - t;
 
       if (delta_t < 0_s) {
@@ -96,15 +95,11 @@ class Trajectory {
           (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) * (reversing ? -1.0 : 1.0);
 
       const units::Length distance = end_value.pose.translation().distance(pose.translation());
-      const double interpolation_frac = distance > 1E-9_in ? (new_s / distance).internal() : i;
+      const double interpolation_frac = distance > 1E-9_in ? double(new_s / distance) : i;
 
       Pose2d new_pose = pose.interpolate(end_value.pose, interpolation_frac);
 
-      const units::Curvature new_curvature =
-          units::Curvature(curvature.to(units::radpm) +
-                               (end_value.curvature.to(units::radpm) - curvature.to(units::radpm)) *
-                                   interpolation_frac,
-                           units::radpm);
+      const units::Curvature new_curvature = curvature + (end_value.curvature - curvature) * interpolation_frac;
 
       return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
     }
@@ -171,7 +166,7 @@ class Trajectory {
     const State& s1 = *it;
 
     if (s1.s == s0.s) return s1.t;
-    double alpha = (s - s0.s).internal() / (s1.s - s0.s).internal();
+    double alpha = (s - s0.s) / (s1.s - s0.s);
     return s0.t + (s1.t - s0.t) * alpha;
   }
 
@@ -203,7 +198,7 @@ class Trajectory {
     }
 
     return prev_sample->interpolate(
-        *sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)).internal());
+        *sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)));
   }
 
   /**
@@ -286,18 +281,27 @@ class Trajectory {
    * @return Combined Trajectory.
    */
   Trajectory operator+(const Trajectory& other) const {
-    if (states_.empty()) {
-      return other;
-    }
+    if (states_.empty()) return other;
+    if (other.empty()) return *this;
 
     std::vector<State> states = states_;
     std::vector<State> other_states = other.states();
+    const units::Length total_distance = states_.back().s;
     for (State& other_state : other_states) {
       other_state.t += total_time_;
+      other_state.s += total_distance;
     }
 
     states.insert(states.end(), other_states.begin() + 1, other_states.end());
-    return Trajectory(states);
+    Trajectory combined(states);
+
+    std::vector<TrajectoryEvent> combined_events = events_;
+    for (const TrajectoryEvent& ev : other.events()) {
+      combined_events.push_back({ev.time + total_time_, ev.name});
+    }
+    combined.set_events(std::move(combined_events));
+
+    return combined;
   }
 
   /** @return Initial pose at t = 0s. */
@@ -371,7 +375,7 @@ class TrajectorySampler {
     if (units::abs(next.t - prev.t) < 1E-9_s) {
       return next;
     }
-    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)).internal());
+    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)));
   }
 
  private:
