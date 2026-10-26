@@ -1,17 +1,14 @@
-#include "core/utils/trajectory/trajectory_parameterizer.h"
+#include "core/math/trajectory/trajectory_parameterizer.h"
 
-#include <cstdio>
 #include <cmath>
+#include <cstdio>
 #include <vector>
 
 Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     const std::vector<PoseWithCurvature>& points,
     const std::vector<std::unique_ptr<TrajectoryConstraint>>& constraints,
-    units::Velocity start_velocity,
-    units::Velocity end_velocity,
-    units::Velocity max_velocity,
-    units::Acceleration max_acceleration,
-    bool reversed,
+    units::Velocity start_velocity, units::Velocity end_velocity, units::Velocity max_velocity,
+    units::Acceleration max_acceleration, bool reversed,
     std::function<void(const char*)> error_handler) {
   if (points.empty()) {
     return Trajectory{};
@@ -36,17 +33,16 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     auto& constrainedState = constrainedStates[i];
     constrainedState.pose = points[i];
 
-    units::Length ds = constrainedState.pose.pose.translation().distance(
-        predecessor.pose.pose.translation());
+    units::Length ds =
+        constrainedState.pose.pose.translation().distance(predecessor.pose.pose.translation());
     constrainedState.distance = ds + predecessor.distance;
 
     while (true) {
-      const double predecessor_velocity_sq = (
-          predecessor.max_velocity * predecessor.max_velocity +
-          predecessor.max_acceleration * ds * 2.0).internal();
+      const double predecessor_velocity_sq = (predecessor.max_velocity * predecessor.max_velocity +
+                                              predecessor.max_acceleration * ds * 2.0)
+                                                 .internal();
       constrainedState.max_velocity = units::Velocity(
-          std::min(max_velocity.internal(),
-                   std::sqrt(std::max(0.0, predecessor_velocity_sq))));
+          std::min(max_velocity.internal(), std::sqrt(std::max(0.0, predecessor_velocity_sq))));
 
       constrainedState.min_acceleration = -max_acceleration;
       constrainedState.max_acceleration = max_acceleration;
@@ -54,9 +50,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
       for (const auto& constraint : constraints) {
         constrainedState.max_velocity = std::min(
             constrainedState.max_velocity,
-            constraint->max_velocity(constrainedState.pose.pose,
-                                    constrainedState.pose.curvature,
-                                    constrainedState.max_velocity));
+            constraint->max_velocity(constrainedState.pose.pose, constrainedState.pose.curvature,
+                                     constrainedState.max_velocity));
       }
 
       if (!enforce_acceleration_limits(reversed, constraints, &constrainedState, error_handler)) {
@@ -96,11 +91,11 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
     units::Length ds = constrainedState.distance - successor.distance;
 
     while (true) {
-      const double successor_velocity_sq = (
-          successor.max_velocity * successor.max_velocity +
-          successor.min_acceleration * ds * 2.0).internal();
-      units::Velocity newMaxVelocity = units::Velocity(
-          std::sqrt(std::max(0.0, successor_velocity_sq)));
+      const double successor_velocity_sq =
+          (successor.max_velocity * successor.max_velocity + successor.min_acceleration * ds * 2.0)
+              .internal();
+      units::Velocity newMaxVelocity =
+          units::Velocity(std::sqrt(std::max(0.0, successor_velocity_sq)));
 
       if (newMaxVelocity >= constrainedState.max_velocity) {
         break;
@@ -153,8 +148,8 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
         dt = ds / v;
       } else {
         if (abs(ds) > kEpsilonLength) {
-            error_handler("TrajectoryParameterizer: time parameterization failed.");
-            return Trajectory{};
+          error_handler("TrajectoryParameterizer: time parameterization failed.");
+          return Trajectory{};
         }
       }
     }
@@ -164,8 +159,7 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
 
     t += dt;
 
-    states[i] = {t, reversed ? -v : v, 0_inps2,
-                 state.pose.pose, state.pose.curvature, s};
+    states[i] = {t, reversed ? -v : v, 0_inps2, state.pose.pose, state.pose.curvature, s};
   }
 
   if (states.size() >= 2) {
@@ -176,28 +170,26 @@ Trajectory TrajectoryParameterizer::time_parameterize_trajectory(
 }
 
 bool TrajectoryParameterizer::enforce_acceleration_limits(
-    bool reverse,
-    const std::vector<std::unique_ptr<TrajectoryConstraint>>& constraints,
-    ConstrainedState* state,
-    const std::function<void(const char*)>& error_handler) {
+    bool reverse, const std::vector<std::unique_ptr<TrajectoryConstraint>>& constraints,
+    ConstrainedState* state, const std::function<void(const char*)>& error_handler) {
   for (auto&& constraint : constraints) {
     double factor = reverse ? -1.0 : 1.0;
 
-    auto minMaxAccel = constraint->min_max_acceleration(
-        state->pose.pose, state->pose.curvature, state->max_velocity * factor);
+    auto minMaxAccel = constraint->min_max_acceleration(state->pose.pose, state->pose.curvature,
+                                                        state->max_velocity * factor);
 
     if (minMaxAccel.min_acceleration > minMaxAccel.max_acceleration) {
       error_handler("TrajectoryParameterizer: infeasible trajectory constraint.");
       return false;
     }
 
-    state->min_acceleration = std::max(
-        state->min_acceleration,
-        reverse ? -minMaxAccel.max_acceleration : minMaxAccel.min_acceleration);
+    state->min_acceleration =
+        std::max(state->min_acceleration,
+                 reverse ? -minMaxAccel.max_acceleration : minMaxAccel.min_acceleration);
 
-    state->max_acceleration = std::min(
-        state->max_acceleration,
-        reverse ? -minMaxAccel.min_acceleration : minMaxAccel.max_acceleration);
+    state->max_acceleration =
+        std::min(state->max_acceleration,
+                 reverse ? -minMaxAccel.min_acceleration : minMaxAccel.max_acceleration);
   }
 
   return true;

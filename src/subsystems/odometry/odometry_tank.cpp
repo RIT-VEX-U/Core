@@ -179,19 +179,12 @@ Pose2d OdometryTank::calculate_new_pos(robot_specs_t& config, Pose2d& curr_pos, 
    * Convert the revolutions into "change in distance", and average the values for a "distance
    * driven"
    */
-<<<<<<< HEAD
-  double lside_diff = (lside_revs - stored_lside_revs) * PI * config.odom_wheel_diam;
-  double rside_diff = (rside_revs - stored_rside_revs) * PI * config.odom_wheel_diam;
-  double dist_driven = (lside_diff + rside_diff) / 2.0;
-
-  double angle = angle_deg * PI / 180.0;  // Degrees to radians
-=======
   double lside_diff = (lside_revs - stored_lside_revs) * std::numbers::pi * config.odom_wheel_diam;
   double rside_diff = (rside_revs - stored_rside_revs) * std::numbers::pi * config.odom_wheel_diam;
   double dist_driven = (lside_diff + rside_diff) / 2.0;
 
   double angle = angle_deg * std::numbers::pi / 180.0;  // Degrees to radians
->>>>>>> main
+
   /*
    * Create a vector from the change in distance in the current direction of the robot
    * deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
