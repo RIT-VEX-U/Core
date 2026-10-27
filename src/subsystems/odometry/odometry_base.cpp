@@ -70,9 +70,6 @@ AutoCommand *OdometryBase::SetPositionCmd(const Pose2d &newpos) {
     });
 }
 
-
-
-
 /**
  * Get the smallest difference in angle between a start heading and end heading.
  * Returns the difference between -180 degrees and +180 degrees, representing the robot
@@ -125,7 +122,3 @@ double OdometryBase::get_angular_accel_deg() {
 
     return retval;
 }
-
-
-
-

@@ -76,10 +76,8 @@ class TankDrive {
     Condition *DriveStalledCondition(double stall_time);
     AutoCommand *DriveTankCmd(double left, double right);
 
-
-    AutoCommand *PrintPositionCmd(TankDrive &drive_sys);
+    AutoCommand *PrintPositionCmd(OdometryBase &odom);
     
-
     /**
      * Stops rotation of all the motors using their "brake mode"
      */

@@ -312,14 +312,28 @@ private:
 };
 
 
-class PrintPositionCommand : public AutoCommand { 
+/**
+ * AutoCommand that prints the current odometry position.
+ * The position is printed by toString(), which the AutoCommand framework logs when it runs.
+ */
+class PrintPositionCommand : public AutoCommand {
 public:
-  PrintPositionCommand(TankDrive &drive_sys);
+  /**
+   * constructs a new PrintPositionCommand
+   * @param odom the odometry system whose position we are printing
+   */
+  PrintPositionCommand(OdometryBase &odom);
 
+  /**
+   * Does nothing; the position is printed through toString()
+   * @returns true
+   */
   bool run() override;
+  /*
+  * Returns a string describing the current position
+  */
   std::string toString() override;
-  void on_timeout() override;
-
 private:
- TankDrive &drive_sys;
+  // odometry system to read the position from
+  OdometryBase &odom;
 };

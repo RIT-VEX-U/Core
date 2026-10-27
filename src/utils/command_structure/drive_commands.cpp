@@ -325,15 +325,16 @@ bool OdomSetPosition::run() {
     return true;
 }
 
-PrintPositionCommand::PrintPositionCommand(TankDrive &drive_sys) : drive_sys(drive_sys) {}
+/**
+ * Construct a Print Position command
+ * @param odom the odometry system whose position we are printing
+ */
+PrintPositionCommand::PrintPositionCommand(OdometryBase &odom) : odom(odom) {}
 
-bool PrintPositionCommand::run() {
-    std::cout << "Current position: X: " + double_to_string(drive_sys.get_position().x()) + ", Y: " + double_to_string(drive_sys.get_position().y()) +
-               ", ROT: " + double_to_string(drive_sys.get_position().rotation().degrees()) << std::endl;
-    return true;
-}
+bool PrintPositionCommand::run() { return true; }
 
 std::string PrintPositionCommand::toString() {
-    return  "Current position: X: " + double_to_string(drive_sys.get_position().x()) + ", Y: " + double_to_string(drive_sys.get_position().y()) +
-               ", ROT: " + double_to_string(drive_sys.get_position().rotation().degrees());
+    Pose2d pos = odom.get_position();
+    return "Current position: X: " + double_to_string(pos.x()) + ", Y: " + double_to_string(pos.y()) +
+           ", ROT: " + double_to_string(pos.rotation().degrees());
 }
