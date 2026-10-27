@@ -1,0 +1,384 @@
+#pragma once
+
+#include <algorithm>
+#include <string>
+
+#include "core/math/geometry/pose2d.h"
+#include "core/math/kinematics/chassis_accelerations.h"
+#include "core/math/kinematics/chassis_velocities.h"
+#include "core/math/kinematics/tank_kinematics.h"
+#include "core/math/kinematics/tank_wheel_velocities.h"
+#include "core/math/units.h"
+
+using namespace units::literals;
+
+/**
+ * @brief Pair representing 2D Pose and scalar path units::Curvature.
+ */
+struct PoseWithCurvature {
+  Pose2d pose;
+  units::Curvature curvature;
+};
+
+/**
+ * @brief Represents an action event triggered at a specific time along a trajectory.
+ */
+struct TrajectoryEvent {
+  units::Time time;
+  std::string name;
+};
+
+/**
+ * @brief Represents a time-parameterized 2D motion trajectory.
+ *
+ * Stores discrete State samples (time, velocity, acceleration, pose, curvature)
+ * along a parameterized path.
+ */
+class Trajectory {
+ public:
+  /**
+   * @brief Represents a single discrete state sample along a trajectory.
+   */
+  struct State {
+    units::Time t = 0_s;                         ///< Elapsed time from trajectory start
+    units::Length s = 0_in;                      ///< Distance along trajectory
+    units::Velocity velocity = 0_inps;           ///< Linear chassis velocity
+    units::Acceleration acceleration = 0_inps2;  ///< Linear chassis acceleration
+    Pose2d pose{};                               ///< 2D robot pose (x, y, theta)
+    units::Curvature curvature = 0_radpm;        ///< Path curvature at pose
+
+    /** @brief Default constructor. */
+    State() = default;
+
+    /**
+     * @brief Constructs a Trajectory State with explicit values.
+     * @param t Sample time.
+     * @param velocity Linear velocity.
+     * @param acceleration Linear acceleration.
+     * @param pose 2D pose.
+     * @param curvature Path curvature.
+     * @param s Distance along trajectory.
+     */
+    State(units::Time t, units::Velocity velocity, units::Acceleration acceleration, Pose2d pose,
+          units::Curvature curvature, units::Length s = 0_in)
+        : t(t),
+          s(s),
+          velocity(velocity),
+          acceleration(acceleration),
+          pose(pose),
+          curvature(curvature) {}
+
+    /** @brief Checks equality between two States. */
+    bool operator==(const State& other) const {
+      return t == other.t && velocity == other.velocity && acceleration == other.acceleration &&
+             pose == other.pose && curvature == other.curvature;
+    }
+
+    /**
+     * @brief Linearly interpolates between this state and end_value at fraction i in [0, 1].
+     * @param end_value Target state for interpolation.
+     * @param i Interpolation fraction ratio [0, 1].
+     * @return Interpolated State.
+     */
+    State interpolate(State end_value, double i) const {
+      const units::Time new_t = t + (end_value.t - t) * i;
+      const units::Time delta_t = new_t - t;
+
+      if (delta_t < 0_s) {
+        return end_value.interpolate(*this, 1.0 - i);
+      }
+
+      const bool reversing =
+          velocity < 0_inps || (units::abs(velocity) < 1E-9_inps && acceleration < 0_inps2);
+      const units::Velocity new_v = velocity + (acceleration * delta_t);
+      const units::Length new_s =
+          (velocity * delta_t + 0.5 * acceleration * delta_t * delta_t) * (reversing ? -1.0 : 1.0);
+
+      const units::Length distance = end_value.pose.translation().distance(pose.translation());
+      const double interpolation_frac = distance > 1E-9_in ? double(new_s / distance) : i;
+
+      Pose2d new_pose = pose.interpolate(end_value.pose, interpolation_frac);
+
+      const units::Curvature new_curvature = curvature + (end_value.curvature - curvature) * interpolation_frac;
+
+      return State(new_t, new_v, acceleration, new_pose, new_curvature, s + new_s);
+    }
+
+    ChassisVelocities chassis_velocities() const {
+      return ChassisVelocities(velocity, 0_inps, velocity * curvature);
+    }
+
+    ChassisAccelerations chassis_accelerations() const {
+      return ChassisAccelerations(acceleration, 0_inps2, acceleration * curvature);
+    }
+
+    TankWheelVelocities to_wheel_velocities(const TankKinematics& kin) const {
+      return kin.to_wheel_velocities(chassis_velocities());
+    }
+
+    TankWheelAccelerations to_wheel_accelerations(const TankKinematics& kin) const {
+      return kin.to_wheel_accelerations(chassis_accelerations());
+    }
+  };
+
+  /** @brief Default constructor. */
+  Trajectory() = default;
+
+  /**
+   * @brief Constructs a Trajectory from a vector of State samples.
+   * @param states Vector of time-parameterized states.
+   */
+  explicit Trajectory(std::vector<State> states) : states_(std::move(states)) {
+    if (!states_.empty()) {
+      total_time_ = states_.back().t;
+    }
+  }
+
+  /** @return True if the trajectory contains no state samples. */
+  bool empty() const { return states_.empty(); }
+
+  /** @return Total duration of the trajectory. */
+  units::Time total_time() const { return total_time_; }
+
+  /** @return Reference to the internal vector of State samples. */
+  const std::vector<State>& states() const { return states_; }
+
+  /** @return Vector of events attached to this trajectory. */
+  const std::vector<TrajectoryEvent>& events() const { return events_; }
+
+  /** @brief Attaches a vector of time-parameterized events to the trajectory. */
+  void set_events(std::vector<TrajectoryEvent> events) { events_ = std::move(events); }
+
+  /**
+   * @brief Interpolates the time at which a given arc distance is reached.
+   * @param s Arc distance along trajectory.
+   * @return Interpolated time.
+   */
+  units::Time time_from_distance(units::Length s) const {
+    if (states_.empty() || s <= 0_in) return 0_s;
+    if (s >= states_.back().s) return total_time_;
+
+    std::vector<State>::const_iterator it =
+        std::lower_bound(states_.begin() + 1, states_.end(), s,
+                         [](const State& st, units::Length val) { return st.s < val; });
+
+    const State& s0 = *(it - 1);
+    const State& s1 = *it;
+
+    if (s1.s == s0.s) return s1.t;
+    double alpha = (s - s0.s) / (s1.s - s0.s);
+    return s0.t + (s1.t - s0.t) * alpha;
+  }
+
+  /**
+   * @brief Samples trajectory state at timestamp t using binary search interpolation.
+   * @param t Target timestamp.
+   * @return Interpolated State struct.
+   */
+  State sample(units::Time t) const {
+    if (states_.empty()) {
+      return State{};
+    }
+
+    if (t <= states_.front().t) {
+      return states_.front();
+    }
+    if (t >= total_time_) {
+      return states_.back();
+    }
+
+    std::vector<State>::const_iterator sample =
+        std::lower_bound(states_.cbegin() + 1, states_.cend(), t,
+                         [](const State& a, const units::Time& b) { return a.t < b; });
+
+    std::vector<State>::const_iterator prev_sample = sample - 1;
+
+    if (units::abs(sample->t - prev_sample->t) < 1E-9_s) {
+      return *sample;
+    }
+
+    return prev_sample->interpolate(
+        *sample, ((t - prev_sample->t) / (sample->t - prev_sample->t)));
+  }
+
+  /**
+   * @brief Expresses all poses in the trajectory relative to a reference pose.
+   * @param pose Reference origin pose.
+   * @return Relative Trajectory.
+   */
+  Trajectory relative_to(const Pose2d& pose) const {
+    std::vector<State> new_states = states_;
+    for (State& state : new_states) {
+      state.pose = state.pose.relative_to(pose);
+    }
+    return Trajectory(new_states);
+  }
+
+  /**
+   * @brief Mirrors the trajectory across the line represented by a pose.
+   *
+   * The pose translation is any point on the mirror line, and the pose rotation
+   * is the direction of the line.
+   *
+   * @param line_pose A point and direction defining the mirror line.
+   * @return Mirrored Trajectory.
+   */
+  Trajectory mirror(const Pose2d& line_pose) const {
+    std::vector<State> new_states;
+    new_states.reserve(states_.size());
+    for (const State& st : states_) {
+      State new_st = st;
+      const Pose2d local_pose = st.pose.relative_to(line_pose);
+      const Pose2d reflected_local_pose(local_pose.x(), -local_pose.y(), -local_pose.rotation());
+      new_st.pose = line_pose.transform_by(reflected_local_pose - Pose2d{});
+      new_st.curvature = -st.curvature;
+      new_states.push_back(new_st);
+    }
+    return Trajectory(new_states);
+  }
+
+  /**
+   * @brief Rotates the trajectory 180 degrees around a center point (Point reflection).
+   * @param center The center point (default 3 tiles from each field edge).
+   * @return Rotated Trajectory.
+   */
+  Trajectory rotate_center(Translation2d center = Translation2d(3_tiles, 3_tiles)) const {
+    std::vector<State> new_states;
+    new_states.reserve(states_.size());
+    for (const State& st : states_) {
+      State new_st = st;
+      const Translation2d new_translation = 2.0 * center - st.pose.translation();
+      new_st.pose = Pose2d(new_translation, st.pose.rotation().opposite());
+      // Curvature remains unchanged for 180 degree rotation
+      new_states.push_back(new_st);
+    }
+    return Trajectory(new_states);
+  }
+
+  /**
+   * @brief Returns a time-reversed version of this trajectory (traces the path from end to
+   * start).
+   * @return Reversed Trajectory.
+   */
+  Trajectory reverse() const {
+    std::vector<State> new_states;
+    new_states.reserve(states_.size());
+    for (std::vector<State>::const_reverse_iterator it = states_.rbegin(); it != states_.rend();
+         ++it) {
+      State st = *it;
+      st.t = total_time_ - st.t;
+      st.velocity = -st.velocity;
+      st.curvature = -st.curvature;
+      st.s = states_.back().s - st.s;
+      new_states.push_back(st);
+    }
+    return Trajectory(new_states);
+  }
+
+  /**
+   * @brief Concatenates two trajectories end-to-end.
+   * @param other Secondary trajectory to append.
+   * @return Combined Trajectory.
+   */
+  Trajectory operator+(const Trajectory& other) const {
+    if (states_.empty()) return other;
+    if (other.empty()) return *this;
+
+    std::vector<State> states = states_;
+    std::vector<State> other_states = other.states();
+    const units::Length total_distance = states_.back().s;
+    for (State& other_state : other_states) {
+      other_state.t += total_time_;
+      other_state.s += total_distance;
+    }
+
+    states.insert(states.end(), other_states.begin() + 1, other_states.end());
+    Trajectory combined(states);
+
+    std::vector<TrajectoryEvent> combined_events = events_;
+    for (const TrajectoryEvent& ev : other.events()) {
+      combined_events.push_back({ev.time + total_time_, ev.name});
+    }
+    combined.set_events(std::move(combined_events));
+
+    return combined;
+  }
+
+  /** @return Initial pose at t = 0s. */
+  Pose2d initial_pose() const { return sample(0_s).pose; }
+
+  /** @brief Checks equality between two trajectories. */
+  bool operator==(const Trajectory& other) const {
+    return total_time_ == other.total_time_ && states_ == other.states_;
+  }
+
+ private:
+  std::vector<State> states_;
+  std::vector<TrajectoryEvent> events_;
+  units::Time total_time_ = 0_s;
+};
+
+/**
+ * @brief High-efficiency streaming sampler for real-time control loops.
+ *
+ * Caches the search index during sequential calls to sample(units::Time t),
+ * achieving O(1) step lookup in 100Hz loop cycles.
+ */
+class TrajectorySampler {
+ public:
+  /**
+   * @brief Constructs a TrajectorySampler bound to a target Trajectory.
+   *
+   * @warning The TrajectorySampler holds a non-owning pointer to the trajectory.
+   * The provided Trajectory object MUST outlive the sampler. Do not pass temporary objects.
+   *
+   * @param trajectory Reference to trajectory to sample.
+   */
+  explicit TrajectorySampler(const Trajectory& trajectory)
+      : trajectory_(&trajectory), cached_index_(0) {}
+
+  /** @brief Resets cached index back to start. */
+  void reset() { cached_index_ = 0; }
+
+  /**
+   * @brief Samples state at timestamp t using cached sequential lookup (O(1)).
+   * @param t Target timestamp.
+   * @return Interpolated State.
+   */
+  Trajectory::State sample(units::Time t) {
+    if (!trajectory_ || trajectory_->empty()) {
+      return Trajectory::State{};
+    }
+    const std::vector<Trajectory::State>& states = trajectory_->states();
+    if (t <= states.front().t) {
+      cached_index_ = 0;
+      return states.front();
+    }
+    if (t >= trajectory_->total_time()) {
+      cached_index_ = states.size() - 1;
+      return states.back();
+    }
+
+    while (cached_index_ + 1 < states.size() && states[cached_index_ + 1].t <= t) {
+      cached_index_++;
+    }
+    while (cached_index_ > 0 && states[cached_index_].t > t) {
+      cached_index_--;
+    }
+
+    if (cached_index_ + 1 >= states.size()) {
+      return states.back();
+    }
+
+    const Trajectory::State& prev = states[cached_index_];
+    const Trajectory::State& next = states[cached_index_ + 1];
+    if (units::abs(next.t - prev.t) < 1E-9_s) {
+      return next;
+    }
+    return prev.interpolate(next, ((t - prev.t) / (next.t - prev.t)));
+  }
+
+ private:
+  const Trajectory* trajectory_ = nullptr;
+  size_t cached_index_ = 0;
+};

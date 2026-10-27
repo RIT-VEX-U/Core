@@ -26,7 +26,6 @@ units::Angle CustomEncoder::position() {
 }
 
 units::AngularVelocity CustomEncoder::velocity() {
-  return units::from(
-      super::velocity(vex::velocityUnits::dps) * tick_scalar, units::degrees_per_second
-  );
+  return units::from(super::velocity(vex::velocityUnits::dps) * tick_scalar,
+                     units::degrees_per_second);
 }

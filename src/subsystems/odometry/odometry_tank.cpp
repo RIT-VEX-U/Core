@@ -11,10 +11,8 @@
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    vex::motor_group& left_side, vex::motor_group& right_side, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(vex::motor_group& left_side, vex::motor_group& right_side,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(&left_side),
       right_side(&right_side),
@@ -36,10 +34,8 @@ OdometryTank::OdometryTank(
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    CustomEncoder& left_custom_enc, CustomEncoder& right_custom_enc, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(CustomEncoder& left_custom_enc, CustomEncoder& right_custom_enc,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(NULL),
       right_side(NULL),
@@ -61,10 +57,8 @@ OdometryTank::OdometryTank(
  * @param is_async If true, position will be updated in the background continuously. If false, the
  * programmer will have to manually call update().
  */
-OdometryTank::OdometryTank(
-    vex::encoder& left_vex_enc, vex::encoder& right_vex_enc, robot_specs_t& config,
-    vex::inertial* imu, bool is_async
-)
+OdometryTank::OdometryTank(vex::encoder& left_vex_enc, vex::encoder& right_vex_enc,
+                           robot_specs_t& config, vex::inertial* imu, bool is_async)
     : OdometryBase(is_async),
       left_side(NULL),
       right_side(NULL),
@@ -175,9 +169,8 @@ Pose2d OdometryTank::update() {
  * Using information about the robot's mechanical structure and sensors, calculate a new position
  * of the robot, relative to when this method was previously ran.
  */
-Pose2d OdometryTank::calculate_new_pos(
-    robot_specs_t& config, Pose2d& curr_pos, double lside_revs, double rside_revs, double angle_deg
-) {
+Pose2d OdometryTank::calculate_new_pos(robot_specs_t& config, Pose2d& curr_pos, double lside_revs,
+                                       double rside_revs, double angle_deg) {
   Pose2d new_pos;
 
   static double stored_lside_revs = lside_revs;
@@ -191,6 +184,7 @@ Pose2d OdometryTank::calculate_new_pos(
   double dist_driven = (lside_diff + rside_diff) / 2.0;
 
   double angle = angle_deg * std::numbers::pi / 180.0;  // Degrees to radians
+
   /*
    * Create a vector from the change in distance in the current direction of the robot
    * deg2rad((smallest_angle(curr_pos.rot, angle_deg)/2 + curr_pos.rot, dist_driven)
