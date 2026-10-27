@@ -1,6 +1,5 @@
 #pragma once
-#include "core/utils/controls/feedback_base.h"
-#include "core/utils/controls/pid.h"
+#include "core/math/controls/feedback_base.h"
 
 /**
  * Main robot characterization struct.
@@ -22,6 +21,5 @@ typedef struct {
 
   Feedback *drive_feedback;         ///< the default feedback for autonomous driving
   Feedback *turn_feedback;          ///< the defualt feedback for autonomous turning
-  PID::pid_config_t correction_pid; ///< the pid controller to keep the robot driving in as straight a line as possible
-
+  Feedback *correction_feedback;    ///< the feedback that houses all needed values
 } robot_specs_t;

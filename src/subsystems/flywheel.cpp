@@ -1,10 +1,10 @@
+#include "vex/vex.h"
 #include "core/subsystems/flywheel.h"
-#include "core/subsystems/screen/legacy.h"
-#include "core/utils/controls/feedforward.h"
-#include "core/utils/controls/pid.h"
+#include "core/screen/legacy.h"
+#include "core/math/controls/feedforward.h"
+#include "core/math/controls/pid.h"
 #include "core/utils/graph_drawer.h"
-#include "core/utils/math_util.h"
-#include "vex.h"
+#include "core/math/util.h"
 
 /*********************************************************
  *         CONSTRUCTOR, GETTERS, SETTERS
@@ -13,14 +13,10 @@
 Flywheel::Flywheel(vex::motor_group &motors, Feedback &feedback, FeedForward &helper, const double ratio, Filter &filt)
     : motors(motors), task_running(false), fb(feedback), ff(helper), ratio(ratio), avger(filt) {}
 
-/**
- * Return the current value that the target_rpm should be set to
- */
+/// Return the current value that the target_rpm should be set to
 double Flywheel::get_target() const { return target_rpm; }
 
-/**
- * @return the motors used to run the flywheel
- */
+/// @return the motors used to run the flywheel
 vex::motor_group &Flywheel::get_motors() const { return motors; }
 
 /**
@@ -35,9 +31,7 @@ double Flywheel::measure_RPM() {
 
 double Flywheel::getRPM() const { return avger.get_value(); }
 
-/**
- * Runs a thread that keeps track of updating flywheel RPM and controlling it accordingly
- */
+/// Runs a thread that keeps track of updating flywheel RPM and controlling it accordingly
 int spinRPMTask(void *wheelPointer) {
     Flywheel &wheel = *(Flywheel *)wheelPointer;
 
@@ -111,9 +105,7 @@ void Flywheel::set_target(double value) {
     fb_mut.unlock();
 }
 
-/**
- * stop the RPM thread and the wheel
- */
+/// stop the RPM thread and the wheel
 void Flywheel::stop() {
     if (task_running) {
         task_running = false;

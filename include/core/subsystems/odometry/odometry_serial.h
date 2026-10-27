@@ -8,9 +8,9 @@
 
 #include "core/subsystems/custom_encoder.h"
 #include "core/subsystems/odometry/odometry_base.h"
-#include "core/utils/math_util.h"
+#include "core/math/util.h"
 
-#include "core/utils/math/geometry/pose2d.h"
+#include "core/math/geometry/pose2d.h"
 
 /**
  * OdometrySerial
@@ -31,9 +31,8 @@
  */
 class OdometrySerial : public OdometryBase {
   public:
-    /**
-     * Construct a new Odometry Serial Object
-     */
+    
+    /// Construct a new Odometry Serial Object
     OdometrySerial(
       bool is_async, bool calc_vel_acc_on_brain, Pose2d initial_pose, Pose2d sensor_offset, int32_t port,
       int32_t baudrate
@@ -50,9 +49,8 @@ class OdometrySerial : public OdometryBase {
      */
     Pose2d update() override;
 
-    /**
-     * Resets the position and rotational data to the input.
-     */
+    
+    /// Resets the position and rotational data to the input.
     void set_position(const Pose2d &new_pose) override;
 
     int receive_cobs_packet(uint32_t port, uint8_t *buffer, size_t buffer_size);

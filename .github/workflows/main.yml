@@ -25,7 +25,7 @@ jobs:
     - name: Run Doxygen
       uses: mattnotmitt/doxygen-action@edge
       with:
-        doxyfile-path: "./Doxyfile"
+        doxyfile-path: "./docs/Doxyfile"
         working-directory: "."
     - name: Install LaTeX
       run: |
