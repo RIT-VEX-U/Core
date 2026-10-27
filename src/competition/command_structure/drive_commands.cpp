@@ -261,3 +261,17 @@ bool OdomSetPosition::run() {
     odom.set_position(newpos);
     return true;
 }
+
+/**
+ * Construct a Print Position command
+ * @param odom the odometry system whose position we are printing
+ */
+PrintPositionCommand::PrintPositionCommand(OdometryBase &odom) : odom(odom) {}
+
+bool PrintPositionCommand::run() { return true; }
+
+std::string PrintPositionCommand::toString() {
+    Pose2d pos = odom.get_position();
+    return "Current position: X: " + double_to_string(pos.x()) + ", Y: " + double_to_string(pos.y()) +
+           ", ROT: " + double_to_string(pos.rotation().degrees());
+}

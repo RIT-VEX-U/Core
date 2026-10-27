@@ -264,3 +264,30 @@ class OdomSetPosition : public AutoCommand {
   OdometryBase& odom;
   Pose2d newpos;
 };
+
+
+/**
+ * AutoCommand that prints the current odometry position.
+ * The position is printed by toString(), which the AutoCommand framework logs when it runs.
+ */
+class PrintPositionCommand : public AutoCommand {
+public:
+  /**
+   * constructs a new PrintPositionCommand
+   * @param odom the odometry system whose position we are printing
+   */
+  PrintPositionCommand(OdometryBase &odom);
+
+  /**
+   * Does nothing; the position is printed through toString()
+   * @returns true
+   */
+  bool run() override;
+  /*
+  * Returns a string describing the current position
+  */
+  std::string toString() override;
+private:
+  // odometry system to read the position from
+  OdometryBase &odom;
+};

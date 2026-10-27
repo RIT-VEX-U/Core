@@ -122,7 +122,13 @@ AutoCommand* TankDrive::DriveTankCmd(double left, double right) {
     return new DriveTankCommand(*this, left, right);
 }
 
-/// Reset the initialization for autonomous drive functions
+AutoCommand *TankDrive::PrintPositionCmd(OdometryBase &odom) {
+    return new PrintPositionCommand(odom);
+}
+
+/**
+ * Reset the initialization for autonomous drive functions
+ */
 void TankDrive::reset_auto() { func_initialized = false; }
 
 /// Stops rotation of all the motors using their "brake mode"
