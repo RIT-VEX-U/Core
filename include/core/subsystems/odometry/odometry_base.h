@@ -9,6 +9,8 @@
 #include "core/competition/command_structure/auto_command.h"
 #include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
+#include "core/math/kinematics/chassis_velocities.h"
+#include "core/math/kinematics/chassis_accelerations.h"
 
 /**
  * OdometryBase
@@ -117,15 +119,15 @@ class OdometryBase {
 
   /**
    * Get the current vector compoenents of the rotational velocity vector
-   * @return the x,y,z components of the rotational velocity vector as a Pose2d
+   * @return the x,y,z components of the rotational velocity vector as a ChassisVelocities
    */
-  Pose2d get_rot_velocity();
+  ChassisVelocities get_rot_velocity();
 
   /**
    * Get the current vector componenets of the rotational acceleration vector
-   * @return the x,y,z componenets of the rot accel vector as a Pose2d
+   * @return the x,y,z componenets of the rot accel vector as a ChassisAccelerations
    */
-  Pose2d get_rot_accel();
+  ChassisAccelerations get_rot_accel();
 
   inline static constexpr Pose2d zero_pos = Pose2d();
 

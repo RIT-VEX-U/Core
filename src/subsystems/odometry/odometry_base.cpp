@@ -1,5 +1,9 @@
 #include "core/subsystems/odometry/odometry_base.h"
 
+#include "core/math/kinematics/chassis_accelerations.h"
+#include "core/math/kinematics/chassis_velocities.h"
+
+
 /**
  * Construct a new Odometry Base object
  *
@@ -161,19 +165,19 @@ Acceleration2d OdometryBase::get_lin_accel() {
 /**
  * Calculates the current rotational velocity vector
  *
- * @return the current rotational velocity vector as a Pose2d
+ * @return the current rotational velocity vector as a ChassisVelocities
  */
-Pose2d OdometryBase::get_rot_velocity() {
+ChassisVelocities OdometryBase::get_rot_velocity() {
   // Obtatining the current angular speed and translation
   mut.lock();
   Rotation2d heading_rad = current_pos.rotation();
   double velocity_x = speed * heading_rad.f_cos();
   double velocity_y = speed * heading_rad.f_sin();
   mut.unlock();
-  
-  Pose2d rot_velocity(
-      units::Length(velocity_x, units::in), units::Length(velocity_y, units::in),
-      Rotation2d::deg2rad(ang_speed_deg)
+
+  ChassisVelocities rot_velocity(
+      units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps),
+      units::AngularVelocity(get_angular_speed_deg(), units::dps)
   );
   return rot_velocity;
 }
@@ -181,18 +185,18 @@ Pose2d OdometryBase::get_rot_velocity() {
 /**
  * Calculates the current rotational acceleration vector
  *
- * @return the current rotational velocity accleration as a Pose2d
+ * @return the current rotational acceleration as a ChassisAccelerations
  */
-Pose2d OdometryBase::get_rot_accel() {
+ChassisAccelerations OdometryBase::get_rot_accel() {
   mut.lock();
   Rotation2d heading = current_pos.rotation();
   double accel_x = accel * heading.f_cos();
   double accel_y = accel * heading.f_sin();
   mut.unlock();
 
-  Pose2d rot_accel = {
-      units::Length(accel_x, units::in), units::Length(accel_y, units::in),
-      Rotation2d::deg2rad(ang_accel_deg)
+  ChassisAccelerations rot_accel = {
+      units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2),
+      units::AngularAcceleration(get_angular_accel_deg(), units::dps2)
   };
   return rot_accel;
 }
