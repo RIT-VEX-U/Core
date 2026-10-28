@@ -177,7 +177,7 @@ ChassisVelocities OdometryBase::get_rot_velocity() {
 
   ChassisVelocities rot_velocity(
       units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps),
-      units::AngularVelocity(get_angular_speed_deg(), units::dps)
+      units::AngularVelocity(get_angular_speed_deg()*M_PI/180.0, units::radps)
   );
   return rot_velocity;
 }
@@ -196,7 +196,7 @@ ChassisAccelerations OdometryBase::get_rot_accel() {
 
   ChassisAccelerations rot_accel = {
       units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2),
-      units::AngularAcceleration(get_angular_accel_deg(), units::dps2)
+      units::AngularAcceleration(get_angular_accel_deg()*M_PI/180.0, units::radps2)
   };
   return rot_accel;
 }
