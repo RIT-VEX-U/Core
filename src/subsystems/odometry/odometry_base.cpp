@@ -124,50 +124,11 @@ double OdometryBase::get_angular_accel_deg() {
 }
 
 /**
- * Calculates the current linear velocity vector of the bot
- *
- * @return the current linear velocity vector as a Velocity2d
- */
-Velocity2d OdometryBase::get_lin_velocity() {
-  mut.lock();
-  double current_speed = speed;
-  Rotation2d heading_rad = current_pos.rotation();
-  mut.unlock();
-
-  double velocity_x = current_speed * heading_rad.f_cos();
-  double velocity_y = current_speed * heading_rad.f_sin();
-  Velocity2d velocity = {
-      units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps)
-  };
-  return velocity;
-}
-
-/**
- * Calculates the current linear acceleration vector of the bot
- *
- * @return the current linear acceleration vector as a Acceleration2d
- */
-Acceleration2d OdometryBase::get_lin_accel() {
-  mut.lock();
-  double current_accel = accel;
-  Rotation2d heading = current_pos.rotation();
-  mut.unlock();
-
-  double accel_x = current_accel * heading.f_cos();
-  double accel_y = current_accel * heading.f_sin();
-
-  Acceleration2d accel = {
-      units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2)
-  };
-  return accel;
-}
-
-/**
  * Calculates the current rotational velocity vector
  *
  * @return the current rotational velocity vector as a ChassisVelocities
  */
-ChassisVelocities OdometryBase::get_rot_velocity() {
+ChassisVelocities OdometryBase::get_chassis_velocity() {
   // Obtatining the current angular speed and translation
   mut.lock();
   Rotation2d heading_rad = current_pos.rotation();
@@ -177,7 +138,7 @@ ChassisVelocities OdometryBase::get_rot_velocity() {
 
   ChassisVelocities rot_velocity(
       units::Velocity(velocity_x, units::inps), units::Velocity(velocity_y, units::inps),
-      units::AngularVelocity(get_angular_speed_deg() * std::numbers::pi / 180.0, units::radps)
+       units::AngularVelocity(get_angular_speed_deg(), units::dps)
   );
   return rot_velocity;
 }
@@ -187,7 +148,7 @@ ChassisVelocities OdometryBase::get_rot_velocity() {
  *
  * @return the current rotational acceleration as a ChassisAccelerations
  */
-ChassisAccelerations OdometryBase::get_rot_accel() {
+ChassisAccelerations OdometryBase::get_chassis_accel() {
   mut.lock();
   Rotation2d heading = current_pos.rotation();
   double accel_x = accel * heading.f_cos();
@@ -196,7 +157,7 @@ ChassisAccelerations OdometryBase::get_rot_accel() {
 
   ChassisAccelerations rot_accel = {
       units::Acceleration(accel_x, units::inps2), units::Acceleration(accel_y, units::inps2),
-      units::AngularAcceleration(get_angular_accel_deg()*std::numbers::pi / 180.0, units::radps2)
+       units::AngularAcceleration(get_angular_accel_deg(), units::dps2)
   };
   return rot_accel;
 }
