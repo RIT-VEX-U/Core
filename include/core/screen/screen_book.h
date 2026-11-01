@@ -9,8 +9,8 @@
 class ScreenBook {
 public:
 
-    ScreenBook(vex::brain::lcd screen, std::initializer_list<Page *> pages);
-    ScreenBook(vex::brain::lcd screen, std::vector<Page *> pages);
+    ScreenBook(vex::brain::lcd screen, std::initializer_list<ScreenPage *> pages);
+    ScreenBook(vex::brain::lcd screen, std::vector<ScreenPage *> pages);
     ScreenBook() = default;
 
     inline std::function<void()> handle() {
@@ -20,7 +20,7 @@ public:
                 return;
             }
 
-            Page *front_page = this->pages[this->index];
+            ScreenPage *front_page = this->pages[this->index];
             std::optional<Point2d> pressing;
 
             if((pressing = ScreenController::get_press_pos()).has_value()) {
@@ -82,7 +82,7 @@ private:
     int x_press;
     int y_press;
 
-    std::vector<Page *> pages;
+    std::vector<ScreenPage *> pages;
     vex::brain::lcd screen;
 };
 
@@ -97,7 +97,7 @@ inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& init
     return [&, o, page]() {
         if(o) o();
 
-        std::vector<Page*> pages; size_t initializations = 0;
+        std::vector<ScreenPage*> pages; size_t initializations = 0;
         do {
             pages.push_back(new InitializerPage(initializer, initializations));
             initializations += 8;

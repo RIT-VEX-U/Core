@@ -116,7 +116,7 @@ void Flywheel::stop() {
 }
 
 //------------------------- Screen Stuff ----------------------------
-class FlywheelPage : public Page {
+class FlywheelPage : public ScreenPage {
   public:
     static const size_t window_size = 40;
 
@@ -154,4 +154,4 @@ class FlywheelPage : public Page {
     MovingAverage avg_err;
 };
 
-Page *Flywheel::Page() const {return new FlywheelPage(*this);}
+ScreenPage *Flywheel::Page() const {return new FlywheelPage(*this);}

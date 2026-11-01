@@ -83,7 +83,7 @@ class MotionController : public Feedback {
     /// @return The current postion, velocity and acceleration setpoints
     motion_t get_motion() const;
 
-Page *Page();
+  ScreenPage *Page();
 
     /**
      * This method attempts to characterize the robot's drivetrain and automatically tune the feedforward.

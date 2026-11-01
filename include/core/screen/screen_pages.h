@@ -142,11 +142,11 @@ struct WidgetConfig {
   } config;
 };
 
-class Page;
+class ScreenPage;
 /// @brief Page describes one part of the screen slideshow
-class Page {
+class ScreenPage {
  public:
-  virtual ~Page() = default;
+  virtual ~ScreenPage() = default;
   /**
    * @brief collect data, respond to screen input, do fast things (runs at
    * 50hz even if you're not focused on this Page (only drawn page gets
@@ -174,7 +174,7 @@ struct ScreenRect {
 };
 void draw_widget(WidgetConfig& widget, ScreenRect rect);
 
-class WidgetPage : public Page {
+class WidgetPage : public ScreenPage {
  public:
   WidgetPage(WidgetConfig& cfg) : base_widget(cfg) {}
   void update(bool was_pressed, int x, int y) override;
@@ -194,7 +194,7 @@ using update_func_t = std::function<void(bool, int, int)>;
 using draw_func_t = std::function<void(vex::brain::lcd& screen, bool, unsigned int)>;
 
 /// @brief Draws motor stats and battery stats to the screen
-class StatsPage : public Page {
+class StatsPage : public ScreenPage {
  public:
   /// @brief Creates a stats page
   /// @param motors a map of string to motor that we want to draw on this page
@@ -221,7 +221,7 @@ class StatsPage : public Page {
  * @brief a page that shows odometry position and rotation and a map (if an sd card with the file is
  * on)
  */
-class OdometryPage : public Page {
+class OdometryPage : public ScreenPage {
  public:
   /// @brief Create an odometry trail. Make sure odometry is initilized before now
   /// @param odom the odometry system to monitor
@@ -253,7 +253,7 @@ class OdometryPage : public Page {
 
 /// @brief Simple page that stores no internal data. the draw and update functions use only global
 /// data rather than storing anything
-class FunctionPage : public Page {
+class FunctionPage : public ScreenPage {
  public:
   /// @brief Creates a function page
   /// @param update_f the function called every tick to respond to user input or do data
@@ -271,7 +271,7 @@ class FunctionPage : public Page {
 };
 
 /// @brief PIDPage provides a way to tune a pid controller on the screen
-class PIDPage : public Page {
+class PIDPage : public ScreenPage {
  public:
   /// @brief Create a PIDPage
   /// @param pid the pid controller we're changing
@@ -306,7 +306,7 @@ class PIDPage : public Page {
 };
 
 /// @brief InitializerPage provides a way to Select a desired Initialization on the Screen
-class InitializerPage : public Page {
+class InitializerPage : public ScreenPage {
  public:
   /// @brief Creates an InitializerPage
   /// @param initializer The initializer object for which this page provides a GUI of

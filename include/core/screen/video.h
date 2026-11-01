@@ -8,7 +8,7 @@ void set_video(const std::string &filename);
 void video_restart();
 // plays the video set by set_video()
 // because of memory constraints we're limited to one video at a time
-class VideoPlayer : public Page {
+class VideoPlayer : public ScreenPage {
   public:
     VideoPlayer();
     void update(bool was_pressed, int x, int y) override;
