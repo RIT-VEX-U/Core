@@ -3,17 +3,15 @@
 #include <initializer_list>
 #include <vector>
 
-#include "legacy.h"
+#include "screen_pages.h"
 #include "core/screen/screen_controller.h"
 
-namespace LegacyScreen {
-
-class LegacyPage {
+class ScreenBook {
 public:
 
-    LegacyPage(vex::brain::lcd screen, std::initializer_list<Page *> pages);
-    LegacyPage(vex::brain::lcd screen, std::vector<Page *> pages);
-    LegacyPage() = default;
+    ScreenBook(vex::brain::lcd screen, std::initializer_list<Page *> pages);
+    ScreenBook(vex::brain::lcd screen, std::vector<Page *> pages);
+    ScreenBook() = default;
 
     inline std::function<void()> handle() {
         return [this]() {
@@ -95,7 +93,7 @@ private:
  * @param o An optional callback to handle other matters during pre-initialization
  * @return A pre-initialization function that handles the screen
  */
-inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, LegacyPage* page, std::function<void()> o = nullptr) {
+inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, ScreenBook* page, std::function<void()> o = nullptr) {
     return [&, o, page]() {
         if(o) o();
 
@@ -105,9 +103,7 @@ inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& init
             initializations += 8;
         } while(initializations < initializer.initialization_count());
 
-        *page = LegacyPage(brain.Screen, pages);
+        *page = ScreenBook(brain.Screen, pages);
         ScreenController::set(page->handle());
     };
 }
-
-} // namespace screen

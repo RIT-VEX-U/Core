@@ -1,6 +1,6 @@
 #include "vex/vex.h"
 #include "core/subsystems/flywheel.h"
-#include "core/screen/legacy.h"
+#include "core/screen/screen_book.h"
 #include "core/math/controls/feedforward.h"
 #include "core/math/controls/pid.h"
 #include "core/utils/graph_drawer.h"
@@ -116,7 +116,7 @@ void Flywheel::stop() {
 }
 
 //------------------------- Screen Stuff ----------------------------
-class FlywheelPage : public LegacyScreen::Page {
+class FlywheelPage : public Page {
   public:
     static const size_t window_size = 40;
 
@@ -154,4 +154,4 @@ class FlywheelPage : public LegacyScreen::Page {
     MovingAverage avg_err;
 };
 
-LegacyScreen::Page *Flywheel::Page() const { return new FlywheelPage(*this); }
+Page *Flywheel::Page() const {return new FlywheelPage(*this);}

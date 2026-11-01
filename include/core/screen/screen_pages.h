@@ -14,8 +14,6 @@
 #include "core/math/geometry/pose2d.h"
 #include "vex/vex.h"
 
-namespace LegacyScreen {
-
 ///  Describes a Rectangle with a minimum and maximum point
 struct Rect {
   Point2d min;
@@ -357,5 +355,3 @@ class InitializerPage : public Page {
 
   const static std::array<Rect, 8> buttons;
 };
-
-}  // namespace LegacyScreen
