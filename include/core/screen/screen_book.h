@@ -3,7 +3,8 @@
 #include <initializer_list>
 #include <vector>
 
-#include "screen_pages.h"
+#include "vex/vex.h"
+#include "core/screen/screen_pages.h"
 #include "core/screen/screen_controller.h"
 
 class ScreenBook {
@@ -75,6 +76,28 @@ public:
         };
     }
 
+    /** 
+     * @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
+     * @param brain The VEX Brain containing the screen to display the InitializerPage objects on
+     * @param initializer The initializer object for which this page provides a GUI of
+     * @param o An optional callback to handle other matters during pre-initialization
+     * @return A pre-initialization function that handles the screen
+     */
+    static inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, ScreenBook* page, std::function<void()> o = nullptr) {
+        return [&, o, page]() {
+            if(o) o();
+
+            std::vector<ScreenPage*> pages; size_t initializations = 0;
+            do {
+                pages.push_back(new InitializerPage(initializer, initializations));
+                initializations += 8;
+            } while(initializations < initializer.initialization_count());
+
+            *page = ScreenBook(brain.Screen, pages);
+            ScreenController::set(page->handle());
+        };
+    }
+
 private:
 
     bool was_pressed;
@@ -85,25 +108,3 @@ private:
     std::vector<ScreenPage *> pages;
     vex::brain::lcd screen;
 };
-
-/** 
- * @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
- * @param brain The VEX Brain containing the screen to display the InitializerPage objects on
- * @param initializer The initializer object for which this page provides a GUI of
- * @param o An optional callback to handle other matters during pre-initialization
- * @return A pre-initialization function that handles the screen
- */
-inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, ScreenBook* page, std::function<void()> o = nullptr) {
-    return [&, o, page]() {
-        if(o) o();
-
-        std::vector<ScreenPage*> pages; size_t initializations = 0;
-        do {
-            pages.push_back(new InitializerPage(initializer, initializations));
-            initializations += 8;
-        } while(initializations < initializer.initialization_count());
-
-        *page = ScreenBook(brain.Screen, pages);
-        ScreenController::set(page->handle());
-    };
-}
