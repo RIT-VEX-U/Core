@@ -2,7 +2,7 @@
 
 #include "vex/vex.h"
 
-#include "core/screen/legacy.h"
+#include "core/screen/screen_book.h"
 #include "core/competition/command_structure/auto_command.h"
 #include "core/math/controls/feedforward.h"
 #include "core/math/moving_average.h"
@@ -77,7 +77,7 @@ class Flywheel {
      *  @brief Creates a page displaying info about the flywheel
      *  @return the page should be used for `screen::start_screen(screen, {fw.Page()});
      */
-    LegacyScreen::Page* Page() const;
+    ScreenPage* Page() const;
 
     /**
      * @brief Creates a new auto command to spin the flywheel at the desired velocity

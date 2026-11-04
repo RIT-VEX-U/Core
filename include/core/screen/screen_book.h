@@ -3,17 +3,16 @@
 #include <initializer_list>
 #include <vector>
 
-#include "legacy.h"
+#include "vex/vex.h"
+#include "core/screen/screen_pages.h"
 #include "core/screen/screen_controller.h"
 
-namespace LegacyScreen {
-
-class LegacyPage {
+class ScreenBook {
 public:
 
-    LegacyPage(vex::brain::lcd screen, std::initializer_list<Page *> pages);
-    LegacyPage(vex::brain::lcd screen, std::vector<Page *> pages);
-    LegacyPage() = default;
+    ScreenBook(vex::brain::lcd screen, std::initializer_list<ScreenPage *> pages);
+    ScreenBook(vex::brain::lcd screen, std::vector<ScreenPage *> pages);
+    ScreenBook() = default;
 
     inline std::function<void()> handle() {
         return [this]() {
@@ -22,7 +21,7 @@ public:
                 return;
             }
 
-            Page *front_page = this->pages[this->index];
+            ScreenPage *front_page = this->pages[this->index];
             std::optional<Point2d> pressing;
 
             if((pressing = ScreenController::get_press_pos()).has_value()) {
@@ -77,6 +76,28 @@ public:
         };
     }
 
+    /** 
+     * @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
+     * @param brain The VEX Brain containing the screen to display the InitializerPage objects on
+     * @param initializer The initializer object for which this page provides a GUI of
+     * @param o An optional callback to handle other matters during pre-initialization
+     * @return A pre-initialization function that handles the screen
+     */
+    static inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, ScreenBook* page, std::function<void()> o = nullptr) {
+        return [&, o, page]() {
+            if(o) o();
+
+            std::vector<ScreenPage*> pages; size_t initializations = 0;
+            do {
+                pages.push_back(new InitializerPage(initializer, initializations));
+                initializations += 8;
+            } while(initializations < initializer.initialization_count());
+
+            *page = ScreenBook(brain.Screen, pages);
+            ScreenController::set(page->handle());
+        };
+    }
+
 private:
 
     bool was_pressed;
@@ -84,30 +105,6 @@ private:
     int x_press;
     int y_press;
 
-    std::vector<Page *> pages;
+    std::vector<ScreenPage *> pages;
     vex::brain::lcd screen;
 };
-
-/** 
- * @brief Generates a pre-initialization function for an Initializer to use if selecting through the InitializerPage system
- * @param brain The VEX Brain containing the screen to display the InitializerPage objects on
- * @param initializer The initializer object for which this page provides a GUI of
- * @param o An optional callback to handle other matters during pre-initialization
- * @return A pre-initialization function that handles the screen
- */
-inline std::function<void()> pre_initialize(vex::brain& brain, Initializer& initializer, LegacyPage* page, std::function<void()> o = nullptr) {
-    return [&, o, page]() {
-        if(o) o();
-
-        std::vector<Page*> pages; size_t initializations = 0;
-        do {
-            pages.push_back(new InitializerPage(initializer, initializations));
-            initializations += 8;
-        } while(initializations < initializer.initialization_count());
-
-        *page = LegacyPage(brain.Screen, pages);
-        ScreenController::set(page->handle());
-    };
-}
-
-} // namespace screen
